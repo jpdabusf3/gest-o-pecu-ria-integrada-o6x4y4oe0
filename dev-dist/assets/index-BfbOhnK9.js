@@ -490,8 +490,8 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 				"=": "=0",
 				":": "=2"
 			};
-			return "$" + key.replace(/[=:]/g, function(match) {
-				return escaperLookup[match];
+			return "$" + key.replace(/[=:]/g, function(match$1) {
+				return escaperLookup[match$1];
 			});
 		}
 		function getElementKey(element, index$1) {
@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$37 = require_react(), Internals = {
+		var React$64 = require_react(), Internals = {
 			d: {
 				f: noop$2,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$37.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$64.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -1645,8 +1645,8 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			if (void 0 === prefix$2) try {
 				throw Error();
 			} catch (x$2) {
-				var match = x$2.stack.trim().match(/\n( *(at )?)/);
-				prefix$2 = match && match[1] || "";
+				var match$1 = x$2.stack.trim().match(/\n( *(at )?)/);
+				prefix$2 = match$1 && match$1[1] || "";
 				suffix = -1 < x$2.stack.indexOf("\n    at") ? " (<anonymous>)" : -1 < x$2.stack.indexOf("@") ? "@unknown:0:0" : "";
 			}
 			return "\n" + prefix$2 + name + suffix;
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$37.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$64.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -6810,11 +6810,11 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 						JSCompiler_object_inline_digest_2724 = JSCompiler_object_inline_componentStack_2726.nextSibling && JSCompiler_object_inline_componentStack_2726.nextSibling.dataset;
 						if (JSCompiler_object_inline_digest_2724) {
 							nextPrimaryChildren = JSCompiler_object_inline_digest_2724.dgst;
-							var message = JSCompiler_object_inline_digest_2724.msg;
+							var message$1 = JSCompiler_object_inline_digest_2724.msg;
 							mode = JSCompiler_object_inline_digest_2724.stck;
 							var componentStack = JSCompiler_object_inline_digest_2724.cstck;
 						}
-						JSCompiler_object_inline_message_2723 = message;
+						JSCompiler_object_inline_message_2723 = message$1;
 						JSCompiler_object_inline_digest_2724 = nextPrimaryChildren;
 						JSCompiler_object_inline_stack_2725 = mode;
 						JSCompiler_object_inline_componentStack_2726 = componentStack;
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$37 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$64 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$37.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$64.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$37.version;
+			var isomorphicReactPackageVersion = React$64.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -15446,14 +15446,14 @@ function createBrowserHistory(options$1 = {}) {
 	}
 	return getUrlBasedHistory(createBrowserLocation, createBrowserHref, null, options$1);
 }
-function invariant$1(value, message) {
-	if (value === false || value === null || typeof value === "undefined") throw new Error(message);
+function invariant$1(value, message$1) {
+	if (value === false || value === null || typeof value === "undefined") throw new Error(message$1);
 }
-function warning(cond, message) {
+function warning(cond, message$1) {
 	if (!cond) {
-		if (typeof console !== "undefined") console.warn(message);
+		if (typeof console !== "undefined") console.warn(message$1);
 		try {
-			throw new Error(message);
+			throw new Error(message$1);
 		} catch (e) {}
 	}
 }
@@ -15628,8 +15628,8 @@ function matchRoutesImpl(routes, locationArg, basename, allowPartial) {
 	}
 	return matches;
 }
-function convertRouteMatchToUiMatch(match, loaderData) {
-	let { route, pathname, params } = match;
+function convertRouteMatchToUiMatch(match$1, loaderData) {
+	let { route, pathname, params } = match$1;
 	return {
 		id: route.id,
 		pathname,
@@ -15713,26 +15713,26 @@ function matchRouteBranch(branch, pathname, allowPartial = false) {
 		let meta = routesMeta[i];
 		let end = i === routesMeta.length - 1;
 		let remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/";
-		let match = matchPath({
+		let match$1 = matchPath({
 			path: meta.relativePath,
 			caseSensitive: meta.caseSensitive,
 			end
 		}, remainingPathname);
 		let route = meta.route;
-		if (!match && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) match = matchPath({
+		if (!match$1 && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) match$1 = matchPath({
 			path: meta.relativePath,
 			caseSensitive: meta.caseSensitive,
 			end: false
 		}, remainingPathname);
-		if (!match) return null;
-		Object.assign(matchedParams, match.params);
+		if (!match$1) return null;
+		Object.assign(matchedParams, match$1.params);
 		matches.push({
 			params: matchedParams,
-			pathname: joinPaths([matchedPathname, match.pathname]),
-			pathnameBase: normalizePathname(joinPaths([matchedPathname, match.pathnameBase])),
+			pathname: joinPaths([matchedPathname, match$1.pathname]),
+			pathnameBase: normalizePathname(joinPaths([matchedPathname, match$1.pathnameBase])),
 			route
 		});
-		if (match.pathnameBase !== "/") matchedPathname = joinPaths([matchedPathname, match.pathnameBase]);
+		if (match$1.pathnameBase !== "/") matchedPathname = joinPaths([matchedPathname, match$1.pathnameBase]);
 	}
 	return matches;
 }
@@ -15743,11 +15743,11 @@ function matchPath(pattern, pathname) {
 		end: true
 	};
 	let [matcher, compiledParams] = compilePath(pattern.path, pattern.caseSensitive, pattern.end);
-	let match = pathname.match(matcher);
-	if (!match) return null;
-	let matchedPathname = match[0];
+	let match$1 = pathname.match(matcher);
+	if (!match$1) return null;
+	let matchedPathname = match$1[0];
 	let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
-	let captureGroups = match.slice(1);
+	let captureGroups = match$1.slice(1);
 	return {
 		params: compiledParams.reduce((memo2, { paramName, isOptional }, index$1) => {
 			if (paramName === "*") {
@@ -15767,13 +15767,13 @@ function matchPath(pattern, pathname) {
 function compilePath(path$1, caseSensitive = false, end = true) {
 	warning(path$1 === "*" || !path$1.endsWith("*") || path$1.endsWith("/*"), `Route path "${path$1}" will be treated as if it were "${path$1.replace(/\*$/, "/*")}" because the \`*\` character must always follow a \`/\` in the pattern. To get rid of this warning, please change the route path to "${path$1.replace(/\*$/, "/*")}".`);
 	let params = [];
-	let regexpSource = "^" + path$1.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(/\/:([\w-]+)(\?)?/g, (match, paramName, isOptional, index$1, str) => {
+	let regexpSource = "^" + path$1.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(/\/:([\w-]+)(\?)?/g, (match$1, paramName, isOptional, index$1, str) => {
 		params.push({
 			paramName,
 			isOptional: isOptional != null
 		});
 		if (isOptional) {
-			let nextChar = str.charAt(index$1 + match.length);
+			let nextChar = str.charAt(index$1 + match$1.length);
 			if (nextChar && nextChar !== "/") return "/([^\\/]*)";
 			return "(?:/([^\\/]*))?";
 		}
@@ -15830,11 +15830,11 @@ function getInvalidPathError(char, field, dest, path$1) {
 	return `Cannot include a '${char}' character in a manually specified \`to.${field}\` field [${JSON.stringify(path$1)}].  Please separate it out to the \`to.${dest}\` field. Alternatively you may provide the full path as a string in <Link to="..."> and the router will parse it for you.`;
 }
 function getPathContributingMatches(matches) {
-	return matches.filter((match, index$1) => index$1 === 0 || match.route.path && match.route.path.length > 0);
+	return matches.filter((match$1, index$1) => index$1 === 0 || match$1.route.path && match$1.route.path.length > 0);
 }
 function getResolveToMatches(matches) {
 	let pathMatches = getPathContributingMatches(matches);
-	return pathMatches.map((match, idx) => idx === pathMatches.length - 1 ? match.pathname : match.pathnameBase);
+	return pathMatches.map((match$1, idx) => idx === pathMatches.length - 1 ? match$1.pathname : match$1.pathnameBase);
 }
 function resolveTo(toArg, routePathnames, locationPathname, isPathRelative = false) {
 	let to;
@@ -16063,10 +16063,10 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
 	let matches = matchRoutes(routes, { pathname: remainingPathname });
 	warning(parentRoute || matches != null, `No routes matched location "${location.pathname}${location.search}${location.hash}" `);
 	warning(matches == null || matches[matches.length - 1].route.element !== void 0 || matches[matches.length - 1].route.Component !== void 0 || matches[matches.length - 1].route.lazy !== void 0, `Matched leaf route at location "${location.pathname}${location.search}${location.hash}" does not have an element or Component. This means it will render an <Outlet /> with a null value by default resulting in an "empty" page.`);
-	let renderedMatches = _renderMatches(matches && matches.map((match) => Object.assign({}, match, {
-		params: Object.assign({}, parentParams, match.params),
-		pathname: joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match.pathname]),
-		pathnameBase: match.pathnameBase === "/" ? parentPathnameBase : joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match.pathnameBase])
+	let renderedMatches = _renderMatches(matches && matches.map((match$1) => Object.assign({}, match$1, {
+		params: Object.assign({}, parentParams, match$1.params),
+		pathname: joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$1.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$1.pathname]),
+		pathnameBase: match$1.pathnameBase === "/" ? parentPathnameBase : joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$1.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$1.pathnameBase])
 	})), parentMatches, dataRouterOpts);
 	if (locationArg && renderedMatches) return /* @__PURE__ */ import_react.createElement(LocationContext.Provider, { value: {
 		location: {
@@ -16084,7 +16084,7 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
 }
 function DefaultErrorComponent() {
 	let error = useRouteError();
-	let message = isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : error instanceof Error ? error.message : JSON.stringify(error);
+	let message$1 = isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : error instanceof Error ? error.message : JSON.stringify(error);
 	let stack = error instanceof Error ? error.stack : null;
 	let lightgrey = "rgba(200,200,200, 0.5)";
 	let preStyles = {
@@ -16098,7 +16098,7 @@ function DefaultErrorComponent() {
 	let devInfo = null;
 	console.error("Error handled by React Router default ErrorBoundary:", error);
 	devInfo = /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement("p", null, "💿 Hey developer 👋"), /* @__PURE__ */ import_react.createElement("p", null, "You can provide a way better UX than this when your app throws errors by providing your own ", /* @__PURE__ */ import_react.createElement("code", { style: codeStyles }, "ErrorBoundary"), " or", " ", /* @__PURE__ */ import_react.createElement("code", { style: codeStyles }, "errorElement"), " prop on your route."));
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement("h2", null, "Unexpected Application Error!"), /* @__PURE__ */ import_react.createElement("h3", { style: { fontStyle: "italic" } }, message), stack ? /* @__PURE__ */ import_react.createElement("pre", { style: preStyles }, stack) : null, devInfo);
+	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement("h2", null, "Unexpected Application Error!"), /* @__PURE__ */ import_react.createElement("h3", { style: { fontStyle: "italic" } }, message$1), stack ? /* @__PURE__ */ import_react.createElement("pre", { style: preStyles }, stack) : null, devInfo);
 }
 var defaultErrorElement = /* @__PURE__ */ import_react.createElement(DefaultErrorComponent, null);
 var RenderErrorBoundary = class extends import_react.Component {
@@ -16167,9 +16167,9 @@ function RSCErrorHandler({ children, error }) {
 	}
 	return children;
 }
-function RenderedRoute({ routeContext, match, children }) {
+function RenderedRoute({ routeContext, match: match$1, children }) {
 	let dataRouterContext = import_react.useContext(DataRouterContext);
-	if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match.route.errorElement || match.route.ErrorBoundary)) dataRouterContext.staticContext._deepestRenderedBoundaryId = match.route.id;
+	if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match$1.route.errorElement || match$1.route.ErrorBoundary)) dataRouterContext.staticContext._deepestRenderedBoundaryId = match$1.route.id;
 	return /* @__PURE__ */ import_react.createElement(RouteContext.Provider, { value: routeContext }, children);
 }
 function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
@@ -16192,12 +16192,12 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 	if (dataRouterOpts && dataRouterState) {
 		renderFallback = dataRouterState.renderFallback;
 		for (let i = 0; i < renderedMatches.length; i++) {
-			let match = renderedMatches[i];
-			if (match.route.HydrateFallback || match.route.hydrateFallbackElement) fallbackIndex = i;
-			if (match.route.id) {
+			let match$1 = renderedMatches[i];
+			if (match$1.route.HydrateFallback || match$1.route.hydrateFallbackElement) fallbackIndex = i;
+			if (match$1.route.id) {
 				let { loaderData, errors: errors2 } = dataRouterState;
-				let needsToRunLoader = match.route.loader && !loaderData.hasOwnProperty(match.route.id) && (!errors2 || errors2[match.route.id] === void 0);
-				if (match.route.lazy || needsToRunLoader) {
+				let needsToRunLoader = match$1.route.loader && !loaderData.hasOwnProperty(match$1.route.id) && (!errors2 || errors2[match$1.route.id] === void 0);
+				if (match$1.route.lazy || needsToRunLoader) {
 					if (dataRouterOpts.isStatic) renderFallback = true;
 					if (fallbackIndex >= 0) renderedMatches = renderedMatches.slice(0, fallbackIndex + 1);
 					else renderedMatches = [renderedMatches[0]];
@@ -16215,14 +16215,14 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 			errorInfo
 		});
 	} : void 0;
-	return renderedMatches.reduceRight((outlet, match, index$1) => {
+	return renderedMatches.reduceRight((outlet, match$1, index$1) => {
 		let error;
 		let shouldRenderHydrateFallback = false;
 		let errorElement = null;
 		let hydrateFallbackElement = null;
 		if (dataRouterState) {
-			error = errors && match.route.id ? errors[match.route.id] : void 0;
-			errorElement = match.route.errorElement || defaultErrorElement;
+			error = errors && match$1.route.id ? errors[match$1.route.id] : void 0;
+			errorElement = match$1.route.errorElement || defaultErrorElement;
 			if (renderFallback) {
 				if (fallbackIndex < 0 && index$1 === 0) {
 					warningOnce("route-fallback", false, "No `HydrateFallback` element provided to render during initial hydration");
@@ -16230,7 +16230,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 					hydrateFallbackElement = null;
 				} else if (fallbackIndex === index$1) {
 					shouldRenderHydrateFallback = true;
-					hydrateFallbackElement = match.route.hydrateFallbackElement || null;
+					hydrateFallbackElement = match$1.route.hydrateFallbackElement || null;
 				}
 			}
 		}
@@ -16239,11 +16239,11 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 			let children;
 			if (error) children = errorElement;
 			else if (shouldRenderHydrateFallback) children = hydrateFallbackElement;
-			else if (match.route.Component) children = /* @__PURE__ */ import_react.createElement(match.route.Component, null);
-			else if (match.route.element) children = match.route.element;
+			else if (match$1.route.Component) children = /* @__PURE__ */ import_react.createElement(match$1.route.Component, null);
+			else if (match$1.route.element) children = match$1.route.element;
 			else children = outlet;
 			return /* @__PURE__ */ import_react.createElement(RenderedRoute, {
-				match,
+				match: match$1,
 				routeContext: {
 					outlet,
 					matches: matches2,
@@ -16252,7 +16252,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 				children
 			});
 		};
-		return dataRouterState && (match.route.ErrorBoundary || match.route.errorElement || index$1 === 0) ? /* @__PURE__ */ import_react.createElement(RenderErrorBoundary, {
+		return dataRouterState && (match$1.route.ErrorBoundary || match$1.route.errorElement || index$1 === 0) ? /* @__PURE__ */ import_react.createElement(RenderErrorBoundary, {
 			location: dataRouterState.location,
 			revalidation: dataRouterState.revalidation,
 			component: errorElement,
@@ -16326,10 +16326,10 @@ function useNavigateStable() {
 	}, [router, id]);
 }
 var alreadyWarned = {};
-function warningOnce(key, cond, message) {
+function warningOnce(key, cond, message$1) {
 	if (!cond && !alreadyWarned[key]) {
 		alreadyWarned[key] = true;
-		warning(false, message);
+		warning(false, message$1);
 	}
 }
 import_react.useOptimistic;
@@ -16557,10 +16557,10 @@ var ESCAPE_LOOKUP = {
 };
 var ESCAPE_REGEX = /[&><\u2028\u2029]/g;
 function escapeHtml(html) {
-	return html.replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
+	return html.replace(ESCAPE_REGEX, (match$1) => ESCAPE_LOOKUP[match$1]);
 }
-function invariant2(value, message) {
-	if (value === false || value === null || typeof value === "undefined") throw new Error(message);
+function invariant2(value, message$1) {
+	if (value === false || value === null || typeof value === "undefined") throw new Error(message$1);
 }
 function singleFetchUrl(reqUrl, basename, trailingSlashAware, extension) {
 	let url = typeof reqUrl === "string" ? new URL(reqUrl, typeof window === "undefined" ? "server://singlefetch/" : window.location.origin) : reqUrl;
@@ -16598,8 +16598,8 @@ function isHtmlLinkDescriptor(object) {
 	return typeof object.rel === "string" && typeof object.href === "string";
 }
 async function getKeyedPrefetchLinks(matches, manifest, routeModules) {
-	return dedupeLinkDescriptors((await Promise.all(matches.map(async (match) => {
-		let route = manifest.routes[match.route.id];
+	return dedupeLinkDescriptors((await Promise.all(matches.map(async (match$1) => {
+		let route = manifest.routes[match$1.route.id];
 		if (route) {
 			let mod = await loadRouteModule(route, routeModules);
 			return mod.links ? mod.links() : [];
@@ -16615,24 +16615,24 @@ async function getKeyedPrefetchLinks(matches, manifest, routeModules) {
 	}));
 }
 function getNewMatchesForLinks(page, nextMatches, currentMatches, manifest, location, mode) {
-	let isNew = (match, index$1) => {
+	let isNew = (match$1, index$1) => {
 		if (!currentMatches[index$1]) return true;
-		return match.route.id !== currentMatches[index$1].route.id;
+		return match$1.route.id !== currentMatches[index$1].route.id;
 	};
-	let matchPathChanged = (match, index$1) => {
-		return currentMatches[index$1].pathname !== match.pathname || currentMatches[index$1].route.path?.endsWith("*") && currentMatches[index$1].params["*"] !== match.params["*"];
+	let matchPathChanged = (match$1, index$1) => {
+		return currentMatches[index$1].pathname !== match$1.pathname || currentMatches[index$1].route.path?.endsWith("*") && currentMatches[index$1].params["*"] !== match$1.params["*"];
 	};
-	if (mode === "assets") return nextMatches.filter((match, index$1) => isNew(match, index$1) || matchPathChanged(match, index$1));
-	if (mode === "data") return nextMatches.filter((match, index$1) => {
-		let manifestRoute = manifest.routes[match.route.id];
+	if (mode === "assets") return nextMatches.filter((match$1, index$1) => isNew(match$1, index$1) || matchPathChanged(match$1, index$1));
+	if (mode === "data") return nextMatches.filter((match$1, index$1) => {
+		let manifestRoute = manifest.routes[match$1.route.id];
 		if (!manifestRoute || !manifestRoute.hasLoader) return false;
-		if (isNew(match, index$1) || matchPathChanged(match, index$1)) return true;
-		if (match.route.shouldRevalidate) {
-			let routeChoice = match.route.shouldRevalidate({
+		if (isNew(match$1, index$1) || matchPathChanged(match$1, index$1)) return true;
+		if (match$1.route.shouldRevalidate) {
+			let routeChoice = match$1.route.shouldRevalidate({
 				currentUrl: new URL(location.pathname + location.search + location.hash, window.origin),
 				currentParams: currentMatches[0]?.params || {},
 				nextUrl: new URL(page, window.origin),
-				nextParams: match.params,
+				nextParams: match$1.params,
 				defaultShouldRevalidate: true
 			});
 			if (typeof routeChoice === "boolean") return routeChoice;
@@ -16642,8 +16642,8 @@ function getNewMatchesForLinks(page, nextMatches, currentMatches, manifest, loca
 	return [];
 }
 function getModuleLinkHrefs(matches, manifest, { includeHydrateFallback } = {}) {
-	return dedupeHrefs(matches.map((match) => {
-		let route = manifest.routes[match.route.id];
+	return dedupeHrefs(matches.map((match$1) => {
+		let route = manifest.routes[match$1.route.id];
 		if (!route) return [];
 		let hrefs = [route.module];
 		if (route.clientActionModule) hrefs = hrefs.concat(route.clientActionModule);
@@ -17165,7 +17165,7 @@ function useFormAction(action, { relative } = {}) {
 	let { basename } = import_react.useContext(NavigationContext);
 	let routeContext = import_react.useContext(RouteContext);
 	invariant$1(routeContext, "useFormAction must be used inside a RouteContext");
-	let [match] = routeContext.matches.slice(-1);
+	let [match$1] = routeContext.matches.slice(-1);
 	let path$1 = { ...useResolvedPath(action ? action : ".", { relative }) };
 	let location = useLocation();
 	if (action == null) {
@@ -17179,7 +17179,7 @@ function useFormAction(action, { relative } = {}) {
 			path$1.search = qs ? `?${qs}` : "";
 		}
 	}
-	if ((!action || action === ".") && match.route.index) path$1.search = path$1.search ? path$1.search.replace(/^\?/, "?index&") : "?index";
+	if ((!action || action === ".") && match$1.route.index) path$1.search = path$1.search ? path$1.search.replace(/^\?/, "?index&") : "?index";
 	if (basename !== "/") path$1.pathname = path$1.pathname === "/" ? basename : joinPaths([basename, path$1.pathname]);
 	return createPath(path$1);
 }
@@ -17609,15 +17609,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$37 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$37.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$64 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$64.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$37 = { react_stack_bottom_frame: function(callStackForError) {
+		React$64 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$37.react_stack_bottom_frame.bind(React$37, UnknownOwner)();
+		var unknownOwnerDebugStack = React$64.react_stack_bottom_frame.bind(React$64, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -18102,7 +18102,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$7 = DismissableLayer;
+var Root$8 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18293,7 +18293,7 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 VisuallyHidden.displayName = NAME$3;
-var Root$6 = VisuallyHidden;
+var Root$7 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$3, useCollection$3, createCollectionScope$3] = createCollection("Toast");
@@ -18592,7 +18592,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -18900,7 +18900,7 @@ var toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLo
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var toCamelCase = (string) => string.replace(/^([A-Z])|[\s-_]+(\w)/g, (match, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase());
+var toCamelCase = (string) => string.replace(/^([A-Z])|[\s-_]+(\w)/g, (match$1, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase());
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -19023,6 +19023,32 @@ var Bell = createLucideIcon("bell", [["path", {
 	d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
 	key: "11g9vi"
 }]]);
+var Bluetooth = createLucideIcon("bluetooth", [["path", {
+	d: "m7 7 10 10-5 5V2l5 5L7 17",
+	key: "1q5490"
+}]]);
+var Calendar$1 = createLucideIcon("calendar", [
+	["path", {
+		d: "M8 2v4",
+		key: "1cmpym"
+	}],
+	["path", {
+		d: "M16 2v4",
+		key: "4m81vk"
+	}],
+	["rect", {
+		width: "18",
+		height: "18",
+		x: "3",
+		y: "4",
+		rx: "2",
+		key: "1hopcy"
+	}],
+	["path", {
+		d: "M3 10h18",
+		key: "8toen8"
+	}]
+]);
 var ChartLine = createLucideIcon("chart-line", [["path", {
 	d: "M3 3v16a2 2 0 0 0 2 2h16",
 	key: "c24i48"
@@ -19038,6 +19064,10 @@ var ChevronDown = createLucideIcon("chevron-down", [["path", {
 	d: "m6 9 6 6 6-6",
 	key: "qrunsl"
 }]]);
+var ChevronLeft = createLucideIcon("chevron-left", [["path", {
+	d: "m15 18-6-6 6-6",
+	key: "1wnfg3"
+}]]);
 var ChevronRight = createLucideIcon("chevron-right", [["path", {
 	d: "m9 18 6-6-6-6",
 	key: "mthhwq"
@@ -19046,11 +19076,51 @@ var ChevronUp = createLucideIcon("chevron-up", [["path", {
 	d: "m18 15-6-6-6 6",
 	key: "153udz"
 }]]);
+var CircleAlert = createLucideIcon("circle-alert", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["line", {
+		x1: "12",
+		x2: "12",
+		y1: "8",
+		y2: "12",
+		key: "1pkeuh"
+	}],
+	["line", {
+		x1: "12",
+		x2: "12.01",
+		y1: "16",
+		y2: "16",
+		key: "4dfq90"
+	}]
+]);
+var CircleCheck = createLucideIcon("circle-check", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}], ["path", {
+	d: "m9 12 2 2 4-4",
+	key: "dzmm74"
+}]]);
 var Circle = createLucideIcon("circle", [["circle", {
 	cx: "12",
 	cy: "12",
 	r: "10",
 	key: "1mglay"
+}]]);
+var Clock = createLucideIcon("clock", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}], ["path", {
+	d: "M12 6v6l4 2",
+	key: "mmk7yg"
 }]]);
 var DollarSign = createLucideIcon("dollar-sign", [["line", {
 	x1: "12",
@@ -19158,6 +19228,10 @@ var LayoutDashboard = createLucideIcon("layout-dashboard", [
 		key: "ldoo1y"
 	}]
 ]);
+var LoaderCircle = createLucideIcon("loader-circle", [["path", {
+	d: "M21 12a9 9 0 1 1-6.219-8.56",
+	key: "13zald"
+}]]);
 var MapPin = createLucideIcon("map-pin", [["path", {
 	d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
 	key: "1r0f0z"
@@ -19279,6 +19353,42 @@ var QrCode = createLucideIcon("qr-code", [
 		key: "1880an"
 	}]
 ]);
+var Save = createLucideIcon("save", [
+	["path", {
+		d: "M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
+		key: "1c8476"
+	}],
+	["path", {
+		d: "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7",
+		key: "1ydtos"
+	}],
+	["path", {
+		d: "M7 3v4a1 1 0 0 0 1 1h7",
+		key: "t51u73"
+	}]
+]);
+var Scale = createLucideIcon("scale", [
+	["path", {
+		d: "M12 3v18",
+		key: "108xh3"
+	}],
+	["path", {
+		d: "m19 8 3 8a5 5 0 0 1-6 0zV7",
+		key: "zcdpyk"
+	}],
+	["path", {
+		d: "M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1",
+		key: "1yorad"
+	}],
+	["path", {
+		d: "m5 8 3 8a5 5 0 0 1-6 0zV7",
+		key: "eua70x"
+	}],
+	["path", {
+		d: "M7 21h10",
+		key: "1b0cd5"
+	}]
+]);
 var ScanLine = createLucideIcon("scan-line", [
 	["path", {
 		d: "M3 7V5a2 2 0 0 1 2-2h2",
@@ -19310,6 +19420,32 @@ var Search = createLucideIcon("search", [["path", {
 	r: "8",
 	key: "4ej97u"
 }]]);
+var Syringe = createLucideIcon("syringe", [
+	["path", {
+		d: "m18 2 4 4",
+		key: "22kx64"
+	}],
+	["path", {
+		d: "m17 7 3-3",
+		key: "1w1zoj"
+	}],
+	["path", {
+		d: "M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5",
+		key: "1exhtz"
+	}],
+	["path", {
+		d: "m9 11 4 4",
+		key: "rovt3i"
+	}],
+	["path", {
+		d: "m5 19-3 3",
+		key: "59f2uf"
+	}],
+	["path", {
+		d: "m14 4 6 6",
+		key: "yqp9t2"
+	}]
+]);
 var Tractor = createLucideIcon("tractor", [
 	["path", {
 		d: "m10 11 11 .9a1 1 0 0 1 .8 1.1l-.665 4.158a1 1 0 0 1-.988.842H20",
@@ -21013,7 +21149,7 @@ var Observer = class {
 		};
 		this.create = (data) => {
 			var _data_id;
-			const { message, ...rest } = data;
+			const { message: message$1, ...rest } = data;
 			const id = typeof (data == null ? void 0 : data.id) === "number" || ((_data_id = data.id) == null ? void 0 : _data_id.length) > 0 ? data.id : toastsCounter++;
 			const alreadyExists = this.toasts.find((toast$2) => {
 				return toast$2.id === id;
@@ -21026,20 +21162,20 @@ var Observer = class {
 						...toast$2,
 						...data,
 						id,
-						title: message
+						title: message$1
 					});
 					return {
 						...toast$2,
 						...data,
 						id,
 						dismissible,
-						title: message
+						title: message$1
 					};
 				}
 				return toast$2;
 			});
 			else this.addToast({
-				title: message,
+				title: message$1,
 				...rest,
 				dismissible,
 				id
@@ -21061,45 +21197,45 @@ var Observer = class {
 			});
 			return id;
 		};
-		this.message = (message, data) => {
+		this.message = (message$1, data) => {
 			return this.create({
 				...data,
-				message
+				message: message$1
 			});
 		};
-		this.error = (message, data) => {
+		this.error = (message$1, data) => {
 			return this.create({
 				...data,
-				message,
+				message: message$1,
 				type: "error"
 			});
 		};
-		this.success = (message, data) => {
+		this.success = (message$1, data) => {
 			return this.create({
 				...data,
 				type: "success",
-				message
+				message: message$1
 			});
 		};
-		this.info = (message, data) => {
+		this.info = (message$1, data) => {
 			return this.create({
 				...data,
 				type: "info",
-				message
+				message: message$1
 			});
 		};
-		this.warning = (message, data) => {
+		this.warning = (message$1, data) => {
 			return this.create({
 				...data,
 				type: "warning",
-				message
+				message: message$1
 			});
 		};
-		this.loading = (message, data) => {
+		this.loading = (message$1, data) => {
 			return this.create({
 				...data,
 				type: "loading",
-				message
+				message: message$1
 			});
 		};
 		this.promise = (promise, data) => {
@@ -21201,10 +21337,10 @@ var Observer = class {
 	}
 };
 var ToastState = new Observer();
-var toastFunction = (message, data) => {
+var toastFunction = (message$1, data) => {
 	const id = (data == null ? void 0 : data.id) || toastsCounter++;
 	ToastState.addToast({
-		title: message,
+		title: message$1,
 		...data,
 		id
 	});
@@ -21821,8 +21957,8 @@ var sides = [
 	"bottom",
 	"left"
 ];
-var min$3 = Math.min;
-var max$4 = Math.max;
+var min$4 = Math.min;
+var max$5 = Math.max;
 var round = Math.round;
 var floor = Math.floor;
 var createCoords = (v) => ({
@@ -21840,7 +21976,7 @@ var oppositeAlignmentMap = {
 	end: "start"
 };
 function clamp$1(start, value, end) {
-	return max$4(start, min$3(value, end));
+	return max$5(start, min$4(value, end));
 }
 function evaluate(value, param) {
 	return typeof value === "function" ? value(param) : value;
@@ -22122,14 +22258,14 @@ var arrow$2 = (options$1) => ({
 		if (!clientSize || !await (platform$1.isElement == null ? void 0 : platform$1.isElement(arrowOffsetParent))) clientSize = elements.floating[clientProp] || rects.floating[length];
 		const centerToReference = endDiff / 2 - startDiff / 2;
 		const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
-		const minPadding = min$3(paddingObject[minProp], largestPossiblePadding);
-		const maxPadding = min$3(paddingObject[maxProp], largestPossiblePadding);
+		const minPadding = min$4(paddingObject[minProp], largestPossiblePadding);
+		const maxPadding = min$4(paddingObject[maxProp], largestPossiblePadding);
 		const min$1$1 = minPadding;
-		const max$5 = clientSize - arrowDimensions[length] - maxPadding;
+		const max$6 = clientSize - arrowDimensions[length] - maxPadding;
 		const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
-		const offset$3 = clamp$1(min$1$1, center, max$5);
+		const offset$3 = clamp$1(min$1$1, center, max$6);
 		const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset$3 && rects.reference[length] / 2 - (center < min$1$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
-		const alignmentOffset = shouldAddOffset ? center < min$1$1 ? center - min$1$1 : center - max$5 : 0;
+		const alignmentOffset = shouldAddOffset ? center < min$1$1 ? center - min$1$1 : center - max$6 : 0;
 		return {
 			[axis]: coords[axis] + alignmentOffset,
 			data: {
@@ -22328,16 +22464,16 @@ var shift$2 = function(options$1) {
 			if (checkMainAxis) {
 				const minSide = mainAxis === "y" ? "top" : "left";
 				const maxSide = mainAxis === "y" ? "bottom" : "right";
-				const min$4 = mainAxisCoord + overflow[minSide];
-				const max$5 = mainAxisCoord - overflow[maxSide];
-				mainAxisCoord = clamp$1(min$4, mainAxisCoord, max$5);
+				const min$5 = mainAxisCoord + overflow[minSide];
+				const max$6 = mainAxisCoord - overflow[maxSide];
+				mainAxisCoord = clamp$1(min$5, mainAxisCoord, max$6);
 			}
 			if (checkCrossAxis) {
 				const minSide = crossAxis === "y" ? "top" : "left";
 				const maxSide = crossAxis === "y" ? "bottom" : "right";
-				const min$4 = crossAxisCoord + overflow[minSide];
-				const max$5 = crossAxisCoord - overflow[maxSide];
-				crossAxisCoord = clamp$1(min$4, crossAxisCoord, max$5);
+				const min$5 = crossAxisCoord + overflow[minSide];
+				const max$6 = crossAxisCoord - overflow[maxSide];
+				crossAxisCoord = clamp$1(min$5, crossAxisCoord, max$6);
 			}
 			const limitedCoords = limiter.fn({
 				...state,
@@ -22430,20 +22566,20 @@ var size$2 = function(options$1) {
 			}
 			const maximumClippingHeight = height - overflow.top - overflow.bottom;
 			const maximumClippingWidth = width - overflow.left - overflow.right;
-			const overflowAvailableHeight = min$3(height - overflow[heightSide], maximumClippingHeight);
-			const overflowAvailableWidth = min$3(width - overflow[widthSide], maximumClippingWidth);
+			const overflowAvailableHeight = min$4(height - overflow[heightSide], maximumClippingHeight);
+			const overflowAvailableWidth = min$4(width - overflow[widthSide], maximumClippingWidth);
 			const noShift = !state.middlewareData.shift;
 			let availableHeight = overflowAvailableHeight;
 			let availableWidth = overflowAvailableWidth;
 			if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) availableWidth = maximumClippingWidth;
 			if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) availableHeight = maximumClippingHeight;
 			if (noShift && !alignment) {
-				const xMin = max$4(overflow.left, 0);
-				const xMax = max$4(overflow.right, 0);
-				const yMin = max$4(overflow.top, 0);
-				const yMax = max$4(overflow.bottom, 0);
-				if (isYAxis) availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max$4(overflow.left, overflow.right));
-				else availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max$4(overflow.top, overflow.bottom));
+				const xMin = max$5(overflow.left, 0);
+				const xMax = max$5(overflow.right, 0);
+				const yMin = max$5(overflow.top, 0);
+				const yMax = max$5(overflow.bottom, 0);
+				if (isYAxis) availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max$5(overflow.left, overflow.right));
+				else availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max$5(overflow.top, overflow.bottom));
 			}
 			await apply$2({
 				...state,
@@ -22737,11 +22873,11 @@ function getDocumentRect(element) {
 	const html = getDocumentElement(element);
 	const scroll = getNodeScroll(element);
 	const body = element.ownerDocument.body;
-	const width = max$4(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
-	const height = max$4(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+	const width = max$5(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+	const height = max$5(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
 	let x$2 = -scroll.scrollLeft + getWindowScrollBarX(element);
 	const y$1 = -scroll.scrollTop;
-	if (getComputedStyle$1(body).direction === "rtl") x$2 += max$4(html.clientWidth, body.clientWidth) - width;
+	if (getComputedStyle$1(body).direction === "rtl") x$2 += max$5(html.clientWidth, body.clientWidth) - width;
 	return {
 		width,
 		height,
@@ -22841,10 +22977,10 @@ function getClippingRect(_ref) {
 	const firstClippingAncestor = clippingAncestors[0];
 	const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
 		const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
-		accRect.top = max$4(rect.top, accRect.top);
-		accRect.right = min$3(rect.right, accRect.right);
-		accRect.bottom = min$3(rect.bottom, accRect.bottom);
-		accRect.left = max$4(rect.left, accRect.left);
+		accRect.top = max$5(rect.top, accRect.top);
+		accRect.right = min$4(rect.right, accRect.right);
+		accRect.bottom = min$4(rect.bottom, accRect.bottom);
+		accRect.left = max$5(rect.left, accRect.left);
 		return accRect;
 	}, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
 	return {
@@ -22973,7 +23109,7 @@ function observeMove(element, onMove) {
 		const insetLeft = floor(left);
 		const options$1 = {
 			rootMargin: -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px",
-			threshold: max$4(0, min$3(1, threshold$1)) || 1
+			threshold: max$5(0, min$4(1, threshold$1)) || 1
 		};
 		let isFirstUpdate = true;
 		function handleObserve(entries) {
@@ -23326,7 +23462,7 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Arrow$1.displayName = NAME$2;
-var Root$5 = Arrow$1;
+var Root$6 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23543,7 +23679,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -23925,7 +24061,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24297,15 +24433,15 @@ Separator$3.displayName = NAME$1;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$4 = Separator$3;
-var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+var Root$5 = Separator$3;
+var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator$2.displayName = Root$4.displayName;
+Separator$2.displayName = Root$5.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -25476,7 +25612,7 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$3 = Dialog$1;
+var Root$4 = Dialog$1;
 var Trigger$3 = DialogTrigger$1;
 var Portal$3 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
@@ -25484,7 +25620,7 @@ var Content$1 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
-var Sheet = Root$3;
+var Sheet = Root$4;
 var SheetPortal = Portal$3;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
@@ -26052,18 +26188,18 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$37.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$64.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$8({ inst: {
+			cachedValue = useState$12({ inst: {
 				value,
 				getSnapshot
 			} });
 			var inst = cachedValue[0].inst, forceUpdate = cachedValue[1];
-			useLayoutEffect$1(function() {
+			useLayoutEffect$2(function() {
 				inst.value = value;
 				inst.getSnapshot = getSnapshot;
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26072,7 +26208,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$4(function() {
+			useEffect$6(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26095,8 +26231,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$37 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$8 = React$37.useState, useEffect$4 = React$37.useEffect, useLayoutEffect$1 = React$37.useLayoutEffect, useDebugValue = React$37.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$37.useSyncExternalStore ? React$37.useSyncExternalStore : shim;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$12 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -26202,15 +26338,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$2 = Avatar$1;
+var Root$3 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$2.displayName;
+Avatar.displayName = Root$3.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26223,7 +26359,7 @@ var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /
 	...props
 }));
 AvatarFallback.displayName = Fallback.displayName;
-var Dialog = Root$3;
+var Dialog = Root$4;
 var DialogTrigger = Trigger$3;
 var DialogPortal = Portal$3;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
@@ -26280,16 +26416,16 @@ var Label$4 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Label$4.displayName = NAME;
-var Root$1 = Label$4;
+var Root$2 = Label$4;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
 	ref,
 	className: cn(labelVariants(), className),
 	...props
 }));
-Label.displayName = Root$1.displayName;
-function clamp(value, [min$4, max$5]) {
-	return Math.min(max$5, Math.max(min$4, value));
+Label.displayName = Root$2.displayName;
+function clamp(value, [min$5, max$6]) {
+	return Math.min(max$6, Math.max(min$5, value));
 }
 var DirectionContext = import_react.createContext(void 0);
 function useDirection(localDir) {
@@ -26323,7 +26459,7 @@ var [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME, [
 var usePopperScope$1 = createPopperScope();
 var [SelectProvider, useSelectContext] = createSelectContext(SELECT_NAME);
 var [SelectNativeOptionsProvider, useSelectNativeOptionsContext] = createSelectContext(SELECT_NAME);
-var Select$1 = (props) => {
+var Select$2 = (props) => {
 	const { __scopeSelect, children, open: openProp, defaultOpen, onOpenChange, value: valueProp, defaultValue, onValueChange, dir, name, autoComplete, disabled, required, form } = props;
 	const popperScope = usePopperScope$1(__scopeSelect);
 	const [trigger, setTrigger] = import_react.useState(null);
@@ -26396,7 +26532,7 @@ var Select$1 = (props) => {
 		})
 	});
 };
-Select$1.displayName = SELECT_NAME;
+Select$2.displayName = SELECT_NAME;
 var TRIGGER_NAME$2 = "SelectTrigger";
 var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, disabled = false, ...triggerProps } = props;
@@ -27245,7 +27381,7 @@ function findNextItem(items, search, currentItem) {
 function wrapArray$2(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root2$2 = Select$1;
+var Root2$2 = Select$2;
 var Trigger$2 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
@@ -27259,7 +27395,7 @@ var ItemIndicator$1 = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
 var Separator$1 = SelectSeparator$1;
-var Select = Root2$2;
+var Select$1 = Root2$2;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$2, {
 	ref,
@@ -27355,7 +27491,7 @@ function QuickAddModal() {
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 							htmlFor: "tipo",
 							children: "Tipo de Registro"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
 							defaultValue: "despesa",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
 								id: "tipo",
@@ -28075,6 +28211,44 @@ const animalData = { "TAG-1234": {
 		}
 	]
 } };
+const sanitaryEvents = [
+	{
+		id: "SAN-01",
+		title: "Vermifugação Semestral",
+		date: "Hoje",
+		type: "Manejo",
+		status: "Atrasado",
+		lote: "LCR-04",
+		target: "Bezerras"
+	},
+	{
+		id: "SAN-02",
+		title: "Vacinação Febre Aftosa",
+		date: "Próxima Semana",
+		type: "Vacina",
+		status: "Agendado",
+		lote: "Todos",
+		target: "Rebanho Geral"
+	},
+	{
+		id: "SAN-03",
+		title: "Toque de Prenhez",
+		date: "Daqui a 15 dias",
+		type: "Exame",
+		status: "Agendado",
+		lote: "LCR-01",
+		target: "Matrizes"
+	},
+	{
+		id: "SAN-04",
+		title: "Aplicação Carrapaticida",
+		date: "Mês Passado",
+		type: "Manejo",
+		status: "Concluído",
+		lote: "LEN-02",
+		target: "Bois Terminação"
+	}
+];
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Array.isArray;
 }));
@@ -28491,8 +28665,8 @@ var require__stringToPath = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = memoizeCapped(function(string) {
 		var result = [];
 		if (string.charCodeAt(0) === 46) result.push("");
-		string.replace(rePropName, function(match, number$3, quote, subString) {
-			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match);
+		string.replace(rePropName, function(match$1, number$3, quote, subString) {
+			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match$1);
 		});
 		return result;
 	});
@@ -29701,14 +29875,14 @@ var Layer = /* @__PURE__ */ import_react.forwardRef(function(props, ref) {
 	return /* @__PURE__ */ import_react.createElement("g", _extends$30({ className: layerClass }, filterProps(others, true), { ref }), children);
 });
 var isDev$1 = true;
-var warn = function warn$2(condition, format$1) {
+var warn = function warn$2(condition, format$2) {
 	for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) args[_key - 2] = arguments[_key];
 	if (isDev$1 && typeof console !== "undefined" && console.warn) {
-		if (format$1 === void 0) console.warn("LogUtils requires an error message argument");
-		if (!condition) if (format$1 === void 0) console.warn("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
+		if (format$2 === void 0) console.warn("LogUtils requires an error message argument");
+		if (!condition) if (format$2 === void 0) console.warn("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
 		else {
 			var argIndex = 0;
-			console.warn(format$1.replace(/%s/g, function() {
+			console.warn(format$2.replace(/%s/g, function() {
 				return args[argIndex++];
 			}));
 		}
@@ -34104,25 +34278,25 @@ function tickStep(start, stop, count$3) {
 	const reverse$1 = stop < start, inc = reverse$1 ? tickIncrement(stop, start, count$3) : tickIncrement(start, stop, count$3);
 	return (reverse$1 ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
 }
-function max$3(values, valueof) {
-	let max$5;
+function max$4(values, valueof) {
+	let max$6;
 	if (valueof === void 0) {
-		for (const value of values) if (value != null && (max$5 < value || max$5 === void 0 && value >= value)) max$5 = value;
+		for (const value of values) if (value != null && (max$6 < value || max$6 === void 0 && value >= value)) max$6 = value;
 	} else {
 		let index$1 = -1;
-		for (let value of values) if ((value = valueof(value, ++index$1, values)) != null && (max$5 < value || max$5 === void 0 && value >= value)) max$5 = value;
+		for (let value of values) if ((value = valueof(value, ++index$1, values)) != null && (max$6 < value || max$6 === void 0 && value >= value)) max$6 = value;
 	}
-	return max$5;
+	return max$6;
 }
-function min$2(values, valueof) {
-	let min$4;
+function min$3(values, valueof) {
+	let min$5;
 	if (valueof === void 0) {
-		for (const value of values) if (value != null && (min$4 > value || min$4 === void 0 && value >= value)) min$4 = value;
+		for (const value of values) if (value != null && (min$5 > value || min$5 === void 0 && value >= value)) min$5 = value;
 	} else {
 		let index$1 = -1;
-		for (let value of values) if ((value = valueof(value, ++index$1, values)) != null && (min$4 > value || min$4 === void 0 && value >= value)) min$4 = value;
+		for (let value of values) if ((value = valueof(value, ++index$1, values)) != null && (min$5 > value || min$5 === void 0 && value >= value)) min$5 = value;
 	}
-	return min$4;
+	return min$5;
 }
 function quickselect(array, k$1, left = 0, right = Infinity, compare) {
 	k$1 = Math.floor(k$1);
@@ -34166,10 +34340,10 @@ function swap(array, i, j) {
 function quantile(values, p, valueof) {
 	values = Float64Array.from(numbers(values, valueof));
 	if (!(n = values.length) || isNaN(p = +p)) return;
-	if (p <= 0 || n < 2) return min$2(values);
-	if (p >= 1) return max$3(values);
-	var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = max$3(quickselect(values, i0).subarray(0, i0 + 1));
-	return value0 + (min$2(values.subarray(i0 + 1)) - value0) * (i - i0);
+	if (p <= 0 || n < 2) return min$3(values);
+	if (p >= 1) return max$4(values);
+	var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = max$4(quickselect(values, i0).subarray(0, i0 + 1));
+	return value0 + (min$3(values.subarray(i0 + 1)) - value0) * (i - i0);
 }
 function quantileSorted(values, p, valueof = number$2) {
 	if (!(n = values.length) || isNaN(p = +p)) return;
@@ -34495,10 +34669,10 @@ function color_formatHsl() {
 function color_formatRgb() {
 	return this.rgb().formatRgb();
 }
-function color(format$1) {
+function color(format$2) {
 	var m, l;
-	format$1 = (format$1 + "").trim().toLowerCase();
-	return (m = reHex.exec(format$1)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) : l === 3 ? new Rgb(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) : l === 8 ? rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) : l === 4 ? rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) : null) : (m = reRgbInteger.exec(format$1)) ? new Rgb(m[1], m[2], m[3], 1) : (m = reRgbPercent.exec(format$1)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) : (m = reRgbaInteger.exec(format$1)) ? rgba(m[1], m[2], m[3], m[4]) : (m = reRgbaPercent.exec(format$1)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) : (m = reHslPercent.exec(format$1)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) : (m = reHslaPercent.exec(format$1)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) : named.hasOwnProperty(format$1) ? rgbn(named[format$1]) : format$1 === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+	format$2 = (format$2 + "").trim().toLowerCase();
+	return (m = reHex.exec(format$2)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) : l === 3 ? new Rgb(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) : l === 8 ? rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) : l === 4 ? rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) : null) : (m = reRgbInteger.exec(format$2)) ? new Rgb(m[1], m[2], m[3], 1) : (m = reRgbPercent.exec(format$2)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) : (m = reRgbaInteger.exec(format$2)) ? rgba(m[1], m[2], m[3], m[4]) : (m = reRgbaPercent.exec(format$2)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) : (m = reHslPercent.exec(format$2)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) : (m = reHslaPercent.exec(format$2)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) : named.hasOwnProperty(format$2) ? rgbn(named[format$2]) : format$2 === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
 }
 function rgbn(n) {
 	return new Rgb(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
@@ -34578,12 +34752,12 @@ function hslConvert(o) {
 	if (!o) return new Hsl();
 	if (o instanceof Hsl) return o;
 	o = o.rgb();
-	var r$1 = o.r / 255, g = o.g / 255, b$1 = o.b / 255, min$4 = Math.min(r$1, g, b$1), max$5 = Math.max(r$1, g, b$1), h = NaN, s$1 = max$5 - min$4, l = (max$5 + min$4) / 2;
+	var r$1 = o.r / 255, g = o.g / 255, b$1 = o.b / 255, min$5 = Math.min(r$1, g, b$1), max$6 = Math.max(r$1, g, b$1), h = NaN, s$1 = max$6 - min$5, l = (max$6 + min$5) / 2;
 	if (s$1) {
-		if (r$1 === max$5) h = (g - b$1) / s$1 + (g < b$1) * 6;
-		else if (g === max$5) h = (b$1 - r$1) / s$1 + 2;
+		if (r$1 === max$6) h = (g - b$1) / s$1 + (g < b$1) * 6;
+		else if (g === max$6) h = (b$1 - r$1) / s$1 + 2;
 		else h = (r$1 - g) / s$1 + 4;
-		s$1 /= l < .5 ? max$5 + min$4 : 2 - max$5 - min$4;
+		s$1 /= l < .5 ? max$6 + min$5 : 2 - max$6 - min$5;
 		h *= 60;
 	} else s$1 = l > 0 && l < 1 ? 0 : h;
 	return new Hsl(h, s$1, l, o.opacity);
@@ -34929,21 +35103,21 @@ function formatNumerals_default(numerals) {
 		});
 	};
 }
-var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+var re$1 = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 function formatSpecifier(specifier) {
-	if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-	var match;
+	if (!(match$1 = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
+	var match$1;
 	return new FormatSpecifier({
-		fill: match[1],
-		align: match[2],
-		sign: match[3],
-		symbol: match[4],
-		zero: match[5],
-		width: match[6],
-		comma: match[7],
-		precision: match[8] && match[8].slice(1),
-		trim: match[9],
-		type: match[10]
+		fill: match$1[1],
+		align: match$1[2],
+		sign: match$1[3],
+		symbol: match$1[4],
+		zero: match$1[5],
+		width: match$1[6],
+		comma: match$1[7],
+		precision: match$1[8] && match$1[8].slice(1),
+		trim: match$1[9],
+		type: match$1[10]
 	});
 }
 formatSpecifier.prototype = FormatSpecifier.prototype;
@@ -35039,7 +35213,7 @@ function locale_default(locale$2) {
 		var prefix$2 = (options$1 && options$1.prefix !== void 0 ? options$1.prefix : "") + (symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : ""), suffix = (symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "") + (options$1 && options$1.suffix !== void 0 ? options$1.suffix : "");
 		var formatType = formatTypes_default[type], maybeSuffix = /[defgprs%]/.test(type);
 		precision = precision === void 0 ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
-		function format$1(value) {
+		function format$2(value) {
 			var valuePrefix = prefix$2, valueSuffix = suffix, i, n, c$1;
 			if (type === "c") {
 				valueSuffix = formatType(value) + valueSuffix;
@@ -35080,10 +35254,10 @@ function locale_default(locale$2) {
 			}
 			return numerals(value);
 		}
-		format$1.toString = function() {
+		format$2.toString = function() {
 			return specifier + "";
 		};
-		return format$1;
+		return format$2;
 	}
 	function formatPrefix$1(specifier, value) {
 		var e = Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3, k$1 = Math.pow(10, -e), f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier), { suffix: prefixes[8 + e / 3] });
@@ -35097,7 +35271,7 @@ function locale_default(locale$2) {
 	};
 }
 var locale$1;
-var format;
+var format$1;
 var formatPrefix;
 defaultLocale$1({
 	thousands: ",",
@@ -35106,7 +35280,7 @@ defaultLocale$1({
 });
 function defaultLocale$1(definition) {
 	locale$1 = locale_default(definition);
-	format = locale$1.format;
+	format$1 = locale$1.format;
 	formatPrefix = locale$1.formatPrefix;
 	return locale$1;
 }
@@ -35116,9 +35290,9 @@ function precisionFixed_default(step) {
 function precisionPrefix_default(step, value) {
 	return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3 - exponent_default(Math.abs(step)));
 }
-function precisionRound_default(step, max$5) {
-	step = Math.abs(step), max$5 = Math.abs(max$5) - step;
-	return Math.max(0, exponent_default(max$5) - exponent_default(step)) + 1;
+function precisionRound_default(step, max$6) {
+	step = Math.abs(step), max$6 = Math.abs(max$6) - step;
+	return Math.max(0, exponent_default(max$6) - exponent_default(step)) + 1;
 }
 function tickFormat(start, stop, count$3, specifier) {
 	var step = tickStep(start, stop, count$3), precision;
@@ -35140,7 +35314,7 @@ function tickFormat(start, stop, count$3, specifier) {
 			if (specifier.precision == null && !isNaN(precision = precisionFixed_default(step))) specifier.precision = precision - (specifier.type === "%") * 2;
 			break;
 	}
-	return format(specifier);
+	return format$1(specifier);
 }
 function linearish(scale) {
 	var domain = scale.domain;
@@ -35301,7 +35475,7 @@ function loggish(transform) {
 		if (specifier == null) specifier = base === 10 ? "s" : ",";
 		if (typeof specifier !== "function") {
 			if (!(base % 1) && (specifier = formatSpecifier(specifier)).precision == null) specifier.trim = true;
-			specifier = format(specifier);
+			specifier = format$1(specifier);
 		}
 		if (count$3 === Infinity) return specifier;
 		const k$1 = Math.max(1, base * count$3 / scale.ticks().length);
@@ -36020,13 +36194,13 @@ function formatLocale(locale$2) {
 	utcFormats.c = newFormat(locale_dateTime, utcFormats);
 	function newFormat(specifier, formats$1) {
 		return function(date$1) {
-			var string = [], i = -1, j = 0, n = specifier.length, c$1, pad$1, format$1;
+			var string = [], i = -1, j = 0, n = specifier.length, c$1, pad$1, format$2;
 			if (!(date$1 instanceof Date)) date$1 = /* @__PURE__ */ new Date(+date$1);
 			while (++i < n) if (specifier.charCodeAt(i) === 37) {
 				string.push(specifier.slice(j, i));
 				if ((pad$1 = pads[c$1 = specifier.charAt(++i)]) != null) c$1 = specifier.charAt(++i);
 				else pad$1 = c$1 === "e" ? " " : "0";
-				if (format$1 = formats$1[c$1]) c$1 = format$1(date$1, pad$1);
+				if (format$2 = formats$1[c$1]) c$1 = format$2(date$1, pad$1);
 				string.push(c$1);
 				j = i + 1;
 			}
@@ -36493,11 +36667,11 @@ function date(t) {
 function number(t) {
 	return t instanceof Date ? +t : +/* @__PURE__ */ new Date(+t);
 }
-function calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, second$1, format$1) {
+function calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, second$1, format$2) {
 	var scale = continuous(), invert = scale.invert, domain = scale.domain;
-	var formatMillisecond = format$1(".%L"), formatSecond = format$1(":%S"), formatMinute = format$1("%I:%M"), formatHour = format$1("%I %p"), formatDay = format$1("%a %d"), formatWeek = format$1("%b %d"), formatMonth = format$1("%B"), formatYear$1 = format$1("%Y");
+	var formatMillisecond = format$2(".%L"), formatSecond = format$2(":%S"), formatMinute = format$2("%I:%M"), formatHour = format$2("%I %p"), formatDay$1 = format$2("%a %d"), formatWeek = format$2("%b %d"), formatMonth = format$2("%B"), formatYear$1 = format$2("%Y");
 	function tickFormat$1(date$1) {
-		return (second$1(date$1) < date$1 ? formatMillisecond : minute(date$1) < date$1 ? formatSecond : hour(date$1) < date$1 ? formatMinute : day(date$1) < date$1 ? formatHour : month(date$1) < date$1 ? week(date$1) < date$1 ? formatDay : formatWeek : year(date$1) < date$1 ? formatMonth : formatYear$1)(date$1);
+		return (second$1(date$1) < date$1 ? formatMillisecond : minute(date$1) < date$1 ? formatSecond : hour(date$1) < date$1 ? formatMinute : day(date$1) < date$1 ? formatHour : month(date$1) < date$1 ? week(date$1) < date$1 ? formatDay$1 : formatWeek : year(date$1) < date$1 ? formatMonth : formatYear$1)(date$1);
 	}
 	scale.invert = function(y$1) {
 		return new Date(invert(y$1));
@@ -36510,7 +36684,7 @@ function calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, s
 		return ticks$1(d[0], d[d.length - 1], interval == null ? 10 : interval);
 	};
 	scale.tickFormat = function(count$3, specifier) {
-		return specifier == null ? tickFormat$1 : format$1(specifier);
+		return specifier == null ? tickFormat$1 : format$2(specifier);
 	};
 	scale.nice = function(interval) {
 		var d = domain();
@@ -36518,7 +36692,7 @@ function calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, s
 		return interval ? domain(nice(d, interval)) : scale;
 	};
 	scale.copy = function() {
-		return copy$1(scale, calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, second$1, format$1));
+		return copy$1(scale, calendar(ticks$1, tickInterval, year, month, week, day, hour, minute, second$1, format$2));
 	};
 	return scale;
 }
@@ -36745,10 +36919,10 @@ var require__baseGt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 }));
 var require_max = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseExtremum$3 = require__baseExtremum(), baseGt$1 = require__baseGt(), identity$3 = require_identity();
-	function max$2(array) {
+	function max$3(array) {
 		return array && array.length ? baseExtremum$3(array, identity$3, baseGt$1) : void 0;
 	}
-	module.exports = max$2;
+	module.exports = max$3;
 }));
 var require__baseLt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function baseLt$2(value, other) {
@@ -36758,10 +36932,10 @@ var require__baseLt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 }));
 var require_min = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseExtremum$2 = require__baseExtremum(), baseLt$1 = require__baseLt(), identity$2 = require_identity();
-	function min$1(array) {
+	function min$2(array) {
 		return array && array.length ? baseExtremum$2(array, identity$2, baseLt$1) : void 0;
 	}
-	module.exports = min$1;
+	module.exports = min$2;
 }));
 var require_map = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var arrayMap = require__arrayMap(), baseIteratee$7 = require__baseIteratee(), baseMap = require__baseMap(), isArray$2 = require_isArray();
@@ -37150,8 +37324,8 @@ var require_decimal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			y$1.e = e;
 			return external ? round$1(y$1, pr) : y$1;
 		}
-		function checkInt32(i, min$4, max$5) {
-			if (i !== ~~i || i < min$4 || i > max$5) throw Error(invalidArgument + i);
+		function checkInt32(i, min$5, max$6) {
+			if (i !== ~~i || i < min$5 || i > max$6) throw Error(invalidArgument + i);
 		}
 		function digitsToString(d) {
 			var i, k$1, ws, indexOfLastWord = d.length - 1, str = "", w = d[0];
@@ -37871,11 +38045,11 @@ function _arrayWithHoles$9(arr) {
 	if (Array.isArray(arr)) return arr;
 }
 function getValidInterval(_ref) {
-	var _ref2 = _slicedToArray$8(_ref, 2), min$4 = _ref2[0], max$5 = _ref2[1];
-	var validMin = min$4, validMax = max$5;
-	if (min$4 > max$5) {
-		validMin = max$5;
-		validMax = min$4;
+	var _ref2 = _slicedToArray$8(_ref, 2), min$5 = _ref2[0], max$6 = _ref2[1];
+	var validMin = min$5, validMax = max$6;
+	if (min$5 > max$6) {
+		validMin = max$6;
+		validMax = min$5;
 	}
 	return [validMin, validMax];
 }
@@ -37904,27 +38078,27 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
 		return middle.add(new import_decimal.default(n - middleIndex).mul(step)).toNumber();
 	}), range$3)(0, tickCount);
 }
-function calculateStep(min$4, max$5, tickCount, allowDecimals) {
+function calculateStep(min$5, max$6, tickCount, allowDecimals) {
 	var correctionFactor = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : 0;
-	if (!Number.isFinite((max$5 - min$4) / (tickCount - 1))) return {
+	if (!Number.isFinite((max$6 - min$5) / (tickCount - 1))) return {
 		step: new import_decimal.default(0),
 		tickMin: new import_decimal.default(0),
 		tickMax: new import_decimal.default(0)
 	};
-	var step = getFormatStep(new import_decimal.default(max$5).sub(min$4).div(tickCount - 1), allowDecimals, correctionFactor);
+	var step = getFormatStep(new import_decimal.default(max$6).sub(min$5).div(tickCount - 1), allowDecimals, correctionFactor);
 	var middle;
-	if (min$4 <= 0 && max$5 >= 0) middle = new import_decimal.default(0);
+	if (min$5 <= 0 && max$6 >= 0) middle = new import_decimal.default(0);
 	else {
-		middle = new import_decimal.default(min$4).add(max$5).div(2);
+		middle = new import_decimal.default(min$5).add(max$6).div(2);
 		middle = middle.sub(new import_decimal.default(middle).mod(step));
 	}
-	var belowCount = Math.ceil(middle.sub(min$4).div(step).toNumber());
-	var upCount = Math.ceil(new import_decimal.default(max$5).sub(middle).div(step).toNumber());
+	var belowCount = Math.ceil(middle.sub(min$5).div(step).toNumber());
+	var upCount = Math.ceil(new import_decimal.default(max$6).sub(middle).div(step).toNumber());
 	var scaleCount = belowCount + upCount + 1;
-	if (scaleCount > tickCount) return calculateStep(min$4, max$5, tickCount, allowDecimals, correctionFactor + 1);
+	if (scaleCount > tickCount) return calculateStep(min$5, max$6, tickCount, allowDecimals, correctionFactor + 1);
 	if (scaleCount < tickCount) {
-		upCount = max$5 > 0 ? upCount + (tickCount - scaleCount) : upCount;
-		belowCount = max$5 > 0 ? belowCount : belowCount + (tickCount - scaleCount);
+		upCount = max$6 > 0 ? upCount + (tickCount - scaleCount) : upCount;
+		belowCount = max$6 > 0 ? belowCount : belowCount + (tickCount - scaleCount);
 	}
 	return {
 		step,
@@ -37933,31 +38107,31 @@ function calculateStep(min$4, max$5, tickCount, allowDecimals) {
 	};
 }
 function getNiceTickValuesFn(_ref3) {
-	var _ref4 = _slicedToArray$8(_ref3, 2), min$4 = _ref4[0], max$5 = _ref4[1];
+	var _ref4 = _slicedToArray$8(_ref3, 2), min$5 = _ref4[0], max$6 = _ref4[1];
 	var tickCount = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 6;
 	var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
 	var count$3 = Math.max(tickCount, 2);
-	var _getValidInterval2 = _slicedToArray$8(getValidInterval([min$4, max$5]), 2), cormin = _getValidInterval2[0], cormax = _getValidInterval2[1];
+	var _getValidInterval2 = _slicedToArray$8(getValidInterval([min$5, max$6]), 2), cormin = _getValidInterval2[0], cormax = _getValidInterval2[1];
 	if (cormin === -Infinity || cormax === Infinity) {
 		var _values = cormax === Infinity ? [cormin].concat(_toConsumableArray$10(range$3(0, tickCount - 1).map(function() {
 			return Infinity;
 		}))) : [].concat(_toConsumableArray$10(range$3(0, tickCount - 1).map(function() {
 			return -Infinity;
 		})), [cormax]);
-		return min$4 > max$5 ? reverse(_values) : _values;
+		return min$5 > max$6 ? reverse(_values) : _values;
 	}
 	if (cormin === cormax) return getTickOfSingleValue(cormin, tickCount, allowDecimals);
 	var _calculateStep = calculateStep(cormin, cormax, count$3, allowDecimals), step = _calculateStep.step, tickMin = _calculateStep.tickMin, tickMax = _calculateStep.tickMax;
 	var values = arithmetic_default.rangeStep(tickMin, tickMax.add(new import_decimal.default(.1).mul(step)), step);
-	return min$4 > max$5 ? reverse(values) : values;
+	return min$5 > max$6 ? reverse(values) : values;
 }
 function getTickValuesFn(_ref5) {
-	var _ref6 = _slicedToArray$8(_ref5, 2), min$4 = _ref6[0], max$5 = _ref6[1];
+	var _ref6 = _slicedToArray$8(_ref5, 2), min$5 = _ref6[0], max$6 = _ref6[1];
 	var tickCount = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 6;
 	var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
 	var count$3 = Math.max(tickCount, 2);
-	var _getValidInterval4 = _slicedToArray$8(getValidInterval([min$4, max$5]), 2), cormin = _getValidInterval4[0], cormax = _getValidInterval4[1];
-	if (cormin === -Infinity || cormax === Infinity) return [min$4, max$5];
+	var _getValidInterval4 = _slicedToArray$8(getValidInterval([min$5, max$6]), 2), cormin = _getValidInterval4[0], cormax = _getValidInterval4[1];
+	if (cormin === -Infinity || cormax === Infinity) return [min$5, max$6];
 	if (cormin === cormax) return getTickOfSingleValue(cormin, tickCount, allowDecimals);
 	var step = getFormatStep(new import_decimal.default(cormax).sub(cormin).div(count$3 - 1), allowDecimals, 0);
 	var values = compose(map(function(n) {
@@ -37965,28 +38139,28 @@ function getTickValuesFn(_ref5) {
 	}), range$3)(0, count$3).filter(function(entry) {
 		return entry >= cormin && entry <= cormax;
 	});
-	return min$4 > max$5 ? reverse(values) : values;
+	return min$5 > max$6 ? reverse(values) : values;
 }
 function getTickValuesFixedDomainFn(_ref7, tickCount) {
-	var _ref8 = _slicedToArray$8(_ref7, 2), min$4 = _ref8[0], max$5 = _ref8[1];
+	var _ref8 = _slicedToArray$8(_ref7, 2), min$5 = _ref8[0], max$6 = _ref8[1];
 	var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
-	var _getValidInterval6 = _slicedToArray$8(getValidInterval([min$4, max$5]), 2), cormin = _getValidInterval6[0], cormax = _getValidInterval6[1];
-	if (cormin === -Infinity || cormax === Infinity) return [min$4, max$5];
+	var _getValidInterval6 = _slicedToArray$8(getValidInterval([min$5, max$6]), 2), cormin = _getValidInterval6[0], cormax = _getValidInterval6[1];
+	if (cormin === -Infinity || cormax === Infinity) return [min$5, max$6];
 	if (cormin === cormax) return [cormin];
 	var count$3 = Math.max(tickCount, 2);
 	var step = getFormatStep(new import_decimal.default(cormax).sub(cormin).div(count$3 - 1), allowDecimals, 0);
 	var values = [].concat(_toConsumableArray$10(arithmetic_default.rangeStep(new import_decimal.default(cormin), new import_decimal.default(cormax).sub(new import_decimal.default(.99).mul(step)), step)), [cormax]);
-	return min$4 > max$5 ? reverse(values) : values;
+	return min$5 > max$6 ? reverse(values) : values;
 }
 var getNiceTickValues = memoize$1(getNiceTickValuesFn);
 memoize$1(getTickValuesFn);
 var getTickValuesFixedDomain = memoize$1(getTickValuesFixedDomainFn);
 var isProduction = false;
 var prefix$1 = "Invariant failed";
-function invariant(condition, message) {
+function invariant(condition, message$1) {
 	if (condition) return;
 	if (isProduction) throw new Error(prefix$1);
-	var provided = typeof message === "function" ? message() : message;
+	var provided = typeof message$1 === "function" ? message$1() : message$1;
 	var value = provided ? "".concat(prefix$1, ": ").concat(provided) : prefix$1;
 	throw new Error(value);
 }
@@ -39262,10 +39436,10 @@ var formatAngleOfSector = function formatAngleOfSector$1(_ref3) {
 	var startAngle = _ref3.startAngle, endAngle = _ref3.endAngle;
 	var startCnt = Math.floor(startAngle / 360);
 	var endCnt = Math.floor(endAngle / 360);
-	var min$4 = Math.min(startCnt, endCnt);
+	var min$5 = Math.min(startCnt, endCnt);
 	return {
-		startAngle: startAngle - min$4 * 360,
-		endAngle: endAngle - min$4 * 360
+		startAngle: startAngle - min$5 * 360,
+		endAngle: endAngle - min$5 * 360
 	};
 };
 var reverseFormatAngleOfSetor = function reverseFormatAngleOfSetor$1(angle, _ref4) {
@@ -40442,10 +40616,10 @@ var require_checkPropTypes = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	var loggedTypeFailures = {};
 	var has$2 = require_has();
 	printWarning$1 = function(text) {
-		var message = "Warning: " + text;
-		if (typeof console !== "undefined") console.error(message);
+		var message$1 = "Warning: " + text;
+		if (typeof console !== "undefined") console.error(message$1);
 		try {
-			throw new Error(message);
+			throw new Error(message$1);
 		} catch (x$2) {}
 	};
 	function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
@@ -40482,10 +40656,10 @@ var require_factoryWithTypeCheckers = /* @__PURE__ */ __commonJSMin(((exports, m
 	var checkPropTypes = require_checkPropTypes();
 	var printWarning = function() {};
 	printWarning = function(text) {
-		var message = "Warning: " + text;
-		if (typeof console !== "undefined") console.error(message);
+		var message$1 = "Warning: " + text;
+		if (typeof console !== "undefined") console.error(message$1);
 		try {
-			throw new Error(message);
+			throw new Error(message$1);
 		} catch (x$2) {}
 	};
 	function emptyFunctionThatReturnsNull() {
@@ -40524,8 +40698,8 @@ var require_factoryWithTypeCheckers = /* @__PURE__ */ __commonJSMin(((exports, m
 			if (x$2 === y$1) return x$2 !== 0 || 1 / x$2 === 1 / y$1;
 			else return x$2 !== x$2 && y$1 !== y$1;
 		}
-		function PropTypeError(message, data) {
-			this.message = message;
+		function PropTypeError(message$1, data) {
+			this.message = message$1;
 			this.data = data && typeof data === "object" ? data : {};
 			this.stack = "";
 		}
@@ -41293,10 +41467,10 @@ var getTransitionVal = function getTransitionVal$1(props, duration, easing) {
 	}).join(",");
 };
 var isDev = true;
-var warn$1 = function warn$2(condition, format$1, a$1, b$1, c$1, d, e, f) {
+var warn$1 = function warn$2(condition, format$2, a$1, b$1, c$1, d, e, f) {
 	if (isDev && typeof console !== "undefined" && console.warn) {
-		if (format$1 === void 0) console.warn("LogUtils requires an error message argument");
-		if (!condition) if (format$1 === void 0) console.warn("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
+		if (format$2 === void 0) console.warn("LogUtils requires an error message argument");
+		if (!condition) if (format$2 === void 0) console.warn("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
 		else {
 			var args = [
 				a$1,
@@ -41307,7 +41481,7 @@ var warn$1 = function warn$2(condition, format$1, a$1, b$1, c$1, d, e, f) {
 				f
 			];
 			var argIndex = 0;
-			console.warn(format$1.replace(/%s/g, function() {
+			console.warn(format$2.replace(/%s/g, function() {
 				return args[argIndex++];
 			}));
 		}
@@ -44408,10 +44582,10 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 				var scaleValues = this.state.scaleValues;
 				var _this$props2 = this.props, gap = _this$props2.gap;
 				var lastIndex = _this$props2.data.length - 1;
-				var min$4 = Math.min(startX, endX);
-				var max$5 = Math.max(startX, endX);
-				var minIndex = Brush$1.getIndexInRange(scaleValues, min$4);
-				var maxIndex = Brush$1.getIndexInRange(scaleValues, max$5);
+				var min$5 = Math.min(startX, endX);
+				var max$6 = Math.max(startX, endX);
+				var minIndex = Brush$1.getIndexInRange(scaleValues, min$5);
+				var maxIndex = Brush$1.getIndexInRange(scaleValues, max$6);
 				return {
 					startIndex: minIndex - minIndex % gap,
 					endIndex: maxIndex === lastIndex ? lastIndex : maxIndex - maxIndex % gap
@@ -45717,14 +45891,14 @@ var require_toInteger = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_findIndex = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseFindIndex = require__baseFindIndex(), baseIteratee = require__baseIteratee(), toInteger = require_toInteger();
 	var nativeMax = Math.max;
-	function findIndex(array, predicate, fromIndex) {
+	function findIndex$1(array, predicate, fromIndex) {
 		var length = array == null ? 0 : array.length;
 		if (!length) return -1;
 		var index$1 = fromIndex == null ? 0 : toInteger(fromIndex);
 		if (index$1 < 0) index$1 = nativeMax(length + index$1, 0);
 		return baseFindIndex(array, baseIteratee(predicate, 3), index$1);
 	}
-	module.exports = findIndex;
+	module.exports = findIndex$1;
 }));
 var require_find = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__createFind()(require_findIndex());
@@ -46461,11 +46635,11 @@ _defineProperty$10(ReferenceArea, "renderRect", function(option, props) {
 	else rect = /* @__PURE__ */ import_react.createElement(Rectangle, _extends$7({}, props, { className: "recharts-reference-area-rect" }));
 	return rect;
 });
-function getEveryNthWithCondition(array, n, isValid) {
+function getEveryNthWithCondition(array, n, isValid$1) {
 	if (n < 1) return [];
-	if (n === 1 && isValid === void 0) return array;
+	if (n === 1 && isValid$1 === void 0) return array;
 	var result = [];
-	for (var i = 0; i < array.length; i += n) if (isValid === void 0 || isValid(array[i]) === true) result.push(array[i]);
+	for (var i = 0; i < array.length; i += n) if (isValid$1 === void 0 || isValid$1(array[i]) === true) result.push(array[i]);
 	else return;
 	return result;
 }
@@ -51027,25 +51201,41 @@ function Index() {
 	const inventoryAlerts = Object.values(inventoryData).flat().filter((item) => item.qtd < item.minQtd).map((item) => ({
 		id: `inv-${item.id}`,
 		title: `Estoque Crítico: ${item.item}`,
-		desc: `A quantidade atual (${item.qtd} ${item.unidade}) está abaixo do limite mínimo aceitável (${item.minQtd}).`,
+		desc: `A quantidade atual (${item.qtd} ${item.unidade}) está abaixo do mínimo aceitável (${item.minQtd}).`,
 		type: "destructive"
 	}));
-	const allAlerts = [...dashboardData.alerts, ...inventoryAlerts];
+	const sanitaryAlerts = sanitaryEvents.filter((event) => event.status === "Atrasado").map((event) => ({
+		id: event.id,
+		title: `Sanidade Atrasada: ${event.title}`,
+		desc: `O protocolo para o lote ${event.lote} encontra-se pendente.`,
+		type: "destructive"
+	}));
+	const allAlerts = [
+		...dashboardData.alerts,
+		...inventoryAlerts,
+		...sanitaryAlerts
+	];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6",
+		className: "space-y-6 pb-20 sm:pb-6",
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-3xl font-bold tracking-tight text-foreground",
-				children: "Dashboard Geral"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Visão consolidada da operação agropecuária."
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					className: "text-3xl font-bold tracking-tight text-foreground",
+					children: "Dashboard Geral"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Visão consolidada da operação agropecuária."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "hidden sm:flex items-center text-xs font-medium text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full border",
+					children: "Acesso Offline Habilitado"
+				})]
+			}),
+			allAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "grid gap-4 md:grid-cols-2",
 				children: allAlerts.map((alert) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
 					variant: alert.type,
-					className: "hover-lift bg-background",
+					className: "hover-lift bg-background shadow-sm border-l-4 border-l-destructive",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "h-5 w-5" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertTitle, {
@@ -51057,6 +51247,59 @@ function Index() {
 				}, alert.id))
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						className: "h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50",
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: "/sanidade",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Syringe, { className: "h-5 w-5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs",
+								children: "Sanidade"
+							})]
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						className: "h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50",
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: "/estoque",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, { className: "h-5 w-5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs",
+								children: "Estoque"
+							})]
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						className: "h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50",
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: "/financeiro",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs",
+								children: "Finanças"
+							})]
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "outline",
+						className: "h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50",
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: "/pastos",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-5 w-5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs",
+								children: "Pastos"
+							})]
+						})
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid gap-4 sm:grid-cols-2 lg:grid-cols-4",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -51065,14 +51308,14 @@ function Index() {
 							className: "flex flex-row items-center justify-between pb-2 space-y-0",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 								className: "text-sm font-medium text-muted-foreground",
-								children: "Total de Animais"
+								children: "Total Animais"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-4 w-4 text-primary" })]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-2xl font-bold",
 							children: dashboardData.kpis.animais
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-xs text-muted-foreground mt-1",
-							children: "+12% em relação ao ano anterior"
+							children: "+12% a/a"
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -51081,14 +51324,14 @@ function Index() {
 							className: "flex flex-row items-center justify-between pb-2 space-y-0",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 								className: "text-sm font-medium text-muted-foreground",
-								children: "Valor Estimado do Rebanho"
+								children: "Valor Estimado"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, { className: "h-4 w-4 text-primary" })]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-2xl font-bold",
 							children: dashboardData.kpis.valorTotal
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-xs text-muted-foreground mt-1",
-							children: "Baseado na arroba atual"
+							children: "Base arroba atual"
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -51097,15 +51340,12 @@ function Index() {
 							className: "flex flex-row items-center justify-between pb-2 space-y-0",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 								className: "text-sm font-medium text-muted-foreground",
-								children: "Receita do Mês"
+								children: "Receita Mês"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-4 w-4 text-primary" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-2xl font-bold text-primary",
 							children: dashboardData.kpis.receitaMes
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-muted-foreground mt-1",
-							children: "+4.5% em relação ao mês anterior"
-						})] })]
+						}) })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 						className: "hover-lift",
@@ -51113,15 +51353,12 @@ function Index() {
 							className: "flex flex-row items-center justify-between pb-2 space-y-0",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 								className: "text-sm font-medium text-muted-foreground",
-								children: "Despesas do Mês"
+								children: "Despesas Mês"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-4 w-4 text-destructive" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-2xl font-bold text-destructive",
 							children: dashboardData.kpis.despesasMes
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-muted-foreground mt-1",
-							children: "Dentro do orçamento projetado"
-						})] })]
+						}) })]
 					})
 				]
 			}),
@@ -51129,37 +51366,18 @@ function Index() {
 				className: "grid gap-4 md:grid-cols-2 lg:grid-cols-7",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 					className: "lg:col-span-4 flex flex-col",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Receitas vs Despesas (6 meses)" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "flex-1 pb-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Receitas vs Despesas" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "flex-1 pb-2 min-h-[300px]",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CashflowChart, {})
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 					className: "lg:col-span-3 flex flex-col",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Distribuição do Rebanho" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "flex-1 pb-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Distribuição Rebanho" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "flex-1 pb-2 min-h-[300px]",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DistributionChart, {})
 					})]
 				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Últimas Movimentações" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "space-y-4",
-				children: dashboardData.activities.map((act) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center justify-between border-b pb-4 last:border-0 last:pb-0",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm font-medium leading-none",
-							children: act.action
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm text-muted-foreground",
-							children: act.time
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: `text-sm font-medium ${act.type === "receita" ? "text-primary" : act.type === "despesa" ? "text-destructive" : "text-muted-foreground"}`,
-						children: act.amount
-					})]
-				}, act.id))
-			}) })] })
+			})
 		]
 	});
 }
@@ -51709,7 +51927,7 @@ function focusFirst$1(candidates, preventScroll = false) {
 function wrapArray$1(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root = RovingFocusGroup;
+var Root$1 = RovingFocusGroup;
 var Item = RovingFocusGroupItem;
 var TABS_NAME = "Tabs";
 var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [createRovingFocusGroupScope]);
@@ -51746,7 +51964,7 @@ var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
 	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
 		asChild: true,
 		...rovingFocusGroupScope,
 		orientation: context.orientation,
@@ -52200,7 +52418,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 					onFocusOutside,
 					onInteractOutside,
 					onDismiss,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
 						asChild: true,
 						...rovingFocusGroupScope,
 						dir: rootContext.dir,
@@ -53044,10 +53262,10 @@ var DropdownMenuShortcut = ({ className, ...props }) => {
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 function Financeiro() {
 	const { toast: toast$2 } = useToast();
-	const handleExport = (format$1) => {
+	const handleExport = (format$2) => {
 		toast$2({
 			title: "Relatório Gerado",
-			description: `O balanço financeiro está sendo baixado em formato ${format$1.toUpperCase()}.`
+			description: `O balanço financeiro está sendo baixado em formato ${format$2.toUpperCase()}.`
 		});
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -53171,6 +53389,127 @@ function Financeiro() {
 		]
 	});
 }
+function ScaleIntegrationModal({ animalId, onSaveWeight }) {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [connectionState, setConnectionState] = (0, import_react.useState)("idle");
+	const [reading, setReading] = (0, import_react.useState)("");
+	const { toast: toast$2 } = useToast();
+	(0, import_react.useEffect)(() => {
+		if (!open) {
+			setTimeout(() => setConnectionState("idle"), 300);
+			setReading("");
+		}
+	}, [open]);
+	const handleStartIntegration = () => {
+		setConnectionState("connecting");
+		setTimeout(() => {
+			setConnectionState("reading");
+			let tempWeight = 240;
+			const interval = setInterval(() => {
+				tempWeight = tempWeight + (Math.random() * 4 - 2);
+				setReading(tempWeight.toFixed(1));
+			}, 300);
+			setTimeout(() => {
+				clearInterval(interval);
+				setReading((245.5 + Math.random() * 2).toFixed(1));
+				setConnectionState("success");
+				toast$2({
+					title: "Leitura Estabilizada",
+					description: "O peso foi capturado com sucesso da balança eletrônica."
+				});
+			}, 3e3);
+		}, 1500);
+	};
+	const handleSave = () => {
+		if (onSaveWeight) onSaveWeight(reading);
+		toast$2({
+			title: "Peso Registrado",
+			description: `O peso de ${reading} kg foi salvo no histórico do animal ${animalId}.`
+		});
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "outline",
+				size: "sm",
+				className: "gap-2 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }), " Importar Balança"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-5 w-5" }), " Integração com Balança"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Conecte ao sensor Bluetooth/Wi-Fi da balança para leitura automática." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col items-center justify-center py-8 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative w-40 h-40 rounded-full border-4 border-muted flex items-center justify-center bg-background shadow-inner",
+					children: [
+						connectionState === "idle" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-12 w-12 text-muted-foreground opacity-50" }),
+						connectionState === "connecting" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center text-primary",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-10 w-10 animate-spin mb-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs font-semibold animate-pulse",
+								children: "Conectando..."
+							})]
+						}),
+						(connectionState === "reading" || connectionState === "success") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: `text-4xl font-bold font-mono tracking-tighter ${connectionState === "success" ? "text-primary" : "text-muted-foreground"}`,
+								children: reading
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-sm text-muted-foreground mt-1",
+								children: "KG"
+							})]
+						}),
+						connectionState === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "absolute -bottom-2 -right-2 bg-background rounded-full",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-8 w-8 text-primary" })
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "w-full space-y-3",
+					children: [
+						connectionState === "idle" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							onClick: handleStartIntegration,
+							className: "w-full gap-2",
+							size: "lg",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }), " Buscar Dispositivos"]
+						}),
+						connectionState === "connecting" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							disabled: true,
+							className: "w-full",
+							size: "lg",
+							children: "Aguarde..."
+						}),
+						connectionState === "reading" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							disabled: true,
+							className: "w-full gap-2",
+							size: "lg",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-4 w-4 animate-spin" }), " Estabilizando Peso"]
+						}),
+						connectionState === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							onClick: handleSave,
+							className: "w-full gap-2",
+							size: "lg",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }),
+								" Salvar ",
+								reading,
+								" kg"
+							]
+						})
+					]
+				})]
+			})]
+		})]
+	});
+}
 function QuickEventModal({ animalId }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
@@ -53188,7 +53527,7 @@ function QuickEventModal({ animalId }) {
 			asChild: true,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 				size: "sm",
-				className: "gap-2",
+				className: "gap-2 min-h-[44px]",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Registrar Evento"]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Novo Evento Sanitário ou Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogDescription, { children: [
@@ -53200,7 +53539,7 @@ function QuickEventModal({ animalId }) {
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "space-y-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Evento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Evento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
 						defaultValue: "pesagem",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
@@ -53224,11 +53563,14 @@ function QuickEventModal({ animalId }) {
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "space-y-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Valor / Detalhe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, { placeholder: "Ex: 250 kg ou Nome da Vacina" })]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Valor / Detalhe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						placeholder: "Ex: 250 kg ou Nome da Vacina",
+						className: "min-h-[44px]"
+					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 					onClick: handleSave,
-					className: "w-full",
+					className: "w-full min-h-[44px]",
 					children: "Salvar Histórico"
 				})
 			]
@@ -53238,6 +53580,17 @@ function QuickEventModal({ animalId }) {
 function AnimalProfile() {
 	const { id } = useParams();
 	const animal = animalData[id || ""] || animalData["TAG-1234"];
+	const [historico, setHistorico] = (0, import_react.useState)(animal.historico);
+	const [pesoAtual, setPesoAtual] = (0, import_react.useState)(animal.pesoAtual);
+	const handleNewWeight = (weight) => {
+		const newData = `${weight} kg`;
+		setPesoAtual(newData);
+		setHistorico([{
+			data: (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR"),
+			tipo: "Pesagem (Sensor)",
+			valor: newData
+		}, ...historico]);
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up",
 		children: [
@@ -53247,9 +53600,10 @@ function AnimalProfile() {
 					variant: "ghost",
 					size: "icon",
 					asChild: true,
+					className: "min-h-[44px] min-w-[44px]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 						to: "/",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-4 w-4" })
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-5 w-5" })
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 					className: "text-3xl font-bold tracking-tight",
@@ -53290,7 +53644,7 @@ function AnimalProfile() {
 						})
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "text-xl font-bold text-primary",
-						children: animal.pesoAtual
+						children: pesoAtual
 					}) })] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 						className: "pb-2",
@@ -53306,20 +53660,26 @@ function AnimalProfile() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 				className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Eventos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickEventModal, { animalId: animal.id })]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Eventos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-wrap gap-2 w-full sm:w-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScaleIntegrationModal, {
+						animalId: animal.id,
+						onSaveWeight: handleNewWeight
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickEventModal, { animalId: animal.id })]
+				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "overflow-x-auto",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Valor / Detalhe" })
-				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: animal.historico.map((ev, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: historico.map((ev, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 						className: "whitespace-nowrap",
 						children: ev.data
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: "outline",
+						variant: ev.tipo.includes("Sensor") ? "default" : "outline",
 						children: ev.tipo
 					}) }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
@@ -53329,6 +53689,3849 @@ function AnimalProfile() {
 				] }, idx)) })] })
 			}) })] })
 		]
+	});
+}
+function tzName(timeZone, date$1, format$2 = "long") {
+	return new Intl.DateTimeFormat("en-US", {
+		hour: "numeric",
+		timeZone,
+		timeZoneName: format$2
+	}).format(date$1).split(/\s/g).slice(2).join(" ");
+}
+var offsetFormatCache = {};
+var offsetCache = {};
+function tzOffset(timeZone, date$1) {
+	try {
+		const offsetStr = (offsetFormatCache[timeZone] ||= new Intl.DateTimeFormat("en-US", {
+			timeZone,
+			timeZoneName: "longOffset"
+		}).format)(date$1).split("GMT")[1];
+		if (offsetStr in offsetCache) return offsetCache[offsetStr];
+		return calcOffset(offsetStr, offsetStr.split(":"));
+	} catch {
+		if (timeZone in offsetCache) return offsetCache[timeZone];
+		const captures = timeZone?.match(offsetRe);
+		if (captures) return calcOffset(timeZone, captures.slice(1));
+		return NaN;
+	}
+}
+var offsetRe = /([+-]\d\d):?(\d\d)?/;
+function calcOffset(cacheStr, values) {
+	const hours = +(values[0] || 0);
+	const minutes = +(values[1] || 0);
+	const seconds$1 = +(values[2] || 0) / 60;
+	return offsetCache[cacheStr] = hours * 60 + minutes > 0 ? hours * 60 + minutes + seconds$1 : hours * 60 - minutes - seconds$1;
+}
+var TZDateMini = class TZDateMini extends Date {
+	constructor(...args) {
+		super();
+		if (args.length > 1 && typeof args[args.length - 1] === "string") this.timeZone = args.pop();
+		this.internal = /* @__PURE__ */ new Date();
+		if (isNaN(tzOffset(this.timeZone, this))) this.setTime(NaN);
+		else if (!args.length) this.setTime(Date.now());
+		else if (typeof args[0] === "number" && (args.length === 1 || args.length === 2 && typeof args[1] !== "number")) this.setTime(args[0]);
+		else if (typeof args[0] === "string") this.setTime(+new Date(args[0]));
+		else if (args[0] instanceof Date) this.setTime(+args[0]);
+		else {
+			this.setTime(+new Date(...args));
+			adjustToSystemTZ(this, NaN);
+			syncToInternal(this);
+		}
+	}
+	static tz(tz, ...args) {
+		return args.length ? new TZDateMini(...args, tz) : new TZDateMini(Date.now(), tz);
+	}
+	withTimeZone(timeZone) {
+		return new TZDateMini(+this, timeZone);
+	}
+	getTimezoneOffset() {
+		const offset$3 = -tzOffset(this.timeZone, this);
+		return offset$3 > 0 ? Math.floor(offset$3) : Math.ceil(offset$3);
+	}
+	setTime(time$1) {
+		Date.prototype.setTime.apply(this, arguments);
+		syncToInternal(this);
+		return +this;
+	}
+	[Symbol.for("constructDateFrom")](date$1) {
+		return new TZDateMini(+new Date(date$1), this.timeZone);
+	}
+};
+var re = /^(get|set)(?!UTC)/;
+Object.getOwnPropertyNames(Date.prototype).forEach((method) => {
+	if (!re.test(method)) return;
+	const utcMethod = method.replace(re, "$1UTC");
+	if (!TZDateMini.prototype[utcMethod]) return;
+	if (method.startsWith("get")) TZDateMini.prototype[method] = function() {
+		return this.internal[utcMethod]();
+	};
+	else {
+		TZDateMini.prototype[method] = function() {
+			Date.prototype[utcMethod].apply(this.internal, arguments);
+			syncFromInternal(this);
+			return +this;
+		};
+		TZDateMini.prototype[utcMethod] = function() {
+			Date.prototype[utcMethod].apply(this, arguments);
+			syncToInternal(this);
+			return +this;
+		};
+	}
+});
+function syncToInternal(date$1) {
+	date$1.internal.setTime(+date$1);
+	date$1.internal.setUTCSeconds(date$1.internal.getUTCSeconds() - Math.round(-tzOffset(date$1.timeZone, date$1) * 60));
+}
+function syncFromInternal(date$1) {
+	Date.prototype.setFullYear.call(date$1, date$1.internal.getUTCFullYear(), date$1.internal.getUTCMonth(), date$1.internal.getUTCDate());
+	Date.prototype.setHours.call(date$1, date$1.internal.getUTCHours(), date$1.internal.getUTCMinutes(), date$1.internal.getUTCSeconds(), date$1.internal.getUTCMilliseconds());
+	adjustToSystemTZ(date$1);
+}
+function adjustToSystemTZ(date$1) {
+	const baseOffset = tzOffset(date$1.timeZone, date$1);
+	const offset$3 = baseOffset > 0 ? Math.floor(baseOffset) : Math.ceil(baseOffset);
+	const prevHour = /* @__PURE__ */ new Date(+date$1);
+	prevHour.setUTCHours(prevHour.getUTCHours() - 1);
+	const systemOffset = -(/* @__PURE__ */ new Date(+date$1)).getTimezoneOffset();
+	const systemDSTChange = systemOffset - -(/* @__PURE__ */ new Date(+prevHour)).getTimezoneOffset();
+	const dstShift = Date.prototype.getHours.apply(date$1) !== date$1.internal.getUTCHours();
+	if (systemDSTChange && dstShift) date$1.internal.setUTCMinutes(date$1.internal.getUTCMinutes() + systemDSTChange);
+	const offsetDiff = systemOffset - offset$3;
+	if (offsetDiff) Date.prototype.setUTCMinutes.call(date$1, Date.prototype.getUTCMinutes.call(date$1) + offsetDiff);
+	const systemDate = /* @__PURE__ */ new Date(+date$1);
+	systemDate.setUTCSeconds(0);
+	const systemSecondsOffset = systemOffset > 0 ? systemDate.getSeconds() : (systemDate.getSeconds() - 60) % 60;
+	const secondsOffset = Math.round(-(tzOffset(date$1.timeZone, date$1) * 60)) % 60;
+	if (secondsOffset || systemSecondsOffset) {
+		date$1.internal.setUTCSeconds(date$1.internal.getUTCSeconds() + secondsOffset);
+		Date.prototype.setUTCSeconds.call(date$1, Date.prototype.getUTCSeconds.call(date$1) + secondsOffset + systemSecondsOffset);
+	}
+	const postBaseOffset = tzOffset(date$1.timeZone, date$1);
+	const postOffset = postBaseOffset > 0 ? Math.floor(postBaseOffset) : Math.ceil(postBaseOffset);
+	const postOffsetDiff = -(/* @__PURE__ */ new Date(+date$1)).getTimezoneOffset() - postOffset;
+	const offsetChanged = postOffset !== offset$3;
+	const postDiff = postOffsetDiff - offsetDiff;
+	if (offsetChanged && postDiff) {
+		Date.prototype.setUTCMinutes.call(date$1, Date.prototype.getUTCMinutes.call(date$1) + postDiff);
+		const newBaseOffset = tzOffset(date$1.timeZone, date$1);
+		const offsetChange = postOffset - (newBaseOffset > 0 ? Math.floor(newBaseOffset) : Math.ceil(newBaseOffset));
+		if (offsetChange) {
+			date$1.internal.setUTCMinutes(date$1.internal.getUTCMinutes() + offsetChange);
+			Date.prototype.setUTCMinutes.call(date$1, Date.prototype.getUTCMinutes.call(date$1) + offsetChange);
+		}
+	}
+}
+var TZDate = class TZDate extends TZDateMini {
+	static tz(tz, ...args) {
+		return args.length ? new TZDate(...args, tz) : new TZDate(Date.now(), tz);
+	}
+	toISOString() {
+		const [sign$1, hours, minutes] = this.tzComponents();
+		const tz = `${sign$1}${hours}:${minutes}`;
+		return this.internal.toISOString().slice(0, -1) + tz;
+	}
+	toString() {
+		return `${this.toDateString()} ${this.toTimeString()}`;
+	}
+	toDateString() {
+		const [day, date$1, month, year] = this.internal.toUTCString().split(" ");
+		return `${day?.slice(0, -1)} ${month} ${date$1} ${year}`;
+	}
+	toTimeString() {
+		const time$1 = this.internal.toUTCString().split(" ")[4];
+		const [sign$1, hours, minutes] = this.tzComponents();
+		return `${time$1} GMT${sign$1}${hours}${minutes} (${tzName(this.timeZone, this)})`;
+	}
+	toLocaleString(locales, options$1) {
+		return Date.prototype.toLocaleString.call(this, locales, {
+			...options$1,
+			timeZone: options$1?.timeZone || this.timeZone
+		});
+	}
+	toLocaleDateString(locales, options$1) {
+		return Date.prototype.toLocaleDateString.call(this, locales, {
+			...options$1,
+			timeZone: options$1?.timeZone || this.timeZone
+		});
+	}
+	toLocaleTimeString(locales, options$1) {
+		return Date.prototype.toLocaleTimeString.call(this, locales, {
+			...options$1,
+			timeZone: options$1?.timeZone || this.timeZone
+		});
+	}
+	tzComponents() {
+		const offset$3 = this.getTimezoneOffset();
+		return [
+			offset$3 > 0 ? "-" : "+",
+			String(Math.floor(Math.abs(offset$3) / 60)).padStart(2, "0"),
+			String(Math.abs(offset$3) % 60).padStart(2, "0")
+		];
+	}
+	withTimeZone(timeZone) {
+		return new TZDate(+this, timeZone);
+	}
+	[Symbol.for("constructDateFrom")](date$1) {
+		return new TZDate(+new Date(date$1), this.timeZone);
+	}
+};
+const daysInYear = 365.2425;
+Math.pow(10, 8) * 24 * 60 * 60 * 1e3;
+const millisecondsInWeek = 6048e5;
+const millisecondsInDay = 864e5;
+const secondsInDay = 3600 * 24;
+secondsInDay * 7;
+secondsInDay * daysInYear / 12 * 3;
+const constructFromSymbol = Symbol.for("constructDateFrom");
+function constructFrom(date$1, value) {
+	if (typeof date$1 === "function") return date$1(value);
+	if (date$1 && typeof date$1 === "object" && constructFromSymbol in date$1) return date$1[constructFromSymbol](value);
+	if (date$1 instanceof Date) return new date$1.constructor(value);
+	return new Date(value);
+}
+function toDate(argument, context) {
+	return constructFrom(context || argument, argument);
+}
+function addDays(date$1, amount, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	if (isNaN(amount)) return constructFrom(options$1?.in || date$1, NaN);
+	if (!amount) return _date;
+	_date.setDate(_date.getDate() + amount);
+	return _date;
+}
+function addMonths(date$1, amount, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	if (isNaN(amount)) return constructFrom(options$1?.in || date$1, NaN);
+	if (!amount) return _date;
+	const dayOfMonth = _date.getDate();
+	const endOfDesiredMonth = constructFrom(options$1?.in || date$1, _date.getTime());
+	endOfDesiredMonth.setMonth(_date.getMonth() + amount + 1, 0);
+	if (dayOfMonth >= endOfDesiredMonth.getDate()) return endOfDesiredMonth;
+	else {
+		_date.setFullYear(endOfDesiredMonth.getFullYear(), endOfDesiredMonth.getMonth(), dayOfMonth);
+		return _date;
+	}
+}
+var defaultOptions = {};
+function getDefaultOptions() {
+	return defaultOptions;
+}
+function startOfWeek(date$1, options$1) {
+	const defaultOptions$1 = getDefaultOptions();
+	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$1.weekStartsOn ?? defaultOptions$1.locale?.options?.weekStartsOn ?? 0;
+	const _date = toDate(date$1, options$1?.in);
+	const day = _date.getDay();
+	const diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
+	_date.setDate(_date.getDate() - diff);
+	_date.setHours(0, 0, 0, 0);
+	return _date;
+}
+function startOfISOWeek(date$1, options$1) {
+	return startOfWeek(date$1, {
+		...options$1,
+		weekStartsOn: 1
+	});
+}
+function getISOWeekYear(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const year = _date.getFullYear();
+	const fourthOfJanuaryOfNextYear = constructFrom(_date, 0);
+	fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4);
+	fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0);
+	const startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear);
+	const fourthOfJanuaryOfThisYear = constructFrom(_date, 0);
+	fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4);
+	fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0);
+	const startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear);
+	if (_date.getTime() >= startOfNextYear.getTime()) return year + 1;
+	else if (_date.getTime() >= startOfThisYear.getTime()) return year;
+	else return year - 1;
+}
+function getTimezoneOffsetInMilliseconds(date$1) {
+	const _date = toDate(date$1);
+	const utcDate$1 = new Date(Date.UTC(_date.getFullYear(), _date.getMonth(), _date.getDate(), _date.getHours(), _date.getMinutes(), _date.getSeconds(), _date.getMilliseconds()));
+	utcDate$1.setUTCFullYear(_date.getFullYear());
+	return +date$1 - +utcDate$1;
+}
+function normalizeDates(context, ...dates) {
+	const normalize$1 = constructFrom.bind(null, context || dates.find((date$1) => typeof date$1 === "object"));
+	return dates.map(normalize$1);
+}
+function startOfDay(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	_date.setHours(0, 0, 0, 0);
+	return _date;
+}
+function differenceInCalendarDays(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	const laterStartOfDay = startOfDay(laterDate_);
+	const earlierStartOfDay = startOfDay(earlierDate_);
+	const laterTimestamp = +laterStartOfDay - getTimezoneOffsetInMilliseconds(laterStartOfDay);
+	const earlierTimestamp = +earlierStartOfDay - getTimezoneOffsetInMilliseconds(earlierStartOfDay);
+	return Math.round((laterTimestamp - earlierTimestamp) / millisecondsInDay);
+}
+function startOfISOWeekYear(date$1, options$1) {
+	const year = getISOWeekYear(date$1, options$1);
+	const fourthOfJanuary = constructFrom(options$1?.in || date$1, 0);
+	fourthOfJanuary.setFullYear(year, 0, 4);
+	fourthOfJanuary.setHours(0, 0, 0, 0);
+	return startOfISOWeek(fourthOfJanuary);
+}
+function addWeeks(date$1, amount, options$1) {
+	return addDays(date$1, amount * 7, options$1);
+}
+function addYears(date$1, amount, options$1) {
+	return addMonths(date$1, amount * 12, options$1);
+}
+function max(dates, options$1) {
+	let result;
+	let context = options$1?.in;
+	dates.forEach((date$1) => {
+		if (!context && typeof date$1 === "object") context = constructFrom.bind(null, date$1);
+		const date_ = toDate(date$1, context);
+		if (!result || result < date_ || isNaN(+date_)) result = date_;
+	});
+	return constructFrom(context, result || NaN);
+}
+function min(dates, options$1) {
+	let result;
+	let context = options$1?.in;
+	dates.forEach((date$1) => {
+		if (!context && typeof date$1 === "object") context = constructFrom.bind(null, date$1);
+		const date_ = toDate(date$1, context);
+		if (!result || result > date_ || isNaN(+date_)) result = date_;
+	});
+	return constructFrom(context, result || NaN);
+}
+function isSameDay(laterDate, earlierDate, options$1) {
+	const [dateLeft_, dateRight_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	return +startOfDay(dateLeft_) === +startOfDay(dateRight_);
+}
+function isDate(value) {
+	return value instanceof Date || typeof value === "object" && Object.prototype.toString.call(value) === "[object Date]";
+}
+function isValid(date$1) {
+	return !(!isDate(date$1) && typeof date$1 !== "number" || isNaN(+toDate(date$1)));
+}
+function differenceInCalendarMonths(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	const yearsDiff = laterDate_.getFullYear() - earlierDate_.getFullYear();
+	const monthsDiff = laterDate_.getMonth() - earlierDate_.getMonth();
+	return yearsDiff * 12 + monthsDiff;
+}
+function endOfMonth(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const month = _date.getMonth();
+	_date.setFullYear(_date.getFullYear(), month + 1, 0);
+	_date.setHours(23, 59, 59, 999);
+	return _date;
+}
+function normalizeInterval(context, interval) {
+	const [start, end] = normalizeDates(context, interval.start, interval.end);
+	return {
+		start,
+		end
+	};
+}
+function eachMonthOfInterval(interval, options$1) {
+	const { start, end } = normalizeInterval(options$1?.in, interval);
+	let reversed = +start > +end;
+	const endTime = reversed ? +start : +end;
+	const date$1 = reversed ? end : start;
+	date$1.setHours(0, 0, 0, 0);
+	date$1.setDate(1);
+	let step = options$1?.step ?? 1;
+	if (!step) return [];
+	if (step < 0) {
+		step = -step;
+		reversed = !reversed;
+	}
+	const dates = [];
+	while (+date$1 <= endTime) {
+		dates.push(constructFrom(start, date$1));
+		date$1.setMonth(date$1.getMonth() + step);
+	}
+	return reversed ? dates.reverse() : dates;
+}
+function startOfMonth(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	_date.setDate(1);
+	_date.setHours(0, 0, 0, 0);
+	return _date;
+}
+function endOfYear(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const year = _date.getFullYear();
+	_date.setFullYear(year + 1, 0, 0);
+	_date.setHours(23, 59, 59, 999);
+	return _date;
+}
+function startOfYear(date$1, options$1) {
+	const date_ = toDate(date$1, options$1?.in);
+	date_.setFullYear(date_.getFullYear(), 0, 1);
+	date_.setHours(0, 0, 0, 0);
+	return date_;
+}
+function eachYearOfInterval(interval, options$1) {
+	const { start, end } = normalizeInterval(options$1?.in, interval);
+	let reversed = +start > +end;
+	const endTime = reversed ? +start : +end;
+	const date$1 = reversed ? end : start;
+	date$1.setHours(0, 0, 0, 0);
+	date$1.setMonth(0, 1);
+	let step = options$1?.step ?? 1;
+	if (!step) return [];
+	if (step < 0) {
+		step = -step;
+		reversed = !reversed;
+	}
+	const dates = [];
+	while (+date$1 <= endTime) {
+		dates.push(constructFrom(start, date$1));
+		date$1.setFullYear(date$1.getFullYear() + step);
+	}
+	return reversed ? dates.reverse() : dates;
+}
+function endOfWeek(date$1, options$1) {
+	const defaultOptions$1 = getDefaultOptions();
+	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$1.weekStartsOn ?? defaultOptions$1.locale?.options?.weekStartsOn ?? 0;
+	const _date = toDate(date$1, options$1?.in);
+	const day = _date.getDay();
+	const diff = (day < weekStartsOn ? -7 : 0) + 6 - (day - weekStartsOn);
+	_date.setDate(_date.getDate() + diff);
+	_date.setHours(23, 59, 59, 999);
+	return _date;
+}
+function endOfISOWeek(date$1, options$1) {
+	return endOfWeek(date$1, {
+		...options$1,
+		weekStartsOn: 1
+	});
+}
+var formatDistanceLocale = {
+	lessThanXSeconds: {
+		one: "less than a second",
+		other: "less than {{count}} seconds"
+	},
+	xSeconds: {
+		one: "1 second",
+		other: "{{count}} seconds"
+	},
+	halfAMinute: "half a minute",
+	lessThanXMinutes: {
+		one: "less than a minute",
+		other: "less than {{count}} minutes"
+	},
+	xMinutes: {
+		one: "1 minute",
+		other: "{{count}} minutes"
+	},
+	aboutXHours: {
+		one: "about 1 hour",
+		other: "about {{count}} hours"
+	},
+	xHours: {
+		one: "1 hour",
+		other: "{{count}} hours"
+	},
+	xDays: {
+		one: "1 day",
+		other: "{{count}} days"
+	},
+	aboutXWeeks: {
+		one: "about 1 week",
+		other: "about {{count}} weeks"
+	},
+	xWeeks: {
+		one: "1 week",
+		other: "{{count}} weeks"
+	},
+	aboutXMonths: {
+		one: "about 1 month",
+		other: "about {{count}} months"
+	},
+	xMonths: {
+		one: "1 month",
+		other: "{{count}} months"
+	},
+	aboutXYears: {
+		one: "about 1 year",
+		other: "about {{count}} years"
+	},
+	xYears: {
+		one: "1 year",
+		other: "{{count}} years"
+	},
+	overXYears: {
+		one: "over 1 year",
+		other: "over {{count}} years"
+	},
+	almostXYears: {
+		one: "almost 1 year",
+		other: "almost {{count}} years"
+	}
+};
+const formatDistance = (token, count$3, options$1) => {
+	let result;
+	const tokenValue = formatDistanceLocale[token];
+	if (typeof tokenValue === "string") result = tokenValue;
+	else if (count$3 === 1) result = tokenValue.one;
+	else result = tokenValue.other.replace("{{count}}", count$3.toString());
+	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "in " + result;
+	else return result + " ago";
+	return result;
+};
+function buildFormatLongFn(args) {
+	return (options$1 = {}) => {
+		const width = options$1.width ? String(options$1.width) : args.defaultWidth;
+		return args.formats[width] || args.formats[args.defaultWidth];
+	};
+}
+const formatLong = {
+	date: buildFormatLongFn({
+		formats: {
+			full: "EEEE, MMMM do, y",
+			long: "MMMM do, y",
+			medium: "MMM d, y",
+			short: "MM/dd/yyyy"
+		},
+		defaultWidth: "full"
+	}),
+	time: buildFormatLongFn({
+		formats: {
+			full: "h:mm:ss a zzzz",
+			long: "h:mm:ss a z",
+			medium: "h:mm:ss a",
+			short: "h:mm a"
+		},
+		defaultWidth: "full"
+	}),
+	dateTime: buildFormatLongFn({
+		formats: {
+			full: "{{date}} 'at' {{time}}",
+			long: "{{date}} 'at' {{time}}",
+			medium: "{{date}}, {{time}}",
+			short: "{{date}}, {{time}}"
+		},
+		defaultWidth: "full"
+	})
+};
+var formatRelativeLocale = {
+	lastWeek: "'last' eeee 'at' p",
+	yesterday: "'yesterday at' p",
+	today: "'today at' p",
+	tomorrow: "'tomorrow at' p",
+	nextWeek: "eeee 'at' p",
+	other: "P"
+};
+const formatRelative = (token, _date, _baseDate, _options) => formatRelativeLocale[token];
+function buildLocalizeFn(args) {
+	return (value, options$1) => {
+		const context = options$1?.context ? String(options$1.context) : "standalone";
+		let valuesArray;
+		if (context === "formatting" && args.formattingValues) {
+			const defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
+			const width = options$1?.width ? String(options$1.width) : defaultWidth;
+			valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
+		} else {
+			const defaultWidth = args.defaultWidth;
+			const width = options$1?.width ? String(options$1.width) : args.defaultWidth;
+			valuesArray = args.values[width] || args.values[defaultWidth];
+		}
+		const index$1 = args.argumentCallback ? args.argumentCallback(value) : value;
+		return valuesArray[index$1];
+	};
+}
+var eraValues = {
+	narrow: ["B", "A"],
+	abbreviated: ["BC", "AD"],
+	wide: ["Before Christ", "Anno Domini"]
+};
+var quarterValues = {
+	narrow: [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	abbreviated: [
+		"Q1",
+		"Q2",
+		"Q3",
+		"Q4"
+	],
+	wide: [
+		"1st quarter",
+		"2nd quarter",
+		"3rd quarter",
+		"4th quarter"
+	]
+};
+var monthValues = {
+	narrow: [
+		"J",
+		"F",
+		"M",
+		"A",
+		"M",
+		"J",
+		"J",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	abbreviated: [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec"
+	],
+	wide: [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December"
+	]
+};
+var dayValues = {
+	narrow: [
+		"S",
+		"M",
+		"T",
+		"W",
+		"T",
+		"F",
+		"S"
+	],
+	short: [
+		"Su",
+		"Mo",
+		"Tu",
+		"We",
+		"Th",
+		"Fr",
+		"Sa"
+	],
+	abbreviated: [
+		"Sun",
+		"Mon",
+		"Tue",
+		"Wed",
+		"Thu",
+		"Fri",
+		"Sat"
+	],
+	wide: [
+		"Sunday",
+		"Monday",
+		"Tuesday",
+		"Wednesday",
+		"Thursday",
+		"Friday",
+		"Saturday"
+	]
+};
+var dayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mi",
+		noon: "n",
+		morning: "morning",
+		afternoon: "afternoon",
+		evening: "evening",
+		night: "night"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "morning",
+		afternoon: "afternoon",
+		evening: "evening",
+		night: "night"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "morning",
+		afternoon: "afternoon",
+		evening: "evening",
+		night: "night"
+	}
+};
+var formattingDayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mi",
+		noon: "n",
+		morning: "in the morning",
+		afternoon: "in the afternoon",
+		evening: "in the evening",
+		night: "at night"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "in the morning",
+		afternoon: "in the afternoon",
+		evening: "in the evening",
+		night: "at night"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "midnight",
+		noon: "noon",
+		morning: "in the morning",
+		afternoon: "in the afternoon",
+		evening: "in the evening",
+		night: "at night"
+	}
+};
+var ordinalNumber = (dirtyNumber, _options) => {
+	const number$3 = Number(dirtyNumber);
+	const rem100 = number$3 % 100;
+	if (rem100 > 20 || rem100 < 10) switch (rem100 % 10) {
+		case 1: return number$3 + "st";
+		case 2: return number$3 + "nd";
+		case 3: return number$3 + "rd";
+	}
+	return number$3 + "th";
+};
+const localize = {
+	ordinalNumber,
+	era: buildLocalizeFn({
+		values: eraValues,
+		defaultWidth: "wide"
+	}),
+	quarter: buildLocalizeFn({
+		values: quarterValues,
+		defaultWidth: "wide",
+		argumentCallback: (quarter) => quarter - 1
+	}),
+	month: buildLocalizeFn({
+		values: monthValues,
+		defaultWidth: "wide"
+	}),
+	day: buildLocalizeFn({
+		values: dayValues,
+		defaultWidth: "wide"
+	}),
+	dayPeriod: buildLocalizeFn({
+		values: dayPeriodValues,
+		defaultWidth: "wide",
+		formattingValues: formattingDayPeriodValues,
+		defaultFormattingWidth: "wide"
+	})
+};
+function buildMatchFn(args) {
+	return (string, options$1 = {}) => {
+		const width = options$1.width;
+		const matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
+		const matchResult = string.match(matchPattern);
+		if (!matchResult) return null;
+		const matchedString = matchResult[0];
+		const parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+		const key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, (pattern) => pattern.test(matchedString)) : findKey(parsePatterns, (pattern) => pattern.test(matchedString));
+		let value;
+		value = args.valueCallback ? args.valueCallback(key) : key;
+		value = options$1.valueCallback ? options$1.valueCallback(value) : value;
+		const rest = string.slice(matchedString.length);
+		return {
+			value,
+			rest
+		};
+	};
+}
+function findKey(object, predicate) {
+	for (const key in object) if (Object.prototype.hasOwnProperty.call(object, key) && predicate(object[key])) return key;
+}
+function findIndex(array, predicate) {
+	for (let key = 0; key < array.length; key++) if (predicate(array[key])) return key;
+}
+function buildMatchPatternFn(args) {
+	return (string, options$1 = {}) => {
+		const matchResult = string.match(args.matchPattern);
+		if (!matchResult) return null;
+		const matchedString = matchResult[0];
+		const parseResult = string.match(args.parsePattern);
+		if (!parseResult) return null;
+		let value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+		value = options$1.valueCallback ? options$1.valueCallback(value) : value;
+		const rest = string.slice(matchedString.length);
+		return {
+			value,
+			rest
+		};
+	};
+}
+const enUS$1 = {
+	code: "en-US",
+	formatDistance,
+	formatLong,
+	formatRelative,
+	localize,
+	match: {
+		ordinalNumber: buildMatchPatternFn({
+			matchPattern: /^(\d+)(th|st|nd|rd)?/i,
+			parsePattern: /\d+/i,
+			valueCallback: (value) => parseInt(value, 10)
+		}),
+		era: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(b|a)/i,
+				abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
+				wide: /^(before christ|before common era|anno domini|common era)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [/^b/i, /^(a|c)/i] },
+			defaultParseWidth: "any"
+		}),
+		quarter: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[1234]/i,
+				abbreviated: /^q[1234]/i,
+				wide: /^[1234](th|st|nd|rd)? quarter/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [
+				/1/i,
+				/2/i,
+				/3/i,
+				/4/i
+			] },
+			defaultParseWidth: "any",
+			valueCallback: (index$1) => index$1 + 1
+		}),
+		month: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[jfmasond]/i,
+				abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
+				wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^j/i,
+					/^f/i,
+					/^m/i,
+					/^a/i,
+					/^m/i,
+					/^j/i,
+					/^j/i,
+					/^a/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				],
+				any: [
+					/^ja/i,
+					/^f/i,
+					/^mar/i,
+					/^ap/i,
+					/^may/i,
+					/^jun/i,
+					/^jul/i,
+					/^au/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		day: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[smtwf]/i,
+				short: /^(su|mo|tu|we|th|fr|sa)/i,
+				abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
+				wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^s/i,
+					/^m/i,
+					/^t/i,
+					/^w/i,
+					/^t/i,
+					/^f/i,
+					/^s/i
+				],
+				any: [
+					/^su/i,
+					/^m/i,
+					/^tu/i,
+					/^w/i,
+					/^th/i,
+					/^f/i,
+					/^sa/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		dayPeriod: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
+				any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
+			},
+			defaultMatchWidth: "any",
+			parsePatterns: { any: {
+				am: /^a/i,
+				pm: /^p/i,
+				midnight: /^mi/i,
+				noon: /^no/i,
+				morning: /morning/i,
+				afternoon: /afternoon/i,
+				evening: /evening/i,
+				night: /night/i
+			} },
+			defaultParseWidth: "any"
+		})
+	},
+	options: {
+		weekStartsOn: 0,
+		firstWeekContainsDate: 1
+	}
+};
+function getDayOfYear(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	return differenceInCalendarDays(_date, startOfYear(_date)) + 1;
+}
+function getISOWeek(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const diff = +startOfISOWeek(_date) - +startOfISOWeekYear(_date);
+	return Math.round(diff / millisecondsInWeek) + 1;
+}
+function getWeekYear(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const year = _date.getFullYear();
+	const defaultOptions$1 = getDefaultOptions();
+	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$1.firstWeekContainsDate ?? defaultOptions$1.locale?.options?.firstWeekContainsDate ?? 1;
+	const firstWeekOfNextYear = constructFrom(options$1?.in || date$1, 0);
+	firstWeekOfNextYear.setFullYear(year + 1, 0, firstWeekContainsDate);
+	firstWeekOfNextYear.setHours(0, 0, 0, 0);
+	const startOfNextYear = startOfWeek(firstWeekOfNextYear, options$1);
+	const firstWeekOfThisYear = constructFrom(options$1?.in || date$1, 0);
+	firstWeekOfThisYear.setFullYear(year, 0, firstWeekContainsDate);
+	firstWeekOfThisYear.setHours(0, 0, 0, 0);
+	const startOfThisYear = startOfWeek(firstWeekOfThisYear, options$1);
+	if (+_date >= +startOfNextYear) return year + 1;
+	else if (+_date >= +startOfThisYear) return year;
+	else return year - 1;
+}
+function startOfWeekYear(date$1, options$1) {
+	const defaultOptions$1 = getDefaultOptions();
+	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$1.firstWeekContainsDate ?? defaultOptions$1.locale?.options?.firstWeekContainsDate ?? 1;
+	const year = getWeekYear(date$1, options$1);
+	const firstWeek = constructFrom(options$1?.in || date$1, 0);
+	firstWeek.setFullYear(year, 0, firstWeekContainsDate);
+	firstWeek.setHours(0, 0, 0, 0);
+	return startOfWeek(firstWeek, options$1);
+}
+function getWeek(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const diff = +startOfWeek(_date, options$1) - +startOfWeekYear(_date, options$1);
+	return Math.round(diff / millisecondsInWeek) + 1;
+}
+function addLeadingZeros(number$3, targetLength) {
+	return (number$3 < 0 ? "-" : "") + Math.abs(number$3).toString().padStart(targetLength, "0");
+}
+const lightFormatters = {
+	y(date$1, token) {
+		const signedYear = date$1.getFullYear();
+		const year = signedYear > 0 ? signedYear : 1 - signedYear;
+		return addLeadingZeros(token === "yy" ? year % 100 : year, token.length);
+	},
+	M(date$1, token) {
+		const month = date$1.getMonth();
+		return token === "M" ? String(month + 1) : addLeadingZeros(month + 1, 2);
+	},
+	d(date$1, token) {
+		return addLeadingZeros(date$1.getDate(), token.length);
+	},
+	a(date$1, token) {
+		const dayPeriodEnumValue = date$1.getHours() / 12 >= 1 ? "pm" : "am";
+		switch (token) {
+			case "a":
+			case "aa": return dayPeriodEnumValue.toUpperCase();
+			case "aaa": return dayPeriodEnumValue;
+			case "aaaaa": return dayPeriodEnumValue[0];
+			case "aaaa":
+			default: return dayPeriodEnumValue === "am" ? "a.m." : "p.m.";
+		}
+	},
+	h(date$1, token) {
+		return addLeadingZeros(date$1.getHours() % 12 || 12, token.length);
+	},
+	H(date$1, token) {
+		return addLeadingZeros(date$1.getHours(), token.length);
+	},
+	m(date$1, token) {
+		return addLeadingZeros(date$1.getMinutes(), token.length);
+	},
+	s(date$1, token) {
+		return addLeadingZeros(date$1.getSeconds(), token.length);
+	},
+	S(date$1, token) {
+		const numberOfDigits = token.length;
+		const milliseconds$1 = date$1.getMilliseconds();
+		return addLeadingZeros(Math.trunc(milliseconds$1 * Math.pow(10, numberOfDigits - 3)), token.length);
+	}
+};
+var dayPeriodEnum = {
+	am: "am",
+	pm: "pm",
+	midnight: "midnight",
+	noon: "noon",
+	morning: "morning",
+	afternoon: "afternoon",
+	evening: "evening",
+	night: "night"
+};
+const formatters = {
+	G: function(date$1, token, localize$1) {
+		const era = date$1.getFullYear() > 0 ? 1 : 0;
+		switch (token) {
+			case "G":
+			case "GG":
+			case "GGG": return localize$1.era(era, { width: "abbreviated" });
+			case "GGGGG": return localize$1.era(era, { width: "narrow" });
+			case "GGGG":
+			default: return localize$1.era(era, { width: "wide" });
+		}
+	},
+	y: function(date$1, token, localize$1) {
+		if (token === "yo") {
+			const signedYear = date$1.getFullYear();
+			const year = signedYear > 0 ? signedYear : 1 - signedYear;
+			return localize$1.ordinalNumber(year, { unit: "year" });
+		}
+		return lightFormatters.y(date$1, token);
+	},
+	Y: function(date$1, token, localize$1, options$1) {
+		const signedWeekYear = getWeekYear(date$1, options$1);
+		const weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
+		if (token === "YY") return addLeadingZeros(weekYear % 100, 2);
+		if (token === "Yo") return localize$1.ordinalNumber(weekYear, { unit: "year" });
+		return addLeadingZeros(weekYear, token.length);
+	},
+	R: function(date$1, token) {
+		return addLeadingZeros(getISOWeekYear(date$1), token.length);
+	},
+	u: function(date$1, token) {
+		return addLeadingZeros(date$1.getFullYear(), token.length);
+	},
+	Q: function(date$1, token, localize$1) {
+		const quarter = Math.ceil((date$1.getMonth() + 1) / 3);
+		switch (token) {
+			case "Q": return String(quarter);
+			case "QQ": return addLeadingZeros(quarter, 2);
+			case "Qo": return localize$1.ordinalNumber(quarter, { unit: "quarter" });
+			case "QQQ": return localize$1.quarter(quarter, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "QQQQQ": return localize$1.quarter(quarter, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "QQQQ":
+			default: return localize$1.quarter(quarter, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	q: function(date$1, token, localize$1) {
+		const quarter = Math.ceil((date$1.getMonth() + 1) / 3);
+		switch (token) {
+			case "q": return String(quarter);
+			case "qq": return addLeadingZeros(quarter, 2);
+			case "qo": return localize$1.ordinalNumber(quarter, { unit: "quarter" });
+			case "qqq": return localize$1.quarter(quarter, {
+				width: "abbreviated",
+				context: "standalone"
+			});
+			case "qqqqq": return localize$1.quarter(quarter, {
+				width: "narrow",
+				context: "standalone"
+			});
+			case "qqqq":
+			default: return localize$1.quarter(quarter, {
+				width: "wide",
+				context: "standalone"
+			});
+		}
+	},
+	M: function(date$1, token, localize$1) {
+		const month = date$1.getMonth();
+		switch (token) {
+			case "M":
+			case "MM": return lightFormatters.M(date$1, token);
+			case "Mo": return localize$1.ordinalNumber(month + 1, { unit: "month" });
+			case "MMM": return localize$1.month(month, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "MMMMM": return localize$1.month(month, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "MMMM":
+			default: return localize$1.month(month, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	L: function(date$1, token, localize$1) {
+		const month = date$1.getMonth();
+		switch (token) {
+			case "L": return String(month + 1);
+			case "LL": return addLeadingZeros(month + 1, 2);
+			case "Lo": return localize$1.ordinalNumber(month + 1, { unit: "month" });
+			case "LLL": return localize$1.month(month, {
+				width: "abbreviated",
+				context: "standalone"
+			});
+			case "LLLLL": return localize$1.month(month, {
+				width: "narrow",
+				context: "standalone"
+			});
+			case "LLLL":
+			default: return localize$1.month(month, {
+				width: "wide",
+				context: "standalone"
+			});
+		}
+	},
+	w: function(date$1, token, localize$1, options$1) {
+		const week = getWeek(date$1, options$1);
+		if (token === "wo") return localize$1.ordinalNumber(week, { unit: "week" });
+		return addLeadingZeros(week, token.length);
+	},
+	I: function(date$1, token, localize$1) {
+		const isoWeek = getISOWeek(date$1);
+		if (token === "Io") return localize$1.ordinalNumber(isoWeek, { unit: "week" });
+		return addLeadingZeros(isoWeek, token.length);
+	},
+	d: function(date$1, token, localize$1) {
+		if (token === "do") return localize$1.ordinalNumber(date$1.getDate(), { unit: "date" });
+		return lightFormatters.d(date$1, token);
+	},
+	D: function(date$1, token, localize$1) {
+		const dayOfYear = getDayOfYear(date$1);
+		if (token === "Do") return localize$1.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
+		return addLeadingZeros(dayOfYear, token.length);
+	},
+	E: function(date$1, token, localize$1) {
+		const dayOfWeek = date$1.getDay();
+		switch (token) {
+			case "E":
+			case "EE":
+			case "EEE": return localize$1.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "EEEEE": return localize$1.day(dayOfWeek, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "EEEEEE": return localize$1.day(dayOfWeek, {
+				width: "short",
+				context: "formatting"
+			});
+			case "EEEE":
+			default: return localize$1.day(dayOfWeek, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	e: function(date$1, token, localize$1, options$1) {
+		const dayOfWeek = date$1.getDay();
+		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
+		switch (token) {
+			case "e": return String(localDayOfWeek);
+			case "ee": return addLeadingZeros(localDayOfWeek, 2);
+			case "eo": return localize$1.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "eee": return localize$1.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "eeeee": return localize$1.day(dayOfWeek, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "eeeeee": return localize$1.day(dayOfWeek, {
+				width: "short",
+				context: "formatting"
+			});
+			case "eeee":
+			default: return localize$1.day(dayOfWeek, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	c: function(date$1, token, localize$1, options$1) {
+		const dayOfWeek = date$1.getDay();
+		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
+		switch (token) {
+			case "c": return String(localDayOfWeek);
+			case "cc": return addLeadingZeros(localDayOfWeek, token.length);
+			case "co": return localize$1.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "ccc": return localize$1.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "standalone"
+			});
+			case "ccccc": return localize$1.day(dayOfWeek, {
+				width: "narrow",
+				context: "standalone"
+			});
+			case "cccccc": return localize$1.day(dayOfWeek, {
+				width: "short",
+				context: "standalone"
+			});
+			case "cccc":
+			default: return localize$1.day(dayOfWeek, {
+				width: "wide",
+				context: "standalone"
+			});
+		}
+	},
+	i: function(date$1, token, localize$1) {
+		const dayOfWeek = date$1.getDay();
+		const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+		switch (token) {
+			case "i": return String(isoDayOfWeek);
+			case "ii": return addLeadingZeros(isoDayOfWeek, token.length);
+			case "io": return localize$1.ordinalNumber(isoDayOfWeek, { unit: "day" });
+			case "iii": return localize$1.day(dayOfWeek, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "iiiii": return localize$1.day(dayOfWeek, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "iiiiii": return localize$1.day(dayOfWeek, {
+				width: "short",
+				context: "formatting"
+			});
+			case "iiii":
+			default: return localize$1.day(dayOfWeek, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	a: function(date$1, token, localize$1) {
+		const dayPeriodEnumValue = date$1.getHours() / 12 >= 1 ? "pm" : "am";
+		switch (token) {
+			case "a":
+			case "aa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "aaa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			}).toLowerCase();
+			case "aaaaa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "aaaa":
+			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	b: function(date$1, token, localize$1) {
+		const hours = date$1.getHours();
+		let dayPeriodEnumValue;
+		if (hours === 12) dayPeriodEnumValue = dayPeriodEnum.noon;
+		else if (hours === 0) dayPeriodEnumValue = dayPeriodEnum.midnight;
+		else dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
+		switch (token) {
+			case "b":
+			case "bb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "bbb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			}).toLowerCase();
+			case "bbbbb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "bbbb":
+			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	B: function(date$1, token, localize$1) {
+		const hours = date$1.getHours();
+		let dayPeriodEnumValue;
+		if (hours >= 17) dayPeriodEnumValue = dayPeriodEnum.evening;
+		else if (hours >= 12) dayPeriodEnumValue = dayPeriodEnum.afternoon;
+		else if (hours >= 4) dayPeriodEnumValue = dayPeriodEnum.morning;
+		else dayPeriodEnumValue = dayPeriodEnum.night;
+		switch (token) {
+			case "B":
+			case "BB":
+			case "BBB": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "abbreviated",
+				context: "formatting"
+			});
+			case "BBBBB": return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "narrow",
+				context: "formatting"
+			});
+			case "BBBB":
+			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+				width: "wide",
+				context: "formatting"
+			});
+		}
+	},
+	h: function(date$1, token, localize$1) {
+		if (token === "ho") {
+			let hours = date$1.getHours() % 12;
+			if (hours === 0) hours = 12;
+			return localize$1.ordinalNumber(hours, { unit: "hour" });
+		}
+		return lightFormatters.h(date$1, token);
+	},
+	H: function(date$1, token, localize$1) {
+		if (token === "Ho") return localize$1.ordinalNumber(date$1.getHours(), { unit: "hour" });
+		return lightFormatters.H(date$1, token);
+	},
+	K: function(date$1, token, localize$1) {
+		const hours = date$1.getHours() % 12;
+		if (token === "Ko") return localize$1.ordinalNumber(hours, { unit: "hour" });
+		return addLeadingZeros(hours, token.length);
+	},
+	k: function(date$1, token, localize$1) {
+		let hours = date$1.getHours();
+		if (hours === 0) hours = 24;
+		if (token === "ko") return localize$1.ordinalNumber(hours, { unit: "hour" });
+		return addLeadingZeros(hours, token.length);
+	},
+	m: function(date$1, token, localize$1) {
+		if (token === "mo") return localize$1.ordinalNumber(date$1.getMinutes(), { unit: "minute" });
+		return lightFormatters.m(date$1, token);
+	},
+	s: function(date$1, token, localize$1) {
+		if (token === "so") return localize$1.ordinalNumber(date$1.getSeconds(), { unit: "second" });
+		return lightFormatters.s(date$1, token);
+	},
+	S: function(date$1, token) {
+		return lightFormatters.S(date$1, token);
+	},
+	X: function(date$1, token, _localize) {
+		const timezoneOffset = date$1.getTimezoneOffset();
+		if (timezoneOffset === 0) return "Z";
+		switch (token) {
+			case "X": return formatTimezoneWithOptionalMinutes(timezoneOffset);
+			case "XXXX":
+			case "XX": return formatTimezone(timezoneOffset);
+			case "XXXXX":
+			case "XXX":
+			default: return formatTimezone(timezoneOffset, ":");
+		}
+	},
+	x: function(date$1, token, _localize) {
+		const timezoneOffset = date$1.getTimezoneOffset();
+		switch (token) {
+			case "x": return formatTimezoneWithOptionalMinutes(timezoneOffset);
+			case "xxxx":
+			case "xx": return formatTimezone(timezoneOffset);
+			case "xxxxx":
+			case "xxx":
+			default: return formatTimezone(timezoneOffset, ":");
+		}
+	},
+	O: function(date$1, token, _localize) {
+		const timezoneOffset = date$1.getTimezoneOffset();
+		switch (token) {
+			case "O":
+			case "OO":
+			case "OOO": return "GMT" + formatTimezoneShort(timezoneOffset, ":");
+			case "OOOO":
+			default: return "GMT" + formatTimezone(timezoneOffset, ":");
+		}
+	},
+	z: function(date$1, token, _localize) {
+		const timezoneOffset = date$1.getTimezoneOffset();
+		switch (token) {
+			case "z":
+			case "zz":
+			case "zzz": return "GMT" + formatTimezoneShort(timezoneOffset, ":");
+			case "zzzz":
+			default: return "GMT" + formatTimezone(timezoneOffset, ":");
+		}
+	},
+	t: function(date$1, token, _localize) {
+		return addLeadingZeros(Math.trunc(+date$1 / 1e3), token.length);
+	},
+	T: function(date$1, token, _localize) {
+		return addLeadingZeros(+date$1, token.length);
+	}
+};
+function formatTimezoneShort(offset$3, delimiter = "") {
+	const sign$1 = offset$3 > 0 ? "-" : "+";
+	const absOffset = Math.abs(offset$3);
+	const hours = Math.trunc(absOffset / 60);
+	const minutes = absOffset % 60;
+	if (minutes === 0) return sign$1 + String(hours);
+	return sign$1 + String(hours) + delimiter + addLeadingZeros(minutes, 2);
+}
+function formatTimezoneWithOptionalMinutes(offset$3, delimiter) {
+	if (offset$3 % 60 === 0) return (offset$3 > 0 ? "-" : "+") + addLeadingZeros(Math.abs(offset$3) / 60, 2);
+	return formatTimezone(offset$3, delimiter);
+}
+function formatTimezone(offset$3, delimiter = "") {
+	const sign$1 = offset$3 > 0 ? "-" : "+";
+	const absOffset = Math.abs(offset$3);
+	const hours = addLeadingZeros(Math.trunc(absOffset / 60), 2);
+	const minutes = addLeadingZeros(absOffset % 60, 2);
+	return sign$1 + hours + delimiter + minutes;
+}
+var dateLongFormatter = (pattern, formatLong$1) => {
+	switch (pattern) {
+		case "P": return formatLong$1.date({ width: "short" });
+		case "PP": return formatLong$1.date({ width: "medium" });
+		case "PPP": return formatLong$1.date({ width: "long" });
+		case "PPPP":
+		default: return formatLong$1.date({ width: "full" });
+	}
+};
+var timeLongFormatter = (pattern, formatLong$1) => {
+	switch (pattern) {
+		case "p": return formatLong$1.time({ width: "short" });
+		case "pp": return formatLong$1.time({ width: "medium" });
+		case "ppp": return formatLong$1.time({ width: "long" });
+		case "pppp":
+		default: return formatLong$1.time({ width: "full" });
+	}
+};
+var dateTimeLongFormatter = (pattern, formatLong$1) => {
+	const matchResult = pattern.match(/(P+)(p+)?/) || [];
+	const datePattern = matchResult[1];
+	const timePattern = matchResult[2];
+	if (!timePattern) return dateLongFormatter(pattern, formatLong$1);
+	let dateTimeFormat;
+	switch (datePattern) {
+		case "P":
+			dateTimeFormat = formatLong$1.dateTime({ width: "short" });
+			break;
+		case "PP":
+			dateTimeFormat = formatLong$1.dateTime({ width: "medium" });
+			break;
+		case "PPP":
+			dateTimeFormat = formatLong$1.dateTime({ width: "long" });
+			break;
+		case "PPPP":
+		default:
+			dateTimeFormat = formatLong$1.dateTime({ width: "full" });
+			break;
+	}
+	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$1)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$1));
+};
+const longFormatters = {
+	p: timeLongFormatter,
+	P: dateTimeLongFormatter
+};
+var dayOfYearTokenRE = /^D+$/;
+var weekYearTokenRE = /^Y+$/;
+var throwTokens = [
+	"D",
+	"DD",
+	"YY",
+	"YYYY"
+];
+function isProtectedDayOfYearToken(token) {
+	return dayOfYearTokenRE.test(token);
+}
+function isProtectedWeekYearToken(token) {
+	return weekYearTokenRE.test(token);
+}
+function warnOrThrowProtectedError(token, format$2, input) {
+	const _message = message(token, format$2, input);
+	console.warn(_message);
+	if (throwTokens.includes(token)) throw new RangeError(_message);
+}
+function message(token, format$2, input) {
+	const subject = token[0] === "Y" ? "years" : "days of the month";
+	return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format$2}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
+}
+var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
+var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
+var escapedStringRegExp = /^'([^]*?)'?$/;
+var doubleQuoteRegExp = /''/g;
+var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
+function format(date$1, formatStr, options$1) {
+	const defaultOptions$1 = getDefaultOptions();
+	const locale$2 = options$1?.locale ?? defaultOptions$1.locale ?? enUS$1;
+	const firstWeekContainsDate = options$1?.firstWeekContainsDate ?? options$1?.locale?.options?.firstWeekContainsDate ?? defaultOptions$1.firstWeekContainsDate ?? defaultOptions$1.locale?.options?.firstWeekContainsDate ?? 1;
+	const weekStartsOn = options$1?.weekStartsOn ?? options$1?.locale?.options?.weekStartsOn ?? defaultOptions$1.weekStartsOn ?? defaultOptions$1.locale?.options?.weekStartsOn ?? 0;
+	const originalDate = toDate(date$1, options$1?.in);
+	if (!isValid(originalDate)) throw new RangeError("Invalid time value");
+	let parts = formatStr.match(longFormattingTokensRegExp).map((substring) => {
+		const firstCharacter = substring[0];
+		if (firstCharacter === "p" || firstCharacter === "P") {
+			const longFormatter = longFormatters[firstCharacter];
+			return longFormatter(substring, locale$2.formatLong);
+		}
+		return substring;
+	}).join("").match(formattingTokensRegExp).map((substring) => {
+		if (substring === "''") return {
+			isToken: false,
+			value: "'"
+		};
+		const firstCharacter = substring[0];
+		if (firstCharacter === "'") return {
+			isToken: false,
+			value: cleanEscapedString(substring)
+		};
+		if (formatters[firstCharacter]) return {
+			isToken: true,
+			value: substring
+		};
+		if (firstCharacter.match(unescapedLatinCharacterRegExp)) throw new RangeError("Format string contains an unescaped latin alphabet character `" + firstCharacter + "`");
+		return {
+			isToken: false,
+			value: substring
+		};
+	});
+	if (locale$2.localize.preprocessor) parts = locale$2.localize.preprocessor(originalDate, parts);
+	const formatterOptions = {
+		firstWeekContainsDate,
+		weekStartsOn,
+		locale: locale$2
+	};
+	return parts.map((part) => {
+		if (!part.isToken) return part.value;
+		const token = part.value;
+		if (!options$1?.useAdditionalWeekYearTokens && isProtectedWeekYearToken(token) || !options$1?.useAdditionalDayOfYearTokens && isProtectedDayOfYearToken(token)) warnOrThrowProtectedError(token, formatStr, String(date$1));
+		const formatter = formatters[token[0]];
+		return formatter(originalDate, token, locale$2.localize, formatterOptions);
+	}).join("");
+}
+function cleanEscapedString(input) {
+	const matched = input.match(escapedStringRegExp);
+	if (!matched) return input;
+	return matched[1].replace(doubleQuoteRegExp, "'");
+}
+function getDaysInMonth(date$1, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const year = _date.getFullYear();
+	const monthIndex = _date.getMonth();
+	const lastDayOfMonth = constructFrom(_date, 0);
+	lastDayOfMonth.setFullYear(year, monthIndex + 1, 0);
+	lastDayOfMonth.setHours(0, 0, 0, 0);
+	return lastDayOfMonth.getDate();
+}
+function getMonth(date$1, options$1) {
+	return toDate(date$1, options$1?.in).getMonth();
+}
+function getYear(date$1, options$1) {
+	return toDate(date$1, options$1?.in).getFullYear();
+}
+function isAfter(date$1, dateToCompare) {
+	return +toDate(date$1) > +toDate(dateToCompare);
+}
+function isBefore(date$1, dateToCompare) {
+	return +toDate(date$1) < +toDate(dateToCompare);
+}
+function isSameMonth(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	return laterDate_.getFullYear() === earlierDate_.getFullYear() && laterDate_.getMonth() === earlierDate_.getMonth();
+}
+function isSameYear(laterDate, earlierDate, options$1) {
+	const [laterDate_, earlierDate_] = normalizeDates(options$1?.in, laterDate, earlierDate);
+	return laterDate_.getFullYear() === earlierDate_.getFullYear();
+}
+function setMonth(date$1, month, options$1) {
+	const _date = toDate(date$1, options$1?.in);
+	const year = _date.getFullYear();
+	const day = _date.getDate();
+	const midMonth = constructFrom(options$1?.in || date$1, 0);
+	midMonth.setFullYear(year, month, 15);
+	midMonth.setHours(0, 0, 0, 0);
+	const daysInMonth = getDaysInMonth(midMonth);
+	_date.setMonth(month, Math.min(day, daysInMonth));
+	return _date;
+}
+function setYear(date$1, year, options$1) {
+	const date_ = toDate(date$1, options$1?.in);
+	if (isNaN(+date_)) return constructFrom(options$1?.in || date$1, NaN);
+	date_.setFullYear(year);
+	return date_;
+}
+var FIVE_WEEKS = 5;
+var FOUR_WEEKS = 4;
+function getBroadcastWeeksInMonth(month, dateLib) {
+	const firstDayOfMonth = dateLib.startOfMonth(month);
+	const firstDayOfWeek = firstDayOfMonth.getDay() > 0 ? firstDayOfMonth.getDay() : 7;
+	const broadcastStartDate = dateLib.addDays(month, -firstDayOfWeek + 1);
+	const lastDateOfLastWeek = dateLib.addDays(broadcastStartDate, FIVE_WEEKS * 7 - 1);
+	return dateLib.getMonth(month) === dateLib.getMonth(lastDateOfLastWeek) ? FIVE_WEEKS : FOUR_WEEKS;
+}
+function startOfBroadcastWeek(date$1, dateLib) {
+	const firstOfMonth = dateLib.startOfMonth(date$1);
+	const dayOfWeek = firstOfMonth.getDay();
+	if (dayOfWeek === 1) return firstOfMonth;
+	else if (dayOfWeek === 0) return dateLib.addDays(firstOfMonth, -6);
+	else return dateLib.addDays(firstOfMonth, -1 * (dayOfWeek - 1));
+}
+function endOfBroadcastWeek(date$1, dateLib) {
+	const startDate = startOfBroadcastWeek(date$1, dateLib);
+	const numberOfWeeks = getBroadcastWeeksInMonth(date$1, dateLib);
+	return dateLib.addDays(startDate, numberOfWeeks * 7 - 1);
+}
+const enUS = {
+	...enUS$1,
+	labels: {
+		labelDayButton: (date$1, modifiers, options$1, dateLib) => {
+			let formatDate;
+			if (dateLib && typeof dateLib.format === "function") formatDate = dateLib.format.bind(dateLib);
+			else formatDate = (d, pattern) => format(d, pattern, {
+				locale: enUS$1,
+				...options$1
+			});
+			let label = formatDate(date$1, "PPPP");
+			if (modifiers.today) label = `Today, ${label}`;
+			if (modifiers.selected) label = `${label}, selected`;
+			return label;
+		},
+		labelMonthDropdown: "Choose the Month",
+		labelNext: "Go to the Next Month",
+		labelPrevious: "Go to the Previous Month",
+		labelWeekNumber: (weekNumber) => `Week ${weekNumber}`,
+		labelYearDropdown: "Choose the Year",
+		labelGrid: (date$1, options$1, dateLib) => {
+			let formatDate;
+			if (dateLib && typeof dateLib.format === "function") formatDate = dateLib.format.bind(dateLib);
+			else formatDate = (d, pattern) => format(d, pattern, {
+				locale: enUS$1,
+				...options$1
+			});
+			return formatDate(date$1, "LLLL yyyy");
+		},
+		labelGridcell: (date$1, modifiers, options$1, dateLib) => {
+			let formatDate;
+			if (dateLib && typeof dateLib.format === "function") formatDate = dateLib.format.bind(dateLib);
+			else formatDate = (d, pattern) => format(d, pattern, {
+				locale: enUS$1,
+				...options$1
+			});
+			let label = formatDate(date$1, "PPPP");
+			if (modifiers?.today) label = `Today, ${label}`;
+			return label;
+		},
+		labelNav: "Navigation bar",
+		labelWeekNumberHeader: "Week Number",
+		labelWeekday: (date$1, options$1, dateLib) => {
+			let formatDate;
+			if (dateLib && typeof dateLib.format === "function") formatDate = dateLib.format.bind(dateLib);
+			else formatDate = (d, pattern) => format(d, pattern, {
+				locale: enUS$1,
+				...options$1
+			});
+			return formatDate(date$1, "cccc");
+		}
+	}
+};
+var DateLib = class DateLib {
+	constructor(options$1, overrides) {
+		this.Date = Date;
+		this.today = () => {
+			if (this.overrides?.today) return this.overrides.today();
+			if (this.options.timeZone) return TZDate.tz(this.options.timeZone);
+			return new this.Date();
+		};
+		this.newDate = (year, monthIndex, date$1) => {
+			if (this.overrides?.newDate) return this.overrides.newDate(year, monthIndex, date$1);
+			if (this.options.timeZone) return new TZDate(year, monthIndex, date$1, this.options.timeZone);
+			return new Date(year, monthIndex, date$1);
+		};
+		this.addDays = (date$1, amount) => {
+			return this.overrides?.addDays ? this.overrides.addDays(date$1, amount) : addDays(date$1, amount);
+		};
+		this.addMonths = (date$1, amount) => {
+			return this.overrides?.addMonths ? this.overrides.addMonths(date$1, amount) : addMonths(date$1, amount);
+		};
+		this.addWeeks = (date$1, amount) => {
+			return this.overrides?.addWeeks ? this.overrides.addWeeks(date$1, amount) : addWeeks(date$1, amount);
+		};
+		this.addYears = (date$1, amount) => {
+			return this.overrides?.addYears ? this.overrides.addYears(date$1, amount) : addYears(date$1, amount);
+		};
+		this.differenceInCalendarDays = (dateLeft, dateRight) => {
+			return this.overrides?.differenceInCalendarDays ? this.overrides.differenceInCalendarDays(dateLeft, dateRight) : differenceInCalendarDays(dateLeft, dateRight);
+		};
+		this.differenceInCalendarMonths = (dateLeft, dateRight) => {
+			return this.overrides?.differenceInCalendarMonths ? this.overrides.differenceInCalendarMonths(dateLeft, dateRight) : differenceInCalendarMonths(dateLeft, dateRight);
+		};
+		this.eachMonthOfInterval = (interval) => {
+			return this.overrides?.eachMonthOfInterval ? this.overrides.eachMonthOfInterval(interval) : eachMonthOfInterval(interval);
+		};
+		this.eachYearOfInterval = (interval) => {
+			const years = this.overrides?.eachYearOfInterval ? this.overrides.eachYearOfInterval(interval) : eachYearOfInterval(interval);
+			const uniqueYears = new Set(years.map((d) => this.getYear(d)));
+			if (uniqueYears.size === years.length) return years;
+			const yearsArray = [];
+			uniqueYears.forEach((y$1) => {
+				yearsArray.push(new Date(y$1, 0, 1));
+			});
+			return yearsArray;
+		};
+		this.endOfBroadcastWeek = (date$1) => {
+			return this.overrides?.endOfBroadcastWeek ? this.overrides.endOfBroadcastWeek(date$1) : endOfBroadcastWeek(date$1, this);
+		};
+		this.endOfISOWeek = (date$1) => {
+			return this.overrides?.endOfISOWeek ? this.overrides.endOfISOWeek(date$1) : endOfISOWeek(date$1);
+		};
+		this.endOfMonth = (date$1) => {
+			return this.overrides?.endOfMonth ? this.overrides.endOfMonth(date$1) : endOfMonth(date$1);
+		};
+		this.endOfWeek = (date$1, options$2) => {
+			return this.overrides?.endOfWeek ? this.overrides.endOfWeek(date$1, options$2) : endOfWeek(date$1, this.options);
+		};
+		this.endOfYear = (date$1) => {
+			return this.overrides?.endOfYear ? this.overrides.endOfYear(date$1) : endOfYear(date$1);
+		};
+		this.format = (date$1, formatStr, _options) => {
+			const formatted = this.overrides?.format ? this.overrides.format(date$1, formatStr, this.options) : format(date$1, formatStr, this.options);
+			if (this.options.numerals && this.options.numerals !== "latn") return this.replaceDigits(formatted);
+			return formatted;
+		};
+		this.getISOWeek = (date$1) => {
+			return this.overrides?.getISOWeek ? this.overrides.getISOWeek(date$1) : getISOWeek(date$1);
+		};
+		this.getMonth = (date$1, _options) => {
+			return this.overrides?.getMonth ? this.overrides.getMonth(date$1, this.options) : getMonth(date$1, this.options);
+		};
+		this.getYear = (date$1, _options) => {
+			return this.overrides?.getYear ? this.overrides.getYear(date$1, this.options) : getYear(date$1, this.options);
+		};
+		this.getWeek = (date$1, _options) => {
+			return this.overrides?.getWeek ? this.overrides.getWeek(date$1, this.options) : getWeek(date$1, this.options);
+		};
+		this.isAfter = (date$1, dateToCompare) => {
+			return this.overrides?.isAfter ? this.overrides.isAfter(date$1, dateToCompare) : isAfter(date$1, dateToCompare);
+		};
+		this.isBefore = (date$1, dateToCompare) => {
+			return this.overrides?.isBefore ? this.overrides.isBefore(date$1, dateToCompare) : isBefore(date$1, dateToCompare);
+		};
+		this.isDate = (value) => {
+			return this.overrides?.isDate ? this.overrides.isDate(value) : isDate(value);
+		};
+		this.isSameDay = (dateLeft, dateRight) => {
+			return this.overrides?.isSameDay ? this.overrides.isSameDay(dateLeft, dateRight) : isSameDay(dateLeft, dateRight);
+		};
+		this.isSameMonth = (dateLeft, dateRight) => {
+			return this.overrides?.isSameMonth ? this.overrides.isSameMonth(dateLeft, dateRight) : isSameMonth(dateLeft, dateRight);
+		};
+		this.isSameYear = (dateLeft, dateRight) => {
+			return this.overrides?.isSameYear ? this.overrides.isSameYear(dateLeft, dateRight) : isSameYear(dateLeft, dateRight);
+		};
+		this.max = (dates) => {
+			return this.overrides?.max ? this.overrides.max(dates) : max(dates);
+		};
+		this.min = (dates) => {
+			return this.overrides?.min ? this.overrides.min(dates) : min(dates);
+		};
+		this.setMonth = (date$1, month) => {
+			return this.overrides?.setMonth ? this.overrides.setMonth(date$1, month) : setMonth(date$1, month);
+		};
+		this.setYear = (date$1, year) => {
+			return this.overrides?.setYear ? this.overrides.setYear(date$1, year) : setYear(date$1, year);
+		};
+		this.startOfBroadcastWeek = (date$1, _dateLib) => {
+			return this.overrides?.startOfBroadcastWeek ? this.overrides.startOfBroadcastWeek(date$1, this) : startOfBroadcastWeek(date$1, this);
+		};
+		this.startOfDay = (date$1) => {
+			return this.overrides?.startOfDay ? this.overrides.startOfDay(date$1) : startOfDay(date$1);
+		};
+		this.startOfISOWeek = (date$1) => {
+			return this.overrides?.startOfISOWeek ? this.overrides.startOfISOWeek(date$1) : startOfISOWeek(date$1);
+		};
+		this.startOfMonth = (date$1) => {
+			return this.overrides?.startOfMonth ? this.overrides.startOfMonth(date$1) : startOfMonth(date$1);
+		};
+		this.startOfWeek = (date$1, _options) => {
+			return this.overrides?.startOfWeek ? this.overrides.startOfWeek(date$1, this.options) : startOfWeek(date$1, this.options);
+		};
+		this.startOfYear = (date$1) => {
+			return this.overrides?.startOfYear ? this.overrides.startOfYear(date$1) : startOfYear(date$1);
+		};
+		this.options = {
+			locale: enUS,
+			...options$1
+		};
+		this.overrides = overrides;
+	}
+	getDigitMap() {
+		const { numerals = "latn" } = this.options;
+		const formatter = new Intl.NumberFormat("en-US", { numberingSystem: numerals });
+		const digitMap = {};
+		for (let i = 0; i < 10; i++) digitMap[i.toString()] = formatter.format(i);
+		return digitMap;
+	}
+	replaceDigits(input) {
+		const digitMap = this.getDigitMap();
+		return input.replace(/\d/g, (digit) => digitMap[digit] || digit);
+	}
+	formatNumber(value) {
+		return this.replaceDigits(value.toString());
+	}
+	getMonthYearOrder() {
+		const code = this.options.locale?.code;
+		if (!code) return "month-first";
+		return DateLib.yearFirstLocales.has(code) ? "year-first" : "month-first";
+	}
+	formatMonthYear(date$1) {
+		const { locale: locale$2, timeZone, numerals } = this.options;
+		const localeCode = locale$2?.code;
+		if (localeCode && DateLib.yearFirstLocales.has(localeCode)) try {
+			return new Intl.DateTimeFormat(localeCode, {
+				month: "long",
+				year: "numeric",
+				timeZone,
+				numberingSystem: numerals
+			}).format(date$1);
+		} catch {}
+		const pattern = this.getMonthYearOrder() === "year-first" ? "y LLLL" : "LLLL y";
+		return this.format(date$1, pattern);
+	}
+};
+DateLib.yearFirstLocales = new Set([
+	"eu",
+	"hu",
+	"ja",
+	"ja-Hira",
+	"ja-JP",
+	"ko",
+	"ko-KR",
+	"lt",
+	"lt-LT",
+	"lv",
+	"lv-LV",
+	"mn",
+	"mn-MN",
+	"zh",
+	"zh-CN",
+	"zh-HK",
+	"zh-TW"
+]);
+const defaultDateLib = new DateLib();
+var CalendarDay = class {
+	constructor(date$1, displayMonth, dateLib = defaultDateLib) {
+		this.date = date$1;
+		this.displayMonth = displayMonth;
+		this.outside = Boolean(displayMonth && !dateLib.isSameMonth(date$1, displayMonth));
+		this.dateLib = dateLib;
+		this.isoDate = dateLib.format(date$1, "yyyy-MM-dd");
+		this.displayMonthId = dateLib.format(displayMonth, "yyyy-MM");
+		this.dateMonthId = dateLib.format(date$1, "yyyy-MM");
+	}
+	isEqualTo(day) {
+		return this.dateLib.isSameDay(day.date, this.date) && this.dateLib.isSameMonth(day.displayMonth, this.displayMonth);
+	}
+};
+var CalendarMonth = class {
+	constructor(month, weeks) {
+		this.date = month;
+		this.weeks = weeks;
+	}
+};
+var CalendarWeek = class {
+	constructor(weekNumber, days) {
+		this.days = days;
+		this.weekNumber = weekNumber;
+	}
+};
+function Button$1(props) {
+	return import_react.createElement("button", { ...props });
+}
+function CaptionLabel(props) {
+	return import_react.createElement("span", { ...props });
+}
+function Chevron(props) {
+	const { size: size$3 = 24, orientation = "left", className } = props;
+	return import_react.createElement("svg", {
+		className,
+		width: size$3,
+		height: size$3,
+		viewBox: "0 0 24 24"
+	}, orientation === "up" && import_react.createElement("polygon", { points: "6.77 17 12.5 11.43 18.24 17 20 15.28 12.5 8 5 15.28" }), orientation === "down" && import_react.createElement("polygon", { points: "6.77 8 12.5 13.57 18.24 8 20 9.72 12.5 17 5 9.72" }), orientation === "left" && import_react.createElement("polygon", { points: "16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20" }), orientation === "right" && import_react.createElement("polygon", { points: "8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20" }));
+}
+function Day(props) {
+	const { day, modifiers, ...tdProps } = props;
+	return import_react.createElement("td", { ...tdProps });
+}
+function DayButton(props) {
+	const { day, modifiers, ...buttonProps } = props;
+	const ref = import_react.useRef(null);
+	import_react.useEffect(() => {
+		if (modifiers.focused) ref.current?.focus();
+	}, [modifiers.focused]);
+	return import_react.createElement("button", {
+		ref,
+		...buttonProps
+	});
+}
+var UI;
+(function(UI$1) {
+	UI$1["Root"] = "root";
+	UI$1["Chevron"] = "chevron";
+	UI$1["Day"] = "day";
+	UI$1["DayButton"] = "day_button";
+	UI$1["CaptionLabel"] = "caption_label";
+	UI$1["Dropdowns"] = "dropdowns";
+	UI$1["Dropdown"] = "dropdown";
+	UI$1["DropdownRoot"] = "dropdown_root";
+	UI$1["Footer"] = "footer";
+	UI$1["MonthGrid"] = "month_grid";
+	UI$1["MonthCaption"] = "month_caption";
+	UI$1["MonthsDropdown"] = "months_dropdown";
+	UI$1["Month"] = "month";
+	UI$1["Months"] = "months";
+	UI$1["Nav"] = "nav";
+	UI$1["NextMonthButton"] = "button_next";
+	UI$1["PreviousMonthButton"] = "button_previous";
+	UI$1["Week"] = "week";
+	UI$1["Weeks"] = "weeks";
+	UI$1["Weekday"] = "weekday";
+	UI$1["Weekdays"] = "weekdays";
+	UI$1["WeekNumber"] = "week_number";
+	UI$1["WeekNumberHeader"] = "week_number_header";
+	UI$1["YearsDropdown"] = "years_dropdown";
+})(UI || (UI = {}));
+var DayFlag;
+(function(DayFlag$1) {
+	DayFlag$1["disabled"] = "disabled";
+	DayFlag$1["hidden"] = "hidden";
+	DayFlag$1["outside"] = "outside";
+	DayFlag$1["focused"] = "focused";
+	DayFlag$1["today"] = "today";
+})(DayFlag || (DayFlag = {}));
+var SelectionState;
+(function(SelectionState$1) {
+	SelectionState$1["range_end"] = "range_end";
+	SelectionState$1["range_middle"] = "range_middle";
+	SelectionState$1["range_start"] = "range_start";
+	SelectionState$1["selected"] = "selected";
+})(SelectionState || (SelectionState = {}));
+var Animation;
+(function(Animation$1) {
+	Animation$1["weeks_before_enter"] = "weeks_before_enter";
+	Animation$1["weeks_before_exit"] = "weeks_before_exit";
+	Animation$1["weeks_after_enter"] = "weeks_after_enter";
+	Animation$1["weeks_after_exit"] = "weeks_after_exit";
+	Animation$1["caption_after_enter"] = "caption_after_enter";
+	Animation$1["caption_after_exit"] = "caption_after_exit";
+	Animation$1["caption_before_enter"] = "caption_before_enter";
+	Animation$1["caption_before_exit"] = "caption_before_exit";
+})(Animation || (Animation = {}));
+function Dropdown(props) {
+	const { options: options$1, className, components, classNames, ...selectProps } = props;
+	const cssClassSelect = [classNames[UI.Dropdown], className].join(" ");
+	const selectedOption = options$1?.find(({ value }) => value === selectProps.value);
+	return import_react.createElement("span", {
+		"data-disabled": selectProps.disabled,
+		className: classNames[UI.DropdownRoot]
+	}, import_react.createElement(components.Select, {
+		className: cssClassSelect,
+		...selectProps
+	}, options$1?.map(({ value, label, disabled }) => import_react.createElement(components.Option, {
+		key: value,
+		value,
+		disabled
+	}, label))), import_react.createElement("span", {
+		className: classNames[UI.CaptionLabel],
+		"aria-hidden": true
+	}, selectedOption?.label, import_react.createElement(components.Chevron, {
+		orientation: "down",
+		size: 18,
+		className: classNames[UI.Chevron]
+	})));
+}
+function DropdownNav(props) {
+	return import_react.createElement("div", { ...props });
+}
+function Footer(props) {
+	return import_react.createElement("div", { ...props });
+}
+function Month(props) {
+	const { calendarMonth, displayIndex, ...divProps } = props;
+	return import_react.createElement("div", { ...divProps }, props.children);
+}
+function MonthCaption(props) {
+	const { calendarMonth, displayIndex, ...divProps } = props;
+	return import_react.createElement("div", { ...divProps });
+}
+function MonthGrid(props) {
+	return import_react.createElement("table", { ...props });
+}
+function Months(props) {
+	return import_react.createElement("div", { ...props });
+}
+const dayPickerContext = (0, import_react.createContext)(void 0);
+function useDayPicker() {
+	const context = (0, import_react.useContext)(dayPickerContext);
+	if (context === void 0) throw new Error("useDayPicker() must be used within a custom component.");
+	return context;
+}
+function MonthsDropdown(props) {
+	const { components } = useDayPicker();
+	return import_react.createElement(components.Dropdown, { ...props });
+}
+function Nav(props) {
+	const { onPreviousClick, onNextClick, previousMonth, nextMonth, ...navProps } = props;
+	const { components, classNames, labels: { labelPrevious: labelPrevious$1, labelNext: labelNext$1 } } = useDayPicker();
+	const handleNextClick = (0, import_react.useCallback)((e) => {
+		if (nextMonth) onNextClick?.(e);
+	}, [nextMonth, onNextClick]);
+	const handlePreviousClick = (0, import_react.useCallback)((e) => {
+		if (previousMonth) onPreviousClick?.(e);
+	}, [previousMonth, onPreviousClick]);
+	return import_react.createElement("nav", { ...navProps }, import_react.createElement(components.PreviousMonthButton, {
+		type: "button",
+		className: classNames[UI.PreviousMonthButton],
+		tabIndex: previousMonth ? void 0 : -1,
+		"aria-disabled": previousMonth ? void 0 : true,
+		"aria-label": labelPrevious$1(previousMonth),
+		onClick: handlePreviousClick
+	}, import_react.createElement(components.Chevron, {
+		disabled: previousMonth ? void 0 : true,
+		className: classNames[UI.Chevron],
+		orientation: "left"
+	})), import_react.createElement(components.NextMonthButton, {
+		type: "button",
+		className: classNames[UI.NextMonthButton],
+		tabIndex: nextMonth ? void 0 : -1,
+		"aria-disabled": nextMonth ? void 0 : true,
+		"aria-label": labelNext$1(nextMonth),
+		onClick: handleNextClick
+	}, import_react.createElement(components.Chevron, {
+		disabled: nextMonth ? void 0 : true,
+		orientation: "right",
+		className: classNames[UI.Chevron]
+	})));
+}
+function NextMonthButton(props) {
+	const { components } = useDayPicker();
+	return import_react.createElement(components.Button, { ...props });
+}
+function Option(props) {
+	return import_react.createElement("option", { ...props });
+}
+function PreviousMonthButton(props) {
+	const { components } = useDayPicker();
+	return import_react.createElement(components.Button, { ...props });
+}
+function Root(props) {
+	const { rootRef, ...rest } = props;
+	return import_react.createElement("div", {
+		...rest,
+		ref: rootRef
+	});
+}
+function Select(props) {
+	return import_react.createElement("select", { ...props });
+}
+function Week(props) {
+	const { week, ...trProps } = props;
+	return import_react.createElement("tr", { ...trProps });
+}
+function Weekday(props) {
+	return import_react.createElement("th", { ...props });
+}
+function Weekdays(props) {
+	return import_react.createElement("thead", { "aria-hidden": true }, import_react.createElement("tr", { ...props }));
+}
+function WeekNumber(props) {
+	const { week, ...thProps } = props;
+	return import_react.createElement("th", { ...thProps });
+}
+function WeekNumberHeader(props) {
+	return import_react.createElement("th", { ...props });
+}
+function Weeks(props) {
+	return import_react.createElement("tbody", { ...props });
+}
+function YearsDropdown(props) {
+	const { components } = useDayPicker();
+	return import_react.createElement(components.Dropdown, { ...props });
+}
+var custom_components_exports = /* @__PURE__ */ __export({
+	Button: () => Button$1,
+	CaptionLabel: () => CaptionLabel,
+	Chevron: () => Chevron,
+	Day: () => Day,
+	DayButton: () => DayButton,
+	Dropdown: () => Dropdown,
+	DropdownNav: () => DropdownNav,
+	Footer: () => Footer,
+	Month: () => Month,
+	MonthCaption: () => MonthCaption,
+	MonthGrid: () => MonthGrid,
+	Months: () => Months,
+	MonthsDropdown: () => MonthsDropdown,
+	Nav: () => Nav,
+	NextMonthButton: () => NextMonthButton,
+	Option: () => Option,
+	PreviousMonthButton: () => PreviousMonthButton,
+	Root: () => Root,
+	Select: () => Select,
+	Week: () => Week,
+	WeekNumber: () => WeekNumber,
+	WeekNumberHeader: () => WeekNumberHeader,
+	Weekday: () => Weekday,
+	Weekdays: () => Weekdays,
+	Weeks: () => Weeks,
+	YearsDropdown: () => YearsDropdown
+}, 1);
+function rangeIncludesDate(range$5, date$1, excludeEnds = false, dateLib = defaultDateLib) {
+	let { from, to } = range$5;
+	const { differenceInCalendarDays: differenceInCalendarDays$1, isSameDay: isSameDay$1 } = dateLib;
+	if (from && to) {
+		if (differenceInCalendarDays$1(to, from) < 0) [from, to] = [to, from];
+		return differenceInCalendarDays$1(date$1, from) >= (excludeEnds ? 1 : 0) && differenceInCalendarDays$1(to, date$1) >= (excludeEnds ? 1 : 0);
+	}
+	if (!excludeEnds && to) return isSameDay$1(to, date$1);
+	if (!excludeEnds && from) return isSameDay$1(from, date$1);
+	return false;
+}
+function isDateInterval(matcher) {
+	return Boolean(matcher && typeof matcher === "object" && "before" in matcher && "after" in matcher);
+}
+function isDateRange(value) {
+	return Boolean(value && typeof value === "object" && "from" in value);
+}
+function isDateAfterType(value) {
+	return Boolean(value && typeof value === "object" && "after" in value);
+}
+function isDateBeforeType(value) {
+	return Boolean(value && typeof value === "object" && "before" in value);
+}
+function isDayOfWeekType(value) {
+	return Boolean(value && typeof value === "object" && "dayOfWeek" in value);
+}
+function isDatesArray(value, dateLib) {
+	return Array.isArray(value) && value.every(dateLib.isDate);
+}
+function dateMatchModifiers(date$1, matchers, dateLib = defaultDateLib) {
+	const matchersArr = !Array.isArray(matchers) ? [matchers] : matchers;
+	const { isSameDay: isSameDay$1, differenceInCalendarDays: differenceInCalendarDays$1, isAfter: isAfter$1 } = dateLib;
+	return matchersArr.some((matcher) => {
+		if (typeof matcher === "boolean") return matcher;
+		if (dateLib.isDate(matcher)) return isSameDay$1(date$1, matcher);
+		if (isDatesArray(matcher, dateLib)) return matcher.some((matcherDate) => isSameDay$1(date$1, matcherDate));
+		if (isDateRange(matcher)) return rangeIncludesDate(matcher, date$1, false, dateLib);
+		if (isDayOfWeekType(matcher)) {
+			if (!Array.isArray(matcher.dayOfWeek)) return matcher.dayOfWeek === date$1.getDay();
+			return matcher.dayOfWeek.includes(date$1.getDay());
+		}
+		if (isDateInterval(matcher)) {
+			const diffBefore = differenceInCalendarDays$1(matcher.before, date$1);
+			const diffAfter = differenceInCalendarDays$1(matcher.after, date$1);
+			const isDayBefore = diffBefore > 0;
+			const isDayAfter = diffAfter < 0;
+			if (isAfter$1(matcher.before, matcher.after)) return isDayAfter && isDayBefore;
+			else return isDayBefore || isDayAfter;
+		}
+		if (isDateAfterType(matcher)) return differenceInCalendarDays$1(date$1, matcher.after) > 0;
+		if (isDateBeforeType(matcher)) return differenceInCalendarDays$1(matcher.before, date$1) > 0;
+		if (typeof matcher === "function") return matcher(date$1);
+		return false;
+	});
+}
+function createGetModifiers(days, props, navStart, navEnd, dateLib) {
+	const { disabled, hidden, modifiers, showOutsideDays, broadcastCalendar, today = dateLib.today() } = props;
+	const { isSameDay: isSameDay$1, isSameMonth: isSameMonth$1, startOfMonth: startOfMonth$1, isBefore: isBefore$1, endOfMonth: endOfMonth$1, isAfter: isAfter$1 } = dateLib;
+	const computedNavStart = navStart && startOfMonth$1(navStart);
+	const computedNavEnd = navEnd && endOfMonth$1(navEnd);
+	const internalModifiersMap = {
+		[DayFlag.focused]: [],
+		[DayFlag.outside]: [],
+		[DayFlag.disabled]: [],
+		[DayFlag.hidden]: [],
+		[DayFlag.today]: []
+	};
+	const customModifiersMap = {};
+	for (const day of days) {
+		const { date: date$1, displayMonth } = day;
+		const isOutside = Boolean(displayMonth && !isSameMonth$1(date$1, displayMonth));
+		const isBeforeNavStart = Boolean(computedNavStart && isBefore$1(date$1, computedNavStart));
+		const isAfterNavEnd = Boolean(computedNavEnd && isAfter$1(date$1, computedNavEnd));
+		const isDisabled = Boolean(disabled && dateMatchModifiers(date$1, disabled, dateLib));
+		const isHidden$1 = Boolean(hidden && dateMatchModifiers(date$1, hidden, dateLib)) || isBeforeNavStart || isAfterNavEnd || !broadcastCalendar && !showOutsideDays && isOutside || broadcastCalendar && showOutsideDays === false && isOutside;
+		const isToday = isSameDay$1(date$1, today);
+		if (isOutside) internalModifiersMap.outside.push(day);
+		if (isDisabled) internalModifiersMap.disabled.push(day);
+		if (isHidden$1) internalModifiersMap.hidden.push(day);
+		if (isToday) internalModifiersMap.today.push(day);
+		if (modifiers) Object.keys(modifiers).forEach((name) => {
+			const modifierValue = modifiers?.[name];
+			if (!(modifierValue ? dateMatchModifiers(date$1, modifierValue, dateLib) : false)) return;
+			if (customModifiersMap[name]) customModifiersMap[name].push(day);
+			else customModifiersMap[name] = [day];
+		});
+	}
+	return (day) => {
+		const dayFlags = {
+			[DayFlag.focused]: false,
+			[DayFlag.disabled]: false,
+			[DayFlag.hidden]: false,
+			[DayFlag.outside]: false,
+			[DayFlag.today]: false
+		};
+		const customModifiers = {};
+		for (const name in internalModifiersMap) dayFlags[name] = internalModifiersMap[name].some((d) => d === day);
+		for (const name in customModifiersMap) customModifiers[name] = customModifiersMap[name].some((d) => d === day);
+		return {
+			...dayFlags,
+			...customModifiers
+		};
+	};
+}
+function getClassNamesForModifiers(modifiers, classNames, modifiersClassNames = {}) {
+	return Object.entries(modifiers).filter(([, active]) => active === true).reduce((previousValue, [key]) => {
+		if (modifiersClassNames[key]) previousValue.push(modifiersClassNames[key]);
+		else if (classNames[DayFlag[key]]) previousValue.push(classNames[DayFlag[key]]);
+		else if (classNames[SelectionState[key]]) previousValue.push(classNames[SelectionState[key]]);
+		return previousValue;
+	}, [classNames[UI.Day]]);
+}
+function getComponents(customComponents) {
+	return {
+		...custom_components_exports,
+		...customComponents
+	};
+}
+function getDataAttributes(props) {
+	const dataAttributes = {
+		"data-mode": props.mode ?? void 0,
+		"data-required": "required" in props ? props.required : void 0,
+		"data-multiple-months": props.numberOfMonths && props.numberOfMonths > 1 || void 0,
+		"data-week-numbers": props.showWeekNumber || void 0,
+		"data-broadcast-calendar": props.broadcastCalendar || void 0,
+		"data-nav-layout": props.navLayout || void 0
+	};
+	Object.entries(props).forEach(([key, val]) => {
+		if (key.startsWith("data-")) dataAttributes[key] = val;
+	});
+	return dataAttributes;
+}
+function getDefaultClassNames() {
+	const classNames = {};
+	for (const key in UI) classNames[UI[key]] = `rdp-${UI[key]}`;
+	for (const key in DayFlag) classNames[DayFlag[key]] = `rdp-${DayFlag[key]}`;
+	for (const key in SelectionState) classNames[SelectionState[key]] = `rdp-${SelectionState[key]}`;
+	for (const key in Animation) classNames[Animation[key]] = `rdp-${Animation[key]}`;
+	return classNames;
+}
+function formatCaption(month, options$1, dateLib) {
+	return (dateLib ?? new DateLib(options$1)).formatMonthYear(month);
+}
+const formatMonthCaption = formatCaption;
+function formatDay(date$1, options$1, dateLib) {
+	return (dateLib ?? new DateLib(options$1)).format(date$1, "d");
+}
+function formatMonthDropdown(month, dateLib = defaultDateLib) {
+	return dateLib.format(month, "LLLL");
+}
+function formatWeekdayName(weekday, options$1, dateLib) {
+	return (dateLib ?? new DateLib(options$1)).format(weekday, "cccccc");
+}
+function formatWeekNumber(weekNumber, dateLib = defaultDateLib) {
+	if (weekNumber < 10) return dateLib.formatNumber(`0${weekNumber.toLocaleString()}`);
+	return dateLib.formatNumber(`${weekNumber.toLocaleString()}`);
+}
+function formatWeekNumberHeader() {
+	return ``;
+}
+function formatYearDropdown(year, dateLib = defaultDateLib) {
+	return dateLib.format(year, "yyyy");
+}
+const formatYearCaption = formatYearDropdown;
+var formatters_exports = /* @__PURE__ */ __export({
+	formatCaption: () => formatCaption,
+	formatDay: () => formatDay,
+	formatMonthCaption: () => formatMonthCaption,
+	formatMonthDropdown: () => formatMonthDropdown,
+	formatWeekNumber: () => formatWeekNumber,
+	formatWeekNumberHeader: () => formatWeekNumberHeader,
+	formatWeekdayName: () => formatWeekdayName,
+	formatYearCaption: () => formatYearCaption,
+	formatYearDropdown: () => formatYearDropdown
+}, 1);
+function getFormatters(customFormatters) {
+	if (customFormatters?.formatMonthCaption && !customFormatters.formatCaption) customFormatters.formatCaption = customFormatters.formatMonthCaption;
+	if (customFormatters?.formatYearCaption && !customFormatters.formatYearDropdown) customFormatters.formatYearDropdown = customFormatters.formatYearCaption;
+	return {
+		...formatters_exports,
+		...customFormatters
+	};
+}
+function labelDayButton(date$1, modifiers, options$1, dateLib) {
+	let label = (dateLib ?? new DateLib(options$1)).format(date$1, "PPPP");
+	if (modifiers.today) label = `Today, ${label}`;
+	if (modifiers.selected) label = `${label}, selected`;
+	return label;
+}
+const labelDay = labelDayButton;
+function labelGrid(date$1, options$1, dateLib) {
+	return (dateLib ?? new DateLib(options$1)).formatMonthYear(date$1);
+}
+const labelCaption = labelGrid;
+function labelGridcell(date$1, modifiers, options$1, dateLib) {
+	let label = (dateLib ?? new DateLib(options$1)).format(date$1, "PPPP");
+	if (modifiers?.today) label = `Today, ${label}`;
+	return label;
+}
+function labelMonthDropdown(_options) {
+	return "Choose the Month";
+}
+function labelNav() {
+	return "";
+}
+var defaultLabel = "Go to the Next Month";
+function labelNext(_month, _options) {
+	return defaultLabel;
+}
+function labelPrevious(_month) {
+	return "Go to the Previous Month";
+}
+function labelWeekday(date$1, options$1, dateLib) {
+	return (dateLib ?? new DateLib(options$1)).format(date$1, "cccc");
+}
+function labelWeekNumber(weekNumber, _options) {
+	return `Week ${weekNumber}`;
+}
+function labelWeekNumberHeader(_options) {
+	return "Week Number";
+}
+function labelYearDropdown(_options) {
+	return "Choose the Year";
+}
+var labels_exports = /* @__PURE__ */ __export({
+	labelCaption: () => labelCaption,
+	labelDay: () => labelDay,
+	labelDayButton: () => labelDayButton,
+	labelGrid: () => labelGrid,
+	labelGridcell: () => labelGridcell,
+	labelMonthDropdown: () => labelMonthDropdown,
+	labelNav: () => labelNav,
+	labelNext: () => labelNext,
+	labelPrevious: () => labelPrevious,
+	labelWeekNumber: () => labelWeekNumber,
+	labelWeekNumberHeader: () => labelWeekNumberHeader,
+	labelWeekday: () => labelWeekday,
+	labelYearDropdown: () => labelYearDropdown
+}, 1);
+var resolveLabel = (defaultLabel$1, customLabel, localeLabel) => {
+	if (customLabel) return customLabel;
+	if (localeLabel) return typeof localeLabel === "function" ? localeLabel : (..._args) => localeLabel;
+	return defaultLabel$1;
+};
+function getLabels(customLabels, options$1) {
+	const localeLabels = options$1.locale?.labels ?? {};
+	return {
+		...labels_exports,
+		...customLabels ?? {},
+		labelDayButton: resolveLabel(labelDayButton, customLabels?.labelDayButton, localeLabels.labelDayButton),
+		labelMonthDropdown: resolveLabel(labelMonthDropdown, customLabels?.labelMonthDropdown, localeLabels.labelMonthDropdown),
+		labelNext: resolveLabel(labelNext, customLabels?.labelNext, localeLabels.labelNext),
+		labelPrevious: resolveLabel(labelPrevious, customLabels?.labelPrevious, localeLabels.labelPrevious),
+		labelWeekNumber: resolveLabel(labelWeekNumber, customLabels?.labelWeekNumber, localeLabels.labelWeekNumber),
+		labelYearDropdown: resolveLabel(labelYearDropdown, customLabels?.labelYearDropdown, localeLabels.labelYearDropdown),
+		labelGrid: resolveLabel(labelGrid, customLabels?.labelGrid, localeLabels.labelGrid),
+		labelGridcell: resolveLabel(labelGridcell, customLabels?.labelGridcell, localeLabels.labelGridcell),
+		labelNav: resolveLabel(labelNav, customLabels?.labelNav, localeLabels.labelNav),
+		labelWeekNumberHeader: resolveLabel(labelWeekNumberHeader, customLabels?.labelWeekNumberHeader, localeLabels.labelWeekNumberHeader),
+		labelWeekday: resolveLabel(labelWeekday, customLabels?.labelWeekday, localeLabels.labelWeekday)
+	};
+}
+function getMonthOptions(displayMonth, navStart, navEnd, formatters$1, dateLib) {
+	const { startOfMonth: startOfMonth$1, startOfYear: startOfYear$1, endOfYear: endOfYear$1, eachMonthOfInterval: eachMonthOfInterval$1, getMonth: getMonth$1 } = dateLib;
+	return eachMonthOfInterval$1({
+		start: startOfYear$1(displayMonth),
+		end: endOfYear$1(displayMonth)
+	}).map((month) => {
+		const label = formatters$1.formatMonthDropdown(month, dateLib);
+		return {
+			value: getMonth$1(month),
+			label,
+			disabled: navStart && month < startOfMonth$1(navStart) || navEnd && month > startOfMonth$1(navEnd) || false
+		};
+	});
+}
+function getStyleForModifiers(dayModifiers, styles = {}, modifiersStyles = {}) {
+	let style = { ...styles?.[UI.Day] };
+	Object.entries(dayModifiers).filter(([, active]) => active === true).forEach(([modifier]) => {
+		style = {
+			...style,
+			...modifiersStyles?.[modifier]
+		};
+	});
+	return style;
+}
+function getWeekdays(dateLib, ISOWeek, broadcastCalendar, today) {
+	const referenceToday = today ?? dateLib.today();
+	const start = broadcastCalendar ? dateLib.startOfBroadcastWeek(referenceToday, dateLib) : ISOWeek ? dateLib.startOfISOWeek(referenceToday) : dateLib.startOfWeek(referenceToday);
+	const days = [];
+	for (let i = 0; i < 7; i++) {
+		const day = dateLib.addDays(start, i);
+		days.push(day);
+	}
+	return days;
+}
+function getYearOptions(navStart, navEnd, formatters$1, dateLib, reverse$1 = false) {
+	if (!navStart) return void 0;
+	if (!navEnd) return void 0;
+	const { startOfYear: startOfYear$1, endOfYear: endOfYear$1, eachYearOfInterval: eachYearOfInterval$1, getYear: getYear$1 } = dateLib;
+	const years = eachYearOfInterval$1({
+		start: startOfYear$1(navStart),
+		end: endOfYear$1(navEnd)
+	});
+	if (reverse$1) years.reverse();
+	return years.map((year) => {
+		const label = formatters$1.formatYearDropdown(year, dateLib);
+		return {
+			value: getYear$1(year),
+			label,
+			disabled: false
+		};
+	});
+}
+function createNoonOverrides(timeZone, options$1 = {}) {
+	const { weekStartsOn, locale: locale$2 } = options$1;
+	const fallbackWeekStartsOn = weekStartsOn ?? locale$2?.options?.weekStartsOn ?? 0;
+	const toNoonTZDate = (date$1) => {
+		const normalizedDate = typeof date$1 === "number" || typeof date$1 === "string" ? new Date(date$1) : date$1;
+		return new TZDate(normalizedDate.getFullYear(), normalizedDate.getMonth(), normalizedDate.getDate(), 12, 0, 0, timeZone);
+	};
+	const toCalendarDate = (date$1) => {
+		const zoned = toNoonTZDate(date$1);
+		return new Date(zoned.getFullYear(), zoned.getMonth(), zoned.getDate(), 0, 0, 0, 0);
+	};
+	return {
+		today: () => {
+			return toNoonTZDate(TZDate.tz(timeZone));
+		},
+		newDate: (year, monthIndex, date$1) => {
+			return new TZDate(year, monthIndex, date$1, 12, 0, 0, timeZone);
+		},
+		startOfDay: (date$1) => {
+			return toNoonTZDate(date$1);
+		},
+		startOfWeek: (date$1, options$2) => {
+			const base = toNoonTZDate(date$1);
+			const weekStartsOnValue = options$2?.weekStartsOn ?? fallbackWeekStartsOn;
+			const diff = (base.getDay() - weekStartsOnValue + 7) % 7;
+			base.setDate(base.getDate() - diff);
+			return base;
+		},
+		startOfISOWeek: (date$1) => {
+			const base = toNoonTZDate(date$1);
+			const diff = (base.getDay() - 1 + 7) % 7;
+			base.setDate(base.getDate() - diff);
+			return base;
+		},
+		startOfMonth: (date$1) => {
+			const base = toNoonTZDate(date$1);
+			base.setDate(1);
+			return base;
+		},
+		startOfYear: (date$1) => {
+			const base = toNoonTZDate(date$1);
+			base.setMonth(0, 1);
+			return base;
+		},
+		endOfWeek: (date$1, options$2) => {
+			const base = toNoonTZDate(date$1);
+			const diff = (((options$2?.weekStartsOn ?? fallbackWeekStartsOn) + 6) % 7 - base.getDay() + 7) % 7;
+			base.setDate(base.getDate() + diff);
+			return base;
+		},
+		endOfISOWeek: (date$1) => {
+			const base = toNoonTZDate(date$1);
+			const diff = (7 - base.getDay()) % 7;
+			base.setDate(base.getDate() + diff);
+			return base;
+		},
+		endOfMonth: (date$1) => {
+			const base = toNoonTZDate(date$1);
+			base.setMonth(base.getMonth() + 1, 0);
+			return base;
+		},
+		endOfYear: (date$1) => {
+			const base = toNoonTZDate(date$1);
+			base.setMonth(11, 31);
+			return base;
+		},
+		eachMonthOfInterval: (interval) => {
+			const start = toNoonTZDate(interval.start);
+			const end = toNoonTZDate(interval.end);
+			const result = [];
+			const cursor = new TZDate(start.getFullYear(), start.getMonth(), 1, 12, 0, 0, timeZone);
+			const endKey = end.getFullYear() * 12 + end.getMonth();
+			while (cursor.getFullYear() * 12 + cursor.getMonth() <= endKey) {
+				result.push(new TZDate(cursor, timeZone));
+				cursor.setMonth(cursor.getMonth() + 1, 1);
+			}
+			return result;
+		},
+		addDays: (date$1, amount) => {
+			const base = toNoonTZDate(date$1);
+			base.setDate(base.getDate() + amount);
+			return base;
+		},
+		addWeeks: (date$1, amount) => {
+			const base = toNoonTZDate(date$1);
+			base.setDate(base.getDate() + amount * 7);
+			return base;
+		},
+		addMonths: (date$1, amount) => {
+			const base = toNoonTZDate(date$1);
+			base.setMonth(base.getMonth() + amount);
+			return base;
+		},
+		addYears: (date$1, amount) => {
+			const base = toNoonTZDate(date$1);
+			base.setFullYear(base.getFullYear() + amount);
+			return base;
+		},
+		eachYearOfInterval: (interval) => {
+			const start = toNoonTZDate(interval.start);
+			const end = toNoonTZDate(interval.end);
+			const years = [];
+			const cursor = new TZDate(start.getFullYear(), 0, 1, 12, 0, 0, timeZone);
+			while (cursor.getFullYear() <= end.getFullYear()) {
+				years.push(new TZDate(cursor, timeZone));
+				cursor.setFullYear(cursor.getFullYear() + 1, 0, 1);
+			}
+			return years;
+		},
+		getWeek: (date$1, options$2) => {
+			return getWeek(toCalendarDate(date$1), {
+				weekStartsOn: options$2?.weekStartsOn ?? fallbackWeekStartsOn,
+				firstWeekContainsDate: options$2?.firstWeekContainsDate ?? locale$2?.options?.firstWeekContainsDate ?? 1
+			});
+		},
+		getISOWeek: (date$1) => {
+			return getISOWeek(toCalendarDate(date$1));
+		},
+		differenceInCalendarDays: (dateLeft, dateRight) => {
+			return differenceInCalendarDays(toCalendarDate(dateLeft), toCalendarDate(dateRight));
+		},
+		differenceInCalendarMonths: (dateLeft, dateRight) => {
+			return differenceInCalendarMonths(toCalendarDate(dateLeft), toCalendarDate(dateRight));
+		}
+	};
+}
+var asHtmlElement = (element) => {
+	if (element instanceof HTMLElement) return element;
+	return null;
+};
+var queryMonthEls = (element) => [...element.querySelectorAll("[data-animated-month]") ?? []];
+var queryMonthEl = (element) => asHtmlElement(element.querySelector("[data-animated-month]"));
+var queryCaptionEl = (element) => asHtmlElement(element.querySelector("[data-animated-caption]"));
+var queryWeeksEl = (element) => asHtmlElement(element.querySelector("[data-animated-weeks]"));
+var queryNavEl = (element) => asHtmlElement(element.querySelector("[data-animated-nav]"));
+var queryWeekdaysEl = (element) => asHtmlElement(element.querySelector("[data-animated-weekdays]"));
+function useAnimation(rootElRef, enabled, { classNames, months, focused, dateLib }) {
+	const previousRootElSnapshotRef = (0, import_react.useRef)(null);
+	const previousMonthsRef = (0, import_react.useRef)(months);
+	const animatingRef = (0, import_react.useRef)(false);
+	(0, import_react.useLayoutEffect)(() => {
+		const previousMonths = previousMonthsRef.current;
+		previousMonthsRef.current = months;
+		if (!enabled || !rootElRef.current || !(rootElRef.current instanceof HTMLElement) || months.length === 0 || previousMonths.length === 0 || months.length !== previousMonths.length) return;
+		const isSameMonth$1 = dateLib.isSameMonth(months[0].date, previousMonths[0].date);
+		const isAfterPreviousMonth = dateLib.isAfter(months[0].date, previousMonths[0].date);
+		const captionAnimationClass = isAfterPreviousMonth ? classNames[Animation.caption_after_enter] : classNames[Animation.caption_before_enter];
+		const weeksAnimationClass = isAfterPreviousMonth ? classNames[Animation.weeks_after_enter] : classNames[Animation.weeks_before_enter];
+		const previousRootElSnapshot = previousRootElSnapshotRef.current;
+		const rootElSnapshot = rootElRef.current.cloneNode(true);
+		if (rootElSnapshot instanceof HTMLElement) {
+			queryMonthEls(rootElSnapshot).forEach((currentMonthElSnapshot) => {
+				if (!(currentMonthElSnapshot instanceof HTMLElement)) return;
+				const previousMonthElSnapshot = queryMonthEl(currentMonthElSnapshot);
+				if (previousMonthElSnapshot && currentMonthElSnapshot.contains(previousMonthElSnapshot)) currentMonthElSnapshot.removeChild(previousMonthElSnapshot);
+				const captionEl = queryCaptionEl(currentMonthElSnapshot);
+				if (captionEl) captionEl.classList.remove(captionAnimationClass);
+				const weeksEl = queryWeeksEl(currentMonthElSnapshot);
+				if (weeksEl) weeksEl.classList.remove(weeksAnimationClass);
+			});
+			previousRootElSnapshotRef.current = rootElSnapshot;
+		} else previousRootElSnapshotRef.current = null;
+		if (animatingRef.current || isSameMonth$1 || focused) return;
+		const previousMonthEls = previousRootElSnapshot instanceof HTMLElement ? queryMonthEls(previousRootElSnapshot) : [];
+		const currentMonthEls = queryMonthEls(rootElRef.current);
+		if (currentMonthEls?.every((el) => el instanceof HTMLElement) && previousMonthEls && previousMonthEls.every((el) => el instanceof HTMLElement)) {
+			animatingRef.current = true;
+			const cleanUpFunctions = [];
+			rootElRef.current.style.isolation = "isolate";
+			const navEl = queryNavEl(rootElRef.current);
+			if (navEl) navEl.style.zIndex = "1";
+			currentMonthEls.forEach((currentMonthEl, index$1) => {
+				const previousMonthEl = previousMonthEls[index$1];
+				if (!previousMonthEl) return;
+				currentMonthEl.style.position = "relative";
+				currentMonthEl.style.overflow = "hidden";
+				const captionEl = queryCaptionEl(currentMonthEl);
+				if (captionEl) captionEl.classList.add(captionAnimationClass);
+				const weeksEl = queryWeeksEl(currentMonthEl);
+				if (weeksEl) weeksEl.classList.add(weeksAnimationClass);
+				const cleanUp = () => {
+					animatingRef.current = false;
+					if (rootElRef.current) rootElRef.current.style.isolation = "";
+					if (navEl) navEl.style.zIndex = "";
+					if (captionEl) captionEl.classList.remove(captionAnimationClass);
+					if (weeksEl) weeksEl.classList.remove(weeksAnimationClass);
+					currentMonthEl.style.position = "";
+					currentMonthEl.style.overflow = "";
+					if (currentMonthEl.contains(previousMonthEl)) currentMonthEl.removeChild(previousMonthEl);
+				};
+				cleanUpFunctions.push(cleanUp);
+				previousMonthEl.style.pointerEvents = "none";
+				previousMonthEl.style.position = "absolute";
+				previousMonthEl.style.overflow = "hidden";
+				previousMonthEl.setAttribute("aria-hidden", "true");
+				const previousWeekdaysEl = queryWeekdaysEl(previousMonthEl);
+				if (previousWeekdaysEl) previousWeekdaysEl.style.opacity = "0";
+				const previousCaptionEl = queryCaptionEl(previousMonthEl);
+				if (previousCaptionEl) {
+					previousCaptionEl.classList.add(isAfterPreviousMonth ? classNames[Animation.caption_before_exit] : classNames[Animation.caption_after_exit]);
+					previousCaptionEl.addEventListener("animationend", cleanUp);
+				}
+				const previousWeeksEl = queryWeeksEl(previousMonthEl);
+				if (previousWeeksEl) previousWeeksEl.classList.add(isAfterPreviousMonth ? classNames[Animation.weeks_before_exit] : classNames[Animation.weeks_after_exit]);
+				currentMonthEl.insertBefore(previousMonthEl, currentMonthEl.firstChild);
+			});
+		}
+	});
+}
+function getDates(displayMonths, maxDate, props, dateLib) {
+	const firstMonth = displayMonths[0];
+	const lastMonth = displayMonths[displayMonths.length - 1];
+	const { ISOWeek, fixedWeeks, broadcastCalendar } = props ?? {};
+	const { addDays: addDays$1, differenceInCalendarDays: differenceInCalendarDays$1, differenceInCalendarMonths: differenceInCalendarMonths$1, endOfBroadcastWeek: endOfBroadcastWeek$1, endOfISOWeek: endOfISOWeek$1, endOfMonth: endOfMonth$1, endOfWeek: endOfWeek$1, isAfter: isAfter$1, startOfBroadcastWeek: startOfBroadcastWeek$1, startOfISOWeek: startOfISOWeek$1, startOfWeek: startOfWeek$1 } = dateLib;
+	const startWeekFirstDate = broadcastCalendar ? startOfBroadcastWeek$1(firstMonth, dateLib) : ISOWeek ? startOfISOWeek$1(firstMonth) : startOfWeek$1(firstMonth);
+	const displayMonthsWeekEnd = broadcastCalendar ? endOfBroadcastWeek$1(lastMonth) : ISOWeek ? endOfISOWeek$1(endOfMonth$1(lastMonth)) : endOfWeek$1(endOfMonth$1(lastMonth));
+	const constraintWeekEnd = maxDate && (broadcastCalendar ? endOfBroadcastWeek$1(maxDate) : ISOWeek ? endOfISOWeek$1(maxDate) : endOfWeek$1(maxDate));
+	const nOfDays = differenceInCalendarDays$1(constraintWeekEnd && isAfter$1(displayMonthsWeekEnd, constraintWeekEnd) ? constraintWeekEnd : displayMonthsWeekEnd, startWeekFirstDate);
+	const nOfMonths = differenceInCalendarMonths$1(lastMonth, firstMonth) + 1;
+	const dates = [];
+	for (let i = 0; i <= nOfDays; i++) {
+		const date$1 = addDays$1(startWeekFirstDate, i);
+		dates.push(date$1);
+	}
+	const extraDates = (broadcastCalendar ? 35 : 42) * nOfMonths;
+	if (fixedWeeks && dates.length < extraDates) {
+		const daysToAdd = extraDates - dates.length;
+		for (let i = 0; i < daysToAdd; i++) {
+			const date$1 = addDays$1(dates[dates.length - 1], 1);
+			dates.push(date$1);
+		}
+	}
+	return dates;
+}
+function getDays(calendarMonths) {
+	const initialDays = [];
+	return calendarMonths.reduce((days, month) => {
+		const weekDays = month.weeks.reduce((weekDays$1, week) => {
+			return weekDays$1.concat(week.days.slice());
+		}, initialDays.slice());
+		return days.concat(weekDays.slice());
+	}, initialDays.slice());
+}
+function getDisplayMonths(firstDisplayedMonth, calendarEndMonth, props, dateLib) {
+	const { numberOfMonths = 1 } = props;
+	const months = [];
+	for (let i = 0; i < numberOfMonths; i++) {
+		const month = dateLib.addMonths(firstDisplayedMonth, i);
+		if (calendarEndMonth && month > calendarEndMonth) break;
+		months.push(month);
+	}
+	return months;
+}
+function getInitialMonth(props, navStart, navEnd, dateLib) {
+	const { month, defaultMonth, today = dateLib.today(), numberOfMonths = 1 } = props;
+	let initialMonth = month || defaultMonth || today;
+	const { differenceInCalendarMonths: differenceInCalendarMonths$1, addMonths: addMonths$1, startOfMonth: startOfMonth$1 } = dateLib;
+	if (navEnd && differenceInCalendarMonths$1(navEnd, initialMonth) < numberOfMonths - 1) initialMonth = addMonths$1(navEnd, -1 * (numberOfMonths - 1));
+	if (navStart && differenceInCalendarMonths$1(initialMonth, navStart) < 0) initialMonth = navStart;
+	return startOfMonth$1(initialMonth);
+}
+function getMonths(displayMonths, dates, props, dateLib) {
+	const { addDays: addDays$1, endOfBroadcastWeek: endOfBroadcastWeek$1, endOfISOWeek: endOfISOWeek$1, endOfMonth: endOfMonth$1, endOfWeek: endOfWeek$1, getISOWeek: getISOWeek$1, getWeek: getWeek$1, startOfBroadcastWeek: startOfBroadcastWeek$1, startOfISOWeek: startOfISOWeek$1, startOfWeek: startOfWeek$1 } = dateLib;
+	const dayPickerMonths = displayMonths.reduce((months, month) => {
+		const firstDateOfFirstWeek = props.broadcastCalendar ? startOfBroadcastWeek$1(month, dateLib) : props.ISOWeek ? startOfISOWeek$1(month) : startOfWeek$1(month);
+		const lastDateOfLastWeek = props.broadcastCalendar ? endOfBroadcastWeek$1(month) : props.ISOWeek ? endOfISOWeek$1(endOfMonth$1(month)) : endOfWeek$1(endOfMonth$1(month));
+		const monthDates = dates.filter((date$1) => {
+			return date$1 >= firstDateOfFirstWeek && date$1 <= lastDateOfLastWeek;
+		});
+		const nrOfDaysWithFixedWeeks = props.broadcastCalendar ? 35 : 42;
+		if (props.fixedWeeks && monthDates.length < nrOfDaysWithFixedWeeks) {
+			const extraDates = dates.filter((date$1) => {
+				const daysToAdd = nrOfDaysWithFixedWeeks - monthDates.length;
+				return date$1 > lastDateOfLastWeek && date$1 <= addDays$1(lastDateOfLastWeek, daysToAdd);
+			});
+			monthDates.push(...extraDates);
+		}
+		const dayPickerMonth = new CalendarMonth(month, monthDates.reduce((weeks, date$1) => {
+			const weekNumber = props.ISOWeek ? getISOWeek$1(date$1) : getWeek$1(date$1);
+			const week = weeks.find((week$1) => week$1.weekNumber === weekNumber);
+			const day = new CalendarDay(date$1, month, dateLib);
+			if (!week) weeks.push(new CalendarWeek(weekNumber, [day]));
+			else week.days.push(day);
+			return weeks;
+		}, []));
+		months.push(dayPickerMonth);
+		return months;
+	}, []);
+	if (!props.reverseMonths) return dayPickerMonths;
+	else return dayPickerMonths.reverse();
+}
+function getNavMonths(props, dateLib) {
+	let { startMonth, endMonth } = props;
+	const { startOfYear: startOfYear$1, startOfDay: startOfDay$1, startOfMonth: startOfMonth$1, endOfMonth: endOfMonth$1, addYears: addYears$1, endOfYear: endOfYear$1, newDate: newDate$1, today } = dateLib;
+	const { fromYear, toYear, fromMonth, toMonth } = props;
+	if (!startMonth && fromMonth) startMonth = fromMonth;
+	if (!startMonth && fromYear) startMonth = dateLib.newDate(fromYear, 0, 1);
+	if (!endMonth && toMonth) endMonth = toMonth;
+	if (!endMonth && toYear) endMonth = newDate$1(toYear, 11, 31);
+	const hasYearDropdown = props.captionLayout === "dropdown" || props.captionLayout === "dropdown-years";
+	if (startMonth) startMonth = startOfMonth$1(startMonth);
+	else if (fromYear) startMonth = newDate$1(fromYear, 0, 1);
+	else if (!startMonth && hasYearDropdown) startMonth = startOfYear$1(addYears$1(props.today ?? today(), -100));
+	if (endMonth) endMonth = endOfMonth$1(endMonth);
+	else if (toYear) endMonth = newDate$1(toYear, 11, 31);
+	else if (!endMonth && hasYearDropdown) endMonth = endOfYear$1(props.today ?? today());
+	return [startMonth ? startOfDay$1(startMonth) : startMonth, endMonth ? startOfDay$1(endMonth) : endMonth];
+}
+function getNextMonth(firstDisplayedMonth, calendarEndMonth, options$1, dateLib) {
+	if (options$1.disableNavigation) return;
+	const { pagedNavigation, numberOfMonths = 1 } = options$1;
+	const { startOfMonth: startOfMonth$1, addMonths: addMonths$1, differenceInCalendarMonths: differenceInCalendarMonths$1 } = dateLib;
+	const offset$3 = pagedNavigation ? numberOfMonths : 1;
+	const month = startOfMonth$1(firstDisplayedMonth);
+	if (!calendarEndMonth) return addMonths$1(month, offset$3);
+	if (differenceInCalendarMonths$1(calendarEndMonth, firstDisplayedMonth) < numberOfMonths) return;
+	return addMonths$1(month, offset$3);
+}
+function getPreviousMonth(firstDisplayedMonth, calendarStartMonth, options$1, dateLib) {
+	if (options$1.disableNavigation) return;
+	const { pagedNavigation, numberOfMonths } = options$1;
+	const { startOfMonth: startOfMonth$1, addMonths: addMonths$1, differenceInCalendarMonths: differenceInCalendarMonths$1 } = dateLib;
+	const offset$3 = pagedNavigation ? numberOfMonths ?? 1 : 1;
+	const month = startOfMonth$1(firstDisplayedMonth);
+	if (!calendarStartMonth) return addMonths$1(month, -offset$3);
+	if (differenceInCalendarMonths$1(month, calendarStartMonth) <= 0) return;
+	return addMonths$1(month, -offset$3);
+}
+function getWeeks(months) {
+	return months.reduce((weeks, month) => {
+		return weeks.concat(month.weeks.slice());
+	}, [].slice());
+}
+function useControlledValue(defaultValue, controlledValue) {
+	const [uncontrolledValue, setValue] = (0, import_react.useState)(defaultValue);
+	return [controlledValue === void 0 ? uncontrolledValue : controlledValue, setValue];
+}
+function useCalendar(props, dateLib) {
+	const [navStart, navEnd] = getNavMonths(props, dateLib);
+	const { startOfMonth: startOfMonth$1, endOfMonth: endOfMonth$1 } = dateLib;
+	const initialMonth = getInitialMonth(props, navStart, navEnd, dateLib);
+	const [firstMonth, setFirstMonth] = useControlledValue(initialMonth, props.month ? initialMonth : void 0);
+	(0, import_react.useEffect)(() => {
+		setFirstMonth(getInitialMonth(props, navStart, navEnd, dateLib));
+	}, [props.timeZone]);
+	const { months, weeks, days, previousMonth, nextMonth } = (0, import_react.useMemo)(() => {
+		const displayMonths = getDisplayMonths(firstMonth, navEnd, { numberOfMonths: props.numberOfMonths }, dateLib);
+		const months$1 = getMonths(displayMonths, getDates(displayMonths, props.endMonth ? endOfMonth$1(props.endMonth) : void 0, {
+			ISOWeek: props.ISOWeek,
+			fixedWeeks: props.fixedWeeks,
+			broadcastCalendar: props.broadcastCalendar
+		}, dateLib), {
+			broadcastCalendar: props.broadcastCalendar,
+			fixedWeeks: props.fixedWeeks,
+			ISOWeek: props.ISOWeek,
+			reverseMonths: props.reverseMonths
+		}, dateLib);
+		return {
+			months: months$1,
+			weeks: getWeeks(months$1),
+			days: getDays(months$1),
+			previousMonth: getPreviousMonth(firstMonth, navStart, props, dateLib),
+			nextMonth: getNextMonth(firstMonth, navEnd, props, dateLib)
+		};
+	}, [
+		dateLib,
+		firstMonth.getTime(),
+		navEnd?.getTime(),
+		navStart?.getTime(),
+		props.disableNavigation,
+		props.broadcastCalendar,
+		props.endMonth?.getTime(),
+		props.fixedWeeks,
+		props.ISOWeek,
+		props.numberOfMonths,
+		props.pagedNavigation,
+		props.reverseMonths
+	]);
+	const { disableNavigation, onMonthChange } = props;
+	const isDayInCalendar = (day) => weeks.some((week) => week.days.some((d) => d.isEqualTo(day)));
+	const goToMonth = (date$1) => {
+		if (disableNavigation) return;
+		let newMonth = startOfMonth$1(date$1);
+		if (navStart && newMonth < startOfMonth$1(navStart)) newMonth = startOfMonth$1(navStart);
+		if (navEnd && newMonth > startOfMonth$1(navEnd)) newMonth = startOfMonth$1(navEnd);
+		setFirstMonth(newMonth);
+		onMonthChange?.(newMonth);
+	};
+	const goToDay = (day) => {
+		if (isDayInCalendar(day)) return;
+		goToMonth(day.date);
+	};
+	return {
+		months,
+		weeks,
+		days,
+		navStart,
+		navEnd,
+		previousMonth,
+		nextMonth,
+		goToMonth,
+		goToDay
+	};
+}
+var FocusTargetPriority;
+(function(FocusTargetPriority$1) {
+	FocusTargetPriority$1[FocusTargetPriority$1["Today"] = 0] = "Today";
+	FocusTargetPriority$1[FocusTargetPriority$1["Selected"] = 1] = "Selected";
+	FocusTargetPriority$1[FocusTargetPriority$1["LastFocused"] = 2] = "LastFocused";
+	FocusTargetPriority$1[FocusTargetPriority$1["FocusedModifier"] = 3] = "FocusedModifier";
+})(FocusTargetPriority || (FocusTargetPriority = {}));
+function isFocusableDay(modifiers) {
+	return !modifiers[DayFlag.disabled] && !modifiers[DayFlag.hidden] && !modifiers[DayFlag.outside];
+}
+function calculateFocusTarget(days, getModifiers, isSelected, lastFocused) {
+	let focusTarget;
+	let foundFocusTargetPriority = -1;
+	for (const day of days) {
+		const modifiers = getModifiers(day);
+		if (isFocusableDay(modifiers)) {
+			if (modifiers[DayFlag.focused] && foundFocusTargetPriority < FocusTargetPriority.FocusedModifier) {
+				focusTarget = day;
+				foundFocusTargetPriority = FocusTargetPriority.FocusedModifier;
+			} else if (lastFocused?.isEqualTo(day) && foundFocusTargetPriority < FocusTargetPriority.LastFocused) {
+				focusTarget = day;
+				foundFocusTargetPriority = FocusTargetPriority.LastFocused;
+			} else if (isSelected(day.date) && foundFocusTargetPriority < FocusTargetPriority.Selected) {
+				focusTarget = day;
+				foundFocusTargetPriority = FocusTargetPriority.Selected;
+			} else if (modifiers[DayFlag.today] && foundFocusTargetPriority < FocusTargetPriority.Today) {
+				focusTarget = day;
+				foundFocusTargetPriority = FocusTargetPriority.Today;
+			}
+		}
+	}
+	if (!focusTarget) focusTarget = days.find((day) => isFocusableDay(getModifiers(day)));
+	return focusTarget;
+}
+function getFocusableDate(moveBy, moveDir, refDate, navStart, navEnd, props, dateLib) {
+	const { ISOWeek, broadcastCalendar } = props;
+	const { addDays: addDays$1, addMonths: addMonths$1, addWeeks: addWeeks$1, addYears: addYears$1, endOfBroadcastWeek: endOfBroadcastWeek$1, endOfISOWeek: endOfISOWeek$1, endOfWeek: endOfWeek$1, max: max$6, min: min$5, startOfBroadcastWeek: startOfBroadcastWeek$1, startOfISOWeek: startOfISOWeek$1, startOfWeek: startOfWeek$1 } = dateLib;
+	let focusableDate = {
+		day: addDays$1,
+		week: addWeeks$1,
+		month: addMonths$1,
+		year: addYears$1,
+		startOfWeek: (date$1) => broadcastCalendar ? startOfBroadcastWeek$1(date$1, dateLib) : ISOWeek ? startOfISOWeek$1(date$1) : startOfWeek$1(date$1),
+		endOfWeek: (date$1) => broadcastCalendar ? endOfBroadcastWeek$1(date$1) : ISOWeek ? endOfISOWeek$1(date$1) : endOfWeek$1(date$1)
+	}[moveBy](refDate, moveDir === "after" ? 1 : -1);
+	if (moveDir === "before" && navStart) focusableDate = max$6([navStart, focusableDate]);
+	else if (moveDir === "after" && navEnd) focusableDate = min$5([navEnd, focusableDate]);
+	return focusableDate;
+}
+function getNextFocus(moveBy, moveDir, refDay, calendarStartMonth, calendarEndMonth, props, dateLib, attempt = 0) {
+	if (attempt > 365) return;
+	const focusableDate = getFocusableDate(moveBy, moveDir, refDay.date, calendarStartMonth, calendarEndMonth, props, dateLib);
+	const isDisabled = Boolean(props.disabled && dateMatchModifiers(focusableDate, props.disabled, dateLib));
+	const isHidden$1 = Boolean(props.hidden && dateMatchModifiers(focusableDate, props.hidden, dateLib));
+	const focusDay = new CalendarDay(focusableDate, focusableDate, dateLib);
+	if (!isDisabled && !isHidden$1) return focusDay;
+	return getNextFocus(moveBy, moveDir, focusDay, calendarStartMonth, calendarEndMonth, props, dateLib, attempt + 1);
+}
+function useFocus(props, calendar$1, getModifiers, isSelected, dateLib) {
+	const { autoFocus } = props;
+	const [lastFocused, setLastFocused] = (0, import_react.useState)();
+	const focusTarget = calculateFocusTarget(calendar$1.days, getModifiers, isSelected || (() => false), lastFocused);
+	const [focusedDay, setFocused] = (0, import_react.useState)(autoFocus ? focusTarget : void 0);
+	const blur = () => {
+		setLastFocused(focusedDay);
+		setFocused(void 0);
+	};
+	const moveFocus = (moveBy, moveDir) => {
+		if (!focusedDay) return;
+		const nextFocus = getNextFocus(moveBy, moveDir, focusedDay, calendar$1.navStart, calendar$1.navEnd, props, dateLib);
+		if (!nextFocus) return;
+		if (props.disableNavigation) {
+			if (!calendar$1.days.some((day) => day.isEqualTo(nextFocus))) return;
+		}
+		calendar$1.goToDay(nextFocus);
+		setFocused(nextFocus);
+	};
+	const isFocusTarget = (day) => {
+		return Boolean(focusTarget?.isEqualTo(day));
+	};
+	return {
+		isFocusTarget,
+		setFocused,
+		focused: focusedDay,
+		blur,
+		moveFocus
+	};
+}
+function useMulti(props, dateLib) {
+	const { selected: initiallySelected, required, onSelect } = props;
+	const [internallySelected, setSelected] = useControlledValue(initiallySelected, onSelect ? initiallySelected : void 0);
+	const selected = !onSelect ? internallySelected : initiallySelected;
+	const { isSameDay: isSameDay$1 } = dateLib;
+	const isSelected = (date$1) => {
+		return selected?.some((d) => isSameDay$1(d, date$1)) ?? false;
+	};
+	const { min: min$5, max: max$6 } = props;
+	const select = (triggerDate, modifiers, e) => {
+		let newDates = [...selected ?? []];
+		if (isSelected(triggerDate)) {
+			if (selected?.length === min$5) return;
+			if (required && selected?.length === 1) return;
+			newDates = selected?.filter((d) => !isSameDay$1(d, triggerDate));
+		} else if (selected?.length === max$6) newDates = [triggerDate];
+		else newDates = [...newDates, triggerDate];
+		if (!onSelect) setSelected(newDates);
+		onSelect?.(newDates, triggerDate, modifiers, e);
+		return newDates;
+	};
+	return {
+		selected,
+		select,
+		isSelected
+	};
+}
+function addToRange(date$1, initialRange, min$5 = 0, max$6 = 0, required = false, dateLib = defaultDateLib) {
+	const { from, to } = initialRange || {};
+	const { isSameDay: isSameDay$1, isAfter: isAfter$1, isBefore: isBefore$1 } = dateLib;
+	let range$5;
+	if (!from && !to) range$5 = {
+		from: date$1,
+		to: min$5 > 0 ? void 0 : date$1
+	};
+	else if (from && !to) if (isSameDay$1(from, date$1)) if (min$5 === 0) range$5 = {
+		from,
+		to: date$1
+	};
+	else if (required) range$5 = {
+		from,
+		to: void 0
+	};
+	else range$5 = void 0;
+	else if (isBefore$1(date$1, from)) range$5 = {
+		from: date$1,
+		to: from
+	};
+	else range$5 = {
+		from,
+		to: date$1
+	};
+	else if (from && to) if (isSameDay$1(from, date$1) && isSameDay$1(to, date$1)) if (required) range$5 = {
+		from,
+		to
+	};
+	else range$5 = void 0;
+	else if (isSameDay$1(from, date$1)) range$5 = {
+		from,
+		to: min$5 > 0 ? void 0 : date$1
+	};
+	else if (isSameDay$1(to, date$1)) range$5 = {
+		from: date$1,
+		to: min$5 > 0 ? void 0 : date$1
+	};
+	else if (isBefore$1(date$1, from)) range$5 = {
+		from: date$1,
+		to
+	};
+	else if (isAfter$1(date$1, from)) range$5 = {
+		from,
+		to: date$1
+	};
+	else if (isAfter$1(date$1, to)) range$5 = {
+		from,
+		to: date$1
+	};
+	else throw new Error("Invalid range");
+	if (range$5?.from && range$5?.to) {
+		const diff = dateLib.differenceInCalendarDays(range$5.to, range$5.from);
+		if (max$6 > 0 && diff > max$6) range$5 = {
+			from: date$1,
+			to: void 0
+		};
+		else if (min$5 > 1 && diff < min$5) range$5 = {
+			from: date$1,
+			to: void 0
+		};
+	}
+	return range$5;
+}
+function rangeContainsDayOfWeek(range$5, dayOfWeek, dateLib = defaultDateLib) {
+	const dayOfWeekArr = !Array.isArray(dayOfWeek) ? [dayOfWeek] : dayOfWeek;
+	let date$1 = range$5.from;
+	const totalDays = dateLib.differenceInCalendarDays(range$5.to, range$5.from);
+	const totalDaysLimit = Math.min(totalDays, 6);
+	for (let i = 0; i <= totalDaysLimit; i++) {
+		if (dayOfWeekArr.includes(date$1.getDay())) return true;
+		date$1 = dateLib.addDays(date$1, 1);
+	}
+	return false;
+}
+function rangeOverlaps(rangeLeft, rangeRight, dateLib = defaultDateLib) {
+	return rangeIncludesDate(rangeLeft, rangeRight.from, false, dateLib) || rangeIncludesDate(rangeLeft, rangeRight.to, false, dateLib) || rangeIncludesDate(rangeRight, rangeLeft.from, false, dateLib) || rangeIncludesDate(rangeRight, rangeLeft.to, false, dateLib);
+}
+function rangeContainsModifiers(range$5, modifiers, dateLib = defaultDateLib) {
+	const matchers = Array.isArray(modifiers) ? modifiers : [modifiers];
+	if (matchers.filter((matcher) => typeof matcher !== "function").some((matcher) => {
+		if (typeof matcher === "boolean") return matcher;
+		if (dateLib.isDate(matcher)) return rangeIncludesDate(range$5, matcher, false, dateLib);
+		if (isDatesArray(matcher, dateLib)) return matcher.some((date$1) => rangeIncludesDate(range$5, date$1, false, dateLib));
+		if (isDateRange(matcher)) {
+			if (matcher.from && matcher.to) return rangeOverlaps(range$5, {
+				from: matcher.from,
+				to: matcher.to
+			}, dateLib);
+			return false;
+		}
+		if (isDayOfWeekType(matcher)) return rangeContainsDayOfWeek(range$5, matcher.dayOfWeek, dateLib);
+		if (isDateInterval(matcher)) {
+			if (dateLib.isAfter(matcher.before, matcher.after)) return rangeOverlaps(range$5, {
+				from: dateLib.addDays(matcher.after, 1),
+				to: dateLib.addDays(matcher.before, -1)
+			}, dateLib);
+			return dateMatchModifiers(range$5.from, matcher, dateLib) || dateMatchModifiers(range$5.to, matcher, dateLib);
+		}
+		if (isDateAfterType(matcher) || isDateBeforeType(matcher)) return dateMatchModifiers(range$5.from, matcher, dateLib) || dateMatchModifiers(range$5.to, matcher, dateLib);
+		return false;
+	})) return true;
+	const functionMatchers = matchers.filter((matcher) => typeof matcher === "function");
+	if (functionMatchers.length) {
+		let date$1 = range$5.from;
+		const totalDays = dateLib.differenceInCalendarDays(range$5.to, range$5.from);
+		for (let i = 0; i <= totalDays; i++) {
+			if (functionMatchers.some((matcher) => matcher(date$1))) return true;
+			date$1 = dateLib.addDays(date$1, 1);
+		}
+	}
+	return false;
+}
+function useRange(props, dateLib) {
+	const { disabled, excludeDisabled, resetOnSelect, selected: initiallySelected, required, onSelect } = props;
+	const [internallySelected, setSelected] = useControlledValue(initiallySelected, onSelect ? initiallySelected : void 0);
+	const selected = !onSelect ? internallySelected : initiallySelected;
+	const isSelected = (date$1) => selected && rangeIncludesDate(selected, date$1, false, dateLib);
+	const select = (triggerDate, modifiers, e) => {
+		const { min: min$5, max: max$6 } = props;
+		let newRange;
+		if (triggerDate) {
+			const selectedFrom = selected?.from;
+			const selectedTo = selected?.to;
+			const hasFullRange = !!selectedFrom && !!selectedTo;
+			const isClickingSingleDayRange = !!selectedFrom && !!selectedTo && dateLib.isSameDay(selectedFrom, selectedTo) && dateLib.isSameDay(triggerDate, selectedFrom);
+			if (resetOnSelect && (hasFullRange || !selected?.from)) if (!required && isClickingSingleDayRange) newRange = void 0;
+			else newRange = {
+				from: triggerDate,
+				to: void 0
+			};
+			else newRange = addToRange(triggerDate, selected, min$5, max$6, required, dateLib);
+		}
+		if (excludeDisabled && disabled && newRange?.from && newRange.to) {
+			if (rangeContainsModifiers({
+				from: newRange.from,
+				to: newRange.to
+			}, disabled, dateLib)) {
+				newRange.from = triggerDate;
+				newRange.to = void 0;
+			}
+		}
+		if (!onSelect) setSelected(newRange);
+		onSelect?.(newRange, triggerDate, modifiers, e);
+		return newRange;
+	};
+	return {
+		selected,
+		select,
+		isSelected
+	};
+}
+function useSingle(props, dateLib) {
+	const { selected: initiallySelected, required, onSelect } = props;
+	const [internallySelected, setSelected] = useControlledValue(initiallySelected, onSelect ? initiallySelected : void 0);
+	const selected = !onSelect ? internallySelected : initiallySelected;
+	const { isSameDay: isSameDay$1 } = dateLib;
+	const isSelected = (compareDate) => {
+		return selected ? isSameDay$1(selected, compareDate) : false;
+	};
+	const select = (triggerDate, modifiers, e) => {
+		let newDate$1 = triggerDate;
+		if (!required && selected && selected && isSameDay$1(triggerDate, selected)) newDate$1 = void 0;
+		if (!onSelect) setSelected(newDate$1);
+		if (required) onSelect?.(newDate$1, triggerDate, modifiers, e);
+		else onSelect?.(newDate$1, triggerDate, modifiers, e);
+		return newDate$1;
+	};
+	return {
+		selected,
+		select,
+		isSelected
+	};
+}
+function useSelection(props, dateLib) {
+	const single = useSingle(props, dateLib);
+	const multi = useMulti(props, dateLib);
+	const range$5 = useRange(props, dateLib);
+	switch (props.mode) {
+		case "single": return single;
+		case "multiple": return multi;
+		case "range": return range$5;
+		default: return;
+	}
+}
+function toTimeZone(date$1, timeZone) {
+	if (date$1 instanceof TZDate && date$1.timeZone === timeZone) return date$1;
+	return new TZDate(date$1, timeZone);
+}
+function toZoneNoon(date$1, timeZone, noonSafe) {
+	if (!noonSafe) return toTimeZone(date$1, timeZone);
+	const zoned = toTimeZone(date$1, timeZone);
+	const noonZoned = new TZDate(zoned.getFullYear(), zoned.getMonth(), zoned.getDate(), 12, 0, 0, timeZone);
+	return new Date(noonZoned.getTime());
+}
+function convertMatcher(matcher, timeZone, noonSafe) {
+	if (typeof matcher === "boolean" || typeof matcher === "function") return matcher;
+	if (matcher instanceof Date) return toZoneNoon(matcher, timeZone, noonSafe);
+	if (Array.isArray(matcher)) return matcher.map((value) => value instanceof Date ? toZoneNoon(value, timeZone, noonSafe) : value);
+	if (isDateRange(matcher)) return {
+		...matcher,
+		from: matcher.from ? toTimeZone(matcher.from, timeZone) : matcher.from,
+		to: matcher.to ? toTimeZone(matcher.to, timeZone) : matcher.to
+	};
+	if (isDateInterval(matcher)) return {
+		before: toZoneNoon(matcher.before, timeZone, noonSafe),
+		after: toZoneNoon(matcher.after, timeZone, noonSafe)
+	};
+	if (isDateAfterType(matcher)) return { after: toZoneNoon(matcher.after, timeZone, noonSafe) };
+	if (isDateBeforeType(matcher)) return { before: toZoneNoon(matcher.before, timeZone, noonSafe) };
+	return matcher;
+}
+function convertMatchersToTimeZone(matchers, timeZone, noonSafe) {
+	if (!matchers) return matchers;
+	if (Array.isArray(matchers)) return matchers.map((matcher) => convertMatcher(matcher, timeZone, noonSafe));
+	return convertMatcher(matchers, timeZone, noonSafe);
+}
+function DayPicker(initialProps) {
+	let props = initialProps;
+	const timeZone = props.timeZone;
+	if (timeZone) {
+		props = {
+			...initialProps,
+			timeZone
+		};
+		if (props.today) props.today = toTimeZone(props.today, timeZone);
+		if (props.month) props.month = toTimeZone(props.month, timeZone);
+		if (props.defaultMonth) props.defaultMonth = toTimeZone(props.defaultMonth, timeZone);
+		if (props.startMonth) props.startMonth = toTimeZone(props.startMonth, timeZone);
+		if (props.endMonth) props.endMonth = toTimeZone(props.endMonth, timeZone);
+		if (props.mode === "single" && props.selected) props.selected = toTimeZone(props.selected, timeZone);
+		else if (props.mode === "multiple" && props.selected) props.selected = props.selected?.map((date$1) => toTimeZone(date$1, timeZone));
+		else if (props.mode === "range" && props.selected) props.selected = {
+			from: props.selected.from ? toTimeZone(props.selected.from, timeZone) : props.selected.from,
+			to: props.selected.to ? toTimeZone(props.selected.to, timeZone) : props.selected.to
+		};
+		if (props.disabled !== void 0) props.disabled = convertMatchersToTimeZone(props.disabled, timeZone);
+		if (props.hidden !== void 0) props.hidden = convertMatchersToTimeZone(props.hidden, timeZone);
+		if (props.modifiers) {
+			const nextModifiers = {};
+			Object.keys(props.modifiers).forEach((key) => {
+				nextModifiers[key] = convertMatchersToTimeZone(props.modifiers?.[key], timeZone);
+			});
+			props.modifiers = nextModifiers;
+		}
+	}
+	const { components, formatters: formatters$1, labels, dateLib, locale: locale$2, classNames } = (0, import_react.useMemo)(() => {
+		const locale$3 = {
+			...enUS,
+			...props.locale
+		};
+		const weekStartsOn = props.broadcastCalendar ? 1 : props.weekStartsOn;
+		const noonOverrides = props.noonSafe && props.timeZone ? createNoonOverrides(props.timeZone, {
+			weekStartsOn,
+			locale: locale$3
+		}) : void 0;
+		const overrides = props.dateLib && noonOverrides ? {
+			...noonOverrides,
+			...props.dateLib
+		} : props.dateLib ?? noonOverrides;
+		const dateLib$1 = new DateLib({
+			locale: locale$3,
+			weekStartsOn,
+			firstWeekContainsDate: props.firstWeekContainsDate,
+			useAdditionalWeekYearTokens: props.useAdditionalWeekYearTokens,
+			useAdditionalDayOfYearTokens: props.useAdditionalDayOfYearTokens,
+			timeZone: props.timeZone,
+			numerals: props.numerals
+		}, overrides);
+		return {
+			dateLib: dateLib$1,
+			components: getComponents(props.components),
+			formatters: getFormatters(props.formatters),
+			labels: getLabels(props.labels, dateLib$1.options),
+			locale: locale$3,
+			classNames: {
+				...getDefaultClassNames(),
+				...props.classNames
+			}
+		};
+	}, [
+		props.locale,
+		props.broadcastCalendar,
+		props.weekStartsOn,
+		props.firstWeekContainsDate,
+		props.useAdditionalWeekYearTokens,
+		props.useAdditionalDayOfYearTokens,
+		props.timeZone,
+		props.numerals,
+		props.dateLib,
+		props.noonSafe,
+		props.components,
+		props.formatters,
+		props.labels,
+		props.classNames
+	]);
+	if (!props.today) props = {
+		...props,
+		today: dateLib.today()
+	};
+	const { captionLayout, mode, navLayout, numberOfMonths = 1, onDayBlur, onDayClick, onDayFocus, onDayKeyDown, onDayMouseEnter, onDayMouseLeave, onNextClick, onPrevClick, showWeekNumber, styles } = props;
+	const { formatCaption: formatCaption$1, formatDay: formatDay$1, formatMonthDropdown: formatMonthDropdown$1, formatWeekNumber: formatWeekNumber$1, formatWeekNumberHeader: formatWeekNumberHeader$1, formatWeekdayName: formatWeekdayName$1, formatYearDropdown: formatYearDropdown$1 } = formatters$1;
+	const calendar$1 = useCalendar(props, dateLib);
+	const { days, months, navStart, navEnd, previousMonth, nextMonth, goToMonth } = calendar$1;
+	const getModifiers = createGetModifiers(days, props, navStart, navEnd, dateLib);
+	const { isSelected, select, selected: selectedValue } = useSelection(props, dateLib) ?? {};
+	const { blur, focused, isFocusTarget, moveFocus, setFocused } = useFocus(props, calendar$1, getModifiers, isSelected ?? (() => false), dateLib);
+	const { labelDayButton: labelDayButton$1, labelGridcell: labelGridcell$1, labelGrid: labelGrid$1, labelMonthDropdown: labelMonthDropdown$1, labelNav: labelNav$1, labelPrevious: labelPrevious$1, labelNext: labelNext$1, labelWeekday: labelWeekday$1, labelWeekNumber: labelWeekNumber$1, labelWeekNumberHeader: labelWeekNumberHeader$1, labelYearDropdown: labelYearDropdown$1 } = labels;
+	const weekdays = (0, import_react.useMemo)(() => getWeekdays(dateLib, props.ISOWeek, props.broadcastCalendar, props.today), [
+		dateLib,
+		props.ISOWeek,
+		props.broadcastCalendar,
+		props.today
+	]);
+	const isInteractive = mode !== void 0 || onDayClick !== void 0;
+	const handlePreviousClick = (0, import_react.useCallback)(() => {
+		if (!previousMonth) return;
+		goToMonth(previousMonth);
+		onPrevClick?.(previousMonth);
+	}, [
+		previousMonth,
+		goToMonth,
+		onPrevClick
+	]);
+	const handleNextClick = (0, import_react.useCallback)(() => {
+		if (!nextMonth) return;
+		goToMonth(nextMonth);
+		onNextClick?.(nextMonth);
+	}, [
+		goToMonth,
+		nextMonth,
+		onNextClick
+	]);
+	const handleDayClick = (0, import_react.useCallback)((day, m) => (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setFocused(day);
+		if (m.disabled) return;
+		select?.(day.date, m, e);
+		onDayClick?.(day.date, m, e);
+	}, [
+		select,
+		onDayClick,
+		setFocused
+	]);
+	const handleDayFocus = (0, import_react.useCallback)((day, m) => (e) => {
+		setFocused(day);
+		onDayFocus?.(day.date, m, e);
+	}, [onDayFocus, setFocused]);
+	const handleDayBlur = (0, import_react.useCallback)((day, m) => (e) => {
+		blur();
+		onDayBlur?.(day.date, m, e);
+	}, [blur, onDayBlur]);
+	const handleDayKeyDown = (0, import_react.useCallback)((day, modifiers) => (e) => {
+		const keyMap = {
+			ArrowLeft: [e.shiftKey ? "month" : "day", props.dir === "rtl" ? "after" : "before"],
+			ArrowRight: [e.shiftKey ? "month" : "day", props.dir === "rtl" ? "before" : "after"],
+			ArrowDown: [e.shiftKey ? "year" : "week", "after"],
+			ArrowUp: [e.shiftKey ? "year" : "week", "before"],
+			PageUp: [e.shiftKey ? "year" : "month", "before"],
+			PageDown: [e.shiftKey ? "year" : "month", "after"],
+			Home: ["startOfWeek", "before"],
+			End: ["endOfWeek", "after"]
+		};
+		if (keyMap[e.key]) {
+			e.preventDefault();
+			e.stopPropagation();
+			const [moveBy, moveDir] = keyMap[e.key];
+			moveFocus(moveBy, moveDir);
+		}
+		onDayKeyDown?.(day.date, modifiers, e);
+	}, [
+		moveFocus,
+		onDayKeyDown,
+		props.dir
+	]);
+	const handleDayMouseEnter = (0, import_react.useCallback)((day, modifiers) => (e) => {
+		onDayMouseEnter?.(day.date, modifiers, e);
+	}, [onDayMouseEnter]);
+	const handleDayMouseLeave = (0, import_react.useCallback)((day, modifiers) => (e) => {
+		onDayMouseLeave?.(day.date, modifiers, e);
+	}, [onDayMouseLeave]);
+	const handleMonthChange = (0, import_react.useCallback)((date$1) => (e) => {
+		const selectedMonth = Number(e.target.value);
+		goToMonth(dateLib.setMonth(dateLib.startOfMonth(date$1), selectedMonth));
+	}, [dateLib, goToMonth]);
+	const handleYearChange = (0, import_react.useCallback)((date$1) => (e) => {
+		const selectedYear = Number(e.target.value);
+		goToMonth(dateLib.setYear(dateLib.startOfMonth(date$1), selectedYear));
+	}, [dateLib, goToMonth]);
+	const { className, style } = (0, import_react.useMemo)(() => ({
+		className: [classNames[UI.Root], props.className].filter(Boolean).join(" "),
+		style: {
+			...styles?.[UI.Root],
+			...props.style
+		}
+	}), [
+		classNames,
+		props.className,
+		props.style,
+		styles
+	]);
+	const dataAttributes = getDataAttributes(props);
+	const rootElRef = (0, import_react.useRef)(null);
+	useAnimation(rootElRef, Boolean(props.animate), {
+		classNames,
+		months,
+		focused,
+		dateLib
+	});
+	const contextValue = {
+		dayPickerProps: props,
+		selected: selectedValue,
+		select,
+		isSelected,
+		months,
+		nextMonth,
+		previousMonth,
+		goToMonth,
+		getModifiers,
+		components,
+		classNames,
+		styles,
+		labels,
+		formatters: formatters$1
+	};
+	return import_react.createElement(dayPickerContext.Provider, { value: contextValue }, import_react.createElement(components.Root, {
+		rootRef: props.animate ? rootElRef : void 0,
+		className,
+		style,
+		dir: props.dir,
+		id: props.id,
+		lang: props.lang ?? locale$2.code,
+		nonce: props.nonce,
+		title: props.title,
+		role: props.role,
+		"aria-label": props["aria-label"],
+		"aria-labelledby": props["aria-labelledby"],
+		...dataAttributes
+	}, import_react.createElement(components.Months, {
+		className: classNames[UI.Months],
+		style: styles?.[UI.Months]
+	}, !props.hideNavigation && !navLayout && import_react.createElement(components.Nav, {
+		"data-animated-nav": props.animate ? "true" : void 0,
+		className: classNames[UI.Nav],
+		style: styles?.[UI.Nav],
+		"aria-label": labelNav$1(),
+		onPreviousClick: handlePreviousClick,
+		onNextClick: handleNextClick,
+		previousMonth,
+		nextMonth
+	}), months.map((calendarMonth, displayIndex) => {
+		return import_react.createElement(components.Month, {
+			"data-animated-month": props.animate ? "true" : void 0,
+			className: classNames[UI.Month],
+			style: styles?.[UI.Month],
+			key: displayIndex,
+			displayIndex,
+			calendarMonth
+		}, navLayout === "around" && !props.hideNavigation && displayIndex === 0 && import_react.createElement(components.PreviousMonthButton, {
+			type: "button",
+			className: classNames[UI.PreviousMonthButton],
+			tabIndex: previousMonth ? void 0 : -1,
+			"aria-disabled": previousMonth ? void 0 : true,
+			"aria-label": labelPrevious$1(previousMonth),
+			onClick: handlePreviousClick,
+			"data-animated-button": props.animate ? "true" : void 0
+		}, import_react.createElement(components.Chevron, {
+			disabled: previousMonth ? void 0 : true,
+			className: classNames[UI.Chevron],
+			orientation: props.dir === "rtl" ? "right" : "left"
+		})), import_react.createElement(components.MonthCaption, {
+			"data-animated-caption": props.animate ? "true" : void 0,
+			className: classNames[UI.MonthCaption],
+			style: styles?.[UI.MonthCaption],
+			calendarMonth,
+			displayIndex
+		}, captionLayout?.startsWith("dropdown") ? import_react.createElement(components.DropdownNav, {
+			className: classNames[UI.Dropdowns],
+			style: styles?.[UI.Dropdowns]
+		}, (() => {
+			const monthControl = captionLayout === "dropdown" || captionLayout === "dropdown-months" ? import_react.createElement(components.MonthsDropdown, {
+				key: "month",
+				className: classNames[UI.MonthsDropdown],
+				"aria-label": labelMonthDropdown$1(),
+				classNames,
+				components,
+				disabled: Boolean(props.disableNavigation),
+				onChange: handleMonthChange(calendarMonth.date),
+				options: getMonthOptions(calendarMonth.date, navStart, navEnd, formatters$1, dateLib),
+				style: styles?.[UI.Dropdown],
+				value: dateLib.getMonth(calendarMonth.date)
+			}) : import_react.createElement("span", { key: "month" }, formatMonthDropdown$1(calendarMonth.date, dateLib));
+			const yearControl = captionLayout === "dropdown" || captionLayout === "dropdown-years" ? import_react.createElement(components.YearsDropdown, {
+				key: "year",
+				className: classNames[UI.YearsDropdown],
+				"aria-label": labelYearDropdown$1(dateLib.options),
+				classNames,
+				components,
+				disabled: Boolean(props.disableNavigation),
+				onChange: handleYearChange(calendarMonth.date),
+				options: getYearOptions(navStart, navEnd, formatters$1, dateLib, Boolean(props.reverseYears)),
+				style: styles?.[UI.Dropdown],
+				value: dateLib.getYear(calendarMonth.date)
+			}) : import_react.createElement("span", { key: "year" }, formatYearDropdown$1(calendarMonth.date, dateLib));
+			return dateLib.getMonthYearOrder() === "year-first" ? [yearControl, monthControl] : [monthControl, yearControl];
+		})(), import_react.createElement("span", {
+			role: "status",
+			"aria-live": "polite",
+			style: {
+				border: 0,
+				clip: "rect(0 0 0 0)",
+				height: "1px",
+				margin: "-1px",
+				overflow: "hidden",
+				padding: 0,
+				position: "absolute",
+				width: "1px",
+				whiteSpace: "nowrap",
+				wordWrap: "normal"
+			}
+		}, formatCaption$1(calendarMonth.date, dateLib.options, dateLib))) : import_react.createElement(components.CaptionLabel, {
+			className: classNames[UI.CaptionLabel],
+			role: "status",
+			"aria-live": "polite"
+		}, formatCaption$1(calendarMonth.date, dateLib.options, dateLib))), navLayout === "around" && !props.hideNavigation && displayIndex === numberOfMonths - 1 && import_react.createElement(components.NextMonthButton, {
+			type: "button",
+			className: classNames[UI.NextMonthButton],
+			tabIndex: nextMonth ? void 0 : -1,
+			"aria-disabled": nextMonth ? void 0 : true,
+			"aria-label": labelNext$1(nextMonth),
+			onClick: handleNextClick,
+			"data-animated-button": props.animate ? "true" : void 0
+		}, import_react.createElement(components.Chevron, {
+			disabled: nextMonth ? void 0 : true,
+			className: classNames[UI.Chevron],
+			orientation: props.dir === "rtl" ? "left" : "right"
+		})), displayIndex === numberOfMonths - 1 && navLayout === "after" && !props.hideNavigation && import_react.createElement(components.Nav, {
+			"data-animated-nav": props.animate ? "true" : void 0,
+			className: classNames[UI.Nav],
+			style: styles?.[UI.Nav],
+			"aria-label": labelNav$1(),
+			onPreviousClick: handlePreviousClick,
+			onNextClick: handleNextClick,
+			previousMonth,
+			nextMonth
+		}), import_react.createElement(components.MonthGrid, {
+			role: "grid",
+			"aria-multiselectable": mode === "multiple" || mode === "range",
+			"aria-label": labelGrid$1(calendarMonth.date, dateLib.options, dateLib) || void 0,
+			className: classNames[UI.MonthGrid],
+			style: styles?.[UI.MonthGrid]
+		}, !props.hideWeekdays && import_react.createElement(components.Weekdays, {
+			"data-animated-weekdays": props.animate ? "true" : void 0,
+			className: classNames[UI.Weekdays],
+			style: styles?.[UI.Weekdays]
+		}, showWeekNumber && import_react.createElement(components.WeekNumberHeader, {
+			"aria-label": labelWeekNumberHeader$1(dateLib.options),
+			className: classNames[UI.WeekNumberHeader],
+			style: styles?.[UI.WeekNumberHeader],
+			scope: "col"
+		}, formatWeekNumberHeader$1()), weekdays.map((weekday) => import_react.createElement(components.Weekday, {
+			"aria-label": labelWeekday$1(weekday, dateLib.options, dateLib),
+			className: classNames[UI.Weekday],
+			key: String(weekday),
+			style: styles?.[UI.Weekday],
+			scope: "col"
+		}, formatWeekdayName$1(weekday, dateLib.options, dateLib)))), import_react.createElement(components.Weeks, {
+			"data-animated-weeks": props.animate ? "true" : void 0,
+			className: classNames[UI.Weeks],
+			style: styles?.[UI.Weeks]
+		}, calendarMonth.weeks.map((week) => {
+			return import_react.createElement(components.Week, {
+				className: classNames[UI.Week],
+				key: week.weekNumber,
+				style: styles?.[UI.Week],
+				week
+			}, showWeekNumber && import_react.createElement(components.WeekNumber, {
+				week,
+				style: styles?.[UI.WeekNumber],
+				"aria-label": labelWeekNumber$1(week.weekNumber, { locale: locale$2 }),
+				className: classNames[UI.WeekNumber],
+				scope: "row",
+				role: "rowheader"
+			}, formatWeekNumber$1(week.weekNumber, dateLib)), week.days.map((day) => {
+				const { date: date$1 } = day;
+				const modifiers = getModifiers(day);
+				modifiers[DayFlag.focused] = !modifiers.hidden && Boolean(focused?.isEqualTo(day));
+				modifiers[SelectionState.selected] = isSelected?.(date$1) || modifiers.selected;
+				if (isDateRange(selectedValue)) {
+					const { from, to } = selectedValue;
+					modifiers[SelectionState.range_start] = Boolean(from && to && dateLib.isSameDay(date$1, from));
+					modifiers[SelectionState.range_end] = Boolean(from && to && dateLib.isSameDay(date$1, to));
+					modifiers[SelectionState.range_middle] = rangeIncludesDate(selectedValue, date$1, true, dateLib);
+				}
+				const style$1 = getStyleForModifiers(modifiers, styles, props.modifiersStyles);
+				const className$1 = getClassNamesForModifiers(modifiers, classNames, props.modifiersClassNames);
+				const ariaLabel = !isInteractive && !modifiers.hidden ? labelGridcell$1(date$1, modifiers, dateLib.options, dateLib) : void 0;
+				return import_react.createElement(components.Day, {
+					key: `${day.isoDate}_${day.displayMonthId}`,
+					day,
+					modifiers,
+					className: className$1.join(" "),
+					style: style$1,
+					role: "gridcell",
+					"aria-selected": modifiers.selected || void 0,
+					"aria-label": ariaLabel,
+					"data-day": day.isoDate,
+					"data-month": day.outside ? day.dateMonthId : void 0,
+					"data-selected": modifiers.selected || void 0,
+					"data-disabled": modifiers.disabled || void 0,
+					"data-hidden": modifiers.hidden || void 0,
+					"data-outside": day.outside || void 0,
+					"data-focused": modifiers.focused || void 0,
+					"data-today": modifiers.today || void 0
+				}, !modifiers.hidden && isInteractive ? import_react.createElement(components.DayButton, {
+					className: classNames[UI.DayButton],
+					style: styles?.[UI.DayButton],
+					type: "button",
+					day,
+					modifiers,
+					disabled: !modifiers.focused && modifiers.disabled || void 0,
+					"aria-disabled": modifiers.focused && modifiers.disabled || void 0,
+					tabIndex: isFocusTarget(day) ? 0 : -1,
+					"aria-label": labelDayButton$1(date$1, modifiers, dateLib.options, dateLib),
+					onClick: handleDayClick(day, modifiers),
+					onBlur: handleDayBlur(day, modifiers),
+					onFocus: handleDayFocus(day, modifiers),
+					onKeyDown: handleDayKeyDown(day, modifiers),
+					onMouseEnter: handleDayMouseEnter(day, modifiers),
+					onMouseLeave: handleDayMouseLeave(day, modifiers)
+				}, formatDay$1(date$1, dateLib.options, dateLib)) : !modifiers.hidden && formatDay$1(day.date, dateLib.options, dateLib));
+			}));
+		}))));
+	})), props.footer && import_react.createElement(components.Footer, {
+		className: classNames[UI.Footer],
+		style: styles?.[UI.Footer],
+		role: "status",
+		"aria-live": "polite"
+	}, props.footer)));
+}
+function Calendar({ className, classNames, showOutsideDays = true, captionLayout = "label", buttonVariant = "ghost", formatters: formatters$1, components, ...props }) {
+	const defaultClassNames = getDefaultClassNames();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DayPicker, {
+		showOutsideDays,
+		className: cn("bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent", String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`, String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`, className),
+		captionLayout,
+		formatters: {
+			formatMonthDropdown: (date$1) => date$1.toLocaleString("default", { month: "short" }),
+			...formatters$1
+		},
+		classNames: {
+			root: cn("w-fit", defaultClassNames.root),
+			months: cn("relative flex flex-col gap-4 md:flex-row", defaultClassNames.months),
+			month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
+			nav: cn("absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1", defaultClassNames.nav),
+			button_previous: cn(buttonVariants({ variant: buttonVariant }), "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50", defaultClassNames.button_previous),
+			button_next: cn(buttonVariants({ variant: buttonVariant }), "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50", defaultClassNames.button_next),
+			month_caption: cn("flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]", defaultClassNames.month_caption),
+			dropdowns: cn("flex h-[--cell-size] w-full items-center justify-center gap-1.5 text-sm font-medium", defaultClassNames.dropdowns),
+			dropdown_root: cn("has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border", defaultClassNames.dropdown_root),
+			dropdown: cn("absolute inset-0 opacity-0", defaultClassNames.dropdown),
+			caption_label: cn("select-none font-medium", captionLayout === "label" ? "text-sm" : "[&>svg]:text-muted-foreground flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm [&>svg]:size-3.5", defaultClassNames.caption_label),
+			table: "w-full border-collapse",
+			weekdays: cn("flex", defaultClassNames.weekdays),
+			weekday: cn("text-muted-foreground flex-1 select-none rounded-md text-[0.8rem] font-normal", defaultClassNames.weekday),
+			week: cn("mt-2 flex w-full", defaultClassNames.week),
+			week_number_header: cn("w-[--cell-size] select-none", defaultClassNames.week_number_header),
+			week_number: cn("text-muted-foreground select-none text-[0.8rem]", defaultClassNames.week_number),
+			day: cn("group/day relative aspect-square h-full w-full select-none p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md", defaultClassNames.day),
+			range_start: cn("bg-accent rounded-l-md", defaultClassNames.range_start),
+			range_middle: cn("rounded-none", defaultClassNames.range_middle),
+			range_end: cn("bg-accent rounded-r-md", defaultClassNames.range_end),
+			today: cn("bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none", defaultClassNames.today),
+			outside: cn("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
+			disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
+			hidden: cn("invisible", defaultClassNames.hidden),
+			...classNames
+		},
+		components: {
+			Root: ({ className: className$1, rootRef, ...props$1 }) => {
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					"data-slot": "calendar",
+					ref: rootRef,
+					className: cn(className$1),
+					...props$1
+				});
+			},
+			Chevron: ({ className: className$1, orientation, ...props$1 }) => {
+				if (orientation === "left") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, {
+					className: cn("size-4", className$1),
+					...props$1
+				});
+				if (orientation === "right") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, {
+					className: cn("size-4", className$1),
+					...props$1
+				});
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
+					className: cn("size-4", className$1),
+					...props$1
+				});
+			},
+			DayButton: CalendarDayButton,
+			WeekNumber: ({ children, ...props$1 }) => {
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+					...props$1,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex size-[--cell-size] items-center justify-center text-center",
+						children
+					})
+				});
+			},
+			...components
+		},
+		...props
+	});
+}
+function CalendarDayButton({ className, day, modifiers, ...props }) {
+	const defaultClassNames = getDefaultClassNames();
+	const ref = import_react.useRef(null);
+	import_react.useEffect(() => {
+		if (modifiers.focused) ref.current?.focus();
+	}, [modifiers.focused]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+		ref,
+		variant: "ghost",
+		size: "icon",
+		"data-day": day.date.toLocaleDateString(),
+		"data-selected-single": modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle,
+		"data-range-start": modifiers.range_start,
+		"data-range-end": modifiers.range_end,
+		"data-range-middle": modifiers.range_middle,
+		className: cn("data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square h-auto w-full min-w-[--cell-size] flex-col gap-1 font-normal leading-none data-[range-end=true]:rounded-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] [&>span]:text-xs [&>span]:opacity-70", defaultClassNames.day, className),
+		...props
+	});
+}
+function Sanidade() {
+	const [date$1, setDate] = (0, import_react.useState)(/* @__PURE__ */ new Date());
+	const { toast: toast$2 } = useToast();
+	const handleSchedule = () => {
+		toast$2({
+			title: "Protocolo Agendado",
+			description: "O novo evento sanitário foi adicionado ao calendário."
+		});
+	};
+	const getStatusIcon = (status) => {
+		switch (status) {
+			case "Atrasado": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "h-4 w-4 text-destructive" });
+			case "Concluído": return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4 text-primary" });
+			default: return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4 text-muted-foreground" });
+		}
+	};
+	const getStatusColor = (status) => {
+		switch (status) {
+			case "Atrasado": return "destructive";
+			case "Concluído": return "default";
+			default: return "secondary";
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-3xl font-bold tracking-tight",
+				children: "Calendário Sanitário"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Gestão de vacinas, vermífugos e protocolos reprodutivos."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick: handleSchedule,
+				className: "w-full sm:w-auto gap-2 min-h-[44px]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Novo Agendamento"]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid gap-6 md:grid-cols-12",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "md:col-span-4 lg:col-span-3 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+					className: "pb-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "text-lg flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar$1, { className: "h-5 w-5" }), " Data Base"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "flex justify-center pb-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, {
+						mode: "single",
+						selected: date$1,
+						onSelect: setDate,
+						className: "rounded-md border shadow-sm"
+					})
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "bg-primary/5 border-primary/20",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-primary",
+							children: "Próxima Campanha"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "font-bold text-lg leading-tight",
+						children: "Febre Aftosa"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-muted-foreground mt-1",
+						children: "Início previsto em 15 dias"
+					})] })]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "md:col-span-8 lg:col-span-9",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "h-full",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Eventos Programados" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhamento de protocolos por lote e categoria." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "space-y-4",
+						children: sanitaryEvents.map((event) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex gap-4 items-start w-full sm:w-auto",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: `mt-1 p-2 rounded-full ${event.status === "Atrasado" ? "bg-destructive/10" : "bg-muted"}`,
+									children: getStatusIcon(event.status)
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+											className: "font-semibold",
+											children: event.title
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											variant: getStatusColor(event.status),
+											className: "ml-2",
+											children: event.status
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "flex items-center gap-1",
+												children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Syringe, { className: "h-3 w-3" }),
+													" ",
+													event.type
+												]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "font-medium text-foreground",
+												children: ["Lote: ", event.lote]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Alvo: ", event.target] })
+										]
+									})]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between w-full sm:w-auto mt-2 sm:mt-0 pt-2 sm:pt-0 border-t sm:border-0",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm font-medium sm:mr-4",
+									children: event.date
+								}), event.status !== "Concluído" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "outline",
+									size: "sm",
+									className: "min-h-[44px]",
+									children: "Registrar"
+								})]
+							})]
+						}, event.id))
+					}) })]
+				})
+			})]
+		})]
 	});
 }
 var NotFound = () => {
@@ -53391,6 +57594,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Financeiro, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/sanidade",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sanidade, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/animal/:id",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalProfile, {})
 				})
@@ -53404,4 +57611,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BOJ7NPwX.js.map
+//# sourceMappingURL=index-BfbOhnK9.js.map

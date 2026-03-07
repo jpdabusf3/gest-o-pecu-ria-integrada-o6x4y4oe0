@@ -1,7 +1,17 @@
+import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertTriangle, TrendingUp, TrendingDown, Beef, Wallet } from 'lucide-react'
-import { dashboardData, inventoryData } from '@/data/mock'
+import { Button } from '@/components/ui/button'
+import {
+  AlertTriangle,
+  TrendingUp,
+  TrendingDown,
+  Beef,
+  Wallet,
+  Syringe,
+  WifiOff,
+} from 'lucide-react'
+import { dashboardData, inventoryData, sanitaryEvents } from '@/data/mock'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 
@@ -12,70 +22,133 @@ export default function Index() {
     .map((item) => ({
       id: `inv-${item.id}`,
       title: `Estoque Crítico: ${item.item}`,
-      desc: `A quantidade atual (${item.qtd} ${item.unidade}) está abaixo do limite mínimo aceitável (${item.minQtd}).`,
+      desc: `A quantidade atual (${item.qtd} ${item.unidade}) está abaixo do mínimo aceitável (${item.minQtd}).`,
       type: 'destructive',
     }))
 
-  const allAlerts = [...dashboardData.alerts, ...inventoryAlerts]
+  const sanitaryAlerts = sanitaryEvents
+    .filter((event) => event.status === 'Atrasado')
+    .map((event) => ({
+      id: event.id,
+      title: `Sanidade Atrasada: ${event.title}`,
+      desc: `O protocolo para o lote ${event.lote} encontra-se pendente.`,
+      type: 'destructive',
+    }))
+
+  const allAlerts = [...dashboardData.alerts, ...inventoryAlerts, ...sanitaryAlerts]
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard Geral</h2>
-        <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
+    <div className="space-y-6 pb-20 sm:pb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard Geral</h2>
+          <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
+        </div>
+
+        {/* PWA / Offline Indicator Simulation */}
+        <div className="hidden sm:flex items-center text-xs font-medium text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full border">
+          Acesso Offline Habilitado
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {allAlerts.map((alert) => (
-          <Alert key={alert.id} variant={alert.type as any} className="hover-lift bg-background">
-            <AlertTriangle className="h-5 w-5" />
-            <AlertTitle className="font-semibold">{alert.title}</AlertTitle>
-            <AlertDescription>{alert.desc}</AlertDescription>
-          </Alert>
-        ))}
+      {allAlerts.length > 0 && (
+        <div className="grid gap-4 md:grid-cols-2">
+          {allAlerts.map((alert) => (
+            <Alert
+              key={alert.id}
+              variant={alert.type as any}
+              className="hover-lift bg-background shadow-sm border-l-4 border-l-destructive"
+            >
+              <AlertTriangle className="h-5 w-5" />
+              <AlertTitle className="font-semibold">{alert.title}</AlertTitle>
+              <AlertDescription>{alert.desc}</AlertDescription>
+            </Alert>
+          ))}
+        </div>
+      )}
+
+      {/* Acesso Rápido - Touch Friendly for Mobile */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <Button
+          variant="outline"
+          className="h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50"
+          asChild
+        >
+          <Link to="/sanidade">
+            <Syringe className="h-5 w-5 text-primary" />
+            <span className="text-xs">Sanidade</span>
+          </Link>
+        </Button>
+        <Button
+          variant="outline"
+          className="h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50"
+          asChild
+        >
+          <Link to="/estoque">
+            <Wallet className="h-5 w-5 text-primary" />
+            <span className="text-xs">Estoque</span>
+          </Link>
+        </Button>
+        <Button
+          variant="outline"
+          className="h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50"
+          asChild
+        >
+          <Link to="/financeiro">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            <span className="text-xs">Finanças</span>
+          </Link>
+        </Button>
+        <Button
+          variant="outline"
+          className="h-16 flex flex-col items-center justify-center gap-1 shadow-sm hover:border-primary/50"
+          asChild
+        >
+          <Link to="/pastos">
+            <Beef className="h-5 w-5 text-primary" />
+            <span className="text-xs">Pastos</span>
+          </Link>
+        </Button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total de Animais
+              Total Animais
             </CardTitle>
             <Beef className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{dashboardData.kpis.animais}</div>
-            <p className="text-xs text-muted-foreground mt-1">+12% em relação ao ano anterior</p>
+            <p className="text-xs text-muted-foreground mt-1">+12% a/a</p>
           </CardContent>
         </Card>
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Valor Estimado do Rebanho
+              Valor Estimado
             </CardTitle>
             <Wallet className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{dashboardData.kpis.valorTotal}</div>
-            <p className="text-xs text-muted-foreground mt-1">Baseado na arroba atual</p>
+            <p className="text-xs text-muted-foreground mt-1">Base arroba atual</p>
           </CardContent>
         </Card>
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Receita do Mês
-            </CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Receita Mês</CardTitle>
             <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">{dashboardData.kpis.receitaMes}</div>
-            <p className="text-xs text-muted-foreground mt-1">+4.5% em relação ao mês anterior</p>
           </CardContent>
         </Card>
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Despesas do Mês
+              Despesas Mês
             </CardTitle>
             <TrendingDown className="h-4 w-4 text-destructive" />
           </CardHeader>
@@ -83,7 +156,6 @@ export default function Index() {
             <div className="text-2xl font-bold text-destructive">
               {dashboardData.kpis.despesasMes}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Dentro do orçamento projetado</p>
           </CardContent>
         </Card>
       </div>
@@ -91,47 +163,21 @@ export default function Index() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="lg:col-span-4 flex flex-col">
           <CardHeader>
-            <CardTitle>Receitas vs Despesas (6 meses)</CardTitle>
+            <CardTitle>Receitas vs Despesas</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1 pb-2">
+          <CardContent className="flex-1 pb-2 min-h-[300px]">
             <CashflowChart />
           </CardContent>
         </Card>
         <Card className="lg:col-span-3 flex flex-col">
           <CardHeader>
-            <CardTitle>Distribuição do Rebanho</CardTitle>
+            <CardTitle>Distribuição Rebanho</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1 pb-2">
+          <CardContent className="flex-1 pb-2 min-h-[300px]">
             <DistributionChart />
           </CardContent>
         </Card>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Últimas Movimentações</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {dashboardData.activities.map((act) => (
-              <div
-                key={act.id}
-                className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
-              >
-                <div className="space-y-1">
-                  <p className="text-sm font-medium leading-none">{act.action}</p>
-                  <p className="text-sm text-muted-foreground">{act.time}</p>
-                </div>
-                <div
-                  className={`text-sm font-medium ${act.type === 'receita' ? 'text-primary' : act.type === 'despesa' ? 'text-destructive' : 'text-muted-foreground'}`}
-                >
-                  {act.amount}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }

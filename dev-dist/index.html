@@ -1,21 +1,40 @@
-<!-- HTML template for the frontend react app: https://developer.mozilla.org/en-US/docs/Web/HTML -->
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Um incrível projeto do Skip</title>
-    <meta name="description" content="Projeto gerado usando Skip (https://goskip.dev)" />
-    <meta name="author" content="Skip (https://goskip.dev)" />
-    <meta property="og:image" content="/og-image.png" />
-    <script type="module" crossorigin src="/assets/index-BOJ7NPwX.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Bcwce1kw.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Gestão Pecuária Integrada</title>
+    <meta name="description" content="Sistema de gestão agropecuária otimizado para produtividade no campo." />
+    <meta name="theme-color" content="#16a34a" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="https://img.usecurling.com/i?q=cow&color=solid-black&shape=fill" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <script type="module" crossorigin src="/assets/index-BfbOhnK9.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-6k2A1JGm.css">
   </head>
 
   <body>
     <div id="root"></div>
     <!-- @skip-protected: Do not remove. Required for app features. -->
     <script src="https://goskip.dev/skip.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(
+            (registration) => {
+              console.log('PWA ServiceWorker registration successful with scope: ', registration.scope);
+            },
+            (err) => {
+              console.log('PWA ServiceWorker registration failed: ', err);
+            }
+          );
+        });
+      }
+    </script>
+    
     <!-- @skip-protected: Do not remove. App entrypoint. -->
   </body>
 </html>

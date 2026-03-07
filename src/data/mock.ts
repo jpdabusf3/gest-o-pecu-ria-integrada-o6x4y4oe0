@@ -370,3 +370,42 @@ export const animalData: Record<string, any> = {
     ],
   },
 }
+
+export const sanitaryEvents = [
+  {
+    id: 'SAN-01',
+    title: 'Vermifugação Semestral',
+    date: 'Hoje',
+    type: 'Manejo',
+    status: 'Atrasado',
+    lote: 'LCR-04',
+    target: 'Bezerras',
+  },
+  {
+    id: 'SAN-02',
+    title: 'Vacinação Febre Aftosa',
+    date: 'Próxima Semana',
+    type: 'Vacina',
+    status: 'Agendado',
+    lote: 'Todos',
+    target: 'Rebanho Geral',
+  },
+  {
+    id: 'SAN-03',
+    title: 'Toque de Prenhez',
+    date: 'Daqui a 15 dias',
+    type: 'Exame',
+    status: 'Agendado',
+    lote: 'LCR-01',
+    target: 'Matrizes',
+  },
+  {
+    id: 'SAN-04',
+    title: 'Aplicação Carrapaticida',
+    date: 'Mês Passado',
+    type: 'Manejo',
+    status: 'Concluído',
+    lote: 'LEN-02',
+    target: 'Bois Terminação',
+  },
+]

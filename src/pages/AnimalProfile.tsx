@@ -31,6 +31,7 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import { animalData } from '@/data/mock'
 import { ArrowLeft, Plus } from 'lucide-react'
+import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
 
 function QuickEventModal({ animalId }: { animalId: string }) {
   const [open, setOpen] = useState(false)
@@ -47,7 +48,7 @@ function QuickEventModal({ animalId }: { animalId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="gap-2">
+        <Button size="sm" className="gap-2 min-h-[44px]">
           <Plus className="h-4 w-4" /> Registrar Evento
         </Button>
       </DialogTrigger>
@@ -75,9 +76,9 @@ function QuickEventModal({ animalId }: { animalId: string }) {
           </div>
           <div className="space-y-2">
             <Label>Valor / Detalhe</Label>
-            <Input placeholder="Ex: 250 kg ou Nome da Vacina" />
+            <Input placeholder="Ex: 250 kg ou Nome da Vacina" className="min-h-[44px]" />
           </div>
-          <Button onClick={handleSave} className="w-full">
+          <Button onClick={handleSave} className="w-full min-h-[44px]">
             Salvar Histórico
           </Button>
         </div>
@@ -89,13 +90,24 @@ function QuickEventModal({ animalId }: { animalId: string }) {
 export default function AnimalProfile() {
   const { id } = useParams<{ id: string }>()
   const animal = animalData[id || ''] || animalData['TAG-1234']
+  const [historico, setHistorico] = useState(animal.historico)
+  const [pesoAtual, setPesoAtual] = useState(animal.pesoAtual)
+
+  const handleNewWeight = (weight: string) => {
+    const newData = `${weight} kg`
+    setPesoAtual(newData)
+    setHistorico([
+      { data: new Date().toLocaleDateString('pt-BR'), tipo: 'Pesagem (Sensor)', valor: newData },
+      ...historico,
+    ])
+  }
 
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild>
+        <Button variant="ghost" size="icon" asChild className="min-h-[44px] min-w-[44px]">
           <Link to="/">
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
         <div>
@@ -128,7 +140,7 @@ export default function AnimalProfile() {
             <CardTitle className="text-sm text-muted-foreground">Peso Atual</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl font-bold text-primary">{animal.pesoAtual}</div>
+            <div className="text-xl font-bold text-primary">{pesoAtual}</div>
           </CardContent>
         </Card>
         <Card>
@@ -144,7 +156,10 @@ export default function AnimalProfile() {
       <Card>
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <CardTitle>Histórico de Eventos</CardTitle>
-          <QuickEventModal animalId={animal.id} />
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+            <ScaleIntegrationModal animalId={animal.id} onSaveWeight={handleNewWeight} />
+            <QuickEventModal animalId={animal.id} />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -157,11 +172,13 @@ export default function AnimalProfile() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {animal.historico.map((ev: any, idx: number) => (
+                {historico.map((ev: any, idx: number) => (
                   <TableRow key={idx}>
                     <TableCell className="whitespace-nowrap">{ev.data}</TableCell>
                     <TableCell>
-                      <Badge variant="outline">{ev.tipo}</Badge>
+                      <Badge variant={ev.tipo.includes('Sensor') ? 'default' : 'outline'}>
+                        {ev.tipo}
+                      </Badge>
                     </TableCell>
                     <TableCell className="font-medium">{ev.valor}</TableCell>
                   </TableRow>
