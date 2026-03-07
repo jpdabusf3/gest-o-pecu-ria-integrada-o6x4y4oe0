@@ -19,28 +19,39 @@ export default function Estoque() {
           <TableRow>
             <TableHead>Item</TableHead>
             <TableHead>Categoria</TableHead>
-            <TableHead className="text-right">Quantidade</TableHead>
+            <TableHead className="text-right">Qtd Atual</TableHead>
+            <TableHead className="text-right hidden sm:table-cell">Mínimo</TableHead>
             <TableHead>Unidade</TableHead>
-            <TableHead>Status de Estoque</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="font-medium">{item.item}</TableCell>
-              <TableCell>{item.tipo}</TableCell>
-              <TableCell className="text-right font-mono">{item.qtd}</TableCell>
-              <TableCell>{item.unidade}</TableCell>
-              <TableCell>
-                <Badge
-                  variant={item.status === 'Baixo' ? 'destructive' : 'secondary'}
-                  className={item.status === 'Baixo' ? 'animate-pulse-slow' : ''}
+          {items.map((item) => {
+            const isCritical = item.qtd < item.minQtd
+            return (
+              <TableRow key={item.id} className={isCritical ? 'bg-destructive/5' : ''}>
+                <TableCell className="font-medium">{item.item}</TableCell>
+                <TableCell>{item.tipo}</TableCell>
+                <TableCell
+                  className={`text-right font-mono ${isCritical ? 'text-destructive font-bold' : ''}`}
                 >
-                  {item.status}
-                </Badge>
-              </TableCell>
-            </TableRow>
-          ))}
+                  {item.qtd}
+                </TableCell>
+                <TableCell className="text-right font-mono text-muted-foreground hidden sm:table-cell">
+                  {item.minQtd}
+                </TableCell>
+                <TableCell>{item.unidade}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={isCritical ? 'destructive' : 'secondary'}
+                    className={isCritical ? 'animate-pulse-slow' : ''}
+                  >
+                    {isCritical ? 'Crítico' : 'Normal'}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -9,13 +10,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { sectorData } from '@/data/mock'
-import { Beef, Activity, DollarSign } from 'lucide-react'
+import { Beef, Activity, DollarSign, LineChart } from 'lucide-react'
+import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
 
 export default function Setor() {
   const { id } = useParams<{ id: string }>()
-  const data = sectorData[id as keyof typeof sectorData]
+  const [selectedLote, setSelectedLote] = useState<string | null>(null)
 
+  const data = sectorData[id as keyof typeof sectorData]
   if (!data) return <Navigate to="/" replace />
 
   return (
@@ -73,12 +77,17 @@ export default function Setor() {
                   <TableHead className="text-right">Cabeças</TableHead>
                   <TableHead>Localização</TableHead>
                   <TableHead>Status Sanitário</TableHead>
+                  <TableHead className="text-right">Desempenho</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.lotes.map((lote) => (
-                  <TableRow key={lote.id}>
-                    <TableCell className="font-medium">{lote.id}</TableCell>
+                  <TableRow
+                    key={lote.id}
+                    className="cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => setSelectedLote(lote.id)}
+                  >
+                    <TableCell className="font-medium text-primary">{lote.id}</TableCell>
                     <TableCell>{lote.categoria}</TableCell>
                     <TableCell className="text-right">{lote.cabecas}</TableCell>
                     <TableCell>{lote.pasto}</TableCell>
@@ -95,6 +104,15 @@ export default function Setor() {
                         {lote.status}
                       </Badge>
                     </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-muted-foreground hover:text-primary"
+                      >
+                        <LineChart className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -102,6 +120,12 @@ export default function Setor() {
           </div>
         </CardContent>
       </Card>
+
+      <LotPerformanceDrawer
+        loteId={selectedLote}
+        open={!!selectedLote}
+        onOpenChange={(open) => !open && setSelectedLote(null)}
+      />
     </div>
   )
 }

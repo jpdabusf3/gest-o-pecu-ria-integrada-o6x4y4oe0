@@ -8,6 +8,7 @@ import Setor from './pages/Setor'
 import Pastos from './pages/Pastos'
 import Estoque from './pages/Estoque'
 import Financeiro from './pages/Financeiro'
+import AnimalProfile from './pages/AnimalProfile'
 import NotFound from './pages/NotFound'
 
 const App = () => (
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/pastos" element={<Pastos />} />
           <Route path="/estoque" element={<Estoque />} />
           <Route path="/financeiro" element={<Financeiro />} />
+          <Route path="/animal/:id" element={<AnimalProfile />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

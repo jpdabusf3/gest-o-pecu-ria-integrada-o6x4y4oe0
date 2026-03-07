@@ -334,7 +334,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			this.updater = updater || ReactNoopUpdateQueue;
 		}
 		function ComponentDummy() {}
-		function PureComponent$11(props, context, updater) {
+		function PureComponent$12(props, context, updater) {
 			this.props = props;
 			this.context = context;
 			this.refs = emptyObject;
@@ -694,8 +694,8 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 		};
 		for (fnName in deprecatedAPIs) deprecatedAPIs.hasOwnProperty(fnName) && defineDeprecationWarning(fnName, deprecatedAPIs[fnName]);
 		ComponentDummy.prototype = Component$2.prototype;
-		deprecatedAPIs = PureComponent$11.prototype = new ComponentDummy();
-		deprecatedAPIs.constructor = PureComponent$11;
+		deprecatedAPIs = PureComponent$12.prototype = new ComponentDummy();
+		deprecatedAPIs.constructor = PureComponent$12;
 		assign$1(deprecatedAPIs, Component$2.prototype);
 		deprecatedAPIs.isPureReactComponent = !0;
 		var isArrayImpl = Array.isArray, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = {
@@ -775,7 +775,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 		exports.Component = Component$2;
 		exports.Fragment = REACT_FRAGMENT_TYPE;
 		exports.Profiler = REACT_PROFILER_TYPE;
-		exports.PureComponent = PureComponent$11;
+		exports.PureComponent = PureComponent$12;
 		exports.StrictMode = REACT_STRICT_MODE_TYPE;
 		exports.Suspense = REACT_SUSPENSE_TYPE;
 		exports.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = ReactSharedInternals;
@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$36 = require_react(), Internals = {
+		var React$37 = require_react(), Internals = {
 			d: {
 				f: noop$2,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$36.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$37.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$36.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$37.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$36 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$37 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$36.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$37.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$36.version;
+			var isomorphicReactPackageVersion = React$37.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17609,15 +17609,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$36 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$36.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$37 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$37.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$36 = { react_stack_bottom_frame: function(callStackForError) {
+		React$37 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$36.react_stack_bottom_frame.bind(React$36, UnknownOwner)();
+		var unknownOwnerDebugStack = React$37.react_stack_bottom_frame.bind(React$37, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -17807,7 +17807,7 @@ function getElementRef$2(element) {
 }
 function createCollection(name) {
 	const PROVIDER_NAME$2 = name + "CollectionProvider";
-	const [createCollectionContext, createCollectionScope$3] = createContextScope(PROVIDER_NAME$2);
+	const [createCollectionContext, createCollectionScope$4] = createContextScope(PROVIDER_NAME$2);
 	const [CollectionProviderImpl, useCollectionContext] = createCollectionContext(PROVIDER_NAME$2, {
 		collectionRef: { current: null },
 		itemMap: /* @__PURE__ */ new Map()
@@ -17856,7 +17856,7 @@ function createCollection(name) {
 		});
 	});
 	CollectionItemSlot.displayName = ITEM_SLOT_NAME;
-	function useCollection$3(scope) {
+	function useCollection$4(scope) {
 		const context = useCollectionContext(name + "CollectionConsumer", scope);
 		return import_react.useCallback(() => {
 			const collectionNode = context.collectionRef.current;
@@ -17871,8 +17871,8 @@ function createCollection(name) {
 			Slot: CollectionSlot,
 			ItemSlot: CollectionItemSlot
 		},
-		useCollection$3,
-		createCollectionScope$3
+		useCollection$4,
+		createCollectionScope$4
 	];
 }
 var Primitive = [
@@ -17894,10 +17894,10 @@ var Primitive = [
 	"svg",
 	"ul"
 ].reduce((primitive, node) => {
-	const Slot$3 = /* @__PURE__ */ createSlot(`Primitive.${node}`);
+	const Slot$4 = /* @__PURE__ */ createSlot(`Primitive.${node}`);
 	const Node$1 = import_react.forwardRef((props, forwardedRef) => {
 		const { asChild, ...primitiveProps } = props;
-		const Comp = asChild ? Slot$3 : node;
+		const Comp = asChild ? Slot$4 : node;
 		if (typeof window !== "undefined") window[Symbol.for("radix-ui")] = true;
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Comp, {
 			...primitiveProps,
@@ -18106,7 +18106,7 @@ var Root$7 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
-var PORTAL_NAME$3 = "Portal";
+var PORTAL_NAME$5 = "Portal";
 var Portal = import_react.forwardRef((props, forwardedRef) => {
 	const { container: containerProp, ...portalProps } = props;
 	const [mounted, setMounted] = import_react.useState(false);
@@ -18117,7 +18117,7 @@ var Portal = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	}), container) : null;
 });
-Portal.displayName = PORTAL_NAME$3;
+Portal.displayName = PORTAL_NAME$5;
 function useStateMachine(initialState, machine) {
 	return import_react.useReducer((state, event) => {
 		return machine[state][event] ?? state;
@@ -18237,7 +18237,7 @@ function useControllableState({ prop, defaultProp, onChange = () => {}, caller }
 	}
 	return [value, import_react.useCallback((nextValue) => {
 		if (isControlled) {
-			const value2 = isFunction$24(nextValue) ? nextValue(prop) : nextValue;
+			const value2 = isFunction$25(nextValue) ? nextValue(prop) : nextValue;
 			if (value2 !== prop) onChangeRef.current?.(value2);
 		} else setUncontrolledProp(nextValue);
 	}, [
@@ -18266,7 +18266,7 @@ function useUncontrolledState({ defaultProp, onChange }) {
 		onChangeRef
 	];
 }
-function isFunction$24(value) {
+function isFunction$25(value) {
 	return typeof value === "function";
 }
 var VISUALLY_HIDDEN_STYLES = Object.freeze({
@@ -18296,8 +18296,8 @@ VisuallyHidden.displayName = NAME$3;
 var Root$6 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
-var [Collection$2, useCollection$2, createCollectionScope$2] = createCollection("Toast");
-var [createToastContext, createToastScope] = createContextScope("Toast", [createCollectionScope$2]);
+var [Collection$3, useCollection$3, createCollectionScope$3] = createCollection("Toast");
+var [createToastContext, createToastScope] = createContextScope("Toast", [createCollectionScope$3]);
 var [ToastProviderProvider, useToastProviderContext] = createToastContext(PROVIDER_NAME$1);
 var ToastProvider$1 = (props) => {
 	const { __scopeToast, label = "Notification", duration = 5e3, swipeDirection = "right", swipeThreshold = 50, children } = props;
@@ -18306,7 +18306,7 @@ var ToastProvider$1 = (props) => {
 	const isFocusedToastEscapeKeyDownRef = import_react.useRef(false);
 	const isClosePausedRef = import_react.useRef(false);
 	if (!label.trim()) console.error(`Invalid prop \`label\` supplied to \`${PROVIDER_NAME$1}\`. Expected non-empty \`string\`.`);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Provider, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.Provider, {
 		scope: __scopeToast,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToastProviderProvider, {
 			scope: __scopeToast,
@@ -18333,7 +18333,7 @@ var VIEWPORT_RESUME = "toast.viewportResume";
 var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeToast, hotkey = VIEWPORT_DEFAULT_HOTKEY, label = "Notifications ({hotkey})", ...viewportProps } = props;
 	const context = useToastProviderContext(VIEWPORT_NAME$1, __scopeToast);
-	const getItems = useCollection$2(__scopeToast);
+	const getItems = useCollection$3(__scopeToast);
 	const wrapperRef = import_react.useRef(null);
 	const headFocusProxyRef = import_react.useRef(null);
 	const tailFocusProxyRef = import_react.useRef(null);
@@ -18410,7 +18410,7 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 					}
 					const sortedCandidates = getSortedTabbableCandidates({ tabbingDirection: isTabbingBackwards ? "backwards" : "forwards" });
 					const index$1 = sortedCandidates.findIndex((candidate) => candidate === focusedElement);
-					if (focusFirst$2(sortedCandidates.slice(index$1 + 1))) event.preventDefault();
+					if (focusFirst$3(sortedCandidates.slice(index$1 + 1))) event.preventDefault();
 					else isTabbingBackwards ? headFocusProxyRef.current?.focus() : tailFocusProxyRef.current?.focus();
 				}
 			};
@@ -18428,10 +18428,10 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 			hasToasts && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusProxy, {
 				ref: headFocusProxyRef,
 				onFocusFromOutsideViewport: () => {
-					focusFirst$2(getSortedTabbableCandidates({ tabbingDirection: "forwards" }));
+					focusFirst$3(getSortedTabbableCandidates({ tabbingDirection: "forwards" }));
 				}
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Slot, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.Slot, {
 				scope: __scopeToast,
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.ol, {
 					tabIndex: -1,
@@ -18442,7 +18442,7 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 			hasToasts && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusProxy, {
 				ref: tailFocusProxyRef,
 				onFocusFromOutsideViewport: () => {
-					focusFirst$2(getSortedTabbableCandidates({ tabbingDirection: "backwards" }));
+					focusFirst$3(getSortedTabbableCandidates({ tabbingDirection: "backwards" }));
 				}
 			})
 		]
@@ -18590,7 +18590,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToastInteractiveProvider, {
 		scope: __scopeToast,
 		onClose: handleClose,
-		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.ItemSlot, {
+		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
 			scope: __scopeToast,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 				asChild: true,
@@ -18812,7 +18812,7 @@ function getTabbableCandidates$1(container) {
 	while (walker.nextNode()) nodes.push(walker.currentNode);
 	return nodes;
 }
-function focusFirst$2(candidates) {
+function focusFirst$3(candidates) {
 	const previouslyFocusedElement = document.activeElement;
 	return candidates.some((candidate) => {
 		if (candidate === previouslyFocusedElement) return true;
@@ -18822,7 +18822,7 @@ function focusFirst$2(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport$1 = ToastViewport$1;
-var Root2$3 = Toast$2;
+var Root2$4 = Toast$2;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action = ToastAction$1;
@@ -18975,6 +18975,13 @@ var Activity = createLucideIcon("activity", [["path", {
 	d: "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2",
 	key: "169zse"
 }]]);
+var ArrowLeft = createLucideIcon("arrow-left", [["path", {
+	d: "m12 19-7-7 7-7",
+	key: "1l729n"
+}], ["path", {
+	d: "M19 12H5",
+	key: "x3x0zl"
+}]]);
 var Baby = createLucideIcon("baby", [
 	["path", {
 		d: "M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5",
@@ -19016,6 +19023,13 @@ var Bell = createLucideIcon("bell", [["path", {
 	d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
 	key: "11g9vi"
 }]]);
+var ChartLine = createLucideIcon("chart-line", [["path", {
+	d: "M3 3v16a2 2 0 0 0 2 2h16",
+	key: "c24i48"
+}], ["path", {
+	d: "m19 9-5 5-4-4-3 3",
+	key: "2osh9i"
+}]]);
 var Check = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
@@ -19024,9 +19038,19 @@ var ChevronDown = createLucideIcon("chevron-down", [["path", {
 	d: "m6 9 6 6 6-6",
 	key: "qrunsl"
 }]]);
+var ChevronRight = createLucideIcon("chevron-right", [["path", {
+	d: "m9 18 6-6-6-6",
+	key: "mthhwq"
+}]]);
 var ChevronUp = createLucideIcon("chevron-up", [["path", {
 	d: "m18 15-6-6-6 6",
 	key: "153udz"
+}]]);
+var Circle = createLucideIcon("circle", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
 }]]);
 var DollarSign = createLucideIcon("dollar-sign", [["line", {
 	x1: "12",
@@ -19050,6 +19074,54 @@ var Download = createLucideIcon("download", [
 	["path", {
 		d: "m7 10 5 5 5-5",
 		key: "brsn70"
+	}]
+]);
+var FileSpreadsheet = createLucideIcon("file-spreadsheet", [
+	["path", {
+		d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+		key: "1oefj6"
+	}],
+	["path", {
+		d: "M14 2v5a1 1 0 0 0 1 1h5",
+		key: "wfsgrz"
+	}],
+	["path", {
+		d: "M8 13h2",
+		key: "yr2amv"
+	}],
+	["path", {
+		d: "M14 13h2",
+		key: "un5t4a"
+	}],
+	["path", {
+		d: "M8 17h2",
+		key: "2yhykz"
+	}],
+	["path", {
+		d: "M14 17h2",
+		key: "10kma7"
+	}]
+]);
+var FileText = createLucideIcon("file-text", [
+	["path", {
+		d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+		key: "1oefj6"
+	}],
+	["path", {
+		d: "M14 2v5a1 1 0 0 0 1 1h5",
+		key: "wfsgrz"
+	}],
+	["path", {
+		d: "M10 9H8",
+		key: "b1mrlr"
+	}],
+	["path", {
+		d: "M16 13H8",
+		key: "t4e002"
+	}],
+	["path", {
+		d: "M16 17H8",
+		key: "z1uh3a"
 	}]
 ]);
 var LayoutDashboard = createLucideIcon("layout-dashboard", [
@@ -19086,6 +19158,15 @@ var LayoutDashboard = createLucideIcon("layout-dashboard", [
 		key: "ldoo1y"
 	}]
 ]);
+var MapPin = createLucideIcon("map-pin", [["path", {
+	d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
+	key: "1r0f0z"
+}], ["circle", {
+	cx: "12",
+	cy: "10",
+	r: "3",
+	key: "ilqhr7"
+}]]);
 var Map$5 = createLucideIcon("map", [
 	["path", {
 		d: "M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z",
@@ -19135,6 +19216,99 @@ var Plus = createLucideIcon("plus", [["path", {
 }], ["path", {
 	d: "M12 5v14",
 	key: "s699le"
+}]]);
+var QrCode = createLucideIcon("qr-code", [
+	["rect", {
+		width: "5",
+		height: "5",
+		x: "3",
+		y: "3",
+		rx: "1",
+		key: "1tu5fj"
+	}],
+	["rect", {
+		width: "5",
+		height: "5",
+		x: "16",
+		y: "3",
+		rx: "1",
+		key: "1v8r4q"
+	}],
+	["rect", {
+		width: "5",
+		height: "5",
+		x: "3",
+		y: "16",
+		rx: "1",
+		key: "1x03jg"
+	}],
+	["path", {
+		d: "M21 16h-3a2 2 0 0 0-2 2v3",
+		key: "177gqh"
+	}],
+	["path", {
+		d: "M21 21v.01",
+		key: "ents32"
+	}],
+	["path", {
+		d: "M12 7v3a2 2 0 0 1-2 2H7",
+		key: "8crl2c"
+	}],
+	["path", {
+		d: "M3 12h.01",
+		key: "nlz23k"
+	}],
+	["path", {
+		d: "M12 3h.01",
+		key: "n36tog"
+	}],
+	["path", {
+		d: "M12 16v.01",
+		key: "133mhm"
+	}],
+	["path", {
+		d: "M16 12h1",
+		key: "1slzba"
+	}],
+	["path", {
+		d: "M21 12v.01",
+		key: "1lwtk9"
+	}],
+	["path", {
+		d: "M12 21v-1",
+		key: "1880an"
+	}]
+]);
+var ScanLine = createLucideIcon("scan-line", [
+	["path", {
+		d: "M3 7V5a2 2 0 0 1 2-2h2",
+		key: "aa7l1z"
+	}],
+	["path", {
+		d: "M17 3h2a2 2 0 0 1 2 2v2",
+		key: "4qcy5o"
+	}],
+	["path", {
+		d: "M21 17v2a2 2 0 0 1-2 2h-2",
+		key: "6vwrx8"
+	}],
+	["path", {
+		d: "M7 21H5a2 2 0 0 1-2-2v-2",
+		key: "ioqczr"
+	}],
+	["path", {
+		d: "M7 12h10",
+		key: "b7w52i"
+	}]
+]);
+var Search = createLucideIcon("search", [["path", {
+	d: "m21 21-4.34-4.34",
+	key: "14j7rj"
+}], ["circle", {
+	cx: "11",
+	cy: "11",
+	r: "8",
+	key: "4ej97u"
 }]]);
 var Tractor = createLucideIcon("tractor", [
 	["path", {
@@ -20623,13 +20797,13 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 	defaultVariants: { variant: "default" }
 });
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		ref,
 		className: cn(toastVariants({ variant }), className),
 		...props
 	});
 });
-Toast$1.displayName = Root2$3.displayName;
+Toast$1.displayName = Root2$4.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action, {
 	ref,
 	className: cn("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
@@ -21009,10 +21183,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$23, data) => {
+		this.custom = (jsx$25, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$23(id),
+				jsx: jsx$25(id),
 				id,
 				...data
 			});
@@ -21648,7 +21822,7 @@ var sides = [
 	"left"
 ];
 var min$3 = Math.min;
-var max$3 = Math.max;
+var max$4 = Math.max;
 var round = Math.round;
 var floor = Math.floor;
 var createCoords = (v) => ({
@@ -21666,7 +21840,7 @@ var oppositeAlignmentMap = {
 	end: "start"
 };
 function clamp$1(start, value, end) {
-	return max$3(start, min$3(value, end));
+	return max$4(start, min$3(value, end));
 }
 function evaluate(value, param) {
 	return typeof value === "function" ? value(param) : value;
@@ -21951,11 +22125,11 @@ var arrow$2 = (options$1) => ({
 		const minPadding = min$3(paddingObject[minProp], largestPossiblePadding);
 		const maxPadding = min$3(paddingObject[maxProp], largestPossiblePadding);
 		const min$1$1 = minPadding;
-		const max$4 = clientSize - arrowDimensions[length] - maxPadding;
+		const max$5 = clientSize - arrowDimensions[length] - maxPadding;
 		const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
-		const offset$3 = clamp$1(min$1$1, center, max$4);
+		const offset$3 = clamp$1(min$1$1, center, max$5);
 		const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset$3 && rects.reference[length] / 2 - (center < min$1$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
-		const alignmentOffset = shouldAddOffset ? center < min$1$1 ? center - min$1$1 : center - max$4 : 0;
+		const alignmentOffset = shouldAddOffset ? center < min$1$1 ? center - min$1$1 : center - max$5 : 0;
 		return {
 			[axis]: coords[axis] + alignmentOffset,
 			data: {
@@ -22155,15 +22329,15 @@ var shift$2 = function(options$1) {
 				const minSide = mainAxis === "y" ? "top" : "left";
 				const maxSide = mainAxis === "y" ? "bottom" : "right";
 				const min$4 = mainAxisCoord + overflow[minSide];
-				const max$4 = mainAxisCoord - overflow[maxSide];
-				mainAxisCoord = clamp$1(min$4, mainAxisCoord, max$4);
+				const max$5 = mainAxisCoord - overflow[maxSide];
+				mainAxisCoord = clamp$1(min$4, mainAxisCoord, max$5);
 			}
 			if (checkCrossAxis) {
 				const minSide = crossAxis === "y" ? "top" : "left";
 				const maxSide = crossAxis === "y" ? "bottom" : "right";
 				const min$4 = crossAxisCoord + overflow[minSide];
-				const max$4 = crossAxisCoord - overflow[maxSide];
-				crossAxisCoord = clamp$1(min$4, crossAxisCoord, max$4);
+				const max$5 = crossAxisCoord - overflow[maxSide];
+				crossAxisCoord = clamp$1(min$4, crossAxisCoord, max$5);
 			}
 			const limitedCoords = limiter.fn({
 				...state,
@@ -22264,12 +22438,12 @@ var size$2 = function(options$1) {
 			if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) availableWidth = maximumClippingWidth;
 			if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) availableHeight = maximumClippingHeight;
 			if (noShift && !alignment) {
-				const xMin = max$3(overflow.left, 0);
-				const xMax = max$3(overflow.right, 0);
-				const yMin = max$3(overflow.top, 0);
-				const yMax = max$3(overflow.bottom, 0);
-				if (isYAxis) availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max$3(overflow.left, overflow.right));
-				else availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max$3(overflow.top, overflow.bottom));
+				const xMin = max$4(overflow.left, 0);
+				const xMax = max$4(overflow.right, 0);
+				const yMin = max$4(overflow.top, 0);
+				const yMax = max$4(overflow.bottom, 0);
+				if (isYAxis) availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max$4(overflow.left, overflow.right));
+				else availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max$4(overflow.top, overflow.bottom));
 			}
 			await apply$2({
 				...state,
@@ -22563,11 +22737,11 @@ function getDocumentRect(element) {
 	const html = getDocumentElement(element);
 	const scroll = getNodeScroll(element);
 	const body = element.ownerDocument.body;
-	const width = max$3(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
-	const height = max$3(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+	const width = max$4(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+	const height = max$4(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
 	let x$2 = -scroll.scrollLeft + getWindowScrollBarX(element);
 	const y$1 = -scroll.scrollTop;
-	if (getComputedStyle$1(body).direction === "rtl") x$2 += max$3(html.clientWidth, body.clientWidth) - width;
+	if (getComputedStyle$1(body).direction === "rtl") x$2 += max$4(html.clientWidth, body.clientWidth) - width;
 	return {
 		width,
 		height,
@@ -22667,10 +22841,10 @@ function getClippingRect(_ref) {
 	const firstClippingAncestor = clippingAncestors[0];
 	const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
 		const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
-		accRect.top = max$3(rect.top, accRect.top);
+		accRect.top = max$4(rect.top, accRect.top);
 		accRect.right = min$3(rect.right, accRect.right);
 		accRect.bottom = min$3(rect.bottom, accRect.bottom);
-		accRect.left = max$3(rect.left, accRect.left);
+		accRect.left = max$4(rect.left, accRect.left);
 		return accRect;
 	}, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
 	return {
@@ -22799,7 +22973,7 @@ function observeMove(element, onMove) {
 		const insetLeft = floor(left);
 		const options$1 = {
 			rootMargin: -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px",
-			threshold: max$3(0, min$3(1, threshold$1)) || 1
+			threshold: max$4(0, min$3(1, threshold$1)) || 1
 		};
 		let isFirstUpdate = true;
 		function handleObserve(entries) {
@@ -23201,10 +23375,10 @@ var Popper = (props) => {
 	});
 };
 Popper.displayName = POPPER_NAME;
-var ANCHOR_NAME = "PopperAnchor";
+var ANCHOR_NAME$1 = "PopperAnchor";
 var PopperAnchor = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, virtualRef, ...anchorProps } = props;
-	const context = usePopperContext(ANCHOR_NAME, __scopePopper);
+	const context = usePopperContext(ANCHOR_NAME$1, __scopePopper);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const anchorRef = import_react.useRef(null);
@@ -23218,12 +23392,12 @@ var PopperAnchor = import_react.forwardRef((props, forwardedRef) => {
 		ref: composedRefs
 	});
 });
-PopperAnchor.displayName = ANCHOR_NAME;
-var CONTENT_NAME$4 = "PopperContent";
-var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$4);
+PopperAnchor.displayName = ANCHOR_NAME$1;
+var CONTENT_NAME$6 = "PopperContent";
+var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$6);
 var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, side = "bottom", sideOffset = 0, align = "center", alignOffset = 0, arrowPadding = 0, avoidCollisions = true, collisionBoundary = [], collisionPadding: collisionPaddingProp = 0, sticky = "partial", hideWhenDetached = false, updatePositionStrategy = "optimized", onPlaced, ...contentProps } = props;
-	const context = usePopperContext(CONTENT_NAME$4, __scopePopper);
+	const context = usePopperContext(CONTENT_NAME$6, __scopePopper);
 	const [content, setContent] = import_react.useState(null);
 	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const [arrow$3, setArrow] = import_react.useState(null);
@@ -23336,8 +23510,8 @@ var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-PopperContent.displayName = CONTENT_NAME$4;
-var ARROW_NAME$2 = "PopperArrow";
+PopperContent.displayName = CONTENT_NAME$6;
+var ARROW_NAME$4 = "PopperArrow";
 var OPPOSITE_SIDE = {
 	top: "bottom",
 	right: "left",
@@ -23346,7 +23520,7 @@ var OPPOSITE_SIDE = {
 };
 var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwardedRef) {
 	const { __scopePopper, ...arrowProps } = props;
-	const contentContext = useContentContext(ARROW_NAME$2, __scopePopper);
+	const contentContext = useContentContext(ARROW_NAME$4, __scopePopper);
 	const baseSide = OPPOSITE_SIDE[contentContext.placedSide];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		ref: contentContext.onArrowChange,
@@ -23379,7 +23553,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 		})
 	});
 });
-PopperArrow.displayName = ARROW_NAME$2;
+PopperArrow.displayName = ARROW_NAME$4;
 function isNotNull(value) {
 	return value !== null;
 }
@@ -23424,12 +23598,12 @@ function getSideAndAlignFromPlacement(placement) {
 	const [side, align = "center"] = placement.split("-");
 	return [side, align];
 }
-var Root2$2 = Popper;
+var Root2$3 = Popper;
 var Anchor = PopperAnchor;
 var Content$2 = PopperContent;
 var Arrow = PopperArrow;
 var [createTooltipContext, createTooltipScope] = createContextScope("Tooltip", [createPopperScope]);
-var usePopperScope$1 = createPopperScope();
+var usePopperScope$2 = createPopperScope();
 var PROVIDER_NAME = "TooltipProvider";
 var DEFAULT_DELAY_DURATION = 700;
 var TOOLTIP_OPEN = "tooltip.open";
@@ -23469,7 +23643,7 @@ var [TooltipContextProvider, useTooltipContext] = createTooltipContext(TOOLTIP_N
 var Tooltip$2 = (props) => {
 	const { __scopeTooltip, children, open: openProp, defaultOpen, onOpenChange, disableHoverableContent: disableHoverableContentProp, delayDuration: delayDurationProp } = props;
 	const providerContext = useTooltipProviderContext(TOOLTIP_NAME, props.__scopeTooltip);
-	const popperScope = usePopperScope$1(__scopeTooltip);
+	const popperScope = usePopperScope$2(__scopeTooltip);
 	const [trigger, setTrigger] = import_react.useState(null);
 	const contentId = useId();
 	const openTimerRef = import_react.useRef(0);
@@ -23518,7 +23692,7 @@ var Tooltip$2 = (props) => {
 			}
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContextProvider, {
 			scope: __scopeTooltip,
@@ -23550,12 +23724,12 @@ var Tooltip$2 = (props) => {
 	});
 };
 Tooltip$2.displayName = TOOLTIP_NAME;
-var TRIGGER_NAME$3 = "TooltipTrigger";
+var TRIGGER_NAME$4 = "TooltipTrigger";
 var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...triggerProps } = props;
-	const context = useTooltipContext(TRIGGER_NAME$3, __scopeTooltip);
-	const providerContext = useTooltipProviderContext(TRIGGER_NAME$3, __scopeTooltip);
-	const popperScope = usePopperScope$1(__scopeTooltip);
+	const context = useTooltipContext(TRIGGER_NAME$4, __scopeTooltip);
+	const providerContext = useTooltipProviderContext(TRIGGER_NAME$4, __scopeTooltip);
+	const popperScope = usePopperScope$2(__scopeTooltip);
 	const composedRefs = useComposedRefs(forwardedRef, import_react.useRef(null), context.onTriggerChange);
 	const isPointerDownRef = import_react.useRef(false);
 	const hasPointerMoveOpenedRef = import_react.useRef(false);
@@ -23595,13 +23769,13 @@ var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipTrigger$1.displayName = TRIGGER_NAME$3;
-var PORTAL_NAME$2 = "TooltipPortal";
-var [PortalProvider$1, usePortalContext$1] = createTooltipContext(PORTAL_NAME$2, { forceMount: void 0 });
+TooltipTrigger$1.displayName = TRIGGER_NAME$4;
+var PORTAL_NAME$4 = "TooltipPortal";
+var [PortalProvider$2, usePortalContext$2] = createTooltipContext(PORTAL_NAME$4, { forceMount: void 0 });
 var TooltipPortal = (props) => {
 	const { __scopeTooltip, forceMount, children, container } = props;
-	const context = useTooltipContext(PORTAL_NAME$2, __scopeTooltip);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider$1, {
+	const context = useTooltipContext(PORTAL_NAME$4, __scopeTooltip);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider$2, {
 		scope: __scopeTooltip,
 		forceMount,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
@@ -23614,12 +23788,12 @@ var TooltipPortal = (props) => {
 		})
 	});
 };
-TooltipPortal.displayName = PORTAL_NAME$2;
-var CONTENT_NAME$3 = "TooltipContent";
+TooltipPortal.displayName = PORTAL_NAME$4;
+var CONTENT_NAME$5 = "TooltipContent";
 var TooltipContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext$1(CONTENT_NAME$3, props.__scopeTooltip);
+	const portalContext = usePortalContext$2(CONTENT_NAME$5, props.__scopeTooltip);
 	const { forceMount = portalContext.forceMount, side = "top", ...contentProps } = props;
-	const context = useTooltipContext(CONTENT_NAME$3, props.__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$5, props.__scopeTooltip);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.open,
 		children: context.disableHoverableContent ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContentImpl, {
@@ -23634,8 +23808,8 @@ var TooltipContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var TooltipContentHoverable = import_react.forwardRef((props, forwardedRef) => {
-	const context = useTooltipContext(CONTENT_NAME$3, props.__scopeTooltip);
-	const providerContext = useTooltipProviderContext(CONTENT_NAME$3, props.__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$5, props.__scopeTooltip);
+	const providerContext = useTooltipProviderContext(CONTENT_NAME$5, props.__scopeTooltip);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [pointerGraceArea, setPointerGraceArea] = import_react.useState(null);
@@ -23686,7 +23860,7 @@ var TooltipContentHoverable = import_react.forwardRef((props, forwardedRef) => {
 					y: event.clientY
 				};
 				const hasEnteredTarget = trigger?.contains(target) || content?.contains(target);
-				const isPointerOutsideGraceArea = !isPointInPolygon(pointerPosition, pointerGraceArea);
+				const isPointerOutsideGraceArea = !isPointInPolygon$1(pointerPosition, pointerGraceArea);
 				if (hasEnteredTarget) handleRemoveGraceArea();
 				else if (isPointerOutsideGraceArea) {
 					handleRemoveGraceArea();
@@ -23712,8 +23886,8 @@ var [VisuallyHiddenContentContextProvider, useVisuallyHiddenContentContext] = cr
 var Slottable = /* @__PURE__ */ createSlottable("TooltipContent");
 var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, children, "aria-label": ariaLabel, onEscapeKeyDown, onPointerDownOutside, ...contentProps } = props;
-	const context = useTooltipContext(CONTENT_NAME$3, __scopeTooltip);
-	const popperScope = usePopperScope$1(__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$5, __scopeTooltip);
+	const popperScope = usePopperScope$2(__scopeTooltip);
 	const { onClose } = context;
 	import_react.useEffect(() => {
 		document.addEventListener(TOOLTIP_OPEN, onClose);
@@ -23760,18 +23934,18 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipContent$1.displayName = CONTENT_NAME$3;
-var ARROW_NAME$1 = "TooltipArrow";
+TooltipContent$1.displayName = CONTENT_NAME$5;
+var ARROW_NAME$3 = "TooltipArrow";
 var TooltipArrow = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...arrowProps } = props;
-	const popperScope = usePopperScope$1(__scopeTooltip);
-	return useVisuallyHiddenContentContext(ARROW_NAME$1, __scopeTooltip).isInside ? null : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow, {
+	const popperScope = usePopperScope$2(__scopeTooltip);
+	return useVisuallyHiddenContentContext(ARROW_NAME$3, __scopeTooltip).isInside ? null : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow, {
 		...popperScope,
 		...arrowProps,
 		ref: forwardedRef
 	});
 });
-TooltipArrow.displayName = ARROW_NAME$1;
+TooltipArrow.displayName = ARROW_NAME$3;
 function getExitSideFromRect(point$3, rect) {
 	const top = Math.abs(rect.top - point$3.y);
 	const bottom = Math.abs(rect.bottom - point$3.y);
@@ -23848,7 +24022,7 @@ function getPointsFromRect(rect) {
 		}
 	];
 }
-function isPointInPolygon(point$3, polygon) {
+function isPointInPolygon$1(point$3, polygon) {
 	const { x: x$2, y: y$1 } = point$3;
 	let inside = false;
 	for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
@@ -23903,19 +24077,19 @@ function getHullPresorted(points) {
 	else return upperHull.concat(lowerHull);
 }
 var Provider = TooltipProvider$1;
-var Root3 = Tooltip$2;
-var Trigger$3 = TooltipTrigger$1;
-var Content2$1 = TooltipContent$1;
+var Root3$1 = Tooltip$2;
+var Trigger$4 = TooltipTrigger$1;
+var Content2$3 = TooltipContent$1;
 var TooltipProvider = Provider;
-var Tooltip$1 = Root3;
-var TooltipTrigger = Trigger$3;
-var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$1, {
+var Tooltip$1 = Root3$1;
+var TooltipTrigger = Trigger$4;
+var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$3, {
 	ref,
 	sideOffset,
 	className: cn("z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]", className),
 	...props
 }));
-TooltipContent.displayName = Content2$1.displayName;
+TooltipContent.displayName = Content2$3.displayName;
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
 var use = import_react[" use ".trim().toString()];
 function isPromiseLike(value) {
@@ -23955,7 +24129,7 @@ function createSlot$1(ownerName) {
 	Slot2.displayName = `${ownerName}.Slot`;
 	return Slot2;
 }
-var Slot$1 = /* @__PURE__ */ createSlot$1("Slot");
+var Slot$2 = /* @__PURE__ */ createSlot$1("Slot");
 /* @__NO_SIDE_EFFECTS__ */
 function createSlotClone(ownerName) {
 	const SlotClone = import_react.forwardRef((props, forwardedRef) => {
@@ -24045,7 +24219,7 @@ var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespa
 	}
 });
 var Button = import_react.forwardRef(({ className, variant, size: size$3, asChild = false, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "button", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
 		className: cn(buttonVariants({
 			variant,
 			size: size$3,
@@ -24085,10 +24259,10 @@ var Primitive$1 = [
 	"svg",
 	"ul"
 ].reduce((primitive, node) => {
-	const Slot$3 = /* @__PURE__ */ createSlot$1(`Primitive.${node}`);
+	const Slot$4 = /* @__PURE__ */ createSlot$1(`Primitive.${node}`);
 	const Node$1 = import_react.forwardRef((props, forwardedRef) => {
 		const { asChild, ...primitiveProps } = props;
-		const Comp = asChild ? Slot$3 : node;
+		const Comp = asChild ? Slot$4 : node;
 		if (typeof window !== "undefined") window[Symbol.for("radix-ui")] = true;
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Comp, {
 			...primitiveProps,
@@ -24104,7 +24278,7 @@ var Primitive$1 = [
 var NAME$1 = "Separator";
 var DEFAULT_ORIENTATION = "horizontal";
 var ORIENTATIONS = ["horizontal", "vertical"];
-var Separator$2 = import_react.forwardRef((props, forwardedRef) => {
+var Separator$3 = import_react.forwardRef((props, forwardedRef) => {
 	const { decorative, orientation: orientationProp = DEFAULT_ORIENTATION, ...domProps } = props;
 	const orientation = isValidOrientation(orientationProp) ? orientationProp : DEFAULT_ORIENTATION;
 	const ariaOrientation = orientation === "vertical" ? orientation : void 0;
@@ -24119,19 +24293,19 @@ var Separator$2 = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-Separator$2.displayName = NAME$1;
+Separator$3.displayName = NAME$1;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$4 = Separator$2;
-var Separator$1 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+var Root$4 = Separator$3;
+var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator$1.displayName = Root$4.displayName;
+Separator$2.displayName = Root$4.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -24198,7 +24372,7 @@ var FocusScope = import_react.forwardRef((props, forwardedRef) => {
 				container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
 				container.dispatchEvent(mountEvent);
 				if (!mountEvent.defaultPrevented) {
-					focusFirst$1(removeLinks(getTabbableCandidates(container)), { select: true });
+					focusFirst$2(removeLinks(getTabbableCandidates(container)), { select: true });
 					if (document.activeElement === previouslyFocusedElement) focus(container);
 				}
 			}
@@ -24251,7 +24425,7 @@ var FocusScope = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 FocusScope.displayName = FOCUS_SCOPE_NAME;
-function focusFirst$1(candidates, { select = false } = {}) {
+function focusFirst$2(candidates, { select = false } = {}) {
 	const previouslyFocusedElement = document.activeElement;
 	for (const candidate of candidates) {
 		focus(candidate, { select });
@@ -25062,10 +25236,10 @@ var Dialog$1 = (props) => {
 	});
 };
 Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME$2 = "DialogTrigger";
+var TRIGGER_NAME$3 = "DialogTrigger";
 var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...triggerProps } = props;
-	const context = useDialogContext(TRIGGER_NAME$2, __scopeDialog);
+	const context = useDialogContext(TRIGGER_NAME$3, __scopeDialog);
 	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
 		type: "button",
@@ -25078,13 +25252,13 @@ var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
 	});
 });
-DialogTrigger$1.displayName = TRIGGER_NAME$2;
-var PORTAL_NAME$1 = "DialogPortal";
-var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME$1, { forceMount: void 0 });
+DialogTrigger$1.displayName = TRIGGER_NAME$3;
+var PORTAL_NAME$3 = "DialogPortal";
+var [PortalProvider$1, usePortalContext$1] = createDialogContext(PORTAL_NAME$3, { forceMount: void 0 });
 var DialogPortal$1 = (props) => {
 	const { __scopeDialog, forceMount, children, container } = props;
-	const context = useDialogContext(PORTAL_NAME$1, __scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider, {
+	const context = useDialogContext(PORTAL_NAME$3, __scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider$1, {
 		scope: __scopeDialog,
 		forceMount,
 		children: import_react.Children.map(children, (child) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
@@ -25097,10 +25271,10 @@ var DialogPortal$1 = (props) => {
 		}))
 	});
 };
-DialogPortal$1.displayName = PORTAL_NAME$1;
+DialogPortal$1.displayName = PORTAL_NAME$3;
 var OVERLAY_NAME = "DialogOverlay";
 var DialogOverlay$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog);
+	const portalContext = usePortalContext$1(OVERLAY_NAME, props.__scopeDialog);
 	const { forceMount = portalContext.forceMount, ...overlayProps } = props;
 	const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog);
 	return context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
@@ -25112,12 +25286,12 @@ var DialogOverlay$1 = import_react.forwardRef((props, forwardedRef) => {
 	}) : null;
 });
 DialogOverlay$1.displayName = OVERLAY_NAME;
-var Slot$2 = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
+var Slot$3 = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
 var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...overlayProps } = props;
 	const context = useDialogContext(OVERLAY_NAME, __scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Combination_default, {
-		as: Slot$2,
+		as: Slot$3,
 		allowPinchZoom: true,
 		shards: [context.contentRef],
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
@@ -25131,11 +25305,11 @@ var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var CONTENT_NAME$2 = "DialogContent";
+var CONTENT_NAME$4 = "DialogContent";
 var DialogContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopeDialog);
+	const portalContext = usePortalContext$1(CONTENT_NAME$4, props.__scopeDialog);
 	const { forceMount = portalContext.forceMount, ...contentProps } = props;
-	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.open,
 		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentModal, {
@@ -25147,9 +25321,9 @@ var DialogContent$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-DialogContent$1.displayName = CONTENT_NAME$2;
+DialogContent$1.displayName = CONTENT_NAME$4;
 var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
 	const contentRef = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
 	import_react.useEffect(() => {
@@ -25174,7 +25348,7 @@ var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var DialogContentNonModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
 	const hasInteractedOutsideRef = import_react.useRef(false);
 	const hasPointerDownOutsideRef = import_react.useRef(false);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentImpl, {
@@ -25205,7 +25379,7 @@ var DialogContentNonModal = import_react.forwardRef((props, forwardedRef) => {
 });
 var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
-	const context = useDialogContext(CONTENT_NAME$2, __scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$4, __scopeDialog);
 	const contentRef = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, contentRef);
 	useFocusGuards();
@@ -25269,7 +25443,7 @@ function getState(open) {
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
 var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
-	contentName: CONTENT_NAME$2,
+	contentName: CONTENT_NAME$4,
 	titleName: TITLE_NAME,
 	docsSlug: "dialog"
 });
@@ -25303,15 +25477,15 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
 	return null;
 };
 var Root$3 = Dialog$1;
-var Trigger$2 = DialogTrigger$1;
-var Portal$2 = DialogPortal$1;
+var Trigger$3 = DialogTrigger$1;
+var Portal$3 = DialogPortal$1;
 var Overlay = DialogOverlay$1;
 var Content$1 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
 var Sheet = Root$3;
-var SheetPortal = Portal$2;
+var SheetPortal = Portal$3;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
 	...props,
@@ -25561,7 +25735,7 @@ var SidebarFooter = import_react.forwardRef(({ className, ...props }, ref) => {
 });
 SidebarFooter.displayName = "SidebarFooter";
 var SidebarSeparator = import_react.forwardRef(({ className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$2, {
 		ref,
 		"data-sidebar": "separator",
 		className: cn("mx-2 w-auto bg-sidebar-border", className),
@@ -25588,7 +25762,7 @@ var SidebarGroup = import_react.forwardRef(({ className, ...props }, ref) => {
 });
 SidebarGroup.displayName = "SidebarGroup";
 var SidebarGroupLabel = import_react.forwardRef(({ className, asChild = false, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "div", {
 		ref,
 		"data-sidebar": "group-label",
 		className: cn("flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0", className),
@@ -25597,7 +25771,7 @@ var SidebarGroupLabel = import_react.forwardRef(({ className, asChild = false, .
 });
 SidebarGroupLabel.displayName = "SidebarGroupLabel";
 var SidebarGroupAction = import_react.forwardRef(({ className, asChild = false, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "button", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
 		ref,
 		"data-sidebar": "group-action",
 		className: cn("absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "group-data-[collapsible=icon]:hidden", className),
@@ -25644,7 +25818,7 @@ var sidebarMenuButtonVariants = cva("peer/menu-button flex w-full items-center g
 	}
 });
 var SidebarMenuButton = import_react.forwardRef(({ asChild = false, isActive = false, variant = "default", size: size$3 = "default", tooltip, className, ...props }, ref) => {
-	const Comp = asChild ? Slot$1 : "button";
+	const Comp = asChild ? Slot$2 : "button";
 	const { isMobile, state } = useSidebar();
 	const button = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Comp, {
 		ref,
@@ -25671,7 +25845,7 @@ var SidebarMenuButton = import_react.forwardRef(({ asChild = false, isActive = f
 });
 SidebarMenuButton.displayName = "SidebarMenuButton";
 var SidebarMenuAction = import_react.forwardRef(({ className, asChild = false, showOnHover = false, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "button", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
 		ref,
 		"data-sidebar": "menu-action",
 		className: cn("absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 peer-hover/menu-button:text-sidebar-accent-foreground [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", showOnHover && "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0", className),
@@ -25719,7 +25893,7 @@ var SidebarMenuSubItem = import_react.forwardRef(({ ...props }, ref) => /* @__PU
 }));
 SidebarMenuSubItem.displayName = "SidebarMenuSubItem";
 var SidebarMenuSubButton = import_react.forwardRef(({ asChild = false, size: size$3 = "md", isActive, className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "a", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "a", {
 		ref,
 		"data-sidebar": "menu-sub-button",
 		"data-size": size$3,
@@ -25878,13 +26052,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$36.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$37.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$5({ inst: {
+			cachedValue = useState$8({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25921,8 +26095,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$36 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$5 = React$36.useState, useEffect$4 = React$36.useEffect, useLayoutEffect$1 = React$36.useLayoutEffect, useDebugValue = React$36.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$36.useSyncExternalStore ? React$36.useSyncExternalStore : shim;
+		var React$37 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$8 = React$37.useState, useEffect$4 = React$37.useEffect, useLayoutEffect$1 = React$37.useLayoutEffect, useDebugValue = React$37.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$37.useSyncExternalStore ? React$37.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -26050,8 +26224,8 @@ var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /
 }));
 AvatarFallback.displayName = Fallback.displayName;
 var Dialog = Root$3;
-var DialogTrigger = Trigger$2;
-var DialogPortal = Portal$2;
+var DialogTrigger = Trigger$3;
+var DialogPortal = Portal$3;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	ref,
 	className: cn("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
@@ -26094,7 +26268,7 @@ var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) =
 }));
 DialogDescription.displayName = Description.displayName;
 var NAME = "Label";
-var Label$3 = import_react.forwardRef((props, forwardedRef) => {
+var Label$4 = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.label, {
 		...props,
 		ref: forwardedRef,
@@ -26105,17 +26279,17 @@ var Label$3 = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-Label$3.displayName = NAME;
-var Root$1 = Label$3;
+Label$4.displayName = NAME;
+var Root$1 = Label$4;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label$1 = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
 	ref,
 	className: cn(labelVariants(), className),
 	...props
 }));
-Label$1.displayName = Root$1.displayName;
-function clamp(value, [min$4, max$4]) {
-	return Math.min(max$4, Math.max(min$4, value));
+Label.displayName = Root$1.displayName;
+function clamp(value, [min$4, max$5]) {
+	return Math.min(max$5, Math.max(min$4, value));
 }
 var DirectionContext = import_react.createContext(void 0);
 function useDirection(localDir) {
@@ -26142,16 +26316,16 @@ var OPEN_KEYS = [
 	"ArrowUp",
 	"ArrowDown"
 ];
-var SELECTION_KEYS = [" ", "Enter"];
+var SELECTION_KEYS$1 = [" ", "Enter"];
 var SELECT_NAME = "Select";
-var [Collection$1, useCollection$1, createCollectionScope$1] = createCollection(SELECT_NAME);
-var [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME, [createCollectionScope$1, createPopperScope]);
-var usePopperScope = createPopperScope();
+var [Collection$2, useCollection$2, createCollectionScope$2] = createCollection(SELECT_NAME);
+var [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME, [createCollectionScope$2, createPopperScope]);
+var usePopperScope$1 = createPopperScope();
 var [SelectProvider, useSelectContext] = createSelectContext(SELECT_NAME);
 var [SelectNativeOptionsProvider, useSelectNativeOptionsContext] = createSelectContext(SELECT_NAME);
 var Select$1 = (props) => {
 	const { __scopeSelect, children, open: openProp, defaultOpen, onOpenChange, value: valueProp, defaultValue, onValueChange, dir, name, autoComplete, disabled, required, form } = props;
-	const popperScope = usePopperScope(__scopeSelect);
+	const popperScope = usePopperScope$1(__scopeSelect);
 	const [trigger, setTrigger] = import_react.useState(null);
 	const [valueNode, setValueNode] = import_react.useState(null);
 	const [valueNodeHasChildren, setValueNodeHasChildren] = import_react.useState(false);
@@ -26172,7 +26346,7 @@ var Select$1 = (props) => {
 	const isFormControl = trigger ? form || !!trigger.closest("form") : true;
 	const [nativeOptionsSet, setNativeOptionsSet] = import_react.useState(/* @__PURE__ */ new Set());
 	const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectProvider, {
 			required,
@@ -26191,7 +26365,7 @@ var Select$1 = (props) => {
 			dir: direction,
 			triggerPointerDownPosRef,
 			disabled,
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Provider, {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Provider, {
 				scope: __scopeSelect,
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectNativeOptionsProvider, {
 					scope: props.__scopeSelect,
@@ -26223,14 +26397,14 @@ var Select$1 = (props) => {
 	});
 };
 Select$1.displayName = SELECT_NAME;
-var TRIGGER_NAME$1 = "SelectTrigger";
+var TRIGGER_NAME$2 = "SelectTrigger";
 var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, disabled = false, ...triggerProps } = props;
-	const popperScope = usePopperScope(__scopeSelect);
-	const context = useSelectContext(TRIGGER_NAME$1, __scopeSelect);
+	const popperScope = usePopperScope$1(__scopeSelect);
+	const context = useSelectContext(TRIGGER_NAME$2, __scopeSelect);
 	const isDisabled = context.disabled || disabled;
 	const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange);
-	const getItems = useCollection$1(__scopeSelect);
+	const getItems = useCollection$2(__scopeSelect);
 	const pointerTypeRef = import_react.useRef("touch");
 	const [searchRef, handleTypeaheadSearch, resetTypeahead] = useTypeaheadSearch((search) => {
 		const enabledItems = getItems().filter((item) => !item.disabled);
@@ -26289,7 +26463,7 @@ var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectTrigger$1.displayName = TRIGGER_NAME$1;
+SelectTrigger$1.displayName = TRIGGER_NAME$2;
 var VALUE_NAME = "SelectValue";
 var SelectValue$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, children, placeholder = "", ...valueProps } = props;
@@ -26319,17 +26493,17 @@ var SelectIcon = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 SelectIcon.displayName = ICON_NAME;
-var PORTAL_NAME = "SelectPortal";
+var PORTAL_NAME$2 = "SelectPortal";
 var SelectPortal = (props) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
 		asChild: true,
 		...props
 	});
 };
-SelectPortal.displayName = PORTAL_NAME;
-var CONTENT_NAME$1 = "SelectContent";
+SelectPortal.displayName = PORTAL_NAME$2;
+var CONTENT_NAME$3 = "SelectContent";
 var SelectContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const context = useSelectContext(CONTENT_NAME$1, props.__scopeSelect);
+	const context = useSelectContext(CONTENT_NAME$3, props.__scopeSelect);
 	const [fragment, setFragment] = import_react.useState();
 	useLayoutEffect2(() => {
 		setFragment(new DocumentFragment());
@@ -26338,7 +26512,7 @@ var SelectContent$1 = import_react.forwardRef((props, forwardedRef) => {
 		const frag = fragment;
 		return frag ? import_react_dom.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContentProvider, {
 			scope: props.__scopeSelect,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Slot, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Slot, {
 				scope: props.__scopeSelect,
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: props.children })
 			})
@@ -26349,27 +26523,27 @@ var SelectContent$1 = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-SelectContent$1.displayName = CONTENT_NAME$1;
+SelectContent$1.displayName = CONTENT_NAME$3;
 var CONTENT_MARGIN = 10;
-var [SelectContentProvider, useSelectContentContext] = createSelectContext(CONTENT_NAME$1);
+var [SelectContentProvider, useSelectContentContext] = createSelectContext(CONTENT_NAME$3);
 var CONTENT_IMPL_NAME = "SelectContentImpl";
-var Slot = /* @__PURE__ */ createSlot("SelectContent.RemoveScroll");
+var Slot$1 = /* @__PURE__ */ createSlot("SelectContent.RemoveScroll");
 var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, position = "item-aligned", onCloseAutoFocus, onEscapeKeyDown, onPointerDownOutside, side, sideOffset, align, alignOffset, arrowPadding, collisionBoundary, collisionPadding, sticky, hideWhenDetached, avoidCollisions, ...contentProps } = props;
-	const context = useSelectContext(CONTENT_NAME$1, __scopeSelect);
+	const context = useSelectContext(CONTENT_NAME$3, __scopeSelect);
 	const [content, setContent] = import_react.useState(null);
 	const [viewport, setViewport] = import_react.useState(null);
 	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const [selectedItem, setSelectedItem] = import_react.useState(null);
 	const [selectedItemText, setSelectedItemText] = import_react.useState(null);
-	const getItems = useCollection$1(__scopeSelect);
+	const getItems = useCollection$2(__scopeSelect);
 	const [isPositioned, setIsPositioned] = import_react.useState(false);
 	const firstValidItemFoundRef = import_react.useRef(false);
 	import_react.useEffect(() => {
 		if (content) return hideOthers(content);
 	}, [content]);
 	useFocusGuards();
-	const focusFirst$3 = import_react.useCallback((candidates) => {
+	const focusFirst$4 = import_react.useCallback((candidates) => {
 		const [firstItem, ...restItems] = getItems().map((item) => item.ref.current);
 		const [lastItem] = restItems.slice(-1);
 		const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
@@ -26382,8 +26556,8 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
 		}
 	}, [getItems, viewport]);
-	const focusSelectedItem = import_react.useCallback(() => focusFirst$3([selectedItem, content]), [
-		focusFirst$3,
+	const focusSelectedItem = import_react.useCallback(() => focusFirst$4([selectedItem, content]), [
+		focusFirst$4,
 		selectedItem,
 		content
 	]);
@@ -26480,7 +26654,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		isPositioned,
 		searchRef,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Combination_default, {
-			as: Slot,
+			as: Slot$1,
 			allowPinchZoom: true,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
 				asChild: true,
@@ -26532,7 +26706,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 									const currentIndex = candidateNodes.indexOf(currentElement);
 									candidateNodes = candidateNodes.slice(currentIndex + 1);
 								}
-								setTimeout(() => focusFirst$3(candidateNodes));
+								setTimeout(() => focusFirst$4(candidateNodes));
 								event.preventDefault();
 							}
 						})
@@ -26546,12 +26720,12 @@ SelectContentImpl.displayName = CONTENT_IMPL_NAME;
 var ITEM_ALIGNED_POSITION_NAME = "SelectItemAlignedPosition";
 var SelectItemAlignedPosition = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, onPlaced, ...popperProps } = props;
-	const context = useSelectContext(CONTENT_NAME$1, __scopeSelect);
-	const contentContext = useSelectContentContext(CONTENT_NAME$1, __scopeSelect);
+	const context = useSelectContext(CONTENT_NAME$3, __scopeSelect);
+	const contentContext = useSelectContentContext(CONTENT_NAME$3, __scopeSelect);
 	const [contentWrapper, setContentWrapper] = import_react.useState(null);
 	const [content, setContent] = import_react.useState(null);
 	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
-	const getItems = useCollection$1(__scopeSelect);
+	const getItems = useCollection$2(__scopeSelect);
 	const shouldExpandOnScrollRef = import_react.useRef(false);
 	const shouldRepositionRef = import_react.useRef(true);
 	const { viewport, selectedItem, selectedItemText, focusSelectedItem } = contentContext;
@@ -26672,7 +26846,7 @@ SelectItemAlignedPosition.displayName = ITEM_ALIGNED_POSITION_NAME;
 var POPPER_POSITION_NAME = "SelectPopperPosition";
 var SelectPopperPosition = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, align = "start", collisionPadding = CONTENT_MARGIN, ...popperProps } = props;
-	const popperScope = usePopperScope(__scopeSelect);
+	const popperScope = usePopperScope$1(__scopeSelect);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
 		...popperScope,
 		...popperProps,
@@ -26691,7 +26865,7 @@ var SelectPopperPosition = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 SelectPopperPosition.displayName = POPPER_POSITION_NAME;
-var [SelectViewportProvider, useSelectViewportContext] = createSelectContext(CONTENT_NAME$1, {});
+var [SelectViewportProvider, useSelectViewportContext] = createSelectContext(CONTENT_NAME$3, {});
 var VIEWPORT_NAME = "SelectViewport";
 var SelectViewport = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, nonce, ...viewportProps } = props;
@@ -26702,7 +26876,7 @@ var SelectViewport = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", {
 		dangerouslySetInnerHTML: { __html: `[data-radix-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-select-viewport]::-webkit-scrollbar{display:none}` },
 		nonce
-	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Slot, {
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Slot, {
 		scope: __scopeSelect,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
 			"data-radix-select-viewport": "",
@@ -26743,8 +26917,8 @@ var SelectViewport = import_react.forwardRef((props, forwardedRef) => {
 	})] });
 });
 SelectViewport.displayName = VIEWPORT_NAME;
-var GROUP_NAME$1 = "SelectGroup";
-var [SelectGroupContextProvider, useSelectGroupContext] = createSelectContext(GROUP_NAME$1);
+var GROUP_NAME$3 = "SelectGroup";
+var [SelectGroupContextProvider, useSelectGroupContext] = createSelectContext(GROUP_NAME$3);
 var SelectGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, ...groupProps } = props;
 	const groupId = useId();
@@ -26759,24 +26933,24 @@ var SelectGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectGroup$1.displayName = GROUP_NAME$1;
-var LABEL_NAME = "SelectLabel";
+SelectGroup$1.displayName = GROUP_NAME$3;
+var LABEL_NAME$2 = "SelectLabel";
 var SelectLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, ...labelProps } = props;
-	const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect);
+	const groupContext = useSelectGroupContext(LABEL_NAME$2, __scopeSelect);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
 		id: groupContext.id,
 		...labelProps,
 		ref: forwardedRef
 	});
 });
-SelectLabel$1.displayName = LABEL_NAME;
-var ITEM_NAME$1 = "SelectItem";
-var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$1);
+SelectLabel$1.displayName = LABEL_NAME$2;
+var ITEM_NAME$3 = "SelectItem";
+var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$3);
 var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, value, disabled = false, textValue: textValueProp, ...itemProps } = props;
-	const context = useSelectContext(ITEM_NAME$1, __scopeSelect);
-	const contentContext = useSelectContentContext(ITEM_NAME$1, __scopeSelect);
+	const context = useSelectContext(ITEM_NAME$3, __scopeSelect);
+	const contentContext = useSelectContentContext(ITEM_NAME$3, __scopeSelect);
 	const isSelected = context.value === value;
 	const [textValue, setTextValue] = import_react.useState(textValueProp ?? "");
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -26799,7 +26973,7 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 		onItemTextChange: import_react.useCallback((node) => {
 			setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? "").trim());
 		}, []),
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.ItemSlot, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.ItemSlot, {
 			scope: __scopeSelect,
 			value,
 			disabled,
@@ -26836,14 +27010,14 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 				}),
 				onKeyDown: composeEventHandlers(itemProps.onKeyDown, (event) => {
 					if (contentContext.searchRef?.current !== "" && event.key === " ") return;
-					if (SELECTION_KEYS.includes(event.key)) handleSelect();
+					if (SELECTION_KEYS$1.includes(event.key)) handleSelect();
 					if (event.key === " ") event.preventDefault();
 				})
 			})
 		})
 	});
 });
-SelectItem$1.displayName = ITEM_NAME$1;
+SelectItem$1.displayName = ITEM_NAME$3;
 var ITEM_TEXT_NAME = "SelectItemText";
 var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, ...itemTextProps } = props;
@@ -26879,16 +27053,16 @@ var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	}), itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren ? import_react_dom.createPortal(itemTextProps.children, context.valueNode) : null] });
 });
 SelectItemText.displayName = ITEM_TEXT_NAME;
-var ITEM_INDICATOR_NAME = "SelectItemIndicator";
+var ITEM_INDICATOR_NAME$1 = "SelectItemIndicator";
 var SelectItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, ...itemIndicatorProps } = props;
-	return useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect).isSelected ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
+	return useSelectItemContext(ITEM_INDICATOR_NAME$1, __scopeSelect).isSelected ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
 		"aria-hidden": true,
 		...itemIndicatorProps,
 		ref: forwardedRef
 	}) : null;
 });
-SelectItemIndicator.displayName = ITEM_INDICATOR_NAME;
+SelectItemIndicator.displayName = ITEM_INDICATOR_NAME$1;
 var SCROLL_UP_BUTTON_NAME = "SelectScrollUpButton";
 var SelectScrollUpButton$1 = import_react.forwardRef((props, forwardedRef) => {
 	const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
@@ -26948,7 +27122,7 @@ var SelectScrollButtonImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, onAutoScroll, ...scrollIndicatorProps } = props;
 	const contentContext = useSelectContentContext("SelectScrollButton", __scopeSelect);
 	const autoScrollTimerRef = import_react.useRef(null);
-	const getItems = useCollection$1(__scopeSelect);
+	const getItems = useCollection$2(__scopeSelect);
 	const clearAutoScrollTimer = import_react.useCallback(() => {
 		if (autoScrollTimerRef.current !== null) {
 			window.clearInterval(autoScrollTimerRef.current);
@@ -26981,7 +27155,7 @@ var SelectScrollButtonImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var SEPARATOR_NAME = "SelectSeparator";
+var SEPARATOR_NAME$2 = "SelectSeparator";
 var SelectSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, ...separatorProps } = props;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
@@ -26990,20 +27164,20 @@ var SelectSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-SelectSeparator$1.displayName = SEPARATOR_NAME;
-var ARROW_NAME = "SelectArrow";
+SelectSeparator$1.displayName = SEPARATOR_NAME$2;
+var ARROW_NAME$2 = "SelectArrow";
 var SelectArrow = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, ...arrowProps } = props;
-	const popperScope = usePopperScope(__scopeSelect);
-	const context = useSelectContext(ARROW_NAME, __scopeSelect);
-	const contentContext = useSelectContentContext(ARROW_NAME, __scopeSelect);
+	const popperScope = usePopperScope$1(__scopeSelect);
+	const context = useSelectContext(ARROW_NAME$2, __scopeSelect);
+	const contentContext = useSelectContentContext(ARROW_NAME$2, __scopeSelect);
 	return context.open && contentContext.position === "popper" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow, {
 		...popperScope,
 		...arrowProps,
 		ref: forwardedRef
 	}) : null;
 });
-SelectArrow.displayName = ARROW_NAME;
+SelectArrow.displayName = ARROW_NAME$2;
 var BUBBLE_INPUT_NAME = "SelectBubbleInput";
 var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
@@ -27063,31 +27237,31 @@ function useTypeaheadSearch(onSearchChange) {
 function findNextItem(items, search, currentItem) {
 	const normalizedSearch = search.length > 1 && Array.from(search).every((char) => char === search[0]) ? search[0] : search;
 	const currentItemIndex = currentItem ? items.indexOf(currentItem) : -1;
-	let wrappedItems = wrapArray$1(items, Math.max(currentItemIndex, 0));
+	let wrappedItems = wrapArray$2(items, Math.max(currentItemIndex, 0));
 	if (normalizedSearch.length === 1) wrappedItems = wrappedItems.filter((v) => v !== currentItem);
 	const nextItem = wrappedItems.find((item) => item.textValue.toLowerCase().startsWith(normalizedSearch.toLowerCase()));
 	return nextItem !== currentItem ? nextItem : void 0;
 }
-function wrapArray$1(array, startIndex) {
+function wrapArray$2(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root2$1 = Select$1;
-var Trigger$1 = SelectTrigger$1;
+var Root2$2 = Select$1;
+var Trigger$2 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
-var Portal$1 = SelectPortal;
-var Content2 = SelectContent$1;
+var Portal$2 = SelectPortal;
+var Content2$2 = SelectContent$1;
 var Viewport = SelectViewport;
-var Label$2 = SelectLabel$1;
+var Label$3 = SelectLabel$1;
 var Item$1 = SelectItem$1;
 var ItemText = SelectItemText;
-var ItemIndicator = SelectItemIndicator;
+var ItemIndicator$1 = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
-var Separator = SelectSeparator$1;
-var Select = Root2$1;
+var Separator$1 = SelectSeparator$1;
+var Select = Root2$2;
 var SelectValue = Value;
-var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$1, {
+var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$2, {
 	ref,
 	className: cn("flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1", className),
 	...props,
@@ -27096,7 +27270,7 @@ var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, 
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-4 w-4 opacity-50" })
 	})]
 }));
-SelectTrigger.displayName = Trigger$1.displayName;
+SelectTrigger.displayName = Trigger$2.displayName;
 var SelectScrollUpButton = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollUpButton, {
 	ref,
 	className: cn("flex cursor-default items-center justify-center py-1", className),
@@ -27111,7 +27285,7 @@ var SelectScrollDownButton = import_react.forwardRef(({ className, ...props }, r
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-4 w-4" })
 }));
 SelectScrollDownButton.displayName = ScrollDownButton.displayName;
-var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2, {
+var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2$2, {
 	ref,
 	className: cn("relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]", position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className),
 	position,
@@ -27125,29 +27299,29 @@ var SelectContent = import_react.forwardRef(({ className, children, position = "
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectScrollDownButton, {})
 	]
 }) }));
-SelectContent.displayName = Content2.displayName;
-var SelectLabel = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$2, {
+SelectContent.displayName = Content2$2.displayName;
+var SelectLabel = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$3, {
 	ref,
 	className: cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className),
 	...props
 }));
-SelectLabel.displayName = Label$2.displayName;
+SelectLabel.displayName = Label$3.displayName;
 var SelectItem = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Item$1, {
 	ref,
 	className: cn("relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" }) })
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator$1, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" }) })
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemText, { children })]
 }));
 SelectItem.displayName = Item$1.displayName;
-var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
+var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
 	ref,
 	className: cn("-mx-1 my-1 h-px bg-muted", className),
 	...props
 }));
-SelectSeparator.displayName = Separator.displayName;
+SelectSeparator.displayName = Separator$1.displayName;
 function QuickAddModal() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
@@ -27178,7 +27352,7 @@ function QuickAddModal() {
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$1, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 							htmlFor: "tipo",
 							children: "Tipo de Registro"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
@@ -27208,7 +27382,7 @@ function QuickAddModal() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$1, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 							htmlFor: "desc",
 							children: "Descrição / Identificação"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
@@ -27218,7 +27392,7 @@ function QuickAddModal() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$1, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 							htmlFor: "valor",
 							children: "Valor ou Quantidade"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
@@ -27234,6 +27408,88 @@ function QuickAddModal() {
 					})
 				]
 			})]
+		})]
+	});
+}
+function ScannerModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [scanning, setScanning] = (0, import_react.useState)(false);
+	const [tag, setTag$3] = (0, import_react.useState)("");
+	const navigate = useNavigate();
+	const { toast: toast$2 } = useToast();
+	const handleSimulateScan = () => {
+		setScanning(true);
+		setTimeout(() => {
+			setScanning(false);
+			toast$2({
+				title: "Leitura concluída",
+				description: "Brinco TAG-1234 detectado com sucesso."
+			});
+			setOpen(false);
+			navigate("/animal/TAG-1234");
+		}, 1500);
+	};
+	const handleManualSearch = () => {
+		if (!tag) return;
+		setOpen(false);
+		navigate(`/animal/${tag}`);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				variant: "outline",
+				size: "icon",
+				className: "relative text-muted-foreground hover:text-foreground",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QrCode, { className: "h-5 w-5" })
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Escanear Brinco / RFID" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Aponte a câmera para o código ou insira o número identificador do animal." })] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-center justify-center py-6 gap-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "relative w-48 h-48 border-2 border-dashed border-primary/50 rounded-xl flex items-center justify-center bg-muted/20 overflow-hidden",
+						children: scanning ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-primary/5" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-1/2 -translate-y-1/2 w-full h-1 bg-primary/80 shadow-[0_0_8px_2px_hsl(var(--primary))] animate-pulse" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanLine, { className: "h-12 w-12 text-primary animate-bounce" })
+						] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QrCode, { className: "h-16 w-16 text-muted-foreground/50" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						onClick: handleSimulateScan,
+						disabled: scanning,
+						className: "w-48 gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScanLine, { className: "h-4 w-4" }), scanning ? "Lendo dados..." : "Simular Leitura"]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative flex items-center py-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex-grow border-t border-border" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "flex-shrink-0 mx-4 text-muted-foreground text-xs uppercase font-medium",
+							children: "Busca Manual"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex-grow border-t border-border" })
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						placeholder: "Ex: TAG-1234",
+						value: tag,
+						onChange: (e) => setTag$3(e.target.value),
+						onKeyDown: (e) => e.key === "Enter" && handleManualSearch()
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						variant: "secondary",
+						onClick: handleManualSearch,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "h-4 w-4" })
+					})]
+				})
+			]
 		})]
 	});
 }
@@ -27253,8 +27509,9 @@ function Header() {
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center gap-3 sm:gap-4",
+			className: "flex items-center gap-2 sm:gap-4",
 			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScannerModal, {}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 					variant: "ghost",
 					size: "icon",
@@ -27264,7 +27521,7 @@ function Header() {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickAddModal, {}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-8 w-px bg-border hidden sm:block" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-					className: "h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105",
+					className: "h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105 hidden sm:flex",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, {
 						src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42",
 						alt: "Avatar do Usuário"
@@ -27356,15 +27613,10 @@ const dashboardData = {
 		receitaMes: "R$ 320.000"
 	},
 	alerts: [{
-		id: 1,
+		id: "1",
 		title: "Atenção: Orçamento de Nutrição",
 		desc: "As despesas no setor de Engorda ultrapassaram o limite previsto em 12%.",
 		type: "warning"
-	}, {
-		id: 2,
-		title: "Estoque Crítico",
-		desc: "Vacina contra Aftosa está abaixo do estoque mínimo (restam 50 doses).",
-		type: "destructive"
 	}],
 	chartCashflow: [
 		{
@@ -27617,7 +27869,8 @@ const inventoryData = {
 			id: "F1",
 			item: "Vacina Febre Aftosa",
 			tipo: "Biológico",
-			qtd: 50,
+			qtd: 40,
+			minQtd: 100,
 			unidade: "Doses",
 			status: "Baixo"
 		},
@@ -27626,6 +27879,7 @@ const inventoryData = {
 			item: "Ivermectina 1%",
 			tipo: "Antiparasitário",
 			qtd: 15,
+			minQtd: 10,
 			unidade: "Frascos (500ml)",
 			status: "Normal"
 		},
@@ -27634,6 +27888,7 @@ const inventoryData = {
 			item: "Anticorpo Mastite",
 			tipo: "Antibiótico",
 			qtd: 8,
+			minQtd: 5,
 			unidade: "Caixas",
 			status: "Normal"
 		}
@@ -27644,6 +27899,7 @@ const inventoryData = {
 			item: "Arame Liso 17x15",
 			tipo: "Material Cerca",
 			qtd: 12,
+			minQtd: 10,
 			unidade: "Rolos",
 			status: "Normal"
 		},
@@ -27652,6 +27908,7 @@ const inventoryData = {
 			item: "Grampo Cerca",
 			tipo: "Material Cerca",
 			qtd: 2,
+			minQtd: 5,
 			unidade: "Caixas (20kg)",
 			status: "Baixo"
 		},
@@ -27660,6 +27917,7 @@ const inventoryData = {
 			item: "Filtro Diesel Trator",
 			tipo: "Peça Máquina",
 			qtd: 4,
+			minQtd: 2,
 			unidade: "Unidades",
 			status: "Normal"
 		}
@@ -27670,6 +27928,7 @@ const inventoryData = {
 			item: "Sal Mineral Reprodução",
 			tipo: "Suplemento",
 			qtd: 45,
+			minQtd: 30,
 			unidade: "Sacos (30kg)",
 			status: "Normal"
 		},
@@ -27678,6 +27937,7 @@ const inventoryData = {
 			item: "Ração Concentrada Engorda",
 			tipo: "Ração",
 			qtd: 120,
+			minQtd: 100,
 			unidade: "Sacos (40kg)",
 			status: "Normal"
 		},
@@ -27686,6 +27946,7 @@ const inventoryData = {
 			item: "Milho Moído",
 			tipo: "Insumo",
 			qtd: 5,
+			minQtd: 15,
 			unidade: "Toneladas",
 			status: "Baixo"
 		}
@@ -27733,6 +27994,87 @@ const financialData = [
 		valor: "R$ 85.000,00"
 	}
 ];
+const weightGainData = {
+	"LRE-01": [
+		{
+			month: "Jan",
+			actual: 180,
+			expected: 185
+		},
+		{
+			month: "Fev",
+			actual: 195,
+			expected: 198
+		},
+		{
+			month: "Mar",
+			actual: 215,
+			expected: 210
+		},
+		{
+			month: "Abr",
+			actual: 235,
+			expected: 225
+		},
+		{
+			month: "Mai",
+			actual: 260,
+			expected: 240
+		}
+	],
+	default: [
+		{
+			month: "Jan",
+			actual: 200,
+			expected: 200
+		},
+		{
+			month: "Fev",
+			actual: 220,
+			expected: 215
+		},
+		{
+			month: "Mar",
+			actual: 235,
+			expected: 230
+		},
+		{
+			month: "Abr",
+			actual: 250,
+			expected: 245
+		},
+		{
+			month: "Mai",
+			actual: 265,
+			expected: 260
+		}
+	]
+};
+const animalData = { "TAG-1234": {
+	id: "TAG-1234",
+	categoria: "Garrote",
+	raca: "Nelore",
+	nascimento: "15/04/2025",
+	pesoAtual: "245 kg",
+	lote: "LRE-01",
+	historico: [
+		{
+			data: "10/03/2026",
+			tipo: "Pesagem",
+			valor: "245 kg"
+		},
+		{
+			data: "01/12/2025",
+			tipo: "Vacinação",
+			valor: "Febre Aftosa"
+		},
+		{
+			data: "15/04/2025",
+			tipo: "Nascimento",
+			valor: "32 kg"
+		}
+	]
+} };
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Array.isArray;
 }));
@@ -27818,12 +28160,12 @@ var require_isObject = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_isFunction = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag$7 = require__baseGetTag(), isObject$10 = require_isObject();
 	var asyncTag = "[object AsyncFunction]", funcTag$1 = "[object Function]", genTag = "[object GeneratorFunction]", proxyTag = "[object Proxy]";
-	function isFunction$23(value) {
+	function isFunction$24(value) {
 		if (!isObject$10(value)) return false;
 		var tag = baseGetTag$7(value);
 		return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
 	}
-	module.exports = isFunction$23;
+	module.exports = isFunction$24;
 }));
 var require__coreJsData = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__root()["__core-js_shared__"];
@@ -27855,7 +28197,7 @@ var require__toSource = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = toSource$2;
 }));
 var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isFunction$22 = require_isFunction(), isMasked = require__isMasked(), isObject$9 = require_isObject(), toSource$1 = require__toSource();
+	var isFunction$23 = require_isFunction(), isMasked = require__isMasked(), isObject$9 = require_isObject(), toSource$1 = require__toSource();
 	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 	var funcProto$1 = Function.prototype, objectProto$3 = Object.prototype;
@@ -27864,7 +28206,7 @@ var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	var reIsNative = RegExp("^" + funcToString$1.call(hasOwnProperty$10).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
 	function baseIsNative$1(value) {
 		if (!isObject$9(value) || isMasked(value)) return false;
-		return (isFunction$22(value) ? reIsNative : reIsHostCtor).test(toSource$1(value));
+		return (isFunction$23(value) ? reIsNative : reIsHostCtor).test(toSource$1(value));
 	}
 	module.exports = baseIsNative$1;
 }));
@@ -28220,10 +28562,10 @@ var require_get = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = get$7;
 }));
 var require_isNil = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function isNil$12(value) {
+	function isNil$13(value) {
 		return value == null;
 	}
-	module.exports = isNil$12;
+	module.exports = isNil$13;
 }));
 var require_isString = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag$6 = require__baseGetTag(), isArray$10 = require_isArray(), isObjectLike$7 = require_isObjectLike();
@@ -28308,7 +28650,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		var Fragment$3 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
-		var Portal$3 = REACT_PORTAL_TYPE;
+		var Portal$4 = REACT_PORTAL_TYPE;
 		var Profiler = REACT_PROFILER_TYPE;
 		var StrictMode = REACT_STRICT_MODE_TYPE;
 		var Suspense = REACT_SUSPENSE_TYPE;
@@ -28372,7 +28714,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		exports.Fragment = Fragment$3;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
-		exports.Portal = Portal$3;
+		exports.Portal = Portal$4;
 		exports.Profiler = Profiler;
 		exports.StrictMode = StrictMode;
 		exports.Suspense = Suspense;
@@ -28414,10 +28756,10 @@ var require_isNaN = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = isNaN$1;
 }));
 var import_isString$2 = /* @__PURE__ */ __toESM(require_isString());
-var import_isNaN$1 = /* @__PURE__ */ __toESM(require_isNaN());
+var import_isNaN$2 = /* @__PURE__ */ __toESM(require_isNaN());
 var import_get$5 = /* @__PURE__ */ __toESM(require_get());
 var import_isNumber = /* @__PURE__ */ __toESM(require_isNumber());
-var import_isNil$11 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isNil$12 = /* @__PURE__ */ __toESM(require_isNil());
 var mathSign = function mathSign$1(value) {
 	if (value === 0) return 0;
 	if (value > 0) return 1;
@@ -28427,10 +28769,10 @@ var isPercent = function isPercent$2(value) {
 	return (0, import_isString$2.default)(value) && value.indexOf("%") === value.length - 1;
 };
 var isNumber = function isNumber$4(value) {
-	return (0, import_isNumber.default)(value) && !(0, import_isNaN$1.default)(value);
+	return (0, import_isNumber.default)(value) && !(0, import_isNaN$2.default)(value);
 };
 var isNullish = function isNullish$1(value) {
-	return (0, import_isNil$11.default)(value);
+	return (0, import_isNil$12.default)(value);
 };
 var isNumOrStr = function isNumOrStr$1(value) {
 	return isNumber(value) || (0, import_isString$2.default)(value);
@@ -28449,7 +28791,7 @@ var getPercentValue = function getPercentValue$1(percent, totalValue) {
 		var index$1 = percent.indexOf("%");
 		value = totalValue * parseFloat(percent.slice(0, index$1)) / 100;
 	} else value = +percent;
-	if ((0, import_isNaN$1.default)(value)) value = defaultValue;
+	if ((0, import_isNaN$2.default)(value)) value = defaultValue;
 	if (validate && value > totalValue) value = totalValue;
 	return value;
 };
@@ -28493,13 +28835,13 @@ function shallowEqual(a$1, b$1) {
 	return true;
 }
 var import_isObject$3 = /* @__PURE__ */ __toESM(require_isObject());
-function _typeof$48(o) {
+function _typeof$49(o) {
 	"@babel/helpers - typeof";
-	return _typeof$48 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$49 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$48(o);
+	}, _typeof$49(o);
 }
 var SVGContainerPropKeys = ["viewBox", "children"];
 var SVGElementPropKeys = [
@@ -28994,7 +29336,7 @@ var getEventHandlerOfChild = function getEventHandlerOfChild$1(originalHandler, 
 	};
 };
 var adaptEventsOfChild = function adaptEventsOfChild$1(props, data, index$1) {
-	if (!(0, import_isObject$3.default)(props) || _typeof$48(props) !== "object") return null;
+	if (!(0, import_isObject$3.default)(props) || _typeof$49(props) !== "object") return null;
 	var out = null;
 	Object.keys(props).forEach(function(key) {
 		var item = props[key];
@@ -29006,15 +29348,15 @@ var adaptEventsOfChild = function adaptEventsOfChild$1(props, data, index$1) {
 	return out;
 };
 var import_get$4 = /* @__PURE__ */ __toESM(require_get());
-var import_isNil$10 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isNil$11 = /* @__PURE__ */ __toESM(require_isNil());
 var import_isString$1 = /* @__PURE__ */ __toESM(require_isString());
-var import_isFunction$20 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isFunction$21 = /* @__PURE__ */ __toESM(require_isFunction());
 var import_isObject$2 = /* @__PURE__ */ __toESM(require_isObject());
 var import_react_is = require_react_is$1();
-var _excluded$19 = ["children"], _excluded2$7 = ["children"];
-function _objectWithoutProperties$19(source, excluded) {
+var _excluded$20 = ["children"], _excluded2$8 = ["children"];
+function _objectWithoutProperties$20(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$19(source, excluded);
+	var target = _objectWithoutPropertiesLoose$20(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -29027,7 +29369,7 @@ function _objectWithoutProperties$19(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$19(source, excluded) {
+function _objectWithoutPropertiesLoose$20(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -29036,13 +29378,13 @@ function _objectWithoutPropertiesLoose$19(source, excluded) {
 	}
 	return target;
 }
-function _typeof$47(o) {
+function _typeof$48(o) {
 	"@babel/helpers - typeof";
-	return _typeof$47 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$48 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$47(o);
+	}, _typeof$48(o);
 }
 var REACT_BROWSER_EVENT_MAP = {
 	click: "onClick",
@@ -29071,7 +29413,7 @@ var toArray = function toArray$1(children) {
 	if (children === lastChildren && Array.isArray(lastResult)) return lastResult;
 	var result = [];
 	import_react.Children.forEach(children, function(child) {
-		if ((0, import_isNil$10.default)(child)) return;
+		if ((0, import_isNil$11.default)(child)) return;
 		if ((0, import_react_is.isFragment)(child)) result = result.concat(toArray$1(child.props.children));
 		else result.push(child);
 	});
@@ -29187,12 +29529,12 @@ var isSvgElement = function isSvgElement$1(child) {
 	return child && child.type && (0, import_isString$1.default)(child.type) && SVG_TAGS.indexOf(child.type) >= 0;
 };
 var hasClipDot = function hasClipDot$1(dot) {
-	return dot && _typeof$47(dot) === "object" && "clipDot" in dot;
+	return dot && _typeof$48(dot) === "object" && "clipDot" in dot;
 };
 var isValidSpreadableProp = function isValidSpreadableProp$1(property$2, key, includeEvents, svgElementType) {
 	var _FilteredElementKeyMa;
 	var matchingElementTypeKeys = (_FilteredElementKeyMa = FilteredElementKeyMap === null || FilteredElementKeyMap === void 0 ? void 0 : FilteredElementKeyMap[svgElementType]) !== null && _FilteredElementKeyMa !== void 0 ? _FilteredElementKeyMa : [];
-	return key.startsWith("data-") || !(0, import_isFunction$20.default)(property$2) && (svgElementType && matchingElementTypeKeys.includes(key) || SVGElementPropKeys.includes(key)) || includeEvents && EventKeys.includes(key);
+	return key.startsWith("data-") || !(0, import_isFunction$21.default)(property$2) && (svgElementType && matchingElementTypeKeys.includes(key) || SVGElementPropKeys.includes(key)) || includeEvents && EventKeys.includes(key);
 };
 var filterProps = function filterProps$1(props, includeEvents, svgElementType) {
 	if (!props || typeof props === "function" || typeof props === "boolean") return null;
@@ -29222,10 +29564,10 @@ var isChildrenEqual = function isChildrenEqual$1(nextChildren, prevChildren) {
 	return true;
 };
 var isSingleChildEqual = function isSingleChildEqual$1(nextChild, prevChild) {
-	if ((0, import_isNil$10.default)(nextChild) && (0, import_isNil$10.default)(prevChild)) return true;
-	if (!(0, import_isNil$10.default)(nextChild) && !(0, import_isNil$10.default)(prevChild)) {
-		var _ref = nextChild.props || {}, nextChildren = _ref.children, nextProps = _objectWithoutProperties$19(_ref, _excluded$19);
-		var _ref2 = prevChild.props || {}, prevChildren = _ref2.children, prevProps = _objectWithoutProperties$19(_ref2, _excluded2$7);
+	if ((0, import_isNil$11.default)(nextChild) && (0, import_isNil$11.default)(prevChild)) return true;
+	if (!(0, import_isNil$11.default)(nextChild) && !(0, import_isNil$11.default)(prevChild)) {
+		var _ref = nextChild.props || {}, nextChildren = _ref.children, nextProps = _objectWithoutProperties$20(_ref, _excluded$20);
+		var _ref2 = prevChild.props || {}, prevChildren = _ref2.children, prevProps = _objectWithoutProperties$20(_ref2, _excluded2$8);
 		if (nextChildren && prevChildren) return shallowEqual(nextProps, prevProps) && isChildrenEqual(nextChildren, prevChildren);
 		if (!nextChildren && !prevChildren) return shallowEqual(nextProps, prevProps);
 		return false;
@@ -29257,7 +29599,7 @@ var getReactEventByType = function getReactEventByType$1(e) {
 var parseChildIndex = function parseChildIndex$1(child, children) {
 	return toArray(children).indexOf(child);
 };
-var _excluded$18 = [
+var _excluded$19 = [
 	"children",
 	"width",
 	"height",
@@ -29267,6 +29609,58 @@ var _excluded$18 = [
 	"title",
 	"desc"
 ];
+function _extends$31() {
+	_extends$31 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$31.apply(this, arguments);
+}
+function _objectWithoutProperties$19(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$19(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$19(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+function Surface(props) {
+	var children = props.children, width = props.width, height = props.height, viewBox = props.viewBox, className = props.className, style = props.style, title = props.title, desc = props.desc, others = _objectWithoutProperties$19(props, _excluded$19);
+	var svgView = viewBox || {
+		width,
+		height,
+		x: 0,
+		y: 0
+	};
+	var layerClass = clsx_default("recharts-surface", className);
+	return /* @__PURE__ */ import_react.createElement("svg", _extends$31({}, filterProps(others, true, "svg"), {
+		className: layerClass,
+		width,
+		height,
+		style,
+		viewBox: "".concat(svgView.x, " ").concat(svgView.y, " ").concat(svgView.width, " ").concat(svgView.height)
+	}), /* @__PURE__ */ import_react.createElement("title", null, title), /* @__PURE__ */ import_react.createElement("desc", null, desc), children);
+}
+var _excluded$18 = ["children", "className"];
 function _extends$30() {
 	_extends$30 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
@@ -29301,62 +29695,10 @@ function _objectWithoutPropertiesLoose$18(source, excluded) {
 	}
 	return target;
 }
-function Surface(props) {
-	var children = props.children, width = props.width, height = props.height, viewBox = props.viewBox, className = props.className, style = props.style, title = props.title, desc = props.desc, others = _objectWithoutProperties$18(props, _excluded$18);
-	var svgView = viewBox || {
-		width,
-		height,
-		x: 0,
-		y: 0
-	};
-	var layerClass = clsx_default("recharts-surface", className);
-	return /* @__PURE__ */ import_react.createElement("svg", _extends$30({}, filterProps(others, true, "svg"), {
-		className: layerClass,
-		width,
-		height,
-		style,
-		viewBox: "".concat(svgView.x, " ").concat(svgView.y, " ").concat(svgView.width, " ").concat(svgView.height)
-	}), /* @__PURE__ */ import_react.createElement("title", null, title), /* @__PURE__ */ import_react.createElement("desc", null, desc), children);
-}
-var _excluded$17 = ["children", "className"];
-function _extends$29() {
-	_extends$29 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$29.apply(this, arguments);
-}
-function _objectWithoutProperties$17(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$17(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$17(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
 var Layer = /* @__PURE__ */ import_react.forwardRef(function(props, ref) {
-	var children = props.children, className = props.className, others = _objectWithoutProperties$17(props, _excluded$17);
+	var children = props.children, className = props.className, others = _objectWithoutProperties$18(props, _excluded$18);
 	var layerClass = clsx_default("recharts-layer", className);
-	return /* @__PURE__ */ import_react.createElement("g", _extends$29({ className: layerClass }, filterProps(others, true), { ref }), children);
+	return /* @__PURE__ */ import_react.createElement("g", _extends$30({ className: layerClass }, filterProps(others, true), { ref }), children);
 });
 var isDev$1 = true;
 var warn = function warn$2(condition, format$1) {
@@ -30282,30 +30624,30 @@ function wiggle_default(series, order) {
 	none_default(series, order);
 }
 var import_upperFirst$2 = /* @__PURE__ */ __toESM(require_upperFirst());
-function _typeof$46(o) {
+function _typeof$47(o) {
 	"@babel/helpers - typeof";
-	return _typeof$46 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$47 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$46(o);
+	}, _typeof$47(o);
 }
-var _excluded$16 = [
+var _excluded$17 = [
 	"type",
 	"size",
 	"sizeType"
 ];
-function _extends$28() {
-	_extends$28 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$29() {
+	_extends$29 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$28.apply(this, arguments);
+	return _extends$29.apply(this, arguments);
 }
-function ownKeys$38(e, r$1) {
+function ownKeys$39(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -30315,19 +30657,19 @@ function ownKeys$38(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$38(e) {
+function _objectSpread$39(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$38(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$43(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$38(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$39(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$44(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$39(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$43(obj, key, value) {
-	key = _toPropertyKey$44(key);
+function _defineProperty$44(obj, key, value) {
+	key = _toPropertyKey$45(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -30337,23 +30679,23 @@ function _defineProperty$43(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$44(t) {
-	var i = _toPrimitive$44(t, "string");
-	return "symbol" == _typeof$46(i) ? i : i + "";
+function _toPropertyKey$45(t) {
+	var i = _toPrimitive$45(t, "string");
+	return "symbol" == _typeof$47(i) ? i : i + "";
 }
-function _toPrimitive$44(t, r$1) {
-	if ("object" != _typeof$46(t) || !t) return t;
+function _toPrimitive$45(t, r$1) {
+	if ("object" != _typeof$47(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$46(i)) return i;
+		if ("object" != _typeof$47(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function _objectWithoutProperties$16(source, excluded) {
+function _objectWithoutProperties$17(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$16(source, excluded);
+	var target = _objectWithoutPropertiesLoose$17(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -30366,7 +30708,7 @@ function _objectWithoutProperties$16(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$16(source, excluded) {
+function _objectWithoutPropertiesLoose$17(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -30407,7 +30749,7 @@ var registerSymbol = function registerSymbol$1(key, factory) {
 };
 var Symbols = function Symbols$1(_ref) {
 	var _ref$type = _ref.type, type = _ref$type === void 0 ? "circle" : _ref$type, _ref$size = _ref.size, size$3 = _ref$size === void 0 ? 64 : _ref$size, _ref$sizeType = _ref.sizeType, sizeType = _ref$sizeType === void 0 ? "area" : _ref$sizeType;
-	var props = _objectSpread$38(_objectSpread$38({}, _objectWithoutProperties$16(_ref, _excluded$16)), {}, {
+	var props = _objectSpread$39(_objectSpread$39({}, _objectWithoutProperties$17(_ref, _excluded$17)), {}, {
 		type,
 		size: size$3,
 		sizeType
@@ -30418,7 +30760,7 @@ var Symbols = function Symbols$1(_ref) {
 	};
 	var className = props.className, cx$1 = props.cx, cy = props.cy;
 	var filteredProps = filterProps(props, true);
-	if (cx$1 === +cx$1 && cy === +cy && size$3 === +size$3) return /* @__PURE__ */ import_react.createElement("path", _extends$28({}, filteredProps, {
+	if (cx$1 === +cx$1 && cy === +cy && size$3 === +size$3) return /* @__PURE__ */ import_react.createElement("path", _extends$29({}, filteredProps, {
 		className: clsx_default("recharts-symbols", className),
 		transform: "translate(".concat(cx$1, ", ").concat(cy, ")"),
 		d: getPath$2()
@@ -30426,26 +30768,26 @@ var Symbols = function Symbols$1(_ref) {
 	return null;
 };
 Symbols.registerSymbol = registerSymbol;
-var import_isFunction$19 = /* @__PURE__ */ __toESM(require_isFunction());
-function _typeof$45(o) {
+var import_isFunction$20 = /* @__PURE__ */ __toESM(require_isFunction());
+function _typeof$46(o) {
 	"@babel/helpers - typeof";
-	return _typeof$45 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$46 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$45(o);
+	}, _typeof$46(o);
 }
-function _extends$27() {
-	_extends$27 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$28() {
+	_extends$28 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$27.apply(this, arguments);
+	return _extends$28.apply(this, arguments);
 }
-function ownKeys$37(e, r$1) {
+function ownKeys$38(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -30455,62 +30797,62 @@ function ownKeys$37(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$37(e) {
+function _objectSpread$38(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$37(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$42(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$37(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$38(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$43(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$38(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _classCallCheck$21(instance, Constructor) {
+function _classCallCheck$22(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$21(target, props) {
+function _defineProperties$22(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$43(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$44(descriptor.key), descriptor);
 	}
 }
-function _createClass$21(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$21(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$21(Constructor, staticProps);
+function _createClass$22(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$22(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$22(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$17(t, o, e) {
-	return o = _getPrototypeOf$18(o), _possibleConstructorReturn$18(t, _isNativeReflectConstruct$18() ? Reflect.construct(o, e || [], _getPrototypeOf$18(t).constructor) : o.apply(t, e));
+function _callSuper$18(t, o, e) {
+	return o = _getPrototypeOf$19(o), _possibleConstructorReturn$19(t, _isNativeReflectConstruct$19() ? Reflect.construct(o, e || [], _getPrototypeOf$19(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$18(self$1, call) {
-	if (call && (_typeof$45(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$19(self$1, call) {
+	if (call && (_typeof$46(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$18(self$1);
+	return _assertThisInitialized$19(self$1);
 }
-function _assertThisInitialized$18(self$1) {
+function _assertThisInitialized$19(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$18() {
+function _isNativeReflectConstruct$19() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$18 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$19 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$18(o) {
-	_getPrototypeOf$18 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$19(o) {
+	_getPrototypeOf$19 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$18(o);
+	return _getPrototypeOf$19(o);
 }
-function _inherits$18(subClass, superClass) {
+function _inherits$19(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -30518,17 +30860,17 @@ function _inherits$18(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$18(subClass, superClass);
+	if (superClass) _setPrototypeOf$19(subClass, superClass);
 }
-function _setPrototypeOf$18(o, p) {
-	_setPrototypeOf$18 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$19(o, p) {
+	_setPrototypeOf$19 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$18(o, p);
+	return _setPrototypeOf$19(o, p);
 }
-function _defineProperty$42(obj, key, value) {
-	key = _toPropertyKey$43(key);
+function _defineProperty$43(obj, key, value) {
+	key = _toPropertyKey$44(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -30538,16 +30880,16 @@ function _defineProperty$42(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$43(t) {
-	var i = _toPrimitive$43(t, "string");
-	return "symbol" == _typeof$45(i) ? i : i + "";
+function _toPropertyKey$44(t) {
+	var i = _toPrimitive$44(t, "string");
+	return "symbol" == _typeof$46(i) ? i : i + "";
 }
-function _toPrimitive$43(t, r$1) {
-	if ("object" != _typeof$45(t) || !t) return t;
+function _toPrimitive$44(t, r$1) {
+	if ("object" != _typeof$46(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$45(i)) return i;
+		if ("object" != _typeof$46(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -30555,11 +30897,11 @@ function _toPrimitive$43(t, r$1) {
 var SIZE = 32;
 var DefaultLegendContent = /* @__PURE__ */ function(_PureComponent) {
 	function DefaultLegendContent$1() {
-		_classCallCheck$21(this, DefaultLegendContent$1);
-		return _callSuper$17(this, DefaultLegendContent$1, arguments);
+		_classCallCheck$22(this, DefaultLegendContent$1);
+		return _callSuper$18(this, DefaultLegendContent$1, arguments);
 	}
-	_inherits$18(DefaultLegendContent$1, _PureComponent);
-	return _createClass$21(DefaultLegendContent$1, [
+	_inherits$19(DefaultLegendContent$1, _PureComponent);
+	return _createClass$22(DefaultLegendContent$1, [
 		{
 			key: "renderIcon",
 			value: function renderIcon(data) {
@@ -30593,7 +30935,7 @@ var DefaultLegendContent = /* @__PURE__ */ function(_PureComponent) {
 					className: "recharts-legend-icon"
 				});
 				if (/* @__PURE__ */ import_react.isValidElement(data.legendIcon)) {
-					var iconProps = _objectSpread$37({}, data);
+					var iconProps = _objectSpread$38({}, data);
 					delete iconProps.legendIcon;
 					return /* @__PURE__ */ import_react.cloneElement(data.legendIcon, iconProps);
 				}
@@ -30629,12 +30971,12 @@ var DefaultLegendContent = /* @__PURE__ */ function(_PureComponent) {
 				};
 				return payload.map(function(entry, i) {
 					var finalFormatter = entry.formatter || formatter;
-					var className = clsx_default(_defineProperty$42(_defineProperty$42({ "recharts-legend-item": true }, "legend-item-".concat(i), true), "inactive", entry.inactive));
+					var className = clsx_default(_defineProperty$43(_defineProperty$43({ "recharts-legend-item": true }, "legend-item-".concat(i), true), "inactive", entry.inactive));
 					if (entry.type === "none") return null;
-					var entryValue = !(0, import_isFunction$19.default)(entry.value) ? entry.value : null;
-					warn(!(0, import_isFunction$19.default)(entry.value), "The name property is also required when using a function for the dataKey of a chart's cartesian components. Ex: <Bar name=\"Name of my Data\"/>");
+					var entryValue = !(0, import_isFunction$20.default)(entry.value) ? entry.value : null;
+					warn(!(0, import_isFunction$20.default)(entry.value), "The name property is also required when using a function for the dataKey of a chart's cartesian components. Ex: <Bar name=\"Name of my Data\"/>");
 					var color$1 = entry.inactive ? inactiveColor : entry.color;
-					return /* @__PURE__ */ import_react.createElement("li", _extends$27({
+					return /* @__PURE__ */ import_react.createElement("li", _extends$28({
 						className,
 						style: itemStyle,
 						key: "legend-item-".concat(i)
@@ -30668,8 +31010,8 @@ var DefaultLegendContent = /* @__PURE__ */ function(_PureComponent) {
 		}
 	]);
 }(import_react.PureComponent);
-_defineProperty$42(DefaultLegendContent, "displayName", "Legend");
-_defineProperty$42(DefaultLegendContent, "defaultProps", {
+_defineProperty$43(DefaultLegendContent, "displayName", "Legend");
+_defineProperty$43(DefaultLegendContent, "defaultProps", {
 	iconSize: 14,
 	layout: "horizontal",
 	align: "center",
@@ -31056,9 +31398,9 @@ var require__baseKeys = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = baseKeys$1;
 }));
 var require_isArrayLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isFunction$19 = require_isFunction(), isLength$1 = require_isLength();
+	var isFunction$20 = require_isFunction(), isLength$1 = require_isLength();
 	function isArrayLike$5(value) {
-		return value != null && isLength$1(value.length) && !isFunction$19(value);
+		return value != null && isLength$1(value.length) && !isFunction$20(value);
 	}
 	module.exports = isArrayLike$5;
 }));
@@ -31431,22 +31773,22 @@ var import_uniqBy = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exp
 	}
 	module.exports = uniqBy$1;
 })))());
-var import_isFunction$18 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isFunction$19 = /* @__PURE__ */ __toESM(require_isFunction());
 function getUniqPayload(payload, option, defaultUniqBy$2) {
 	if (option === true) return (0, import_uniqBy.default)(payload, defaultUniqBy$2);
-	if ((0, import_isFunction$18.default)(option)) return (0, import_uniqBy.default)(payload, option);
+	if ((0, import_isFunction$19.default)(option)) return (0, import_uniqBy.default)(payload, option);
 	return payload;
 }
-function _typeof$44(o) {
+function _typeof$45(o) {
 	"@babel/helpers - typeof";
-	return _typeof$44 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$45 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$44(o);
+	}, _typeof$45(o);
 }
-var _excluded$15 = ["ref"];
-function ownKeys$36(e, r$1) {
+var _excluded$16 = ["ref"];
+function ownKeys$37(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -31456,62 +31798,62 @@ function ownKeys$36(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$36(e) {
+function _objectSpread$37(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$36(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$41(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$36(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$37(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$42(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$37(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _classCallCheck$20(instance, Constructor) {
+function _classCallCheck$21(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$20(target, props) {
+function _defineProperties$21(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$42(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$43(descriptor.key), descriptor);
 	}
 }
-function _createClass$20(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$20(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$20(Constructor, staticProps);
+function _createClass$21(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$21(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$21(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$16(t, o, e) {
-	return o = _getPrototypeOf$17(o), _possibleConstructorReturn$17(t, _isNativeReflectConstruct$17() ? Reflect.construct(o, e || [], _getPrototypeOf$17(t).constructor) : o.apply(t, e));
+function _callSuper$17(t, o, e) {
+	return o = _getPrototypeOf$18(o), _possibleConstructorReturn$18(t, _isNativeReflectConstruct$18() ? Reflect.construct(o, e || [], _getPrototypeOf$18(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$17(self$1, call) {
-	if (call && (_typeof$44(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$18(self$1, call) {
+	if (call && (_typeof$45(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$17(self$1);
+	return _assertThisInitialized$18(self$1);
 }
-function _assertThisInitialized$17(self$1) {
+function _assertThisInitialized$18(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$17() {
+function _isNativeReflectConstruct$18() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$17 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$18 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$17(o) {
-	_getPrototypeOf$17 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$18(o) {
+	_getPrototypeOf$18 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$17(o);
+	return _getPrototypeOf$18(o);
 }
-function _inherits$17(subClass, superClass) {
+function _inherits$18(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -31519,17 +31861,17 @@ function _inherits$17(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$17(subClass, superClass);
+	if (superClass) _setPrototypeOf$18(subClass, superClass);
 }
-function _setPrototypeOf$17(o, p) {
-	_setPrototypeOf$17 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$18(o, p) {
+	_setPrototypeOf$18 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$17(o, p);
+	return _setPrototypeOf$18(o, p);
 }
-function _defineProperty$41(obj, key, value) {
-	key = _toPropertyKey$42(key);
+function _defineProperty$42(obj, key, value) {
+	key = _toPropertyKey$43(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -31539,23 +31881,23 @@ function _defineProperty$41(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$42(t) {
-	var i = _toPrimitive$42(t, "string");
-	return "symbol" == _typeof$44(i) ? i : i + "";
+function _toPropertyKey$43(t) {
+	var i = _toPrimitive$43(t, "string");
+	return "symbol" == _typeof$45(i) ? i : i + "";
 }
-function _toPrimitive$42(t, r$1) {
-	if ("object" != _typeof$44(t) || !t) return t;
+function _toPrimitive$43(t, r$1) {
+	if ("object" != _typeof$45(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$44(i)) return i;
+		if ("object" != _typeof$45(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function _objectWithoutProperties$15(source, excluded) {
+function _objectWithoutProperties$16(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$15(source, excluded);
+	var target = _objectWithoutPropertiesLoose$16(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -31568,7 +31910,7 @@ function _objectWithoutProperties$15(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$15(source, excluded) {
+function _objectWithoutPropertiesLoose$16(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -31584,24 +31926,24 @@ function renderContent$1(content, props) {
 	if (/* @__PURE__ */ import_react.isValidElement(content)) return /* @__PURE__ */ import_react.cloneElement(content, props);
 	if (typeof content === "function") return /* @__PURE__ */ import_react.createElement(content, props);
 	props.ref;
-	var otherProps = _objectWithoutProperties$15(props, _excluded$15);
+	var otherProps = _objectWithoutProperties$16(props, _excluded$16);
 	return /* @__PURE__ */ import_react.createElement(DefaultLegendContent, otherProps);
 }
 var EPS$1 = 1;
 var Legend = /* @__PURE__ */ function(_PureComponent) {
 	function Legend$1() {
 		var _this;
-		_classCallCheck$20(this, Legend$1);
+		_classCallCheck$21(this, Legend$1);
 		for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-		_this = _callSuper$16(this, Legend$1, [].concat(args));
-		_defineProperty$41(_this, "lastBoundingBox", {
+		_this = _callSuper$17(this, Legend$1, [].concat(args));
+		_defineProperty$42(_this, "lastBoundingBox", {
 			width: -1,
 			height: -1
 		});
 		return _this;
 	}
-	_inherits$17(Legend$1, _PureComponent);
-	return _createClass$20(Legend$1, [
+	_inherits$18(Legend$1, _PureComponent);
+	return _createClass$21(Legend$1, [
 		{
 			key: "componentDidMount",
 			value: function componentDidMount() {
@@ -31647,7 +31989,7 @@ var Legend = /* @__PURE__ */ function(_PureComponent) {
 		{
 			key: "getBBoxSnapshot",
 			value: function getBBoxSnapshot() {
-				if (this.lastBoundingBox.width >= 0 && this.lastBoundingBox.height >= 0) return _objectSpread$36({}, this.lastBoundingBox);
+				if (this.lastBoundingBox.width >= 0 && this.lastBoundingBox.height >= 0) return _objectSpread$37({}, this.lastBoundingBox);
 				return {
 					width: 0,
 					height: 0
@@ -31667,7 +32009,7 @@ var Legend = /* @__PURE__ */ function(_PureComponent) {
 					var _box = this.getBBoxSnapshot();
 					vPos = { top: ((chartHeight || 0) - _box.height) / 2 };
 				} else vPos = verticalAlign === "bottom" ? { bottom: margin && margin.bottom || 0 } : { top: margin && margin.top || 0 };
-				return _objectSpread$36(_objectSpread$36({}, hPos), vPos);
+				return _objectSpread$37(_objectSpread$37({}, hPos), vPos);
 			}
 		},
 		{
@@ -31675,7 +32017,7 @@ var Legend = /* @__PURE__ */ function(_PureComponent) {
 			value: function render() {
 				var _this2 = this;
 				var _this$props2 = this.props, content = _this$props2.content, width = _this$props2.width, height = _this$props2.height, wrapperStyle = _this$props2.wrapperStyle, payloadUniqBy = _this$props2.payloadUniqBy, payload = _this$props2.payload;
-				var outerStyle = _objectSpread$36(_objectSpread$36({
+				var outerStyle = _objectSpread$37(_objectSpread$37({
 					position: "absolute",
 					width: width || "auto",
 					height: height || "auto"
@@ -31686,21 +32028,21 @@ var Legend = /* @__PURE__ */ function(_PureComponent) {
 					ref: function ref(node) {
 						_this2.wrapperNode = node;
 					}
-				}, renderContent$1(content, _objectSpread$36(_objectSpread$36({}, this.props), {}, { payload: getUniqPayload(payload, payloadUniqBy, defaultUniqBy$1) })));
+				}, renderContent$1(content, _objectSpread$37(_objectSpread$37({}, this.props), {}, { payload: getUniqPayload(payload, payloadUniqBy, defaultUniqBy$1) })));
 			}
 		}
 	], [{
 		key: "getWithHeight",
 		value: function getWithHeight(item, chartWidth) {
-			var layout = _objectSpread$36(_objectSpread$36({}, this.defaultProps), item.props).layout;
+			var layout = _objectSpread$37(_objectSpread$37({}, this.defaultProps), item.props).layout;
 			if (layout === "vertical" && isNumber(item.props.height)) return { height: item.props.height };
 			if (layout === "horizontal") return { width: item.props.width || chartWidth };
 			return null;
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$41(Legend, "displayName", "Legend");
-_defineProperty$41(Legend, "defaultProps", {
+_defineProperty$42(Legend, "displayName", "Legend");
+_defineProperty$42(Legend, "defaultProps", {
 	iconSize: 14,
 	layout: "horizontal",
 	align: "center",
@@ -31951,24 +32293,24 @@ var require_sortBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	});
 }));
 var import_sortBy$2 = /* @__PURE__ */ __toESM(require_sortBy());
-var import_isNil$9 = /* @__PURE__ */ __toESM(require_isNil());
-function _typeof$43(o) {
+var import_isNil$10 = /* @__PURE__ */ __toESM(require_isNil());
+function _typeof$44(o) {
 	"@babel/helpers - typeof";
-	return _typeof$43 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$44 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$43(o);
+	}, _typeof$44(o);
 }
-function _extends$26() {
-	_extends$26 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$27() {
+	_extends$27 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$26.apply(this, arguments);
+	return _extends$27.apply(this, arguments);
 }
 function _slicedToArray$12(arr, i) {
 	return _arrayWithHoles$13(arr) || _iterableToArrayLimit$12(arr, i) || _unsupportedIterableToArray$21(arr, i) || _nonIterableRest$13();
@@ -32013,7 +32355,7 @@ function _iterableToArrayLimit$12(r$1, l) {
 function _arrayWithHoles$13(arr) {
 	if (Array.isArray(arr)) return arr;
 }
-function ownKeys$35(e, r$1) {
+function ownKeys$36(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -32023,19 +32365,19 @@ function ownKeys$35(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$35(e) {
+function _objectSpread$36(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$35(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$40(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$35(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$36(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$41(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$36(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$40(obj, key, value) {
-	key = _toPropertyKey$41(key);
+function _defineProperty$41(obj, key, value) {
+	key = _toPropertyKey$42(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -32045,16 +32387,16 @@ function _defineProperty$40(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$41(t) {
-	var i = _toPrimitive$41(t, "string");
-	return "symbol" == _typeof$43(i) ? i : i + "";
+function _toPropertyKey$42(t) {
+	var i = _toPrimitive$42(t, "string");
+	return "symbol" == _typeof$44(i) ? i : i + "";
 }
-function _toPrimitive$41(t, r$1) {
-	if ("object" != _typeof$43(t) || !t) return t;
+function _toPrimitive$42(t, r$1) {
+	if ("object" != _typeof$44(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$43(i)) return i;
+		if ("object" != _typeof$44(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -32072,7 +32414,7 @@ var DefaultTooltipContent = function DefaultTooltipContent$1(props) {
 			};
 			var items = (itemSorter ? (0, import_sortBy$2.default)(payload, itemSorter) : payload).map(function(entry, i) {
 				if (entry.type === "none") return null;
-				var finalItemStyle = _objectSpread$35({
+				var finalItemStyle = _objectSpread$36({
 					display: "block",
 					paddingTop: 4,
 					paddingBottom: 4,
@@ -32103,15 +32445,15 @@ var DefaultTooltipContent = function DefaultTooltipContent$1(props) {
 		}
 		return null;
 	};
-	var finalStyle = _objectSpread$35({
+	var finalStyle = _objectSpread$36({
 		margin: 0,
 		padding: 10,
 		backgroundColor: "#fff",
 		border: "1px solid #ccc",
 		whiteSpace: "nowrap"
 	}, contentStyle);
-	var finalLabelStyle = _objectSpread$35({ margin: 0 }, labelStyle);
-	var hasLabel = !(0, import_isNil$9.default)(label);
+	var finalLabelStyle = _objectSpread$36({ margin: 0 }, labelStyle);
+	var hasLabel = !(0, import_isNil$10.default)(label);
 	var finalLabel = hasLabel ? label : "";
 	var wrapperCN = clsx_default("recharts-default-tooltip", wrapperClassName);
 	var labelCN = clsx_default("recharts-tooltip-label", labelClassName);
@@ -32120,7 +32462,7 @@ var DefaultTooltipContent = function DefaultTooltipContent$1(props) {
 		role: "status",
 		"aria-live": "assertive"
 	} : {};
-	return /* @__PURE__ */ import_react.createElement("div", _extends$26({
+	return /* @__PURE__ */ import_react.createElement("div", _extends$27({
 		className: wrapperCN,
 		style: finalStyle
 	}, accessibilityAttributes), /* @__PURE__ */ import_react.createElement("p", {
@@ -32128,16 +32470,16 @@ var DefaultTooltipContent = function DefaultTooltipContent$1(props) {
 		style: finalLabelStyle
 	}, /* @__PURE__ */ import_react.isValidElement(finalLabel) ? finalLabel : "".concat(finalLabel)), renderContent$2());
 };
-function _typeof$42(o) {
+function _typeof$43(o) {
 	"@babel/helpers - typeof";
-	return _typeof$42 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$43 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$42(o);
+	}, _typeof$43(o);
 }
-function _defineProperty$39(obj, key, value) {
-	key = _toPropertyKey$40(key);
+function _defineProperty$40(obj, key, value) {
+	key = _toPropertyKey$41(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -32147,16 +32489,16 @@ function _defineProperty$39(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$40(t) {
-	var i = _toPrimitive$40(t, "string");
-	return "symbol" == _typeof$42(i) ? i : i + "";
+function _toPropertyKey$41(t) {
+	var i = _toPrimitive$41(t, "string");
+	return "symbol" == _typeof$43(i) ? i : i + "";
 }
-function _toPrimitive$40(t, r$1) {
-	if ("object" != _typeof$42(t) || !t) return t;
+function _toPrimitive$41(t, r$1) {
+	if ("object" != _typeof$43(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$42(i)) return i;
+		if ("object" != _typeof$43(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -32165,7 +32507,7 @@ var CSS_CLASS_PREFIX = "recharts-tooltip-wrapper";
 var TOOLTIP_HIDDEN = { visibility: "hidden" };
 function getTooltipCSSClassName(_ref) {
 	var coordinate = _ref.coordinate, translateX = _ref.translateX, translateY = _ref.translateY;
-	return clsx_default(CSS_CLASS_PREFIX, _defineProperty$39(_defineProperty$39(_defineProperty$39(_defineProperty$39({}, "".concat(CSS_CLASS_PREFIX, "-right"), isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX >= coordinate.x), "".concat(CSS_CLASS_PREFIX, "-left"), isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX < coordinate.x), "".concat(CSS_CLASS_PREFIX, "-bottom"), isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY >= coordinate.y), "".concat(CSS_CLASS_PREFIX, "-top"), isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY < coordinate.y));
+	return clsx_default(CSS_CLASS_PREFIX, _defineProperty$40(_defineProperty$40(_defineProperty$40(_defineProperty$40({}, "".concat(CSS_CLASS_PREFIX, "-right"), isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX >= coordinate.x), "".concat(CSS_CLASS_PREFIX, "-left"), isNumber(translateX) && coordinate && isNumber(coordinate.x) && translateX < coordinate.x), "".concat(CSS_CLASS_PREFIX, "-bottom"), isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY >= coordinate.y), "".concat(CSS_CLASS_PREFIX, "-top"), isNumber(translateY) && coordinate && isNumber(coordinate.y) && translateY < coordinate.y));
 }
 function getTooltipTranslateXY(_ref2) {
 	var allowEscapeViewBox = _ref2.allowEscapeViewBox, coordinate = _ref2.coordinate, key = _ref2.key, offsetTopLeft = _ref2.offsetTopLeft, position = _ref2.position, reverseDirection = _ref2.reverseDirection, tooltipDimension = _ref2.tooltipDimension, viewBox = _ref2.viewBox, viewBoxDimension = _ref2.viewBoxDimension;
@@ -32225,6 +32567,243 @@ function getTooltipTranslate(_ref4) {
 		})
 	};
 }
+function _typeof$42(o) {
+	"@babel/helpers - typeof";
+	return _typeof$42 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$42(o);
+}
+function ownKeys$35(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$35(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$35(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$39(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$35(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _classCallCheck$20(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$20(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$40(descriptor.key), descriptor);
+	}
+}
+function _createClass$20(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$20(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$20(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$16(t, o, e) {
+	return o = _getPrototypeOf$17(o), _possibleConstructorReturn$17(t, _isNativeReflectConstruct$17() ? Reflect.construct(o, e || [], _getPrototypeOf$17(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$17(self$1, call) {
+	if (call && (_typeof$42(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$17(self$1);
+}
+function _assertThisInitialized$17(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$17() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$17 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$17(o) {
+	_getPrototypeOf$17 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$17(o);
+}
+function _inherits$17(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$17(subClass, superClass);
+}
+function _setPrototypeOf$17(o, p) {
+	_setPrototypeOf$17 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$17(o, p);
+}
+function _defineProperty$39(obj, key, value) {
+	key = _toPropertyKey$40(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$40(t) {
+	var i = _toPrimitive$40(t, "string");
+	return "symbol" == _typeof$42(i) ? i : i + "";
+}
+function _toPrimitive$40(t, r$1) {
+	if ("object" != _typeof$42(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$42(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+var EPSILON = 1;
+var TooltipBoundingBox = /* @__PURE__ */ function(_PureComponent) {
+	function TooltipBoundingBox$1() {
+		var _this;
+		_classCallCheck$20(this, TooltipBoundingBox$1);
+		for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+		_this = _callSuper$16(this, TooltipBoundingBox$1, [].concat(args));
+		_defineProperty$39(_this, "state", {
+			dismissed: false,
+			dismissedAtCoordinate: {
+				x: 0,
+				y: 0
+			},
+			lastBoundingBox: {
+				width: -1,
+				height: -1
+			}
+		});
+		_defineProperty$39(_this, "handleKeyDown", function(event) {
+			if (event.key === "Escape") {
+				var _this$props$coordinat, _this$props$coordinat2, _this$props$coordinat3, _this$props$coordinat4;
+				_this.setState({
+					dismissed: true,
+					dismissedAtCoordinate: {
+						x: (_this$props$coordinat = (_this$props$coordinat2 = _this.props.coordinate) === null || _this$props$coordinat2 === void 0 ? void 0 : _this$props$coordinat2.x) !== null && _this$props$coordinat !== void 0 ? _this$props$coordinat : 0,
+						y: (_this$props$coordinat3 = (_this$props$coordinat4 = _this.props.coordinate) === null || _this$props$coordinat4 === void 0 ? void 0 : _this$props$coordinat4.y) !== null && _this$props$coordinat3 !== void 0 ? _this$props$coordinat3 : 0
+					}
+				});
+			}
+		});
+		return _this;
+	}
+	_inherits$17(TooltipBoundingBox$1, _PureComponent);
+	return _createClass$20(TooltipBoundingBox$1, [
+		{
+			key: "updateBBox",
+			value: function updateBBox() {
+				if (this.wrapperNode && this.wrapperNode.getBoundingClientRect) {
+					var box = this.wrapperNode.getBoundingClientRect();
+					if (Math.abs(box.width - this.state.lastBoundingBox.width) > EPSILON || Math.abs(box.height - this.state.lastBoundingBox.height) > EPSILON) this.setState({ lastBoundingBox: {
+						width: box.width,
+						height: box.height
+					} });
+				} else if (this.state.lastBoundingBox.width !== -1 || this.state.lastBoundingBox.height !== -1) this.setState({ lastBoundingBox: {
+					width: -1,
+					height: -1
+				} });
+			}
+		},
+		{
+			key: "componentDidMount",
+			value: function componentDidMount() {
+				document.addEventListener("keydown", this.handleKeyDown);
+				this.updateBBox();
+			}
+		},
+		{
+			key: "componentWillUnmount",
+			value: function componentWillUnmount() {
+				document.removeEventListener("keydown", this.handleKeyDown);
+			}
+		},
+		{
+			key: "componentDidUpdate",
+			value: function componentDidUpdate() {
+				var _this$props$coordinat5, _this$props$coordinat6;
+				if (this.props.active) this.updateBBox();
+				if (!this.state.dismissed) return;
+				if (((_this$props$coordinat5 = this.props.coordinate) === null || _this$props$coordinat5 === void 0 ? void 0 : _this$props$coordinat5.x) !== this.state.dismissedAtCoordinate.x || ((_this$props$coordinat6 = this.props.coordinate) === null || _this$props$coordinat6 === void 0 ? void 0 : _this$props$coordinat6.y) !== this.state.dismissedAtCoordinate.y) this.state.dismissed = false;
+			}
+		},
+		{
+			key: "render",
+			value: function render() {
+				var _this2 = this;
+				var _this$props = this.props, active = _this$props.active, allowEscapeViewBox = _this$props.allowEscapeViewBox, animationDuration = _this$props.animationDuration, animationEasing = _this$props.animationEasing, children = _this$props.children, coordinate = _this$props.coordinate, hasPayload = _this$props.hasPayload, isAnimationActive = _this$props.isAnimationActive, offset$3 = _this$props.offset, position = _this$props.position, reverseDirection = _this$props.reverseDirection, useTranslate3d = _this$props.useTranslate3d, viewBox = _this$props.viewBox, wrapperStyle = _this$props.wrapperStyle;
+				var _getTooltipTranslate = getTooltipTranslate({
+					allowEscapeViewBox,
+					coordinate,
+					offsetTopLeft: offset$3,
+					position,
+					reverseDirection,
+					tooltipBox: this.state.lastBoundingBox,
+					useTranslate3d,
+					viewBox
+				}), cssClasses = _getTooltipTranslate.cssClasses, cssProperties = _getTooltipTranslate.cssProperties;
+				var outerStyle = _objectSpread$35(_objectSpread$35({ transition: isAnimationActive && active ? "transform ".concat(animationDuration, "ms ").concat(animationEasing) : void 0 }, cssProperties), {}, {
+					pointerEvents: "none",
+					visibility: !this.state.dismissed && active && hasPayload ? "visible" : "hidden",
+					position: "absolute",
+					top: 0,
+					left: 0
+				}, wrapperStyle);
+				return /* @__PURE__ */ import_react.createElement("div", {
+					tabIndex: -1,
+					className: cssClasses,
+					style: outerStyle,
+					ref: function ref(node) {
+						_this2.wrapperNode = node;
+					}
+				}, children);
+			}
+		}
+	]);
+}(import_react.PureComponent);
+var Global = {
+	isSsr: function parseIsSsrByDefault$1() {
+		return !(typeof window !== "undefined" && window.document && window.document.createElement && window.setTimeout);
+	}(),
+	get: function get$8(key) {
+		return Global[key];
+	},
+	set: function set(key, value) {
+		if (typeof key === "string") Global[key] = value;
+		else {
+			var keys$6 = Object.keys(key);
+			if (keys$6 && keys$6.length) keys$6.forEach(function(k$1) {
+				Global[k$1] = key[k$1];
+			});
+		}
+	}
+};
 function _typeof$41(o) {
 	"@babel/helpers - typeof";
 	return _typeof$41 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -32288,12 +32867,12 @@ function _isNativeReflectConstruct$16() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$16 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$16 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
 function _getPrototypeOf$16(o) {
-	_getPrototypeOf$16 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+	_getPrototypeOf$16 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
 	return _getPrototypeOf$16(o);
@@ -32309,7 +32888,7 @@ function _inherits$16(subClass, superClass) {
 	if (superClass) _setPrototypeOf$16(subClass, superClass);
 }
 function _setPrototypeOf$16(o, p) {
-	_setPrototypeOf$16 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+	_setPrototypeOf$16 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
@@ -32340,243 +32919,6 @@ function _toPrimitive$39(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-var EPSILON = 1;
-var TooltipBoundingBox = /* @__PURE__ */ function(_PureComponent) {
-	function TooltipBoundingBox$1() {
-		var _this;
-		_classCallCheck$19(this, TooltipBoundingBox$1);
-		for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-		_this = _callSuper$15(this, TooltipBoundingBox$1, [].concat(args));
-		_defineProperty$38(_this, "state", {
-			dismissed: false,
-			dismissedAtCoordinate: {
-				x: 0,
-				y: 0
-			},
-			lastBoundingBox: {
-				width: -1,
-				height: -1
-			}
-		});
-		_defineProperty$38(_this, "handleKeyDown", function(event) {
-			if (event.key === "Escape") {
-				var _this$props$coordinat, _this$props$coordinat2, _this$props$coordinat3, _this$props$coordinat4;
-				_this.setState({
-					dismissed: true,
-					dismissedAtCoordinate: {
-						x: (_this$props$coordinat = (_this$props$coordinat2 = _this.props.coordinate) === null || _this$props$coordinat2 === void 0 ? void 0 : _this$props$coordinat2.x) !== null && _this$props$coordinat !== void 0 ? _this$props$coordinat : 0,
-						y: (_this$props$coordinat3 = (_this$props$coordinat4 = _this.props.coordinate) === null || _this$props$coordinat4 === void 0 ? void 0 : _this$props$coordinat4.y) !== null && _this$props$coordinat3 !== void 0 ? _this$props$coordinat3 : 0
-					}
-				});
-			}
-		});
-		return _this;
-	}
-	_inherits$16(TooltipBoundingBox$1, _PureComponent);
-	return _createClass$19(TooltipBoundingBox$1, [
-		{
-			key: "updateBBox",
-			value: function updateBBox() {
-				if (this.wrapperNode && this.wrapperNode.getBoundingClientRect) {
-					var box = this.wrapperNode.getBoundingClientRect();
-					if (Math.abs(box.width - this.state.lastBoundingBox.width) > EPSILON || Math.abs(box.height - this.state.lastBoundingBox.height) > EPSILON) this.setState({ lastBoundingBox: {
-						width: box.width,
-						height: box.height
-					} });
-				} else if (this.state.lastBoundingBox.width !== -1 || this.state.lastBoundingBox.height !== -1) this.setState({ lastBoundingBox: {
-					width: -1,
-					height: -1
-				} });
-			}
-		},
-		{
-			key: "componentDidMount",
-			value: function componentDidMount() {
-				document.addEventListener("keydown", this.handleKeyDown);
-				this.updateBBox();
-			}
-		},
-		{
-			key: "componentWillUnmount",
-			value: function componentWillUnmount() {
-				document.removeEventListener("keydown", this.handleKeyDown);
-			}
-		},
-		{
-			key: "componentDidUpdate",
-			value: function componentDidUpdate() {
-				var _this$props$coordinat5, _this$props$coordinat6;
-				if (this.props.active) this.updateBBox();
-				if (!this.state.dismissed) return;
-				if (((_this$props$coordinat5 = this.props.coordinate) === null || _this$props$coordinat5 === void 0 ? void 0 : _this$props$coordinat5.x) !== this.state.dismissedAtCoordinate.x || ((_this$props$coordinat6 = this.props.coordinate) === null || _this$props$coordinat6 === void 0 ? void 0 : _this$props$coordinat6.y) !== this.state.dismissedAtCoordinate.y) this.state.dismissed = false;
-			}
-		},
-		{
-			key: "render",
-			value: function render() {
-				var _this2 = this;
-				var _this$props = this.props, active = _this$props.active, allowEscapeViewBox = _this$props.allowEscapeViewBox, animationDuration = _this$props.animationDuration, animationEasing = _this$props.animationEasing, children = _this$props.children, coordinate = _this$props.coordinate, hasPayload = _this$props.hasPayload, isAnimationActive = _this$props.isAnimationActive, offset$3 = _this$props.offset, position = _this$props.position, reverseDirection = _this$props.reverseDirection, useTranslate3d = _this$props.useTranslate3d, viewBox = _this$props.viewBox, wrapperStyle = _this$props.wrapperStyle;
-				var _getTooltipTranslate = getTooltipTranslate({
-					allowEscapeViewBox,
-					coordinate,
-					offsetTopLeft: offset$3,
-					position,
-					reverseDirection,
-					tooltipBox: this.state.lastBoundingBox,
-					useTranslate3d,
-					viewBox
-				}), cssClasses = _getTooltipTranslate.cssClasses, cssProperties = _getTooltipTranslate.cssProperties;
-				var outerStyle = _objectSpread$34(_objectSpread$34({ transition: isAnimationActive && active ? "transform ".concat(animationDuration, "ms ").concat(animationEasing) : void 0 }, cssProperties), {}, {
-					pointerEvents: "none",
-					visibility: !this.state.dismissed && active && hasPayload ? "visible" : "hidden",
-					position: "absolute",
-					top: 0,
-					left: 0
-				}, wrapperStyle);
-				return /* @__PURE__ */ import_react.createElement("div", {
-					tabIndex: -1,
-					className: cssClasses,
-					style: outerStyle,
-					ref: function ref(node) {
-						_this2.wrapperNode = node;
-					}
-				}, children);
-			}
-		}
-	]);
-}(import_react.PureComponent);
-var Global = {
-	isSsr: function parseIsSsrByDefault$1() {
-		return !(typeof window !== "undefined" && window.document && window.document.createElement && window.setTimeout);
-	}(),
-	get: function get$8(key) {
-		return Global[key];
-	},
-	set: function set(key, value) {
-		if (typeof key === "string") Global[key] = value;
-		else {
-			var keys$6 = Object.keys(key);
-			if (keys$6 && keys$6.length) keys$6.forEach(function(k$1) {
-				Global[k$1] = key[k$1];
-			});
-		}
-	}
-};
-function _typeof$40(o) {
-	"@babel/helpers - typeof";
-	return _typeof$40 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$40(o);
-}
-function ownKeys$33(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$33(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$33(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$37(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$33(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _classCallCheck$18(instance, Constructor) {
-	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties$18(target, props) {
-	for (var i = 0; i < props.length; i++) {
-		var descriptor = props[i];
-		descriptor.enumerable = descriptor.enumerable || false;
-		descriptor.configurable = true;
-		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$38(descriptor.key), descriptor);
-	}
-}
-function _createClass$18(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$18(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$18(Constructor, staticProps);
-	Object.defineProperty(Constructor, "prototype", { writable: false });
-	return Constructor;
-}
-function _callSuper$14(t, o, e) {
-	return o = _getPrototypeOf$15(o), _possibleConstructorReturn$15(t, _isNativeReflectConstruct$15() ? Reflect.construct(o, e || [], _getPrototypeOf$15(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn$15(self$1, call) {
-	if (call && (_typeof$40(call) === "object" || typeof call === "function")) return call;
-	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$15(self$1);
-}
-function _assertThisInitialized$15(self$1) {
-	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	return self$1;
-}
-function _isNativeReflectConstruct$15() {
-	try {
-		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-	} catch (t$1) {}
-	return (_isNativeReflectConstruct$15 = function _isNativeReflectConstruct$19() {
-		return !!t;
-	})();
-}
-function _getPrototypeOf$15(o) {
-	_getPrototypeOf$15 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
-		return o$1.__proto__ || Object.getPrototypeOf(o$1);
-	};
-	return _getPrototypeOf$15(o);
-}
-function _inherits$15(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-		value: subClass,
-		writable: true,
-		configurable: true
-	} });
-	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$15(subClass, superClass);
-}
-function _setPrototypeOf$15(o, p) {
-	_setPrototypeOf$15 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
-		o$1.__proto__ = p$1;
-		return o$1;
-	};
-	return _setPrototypeOf$15(o, p);
-}
-function _defineProperty$37(obj, key, value) {
-	key = _toPropertyKey$38(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$38(t) {
-	var i = _toPrimitive$38(t, "string");
-	return "symbol" == _typeof$40(i) ? i : i + "";
-}
-function _toPrimitive$38(t, r$1) {
-	if ("object" != _typeof$40(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$40(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 function defaultUniqBy(entry) {
 	return entry.dataKey;
 }
@@ -32587,11 +32929,11 @@ function renderContent(content, props) {
 }
 var Tooltip = /* @__PURE__ */ function(_PureComponent) {
 	function Tooltip$3() {
-		_classCallCheck$18(this, Tooltip$3);
-		return _callSuper$14(this, Tooltip$3, arguments);
+		_classCallCheck$19(this, Tooltip$3);
+		return _callSuper$15(this, Tooltip$3, arguments);
 	}
-	_inherits$15(Tooltip$3, _PureComponent);
-	return _createClass$18(Tooltip$3, [{
+	_inherits$16(Tooltip$3, _PureComponent);
+	return _createClass$19(Tooltip$3, [{
 		key: "render",
 		value: function render() {
 			var _this = this;
@@ -32615,12 +32957,12 @@ var Tooltip = /* @__PURE__ */ function(_PureComponent) {
 				useTranslate3d,
 				viewBox,
 				wrapperStyle
-			}, renderContent(content, _objectSpread$33(_objectSpread$33({}, this.props), {}, { payload: finalPayload })));
+			}, renderContent(content, _objectSpread$34(_objectSpread$34({}, this.props), {}, { payload: finalPayload })));
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$37(Tooltip, "displayName", "Tooltip");
-_defineProperty$37(Tooltip, "defaultProps", {
+_defineProperty$38(Tooltip, "displayName", "Tooltip");
+_defineProperty$38(Tooltip, "defaultProps", {
 	accessibilityLayer: false,
 	allowEscapeViewBox: {
 		x: false,
@@ -32794,15 +33136,15 @@ var require_throttle = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = throttle$2;
 }));
 var import_throttle$1 = /* @__PURE__ */ __toESM(require_throttle());
-function _typeof$39(o) {
+function _typeof$40(o) {
 	"@babel/helpers - typeof";
-	return _typeof$39 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$40 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$39(o);
+	}, _typeof$40(o);
 }
-function ownKeys$32(e, r$1) {
+function ownKeys$33(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -32812,19 +33154,19 @@ function ownKeys$32(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$32(e) {
+function _objectSpread$33(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$32(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$36(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$32(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$33(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$37(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$33(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$36(obj, key, value) {
-	key = _toPropertyKey$37(key);
+function _defineProperty$37(obj, key, value) {
+	key = _toPropertyKey$38(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -32834,16 +33176,16 @@ function _defineProperty$36(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$37(t) {
-	var i = _toPrimitive$37(t, "string");
-	return "symbol" == _typeof$39(i) ? i : i + "";
+function _toPropertyKey$38(t) {
+	var i = _toPrimitive$38(t, "string");
+	return "symbol" == _typeof$40(i) ? i : i + "";
 }
-function _toPrimitive$37(t, r$1) {
-	if ("object" != _typeof$39(t) || !t) return t;
+function _toPrimitive$38(t, r$1) {
+	if ("object" != _typeof$40(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$39(i)) return i;
+		if ("object" != _typeof$40(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -32957,10 +33299,10 @@ var ResponsiveContainer = /* @__PURE__ */ (0, import_react.forwardRef)(function(
 		warn(calculatedWidth > 0 || calculatedHeight > 0, "The width(%s) and height(%s) of chart should be greater than 0,\n       please check the style of container, or the props width(%s) and height(%s),\n       or add a minWidth(%s) or minHeight(%s) or use aspect(%s) to control the\n       height and width.", calculatedWidth, calculatedHeight, width, height, minWidth, minHeight, aspect);
 		var isCharts = !Array.isArray(children) && getDisplayName(children.type).endsWith("Chart");
 		return import_react.Children.map(children, function(child) {
-			if (/* @__PURE__ */ import_react.isValidElement(child)) return /* @__PURE__ */ (0, import_react.cloneElement)(child, _objectSpread$32({
+			if (/* @__PURE__ */ import_react.isValidElement(child)) return /* @__PURE__ */ (0, import_react.cloneElement)(child, _objectSpread$33({
 				width: calculatedWidth,
 				height: calculatedHeight
-			}, isCharts ? { style: _objectSpread$32({
+			}, isCharts ? { style: _objectSpread$33({
 				height: "100%",
 				width: "100%",
 				maxHeight: calculatedHeight,
@@ -32981,7 +33323,7 @@ var ResponsiveContainer = /* @__PURE__ */ (0, import_react.forwardRef)(function(
 	return /* @__PURE__ */ import_react.createElement("div", {
 		id: id ? "".concat(id) : void 0,
 		className: clsx_default("recharts-responsive-container", className),
-		style: _objectSpread$32(_objectSpread$32({}, style), {}, {
+		style: _objectSpread$33(_objectSpread$33({}, style), {}, {
 			width,
 			height,
 			minWidth,
@@ -32995,15 +33337,15 @@ var Cell = function Cell$1(_props) {
 	return null;
 };
 Cell.displayName = "Cell";
-function _typeof$38(o) {
+function _typeof$39(o) {
 	"@babel/helpers - typeof";
-	return _typeof$38 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$39 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$38(o);
+	}, _typeof$39(o);
 }
-function ownKeys$31(e, r$1) {
+function ownKeys$32(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -33013,19 +33355,19 @@ function ownKeys$31(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$31(e) {
+function _objectSpread$32(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$31(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$35(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$31(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$32(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$36(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$32(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$35(obj, key, value) {
-	key = _toPropertyKey$36(key);
+function _defineProperty$36(obj, key, value) {
+	key = _toPropertyKey$37(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -33035,16 +33377,16 @@ function _defineProperty$35(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$36(t) {
-	var i = _toPrimitive$36(t, "string");
-	return "symbol" == _typeof$38(i) ? i : i + "";
+function _toPropertyKey$37(t) {
+	var i = _toPrimitive$37(t, "string");
+	return "symbol" == _typeof$39(i) ? i : i + "";
 }
-function _toPrimitive$36(t, r$1) {
-	if ("object" != _typeof$38(t) || !t) return t;
+function _toPrimitive$37(t, r$1) {
+	if ("object" != _typeof$39(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$38(i)) return i;
+		if ("object" != _typeof$39(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -33065,7 +33407,7 @@ var SPAN_STYLE = {
 };
 var MEASUREMENT_SPAN_ID = "recharts_measurement_span";
 function removeInvalidKeys(obj) {
-	var copyObj = _objectSpread$31({}, obj);
+	var copyObj = _objectSpread$32({}, obj);
 	Object.keys(copyObj).forEach(function(key) {
 		if (!copyObj[key]) delete copyObj[key];
 	});
@@ -33091,7 +33433,7 @@ var getStringSize = function getStringSize$1(text) {
 			measurementSpan.setAttribute("aria-hidden", "true");
 			document.body.appendChild(measurementSpan);
 		}
-		var measurementSpanStyle = _objectSpread$31(_objectSpread$31({}, SPAN_STYLE), copyStyle);
+		var measurementSpanStyle = _objectSpread$32(_objectSpread$32({}, SPAN_STYLE), copyStyle);
 		Object.assign(measurementSpan.style, measurementSpanStyle);
 		measurementSpan.textContent = "".concat(text);
 		var rect = measurementSpan.getBoundingClientRect();
@@ -33118,13 +33460,13 @@ var getOffset = function getOffset$2(rect) {
 		left: rect.left + window.scrollX - document.documentElement.clientLeft
 	};
 };
-function _typeof$37(o) {
+function _typeof$38(o) {
 	"@babel/helpers - typeof";
-	return _typeof$37 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$38 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$37(o);
+	}, _typeof$38(o);
 }
 function _slicedToArray$10(arr, i) {
 	return _arrayWithHoles$11(arr) || _iterableToArrayLimit$10(arr, i) || _unsupportedIterableToArray$19(arr, i) || _nonIterableRest$11();
@@ -33169,34 +33511,34 @@ function _iterableToArrayLimit$10(r$1, l) {
 function _arrayWithHoles$11(arr) {
 	if (Array.isArray(arr)) return arr;
 }
-function _classCallCheck$17(instance, Constructor) {
+function _classCallCheck$18(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$17(target, props) {
+function _defineProperties$18(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$35(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$36(descriptor.key), descriptor);
 	}
 }
-function _createClass$17(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$17(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$17(Constructor, staticProps);
+function _createClass$18(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$18(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$18(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _toPropertyKey$35(t) {
-	var i = _toPrimitive$35(t, "string");
-	return "symbol" == _typeof$37(i) ? i : i + "";
+function _toPropertyKey$36(t) {
+	var i = _toPrimitive$36(t, "string");
+	return "symbol" == _typeof$38(i) ? i : i + "";
 }
-function _toPrimitive$35(t, r$1) {
-	if ("object" != _typeof$37(t) || !t) return t;
+function _toPrimitive$36(t, r$1) {
+	if ("object" != _typeof$38(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$37(i)) return i;
+		if ("object" != _typeof$38(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -33221,7 +33563,7 @@ function convertToPx(value, unit$1) {
 }
 var DecimalCSS = /* @__PURE__ */ function() {
 	function DecimalCSS$1(num, unit$1) {
-		_classCallCheck$17(this, DecimalCSS$1);
+		_classCallCheck$18(this, DecimalCSS$1);
 		this.num = num;
 		this.unit = unit$1;
 		this.num = num;
@@ -33236,7 +33578,7 @@ var DecimalCSS = /* @__PURE__ */ function() {
 			this.unit = "px";
 		}
 	}
-	return _createClass$17(DecimalCSS$1, [
+	return _createClass$18(DecimalCSS$1, [
 		{
 			key: "add",
 			value: function add(other) {
@@ -33337,8 +33679,8 @@ function reduceCSSCalc(expression) {
 	if (result === STR_NAN) return "";
 	return result;
 }
-var import_isNil$8 = /* @__PURE__ */ __toESM(require_isNil());
-var _excluded$14 = [
+var import_isNil$9 = /* @__PURE__ */ __toESM(require_isNil());
+var _excluded$15 = [
 	"x",
 	"y",
 	"lineHeight",
@@ -33347,26 +33689,26 @@ var _excluded$14 = [
 	"textAnchor",
 	"verticalAnchor",
 	"fill"
-], _excluded2$6 = [
+], _excluded2$7 = [
 	"dx",
 	"dy",
 	"angle",
 	"className",
 	"breakAll"
 ];
-function _extends$25() {
-	_extends$25 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$26() {
+	_extends$26 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$25.apply(this, arguments);
+	return _extends$26.apply(this, arguments);
 }
-function _objectWithoutProperties$14(source, excluded) {
+function _objectWithoutProperties$15(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$14(source, excluded);
+	var target = _objectWithoutPropertiesLoose$15(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -33379,7 +33721,7 @@ function _objectWithoutProperties$14(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$14(source, excluded) {
+function _objectWithoutPropertiesLoose$15(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -33436,7 +33778,7 @@ var calculateWordWidths = function calculateWordWidths$1(_ref) {
 	var children = _ref.children, breakAll = _ref.breakAll, style = _ref.style;
 	try {
 		var words = [];
-		if (!(0, import_isNil$8.default)(children)) if (breakAll) words = children.toString().split("");
+		if (!(0, import_isNil$9.default)(children)) if (breakAll) words = children.toString().split("");
 		else words = children.toString().split(BREAKING_SPACES);
 		return {
 			wordsWithComputedWidth: words.map(function(word) {
@@ -33508,7 +33850,7 @@ var calculateWordsByLines = function calculateWordsByLines$1(_ref2, initialWords
 	return trimmedResult || originalResult;
 };
 var getWordsWithoutCalculate = function getWordsWithoutCalculate$1(children) {
-	return [{ words: !(0, import_isNil$8.default)(children) ? children.toString().split(BREAKING_SPACES) : [] }];
+	return [{ words: !(0, import_isNil$9.default)(children) ? children.toString().split(BREAKING_SPACES) : [] }];
 };
 var getWordsByLines = function getWordsByLines$1(_ref4) {
 	var width = _ref4.width, scaleToFit = _ref4.scaleToFit, children = _ref4.children, style = _ref4.style, breakAll = _ref4.breakAll, maxLines = _ref4.maxLines;
@@ -33535,7 +33877,7 @@ var getWordsByLines = function getWordsByLines$1(_ref4) {
 };
 var DEFAULT_FILL = "#808080";
 var Text = function Text$1(_ref5) {
-	var _ref5$x = _ref5.x, propsX = _ref5$x === void 0 ? 0 : _ref5$x, _ref5$y = _ref5.y, propsY = _ref5$y === void 0 ? 0 : _ref5$y, _ref5$lineHeight = _ref5.lineHeight, lineHeight = _ref5$lineHeight === void 0 ? "1em" : _ref5$lineHeight, _ref5$capHeight = _ref5.capHeight, capHeight = _ref5$capHeight === void 0 ? "0.71em" : _ref5$capHeight, _ref5$scaleToFit = _ref5.scaleToFit, scaleToFit = _ref5$scaleToFit === void 0 ? false : _ref5$scaleToFit, _ref5$textAnchor = _ref5.textAnchor, textAnchor = _ref5$textAnchor === void 0 ? "start" : _ref5$textAnchor, _ref5$verticalAnchor = _ref5.verticalAnchor, verticalAnchor = _ref5$verticalAnchor === void 0 ? "end" : _ref5$verticalAnchor, _ref5$fill = _ref5.fill, fill = _ref5$fill === void 0 ? DEFAULT_FILL : _ref5$fill, props = _objectWithoutProperties$14(_ref5, _excluded$14);
+	var _ref5$x = _ref5.x, propsX = _ref5$x === void 0 ? 0 : _ref5$x, _ref5$y = _ref5.y, propsY = _ref5$y === void 0 ? 0 : _ref5$y, _ref5$lineHeight = _ref5.lineHeight, lineHeight = _ref5$lineHeight === void 0 ? "1em" : _ref5$lineHeight, _ref5$capHeight = _ref5.capHeight, capHeight = _ref5$capHeight === void 0 ? "0.71em" : _ref5$capHeight, _ref5$scaleToFit = _ref5.scaleToFit, scaleToFit = _ref5$scaleToFit === void 0 ? false : _ref5$scaleToFit, _ref5$textAnchor = _ref5.textAnchor, textAnchor = _ref5$textAnchor === void 0 ? "start" : _ref5$textAnchor, _ref5$verticalAnchor = _ref5.verticalAnchor, verticalAnchor = _ref5$verticalAnchor === void 0 ? "end" : _ref5$verticalAnchor, _ref5$fill = _ref5.fill, fill = _ref5$fill === void 0 ? DEFAULT_FILL : _ref5$fill, props = _objectWithoutProperties$15(_ref5, _excluded$15);
 	var wordsByLines = (0, import_react.useMemo)(function() {
 		return getWordsByLines({
 			breakAll: props.breakAll,
@@ -33553,7 +33895,7 @@ var Text = function Text$1(_ref5) {
 		props.style,
 		props.width
 	]);
-	var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$14(props, _excluded2$6);
+	var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$15(props, _excluded2$7);
 	if (!isNumOrStr(propsX) || !isNumOrStr(propsY)) return null;
 	var x$2 = propsX + (isNumber(dx) ? dx : 0);
 	var y$1 = propsY + (isNumber(dy) ? dy : 0);
@@ -33577,7 +33919,7 @@ var Text = function Text$1(_ref5) {
 	}
 	if (angle) transforms.push("rotate(".concat(angle, ", ").concat(x$2, ", ").concat(y$1, ")"));
 	if (transforms.length) textProps.transform = transforms.join(" ");
-	return /* @__PURE__ */ import_react.createElement("text", _extends$25({}, filterProps(textProps, true), {
+	return /* @__PURE__ */ import_react.createElement("text", _extends$26({}, filterProps(textProps, true), {
 		x: x$2,
 		y: y$1,
 		className: clsx_default("recharts-text", className),
@@ -33762,15 +34104,15 @@ function tickStep(start, stop, count$3) {
 	const reverse$1 = stop < start, inc = reverse$1 ? tickIncrement(stop, start, count$3) : tickIncrement(start, stop, count$3);
 	return (reverse$1 ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
 }
-function max$2(values, valueof) {
-	let max$4;
+function max$3(values, valueof) {
+	let max$5;
 	if (valueof === void 0) {
-		for (const value of values) if (value != null && (max$4 < value || max$4 === void 0 && value >= value)) max$4 = value;
+		for (const value of values) if (value != null && (max$5 < value || max$5 === void 0 && value >= value)) max$5 = value;
 	} else {
 		let index$1 = -1;
-		for (let value of values) if ((value = valueof(value, ++index$1, values)) != null && (max$4 < value || max$4 === void 0 && value >= value)) max$4 = value;
+		for (let value of values) if ((value = valueof(value, ++index$1, values)) != null && (max$5 < value || max$5 === void 0 && value >= value)) max$5 = value;
 	}
-	return max$4;
+	return max$5;
 }
 function min$2(values, valueof) {
 	let min$4;
@@ -33825,8 +34167,8 @@ function quantile(values, p, valueof) {
 	values = Float64Array.from(numbers(values, valueof));
 	if (!(n = values.length) || isNaN(p = +p)) return;
 	if (p <= 0 || n < 2) return min$2(values);
-	if (p >= 1) return max$2(values);
-	var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = max$2(quickselect(values, i0).subarray(0, i0 + 1));
+	if (p >= 1) return max$3(values);
+	var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = max$3(quickselect(values, i0).subarray(0, i0 + 1));
 	return value0 + (min$2(values.subarray(i0 + 1)) - value0) * (i - i0);
 }
 function quantileSorted(values, p, valueof = number$2) {
@@ -34236,12 +34578,12 @@ function hslConvert(o) {
 	if (!o) return new Hsl();
 	if (o instanceof Hsl) return o;
 	o = o.rgb();
-	var r$1 = o.r / 255, g = o.g / 255, b$1 = o.b / 255, min$4 = Math.min(r$1, g, b$1), max$4 = Math.max(r$1, g, b$1), h = NaN, s$1 = max$4 - min$4, l = (max$4 + min$4) / 2;
+	var r$1 = o.r / 255, g = o.g / 255, b$1 = o.b / 255, min$4 = Math.min(r$1, g, b$1), max$5 = Math.max(r$1, g, b$1), h = NaN, s$1 = max$5 - min$4, l = (max$5 + min$4) / 2;
 	if (s$1) {
-		if (r$1 === max$4) h = (g - b$1) / s$1 + (g < b$1) * 6;
-		else if (g === max$4) h = (b$1 - r$1) / s$1 + 2;
+		if (r$1 === max$5) h = (g - b$1) / s$1 + (g < b$1) * 6;
+		else if (g === max$5) h = (b$1 - r$1) / s$1 + 2;
 		else h = (r$1 - g) / s$1 + 4;
-		s$1 /= l < .5 ? max$4 + min$4 : 2 - max$4 - min$4;
+		s$1 /= l < .5 ? max$5 + min$4 : 2 - max$5 - min$4;
 		h *= 60;
 	} else s$1 = l > 0 && l < 1 ? 0 : h;
 	return new Hsl(h, s$1, l, o.opacity);
@@ -34774,9 +35116,9 @@ function precisionFixed_default(step) {
 function precisionPrefix_default(step, value) {
 	return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3 - exponent_default(Math.abs(step)));
 }
-function precisionRound_default(step, max$4) {
-	step = Math.abs(step), max$4 = Math.abs(max$4) - step;
-	return Math.max(0, exponent_default(max$4) - exponent_default(step)) + 1;
+function precisionRound_default(step, max$5) {
+	step = Math.abs(step), max$5 = Math.abs(max$5) - step;
+	return Math.max(0, exponent_default(max$5) - exponent_default(step)) + 1;
 }
 function tickFormat(start, stop, count$3, specifier) {
 	var step = tickStep(start, stop, count$3), precision;
@@ -36403,10 +36745,10 @@ var require__baseGt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 }));
 var require_max = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseExtremum$3 = require__baseExtremum(), baseGt$1 = require__baseGt(), identity$3 = require_identity();
-	function max$1(array) {
+	function max$2(array) {
 		return array && array.length ? baseExtremum$3(array, identity$3, baseGt$1) : void 0;
 	}
-	module.exports = max$1;
+	module.exports = max$2;
 }));
 var require__baseLt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function baseLt$2(value, other) {
@@ -36437,10 +36779,10 @@ var require_flatMap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 }));
 var require_isEqual = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseIsEqual = require__baseIsEqual();
-	function isEqual$5(value, other) {
+	function isEqual$6(value, other) {
 		return baseIsEqual(value, other);
 	}
-	module.exports = isEqual$5;
+	module.exports = isEqual$6;
 }));
 var require_decimal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	(function(globalScope) {
@@ -36808,8 +37150,8 @@ var require_decimal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			y$1.e = e;
 			return external ? round$1(y$1, pr) : y$1;
 		}
-		function checkInt32(i, min$4, max$4) {
-			if (i !== ~~i || i < min$4 || i > max$4) throw Error(invalidArgument + i);
+		function checkInt32(i, min$4, max$5) {
+			if (i !== ~~i || i < min$4 || i > max$5) throw Error(invalidArgument + i);
 		}
 		function digitsToString(d) {
 			var i, k$1, ws, indexOfLastWord = d.length - 1, str = "", w = d[0];
@@ -37529,10 +37871,10 @@ function _arrayWithHoles$9(arr) {
 	if (Array.isArray(arr)) return arr;
 }
 function getValidInterval(_ref) {
-	var _ref2 = _slicedToArray$8(_ref, 2), min$4 = _ref2[0], max$4 = _ref2[1];
-	var validMin = min$4, validMax = max$4;
-	if (min$4 > max$4) {
-		validMin = max$4;
+	var _ref2 = _slicedToArray$8(_ref, 2), min$4 = _ref2[0], max$5 = _ref2[1];
+	var validMin = min$4, validMax = max$5;
+	if (min$4 > max$5) {
+		validMin = max$5;
 		validMax = min$4;
 	}
 	return [validMin, validMax];
@@ -37562,27 +37904,27 @@ function getTickOfSingleValue(value, tickCount, allowDecimals) {
 		return middle.add(new import_decimal.default(n - middleIndex).mul(step)).toNumber();
 	}), range$3)(0, tickCount);
 }
-function calculateStep(min$4, max$4, tickCount, allowDecimals) {
+function calculateStep(min$4, max$5, tickCount, allowDecimals) {
 	var correctionFactor = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : 0;
-	if (!Number.isFinite((max$4 - min$4) / (tickCount - 1))) return {
+	if (!Number.isFinite((max$5 - min$4) / (tickCount - 1))) return {
 		step: new import_decimal.default(0),
 		tickMin: new import_decimal.default(0),
 		tickMax: new import_decimal.default(0)
 	};
-	var step = getFormatStep(new import_decimal.default(max$4).sub(min$4).div(tickCount - 1), allowDecimals, correctionFactor);
+	var step = getFormatStep(new import_decimal.default(max$5).sub(min$4).div(tickCount - 1), allowDecimals, correctionFactor);
 	var middle;
-	if (min$4 <= 0 && max$4 >= 0) middle = new import_decimal.default(0);
+	if (min$4 <= 0 && max$5 >= 0) middle = new import_decimal.default(0);
 	else {
-		middle = new import_decimal.default(min$4).add(max$4).div(2);
+		middle = new import_decimal.default(min$4).add(max$5).div(2);
 		middle = middle.sub(new import_decimal.default(middle).mod(step));
 	}
 	var belowCount = Math.ceil(middle.sub(min$4).div(step).toNumber());
-	var upCount = Math.ceil(new import_decimal.default(max$4).sub(middle).div(step).toNumber());
+	var upCount = Math.ceil(new import_decimal.default(max$5).sub(middle).div(step).toNumber());
 	var scaleCount = belowCount + upCount + 1;
-	if (scaleCount > tickCount) return calculateStep(min$4, max$4, tickCount, allowDecimals, correctionFactor + 1);
+	if (scaleCount > tickCount) return calculateStep(min$4, max$5, tickCount, allowDecimals, correctionFactor + 1);
 	if (scaleCount < tickCount) {
-		upCount = max$4 > 0 ? upCount + (tickCount - scaleCount) : upCount;
-		belowCount = max$4 > 0 ? belowCount : belowCount + (tickCount - scaleCount);
+		upCount = max$5 > 0 ? upCount + (tickCount - scaleCount) : upCount;
+		belowCount = max$5 > 0 ? belowCount : belowCount + (tickCount - scaleCount);
 	}
 	return {
 		step,
@@ -37591,31 +37933,31 @@ function calculateStep(min$4, max$4, tickCount, allowDecimals) {
 	};
 }
 function getNiceTickValuesFn(_ref3) {
-	var _ref4 = _slicedToArray$8(_ref3, 2), min$4 = _ref4[0], max$4 = _ref4[1];
+	var _ref4 = _slicedToArray$8(_ref3, 2), min$4 = _ref4[0], max$5 = _ref4[1];
 	var tickCount = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 6;
 	var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
 	var count$3 = Math.max(tickCount, 2);
-	var _getValidInterval2 = _slicedToArray$8(getValidInterval([min$4, max$4]), 2), cormin = _getValidInterval2[0], cormax = _getValidInterval2[1];
+	var _getValidInterval2 = _slicedToArray$8(getValidInterval([min$4, max$5]), 2), cormin = _getValidInterval2[0], cormax = _getValidInterval2[1];
 	if (cormin === -Infinity || cormax === Infinity) {
 		var _values = cormax === Infinity ? [cormin].concat(_toConsumableArray$10(range$3(0, tickCount - 1).map(function() {
 			return Infinity;
 		}))) : [].concat(_toConsumableArray$10(range$3(0, tickCount - 1).map(function() {
 			return -Infinity;
 		})), [cormax]);
-		return min$4 > max$4 ? reverse(_values) : _values;
+		return min$4 > max$5 ? reverse(_values) : _values;
 	}
 	if (cormin === cormax) return getTickOfSingleValue(cormin, tickCount, allowDecimals);
 	var _calculateStep = calculateStep(cormin, cormax, count$3, allowDecimals), step = _calculateStep.step, tickMin = _calculateStep.tickMin, tickMax = _calculateStep.tickMax;
 	var values = arithmetic_default.rangeStep(tickMin, tickMax.add(new import_decimal.default(.1).mul(step)), step);
-	return min$4 > max$4 ? reverse(values) : values;
+	return min$4 > max$5 ? reverse(values) : values;
 }
 function getTickValuesFn(_ref5) {
-	var _ref6 = _slicedToArray$8(_ref5, 2), min$4 = _ref6[0], max$4 = _ref6[1];
+	var _ref6 = _slicedToArray$8(_ref5, 2), min$4 = _ref6[0], max$5 = _ref6[1];
 	var tickCount = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 6;
 	var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
 	var count$3 = Math.max(tickCount, 2);
-	var _getValidInterval4 = _slicedToArray$8(getValidInterval([min$4, max$4]), 2), cormin = _getValidInterval4[0], cormax = _getValidInterval4[1];
-	if (cormin === -Infinity || cormax === Infinity) return [min$4, max$4];
+	var _getValidInterval4 = _slicedToArray$8(getValidInterval([min$4, max$5]), 2), cormin = _getValidInterval4[0], cormax = _getValidInterval4[1];
+	if (cormin === -Infinity || cormax === Infinity) return [min$4, max$5];
 	if (cormin === cormax) return getTickOfSingleValue(cormin, tickCount, allowDecimals);
 	var step = getFormatStep(new import_decimal.default(cormax).sub(cormin).div(count$3 - 1), allowDecimals, 0);
 	var values = compose(map(function(n) {
@@ -37623,18 +37965,18 @@ function getTickValuesFn(_ref5) {
 	}), range$3)(0, count$3).filter(function(entry) {
 		return entry >= cormin && entry <= cormax;
 	});
-	return min$4 > max$4 ? reverse(values) : values;
+	return min$4 > max$5 ? reverse(values) : values;
 }
 function getTickValuesFixedDomainFn(_ref7, tickCount) {
-	var _ref8 = _slicedToArray$8(_ref7, 2), min$4 = _ref8[0], max$4 = _ref8[1];
+	var _ref8 = _slicedToArray$8(_ref7, 2), min$4 = _ref8[0], max$5 = _ref8[1];
 	var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
-	var _getValidInterval6 = _slicedToArray$8(getValidInterval([min$4, max$4]), 2), cormin = _getValidInterval6[0], cormax = _getValidInterval6[1];
-	if (cormin === -Infinity || cormax === Infinity) return [min$4, max$4];
+	var _getValidInterval6 = _slicedToArray$8(getValidInterval([min$4, max$5]), 2), cormin = _getValidInterval6[0], cormax = _getValidInterval6[1];
+	if (cormin === -Infinity || cormax === Infinity) return [min$4, max$5];
 	if (cormin === cormax) return [cormin];
 	var count$3 = Math.max(tickCount, 2);
 	var step = getFormatStep(new import_decimal.default(cormax).sub(cormin).div(count$3 - 1), allowDecimals, 0);
 	var values = [].concat(_toConsumableArray$10(arithmetic_default.rangeStep(new import_decimal.default(cormin), new import_decimal.default(cormax).sub(new import_decimal.default(.99).mul(step)), step)), [cormax]);
-	return min$4 > max$4 ? reverse(values) : values;
+	return min$4 > max$5 ? reverse(values) : values;
 }
 var getNiceTickValues = memoize$1(getNiceTickValuesFn);
 memoize$1(getTickValuesFn);
@@ -37648,7 +37990,7 @@ function invariant(condition, message) {
 	var value = provided ? "".concat(prefix$1, ": ").concat(provided) : prefix$1;
 	throw new Error(value);
 }
-var _excluded$13 = [
+var _excluded$14 = [
 	"offset",
 	"layout",
 	"width",
@@ -37658,23 +38000,23 @@ var _excluded$13 = [
 	"xAxis",
 	"yAxis"
 ];
-function _typeof$36(o) {
+function _typeof$37(o) {
 	"@babel/helpers - typeof";
-	return _typeof$36 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$37 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$36(o);
+	}, _typeof$37(o);
 }
-function _extends$24() {
-	_extends$24 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$25() {
+	_extends$25 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$24.apply(this, arguments);
+	return _extends$25.apply(this, arguments);
 }
 function _slicedToArray$7(arr, i) {
 	return _arrayWithHoles$8(arr) || _iterableToArrayLimit$7(arr, i) || _unsupportedIterableToArray$15(arr, i) || _nonIterableRest$8();
@@ -37719,9 +38061,9 @@ function _iterableToArrayLimit$7(r$1, l) {
 function _arrayWithHoles$8(arr) {
 	if (Array.isArray(arr)) return arr;
 }
-function _objectWithoutProperties$13(source, excluded) {
+function _objectWithoutProperties$14(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$13(source, excluded);
+	var target = _objectWithoutPropertiesLoose$14(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -37734,7 +38076,7 @@ function _objectWithoutProperties$13(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$13(source, excluded) {
+function _objectWithoutPropertiesLoose$14(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -37743,51 +38085,51 @@ function _objectWithoutPropertiesLoose$13(source, excluded) {
 	}
 	return target;
 }
-function _classCallCheck$16(instance, Constructor) {
+function _classCallCheck$17(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$16(target, props) {
+function _defineProperties$17(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$34(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$35(descriptor.key), descriptor);
 	}
 }
-function _createClass$16(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$16(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$16(Constructor, staticProps);
+function _createClass$17(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$17(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$17(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$13(t, o, e) {
-	return o = _getPrototypeOf$14(o), _possibleConstructorReturn$14(t, _isNativeReflectConstruct$14() ? Reflect.construct(o, e || [], _getPrototypeOf$14(t).constructor) : o.apply(t, e));
+function _callSuper$14(t, o, e) {
+	return o = _getPrototypeOf$15(o), _possibleConstructorReturn$15(t, _isNativeReflectConstruct$15() ? Reflect.construct(o, e || [], _getPrototypeOf$15(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$14(self$1, call) {
-	if (call && (_typeof$36(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$15(self$1, call) {
+	if (call && (_typeof$37(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$14(self$1);
+	return _assertThisInitialized$15(self$1);
 }
-function _assertThisInitialized$14(self$1) {
+function _assertThisInitialized$15(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$14() {
+function _isNativeReflectConstruct$15() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$14 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$15 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$14(o) {
-	_getPrototypeOf$14 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$15(o) {
+	_getPrototypeOf$15 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$14(o);
+	return _getPrototypeOf$15(o);
 }
-function _inherits$14(subClass, superClass) {
+function _inherits$15(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -37795,17 +38137,17 @@ function _inherits$14(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$14(subClass, superClass);
+	if (superClass) _setPrototypeOf$15(subClass, superClass);
 }
-function _setPrototypeOf$14(o, p) {
-	_setPrototypeOf$14 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$15(o, p) {
+	_setPrototypeOf$15 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$14(o, p);
+	return _setPrototypeOf$15(o, p);
 }
-function _defineProperty$34(obj, key, value) {
-	key = _toPropertyKey$34(key);
+function _defineProperty$35(obj, key, value) {
+	key = _toPropertyKey$35(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -37815,31 +38157,31 @@ function _defineProperty$34(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$34(t) {
-	var i = _toPrimitive$34(t, "string");
-	return "symbol" == _typeof$36(i) ? i : i + "";
+function _toPropertyKey$35(t) {
+	var i = _toPrimitive$35(t, "string");
+	return "symbol" == _typeof$37(i) ? i : i + "";
 }
-function _toPrimitive$34(t, r$1) {
-	if ("object" != _typeof$36(t) || !t) return t;
+function _toPrimitive$35(t, r$1) {
+	if ("object" != _typeof$37(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$36(i)) return i;
+		if ("object" != _typeof$37(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
 var ErrorBar = /* @__PURE__ */ function(_React$Component) {
 	function ErrorBar$1() {
-		_classCallCheck$16(this, ErrorBar$1);
-		return _callSuper$13(this, ErrorBar$1, arguments);
+		_classCallCheck$17(this, ErrorBar$1);
+		return _callSuper$14(this, ErrorBar$1, arguments);
 	}
-	_inherits$14(ErrorBar$1, _React$Component);
-	return _createClass$16(ErrorBar$1, [{
+	_inherits$15(ErrorBar$1, _React$Component);
+	return _createClass$17(ErrorBar$1, [{
 		key: "render",
 		value: function render() {
 			var _this$props = this.props, offset$3 = _this$props.offset, layout = _this$props.layout, width = _this$props.width, dataKey = _this$props.dataKey, data = _this$props.data, dataPointFormatter = _this$props.dataPointFormatter, xAxis = _this$props.xAxis, yAxis = _this$props.yAxis;
-			var svgProps = filterProps(_objectWithoutProperties$13(_this$props, _excluded$13), false);
+			var svgProps = filterProps(_objectWithoutProperties$14(_this$props, _excluded$14), false);
 			this.props.direction === "x" && xAxis.type !== "number" && invariant(false, "ErrorBar requires Axis type property to be \"number\".");
 			var errorBars = data.map(function(entry) {
 				var _dataPointFormatter = dataPointFormatter(entry, dataKey), x$2 = _dataPointFormatter.x, y$1 = _dataPointFormatter.y, value = _dataPointFormatter.value, errorVal = _dataPointFormatter.errorVal;
@@ -37902,27 +38244,131 @@ var ErrorBar = /* @__PURE__ */ function(_React$Component) {
 						y2: _yMin
 					});
 				}
-				return /* @__PURE__ */ import_react.createElement(Layer, _extends$24({
+				return /* @__PURE__ */ import_react.createElement(Layer, _extends$25({
 					className: "recharts-errorBar",
 					key: "bar-".concat(lineCoordinates.map(function(c$1) {
 						return "".concat(c$1.x1, "-").concat(c$1.x2, "-").concat(c$1.y1, "-").concat(c$1.y2);
 					}))
 				}, svgProps), lineCoordinates.map(function(coordinates) {
-					return /* @__PURE__ */ import_react.createElement("line", _extends$24({}, coordinates, { key: "line-".concat(coordinates.x1, "-").concat(coordinates.x2, "-").concat(coordinates.y1, "-").concat(coordinates.y2) }));
+					return /* @__PURE__ */ import_react.createElement("line", _extends$25({}, coordinates, { key: "line-".concat(coordinates.x1, "-").concat(coordinates.x2, "-").concat(coordinates.y1, "-").concat(coordinates.y2) }));
 				}));
 			});
 			return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-errorBars" }, errorBars);
 		}
 	}]);
 }(import_react.Component);
-_defineProperty$34(ErrorBar, "defaultProps", {
+_defineProperty$35(ErrorBar, "defaultProps", {
 	stroke: "black",
 	strokeWidth: 1.5,
 	width: 5,
 	offset: 0,
 	layout: "horizontal"
 });
-_defineProperty$34(ErrorBar, "displayName", "ErrorBar");
+_defineProperty$35(ErrorBar, "displayName", "ErrorBar");
+function _typeof$36(o) {
+	"@babel/helpers - typeof";
+	return _typeof$36 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$36(o);
+}
+function ownKeys$31(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$31(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$31(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$34(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$31(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$34(obj, key, value) {
+	key = _toPropertyKey$34(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$34(t) {
+	var i = _toPrimitive$34(t, "string");
+	return "symbol" == _typeof$36(i) ? i : i + "";
+}
+function _toPrimitive$34(t, r$1) {
+	if ("object" != _typeof$36(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$36(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+var getLegendProps = function getLegendProps$1(_ref) {
+	var children = _ref.children, formattedGraphicalItems = _ref.formattedGraphicalItems, legendWidth = _ref.legendWidth, legendContent = _ref.legendContent;
+	var legendItem = findChildByType(children, Legend);
+	if (!legendItem) return null;
+	var legendDefaultProps = Legend.defaultProps;
+	var legendProps = legendDefaultProps !== void 0 ? _objectSpread$31(_objectSpread$31({}, legendDefaultProps), legendItem.props) : {};
+	var legendData;
+	if (legendItem.props && legendItem.props.payload) legendData = legendItem.props && legendItem.props.payload;
+	else if (legendContent === "children") legendData = (formattedGraphicalItems || []).reduce(function(result, _ref2) {
+		var item = _ref2.item, props = _ref2.props;
+		var data = props.sectors || props.data || [];
+		return result.concat(data.map(function(entry) {
+			return {
+				type: legendItem.props.iconType || item.props.legendType,
+				value: entry.name,
+				color: entry.fill,
+				payload: entry
+			};
+		}));
+	}, []);
+	else legendData = (formattedGraphicalItems || []).map(function(_ref3) {
+		var item = _ref3.item;
+		var itemDefaultProps = item.type.defaultProps;
+		var itemProps = itemDefaultProps !== void 0 ? _objectSpread$31(_objectSpread$31({}, itemDefaultProps), item.props) : {};
+		var dataKey = itemProps.dataKey, name = itemProps.name, legendType = itemProps.legendType;
+		return {
+			inactive: itemProps.hide,
+			dataKey,
+			type: legendProps.iconType || legendType || "square",
+			color: getMainColorOfGraphicItem(item),
+			value: name || dataKey,
+			payload: itemProps
+		};
+	});
+	return _objectSpread$31(_objectSpread$31(_objectSpread$31({}, legendProps), Legend.getWithHeight(legendItem, legendWidth)), {}, {
+		payload: legendData,
+		item: legendItem
+	});
+};
+var import_max$1 = /* @__PURE__ */ __toESM(require_max());
+var import_min = /* @__PURE__ */ __toESM(require_min());
+var import_isNil$8 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isFunction$18 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isString = /* @__PURE__ */ __toESM(require_isString());
+var import_get$3 = /* @__PURE__ */ __toESM(require_get());
+var import_flatMap = /* @__PURE__ */ __toESM(require_flatMap());
+var import_isNaN$1 = /* @__PURE__ */ __toESM(require_isNaN());
+var import_upperFirst$1 = /* @__PURE__ */ __toESM(require_upperFirst());
+var import_isEqual$5 = /* @__PURE__ */ __toESM(require_isEqual());
+var import_sortBy$1 = /* @__PURE__ */ __toESM(require_sortBy());
 function _typeof$35(o) {
 	"@babel/helpers - typeof";
 	return _typeof$35 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -37930,6 +38376,31 @@ function _typeof$35(o) {
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
 	}, _typeof$35(o);
+}
+function _toConsumableArray$9(arr) {
+	return _arrayWithoutHoles$9(arr) || _iterableToArray$10(arr) || _unsupportedIterableToArray$14(arr) || _nonIterableSpread$9();
+}
+function _nonIterableSpread$9() {
+	throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray$14(o, minLen) {
+	if (!o) return;
+	if (typeof o === "string") return _arrayLikeToArray$14(o, minLen);
+	var n = Object.prototype.toString.call(o).slice(8, -1);
+	if (n === "Object" && o.constructor) n = o.constructor.name;
+	if (n === "Map" || n === "Set") return Array.from(o);
+	if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$14(o, minLen);
+}
+function _iterableToArray$10(iter) {
+	if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+function _arrayWithoutHoles$9(arr) {
+	if (Array.isArray(arr)) return _arrayLikeToArray$14(arr);
+}
+function _arrayLikeToArray$14(arr, len) {
+	if (len == null || len > arr.length) len = arr.length;
+	for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+	return arr2;
 }
 function ownKeys$30(e, r$1) {
 	var t = Object.keys(e);
@@ -37977,139 +38448,10 @@ function _toPrimitive$33(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-var getLegendProps = function getLegendProps$1(_ref) {
-	var children = _ref.children, formattedGraphicalItems = _ref.formattedGraphicalItems, legendWidth = _ref.legendWidth, legendContent = _ref.legendContent;
-	var legendItem = findChildByType(children, Legend);
-	if (!legendItem) return null;
-	var legendDefaultProps = Legend.defaultProps;
-	var legendProps = legendDefaultProps !== void 0 ? _objectSpread$30(_objectSpread$30({}, legendDefaultProps), legendItem.props) : {};
-	var legendData;
-	if (legendItem.props && legendItem.props.payload) legendData = legendItem.props && legendItem.props.payload;
-	else if (legendContent === "children") legendData = (formattedGraphicalItems || []).reduce(function(result, _ref2) {
-		var item = _ref2.item, props = _ref2.props;
-		var data = props.sectors || props.data || [];
-		return result.concat(data.map(function(entry) {
-			return {
-				type: legendItem.props.iconType || item.props.legendType,
-				value: entry.name,
-				color: entry.fill,
-				payload: entry
-			};
-		}));
-	}, []);
-	else legendData = (formattedGraphicalItems || []).map(function(_ref3) {
-		var item = _ref3.item;
-		var itemDefaultProps = item.type.defaultProps;
-		var itemProps = itemDefaultProps !== void 0 ? _objectSpread$30(_objectSpread$30({}, itemDefaultProps), item.props) : {};
-		var dataKey = itemProps.dataKey, name = itemProps.name, legendType = itemProps.legendType;
-		return {
-			inactive: itemProps.hide,
-			dataKey,
-			type: legendProps.iconType || legendType || "square",
-			color: getMainColorOfGraphicItem(item),
-			value: name || dataKey,
-			payload: itemProps
-		};
-	});
-	return _objectSpread$30(_objectSpread$30(_objectSpread$30({}, legendProps), Legend.getWithHeight(legendItem, legendWidth)), {}, {
-		payload: legendData,
-		item: legendItem
-	});
-};
-var import_max = /* @__PURE__ */ __toESM(require_max());
-var import_min = /* @__PURE__ */ __toESM(require_min());
-var import_isNil$7 = /* @__PURE__ */ __toESM(require_isNil());
-var import_isFunction$17 = /* @__PURE__ */ __toESM(require_isFunction());
-var import_isString = /* @__PURE__ */ __toESM(require_isString());
-var import_get$3 = /* @__PURE__ */ __toESM(require_get());
-var import_flatMap = /* @__PURE__ */ __toESM(require_flatMap());
-var import_isNaN = /* @__PURE__ */ __toESM(require_isNaN());
-var import_upperFirst$1 = /* @__PURE__ */ __toESM(require_upperFirst());
-var import_isEqual$4 = /* @__PURE__ */ __toESM(require_isEqual());
-var import_sortBy$1 = /* @__PURE__ */ __toESM(require_sortBy());
-function _typeof$34(o) {
-	"@babel/helpers - typeof";
-	return _typeof$34 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$34(o);
-}
-function _toConsumableArray$9(arr) {
-	return _arrayWithoutHoles$9(arr) || _iterableToArray$10(arr) || _unsupportedIterableToArray$14(arr) || _nonIterableSpread$9();
-}
-function _nonIterableSpread$9() {
-	throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _unsupportedIterableToArray$14(o, minLen) {
-	if (!o) return;
-	if (typeof o === "string") return _arrayLikeToArray$14(o, minLen);
-	var n = Object.prototype.toString.call(o).slice(8, -1);
-	if (n === "Object" && o.constructor) n = o.constructor.name;
-	if (n === "Map" || n === "Set") return Array.from(o);
-	if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$14(o, minLen);
-}
-function _iterableToArray$10(iter) {
-	if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-}
-function _arrayWithoutHoles$9(arr) {
-	if (Array.isArray(arr)) return _arrayLikeToArray$14(arr);
-}
-function _arrayLikeToArray$14(arr, len) {
-	if (len == null || len > arr.length) len = arr.length;
-	for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-	return arr2;
-}
-function ownKeys$29(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$29(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$29(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$32(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$29(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _defineProperty$32(obj, key, value) {
-	key = _toPropertyKey$32(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$32(t) {
-	var i = _toPrimitive$32(t, "string");
-	return "symbol" == _typeof$34(i) ? i : i + "";
-}
-function _toPrimitive$32(t, r$1) {
-	if ("object" != _typeof$34(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$34(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 function getValueByDataKey(obj, dataKey, defaultValue) {
-	if ((0, import_isNil$7.default)(obj) || (0, import_isNil$7.default)(dataKey)) return defaultValue;
+	if ((0, import_isNil$8.default)(obj) || (0, import_isNil$8.default)(dataKey)) return defaultValue;
 	if (isNumOrStr(dataKey)) return (0, import_get$3.default)(obj, dataKey, defaultValue);
-	if ((0, import_isFunction$17.default)(dataKey)) return dataKey(obj);
+	if ((0, import_isFunction$18.default)(dataKey)) return dataKey(obj);
 	return defaultValue;
 }
 function getDomainOfDataByKey(data, key, type, filterNil) {
@@ -38120,10 +38462,10 @@ function getDomainOfDataByKey(data, key, type, filterNil) {
 		var domain = flattenData.filter(function(entry) {
 			return isNumber(entry) || parseFloat(entry);
 		});
-		return domain.length ? [(0, import_min.default)(domain), (0, import_max.default)(domain)] : [Infinity, -Infinity];
+		return domain.length ? [(0, import_min.default)(domain), (0, import_max$1.default)(domain)] : [Infinity, -Infinity];
 	}
 	return (filterNil ? flattenData.filter(function(entry) {
-		return !(0, import_isNil$7.default)(entry);
+		return !(0, import_isNil$8.default)(entry);
 	}) : flattenData).map(function(entry) {
 		return isNumOrStr(entry) || entry instanceof Date ? entry : "";
 	});
@@ -38179,7 +38521,7 @@ var calculateActiveTickIndex = function calculateActiveTickIndex$1(coordinate) {
 var getMainColorOfGraphicItem = function getMainColorOfGraphicItem$1(item) {
 	var _item$type;
 	var displayName = item.type.displayName;
-	var defaultedProps = (_item$type = item.type) !== null && _item$type !== void 0 && _item$type.defaultProps ? _objectSpread$29(_objectSpread$29({}, item.type.defaultProps), item.props) : item.props;
+	var defaultedProps = (_item$type = item.type) !== null && _item$type !== void 0 && _item$type.defaultProps ? _objectSpread$30(_objectSpread$30({}, item.type.defaultProps), item.props) : item.props;
 	var stroke = defaultedProps.stroke, fill = defaultedProps.fill;
 	var result;
 	switch (displayName) {
@@ -38211,15 +38553,15 @@ var getBarSizeList = function getBarSizeList$1(_ref2) {
 			});
 			if (barItems && barItems.length) {
 				var barItemDefaultProps = barItems[0].type.defaultProps;
-				var barItemProps = barItemDefaultProps !== void 0 ? _objectSpread$29(_objectSpread$29({}, barItemDefaultProps), barItems[0].props) : barItems[0].props;
+				var barItemProps = barItemDefaultProps !== void 0 ? _objectSpread$30(_objectSpread$30({}, barItemDefaultProps), barItems[0].props) : barItems[0].props;
 				var selfSize = barItemProps.barSize;
 				var cateId = barItemProps[cateAxisId];
 				if (!result[cateId]) result[cateId] = [];
-				var barSize = (0, import_isNil$7.default)(selfSize) ? globalSize : selfSize;
+				var barSize = (0, import_isNil$8.default)(selfSize) ? globalSize : selfSize;
 				result[cateId].push({
 					item: barItems[0],
 					stackList: barItems.slice(1),
-					barSize: (0, import_isNil$7.default)(barSize) ? void 0 : getPercentValue(barSize, totalSize, 0)
+					barSize: (0, import_isNil$8.default)(barSize) ? void 0 : getPercentValue(barSize, totalSize, 0)
 				});
 			}
 		}
@@ -38305,13 +38647,13 @@ var appendOffsetOfLegend = function appendOffsetOfLegend$1(offset$3, _unused, pr
 	if (legendProps) {
 		var _ref4 = legendBox || {}, boxWidth = _ref4.width, boxHeight = _ref4.height;
 		var align = legendProps.align, verticalAlign = legendProps.verticalAlign, layout = legendProps.layout;
-		if ((layout === "vertical" || layout === "horizontal" && verticalAlign === "middle") && align !== "center" && isNumber(offset$3[align])) return _objectSpread$29(_objectSpread$29({}, offset$3), {}, _defineProperty$32({}, align, offset$3[align] + (boxWidth || 0)));
-		if ((layout === "horizontal" || layout === "vertical" && align === "center") && verticalAlign !== "middle" && isNumber(offset$3[verticalAlign])) return _objectSpread$29(_objectSpread$29({}, offset$3), {}, _defineProperty$32({}, verticalAlign, offset$3[verticalAlign] + (boxHeight || 0)));
+		if ((layout === "vertical" || layout === "horizontal" && verticalAlign === "middle") && align !== "center" && isNumber(offset$3[align])) return _objectSpread$30(_objectSpread$30({}, offset$3), {}, _defineProperty$33({}, align, offset$3[align] + (boxWidth || 0)));
+		if ((layout === "horizontal" || layout === "vertical" && align === "center") && verticalAlign !== "middle" && isNumber(offset$3[verticalAlign])) return _objectSpread$30(_objectSpread$30({}, offset$3), {}, _defineProperty$33({}, verticalAlign, offset$3[verticalAlign] + (boxHeight || 0)));
 	}
 	return offset$3;
 };
 var isErrorBarRelevantForAxis = function isErrorBarRelevantForAxis$1(layout, axisType, direction) {
-	if ((0, import_isNil$7.default)(axisType)) return true;
+	if ((0, import_isNil$8.default)(axisType)) return true;
 	if (layout === "horizontal") return axisType === "yAxis";
 	if (layout === "vertical") return axisType === "xAxis";
 	if (direction === "x") return axisType === "xAxis";
@@ -38329,8 +38671,8 @@ var getDomainOfErrorBars = function getDomainOfErrorBars$1(data, item, dataKey, 
 		});
 		return data.reduce(function(result, entry) {
 			var entryValue = getValueByDataKey(entry, dataKey);
-			if ((0, import_isNil$7.default)(entryValue)) return result;
-			var mainValue = Array.isArray(entryValue) ? [(0, import_min.default)(entryValue), (0, import_max.default)(entryValue)] : [entryValue, entryValue];
+			if ((0, import_isNil$8.default)(entryValue)) return result;
+			var mainValue = Array.isArray(entryValue) ? [(0, import_min.default)(entryValue), (0, import_max$1.default)(entryValue)] : [entryValue, entryValue];
 			var errorDomain = keys$6.reduce(function(prevErrorArr, k$1) {
 				var errorValue = getValueByDataKey(entry, k$1, 0);
 				var lowerValue = mainValue[0] - Math.abs(Array.isArray(errorValue) ? errorValue[0] : errorValue);
@@ -38346,7 +38688,7 @@ var parseErrorBarsOfAxis = function parseErrorBarsOfAxis$1(data, items, dataKey,
 	var domains = items.map(function(item) {
 		return getDomainOfErrorBars(data, item, dataKey, layout, axisType);
 	}).filter(function(entry) {
-		return !(0, import_isNil$7.default)(entry);
+		return !(0, import_isNil$8.default)(entry);
 	});
 	if (domains && domains.length) return domains.reduce(function(result, entry) {
 		return [Math.min(result[0], entry[0]), Math.max(result[1], entry[1])];
@@ -38402,7 +38744,7 @@ var getTicksOfAxis = function getTicksOfAxis$1(axis, isGrid, isAll) {
 			offset: offset$3
 		};
 	}).filter(function(row) {
-		return !(0, import_isNaN.default)(row.coordinate);
+		return !(0, import_isNaN$1.default)(row.coordinate);
 	});
 	if (axis.isCategorical && axis.categoricalDomain) return axis.categoricalDomain.map(function(entry, index$1) {
 		return {
@@ -38472,7 +38814,7 @@ var parseScale = function parseScale$1(axis, chartType, hasBar) {
 			realScaleType: d3_scale_exports[name] ? name : "point"
 		};
 	}
-	return (0, import_isFunction$17.default)(scale) ? { scale } : {
+	return (0, import_isFunction$18.default)(scale) ? { scale } : {
 		scale: point(),
 		realScaleType: "point"
 	};
@@ -38513,7 +38855,7 @@ var STACK_OFFSET_MAP = {
 			var positive = 0;
 			var negative = 0;
 			for (var i = 0; i < n; ++i) {
-				var value = (0, import_isNaN.default)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+				var value = (0, import_isNaN$1.default)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
 				if (value >= 0) {
 					series[i][j][0] = positive;
 					series[i][j][1] = positive + value;
@@ -38536,7 +38878,7 @@ var STACK_OFFSET_MAP = {
 		for (var j = 0, m = series[0].length; j < m; ++j) {
 			var positive = 0;
 			for (var i = 0; i < n; ++i) {
-				var value = (0, import_isNaN.default)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
+				var value = (0, import_isNaN$1.default)(series[i][j][1]) ? series[i][j][0] : series[i][j][1];
 				if (value >= 0) {
 					series[i][j][0] = positive;
 					series[i][j][1] = positive + value;
@@ -38562,7 +38904,7 @@ var getStackGroupsByAxisId = function getStackGroupsByAxisId$1(data, _items, num
 	if (!data) return null;
 	var stackGroups = (reverseStackOrder ? _items.reverse() : _items).reduce(function(result, item) {
 		var _item$type2;
-		var defaultedProps = (_item$type2 = item.type) !== null && _item$type2 !== void 0 && _item$type2.defaultProps ? _objectSpread$29(_objectSpread$29({}, item.type.defaultProps), item.props) : item.props;
+		var defaultedProps = (_item$type2 = item.type) !== null && _item$type2 !== void 0 && _item$type2.defaultProps ? _objectSpread$30(_objectSpread$30({}, item.type.defaultProps), item.props) : item.props;
 		var stackId = defaultedProps.stackId;
 		if (defaultedProps.hide) return result;
 		var axisId = defaultedProps[numericAxisId];
@@ -38584,20 +38926,20 @@ var getStackGroupsByAxisId = function getStackGroupsByAxisId$1(data, _items, num
 			cateAxisId,
 			items: [item]
 		};
-		return _objectSpread$29(_objectSpread$29({}, result), {}, _defineProperty$32({}, axisId, parentGroup));
+		return _objectSpread$30(_objectSpread$30({}, result), {}, _defineProperty$33({}, axisId, parentGroup));
 	}, {});
 	return Object.keys(stackGroups).reduce(function(result, axisId) {
 		var group = stackGroups[axisId];
 		if (group.hasStack) group.stackGroups = Object.keys(group.stackGroups).reduce(function(res, stackId) {
 			var g = group.stackGroups[stackId];
-			return _objectSpread$29(_objectSpread$29({}, res), {}, _defineProperty$32({}, stackId, {
+			return _objectSpread$30(_objectSpread$30({}, res), {}, _defineProperty$33({}, stackId, {
 				numericAxisId,
 				cateAxisId,
 				items: g.items,
 				stackedData: getStackedData(data, g.items, offsetType)
 			}));
 		}, {});
-		return _objectSpread$29(_objectSpread$29({}, result), {}, _defineProperty$32({}, axisId, group));
+		return _objectSpread$30(_objectSpread$30({}, result), {}, _defineProperty$33({}, axisId, group));
 	}, {});
 };
 var getTicksOfScale = function getTicksOfScale$1(scale, opts) {
@@ -38608,7 +38950,7 @@ var getTicksOfScale = function getTicksOfScale$1(scale, opts) {
 		var domain = scale.domain();
 		if (!domain.length) return null;
 		var tickValues = getNiceTickValues(domain, tickCount, allowDecimals);
-		scale.domain([(0, import_min.default)(tickValues), (0, import_max.default)(tickValues)]);
+		scale.domain([(0, import_min.default)(tickValues), (0, import_max$1.default)(tickValues)]);
 		return { niceTicks: tickValues };
 	}
 	if (tickCount && type === "number") return { niceTicks: getTickValuesFixedDomain(scale.domain(), tickCount, allowDecimals) };
@@ -38617,20 +38959,20 @@ var getTicksOfScale = function getTicksOfScale$1(scale, opts) {
 function getCateCoordinateOfLine(_ref5) {
 	var axis = _ref5.axis, ticks$1 = _ref5.ticks, bandSize = _ref5.bandSize, entry = _ref5.entry, index$1 = _ref5.index, dataKey = _ref5.dataKey;
 	if (axis.type === "category") {
-		if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, import_isNil$7.default)(entry[axis.dataKey])) {
+		if (!axis.allowDuplicatedCategory && axis.dataKey && !(0, import_isNil$8.default)(entry[axis.dataKey])) {
 			var matchedTick = findEntryInArray(ticks$1, "value", entry[axis.dataKey]);
 			if (matchedTick) return matchedTick.coordinate + bandSize / 2;
 		}
 		return ticks$1[index$1] ? ticks$1[index$1].coordinate + bandSize / 2 : null;
 	}
-	var value = getValueByDataKey(entry, !(0, import_isNil$7.default)(dataKey) ? dataKey : axis.dataKey);
-	return !(0, import_isNil$7.default)(value) ? axis.scale(value) : null;
+	var value = getValueByDataKey(entry, !(0, import_isNil$8.default)(dataKey) ? dataKey : axis.dataKey);
+	return !(0, import_isNil$8.default)(value) ? axis.scale(value) : null;
 }
 var getCateCoordinateOfBar = function getCateCoordinateOfBar$1(_ref6) {
 	var axis = _ref6.axis, ticks$1 = _ref6.ticks, offset$3 = _ref6.offset, bandSize = _ref6.bandSize, entry = _ref6.entry, index$1 = _ref6.index;
 	if (axis.type === "category") return ticks$1[index$1] ? ticks$1[index$1].coordinate + offset$3 : null;
 	var value = getValueByDataKey(entry, axis.dataKey, axis.domain[index$1]);
-	return !(0, import_isNil$7.default)(value) ? axis.scale(value) - bandSize / 2 + offset$3 : null;
+	return !(0, import_isNil$8.default)(value) ? axis.scale(value) - bandSize / 2 + offset$3 : null;
 };
 var getBaseValueOfBar = function getBaseValueOfBar$1(_ref7) {
 	var numericAxis = _ref7.numericAxis;
@@ -38646,7 +38988,7 @@ var getBaseValueOfBar = function getBaseValueOfBar$1(_ref7) {
 };
 var getStackedDataOfItem = function getStackedDataOfItem$1(item, stackGroups) {
 	var _item$type3;
-	var stackId = ((_item$type3 = item.type) !== null && _item$type3 !== void 0 && _item$type3.defaultProps ? _objectSpread$29(_objectSpread$29({}, item.type.defaultProps), item.props) : item.props).stackId;
+	var stackId = ((_item$type3 = item.type) !== null && _item$type3 !== void 0 && _item$type3.defaultProps ? _objectSpread$30(_objectSpread$30({}, item.type.defaultProps), item.props) : item.props).stackId;
 	if (isNumOrStr(stackId)) {
 		var group = stackGroups[stackId];
 		if (group) {
@@ -38658,7 +39000,7 @@ var getStackedDataOfItem = function getStackedDataOfItem$1(item, stackGroups) {
 };
 var getDomainOfSingle = function getDomainOfSingle$1(data) {
 	return data.reduce(function(result, entry) {
-		return [(0, import_min.default)(entry.concat([result[0]]).filter(isNumber)), (0, import_max.default)(entry.concat([result[1]]).filter(isNumber))];
+		return [(0, import_min.default)(entry.concat([result[0]]).filter(isNumber)), (0, import_max$1.default)(entry.concat([result[1]]).filter(isNumber))];
 	}, [Infinity, -Infinity]);
 };
 var getDomainOfStackGroups = function getDomainOfStackGroups$1(stackGroups, startIndex, endIndex) {
@@ -38675,20 +39017,20 @@ var getDomainOfStackGroups = function getDomainOfStackGroups$1(stackGroups, star
 var MIN_VALUE_REG = /^dataMin[\s]*-[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 var MAX_VALUE_REG = /^dataMax[\s]*\+[\s]*([0-9]+([.]{1}[0-9]+){0,1})$/;
 var parseSpecifiedDomain = function parseSpecifiedDomain$1(specifiedDomain, dataDomain, allowDataOverflow) {
-	if ((0, import_isFunction$17.default)(specifiedDomain)) return specifiedDomain(dataDomain, allowDataOverflow);
+	if ((0, import_isFunction$18.default)(specifiedDomain)) return specifiedDomain(dataDomain, allowDataOverflow);
 	if (!Array.isArray(specifiedDomain)) return dataDomain;
 	var domain = [];
 	if (isNumber(specifiedDomain[0])) domain[0] = allowDataOverflow ? specifiedDomain[0] : Math.min(specifiedDomain[0], dataDomain[0]);
 	else if (MIN_VALUE_REG.test(specifiedDomain[0])) {
 		var value = +MIN_VALUE_REG.exec(specifiedDomain[0])[1];
 		domain[0] = dataDomain[0] - value;
-	} else if ((0, import_isFunction$17.default)(specifiedDomain[0])) domain[0] = specifiedDomain[0](dataDomain[0]);
+	} else if ((0, import_isFunction$18.default)(specifiedDomain[0])) domain[0] = specifiedDomain[0](dataDomain[0]);
 	else domain[0] = dataDomain[0];
 	if (isNumber(specifiedDomain[1])) domain[1] = allowDataOverflow ? specifiedDomain[1] : Math.max(specifiedDomain[1], dataDomain[1]);
 	else if (MAX_VALUE_REG.test(specifiedDomain[1])) {
 		var _value = +MAX_VALUE_REG.exec(specifiedDomain[1])[1];
 		domain[1] = dataDomain[1] + _value;
-	} else if ((0, import_isFunction$17.default)(specifiedDomain[1])) domain[1] = specifiedDomain[1](dataDomain[1]);
+	} else if ((0, import_isFunction$18.default)(specifiedDomain[1])) domain[1] = specifiedDomain[1](dataDomain[1]);
 	else domain[1] = dataDomain[1];
 	return domain;
 };
@@ -38713,13 +39055,13 @@ var getBandSizeOfAxis = function getBandSizeOfAxis$1(axis, ticks$1, isBar) {
 };
 var parseDomainOfCategoryAxis = function parseDomainOfCategoryAxis$1(specifiedDomain, calculatedDomain, axisChild) {
 	if (!specifiedDomain || !specifiedDomain.length) return calculatedDomain;
-	if ((0, import_isEqual$4.default)(specifiedDomain, (0, import_get$3.default)(axisChild, "type.defaultProps.domain"))) return calculatedDomain;
+	if ((0, import_isEqual$5.default)(specifiedDomain, (0, import_get$3.default)(axisChild, "type.defaultProps.domain"))) return calculatedDomain;
 	return specifiedDomain;
 };
 var getTooltipItem = function getTooltipItem$1(graphicalItem, payload) {
-	var defaultedProps = graphicalItem.type.defaultProps ? _objectSpread$29(_objectSpread$29({}, graphicalItem.type.defaultProps), graphicalItem.props) : graphicalItem.props;
+	var defaultedProps = graphicalItem.type.defaultProps ? _objectSpread$30(_objectSpread$30({}, graphicalItem.type.defaultProps), graphicalItem.props) : graphicalItem.props;
 	var dataKey = defaultedProps.dataKey, name = defaultedProps.name, unit$1 = defaultedProps.unit, formatter = defaultedProps.formatter, tooltipType = defaultedProps.tooltipType, chartType = defaultedProps.chartType, hide$3 = defaultedProps.hide;
-	return _objectSpread$29(_objectSpread$29({}, filterProps(graphicalItem, false)), {}, {
+	return _objectSpread$30(_objectSpread$30({}, filterProps(graphicalItem, false)), {}, {
 		dataKey,
 		unit: unit$1,
 		formatter,
@@ -38732,17 +39074,17 @@ var getTooltipItem = function getTooltipItem$1(graphicalItem, payload) {
 		hide: hide$3
 	});
 };
-var import_isNil$6 = /* @__PURE__ */ __toESM(require_isNil());
-var import_isFunction$16 = /* @__PURE__ */ __toESM(require_isFunction());
-function _typeof$33(o) {
+var import_isNil$7 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isFunction$17 = /* @__PURE__ */ __toESM(require_isFunction());
+function _typeof$34(o) {
 	"@babel/helpers - typeof";
-	return _typeof$33 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$34 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$33(o);
+	}, _typeof$34(o);
 }
-function ownKeys$28(e, r$1) {
+function ownKeys$29(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -38752,19 +39094,19 @@ function ownKeys$28(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$28(e) {
+function _objectSpread$29(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$28(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$31(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$28(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$29(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$32(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$29(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$31(obj, key, value) {
-	key = _toPropertyKey$31(key);
+function _defineProperty$32(obj, key, value) {
+	key = _toPropertyKey$32(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -38774,16 +39116,16 @@ function _defineProperty$31(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$31(t) {
-	var i = _toPrimitive$31(t, "string");
-	return "symbol" == _typeof$33(i) ? i : i + "";
+function _toPropertyKey$32(t) {
+	var i = _toPrimitive$32(t, "string");
+	return "symbol" == _typeof$34(i) ? i : i + "";
 }
-function _toPrimitive$31(t, r$1) {
-	if ("object" != _typeof$33(t) || !t) return t;
+function _toPrimitive$32(t, r$1) {
+	if ("object" != _typeof$34(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$33(i)) return i;
+		if ("object" != _typeof$34(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -38850,7 +39192,7 @@ var getMaxRadius = function getMaxRadius$1(width, height) {
 	};
 	return Math.min(Math.abs(width - (offset$3.left || 0) - (offset$3.right || 0)), Math.abs(height - (offset$3.top || 0) - (offset$3.bottom || 0))) / 2;
 };
-var formatAxisMap = function formatAxisMap$2(props, axisMap, offset$3, axisType, chartName) {
+var formatAxisMap$1 = function formatAxisMap$2(props, axisMap, offset$3, axisType, chartName) {
 	var width = props.width, height = props.height;
 	var startAngle = props.startAngle, endAngle = props.endAngle;
 	var cx$1 = getPercentValue(props.cx, width, width / 2);
@@ -38862,7 +39204,7 @@ var formatAxisMap = function formatAxisMap$2(props, axisMap, offset$3, axisType,
 		var axis = axisMap[id];
 		var domain = axis.domain, reversed = axis.reversed;
 		var range$5;
-		if ((0, import_isNil$6.default)(axis.range)) {
+		if ((0, import_isNil$7.default)(axis.range)) {
 			if (axisType === "angleAxis") range$5 = [startAngle, endAngle];
 			else if (axisType === "radiusAxis") range$5 = [innerRadius, outerRadius];
 			if (reversed) range$5 = [range$5[1], range$5[0]];
@@ -38875,8 +39217,8 @@ var formatAxisMap = function formatAxisMap$2(props, axisMap, offset$3, axisType,
 		var _parseScale = parseScale(axis, chartName), realScaleType = _parseScale.realScaleType, scale = _parseScale.scale;
 		scale.domain(domain).range(range$5);
 		checkDomainOfScale(scale);
-		var ticks$1 = getTicksOfScale(scale, _objectSpread$28(_objectSpread$28({}, axis), {}, { realScaleType }));
-		var finalAxis = _objectSpread$28(_objectSpread$28(_objectSpread$28({}, axis), ticks$1), {}, {
+		var ticks$1 = getTicksOfScale(scale, _objectSpread$29(_objectSpread$29({}, axis), {}, { realScaleType }));
+		var finalAxis = _objectSpread$29(_objectSpread$29(_objectSpread$29({}, axis), ticks$1), {}, {
 			range: range$5,
 			radius: outerRadius,
 			realScaleType,
@@ -38888,7 +39230,7 @@ var formatAxisMap = function formatAxisMap$2(props, axisMap, offset$3, axisType,
 			startAngle,
 			endAngle
 		});
-		return _objectSpread$28(_objectSpread$28({}, result), {}, _defineProperty$31({}, id, finalAxis));
+		return _objectSpread$29(_objectSpread$29({}, result), {}, _defineProperty$32({}, id, finalAxis));
 	}, {});
 };
 var distanceBetweenPoints = function distanceBetweenPoints$1(point$3, anotherPoint) {
@@ -38953,27 +39295,27 @@ var inRangeOfSector = function inRangeOfSector$1(_ref5, sector) {
 		while (formatAngle < endAngle) formatAngle += 360;
 		inRange = formatAngle >= endAngle && formatAngle <= startAngle;
 	}
-	if (inRange) return _objectSpread$28(_objectSpread$28({}, sector), {}, {
+	if (inRange) return _objectSpread$29(_objectSpread$29({}, sector), {}, {
 		radius,
 		angle: reverseFormatAngleOfSetor(formatAngle, sector)
 	});
 	return null;
 };
 var getTickClassName = function getTickClassName$1(tick) {
-	return !/* @__PURE__ */ (0, import_react.isValidElement)(tick) && !(0, import_isFunction$16.default)(tick) && typeof tick !== "boolean" ? tick.className : "";
+	return !/* @__PURE__ */ (0, import_react.isValidElement)(tick) && !(0, import_isFunction$17.default)(tick) && typeof tick !== "boolean" ? tick.className : "";
 };
-var import_isNil$5 = /* @__PURE__ */ __toESM(require_isNil());
-var import_isFunction$15 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isNil$6 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isFunction$16 = /* @__PURE__ */ __toESM(require_isFunction());
 var import_isObject$1 = /* @__PURE__ */ __toESM(require_isObject());
-function _typeof$32(o) {
+function _typeof$33(o) {
 	"@babel/helpers - typeof";
-	return _typeof$32 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$33 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$32(o);
+	}, _typeof$33(o);
 }
-var _excluded$12 = ["offset"];
+var _excluded$13 = ["offset"];
 function _toConsumableArray$8(arr) {
 	return _arrayWithoutHoles$8(arr) || _iterableToArray$9(arr) || _unsupportedIterableToArray$12(arr) || _nonIterableSpread$8();
 }
@@ -38999,9 +39341,9 @@ function _arrayLikeToArray$12(arr, len) {
 	for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 	return arr2;
 }
-function _objectWithoutProperties$12(source, excluded) {
+function _objectWithoutProperties$13(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$12(source, excluded);
+	var target = _objectWithoutPropertiesLoose$13(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -39014,7 +39356,7 @@ function _objectWithoutProperties$12(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$12(source, excluded) {
+function _objectWithoutPropertiesLoose$13(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -39023,7 +39365,7 @@ function _objectWithoutPropertiesLoose$12(source, excluded) {
 	}
 	return target;
 }
-function ownKeys$27(e, r$1) {
+function ownKeys$28(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -39033,19 +39375,19 @@ function ownKeys$27(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$27(e) {
+function _objectSpread$28(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$27(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$30(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$27(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$28(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$31(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$28(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$30(obj, key, value) {
-	key = _toPropertyKey$30(key);
+function _defineProperty$31(obj, key, value) {
+	key = _toPropertyKey$31(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -39055,34 +39397,34 @@ function _defineProperty$30(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$30(t) {
-	var i = _toPrimitive$30(t, "string");
-	return "symbol" == _typeof$32(i) ? i : i + "";
+function _toPropertyKey$31(t) {
+	var i = _toPrimitive$31(t, "string");
+	return "symbol" == _typeof$33(i) ? i : i + "";
 }
-function _toPrimitive$30(t, r$1) {
-	if ("object" != _typeof$32(t) || !t) return t;
+function _toPrimitive$31(t, r$1) {
+	if ("object" != _typeof$33(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$32(i)) return i;
+		if ("object" != _typeof$33(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function _extends$23() {
-	_extends$23 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$24() {
+	_extends$24 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$23.apply(this, arguments);
+	return _extends$24.apply(this, arguments);
 }
 var getLabel = function getLabel$1(props) {
 	var value = props.value, formatter = props.formatter;
-	var label = (0, import_isNil$5.default)(props.children) ? value : props.children;
-	if ((0, import_isFunction$15.default)(formatter)) return formatter(label);
+	var label = (0, import_isNil$6.default)(props.children) ? value : props.children;
+	if ((0, import_isFunction$16.default)(formatter)) return formatter(label);
 	return label;
 };
 var getDeltaAngle$1 = function getDeltaAngle$2(startAngle, endAngle) {
@@ -39109,8 +39451,8 @@ var renderRadialLabel = function renderRadialLabel$1(labelProps, label, attrs) {
 	var startPoint = polarToCartesian(cx$1, cy, radius, labelAngle);
 	var endPoint = polarToCartesian(cx$1, cy, radius, labelAngle + (direction ? 1 : -1) * 359);
 	var path$1 = "M".concat(startPoint.x, ",").concat(startPoint.y, "\n    A").concat(radius, ",").concat(radius, ",0,1,").concat(direction ? 0 : 1, ",\n    ").concat(endPoint.x, ",").concat(endPoint.y);
-	var id = (0, import_isNil$5.default)(labelProps.id) ? uniqueId("recharts-radial-line-") : labelProps.id;
-	return /* @__PURE__ */ import_react.createElement("text", _extends$23({}, attrs, {
+	var id = (0, import_isNil$6.default)(labelProps.id) ? uniqueId("recharts-radial-line-") : labelProps.id;
+	return /* @__PURE__ */ import_react.createElement("text", _extends$24({}, attrs, {
 		dominantBaseline: "central",
 		className: clsx_default("recharts-radial-bar-label", className)
 	}), /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("path", {
@@ -39168,7 +39510,7 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 	var horizontalOffset = horizontalSign * offset$3;
 	var horizontalEnd = horizontalSign > 0 ? "end" : "start";
 	var horizontalStart = horizontalSign > 0 ? "start" : "end";
-	if (position === "top") return _objectSpread$27(_objectSpread$27({}, {
+	if (position === "top") return _objectSpread$28(_objectSpread$28({}, {
 		x: x$2 + width / 2,
 		y: y$1 - verticalSign * offset$3,
 		textAnchor: "middle",
@@ -39177,7 +39519,7 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 		height: Math.max(y$1 - parentViewBox.y, 0),
 		width
 	} : {});
-	if (position === "bottom") return _objectSpread$27(_objectSpread$27({}, {
+	if (position === "bottom") return _objectSpread$28(_objectSpread$28({}, {
 		x: x$2 + width / 2,
 		y: y$1 + height + verticalOffset,
 		textAnchor: "middle",
@@ -39193,7 +39535,7 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 			textAnchor: horizontalEnd,
 			verticalAnchor: "middle"
 		};
-		return _objectSpread$27(_objectSpread$27({}, _attrs2), parentViewBox ? {
+		return _objectSpread$28(_objectSpread$28({}, _attrs2), parentViewBox ? {
 			width: Math.max(_attrs2.x - parentViewBox.x, 0),
 			height
 		} : {});
@@ -39205,7 +39547,7 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 			textAnchor: horizontalStart,
 			verticalAnchor: "middle"
 		};
-		return _objectSpread$27(_objectSpread$27({}, _attrs3), parentViewBox ? {
+		return _objectSpread$28(_objectSpread$28({}, _attrs3), parentViewBox ? {
 			width: Math.max(parentViewBox.x + parentViewBox.width - _attrs3.x, 0),
 			height
 		} : {});
@@ -39214,61 +39556,61 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 		width,
 		height
 	} : {};
-	if (position === "insideLeft") return _objectSpread$27({
+	if (position === "insideLeft") return _objectSpread$28({
 		x: x$2 + horizontalOffset,
 		y: y$1 + height / 2,
 		textAnchor: horizontalStart,
 		verticalAnchor: "middle"
 	}, sizeAttrs);
-	if (position === "insideRight") return _objectSpread$27({
+	if (position === "insideRight") return _objectSpread$28({
 		x: x$2 + width - horizontalOffset,
 		y: y$1 + height / 2,
 		textAnchor: horizontalEnd,
 		verticalAnchor: "middle"
 	}, sizeAttrs);
-	if (position === "insideTop") return _objectSpread$27({
+	if (position === "insideTop") return _objectSpread$28({
 		x: x$2 + width / 2,
 		y: y$1 + verticalOffset,
 		textAnchor: "middle",
 		verticalAnchor: verticalStart
 	}, sizeAttrs);
-	if (position === "insideBottom") return _objectSpread$27({
+	if (position === "insideBottom") return _objectSpread$28({
 		x: x$2 + width / 2,
 		y: y$1 + height - verticalOffset,
 		textAnchor: "middle",
 		verticalAnchor: verticalEnd
 	}, sizeAttrs);
-	if (position === "insideTopLeft") return _objectSpread$27({
+	if (position === "insideTopLeft") return _objectSpread$28({
 		x: x$2 + horizontalOffset,
 		y: y$1 + verticalOffset,
 		textAnchor: horizontalStart,
 		verticalAnchor: verticalStart
 	}, sizeAttrs);
-	if (position === "insideTopRight") return _objectSpread$27({
+	if (position === "insideTopRight") return _objectSpread$28({
 		x: x$2 + width - horizontalOffset,
 		y: y$1 + verticalOffset,
 		textAnchor: horizontalEnd,
 		verticalAnchor: verticalStart
 	}, sizeAttrs);
-	if (position === "insideBottomLeft") return _objectSpread$27({
+	if (position === "insideBottomLeft") return _objectSpread$28({
 		x: x$2 + horizontalOffset,
 		y: y$1 + height - verticalOffset,
 		textAnchor: horizontalStart,
 		verticalAnchor: verticalEnd
 	}, sizeAttrs);
-	if (position === "insideBottomRight") return _objectSpread$27({
+	if (position === "insideBottomRight") return _objectSpread$28({
 		x: x$2 + width - horizontalOffset,
 		y: y$1 + height - verticalOffset,
 		textAnchor: horizontalEnd,
 		verticalAnchor: verticalEnd
 	}, sizeAttrs);
-	if ((0, import_isObject$1.default)(position) && (isNumber(position.x) || isPercent(position.x)) && (isNumber(position.y) || isPercent(position.y))) return _objectSpread$27({
+	if ((0, import_isObject$1.default)(position) && (isNumber(position.x) || isPercent(position.x)) && (isNumber(position.y) || isPercent(position.y))) return _objectSpread$28({
 		x: x$2 + getPercentValue(position.x, width),
 		y: y$1 + getPercentValue(position.y, height),
 		textAnchor: "end",
 		verticalAnchor: "end"
 	}, sizeAttrs);
-	return _objectSpread$27({
+	return _objectSpread$28({
 		x: x$2 + width / 2,
 		y: y$1 + height / 2,
 		textAnchor: "middle",
@@ -39278,14 +39620,14 @@ var getAttrsOfCartesianLabel = function getAttrsOfCartesianLabel$1(props) {
 var isPolar = function isPolar$1(viewBox) {
 	return "cx" in viewBox && isNumber(viewBox.cx);
 };
-function Label(_ref4) {
-	var _ref4$offset = _ref4.offset, offset$3 = _ref4$offset === void 0 ? 5 : _ref4$offset, restProps = _objectWithoutProperties$12(_ref4, _excluded$12);
-	var props = _objectSpread$27({ offset: offset$3 }, restProps);
+function Label$2(_ref4) {
+	var _ref4$offset = _ref4.offset, offset$3 = _ref4$offset === void 0 ? 5 : _ref4$offset, restProps = _objectWithoutProperties$13(_ref4, _excluded$13);
+	var props = _objectSpread$28({ offset: offset$3 }, restProps);
 	var viewBox = props.viewBox, position = props.position, value = props.value, children = props.children, content = props.content, _props$className = props.className, className = _props$className === void 0 ? "" : _props$className, textBreakAll = props.textBreakAll;
-	if (!viewBox || (0, import_isNil$5.default)(value) && (0, import_isNil$5.default)(children) && !/* @__PURE__ */ (0, import_react.isValidElement)(content) && !(0, import_isFunction$15.default)(content)) return null;
+	if (!viewBox || (0, import_isNil$6.default)(value) && (0, import_isNil$6.default)(children) && !/* @__PURE__ */ (0, import_react.isValidElement)(content) && !(0, import_isFunction$16.default)(content)) return null;
 	if (/* @__PURE__ */ (0, import_react.isValidElement)(content)) return /* @__PURE__ */ (0, import_react.cloneElement)(content, props);
 	var label;
-	if ((0, import_isFunction$15.default)(content)) {
+	if ((0, import_isFunction$16.default)(content)) {
 		label = /* @__PURE__ */ (0, import_react.createElement)(content, props);
 		if (/* @__PURE__ */ (0, import_react.isValidElement)(label)) return label;
 	} else label = getLabel(props);
@@ -39293,9 +39635,9 @@ function Label(_ref4) {
 	var attrs = filterProps(props, true);
 	if (isPolarLabel && (position === "insideStart" || position === "insideEnd" || position === "end")) return renderRadialLabel(props, label, attrs);
 	var positionAttrs = isPolarLabel ? getAttrsOfPolarLabel(props) : getAttrsOfCartesianLabel(props);
-	return /* @__PURE__ */ import_react.createElement(Text, _extends$23({ className: clsx_default("recharts-label", className) }, attrs, positionAttrs, { breakAll: textBreakAll }), label);
+	return /* @__PURE__ */ import_react.createElement(Text, _extends$24({ className: clsx_default("recharts-label", className) }, attrs, positionAttrs, { breakAll: textBreakAll }), label);
 }
-Label.displayName = "Label";
+Label$2.displayName = "Label";
 var parseViewBox = function parseViewBox$1(props) {
 	var cx$1 = props.cx, cy = props.cy, angle = props.angle, startAngle = props.startAngle, endAngle = props.endAngle, r$1 = props.r, radius = props.radius, innerRadius = props.innerRadius, outerRadius = props.outerRadius, x$2 = props.x, y$1 = props.y, top = props.top, left = props.left, width = props.width, height = props.height, clockWise = props.clockWise, labelViewBox = props.labelViewBox;
 	if (labelViewBox) return labelViewBox;
@@ -39333,32 +39675,32 @@ var parseViewBox = function parseViewBox$1(props) {
 };
 var parseLabel = function parseLabel$1(label, viewBox) {
 	if (!label) return null;
-	if (label === true) return /* @__PURE__ */ import_react.createElement(Label, {
+	if (label === true) return /* @__PURE__ */ import_react.createElement(Label$2, {
 		key: "label-implicit",
 		viewBox
 	});
-	if (isNumOrStr(label)) return /* @__PURE__ */ import_react.createElement(Label, {
+	if (isNumOrStr(label)) return /* @__PURE__ */ import_react.createElement(Label$2, {
 		key: "label-implicit",
 		viewBox,
 		value: label
 	});
 	if (/* @__PURE__ */ (0, import_react.isValidElement)(label)) {
-		if (label.type === Label) return /* @__PURE__ */ (0, import_react.cloneElement)(label, {
+		if (label.type === Label$2) return /* @__PURE__ */ (0, import_react.cloneElement)(label, {
 			key: "label-implicit",
 			viewBox
 		});
-		return /* @__PURE__ */ import_react.createElement(Label, {
+		return /* @__PURE__ */ import_react.createElement(Label$2, {
 			key: "label-implicit",
 			content: label,
 			viewBox
 		});
 	}
-	if ((0, import_isFunction$15.default)(label)) return /* @__PURE__ */ import_react.createElement(Label, {
+	if ((0, import_isFunction$16.default)(label)) return /* @__PURE__ */ import_react.createElement(Label$2, {
 		key: "label-implicit",
 		content: label,
 		viewBox
 	});
-	if ((0, import_isObject$1.default)(label)) return /* @__PURE__ */ import_react.createElement(Label, _extends$23({ viewBox }, label, { key: "label-implicit" }));
+	if ((0, import_isObject$1.default)(label)) return /* @__PURE__ */ import_react.createElement(Label$2, _extends$24({ viewBox }, label, { key: "label-implicit" }));
 	return null;
 };
 var renderCallByParent$1 = function renderCallByParent$2(parentProps, viewBox) {
@@ -39366,7 +39708,7 @@ var renderCallByParent$1 = function renderCallByParent$2(parentProps, viewBox) {
 	if (!parentProps || !parentProps.children && checkPropsLabel && !parentProps.label) return null;
 	var children = parentProps.children;
 	var parentViewBox = parseViewBox(parentProps);
-	var explicitChildren = findAllByType(children, Label).map(function(child, index$1) {
+	var explicitChildren = findAllByType(children, Label$2).map(function(child, index$1) {
 		return /* @__PURE__ */ (0, import_react.cloneElement)(child, {
 			viewBox: viewBox || parentViewBox,
 			key: "label-".concat(index$1)
@@ -39375,8 +39717,8 @@ var renderCallByParent$1 = function renderCallByParent$2(parentProps, viewBox) {
 	if (!checkPropsLabel) return explicitChildren;
 	return [parseLabel(parentProps.label, viewBox || parentViewBox)].concat(_toConsumableArray$8(explicitChildren));
 };
-Label.parseViewBox = parseViewBox;
-Label.renderCallByParent = renderCallByParent$1;
+Label$2.parseViewBox = parseViewBox;
+Label$2.renderCallByParent = renderCallByParent$1;
 var require_last = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function last$1(array) {
 		var length = array == null ? 0 : array.length;
@@ -39384,19 +39726,19 @@ var require_last = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = last$1;
 }));
-var import_isNil$4 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isNil$5 = /* @__PURE__ */ __toESM(require_isNil());
 var import_isObject = /* @__PURE__ */ __toESM(require_isObject());
-var import_isFunction$14 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isFunction$15 = /* @__PURE__ */ __toESM(require_isFunction());
 var import_last = /* @__PURE__ */ __toESM(require_last());
-function _typeof$31(o) {
+function _typeof$32(o) {
 	"@babel/helpers - typeof";
-	return _typeof$31 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$32 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$31(o);
+	}, _typeof$32(o);
 }
-var _excluded$11 = ["valueAccessor"], _excluded2$5 = [
+var _excluded$12 = ["valueAccessor"], _excluded2$6 = [
 	"data",
 	"dataKey",
 	"clockWise",
@@ -39427,6 +39769,143 @@ function _arrayLikeToArray$11(arr, len) {
 	if (len == null || len > arr.length) len = arr.length;
 	for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 	return arr2;
+}
+function _extends$23() {
+	_extends$23 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$23.apply(this, arguments);
+}
+function ownKeys$27(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$27(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$27(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$30(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$27(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$30(obj, key, value) {
+	key = _toPropertyKey$30(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$30(t) {
+	var i = _toPrimitive$30(t, "string");
+	return "symbol" == _typeof$32(i) ? i : i + "";
+}
+function _toPrimitive$30(t, r$1) {
+	if ("object" != _typeof$32(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$32(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+function _objectWithoutProperties$12(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$12(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$12(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+var defaultAccessor = function defaultAccessor$1(entry) {
+	return Array.isArray(entry.value) ? (0, import_last.default)(entry.value) : entry.value;
+};
+function LabelList(_ref) {
+	var _ref$valueAccessor = _ref.valueAccessor, valueAccessor = _ref$valueAccessor === void 0 ? defaultAccessor : _ref$valueAccessor, restProps = _objectWithoutProperties$12(_ref, _excluded$12);
+	var data = restProps.data, dataKey = restProps.dataKey, clockWise = restProps.clockWise, id = restProps.id, textBreakAll = restProps.textBreakAll, others = _objectWithoutProperties$12(restProps, _excluded2$6);
+	if (!data || !data.length) return null;
+	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-label-list" }, data.map(function(entry, index$1) {
+		var value = (0, import_isNil$5.default)(dataKey) ? valueAccessor(entry, index$1) : getValueByDataKey(entry && entry.payload, dataKey);
+		var idProps = (0, import_isNil$5.default)(id) ? {} : { id: "".concat(id, "-").concat(index$1) };
+		return /* @__PURE__ */ import_react.createElement(Label$2, _extends$23({}, filterProps(entry, true), others, idProps, {
+			parentViewBox: entry.parentViewBox,
+			value,
+			textBreakAll,
+			viewBox: Label$2.parseViewBox((0, import_isNil$5.default)(clockWise) ? entry : _objectSpread$27(_objectSpread$27({}, entry), {}, { clockWise })),
+			key: "label-".concat(index$1),
+			index: index$1
+		}));
+	}));
+}
+LabelList.displayName = "LabelList";
+function parseLabelList(label, data) {
+	if (!label) return null;
+	if (label === true) return /* @__PURE__ */ import_react.createElement(LabelList, {
+		key: "labelList-implicit",
+		data
+	});
+	if (/* @__PURE__ */ import_react.isValidElement(label) || (0, import_isFunction$15.default)(label)) return /* @__PURE__ */ import_react.createElement(LabelList, {
+		key: "labelList-implicit",
+		data,
+		content: label
+	});
+	if ((0, import_isObject.default)(label)) return /* @__PURE__ */ import_react.createElement(LabelList, _extends$23({ data }, label, { key: "labelList-implicit" }));
+	return null;
+}
+function renderCallByParent(parentProps, data) {
+	var checkPropsLabel = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
+	if (!parentProps || !parentProps.children && checkPropsLabel && !parentProps.label) return null;
+	var children = parentProps.children;
+	var explicitChildren = findAllByType(children, LabelList).map(function(child, index$1) {
+		return /* @__PURE__ */ (0, import_react.cloneElement)(child, {
+			data,
+			key: "labelList-".concat(index$1)
+		});
+	});
+	if (!checkPropsLabel) return explicitChildren;
+	return [parseLabelList(parentProps.label, data)].concat(_toConsumableArray$7(explicitChildren));
+}
+LabelList.renderCallByParent = renderCallByParent;
+function _typeof$31(o) {
+	"@babel/helpers - typeof";
+	return _typeof$31 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$31(o);
 }
 function _extends$22() {
 	_extends$22 = Object.assign ? Object.assign.bind() : function(target) {
@@ -39480,143 +39959,6 @@ function _toPrimitive$29(t, r$1) {
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
 		if ("object" != _typeof$31(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
-function _objectWithoutProperties$11(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$11(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$11(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-var defaultAccessor = function defaultAccessor$1(entry) {
-	return Array.isArray(entry.value) ? (0, import_last.default)(entry.value) : entry.value;
-};
-function LabelList(_ref) {
-	var _ref$valueAccessor = _ref.valueAccessor, valueAccessor = _ref$valueAccessor === void 0 ? defaultAccessor : _ref$valueAccessor, restProps = _objectWithoutProperties$11(_ref, _excluded$11);
-	var data = restProps.data, dataKey = restProps.dataKey, clockWise = restProps.clockWise, id = restProps.id, textBreakAll = restProps.textBreakAll, others = _objectWithoutProperties$11(restProps, _excluded2$5);
-	if (!data || !data.length) return null;
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-label-list" }, data.map(function(entry, index$1) {
-		var value = (0, import_isNil$4.default)(dataKey) ? valueAccessor(entry, index$1) : getValueByDataKey(entry && entry.payload, dataKey);
-		var idProps = (0, import_isNil$4.default)(id) ? {} : { id: "".concat(id, "-").concat(index$1) };
-		return /* @__PURE__ */ import_react.createElement(Label, _extends$22({}, filterProps(entry, true), others, idProps, {
-			parentViewBox: entry.parentViewBox,
-			value,
-			textBreakAll,
-			viewBox: Label.parseViewBox((0, import_isNil$4.default)(clockWise) ? entry : _objectSpread$26(_objectSpread$26({}, entry), {}, { clockWise })),
-			key: "label-".concat(index$1),
-			index: index$1
-		}));
-	}));
-}
-LabelList.displayName = "LabelList";
-function parseLabelList(label, data) {
-	if (!label) return null;
-	if (label === true) return /* @__PURE__ */ import_react.createElement(LabelList, {
-		key: "labelList-implicit",
-		data
-	});
-	if (/* @__PURE__ */ import_react.isValidElement(label) || (0, import_isFunction$14.default)(label)) return /* @__PURE__ */ import_react.createElement(LabelList, {
-		key: "labelList-implicit",
-		data,
-		content: label
-	});
-	if ((0, import_isObject.default)(label)) return /* @__PURE__ */ import_react.createElement(LabelList, _extends$22({ data }, label, { key: "labelList-implicit" }));
-	return null;
-}
-function renderCallByParent(parentProps, data) {
-	var checkPropsLabel = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
-	if (!parentProps || !parentProps.children && checkPropsLabel && !parentProps.label) return null;
-	var children = parentProps.children;
-	var explicitChildren = findAllByType(children, LabelList).map(function(child, index$1) {
-		return /* @__PURE__ */ (0, import_react.cloneElement)(child, {
-			data,
-			key: "labelList-".concat(index$1)
-		});
-	});
-	if (!checkPropsLabel) return explicitChildren;
-	return [parseLabelList(parentProps.label, data)].concat(_toConsumableArray$7(explicitChildren));
-}
-LabelList.renderCallByParent = renderCallByParent;
-function _typeof$30(o) {
-	"@babel/helpers - typeof";
-	return _typeof$30 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$30(o);
-}
-function _extends$21() {
-	_extends$21 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$21.apply(this, arguments);
-}
-function ownKeys$25(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$25(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$25(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$28(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$25(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _defineProperty$28(obj, key, value) {
-	key = _toPropertyKey$28(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$28(t) {
-	var i = _toPrimitive$28(t, "string");
-	return "symbol" == _typeof$30(i) ? i : i + "";
-}
-function _toPrimitive$28(t, r$1) {
-	if ("object" != _typeof$30(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$30(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -39726,7 +40068,7 @@ var defaultProps$3 = {
 	cornerIsExternal: false
 };
 var Sector = function Sector$1(sectorProps) {
-	var props = _objectSpread$25(_objectSpread$25({}, defaultProps$3), sectorProps);
+	var props = _objectSpread$26(_objectSpread$26({}, defaultProps$3), sectorProps);
 	var cx$1 = props.cx, cy = props.cy, innerRadius = props.innerRadius, outerRadius = props.outerRadius, cornerRadius = props.cornerRadius, forceCornerRadius = props.forceCornerRadius, cornerIsExternal = props.cornerIsExternal, startAngle = props.startAngle, endAngle = props.endAngle, className = props.className;
 	if (outerRadius < innerRadius || startAngle === endAngle) return null;
 	var layerClass = clsx_default("recharts-sector", className);
@@ -39752,33 +40094,33 @@ var Sector = function Sector$1(sectorProps) {
 		startAngle,
 		endAngle
 	});
-	return /* @__PURE__ */ import_react.createElement("path", _extends$21({}, filterProps(props, true), {
+	return /* @__PURE__ */ import_react.createElement("path", _extends$22({}, filterProps(props, true), {
 		className: layerClass,
 		d: path$1,
 		role: "img"
 	}));
 };
 var import_upperFirst = /* @__PURE__ */ __toESM(require_upperFirst());
-var import_isFunction$13 = /* @__PURE__ */ __toESM(require_isFunction());
-function _typeof$29(o) {
+var import_isFunction$14 = /* @__PURE__ */ __toESM(require_isFunction());
+function _typeof$30(o) {
 	"@babel/helpers - typeof";
-	return _typeof$29 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$30 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$29(o);
+	}, _typeof$30(o);
 }
-function _extends$20() {
-	_extends$20 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$21() {
+	_extends$21 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$20.apply(this, arguments);
+	return _extends$21.apply(this, arguments);
 }
-function ownKeys$24(e, r$1) {
+function ownKeys$25(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -39788,19 +40130,19 @@ function ownKeys$24(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$24(e) {
+function _objectSpread$25(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$24(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$27(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$24(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$25(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$28(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$25(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$27(obj, key, value) {
-	key = _toPropertyKey$27(key);
+function _defineProperty$28(obj, key, value) {
+	key = _toPropertyKey$28(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -39810,16 +40152,16 @@ function _defineProperty$27(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$27(t) {
-	var i = _toPrimitive$27(t, "string");
-	return "symbol" == _typeof$29(i) ? i : i + "";
+function _toPropertyKey$28(t) {
+	var i = _toPrimitive$28(t, "string");
+	return "symbol" == _typeof$30(i) ? i : i + "";
 }
-function _toPrimitive$27(t, r$1) {
-	if ("object" != _typeof$29(t) || !t) return t;
+function _toPrimitive$28(t, r$1) {
+	if ("object" != _typeof$30(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$29(i)) return i;
+		if ("object" != _typeof$30(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -39849,7 +40191,7 @@ var getY = function getY$1(p) {
 	return p.y;
 };
 var getCurveFactory = function getCurveFactory$1(type, layout) {
-	if ((0, import_isFunction$13.default)(type)) return type;
+	if ((0, import_isFunction$14.default)(type)) return type;
 	var name = "curve".concat((0, import_upperFirst.default)(type));
 	if ((name === "curveMonotone" || name === "curveBump") && layout) return CURVE_FACTORIES["".concat(name).concat(layout === "vertical" ? "Y" : "X")];
 	return CURVE_FACTORIES[name] || linear_default;
@@ -39866,7 +40208,7 @@ var getPath$1 = function getPath$2(_ref) {
 			return defined(base);
 		}) : baseLine;
 		var areaPoints = formatPoints.map(function(entry, index$1) {
-			return _objectSpread$24(_objectSpread$24({}, entry), {}, { base: formatBaseLine[index$1] });
+			return _objectSpread$25(_objectSpread$25({}, entry), {}, { base: formatBaseLine[index$1] });
 		});
 		if (layout === "vertical") lineFunction = area_default().y(getY).x1(getX).x0(function(d) {
 			return d.base.x;
@@ -39887,7 +40229,7 @@ var Curve = function Curve$1(props) {
 	var className = props.className, points = props.points, path$1 = props.path, pathRef = props.pathRef;
 	if ((!points || !points.length) && !path$1) return null;
 	var realPath = points && points.length ? getPath$1(props) : path$1;
-	return /* @__PURE__ */ import_react.createElement("path", _extends$20({}, filterProps(props, false), adaptEventHandlers(props), {
+	return /* @__PURE__ */ import_react.createElement("path", _extends$21({}, filterProps(props, false), adaptEventHandlers(props), {
 		className: clsx_default("recharts-curve", className),
 		d: realPath,
 		ref: pathRef
@@ -39963,7 +40305,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var Fragment$3 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
-		var Portal$3 = REACT_PORTAL_TYPE;
+		var Portal$4 = REACT_PORTAL_TYPE;
 		var Profiler = REACT_PROFILER_TYPE;
 		var StrictMode = REACT_STRICT_MODE_TYPE;
 		var Suspense = REACT_SUSPENSE_TYPE;
@@ -40020,7 +40362,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		exports.Fragment = Fragment$3;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
-		exports.Portal = Portal$3;
+		exports.Portal = Portal$4;
 		exports.Profiler = Profiler;
 		exports.StrictMode = StrictMode;
 		exports.Suspense = Suspense;
@@ -40457,7 +40799,7 @@ var require_prop_types = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var { getOwnPropertyNames, getOwnPropertySymbols } = Object;
 var { hasOwnProperty: hasOwnProperty$1 } = Object.prototype;
 function combineComparators(comparatorA, comparatorB) {
-	return function isEqual$6(a$1, b$1, state) {
+	return function isEqual$7(a$1, b$1, state) {
 		return comparatorA(a$1, b$1, state) && comparatorB(a$1, b$1, state);
 	};
 }
@@ -40722,7 +41064,7 @@ function createInternalEqualityComparator(compare) {
 	};
 }
 function createIsEqual({ circular, comparator, createState, equals, strict }) {
-	if (createState) return function isEqual$6(a$1, b$1) {
+	if (createState) return function isEqual$7(a$1, b$1) {
 		const { cache = circular ? /* @__PURE__ */ new WeakMap() : void 0, meta } = createState();
 		return comparator(a$1, b$1, {
 			cache,
@@ -40731,7 +41073,7 @@ function createIsEqual({ circular, comparator, createState, equals, strict }) {
 			strict
 		});
 	};
-	if (circular) return function isEqual$6(a$1, b$1) {
+	if (circular) return function isEqual$7(a$1, b$1) {
 		return comparator(a$1, b$1, {
 			cache: /* @__PURE__ */ new WeakMap(),
 			equals,
@@ -40745,7 +41087,7 @@ function createIsEqual({ circular, comparator, createState, equals, strict }) {
 		meta: void 0,
 		strict
 	};
-	return function isEqual$6(a$1, b$1) {
+	return function isEqual$7(a$1, b$1) {
 		return comparator(a$1, b$1, state);
 	};
 }
@@ -40795,13 +41137,13 @@ function setRafTimeout(callback) {
 		} else safeRequestAnimationFrame(shouldUpdate);
 	});
 }
-function _typeof$28(o) {
+function _typeof$29(o) {
 	"@babel/helpers - typeof";
-	return _typeof$28 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$29 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$28(o);
+	}, _typeof$29(o);
 }
 function _toArray(arr) {
 	return _arrayWithHoles$6(arr) || _iterableToArray$7(arr) || _unsupportedIterableToArray$10(arr) || _nonIterableRest$6();
@@ -40847,7 +41189,7 @@ function createAnimateManager() {
 			setRafTimeout(setStyle$1.bind(null, restStyles));
 			return;
 		}
-		if (_typeof$28(_style) === "object") {
+		if (_typeof$29(_style) === "object") {
 			currStyle = _style;
 			handleChange(currStyle);
 		}
@@ -40871,15 +41213,15 @@ function createAnimateManager() {
 		}
 	};
 }
-function _typeof$27(o) {
+function _typeof$28(o) {
 	"@babel/helpers - typeof";
-	return _typeof$27 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$28 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$27(o);
+	}, _typeof$28(o);
 }
-function ownKeys$23(e, r$1) {
+function ownKeys$24(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -40889,19 +41231,19 @@ function ownKeys$23(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$23(e) {
+function _objectSpread$24(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$23(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$26(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$23(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$24(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$27(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$24(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$26(obj, key, value) {
-	key = _toPropertyKey$26(key);
+function _defineProperty$27(obj, key, value) {
+	key = _toPropertyKey$27(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -40911,16 +41253,16 @@ function _defineProperty$26(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$26(arg) {
-	var key = _toPrimitive$26(arg, "string");
-	return _typeof$27(key) === "symbol" ? key : String(key);
+function _toPropertyKey$27(arg) {
+	var key = _toPrimitive$27(arg, "string");
+	return _typeof$28(key) === "symbol" ? key : String(key);
 }
-function _toPrimitive$26(input, hint) {
-	if (_typeof$27(input) !== "object" || input === null) return input;
+function _toPrimitive$27(input, hint) {
+	if (_typeof$28(input) !== "object" || input === null) return input;
 	var prim = input[Symbol.toPrimitive];
 	if (prim !== void 0) {
 		var res = prim.call(input, hint || "default");
-		if (_typeof$27(res) !== "object") return res;
+		if (_typeof$28(res) !== "object") return res;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (hint === "string" ? String : Number)(input);
@@ -40942,7 +41284,7 @@ var getDashCase = function getDashCase$1(name) {
 };
 var mapObject = function mapObject$1(fn, obj) {
 	return Object.keys(obj).reduce(function(res, key) {
-		return _objectSpread$23(_objectSpread$23({}, res), {}, _defineProperty$26({}, key, fn(key, obj[key])));
+		return _objectSpread$24(_objectSpread$24({}, res), {}, _defineProperty$27({}, key, fn(key, obj[key])));
 	}, {});
 };
 var getTransitionVal = function getTransitionVal$1(props, duration, easing) {
@@ -41162,13 +41504,13 @@ var configEasing = function configEasing$1() {
 	warn$1(false, "[configEasing]: first argument type should be function or string, instead received %s", args);
 	return null;
 };
-function _typeof$26(o) {
+function _typeof$27(o) {
 	"@babel/helpers - typeof";
-	return _typeof$26 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$27 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$26(o);
+	}, _typeof$27(o);
 }
 function _toConsumableArray$5(arr) {
 	return _arrayWithoutHoles$5(arr) || _iterableToArray$5(arr) || _unsupportedIterableToArray$8(arr) || _nonIterableSpread$5();
@@ -41182,7 +41524,7 @@ function _iterableToArray$5(iter) {
 function _arrayWithoutHoles$5(arr) {
 	if (Array.isArray(arr)) return _arrayLikeToArray$8(arr);
 }
-function ownKeys$22(e, r$1) {
+function ownKeys$23(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -41192,19 +41534,19 @@ function ownKeys$22(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$22(e) {
+function _objectSpread$23(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$22(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$25(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$22(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$23(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$26(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$23(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$25(obj, key, value) {
-	key = _toPropertyKey$25(key);
+function _defineProperty$26(obj, key, value) {
+	key = _toPropertyKey$26(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -41214,16 +41556,16 @@ function _defineProperty$25(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$25(arg) {
-	var key = _toPrimitive$25(arg, "string");
-	return _typeof$26(key) === "symbol" ? key : String(key);
+function _toPropertyKey$26(arg) {
+	var key = _toPrimitive$26(arg, "string");
+	return _typeof$27(key) === "symbol" ? key : String(key);
 }
-function _toPrimitive$25(input, hint) {
-	if (_typeof$26(input) !== "object" || input === null) return input;
+function _toPrimitive$26(input, hint) {
+	if (_typeof$27(input) !== "object" || input === null) return input;
 	var prim = input[Symbol.toPrimitive];
 	if (prim !== void 0) {
 		var res = prim.call(input, hint || "default");
-		if (_typeof$26(res) !== "object") return res;
+		if (_typeof$27(res) !== "object") return res;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (hint === "string" ? String : Number)(input);
@@ -41281,7 +41623,7 @@ var calStepperVals = function calStepperVals$1(easing, preVals, steps) {
 	var nextStepVals = mapObject(function(key, val) {
 		if (needContinue(val)) {
 			var _easing2 = _slicedToArray$4(easing(val.from, val.to, val.velocity), 2), newX = _easing2[0], newV = _easing2[1];
-			return _objectSpread$22(_objectSpread$22({}, val), {}, {
+			return _objectSpread$23(_objectSpread$23({}, val), {}, {
 				from: newX,
 				velocity: newV
 			});
@@ -41289,7 +41631,7 @@ var calStepperVals = function calStepperVals$1(easing, preVals, steps) {
 		return val;
 	}, preVals);
 	if (steps < 1) return mapObject(function(key, val) {
-		if (needContinue(val)) return _objectSpread$22(_objectSpread$22({}, val), {}, {
+		if (needContinue(val)) return _objectSpread$23(_objectSpread$23({}, val), {}, {
 			velocity: alpha(val.velocity, nextStepVals[key].velocity, steps),
 			from: alpha(val.from, nextStepVals[key].from, steps)
 		});
@@ -41300,10 +41642,10 @@ var calStepperVals = function calStepperVals$1(easing, preVals, steps) {
 var configUpdate_default = (function(from, to, easing, duration, render) {
 	var interKeys = getIntersectionKeys(from, to);
 	var timingStyle = interKeys.reduce(function(res, key) {
-		return _objectSpread$22(_objectSpread$22({}, res), {}, _defineProperty$25({}, key, [from[key], to[key]]));
+		return _objectSpread$23(_objectSpread$23({}, res), {}, _defineProperty$26({}, key, [from[key], to[key]]));
 	}, {});
 	var stepperStyle = interKeys.reduce(function(res, key) {
-		return _objectSpread$22(_objectSpread$22({}, res), {}, _defineProperty$25({}, key, {
+		return _objectSpread$23(_objectSpread$23({}, res), {}, _defineProperty$26({}, key, {
 			from: from[key],
 			velocity: 0,
 			to: to[key]
@@ -41327,7 +41669,7 @@ var configUpdate_default = (function(from, to, easing, duration, render) {
 		if (!preTime) preTime = now$2;
 		var steps = (now$2 - preTime) / easing.dt;
 		stepperStyle = calStepperVals(easing, stepperStyle, steps);
-		render(_objectSpread$22(_objectSpread$22(_objectSpread$22({}, from), to), getCurrStyle(stepperStyle)));
+		render(_objectSpread$23(_objectSpread$23(_objectSpread$23({}, from), to), getCurrStyle(stepperStyle)));
 		preTime = now$2;
 		if (!shouldStopAnimation()) cafId = requestAnimationFrame(update);
 	} : function timingUpdate(now$2) {
@@ -41336,13 +41678,13 @@ var configUpdate_default = (function(from, to, easing, duration, render) {
 		var currStyle = mapObject(function(key, val) {
 			return alpha.apply(void 0, _toConsumableArray$5(val).concat([easing(t)]));
 		}, timingStyle);
-		render(_objectSpread$22(_objectSpread$22(_objectSpread$22({}, from), to), currStyle));
+		render(_objectSpread$23(_objectSpread$23(_objectSpread$23({}, from), to), currStyle));
 		if (t < 1) cafId = requestAnimationFrame(update);
 		else {
 			var finalStyle = mapObject(function(key, val) {
 				return alpha.apply(void 0, _toConsumableArray$5(val).concat([easing(1)]));
 			}, timingStyle);
-			render(_objectSpread$22(_objectSpread$22(_objectSpread$22({}, from), to), finalStyle));
+			render(_objectSpread$23(_objectSpread$23(_objectSpread$23({}, from), to), finalStyle));
 		}
 	};
 	return function() {
@@ -41353,15 +41695,15 @@ var configUpdate_default = (function(from, to, easing, duration, render) {
 	};
 });
 var import_prop_types = /* @__PURE__ */ __toESM(require_prop_types());
-function _typeof$25(o) {
+function _typeof$26(o) {
 	"@babel/helpers - typeof";
-	return _typeof$25 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$26 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$25(o);
+	}, _typeof$26(o);
 }
-var _excluded$10 = [
+var _excluded$11 = [
 	"children",
 	"begin",
 	"duration",
@@ -41376,9 +41718,9 @@ var _excluded$10 = [
 	"shouldReAnimate",
 	"onAnimationReStart"
 ];
-function _objectWithoutProperties$10(source, excluded) {
+function _objectWithoutProperties$11(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$10(source, excluded);
+	var target = _objectWithoutPropertiesLoose$11(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -41391,7 +41733,7 @@ function _objectWithoutProperties$10(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$10(source, excluded) {
+function _objectWithoutPropertiesLoose$11(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	var sourceKeys = Object.keys(source);
@@ -41428,7 +41770,7 @@ function _arrayLikeToArray$7(arr, len) {
 	for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 	return arr2;
 }
-function ownKeys$21(e, r$1) {
+function ownKeys$22(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -41438,19 +41780,19 @@ function ownKeys$21(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$21(e) {
+function _objectSpread$22(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$21(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$24(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$21(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$22(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$25(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$22(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$24(obj, key, value) {
-	key = _toPropertyKey$24(key);
+function _defineProperty$25(obj, key, value) {
+	key = _toPropertyKey$25(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -41460,39 +41802,39 @@ function _defineProperty$24(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _classCallCheck$15(instance, Constructor) {
+function _classCallCheck$16(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$15(target, props) {
+function _defineProperties$16(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$24(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$25(descriptor.key), descriptor);
 	}
 }
-function _createClass$15(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$15(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$15(Constructor, staticProps);
+function _createClass$16(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$16(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$16(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _toPropertyKey$24(arg) {
-	var key = _toPrimitive$24(arg, "string");
-	return _typeof$25(key) === "symbol" ? key : String(key);
+function _toPropertyKey$25(arg) {
+	var key = _toPrimitive$25(arg, "string");
+	return _typeof$26(key) === "symbol" ? key : String(key);
 }
-function _toPrimitive$24(input, hint) {
-	if (_typeof$25(input) !== "object" || input === null) return input;
+function _toPrimitive$25(input, hint) {
+	if (_typeof$26(input) !== "object" || input === null) return input;
 	var prim = input[Symbol.toPrimitive];
 	if (prim !== void 0) {
 		var res = prim.call(input, hint || "default");
-		if (_typeof$25(res) !== "object") return res;
+		if (_typeof$26(res) !== "object") return res;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (hint === "string" ? String : Number)(input);
 }
-function _inherits$13(subClass, superClass) {
+function _inherits$14(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -41500,36 +41842,36 @@ function _inherits$13(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$13(subClass, superClass);
+	if (superClass) _setPrototypeOf$14(subClass, superClass);
 }
-function _setPrototypeOf$13(o, p) {
-	_setPrototypeOf$13 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$14(o, p) {
+	_setPrototypeOf$14 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$13(o, p);
+	return _setPrototypeOf$14(o, p);
 }
 function _createSuper(Derived) {
-	var hasNativeReflectConstruct = _isNativeReflectConstruct$13();
+	var hasNativeReflectConstruct = _isNativeReflectConstruct$14();
 	return function _createSuperInternal() {
-		var Super = _getPrototypeOf$13(Derived), result;
+		var Super = _getPrototypeOf$14(Derived), result;
 		if (hasNativeReflectConstruct) {
-			var NewTarget = _getPrototypeOf$13(this).constructor;
+			var NewTarget = _getPrototypeOf$14(this).constructor;
 			result = Reflect.construct(Super, arguments, NewTarget);
 		} else result = Super.apply(this, arguments);
-		return _possibleConstructorReturn$13(this, result);
+		return _possibleConstructorReturn$14(this, result);
 	};
 }
-function _possibleConstructorReturn$13(self$1, call) {
-	if (call && (_typeof$25(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$14(self$1, call) {
+	if (call && (_typeof$26(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$13(self$1);
+	return _assertThisInitialized$14(self$1);
 }
-function _assertThisInitialized$13(self$1) {
+function _assertThisInitialized$14(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$13() {
+function _isNativeReflectConstruct$14() {
 	if (typeof Reflect === "undefined" || !Reflect.construct) return false;
 	if (Reflect.construct.sham) return false;
 	if (typeof Proxy === "function") return true;
@@ -41540,38 +41882,38 @@ function _isNativeReflectConstruct$13() {
 		return false;
 	}
 }
-function _getPrototypeOf$13(o) {
-	_getPrototypeOf$13 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$14(o) {
+	_getPrototypeOf$14 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$13(o);
+	return _getPrototypeOf$14(o);
 }
 var Animate = /* @__PURE__ */ function(_PureComponent) {
-	_inherits$13(Animate$1, _PureComponent);
+	_inherits$14(Animate$1, _PureComponent);
 	var _super = _createSuper(Animate$1);
 	function Animate$1(props, context) {
 		var _this;
-		_classCallCheck$15(this, Animate$1);
+		_classCallCheck$16(this, Animate$1);
 		_this = _super.call(this, props, context);
 		var _this$props = _this.props, isActive = _this$props.isActive, attributeName = _this$props.attributeName, from = _this$props.from, to = _this$props.to, steps = _this$props.steps, children = _this$props.children, duration = _this$props.duration;
-		_this.handleStyleChange = _this.handleStyleChange.bind(_assertThisInitialized$13(_this));
-		_this.changeStyle = _this.changeStyle.bind(_assertThisInitialized$13(_this));
+		_this.handleStyleChange = _this.handleStyleChange.bind(_assertThisInitialized$14(_this));
+		_this.changeStyle = _this.changeStyle.bind(_assertThisInitialized$14(_this));
 		if (!isActive || duration <= 0) {
 			_this.state = { style: {} };
 			if (typeof children === "function") _this.state = { style: to };
-			return _possibleConstructorReturn$13(_this);
+			return _possibleConstructorReturn$14(_this);
 		}
 		if (steps && steps.length) _this.state = { style: steps[0].style };
 		else if (from) {
 			if (typeof children === "function") {
 				_this.state = { style: from };
-				return _possibleConstructorReturn$13(_this);
+				return _possibleConstructorReturn$14(_this);
 			}
-			_this.state = { style: attributeName ? _defineProperty$24({}, attributeName, from) : from };
+			_this.state = { style: attributeName ? _defineProperty$25({}, attributeName, from) : from };
 		} else _this.state = { style: {} };
 		return _this;
 	}
-	_createClass$15(Animate$1, [
+	_createClass$16(Animate$1, [
 		{
 			key: "componentDidMount",
 			value: function componentDidMount() {
@@ -41588,7 +41930,7 @@ var Animate = /* @__PURE__ */ function(_PureComponent) {
 				var style = this.state.style;
 				if (!canBegin) return;
 				if (!isActive) {
-					var newState = { style: attributeName ? _defineProperty$24({}, attributeName, to) : to };
+					var newState = { style: attributeName ? _defineProperty$25({}, attributeName, to) : to };
 					if (this.state && style) {
 						if (attributeName && style[attributeName] !== to || !attributeName && style !== to) this.setState(newState);
 					}
@@ -41600,10 +41942,10 @@ var Animate = /* @__PURE__ */ function(_PureComponent) {
 				if (this.stopJSAnimation) this.stopJSAnimation();
 				var from = isTriggered || shouldReAnimate ? currentFrom : prevProps.to;
 				if (this.state && style) {
-					var _newState = { style: attributeName ? _defineProperty$24({}, attributeName, from) : from };
+					var _newState = { style: attributeName ? _defineProperty$25({}, attributeName, from) : from };
 					if (attributeName && style[attributeName] !== from || !attributeName && style !== from) this.setState(_newState);
 				}
-				this.runAnimation(_objectSpread$21(_objectSpread$21({}, this.props), {}, {
+				this.runAnimation(_objectSpread$22(_objectSpread$22({}, this.props), {}, {
 					from,
 					begin: 0
 				}));
@@ -41670,7 +42012,7 @@ var Animate = /* @__PURE__ */ function(_PureComponent) {
 						easing
 					}), duration]);
 					var transition = getTransitionVal(properties, duration, easing);
-					var newStyle = _objectSpread$21(_objectSpread$21(_objectSpread$21({}, preItem.style), style), {}, { transition });
+					var newStyle = _objectSpread$22(_objectSpread$22(_objectSpread$22({}, preItem.style), style), {}, { transition });
 					return [].concat(_toConsumableArray$4(sequence), [
 						newStyle,
 						duration,
@@ -41694,12 +42036,12 @@ var Animate = /* @__PURE__ */ function(_PureComponent) {
 					this.runStepAnimation(props);
 					return;
 				}
-				var to = attributeName ? _defineProperty$24({}, attributeName, propsTo) : propsTo;
+				var to = attributeName ? _defineProperty$25({}, attributeName, propsTo) : propsTo;
 				var transition = getTransitionVal(Object.keys(to), duration, easing);
 				manager.start([
 					onAnimationStart,
 					begin,
-					_objectSpread$21(_objectSpread$21({}, to), {}, { transition }),
+					_objectSpread$22(_objectSpread$22({}, to), {}, { transition }),
 					duration,
 					onAnimationEnd
 				]);
@@ -41721,15 +42063,15 @@ var Animate = /* @__PURE__ */ function(_PureComponent) {
 				_this$props4.onAnimationEnd;
 				_this$props4.shouldReAnimate;
 				_this$props4.onAnimationReStart;
-				var others = _objectWithoutProperties$10(_this$props4, _excluded$10);
+				var others = _objectWithoutProperties$11(_this$props4, _excluded$11);
 				var count$3 = import_react.Children.count(children);
 				var stateStyle = this.state.style;
 				if (typeof children === "function") return children(stateStyle);
 				if (!isActive || count$3 === 0 || duration <= 0) return children;
 				var cloneContainer = function cloneContainer$1(container) {
 					var _container$props = container.props, _container$props$styl = _container$props.style, style = _container$props$styl === void 0 ? {} : _container$props$styl, className = _container$props.className;
-					return /* @__PURE__ */ (0, import_react.cloneElement)(container, _objectSpread$21(_objectSpread$21({}, others), {}, {
-						style: _objectSpread$21(_objectSpread$21({}, style), stateStyle),
+					return /* @__PURE__ */ (0, import_react.cloneElement)(container, _objectSpread$22(_objectSpread$22({}, others), {}, {
+						style: _objectSpread$22(_objectSpread$22({}, style), stateStyle),
 						className
 					}));
 				};
@@ -41785,23 +42127,23 @@ Animate.propTypes = {
 	onAnimationReStart: import_prop_types.default.func
 };
 var es6_default = Animate;
-function _typeof$24(o) {
+function _typeof$25(o) {
 	"@babel/helpers - typeof";
-	return _typeof$24 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$25 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$24(o);
+	}, _typeof$25(o);
 }
-function _extends$19() {
-	_extends$19 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$20() {
+	_extends$20 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$19.apply(this, arguments);
+	return _extends$20.apply(this, arguments);
 }
 function _slicedToArray$3(arr, i) {
 	return _arrayWithHoles$3(arr) || _iterableToArrayLimit$3(arr, i) || _unsupportedIterableToArray$6(arr, i) || _nonIterableRest$3();
@@ -41846,7 +42188,7 @@ function _iterableToArrayLimit$3(r$1, l) {
 function _arrayWithHoles$3(arr) {
 	if (Array.isArray(arr)) return arr;
 }
-function ownKeys$20(e, r$1) {
+function ownKeys$21(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -41856,19 +42198,19 @@ function ownKeys$20(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$20(e) {
+function _objectSpread$21(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$20(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$23(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$20(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$21(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$24(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$21(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$23(obj, key, value) {
-	key = _toPropertyKey$23(key);
+function _defineProperty$24(obj, key, value) {
+	key = _toPropertyKey$24(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -41878,16 +42220,16 @@ function _defineProperty$23(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$23(t) {
-	var i = _toPrimitive$23(t, "string");
-	return "symbol" == _typeof$24(i) ? i : i + "";
+function _toPropertyKey$24(t) {
+	var i = _toPrimitive$24(t, "string");
+	return "symbol" == _typeof$25(i) ? i : i + "";
 }
-function _toPrimitive$23(t, r$1) {
-	if ("object" != _typeof$24(t) || !t) return t;
+function _toPrimitive$24(t, r$1) {
+	if ("object" != _typeof$25(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$24(i)) return i;
+		if ("object" != _typeof$25(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -41947,7 +42289,7 @@ var defaultProps$2 = {
 	animationEasing: "ease"
 };
 var Rectangle = function Rectangle$1(rectangleProps) {
-	var props = _objectSpread$20(_objectSpread$20({}, defaultProps$2), rectangleProps);
+	var props = _objectSpread$21(_objectSpread$21({}, defaultProps$2), rectangleProps);
 	var pathRef = (0, import_react.useRef)();
 	var _useState2 = _slicedToArray$3((0, import_react.useState)(-1), 2), totalLength = _useState2[0], setTotalLength = _useState2[1];
 	(0, import_react.useEffect)(function() {
@@ -41960,7 +42302,7 @@ var Rectangle = function Rectangle$1(rectangleProps) {
 	var animationEasing = props.animationEasing, animationDuration = props.animationDuration, animationBegin = props.animationBegin, isAnimationActive = props.isAnimationActive, isUpdateAnimationActive = props.isUpdateAnimationActive;
 	if (x$2 !== +x$2 || y$1 !== +y$1 || width !== +width || height !== +height || width === 0 || height === 0) return null;
 	var layerClass = clsx_default("recharts-rectangle", className);
-	if (!isUpdateAnimationActive) return /* @__PURE__ */ import_react.createElement("path", _extends$19({}, filterProps(props, true), {
+	if (!isUpdateAnimationActive) return /* @__PURE__ */ import_react.createElement("path", _extends$20({}, filterProps(props, true), {
 		className: layerClass,
 		d: getRectanglePath(x$2, y$1, width, height, radius)
 	}));
@@ -41992,32 +42334,32 @@ var Rectangle = function Rectangle$1(rectangleProps) {
 			duration: animationDuration,
 			isActive: isAnimationActive,
 			easing: animationEasing
-		}, /* @__PURE__ */ import_react.createElement("path", _extends$19({}, filterProps(props, true), {
+		}, /* @__PURE__ */ import_react.createElement("path", _extends$20({}, filterProps(props, true), {
 			className: layerClass,
 			d: getRectanglePath(currX, currY, currWidth, currHeight, radius),
 			ref: pathRef
 		})));
 	});
 };
-var _excluded$9 = [
+var _excluded$10 = [
 	"points",
 	"className",
 	"baseLinePoints",
 	"connectNulls"
 ];
-function _extends$18() {
-	_extends$18 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$19() {
+	_extends$19 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$18.apply(this, arguments);
+	return _extends$19.apply(this, arguments);
 }
-function _objectWithoutProperties$9(source, excluded) {
+function _objectWithoutProperties$10(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$9(source, excluded);
+	var target = _objectWithoutPropertiesLoose$10(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -42030,7 +42372,7 @@ function _objectWithoutProperties$9(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$9(source, excluded) {
+function _objectWithoutPropertiesLoose$10(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -42095,31 +42437,69 @@ var getRanglePath = function getRanglePath$1(points, baseLinePoints, connectNull
 	return "".concat(outerPath.slice(-1) === "Z" ? outerPath.slice(0, -1) : outerPath, "L").concat(getSinglePolygonPath(baseLinePoints.reverse(), connectNulls).slice(1));
 };
 var Polygon = function Polygon$1(props) {
-	var points = props.points, className = props.className, baseLinePoints = props.baseLinePoints, connectNulls = props.connectNulls, others = _objectWithoutProperties$9(props, _excluded$9);
+	var points = props.points, className = props.className, baseLinePoints = props.baseLinePoints, connectNulls = props.connectNulls, others = _objectWithoutProperties$10(props, _excluded$10);
 	if (!points || !points.length) return null;
 	var layerClass = clsx_default("recharts-polygon", className);
 	if (baseLinePoints && baseLinePoints.length) {
 		var hasStroke = others.stroke && others.stroke !== "none";
 		var rangePath = getRanglePath(points, baseLinePoints, connectNulls);
-		return /* @__PURE__ */ import_react.createElement("g", { className: layerClass }, /* @__PURE__ */ import_react.createElement("path", _extends$18({}, filterProps(others, true), {
+		return /* @__PURE__ */ import_react.createElement("g", { className: layerClass }, /* @__PURE__ */ import_react.createElement("path", _extends$19({}, filterProps(others, true), {
 			fill: rangePath.slice(-1) === "Z" ? others.fill : "none",
 			stroke: "none",
 			d: rangePath
-		})), hasStroke ? /* @__PURE__ */ import_react.createElement("path", _extends$18({}, filterProps(others, true), {
+		})), hasStroke ? /* @__PURE__ */ import_react.createElement("path", _extends$19({}, filterProps(others, true), {
 			fill: "none",
 			d: getSinglePolygonPath(points, connectNulls)
-		})) : null, hasStroke ? /* @__PURE__ */ import_react.createElement("path", _extends$18({}, filterProps(others, true), {
+		})) : null, hasStroke ? /* @__PURE__ */ import_react.createElement("path", _extends$19({}, filterProps(others, true), {
 			fill: "none",
 			d: getSinglePolygonPath(baseLinePoints, connectNulls)
 		})) : null);
 	}
 	var singlePath = getSinglePolygonPath(points, connectNulls);
-	return /* @__PURE__ */ import_react.createElement("path", _extends$18({}, filterProps(others, true), {
+	return /* @__PURE__ */ import_react.createElement("path", _extends$19({}, filterProps(others, true), {
 		fill: singlePath.slice(-1) === "Z" ? others.fill : "none",
 		className: layerClass,
 		d: singlePath
 	}));
 };
+function _extends$18() {
+	_extends$18 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$18.apply(this, arguments);
+}
+var Dot = function Dot$1(props) {
+	var cx$1 = props.cx, cy = props.cy, r$1 = props.r, className = props.className;
+	var layerClass = clsx_default("recharts-dot", className);
+	if (cx$1 === +cx$1 && cy === +cy && r$1 === +r$1) return /* @__PURE__ */ import_react.createElement("circle", _extends$18({}, filterProps(props, false), adaptEventHandlers(props), {
+		className: layerClass,
+		cx: cx$1,
+		cy,
+		r: r$1
+	}));
+	return null;
+};
+function _typeof$24(o) {
+	"@babel/helpers - typeof";
+	return _typeof$24 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$24(o);
+}
+var _excluded$9 = [
+	"x",
+	"y",
+	"top",
+	"left",
+	"width",
+	"height",
+	"className"
+];
 function _extends$17() {
 	_extends$17 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
@@ -42130,17 +42510,125 @@ function _extends$17() {
 	};
 	return _extends$17.apply(this, arguments);
 }
-var Dot = function Dot$1(props) {
-	var cx$1 = props.cx, cy = props.cy, r$1 = props.r, className = props.className;
-	var layerClass = clsx_default("recharts-dot", className);
-	if (cx$1 === +cx$1 && cy === +cy && r$1 === +r$1) return /* @__PURE__ */ import_react.createElement("circle", _extends$17({}, filterProps(props, false), adaptEventHandlers(props), {
-		className: layerClass,
-		cx: cx$1,
-		cy,
-		r: r$1
-	}));
-	return null;
+function ownKeys$20(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$20(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$20(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$23(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$20(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$23(obj, key, value) {
+	key = _toPropertyKey$23(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$23(t) {
+	var i = _toPrimitive$23(t, "string");
+	return "symbol" == _typeof$24(i) ? i : i + "";
+}
+function _toPrimitive$23(t, r$1) {
+	if ("object" != _typeof$24(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$24(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+function _objectWithoutProperties$9(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$9(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$9(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+var getPath = function getPath$2(x$2, y$1, width, height, top, left) {
+	return "M".concat(x$2, ",").concat(top, "v").concat(height, "M").concat(left, ",").concat(y$1, "h").concat(width);
 };
+var Cross = function Cross$1(_ref) {
+	var _ref$x = _ref.x, x$2 = _ref$x === void 0 ? 0 : _ref$x, _ref$y = _ref.y, y$1 = _ref$y === void 0 ? 0 : _ref$y, _ref$top = _ref.top, top = _ref$top === void 0 ? 0 : _ref$top, _ref$left = _ref.left, left = _ref$left === void 0 ? 0 : _ref$left, _ref$width = _ref.width, width = _ref$width === void 0 ? 0 : _ref$width, _ref$height = _ref.height, height = _ref$height === void 0 ? 0 : _ref$height, className = _ref.className, rest = _objectWithoutProperties$9(_ref, _excluded$9);
+	var props = _objectSpread$20({
+		x: x$2,
+		y: y$1,
+		top,
+		left,
+		width,
+		height
+	}, rest);
+	if (!isNumber(x$2) || !isNumber(y$1) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) return null;
+	return /* @__PURE__ */ import_react.createElement("path", _extends$17({}, filterProps(props, true), {
+		className: clsx_default("recharts-cross", className),
+		d: getPath(x$2, y$1, width, height, top, left)
+	}));
+};
+var require_maxBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var baseExtremum$1 = require__baseExtremum(), baseGt = require__baseGt(), baseIteratee$6 = require__baseIteratee();
+	function maxBy$1(array, iteratee) {
+		return array && array.length ? baseExtremum$1(array, baseIteratee$6(iteratee, 2), baseGt) : void 0;
+	}
+	module.exports = maxBy$1;
+}));
+var require_minBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var baseExtremum = require__baseExtremum(), baseIteratee$5 = require__baseIteratee(), baseLt = require__baseLt();
+	function minBy$1(array, iteratee) {
+		return array && array.length ? baseExtremum(array, baseIteratee$5(iteratee, 2), baseLt) : void 0;
+	}
+	module.exports = minBy$1;
+}));
+var import_maxBy = /* @__PURE__ */ __toESM(require_maxBy());
+var import_minBy = /* @__PURE__ */ __toESM(require_minBy());
+var import_isFunction$13 = /* @__PURE__ */ __toESM(require_isFunction());
+var _excluded$8 = [
+	"cx",
+	"cy",
+	"angle",
+	"ticks",
+	"axisLine"
+], _excluded2$5 = [
+	"ticks",
+	"tick",
+	"angle",
+	"tickFormatter",
+	"stroke"
+];
 function _typeof$23(o) {
 	"@babel/helpers - typeof";
 	return _typeof$23 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -42149,15 +42637,6 @@ function _typeof$23(o) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
 	}, _typeof$23(o);
 }
-var _excluded$8 = [
-	"x",
-	"y",
-	"top",
-	"left",
-	"width",
-	"height",
-	"className"
-];
 function _extends$16() {
 	_extends$16 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
@@ -42189,6 +42668,91 @@ function _objectSpread$19(e) {
 	}
 	return e;
 }
+function _objectWithoutProperties$8(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$8(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$8(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+function _classCallCheck$15(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$15(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$22(descriptor.key), descriptor);
+	}
+}
+function _createClass$15(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$15(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$15(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$13(t, o, e) {
+	return o = _getPrototypeOf$13(o), _possibleConstructorReturn$13(t, _isNativeReflectConstruct$13() ? Reflect.construct(o, e || [], _getPrototypeOf$13(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$13(self$1, call) {
+	if (call && (_typeof$23(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$13(self$1);
+}
+function _assertThisInitialized$13(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$13() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$13 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$13(o) {
+	_getPrototypeOf$13 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$13(o);
+}
+function _inherits$13(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$13(subClass, superClass);
+}
+function _setPrototypeOf$13(o, p) {
+	_setPrototypeOf$13 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$13(o, p);
+}
 function _defineProperty$22(obj, key, value) {
 	key = _toPropertyKey$22(key);
 	if (key in obj) Object.defineProperty(obj, key, {
@@ -42214,235 +42778,13 @@ function _toPrimitive$22(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function _objectWithoutProperties$8(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$8(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$8(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-var getPath = function getPath$2(x$2, y$1, width, height, top, left) {
-	return "M".concat(x$2, ",").concat(top, "v").concat(height, "M").concat(left, ",").concat(y$1, "h").concat(width);
-};
-var Cross = function Cross$1(_ref) {
-	var _ref$x = _ref.x, x$2 = _ref$x === void 0 ? 0 : _ref$x, _ref$y = _ref.y, y$1 = _ref$y === void 0 ? 0 : _ref$y, _ref$top = _ref.top, top = _ref$top === void 0 ? 0 : _ref$top, _ref$left = _ref.left, left = _ref$left === void 0 ? 0 : _ref$left, _ref$width = _ref.width, width = _ref$width === void 0 ? 0 : _ref$width, _ref$height = _ref.height, height = _ref$height === void 0 ? 0 : _ref$height, className = _ref.className, rest = _objectWithoutProperties$8(_ref, _excluded$8);
-	var props = _objectSpread$19({
-		x: x$2,
-		y: y$1,
-		top,
-		left,
-		width,
-		height
-	}, rest);
-	if (!isNumber(x$2) || !isNumber(y$1) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) return null;
-	return /* @__PURE__ */ import_react.createElement("path", _extends$16({}, filterProps(props, true), {
-		className: clsx_default("recharts-cross", className),
-		d: getPath(x$2, y$1, width, height, top, left)
-	}));
-};
-var require_maxBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var baseExtremum$1 = require__baseExtremum(), baseGt = require__baseGt(), baseIteratee$6 = require__baseIteratee();
-	function maxBy$1(array, iteratee) {
-		return array && array.length ? baseExtremum$1(array, baseIteratee$6(iteratee, 2), baseGt) : void 0;
-	}
-	module.exports = maxBy$1;
-}));
-var require_minBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var baseExtremum = require__baseExtremum(), baseIteratee$5 = require__baseIteratee(), baseLt = require__baseLt();
-	function minBy$1(array, iteratee) {
-		return array && array.length ? baseExtremum(array, baseIteratee$5(iteratee, 2), baseLt) : void 0;
-	}
-	module.exports = minBy$1;
-}));
-var import_maxBy = /* @__PURE__ */ __toESM(require_maxBy());
-var import_minBy = /* @__PURE__ */ __toESM(require_minBy());
-var import_isFunction$12 = /* @__PURE__ */ __toESM(require_isFunction());
-var _excluded$7 = [
-	"cx",
-	"cy",
-	"angle",
-	"ticks",
-	"axisLine"
-], _excluded2$4 = [
-	"ticks",
-	"tick",
-	"angle",
-	"tickFormatter",
-	"stroke"
-];
-function _typeof$22(o) {
-	"@babel/helpers - typeof";
-	return _typeof$22 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$22(o);
-}
-function _extends$15() {
-	_extends$15 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$15.apply(this, arguments);
-}
-function ownKeys$18(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$18(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$18(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$21(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$18(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _objectWithoutProperties$7(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$7(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$7(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-function _classCallCheck$14(instance, Constructor) {
-	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties$14(target, props) {
-	for (var i = 0; i < props.length; i++) {
-		var descriptor = props[i];
-		descriptor.enumerable = descriptor.enumerable || false;
-		descriptor.configurable = true;
-		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$21(descriptor.key), descriptor);
-	}
-}
-function _createClass$14(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$14(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$14(Constructor, staticProps);
-	Object.defineProperty(Constructor, "prototype", { writable: false });
-	return Constructor;
-}
-function _callSuper$12(t, o, e) {
-	return o = _getPrototypeOf$12(o), _possibleConstructorReturn$12(t, _isNativeReflectConstruct$12() ? Reflect.construct(o, e || [], _getPrototypeOf$12(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn$12(self$1, call) {
-	if (call && (_typeof$22(call) === "object" || typeof call === "function")) return call;
-	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$12(self$1);
-}
-function _assertThisInitialized$12(self$1) {
-	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	return self$1;
-}
-function _isNativeReflectConstruct$12() {
-	try {
-		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-	} catch (t$1) {}
-	return (_isNativeReflectConstruct$12 = function _isNativeReflectConstruct$19() {
-		return !!t;
-	})();
-}
-function _getPrototypeOf$12(o) {
-	_getPrototypeOf$12 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
-		return o$1.__proto__ || Object.getPrototypeOf(o$1);
-	};
-	return _getPrototypeOf$12(o);
-}
-function _inherits$12(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-		value: subClass,
-		writable: true,
-		configurable: true
-	} });
-	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$12(subClass, superClass);
-}
-function _setPrototypeOf$12(o, p) {
-	_setPrototypeOf$12 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
-		o$1.__proto__ = p$1;
-		return o$1;
-	};
-	return _setPrototypeOf$12(o, p);
-}
-function _defineProperty$21(obj, key, value) {
-	key = _toPropertyKey$21(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$21(t) {
-	var i = _toPrimitive$21(t, "string");
-	return "symbol" == _typeof$22(i) ? i : i + "";
-}
-function _toPrimitive$21(t, r$1) {
-	if ("object" != _typeof$22(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$22(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 var PolarRadiusAxis = /* @__PURE__ */ function(_PureComponent) {
 	function PolarRadiusAxis$1() {
-		_classCallCheck$14(this, PolarRadiusAxis$1);
-		return _callSuper$12(this, PolarRadiusAxis$1, arguments);
+		_classCallCheck$15(this, PolarRadiusAxis$1);
+		return _callSuper$13(this, PolarRadiusAxis$1, arguments);
 	}
-	_inherits$12(PolarRadiusAxis$1, _PureComponent);
-	return _createClass$14(PolarRadiusAxis$1, [
+	_inherits$13(PolarRadiusAxis$1, _PureComponent);
+	return _createClass$15(PolarRadiusAxis$1, [
 		{
 			key: "getTickValueCoord",
 			value: function getTickValueCoord(_ref) {
@@ -42492,39 +42834,39 @@ var PolarRadiusAxis = /* @__PURE__ */ function(_PureComponent) {
 		{
 			key: "renderAxisLine",
 			value: function renderAxisLine() {
-				var _this$props3 = this.props, cx$1 = _this$props3.cx, cy = _this$props3.cy, angle = _this$props3.angle, ticks$1 = _this$props3.ticks, axisLine = _this$props3.axisLine, others = _objectWithoutProperties$7(_this$props3, _excluded$7);
+				var _this$props3 = this.props, cx$1 = _this$props3.cx, cy = _this$props3.cy, angle = _this$props3.angle, ticks$1 = _this$props3.ticks, axisLine = _this$props3.axisLine, others = _objectWithoutProperties$8(_this$props3, _excluded$8);
 				var extent = ticks$1.reduce(function(result, entry) {
 					return [Math.min(result[0], entry.coordinate), Math.max(result[1], entry.coordinate)];
 				}, [Infinity, -Infinity]);
 				var point0 = polarToCartesian(cx$1, cy, extent[0], angle);
 				var point1 = polarToCartesian(cx$1, cy, extent[1], angle);
-				var props = _objectSpread$18(_objectSpread$18(_objectSpread$18({}, filterProps(others, false)), {}, { fill: "none" }, filterProps(axisLine, false)), {}, {
+				var props = _objectSpread$19(_objectSpread$19(_objectSpread$19({}, filterProps(others, false)), {}, { fill: "none" }, filterProps(axisLine, false)), {}, {
 					x1: point0.x,
 					y1: point0.y,
 					x2: point1.x,
 					y2: point1.y
 				});
-				return /* @__PURE__ */ import_react.createElement("line", _extends$15({ className: "recharts-polar-radius-axis-line" }, props));
+				return /* @__PURE__ */ import_react.createElement("line", _extends$16({ className: "recharts-polar-radius-axis-line" }, props));
 			}
 		},
 		{
 			key: "renderTicks",
 			value: function renderTicks() {
 				var _this = this;
-				var _this$props4 = this.props, ticks$1 = _this$props4.ticks, tick = _this$props4.tick, angle = _this$props4.angle, tickFormatter = _this$props4.tickFormatter, stroke = _this$props4.stroke, others = _objectWithoutProperties$7(_this$props4, _excluded2$4);
+				var _this$props4 = this.props, ticks$1 = _this$props4.ticks, tick = _this$props4.tick, angle = _this$props4.angle, tickFormatter = _this$props4.tickFormatter, stroke = _this$props4.stroke, others = _objectWithoutProperties$8(_this$props4, _excluded2$5);
 				var textAnchor = this.getTickTextAnchor();
 				var axisProps = filterProps(others, false);
 				var customTickProps = filterProps(tick, false);
 				var items = ticks$1.map(function(entry, i) {
 					var coord = _this.getTickValueCoord(entry);
-					var tickProps = _objectSpread$18(_objectSpread$18(_objectSpread$18(_objectSpread$18({
+					var tickProps = _objectSpread$19(_objectSpread$19(_objectSpread$19(_objectSpread$19({
 						textAnchor,
 						transform: "rotate(".concat(90 - angle, ", ").concat(coord.x, ", ").concat(coord.y, ")")
 					}, axisProps), {}, {
 						stroke: "none",
 						fill: stroke
 					}, customTickProps), {}, { index: i }, coord), {}, { payload: entry });
-					return /* @__PURE__ */ import_react.createElement(Layer, _extends$15({
+					return /* @__PURE__ */ import_react.createElement(Layer, _extends$16({
 						className: clsx_default("recharts-polar-radius-axis-tick", getTickClassName(tick)),
 						key: "tick-".concat(entry.coordinate)
 					}, adaptEventsOfChild(_this.props, entry, i)), PolarRadiusAxis$1.renderTickItem(tick, tickProps, tickFormatter ? tickFormatter(entry.value, i) : entry.value));
@@ -42537,7 +42879,7 @@ var PolarRadiusAxis = /* @__PURE__ */ function(_PureComponent) {
 			value: function render() {
 				var _this$props5 = this.props, ticks$1 = _this$props5.ticks, axisLine = _this$props5.axisLine, tick = _this$props5.tick;
 				if (!ticks$1 || !ticks$1.length) return null;
-				return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-polar-radius-axis", this.props.className) }, axisLine && this.renderAxisLine(), tick && this.renderTicks(), Label.renderCallByParent(this.props, this.getViewBox()));
+				return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-polar-radius-axis", this.props.className) }, axisLine && this.renderAxisLine(), tick && this.renderTicks(), Label$2.renderCallByParent(this.props, this.getViewBox()));
 			}
 		}
 	], [{
@@ -42545,15 +42887,15 @@ var PolarRadiusAxis = /* @__PURE__ */ function(_PureComponent) {
 		value: function renderTickItem(option, props, value) {
 			var tickItem;
 			if (/* @__PURE__ */ import_react.isValidElement(option)) tickItem = /* @__PURE__ */ import_react.cloneElement(option, props);
-			else if ((0, import_isFunction$12.default)(option)) tickItem = option(props);
-			else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$15({}, props, { className: "recharts-polar-radius-axis-tick-value" }), value);
+			else if ((0, import_isFunction$13.default)(option)) tickItem = option(props);
+			else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$16({}, props, { className: "recharts-polar-radius-axis-tick-value" }), value);
 			return tickItem;
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$21(PolarRadiusAxis, "displayName", "PolarRadiusAxis");
-_defineProperty$21(PolarRadiusAxis, "axisType", "radiusAxis");
-_defineProperty$21(PolarRadiusAxis, "defaultProps", {
+_defineProperty$22(PolarRadiusAxis, "displayName", "PolarRadiusAxis");
+_defineProperty$22(PolarRadiusAxis, "axisType", "radiusAxis");
+_defineProperty$22(PolarRadiusAxis, "defaultProps", {
 	type: "number",
 	radiusAxisId: 0,
 	cx: 0,
@@ -42568,26 +42910,26 @@ _defineProperty$21(PolarRadiusAxis, "defaultProps", {
 	scale: "auto",
 	allowDuplicatedCategory: true
 });
-var import_isFunction$11 = /* @__PURE__ */ __toESM(require_isFunction());
-function _typeof$21(o) {
+var import_isFunction$12 = /* @__PURE__ */ __toESM(require_isFunction());
+function _typeof$22(o) {
 	"@babel/helpers - typeof";
-	return _typeof$21 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$22 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$21(o);
+	}, _typeof$22(o);
 }
-function _extends$14() {
-	_extends$14 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$15() {
+	_extends$15 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$14.apply(this, arguments);
+	return _extends$15.apply(this, arguments);
 }
-function ownKeys$17(e, r$1) {
+function ownKeys$18(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -42597,62 +42939,62 @@ function ownKeys$17(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$17(e) {
+function _objectSpread$18(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$17(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$20(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$17(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$18(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$21(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$18(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _classCallCheck$13(instance, Constructor) {
+function _classCallCheck$14(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$13(target, props) {
+function _defineProperties$14(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$20(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$21(descriptor.key), descriptor);
 	}
 }
-function _createClass$13(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$13(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$13(Constructor, staticProps);
+function _createClass$14(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$14(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$14(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$11(t, o, e) {
-	return o = _getPrototypeOf$11(o), _possibleConstructorReturn$11(t, _isNativeReflectConstruct$11() ? Reflect.construct(o, e || [], _getPrototypeOf$11(t).constructor) : o.apply(t, e));
+function _callSuper$12(t, o, e) {
+	return o = _getPrototypeOf$12(o), _possibleConstructorReturn$12(t, _isNativeReflectConstruct$12() ? Reflect.construct(o, e || [], _getPrototypeOf$12(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$11(self$1, call) {
-	if (call && (_typeof$21(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$12(self$1, call) {
+	if (call && (_typeof$22(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$11(self$1);
+	return _assertThisInitialized$12(self$1);
 }
-function _assertThisInitialized$11(self$1) {
+function _assertThisInitialized$12(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$11() {
+function _isNativeReflectConstruct$12() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$11 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$12 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$11(o) {
-	_getPrototypeOf$11 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$12(o) {
+	_getPrototypeOf$12 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$11(o);
+	return _getPrototypeOf$12(o);
 }
-function _inherits$11(subClass, superClass) {
+function _inherits$12(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -42660,17 +43002,17 @@ function _inherits$11(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$11(subClass, superClass);
+	if (superClass) _setPrototypeOf$12(subClass, superClass);
 }
-function _setPrototypeOf$11(o, p) {
-	_setPrototypeOf$11 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$12(o, p) {
+	_setPrototypeOf$12 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$11(o, p);
+	return _setPrototypeOf$12(o, p);
 }
-function _defineProperty$20(obj, key, value) {
-	key = _toPropertyKey$20(key);
+function _defineProperty$21(obj, key, value) {
+	key = _toPropertyKey$21(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -42680,16 +43022,16 @@ function _defineProperty$20(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$20(t) {
-	var i = _toPrimitive$20(t, "string");
-	return "symbol" == _typeof$21(i) ? i : i + "";
+function _toPropertyKey$21(t) {
+	var i = _toPrimitive$21(t, "string");
+	return "symbol" == _typeof$22(i) ? i : i + "";
 }
-function _toPrimitive$20(t, r$1) {
-	if ("object" != _typeof$21(t) || !t) return t;
+function _toPrimitive$21(t, r$1) {
+	if ("object" != _typeof$22(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$21(i)) return i;
+		if ("object" != _typeof$22(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -42698,11 +43040,11 @@ var RADIAN = Math.PI / 180;
 var eps = 1e-5;
 var PolarAngleAxis = /* @__PURE__ */ function(_PureComponent) {
 	function PolarAngleAxis$1() {
-		_classCallCheck$13(this, PolarAngleAxis$1);
-		return _callSuper$11(this, PolarAngleAxis$1, arguments);
+		_classCallCheck$14(this, PolarAngleAxis$1);
+		return _callSuper$12(this, PolarAngleAxis$1, arguments);
 	}
-	_inherits$11(PolarAngleAxis$1, _PureComponent);
-	return _createClass$13(PolarAngleAxis$1, [
+	_inherits$12(PolarAngleAxis$1, _PureComponent);
+	return _createClass$14(PolarAngleAxis$1, [
 		{
 			key: "getTickLineCoord",
 			value: function getTickLineCoord(data) {
@@ -42734,8 +43076,8 @@ var PolarAngleAxis = /* @__PURE__ */ function(_PureComponent) {
 			key: "renderAxisLine",
 			value: function renderAxisLine() {
 				var _this$props2 = this.props, cx$1 = _this$props2.cx, cy = _this$props2.cy, radius = _this$props2.radius, axisLine = _this$props2.axisLine, axisLineType = _this$props2.axisLineType;
-				var props = _objectSpread$17(_objectSpread$17({}, filterProps(this.props, false)), {}, { fill: "none" }, filterProps(axisLine, false));
-				if (axisLineType === "circle") return /* @__PURE__ */ import_react.createElement(Dot, _extends$14({ className: "recharts-polar-angle-axis-line" }, props, {
+				var props = _objectSpread$18(_objectSpread$18({}, filterProps(this.props, false)), {}, { fill: "none" }, filterProps(axisLine, false));
+				if (axisLineType === "circle") return /* @__PURE__ */ import_react.createElement(Dot, _extends$15({ className: "recharts-polar-angle-axis-line" }, props, {
 					cx: cx$1,
 					cy,
 					r: radius
@@ -42743,7 +43085,7 @@ var PolarAngleAxis = /* @__PURE__ */ function(_PureComponent) {
 				var points = this.props.ticks.map(function(entry) {
 					return polarToCartesian(cx$1, cy, radius, entry.coordinate);
 				});
-				return /* @__PURE__ */ import_react.createElement(Polygon, _extends$14({ className: "recharts-polar-angle-axis-line" }, props, { points }));
+				return /* @__PURE__ */ import_react.createElement(Polygon, _extends$15({ className: "recharts-polar-angle-axis-line" }, props, { points }));
 			}
 		},
 		{
@@ -42753,10 +43095,10 @@ var PolarAngleAxis = /* @__PURE__ */ function(_PureComponent) {
 				var _this$props3 = this.props, ticks$1 = _this$props3.ticks, tick = _this$props3.tick, tickLine = _this$props3.tickLine, tickFormatter = _this$props3.tickFormatter, stroke = _this$props3.stroke;
 				var axisProps = filterProps(this.props, false);
 				var customTickProps = filterProps(tick, false);
-				var tickLineProps = _objectSpread$17(_objectSpread$17({}, axisProps), {}, { fill: "none" }, filterProps(tickLine, false));
+				var tickLineProps = _objectSpread$18(_objectSpread$18({}, axisProps), {}, { fill: "none" }, filterProps(tickLine, false));
 				var items = ticks$1.map(function(entry, i) {
 					var lineCoord = _this.getTickLineCoord(entry);
-					var tickProps = _objectSpread$17(_objectSpread$17(_objectSpread$17({ textAnchor: _this.getTickTextAnchor(entry) }, axisProps), {}, {
+					var tickProps = _objectSpread$18(_objectSpread$18(_objectSpread$18({ textAnchor: _this.getTickTextAnchor(entry) }, axisProps), {}, {
 						stroke: "none",
 						fill: stroke
 					}, customTickProps), {}, {
@@ -42765,10 +43107,10 @@ var PolarAngleAxis = /* @__PURE__ */ function(_PureComponent) {
 						x: lineCoord.x2,
 						y: lineCoord.y2
 					});
-					return /* @__PURE__ */ import_react.createElement(Layer, _extends$14({
+					return /* @__PURE__ */ import_react.createElement(Layer, _extends$15({
 						className: clsx_default("recharts-polar-angle-axis-tick", getTickClassName(tick)),
 						key: "tick-".concat(entry.coordinate)
-					}, adaptEventsOfChild(_this.props, entry, i)), tickLine && /* @__PURE__ */ import_react.createElement("line", _extends$14({ className: "recharts-polar-angle-axis-tick-line" }, tickLineProps, lineCoord)), tick && PolarAngleAxis$1.renderTickItem(tick, tickProps, tickFormatter ? tickFormatter(entry.value, i) : entry.value));
+					}, adaptEventsOfChild(_this.props, entry, i)), tickLine && /* @__PURE__ */ import_react.createElement("line", _extends$15({ className: "recharts-polar-angle-axis-tick-line" }, tickLineProps, lineCoord)), tick && PolarAngleAxis$1.renderTickItem(tick, tickProps, tickFormatter ? tickFormatter(entry.value, i) : entry.value));
 				});
 				return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-polar-angle-axis-ticks" }, items);
 			}
@@ -42786,15 +43128,15 @@ var PolarAngleAxis = /* @__PURE__ */ function(_PureComponent) {
 		value: function renderTickItem(option, props, value) {
 			var tickItem;
 			if (/* @__PURE__ */ import_react.isValidElement(option)) tickItem = /* @__PURE__ */ import_react.cloneElement(option, props);
-			else if ((0, import_isFunction$11.default)(option)) tickItem = option(props);
-			else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$14({}, props, { className: "recharts-polar-angle-axis-tick-value" }), value);
+			else if ((0, import_isFunction$12.default)(option)) tickItem = option(props);
+			else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$15({}, props, { className: "recharts-polar-angle-axis-tick-value" }), value);
 			return tickItem;
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$20(PolarAngleAxis, "displayName", "PolarAngleAxis");
-_defineProperty$20(PolarAngleAxis, "axisType", "angleAxis");
-_defineProperty$20(PolarAngleAxis, "defaultProps", {
+_defineProperty$21(PolarAngleAxis, "displayName", "PolarAngleAxis");
+_defineProperty$21(PolarAngleAxis, "axisType", "angleAxis");
+_defineProperty$21(PolarAngleAxis, "defaultProps", {
 	type: "category",
 	angleAxisId: 0,
 	scale: "auto",
@@ -42835,23 +43177,23 @@ var require_isBoolean = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = isBoolean$1;
 }));
-function _typeof$20(o) {
+function _typeof$21(o) {
 	"@babel/helpers - typeof";
-	return _typeof$20 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$21 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$20(o);
+	}, _typeof$21(o);
 }
-function _extends$13() {
-	_extends$13 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$14() {
+	_extends$14 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$13.apply(this, arguments);
+	return _extends$14.apply(this, arguments);
 }
 function _slicedToArray$2(arr, i) {
 	return _arrayWithHoles$2(arr) || _iterableToArrayLimit$2(arr, i) || _unsupportedIterableToArray$4(arr, i) || _nonIterableRest$2();
@@ -42895,6 +43237,169 @@ function _iterableToArrayLimit$2(r$1, l) {
 }
 function _arrayWithHoles$2(arr) {
 	if (Array.isArray(arr)) return arr;
+}
+function ownKeys$17(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$17(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$17(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$20(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$17(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$20(obj, key, value) {
+	key = _toPropertyKey$20(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$20(t) {
+	var i = _toPrimitive$20(t, "string");
+	return "symbol" == _typeof$21(i) ? i : i + "";
+}
+function _toPrimitive$20(t, r$1) {
+	if ("object" != _typeof$21(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$21(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+var getTrapezoidPath = function getTrapezoidPath$1(x$2, y$1, upperWidth, lowerWidth, height) {
+	var widthGap = upperWidth - lowerWidth;
+	var path$1 = "M ".concat(x$2, ",").concat(y$1);
+	path$1 += "L ".concat(x$2 + upperWidth, ",").concat(y$1);
+	path$1 += "L ".concat(x$2 + upperWidth - widthGap / 2, ",").concat(y$1 + height);
+	path$1 += "L ".concat(x$2 + upperWidth - widthGap / 2 - lowerWidth, ",").concat(y$1 + height);
+	path$1 += "L ".concat(x$2, ",").concat(y$1, " Z");
+	return path$1;
+};
+var defaultProps$1 = {
+	x: 0,
+	y: 0,
+	upperWidth: 0,
+	lowerWidth: 0,
+	height: 0,
+	isUpdateAnimationActive: false,
+	animationBegin: 0,
+	animationDuration: 1500,
+	animationEasing: "ease"
+};
+var Trapezoid = function Trapezoid$1(props) {
+	var trapezoidProps = _objectSpread$17(_objectSpread$17({}, defaultProps$1), props);
+	var pathRef = (0, import_react.useRef)();
+	var _useState2 = _slicedToArray$2((0, import_react.useState)(-1), 2), totalLength = _useState2[0], setTotalLength = _useState2[1];
+	(0, import_react.useEffect)(function() {
+		if (pathRef.current && pathRef.current.getTotalLength) try {
+			var pathTotalLength = pathRef.current.getTotalLength();
+			if (pathTotalLength) setTotalLength(pathTotalLength);
+		} catch (err) {}
+	}, []);
+	var x$2 = trapezoidProps.x, y$1 = trapezoidProps.y, upperWidth = trapezoidProps.upperWidth, lowerWidth = trapezoidProps.lowerWidth, height = trapezoidProps.height, className = trapezoidProps.className;
+	var animationEasing = trapezoidProps.animationEasing, animationDuration = trapezoidProps.animationDuration, animationBegin = trapezoidProps.animationBegin, isUpdateAnimationActive = trapezoidProps.isUpdateAnimationActive;
+	if (x$2 !== +x$2 || y$1 !== +y$1 || upperWidth !== +upperWidth || lowerWidth !== +lowerWidth || height !== +height || upperWidth === 0 && lowerWidth === 0 || height === 0) return null;
+	var layerClass = clsx_default("recharts-trapezoid", className);
+	if (!isUpdateAnimationActive) return /* @__PURE__ */ import_react.createElement("g", null, /* @__PURE__ */ import_react.createElement("path", _extends$14({}, filterProps(trapezoidProps, true), {
+		className: layerClass,
+		d: getTrapezoidPath(x$2, y$1, upperWidth, lowerWidth, height)
+	})));
+	return /* @__PURE__ */ import_react.createElement(es6_default, {
+		canBegin: totalLength > 0,
+		from: {
+			upperWidth: 0,
+			lowerWidth: 0,
+			height,
+			x: x$2,
+			y: y$1
+		},
+		to: {
+			upperWidth,
+			lowerWidth,
+			height,
+			x: x$2,
+			y: y$1
+		},
+		duration: animationDuration,
+		animationEasing,
+		isActive: isUpdateAnimationActive
+	}, function(_ref) {
+		var currUpperWidth = _ref.upperWidth, currLowerWidth = _ref.lowerWidth, currHeight = _ref.height, currX = _ref.x, currY = _ref.y;
+		return /* @__PURE__ */ import_react.createElement(es6_default, {
+			canBegin: totalLength > 0,
+			from: "0px ".concat(totalLength === -1 ? 1 : totalLength, "px"),
+			to: "".concat(totalLength, "px 0px"),
+			attributeName: "strokeDasharray",
+			begin: animationBegin,
+			duration: animationDuration,
+			easing: animationEasing
+		}, /* @__PURE__ */ import_react.createElement("path", _extends$14({}, filterProps(trapezoidProps, true), {
+			className: layerClass,
+			d: getTrapezoidPath(currX, currY, currUpperWidth, currLowerWidth, currHeight),
+			ref: pathRef
+		})));
+	});
+};
+var import_isFunction$11 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isPlainObject = /* @__PURE__ */ __toESM(require_isPlainObject());
+var import_isBoolean = /* @__PURE__ */ __toESM(require_isBoolean());
+var import_isEqual$4 = /* @__PURE__ */ __toESM(require_isEqual());
+var _excluded$7 = [
+	"option",
+	"shapeType",
+	"propTransformer",
+	"activeClassName",
+	"isActive"
+];
+function _typeof$20(o) {
+	"@babel/helpers - typeof";
+	return _typeof$20 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$20(o);
+}
+function _objectWithoutProperties$7(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$7(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$7(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
 }
 function ownKeys$16(e, r$1) {
 	var t = Object.keys(e);
@@ -42942,171 +43447,8 @@ function _toPrimitive$19(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-var getTrapezoidPath = function getTrapezoidPath$1(x$2, y$1, upperWidth, lowerWidth, height) {
-	var widthGap = upperWidth - lowerWidth;
-	var path$1 = "M ".concat(x$2, ",").concat(y$1);
-	path$1 += "L ".concat(x$2 + upperWidth, ",").concat(y$1);
-	path$1 += "L ".concat(x$2 + upperWidth - widthGap / 2, ",").concat(y$1 + height);
-	path$1 += "L ".concat(x$2 + upperWidth - widthGap / 2 - lowerWidth, ",").concat(y$1 + height);
-	path$1 += "L ".concat(x$2, ",").concat(y$1, " Z");
-	return path$1;
-};
-var defaultProps$1 = {
-	x: 0,
-	y: 0,
-	upperWidth: 0,
-	lowerWidth: 0,
-	height: 0,
-	isUpdateAnimationActive: false,
-	animationBegin: 0,
-	animationDuration: 1500,
-	animationEasing: "ease"
-};
-var Trapezoid = function Trapezoid$1(props) {
-	var trapezoidProps = _objectSpread$16(_objectSpread$16({}, defaultProps$1), props);
-	var pathRef = (0, import_react.useRef)();
-	var _useState2 = _slicedToArray$2((0, import_react.useState)(-1), 2), totalLength = _useState2[0], setTotalLength = _useState2[1];
-	(0, import_react.useEffect)(function() {
-		if (pathRef.current && pathRef.current.getTotalLength) try {
-			var pathTotalLength = pathRef.current.getTotalLength();
-			if (pathTotalLength) setTotalLength(pathTotalLength);
-		} catch (err) {}
-	}, []);
-	var x$2 = trapezoidProps.x, y$1 = trapezoidProps.y, upperWidth = trapezoidProps.upperWidth, lowerWidth = trapezoidProps.lowerWidth, height = trapezoidProps.height, className = trapezoidProps.className;
-	var animationEasing = trapezoidProps.animationEasing, animationDuration = trapezoidProps.animationDuration, animationBegin = trapezoidProps.animationBegin, isUpdateAnimationActive = trapezoidProps.isUpdateAnimationActive;
-	if (x$2 !== +x$2 || y$1 !== +y$1 || upperWidth !== +upperWidth || lowerWidth !== +lowerWidth || height !== +height || upperWidth === 0 && lowerWidth === 0 || height === 0) return null;
-	var layerClass = clsx_default("recharts-trapezoid", className);
-	if (!isUpdateAnimationActive) return /* @__PURE__ */ import_react.createElement("g", null, /* @__PURE__ */ import_react.createElement("path", _extends$13({}, filterProps(trapezoidProps, true), {
-		className: layerClass,
-		d: getTrapezoidPath(x$2, y$1, upperWidth, lowerWidth, height)
-	})));
-	return /* @__PURE__ */ import_react.createElement(es6_default, {
-		canBegin: totalLength > 0,
-		from: {
-			upperWidth: 0,
-			lowerWidth: 0,
-			height,
-			x: x$2,
-			y: y$1
-		},
-		to: {
-			upperWidth,
-			lowerWidth,
-			height,
-			x: x$2,
-			y: y$1
-		},
-		duration: animationDuration,
-		animationEasing,
-		isActive: isUpdateAnimationActive
-	}, function(_ref) {
-		var currUpperWidth = _ref.upperWidth, currLowerWidth = _ref.lowerWidth, currHeight = _ref.height, currX = _ref.x, currY = _ref.y;
-		return /* @__PURE__ */ import_react.createElement(es6_default, {
-			canBegin: totalLength > 0,
-			from: "0px ".concat(totalLength === -1 ? 1 : totalLength, "px"),
-			to: "".concat(totalLength, "px 0px"),
-			attributeName: "strokeDasharray",
-			begin: animationBegin,
-			duration: animationDuration,
-			easing: animationEasing
-		}, /* @__PURE__ */ import_react.createElement("path", _extends$13({}, filterProps(trapezoidProps, true), {
-			className: layerClass,
-			d: getTrapezoidPath(currX, currY, currUpperWidth, currLowerWidth, currHeight),
-			ref: pathRef
-		})));
-	});
-};
-var import_isFunction$10 = /* @__PURE__ */ __toESM(require_isFunction());
-var import_isPlainObject = /* @__PURE__ */ __toESM(require_isPlainObject());
-var import_isBoolean = /* @__PURE__ */ __toESM(require_isBoolean());
-var import_isEqual$3 = /* @__PURE__ */ __toESM(require_isEqual());
-var _excluded$6 = [
-	"option",
-	"shapeType",
-	"propTransformer",
-	"activeClassName",
-	"isActive"
-];
-function _typeof$19(o) {
-	"@babel/helpers - typeof";
-	return _typeof$19 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$19(o);
-}
-function _objectWithoutProperties$6(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$6(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$6(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-function ownKeys$15(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$15(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$15(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$18(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$15(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _defineProperty$18(obj, key, value) {
-	key = _toPropertyKey$18(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$18(t) {
-	var i = _toPrimitive$18(t, "string");
-	return "symbol" == _typeof$19(i) ? i : i + "";
-}
-function _toPrimitive$18(t, r$1) {
-	if ("object" != _typeof$19(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$19(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 function defaultPropTransformer(option, props) {
-	return _objectSpread$15(_objectSpread$15({}, props), option);
+	return _objectSpread$16(_objectSpread$16({}, props), option);
 }
 function isSymbolsProps(shapeType, _elementProps) {
 	return shapeType === "symbols";
@@ -43128,10 +43470,10 @@ function getPropsFromShapeOption(option) {
 	return option;
 }
 function Shape(_ref2) {
-	var option = _ref2.option, shapeType = _ref2.shapeType, _ref2$propTransformer = _ref2.propTransformer, propTransformer = _ref2$propTransformer === void 0 ? defaultPropTransformer : _ref2$propTransformer, _ref2$activeClassName = _ref2.activeClassName, activeClassName = _ref2$activeClassName === void 0 ? "recharts-active-shape" : _ref2$activeClassName, isActive = _ref2.isActive, props = _objectWithoutProperties$6(_ref2, _excluded$6);
+	var option = _ref2.option, shapeType = _ref2.shapeType, _ref2$propTransformer = _ref2.propTransformer, propTransformer = _ref2$propTransformer === void 0 ? defaultPropTransformer : _ref2$propTransformer, _ref2$activeClassName = _ref2.activeClassName, activeClassName = _ref2$activeClassName === void 0 ? "recharts-active-shape" : _ref2$activeClassName, isActive = _ref2.isActive, props = _objectWithoutProperties$7(_ref2, _excluded$7);
 	var shape;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(option)) shape = /* @__PURE__ */ (0, import_react.cloneElement)(option, _objectSpread$15(_objectSpread$15({}, props), getPropsFromShapeOption(option)));
-	else if ((0, import_isFunction$10.default)(option)) shape = option(props);
+	if (/* @__PURE__ */ (0, import_react.isValidElement)(option)) shape = /* @__PURE__ */ (0, import_react.cloneElement)(option, _objectSpread$16(_objectSpread$16({}, props), getPropsFromShapeOption(option)));
+	else if ((0, import_isFunction$11.default)(option)) shape = option(props);
 	else if ((0, import_isPlainObject.default)(option) && !(0, import_isBoolean.default)(option)) {
 		var nextProps = propTransformer(option, props);
 		shape = /* @__PURE__ */ import_react.createElement(ShapeSelector, {
@@ -43205,7 +43547,7 @@ function getActiveShapeIndexForTooltip(_ref3) {
 	var shapeKey = getShapeDataKey(graphicalItem, activeTooltipItem);
 	var tooltipPayload = getActiveShapeTooltipPayload(graphicalItem, activeTooltipItem);
 	var activeItemMatches = itemData.filter(function(datum, dataIndex) {
-		var valuesMatch = (0, import_isEqual$3.default)(tooltipPayload, datum);
+		var valuesMatch = (0, import_isEqual$4.default)(tooltipPayload, datum);
 		var mouseCoordinateMatches = graphicalItem.props[shapeKey].filter(function(shapeData) {
 			return getComparisonFn(graphicalItem, activeTooltipItem)(shapeData, activeTooltipItem);
 		});
@@ -43215,29 +43557,29 @@ function getActiveShapeIndexForTooltip(_ref3) {
 	return itemData.indexOf(activeItemMatches[activeItemMatches.length - 1]);
 }
 var import_get$2 = /* @__PURE__ */ __toESM(require_get());
-var import_isEqual$2 = /* @__PURE__ */ __toESM(require_isEqual());
-var import_isNil$3 = /* @__PURE__ */ __toESM(require_isNil());
-var import_isFunction$9 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isEqual$3 = /* @__PURE__ */ __toESM(require_isEqual());
+var import_isNil$4 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isFunction$10 = /* @__PURE__ */ __toESM(require_isFunction());
 var _Pie;
-function _typeof$18(o) {
+function _typeof$19(o) {
 	"@babel/helpers - typeof";
-	return _typeof$18 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$19 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$18(o);
+	}, _typeof$19(o);
 }
-function _extends$12() {
-	_extends$12 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$13() {
+	_extends$13 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$12.apply(this, arguments);
+	return _extends$13.apply(this, arguments);
 }
-function ownKeys$14(e, r$1) {
+function ownKeys$15(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -43247,62 +43589,62 @@ function ownKeys$14(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$14(e) {
+function _objectSpread$15(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$14(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$17(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$14(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$15(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$18(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$15(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _classCallCheck$12(instance, Constructor) {
+function _classCallCheck$13(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$12(target, props) {
+function _defineProperties$13(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$17(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$18(descriptor.key), descriptor);
 	}
 }
-function _createClass$12(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$12(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$12(Constructor, staticProps);
+function _createClass$13(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$13(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$13(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$10(t, o, e) {
-	return o = _getPrototypeOf$10(o), _possibleConstructorReturn$10(t, _isNativeReflectConstruct$10() ? Reflect.construct(o, e || [], _getPrototypeOf$10(t).constructor) : o.apply(t, e));
+function _callSuper$11(t, o, e) {
+	return o = _getPrototypeOf$11(o), _possibleConstructorReturn$11(t, _isNativeReflectConstruct$11() ? Reflect.construct(o, e || [], _getPrototypeOf$11(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$10(self$1, call) {
-	if (call && (_typeof$18(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$11(self$1, call) {
+	if (call && (_typeof$19(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$10(self$1);
+	return _assertThisInitialized$11(self$1);
 }
-function _assertThisInitialized$10(self$1) {
+function _assertThisInitialized$11(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$10() {
+function _isNativeReflectConstruct$11() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$10 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$11 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$10(o) {
-	_getPrototypeOf$10 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$11(o) {
+	_getPrototypeOf$11 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$10(o);
+	return _getPrototypeOf$11(o);
 }
-function _inherits$10(subClass, superClass) {
+function _inherits$11(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -43310,17 +43652,17 @@ function _inherits$10(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$10(subClass, superClass);
+	if (superClass) _setPrototypeOf$11(subClass, superClass);
 }
-function _setPrototypeOf$10(o, p) {
-	_setPrototypeOf$10 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$11(o, p) {
+	_setPrototypeOf$11 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$10(o, p);
+	return _setPrototypeOf$11(o, p);
 }
-function _defineProperty$17(obj, key, value) {
-	key = _toPropertyKey$17(key);
+function _defineProperty$18(obj, key, value) {
+	key = _toPropertyKey$18(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -43330,16 +43672,16 @@ function _defineProperty$17(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$17(t) {
-	var i = _toPrimitive$17(t, "string");
-	return "symbol" == _typeof$18(i) ? i : i + "";
+function _toPropertyKey$18(t) {
+	var i = _toPrimitive$18(t, "string");
+	return "symbol" == _typeof$19(i) ? i : i + "";
 }
-function _toPrimitive$17(t, r$1) {
-	if ("object" != _typeof$18(t) || !t) return t;
+function _toPrimitive$18(t, r$1) {
+	if ("object" != _typeof$19(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$18(i)) return i;
+		if ("object" != _typeof$19(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -43347,20 +43689,20 @@ function _toPrimitive$17(t, r$1) {
 var Pie = /* @__PURE__ */ function(_PureComponent) {
 	function Pie$1(props) {
 		var _this;
-		_classCallCheck$12(this, Pie$1);
-		_this = _callSuper$10(this, Pie$1, [props]);
-		_defineProperty$17(_this, "pieRef", null);
-		_defineProperty$17(_this, "sectorRefs", []);
-		_defineProperty$17(_this, "id", uniqueId("recharts-pie-"));
-		_defineProperty$17(_this, "handleAnimationEnd", function() {
+		_classCallCheck$13(this, Pie$1);
+		_this = _callSuper$11(this, Pie$1, [props]);
+		_defineProperty$18(_this, "pieRef", null);
+		_defineProperty$18(_this, "sectorRefs", []);
+		_defineProperty$18(_this, "id", uniqueId("recharts-pie-"));
+		_defineProperty$18(_this, "handleAnimationEnd", function() {
 			var onAnimationEnd = _this.props.onAnimationEnd;
 			_this.setState({ isAnimationFinished: true });
-			if ((0, import_isFunction$9.default)(onAnimationEnd)) onAnimationEnd();
+			if ((0, import_isFunction$10.default)(onAnimationEnd)) onAnimationEnd();
 		});
-		_defineProperty$17(_this, "handleAnimationStart", function() {
+		_defineProperty$18(_this, "handleAnimationStart", function() {
 			var onAnimationStart = _this.props.onAnimationStart;
 			_this.setState({ isAnimationFinished: false });
-			if ((0, import_isFunction$9.default)(onAnimationStart)) onAnimationStart();
+			if ((0, import_isFunction$10.default)(onAnimationStart)) onAnimationStart();
 		});
 		_this.state = {
 			isAnimationFinished: !props.isAnimationActive,
@@ -43370,8 +43712,8 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 		};
 		return _this;
 	}
-	_inherits$10(Pie$1, _PureComponent);
-	return _createClass$12(Pie$1, [
+	_inherits$11(Pie$1, _PureComponent);
+	return _createClass$13(Pie$1, [
 		{
 			key: "isActiveIndex",
 			value: function isActiveIndex(i) {
@@ -43399,11 +43741,11 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 				var labels = sectors.map(function(entry, i) {
 					var midAngle = (entry.startAngle + entry.endAngle) / 2;
 					var endPoint = polarToCartesian(entry.cx, entry.cy, entry.outerRadius + offsetRadius, midAngle);
-					var labelProps = _objectSpread$14(_objectSpread$14(_objectSpread$14(_objectSpread$14({}, pieProps), entry), {}, { stroke: "none" }, customLabelProps), {}, {
+					var labelProps = _objectSpread$15(_objectSpread$15(_objectSpread$15(_objectSpread$15({}, pieProps), entry), {}, { stroke: "none" }, customLabelProps), {}, {
 						index: i,
 						textAnchor: Pie$1.getTextAnchor(endPoint.x, entry.cx)
 					}, endPoint);
-					var lineProps = _objectSpread$14(_objectSpread$14(_objectSpread$14(_objectSpread$14({}, pieProps), entry), {}, {
+					var lineProps = _objectSpread$15(_objectSpread$15(_objectSpread$15(_objectSpread$15({}, pieProps), entry), {}, {
 						fill: "none",
 						stroke: entry.fill
 					}, customLabelLineProps), {}, {
@@ -43411,8 +43753,8 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 						points: [polarToCartesian(entry.cx, entry.cy, entry.outerRadius, midAngle), endPoint]
 					});
 					var realDataKey = dataKey;
-					if ((0, import_isNil$3.default)(dataKey) && (0, import_isNil$3.default)(valueKey)) realDataKey = "value";
-					else if ((0, import_isNil$3.default)(dataKey)) realDataKey = valueKey;
+					if ((0, import_isNil$4.default)(dataKey) && (0, import_isNil$4.default)(valueKey)) realDataKey = "value";
+					else if ((0, import_isNil$4.default)(dataKey)) realDataKey = valueKey;
 					return /* @__PURE__ */ import_react.createElement(Layer, { key: "label-".concat(entry.startAngle, "-").concat(entry.endAngle, "-").concat(entry.midAngle, "-").concat(i) }, labelLine && Pie$1.renderLabelLineItem(labelLine, lineProps, "line"), Pie$1.renderLabelItem(label, labelProps, getValueByDataKey(entry, realDataKey)));
 				});
 				return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-pie-labels" }, labels);
@@ -43428,17 +43770,17 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 					var isActive = _this2.isActiveIndex(i);
 					var inactiveShape = inactiveShapeProp && _this2.hasActiveIndex() ? inactiveShapeProp : null;
 					var sectorOptions = isActive ? activeShape : inactiveShape;
-					var sectorProps = _objectSpread$14(_objectSpread$14({}, entry), {}, {
+					var sectorProps = _objectSpread$15(_objectSpread$15({}, entry), {}, {
 						stroke: blendStroke ? entry.fill : entry.stroke,
 						tabIndex: -1
 					});
-					return /* @__PURE__ */ import_react.createElement(Layer, _extends$12({
+					return /* @__PURE__ */ import_react.createElement(Layer, _extends$13({
 						ref: function ref(_ref) {
 							if (_ref && !_this2.sectorRefs.includes(_ref)) _this2.sectorRefs.push(_ref);
 						},
 						tabIndex: -1,
 						className: "recharts-pie-sector"
-					}, adaptEventsOfChild(_this2.props, entry, i), { key: "sector-".concat(entry === null || entry === void 0 ? void 0 : entry.startAngle, "-").concat(entry === null || entry === void 0 ? void 0 : entry.endAngle, "-").concat(entry.midAngle, "-").concat(i) }), /* @__PURE__ */ import_react.createElement(Shape, _extends$12({
+					}, adaptEventsOfChild(_this2.props, entry, i), { key: "sector-".concat(entry === null || entry === void 0 ? void 0 : entry.startAngle, "-").concat(entry === null || entry === void 0 ? void 0 : entry.endAngle, "-").concat(entry.midAngle, "-").concat(i) }), /* @__PURE__ */ import_react.createElement(Shape, _extends$13({
 						option: sectorOptions,
 						isActive,
 						shapeType: "sector"
@@ -43471,7 +43813,7 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 						var paddingAngle = index$1 > 0 ? (0, import_get$2.default)(entry, "paddingAngle", 0) : 0;
 						if (prev) {
 							var angleIp = interpolateNumber(prev.endAngle - prev.startAngle, entry.endAngle - entry.startAngle);
-							var latest = _objectSpread$14(_objectSpread$14({}, entry), {}, {
+							var latest = _objectSpread$15(_objectSpread$15({}, entry), {}, {
 								startAngle: curAngle + paddingAngle,
 								endAngle: curAngle + angleIp(t) + paddingAngle
 							});
@@ -43480,7 +43822,7 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 						} else {
 							var endAngle = entry.endAngle, startAngle = entry.startAngle;
 							var deltaAngle = interpolateNumber(0, endAngle - startAngle)(t);
-							var _latest = _objectSpread$14(_objectSpread$14({}, entry), {}, {
+							var _latest = _objectSpread$15(_objectSpread$15({}, entry), {}, {
 								startAngle: curAngle + paddingAngle,
 								endAngle: curAngle + deltaAngle + paddingAngle
 							});
@@ -43522,7 +43864,7 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderSectors() {
 				var _this$props4 = this.props, sectors = _this$props4.sectors, isAnimationActive = _this$props4.isAnimationActive;
 				var prevSectors = this.state.prevSectors;
-				if (isAnimationActive && sectors && sectors.length && (!prevSectors || !(0, import_isEqual$2.default)(prevSectors, sectors))) return this.renderSectorsWithAnimation();
+				if (isAnimationActive && sectors && sectors.length && (!prevSectors || !(0, import_isEqual$3.default)(prevSectors, sectors))) return this.renderSectorsWithAnimation();
 				return this.renderSectorsStatically(sectors);
 			}
 		},
@@ -43546,7 +43888,7 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 					ref: function ref(_ref3) {
 						_this5.pieRef = _ref3;
 					}
-				}, this.renderSectors(), label && this.renderLabels(sectors), Label.renderCallByParent(this.props, null, false), (!isAnimationActive || isAnimationFinished) && LabelList.renderCallByParent(this.props, sectors, false));
+				}, this.renderSectors(), label && this.renderLabels(sectors), Label$2.renderCallByParent(this.props, null, false), (!isAnimationActive || isAnimationFinished) && LabelList.renderCallByParent(this.props, sectors, false));
 			}
 		}
 	], [
@@ -43585,9 +43927,9 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 			key: "renderLabelLineItem",
 			value: function renderLabelLineItem(option, props, key) {
 				if (/* @__PURE__ */ import_react.isValidElement(option)) return /* @__PURE__ */ import_react.cloneElement(option, props);
-				if ((0, import_isFunction$9.default)(option)) return option(props);
+				if ((0, import_isFunction$10.default)(option)) return option(props);
 				var className = clsx_default("recharts-pie-label-line", typeof option !== "boolean" ? option.className : "");
-				return /* @__PURE__ */ import_react.createElement(Curve, _extends$12({}, props, {
+				return /* @__PURE__ */ import_react.createElement(Curve, _extends$13({}, props, {
 					key,
 					type: "linear",
 					className
@@ -43599,12 +43941,12 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderLabelItem(option, props, value) {
 				if (/* @__PURE__ */ import_react.isValidElement(option)) return /* @__PURE__ */ import_react.cloneElement(option, props);
 				var label = value;
-				if ((0, import_isFunction$9.default)(option)) {
+				if ((0, import_isFunction$10.default)(option)) {
 					label = option(props);
 					if (/* @__PURE__ */ import_react.isValidElement(label)) return label;
 				}
-				var className = clsx_default("recharts-pie-label-text", typeof option !== "boolean" && !(0, import_isFunction$9.default)(option) ? option.className : "");
-				return /* @__PURE__ */ import_react.createElement(Text, _extends$12({}, props, {
+				var className = clsx_default("recharts-pie-label-text", typeof option !== "boolean" && !(0, import_isFunction$10.default)(option) ? option.className : "");
+				return /* @__PURE__ */ import_react.createElement(Text, _extends$13({}, props, {
 					alignmentBaseline: "middle",
 					className
 				}), label);
@@ -43613,8 +43955,8 @@ var Pie = /* @__PURE__ */ function(_PureComponent) {
 	]);
 }(import_react.PureComponent);
 _Pie = Pie;
-_defineProperty$17(Pie, "displayName", "Pie");
-_defineProperty$17(Pie, "defaultProps", {
+_defineProperty$18(Pie, "displayName", "Pie");
+_defineProperty$18(Pie, "defaultProps", {
 	stroke: "#fff",
 	fill: "#808080",
 	legendType: "rect",
@@ -43636,22 +43978,22 @@ _defineProperty$17(Pie, "defaultProps", {
 	blendStroke: false,
 	rootTabIndex: 0
 });
-_defineProperty$17(Pie, "parseDeltaAngle", function(startAngle, endAngle) {
+_defineProperty$18(Pie, "parseDeltaAngle", function(startAngle, endAngle) {
 	return mathSign(endAngle - startAngle) * Math.min(Math.abs(endAngle - startAngle), 360);
 });
-_defineProperty$17(Pie, "getRealPieData", function(itemProps) {
+_defineProperty$18(Pie, "getRealPieData", function(itemProps) {
 	var data = itemProps.data, children = itemProps.children;
 	var presentationProps = filterProps(itemProps, false);
 	var cells = findAllByType(children, Cell);
 	if (data && data.length) return data.map(function(entry, index$1) {
-		return _objectSpread$14(_objectSpread$14(_objectSpread$14({ payload: entry }, presentationProps), entry), cells && cells[index$1] && cells[index$1].props);
+		return _objectSpread$15(_objectSpread$15(_objectSpread$15({ payload: entry }, presentationProps), entry), cells && cells[index$1] && cells[index$1].props);
 	});
 	if (cells && cells.length) return cells.map(function(cell) {
-		return _objectSpread$14(_objectSpread$14({}, presentationProps), cell.props);
+		return _objectSpread$15(_objectSpread$15({}, presentationProps), cell.props);
 	});
 	return [];
 });
-_defineProperty$17(Pie, "parseCoordinateOfPie", function(itemProps, offset$3) {
+_defineProperty$18(Pie, "parseCoordinateOfPie", function(itemProps, offset$3) {
 	var top = offset$3.top, left = offset$3.left, width = offset$3.width, height = offset$3.height;
 	var maxPieRadius = getMaxRadius(width, height);
 	return {
@@ -43662,9 +44004,9 @@ _defineProperty$17(Pie, "parseCoordinateOfPie", function(itemProps, offset$3) {
 		maxRadius: itemProps.maxRadius || Math.sqrt(width * width + height * height) / 2
 	};
 });
-_defineProperty$17(Pie, "getComposedData", function(_ref4) {
+_defineProperty$18(Pie, "getComposedData", function(_ref4) {
 	var item = _ref4.item, offset$3 = _ref4.offset;
-	var itemProps = item.type.defaultProps !== void 0 ? _objectSpread$14(_objectSpread$14({}, item.type.defaultProps), item.props) : item.props;
+	var itemProps = item.type.defaultProps !== void 0 ? _objectSpread$15(_objectSpread$15({}, item.type.defaultProps), item.props) : item.props;
 	var pieData = _Pie.getRealPieData(itemProps);
 	if (!pieData || !pieData.length) return null;
 	var cornerRadius = itemProps.cornerRadius, startAngle = itemProps.startAngle, endAngle = itemProps.endAngle, paddingAngle = itemProps.paddingAngle, dataKey = itemProps.dataKey, nameKey = itemProps.nameKey, valueKey = itemProps.valueKey, tooltipType = itemProps.tooltipType;
@@ -43673,10 +44015,10 @@ _defineProperty$17(Pie, "getComposedData", function(_ref4) {
 	var deltaAngle = _Pie.parseDeltaAngle(startAngle, endAngle);
 	var absDeltaAngle = Math.abs(deltaAngle);
 	var realDataKey = dataKey;
-	if ((0, import_isNil$3.default)(dataKey) && (0, import_isNil$3.default)(valueKey)) {
+	if ((0, import_isNil$4.default)(dataKey) && (0, import_isNil$4.default)(valueKey)) {
 		warn(false, "Use \"dataKey\" to specify the value of pie,\n      the props \"valueKey\" will be deprecated in 1.1.0");
 		realDataKey = "value";
-	} else if ((0, import_isNil$3.default)(dataKey)) {
+	} else if ((0, import_isNil$4.default)(dataKey)) {
 		warn(false, "Use \"dataKey\" to specify the value of pie,\n      the props \"valueKey\" will be deprecated in 1.1.0");
 		realDataKey = valueKey;
 	}
@@ -43702,7 +44044,7 @@ _defineProperty$17(Pie, "getComposedData", function(_ref4) {
 			var tempEndAngle = tempStartAngle + mathSign(deltaAngle) * ((val !== 0 ? minAngle : 0) + percent * realTotalAngle);
 			var midAngle = (tempStartAngle + tempEndAngle) / 2;
 			var middleRadius = (coordinate.innerRadius + coordinate.outerRadius) / 2;
-			prev = _objectSpread$14(_objectSpread$14(_objectSpread$14({
+			prev = _objectSpread$15(_objectSpread$15(_objectSpread$15({
 				percent,
 				cornerRadius,
 				name,
@@ -43726,7 +44068,7 @@ _defineProperty$17(Pie, "getComposedData", function(_ref4) {
 			return prev;
 		});
 	}
-	return _objectSpread$14(_objectSpread$14({}, coordinate), {}, {
+	return _objectSpread$15(_objectSpread$15({}, coordinate), {}, {
 		sectors,
 		data: pieData
 	});
@@ -43773,6 +44115,79 @@ var require__createRange = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__createRange()();
 }));
+function _typeof$18(o) {
+	"@babel/helpers - typeof";
+	return _typeof$18 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$18(o);
+}
+function ownKeys$14(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$14(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$14(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$17(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$14(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$17(obj, key, value) {
+	key = _toPropertyKey$17(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$17(t) {
+	var i = _toPrimitive$17(t, "string");
+	return "symbol" == _typeof$18(i) ? i : i + "";
+}
+function _toPrimitive$17(t, r$1) {
+	if ("object" != _typeof$18(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$18(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+var PREFIX_LIST = [
+	"Webkit",
+	"Moz",
+	"O",
+	"ms"
+];
+var generatePrefixStyle = function generatePrefixStyle$1(name, value) {
+	if (!name) return null;
+	var camelName = name.replace(/(\w)/, function(v) {
+		return v.toUpperCase();
+	});
+	var result = PREFIX_LIST.reduce(function(res, entry) {
+		return _objectSpread$14(_objectSpread$14({}, res), {}, _defineProperty$17({}, entry + camelName, value));
+	}, {});
+	result[name] = value;
+	return result;
+};
+var import_isFunction$9 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_range$1 = /* @__PURE__ */ __toESM(require_range());
 function _typeof$17(o) {
 	"@babel/helpers - typeof";
 	return _typeof$17 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -43780,6 +44195,16 @@ function _typeof$17(o) {
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
 	}, _typeof$17(o);
+}
+function _extends$12() {
+	_extends$12 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$12.apply(this, arguments);
 }
 function ownKeys$13(e, r$1) {
 	var t = Object.keys(e);
@@ -43802,6 +44227,67 @@ function _objectSpread$13(e) {
 	}
 	return e;
 }
+function _classCallCheck$12(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$12(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$16(descriptor.key), descriptor);
+	}
+}
+function _createClass$12(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$12(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$12(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$10(t, o, e) {
+	return o = _getPrototypeOf$10(o), _possibleConstructorReturn$10(t, _isNativeReflectConstruct$10() ? Reflect.construct(o, e || [], _getPrototypeOf$10(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$10(self$1, call) {
+	if (call && (_typeof$17(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$10(self$1);
+}
+function _assertThisInitialized$10(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$10() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$10 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$10(o) {
+	_getPrototypeOf$10 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$10(o);
+}
+function _inherits$10(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$10(subClass, superClass);
+}
+function _setPrototypeOf$10(o, p) {
+	_setPrototypeOf$10 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$10(o, p);
+}
 function _defineProperty$16(obj, key, value) {
 	key = _toPropertyKey$16(key);
 	if (key in obj) Object.defineProperty(obj, key, {
@@ -43823,150 +44309,6 @@ function _toPrimitive$16(t, r$1) {
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
 		if ("object" != _typeof$17(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
-var PREFIX_LIST = [
-	"Webkit",
-	"Moz",
-	"O",
-	"ms"
-];
-var generatePrefixStyle = function generatePrefixStyle$1(name, value) {
-	if (!name) return null;
-	var camelName = name.replace(/(\w)/, function(v) {
-		return v.toUpperCase();
-	});
-	var result = PREFIX_LIST.reduce(function(res, entry) {
-		return _objectSpread$13(_objectSpread$13({}, res), {}, _defineProperty$16({}, entry + camelName, value));
-	}, {});
-	result[name] = value;
-	return result;
-};
-var import_isFunction$8 = /* @__PURE__ */ __toESM(require_isFunction());
-var import_range$1 = /* @__PURE__ */ __toESM(require_range());
-function _typeof$16(o) {
-	"@babel/helpers - typeof";
-	return _typeof$16 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$16(o);
-}
-function _extends$11() {
-	_extends$11 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$11.apply(this, arguments);
-}
-function ownKeys$12(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$12(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$12(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$15(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$12(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _classCallCheck$11(instance, Constructor) {
-	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties$11(target, props) {
-	for (var i = 0; i < props.length; i++) {
-		var descriptor = props[i];
-		descriptor.enumerable = descriptor.enumerable || false;
-		descriptor.configurable = true;
-		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$15(descriptor.key), descriptor);
-	}
-}
-function _createClass$11(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$11(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$11(Constructor, staticProps);
-	Object.defineProperty(Constructor, "prototype", { writable: false });
-	return Constructor;
-}
-function _callSuper$9(t, o, e) {
-	return o = _getPrototypeOf$9(o), _possibleConstructorReturn$9(t, _isNativeReflectConstruct$9() ? Reflect.construct(o, e || [], _getPrototypeOf$9(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn$9(self$1, call) {
-	if (call && (_typeof$16(call) === "object" || typeof call === "function")) return call;
-	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$9(self$1);
-}
-function _assertThisInitialized$9(self$1) {
-	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	return self$1;
-}
-function _isNativeReflectConstruct$9() {
-	try {
-		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-	} catch (t$1) {}
-	return (_isNativeReflectConstruct$9 = function _isNativeReflectConstruct$19() {
-		return !!t;
-	})();
-}
-function _getPrototypeOf$9(o) {
-	_getPrototypeOf$9 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
-		return o$1.__proto__ || Object.getPrototypeOf(o$1);
-	};
-	return _getPrototypeOf$9(o);
-}
-function _inherits$9(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-		value: subClass,
-		writable: true,
-		configurable: true
-	} });
-	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$9(subClass, superClass);
-}
-function _setPrototypeOf$9(o, p) {
-	_setPrototypeOf$9 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
-		o$1.__proto__ = p$1;
-		return o$1;
-	};
-	return _setPrototypeOf$9(o, p);
-}
-function _defineProperty$15(obj, key, value) {
-	key = _toPropertyKey$15(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$15(t) {
-	var i = _toPrimitive$15(t, "string");
-	return "symbol" == _typeof$16(i) ? i : i + "";
-}
-function _toPrimitive$15(t, r$1) {
-	if ("object" != _typeof$16(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$16(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -43996,9 +44338,9 @@ var isTouch = function isTouch$1(e) {
 var Brush = /* @__PURE__ */ function(_PureComponent) {
 	function Brush$1(props) {
 		var _this;
-		_classCallCheck$11(this, Brush$1);
-		_this = _callSuper$9(this, Brush$1, [props]);
-		_defineProperty$15(_this, "handleDrag", function(e) {
+		_classCallCheck$12(this, Brush$1);
+		_this = _callSuper$10(this, Brush$1, [props]);
+		_defineProperty$16(_this, "handleDrag", function(e) {
 			if (_this.leaveTimer) {
 				clearTimeout(_this.leaveTimer);
 				_this.leaveTimer = null;
@@ -44006,10 +44348,10 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 			if (_this.state.isTravellerMoving) _this.handleTravellerMove(e);
 			else if (_this.state.isSlideMoving) _this.handleSlideDrag(e);
 		});
-		_defineProperty$15(_this, "handleTouchMove", function(e) {
+		_defineProperty$16(_this, "handleTouchMove", function(e) {
 			if (e.changedTouches != null && e.changedTouches.length > 0) _this.handleDrag(e.changedTouches[0]);
 		});
-		_defineProperty$15(_this, "handleDragEnd", function() {
+		_defineProperty$16(_this, "handleDragEnd", function() {
 			_this.setState({
 				isTravellerMoving: false,
 				isSlideMoving: false
@@ -44022,16 +44364,16 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 			});
 			_this.detachDragEndListener();
 		});
-		_defineProperty$15(_this, "handleLeaveWrapper", function() {
+		_defineProperty$16(_this, "handleLeaveWrapper", function() {
 			if (_this.state.isTravellerMoving || _this.state.isSlideMoving) _this.leaveTimer = window.setTimeout(_this.handleDragEnd, _this.props.leaveTimeOut);
 		});
-		_defineProperty$15(_this, "handleEnterSlideOrTraveller", function() {
+		_defineProperty$16(_this, "handleEnterSlideOrTraveller", function() {
 			_this.setState({ isTextActive: true });
 		});
-		_defineProperty$15(_this, "handleLeaveSlideOrTraveller", function() {
+		_defineProperty$16(_this, "handleLeaveSlideOrTraveller", function() {
 			_this.setState({ isTextActive: false });
 		});
-		_defineProperty$15(_this, "handleSlideDragStart", function(e) {
+		_defineProperty$16(_this, "handleSlideDragStart", function(e) {
 			var event = isTouch(e) ? e.changedTouches[0] : e;
 			_this.setState({
 				isTravellerMoving: false,
@@ -44047,8 +44389,8 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 		_this.state = {};
 		return _this;
 	}
-	_inherits$9(Brush$1, _PureComponent);
-	return _createClass$11(Brush$1, [
+	_inherits$10(Brush$1, _PureComponent);
+	return _createClass$12(Brush$1, [
 		{
 			key: "componentWillUnmount",
 			value: function componentWillUnmount() {
@@ -44067,9 +44409,9 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 				var _this$props2 = this.props, gap = _this$props2.gap;
 				var lastIndex = _this$props2.data.length - 1;
 				var min$4 = Math.min(startX, endX);
-				var max$4 = Math.max(startX, endX);
+				var max$5 = Math.max(startX, endX);
 				var minIndex = Brush$1.getIndexInRange(scaleValues, min$4);
-				var maxIndex = Brush$1.getIndexInRange(scaleValues, max$4);
+				var maxIndex = Brush$1.getIndexInRange(scaleValues, max$5);
 				return {
 					startIndex: minIndex - minIndex % gap,
 					endIndex: maxIndex === lastIndex ? lastIndex : maxIndex - maxIndex % gap
@@ -44081,7 +44423,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 			value: function getTextOfTick(index$1) {
 				var _this$props3 = this.props, data = _this$props3.data, tickFormatter = _this$props3.tickFormatter, dataKey = _this$props3.dataKey;
 				var text = getValueByDataKey(data[index$1], dataKey, index$1);
-				return (0, import_isFunction$8.default)(tickFormatter) ? tickFormatter(text, index$1) : text;
+				return (0, import_isFunction$9.default)(tickFormatter) ? tickFormatter(text, index$1) : text;
 			}
 		},
 		{
@@ -44154,7 +44496,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 					if (movingTravellerId === "startX" && (endX > startX ? startIndex % gap === 0 : endIndex % gap === 0) || endX < startX && endIndex === lastIndex || movingTravellerId === "endX" && (endX > startX ? endIndex % gap === 0 : startIndex % gap === 0) || endX > startX && endIndex === lastIndex) return true;
 					return false;
 				};
-				this.setState(_defineProperty$15(_defineProperty$15({}, movingTravellerId, prevValue + delta), "brushMoveStartX", e.pageX), function() {
+				this.setState(_defineProperty$16(_defineProperty$16({}, movingTravellerId, prevValue + delta), "brushMoveStartX", e.pageX), function() {
 					if (onChange) {
 						if (isFullGap()) onChange(newIndex);
 					}
@@ -44173,7 +44515,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 				if (newIndex === -1 || newIndex >= scaleValues.length) return;
 				var newScaleValue = scaleValues[newIndex];
 				if (id === "startX" && newScaleValue >= endX || id === "endX" && newScaleValue <= startX) return;
-				this.setState(_defineProperty$15({}, id, newScaleValue), function() {
+				this.setState(_defineProperty$16({}, id, newScaleValue), function() {
 					_this2.props.onChange(_this2.getIndex({
 						startX: _this2.state.startX,
 						endX: _this2.state.endX
@@ -44218,7 +44560,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 				var _data$startIndex, _data$endIndex, _this3 = this;
 				var _this$props8 = this.props, y$1 = _this$props8.y, travellerWidth = _this$props8.travellerWidth, height = _this$props8.height, traveller = _this$props8.traveller, ariaLabel = _this$props8.ariaLabel, data = _this$props8.data, startIndex = _this$props8.startIndex, endIndex = _this$props8.endIndex;
 				var x$2 = Math.max(travellerX, this.props.x);
-				var travellerProps = _objectSpread$12(_objectSpread$12({}, filterProps(this.props, false)), {}, {
+				var travellerProps = _objectSpread$13(_objectSpread$13({}, filterProps(this.props, false)), {}, {
 					x: x$2,
 					y: y$1,
 					width: travellerWidth,
@@ -44284,12 +44626,12 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 					pointerEvents: "none",
 					fill: stroke
 				};
-				return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-brush-texts" }, /* @__PURE__ */ import_react.createElement(Text, _extends$11({
+				return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-brush-texts" }, /* @__PURE__ */ import_react.createElement(Text, _extends$12({
 					textAnchor: "end",
 					verticalAnchor: "middle",
 					x: Math.min(startX, endX) - offset$3,
 					y: y$1 + height / 2
-				}, attrs), this.getTextOfTick(startIndex)), /* @__PURE__ */ import_react.createElement(Text, _extends$11({
+				}, attrs), this.getTextOfTick(startIndex)), /* @__PURE__ */ import_react.createElement(Text, _extends$12({
 					textAnchor: "start",
 					verticalAnchor: "middle",
 					x: Math.max(startX, endX) + travellerWidth + offset$3,
@@ -44349,7 +44691,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderTraveller(option, props) {
 				var rectangle;
 				if (/* @__PURE__ */ import_react.isValidElement(option)) rectangle = /* @__PURE__ */ import_react.cloneElement(option, props);
-				else if ((0, import_isFunction$8.default)(option)) rectangle = option(props);
+				else if ((0, import_isFunction$9.default)(option)) rectangle = option(props);
 				else rectangle = Brush$1.renderDefaultTraveller(props);
 				return rectangle;
 			}
@@ -44358,7 +44700,7 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 			key: "getDerivedStateFromProps",
 			value: function getDerivedStateFromProps(nextProps, prevState) {
 				var data = nextProps.data, width = nextProps.width, x$2 = nextProps.x, travellerWidth = nextProps.travellerWidth, updateId = nextProps.updateId, startIndex = nextProps.startIndex, endIndex = nextProps.endIndex;
-				if (data !== prevState.prevData || updateId !== prevState.prevUpdateId) return _objectSpread$12({
+				if (data !== prevState.prevData || updateId !== prevState.prevUpdateId) return _objectSpread$13({
 					prevData: data,
 					prevTravellerWidth: travellerWidth,
 					prevUpdateId: updateId,
@@ -44410,8 +44752,8 @@ var Brush = /* @__PURE__ */ function(_PureComponent) {
 		}
 	]);
 }(import_react.PureComponent);
-_defineProperty$15(Brush, "displayName", "Brush");
-_defineProperty$15(Brush, "defaultProps", {
+_defineProperty$16(Brush, "displayName", "Brush");
+_defineProperty$16(Brush, "defaultProps", {
 	height: 40,
 	travellerWidth: 5,
 	gap: 1,
@@ -44507,7 +44849,133 @@ var require_every = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 	module.exports = every$2;
 }));
-var _excluded$5 = ["x", "y"];
+var _excluded$6 = ["x", "y"];
+function _typeof$16(o) {
+	"@babel/helpers - typeof";
+	return _typeof$16 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$16(o);
+}
+function _extends$11() {
+	_extends$11 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$11.apply(this, arguments);
+}
+function ownKeys$12(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$12(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$12(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$15(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$12(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$15(obj, key, value) {
+	key = _toPropertyKey$15(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$15(t) {
+	var i = _toPrimitive$15(t, "string");
+	return "symbol" == _typeof$16(i) ? i : i + "";
+}
+function _toPrimitive$15(t, r$1) {
+	if ("object" != _typeof$16(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$16(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+function _objectWithoutProperties$6(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$6(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$6(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+function typeguardBarRectangleProps(_ref, props) {
+	var xProp = _ref.x, yProp = _ref.y, option = _objectWithoutProperties$6(_ref, _excluded$6);
+	var xValue = "".concat(xProp);
+	var x$2 = parseInt(xValue, 10);
+	var yValue = "".concat(yProp);
+	var y$1 = parseInt(yValue, 10);
+	var heightValue = "".concat(props.height || option.height);
+	var height = parseInt(heightValue, 10);
+	var widthValue = "".concat(props.width || option.width);
+	var width = parseInt(widthValue, 10);
+	return _objectSpread$12(_objectSpread$12(_objectSpread$12(_objectSpread$12(_objectSpread$12({}, props), option), x$2 ? { x: x$2 } : {}), y$1 ? { y: y$1 } : {}), {}, {
+		height,
+		width,
+		name: props.name,
+		radius: props.radius
+	});
+}
+function BarRectangle(props) {
+	return /* @__PURE__ */ import_react.createElement(Shape, _extends$11({
+		shapeType: "rectangle",
+		propTransformer: typeguardBarRectangleProps,
+		activeClassName: "recharts-active-bar"
+	}, props));
+}
+var minPointSizeCallback = function minPointSizeCallback$1(minPointSize) {
+	var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+	return function(value, index$1) {
+		if (typeof minPointSize === "number") return minPointSize;
+		var isValueNumberOrNil = isNumber(value) || isNullish(value);
+		if (isValueNumberOrNil) return minPointSize(value, index$1);
+		!isValueNumberOrNil && invariant(false, "minPointSize callback function received a value with type of ".concat(_typeof$16(value), ". Currently only numbers or null/undefined are supported."));
+		return defaultValue;
+	};
+};
+var import_isEqual$2 = /* @__PURE__ */ __toESM(require_isEqual());
+var import_isNil$3 = /* @__PURE__ */ __toESM(require_isNil());
+var _excluded$5 = ["value", "background"];
+var _Bar;
 function _typeof$15(o) {
 	"@babel/helpers - typeof";
 	return _typeof$15 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -44515,6 +44983,30 @@ function _typeof$15(o) {
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
 	}, _typeof$15(o);
+}
+function _objectWithoutProperties$5(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$5(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$5(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
 }
 function _extends$10() {
 	_extends$10 = Object.assign ? Object.assign.bind() : function(target) {
@@ -44547,6 +45039,67 @@ function _objectSpread$11(e) {
 	}
 	return e;
 }
+function _classCallCheck$11(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$11(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$14(descriptor.key), descriptor);
+	}
+}
+function _createClass$11(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$11(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$11(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$9(t, o, e) {
+	return o = _getPrototypeOf$9(o), _possibleConstructorReturn$9(t, _isNativeReflectConstruct$9() ? Reflect.construct(o, e || [], _getPrototypeOf$9(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$9(self$1, call) {
+	if (call && (_typeof$15(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$9(self$1);
+}
+function _assertThisInitialized$9(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$9() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$9 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$9(o) {
+	_getPrototypeOf$9 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$9(o);
+}
+function _inherits$9(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$9(subClass, superClass);
+}
+function _setPrototypeOf$9(o, p) {
+	_setPrototypeOf$9 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$9(o, p);
+}
 function _defineProperty$14(obj, key, value) {
 	key = _toPropertyKey$14(key);
 	if (key in obj) Object.defineProperty(obj, key, {
@@ -44572,239 +45125,28 @@ function _toPrimitive$14(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function _objectWithoutProperties$5(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$5(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$5(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-function typeguardBarRectangleProps(_ref, props) {
-	var xProp = _ref.x, yProp = _ref.y, option = _objectWithoutProperties$5(_ref, _excluded$5);
-	var xValue = "".concat(xProp);
-	var x$2 = parseInt(xValue, 10);
-	var yValue = "".concat(yProp);
-	var y$1 = parseInt(yValue, 10);
-	var heightValue = "".concat(props.height || option.height);
-	var height = parseInt(heightValue, 10);
-	var widthValue = "".concat(props.width || option.width);
-	var width = parseInt(widthValue, 10);
-	return _objectSpread$11(_objectSpread$11(_objectSpread$11(_objectSpread$11(_objectSpread$11({}, props), option), x$2 ? { x: x$2 } : {}), y$1 ? { y: y$1 } : {}), {}, {
-		height,
-		width,
-		name: props.name,
-		radius: props.radius
-	});
-}
-function BarRectangle(props) {
-	return /* @__PURE__ */ import_react.createElement(Shape, _extends$10({
-		shapeType: "rectangle",
-		propTransformer: typeguardBarRectangleProps,
-		activeClassName: "recharts-active-bar"
-	}, props));
-}
-var minPointSizeCallback = function minPointSizeCallback$1(minPointSize) {
-	var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-	return function(value, index$1) {
-		if (typeof minPointSize === "number") return minPointSize;
-		var isValueNumberOrNil = isNumber(value) || isNullish(value);
-		if (isValueNumberOrNil) return minPointSize(value, index$1);
-		!isValueNumberOrNil && invariant(false, "minPointSize callback function received a value with type of ".concat(_typeof$15(value), ". Currently only numbers or null/undefined are supported."));
-		return defaultValue;
-	};
-};
-var import_isEqual$1 = /* @__PURE__ */ __toESM(require_isEqual());
-var import_isNil$2 = /* @__PURE__ */ __toESM(require_isNil());
-var _excluded$4 = ["value", "background"];
-var _Bar;
-function _typeof$14(o) {
-	"@babel/helpers - typeof";
-	return _typeof$14 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$14(o);
-}
-function _objectWithoutProperties$4(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$4(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$4(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-function _extends$9() {
-	_extends$9 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$9.apply(this, arguments);
-}
-function ownKeys$10(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$10(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$10(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$13(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$10(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _classCallCheck$10(instance, Constructor) {
-	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties$10(target, props) {
-	for (var i = 0; i < props.length; i++) {
-		var descriptor = props[i];
-		descriptor.enumerable = descriptor.enumerable || false;
-		descriptor.configurable = true;
-		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$13(descriptor.key), descriptor);
-	}
-}
-function _createClass$10(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$10(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$10(Constructor, staticProps);
-	Object.defineProperty(Constructor, "prototype", { writable: false });
-	return Constructor;
-}
-function _callSuper$8(t, o, e) {
-	return o = _getPrototypeOf$8(o), _possibleConstructorReturn$8(t, _isNativeReflectConstruct$8() ? Reflect.construct(o, e || [], _getPrototypeOf$8(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn$8(self$1, call) {
-	if (call && (_typeof$14(call) === "object" || typeof call === "function")) return call;
-	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$8(self$1);
-}
-function _assertThisInitialized$8(self$1) {
-	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	return self$1;
-}
-function _isNativeReflectConstruct$8() {
-	try {
-		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-	} catch (t$1) {}
-	return (_isNativeReflectConstruct$8 = function _isNativeReflectConstruct$19() {
-		return !!t;
-	})();
-}
-function _getPrototypeOf$8(o) {
-	_getPrototypeOf$8 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
-		return o$1.__proto__ || Object.getPrototypeOf(o$1);
-	};
-	return _getPrototypeOf$8(o);
-}
-function _inherits$8(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-		value: subClass,
-		writable: true,
-		configurable: true
-	} });
-	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$8(subClass, superClass);
-}
-function _setPrototypeOf$8(o, p) {
-	_setPrototypeOf$8 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
-		o$1.__proto__ = p$1;
-		return o$1;
-	};
-	return _setPrototypeOf$8(o, p);
-}
-function _defineProperty$13(obj, key, value) {
-	key = _toPropertyKey$13(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$13(t) {
-	var i = _toPrimitive$13(t, "string");
-	return "symbol" == _typeof$14(i) ? i : i + "";
-}
-function _toPrimitive$13(t, r$1) {
-	if ("object" != _typeof$14(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$14(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 var Bar = /* @__PURE__ */ function(_PureComponent) {
 	function Bar$1() {
 		var _this;
-		_classCallCheck$10(this, Bar$1);
+		_classCallCheck$11(this, Bar$1);
 		for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-		_this = _callSuper$8(this, Bar$1, [].concat(args));
-		_defineProperty$13(_this, "state", { isAnimationFinished: false });
-		_defineProperty$13(_this, "id", uniqueId("recharts-bar-"));
-		_defineProperty$13(_this, "handleAnimationEnd", function() {
+		_this = _callSuper$9(this, Bar$1, [].concat(args));
+		_defineProperty$14(_this, "state", { isAnimationFinished: false });
+		_defineProperty$14(_this, "id", uniqueId("recharts-bar-"));
+		_defineProperty$14(_this, "handleAnimationEnd", function() {
 			var onAnimationEnd = _this.props.onAnimationEnd;
 			_this.setState({ isAnimationFinished: true });
 			if (onAnimationEnd) onAnimationEnd();
 		});
-		_defineProperty$13(_this, "handleAnimationStart", function() {
+		_defineProperty$14(_this, "handleAnimationStart", function() {
 			var onAnimationStart = _this.props.onAnimationStart;
 			_this.setState({ isAnimationFinished: false });
 			if (onAnimationStart) onAnimationStart();
 		});
 		return _this;
 	}
-	_inherits$8(Bar$1, _PureComponent);
-	return _createClass$10(Bar$1, [
+	_inherits$9(Bar$1, _PureComponent);
+	return _createClass$11(Bar$1, [
 		{
 			key: "renderRectanglesStatically",
 			value: function renderRectanglesStatically(data) {
@@ -44814,7 +45156,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 				return data && data.map(function(entry, i) {
 					var isActive = i === activeIndex;
 					var option = isActive ? activeBar : shape;
-					var props = _objectSpread$10(_objectSpread$10(_objectSpread$10({}, baseProps), entry), {}, {
+					var props = _objectSpread$11(_objectSpread$11(_objectSpread$11({}, baseProps), entry), {}, {
 						isActive,
 						option,
 						index: i,
@@ -44822,7 +45164,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 						onAnimationStart: _this2.handleAnimationStart,
 						onAnimationEnd: _this2.handleAnimationEnd
 					});
-					return /* @__PURE__ */ import_react.createElement(Layer, _extends$9({ className: "recharts-bar-rectangle" }, adaptEventsOfChild(_this2.props, entry, i), { key: "rectangle-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value, "-").concat(i) }), /* @__PURE__ */ import_react.createElement(BarRectangle, props));
+					return /* @__PURE__ */ import_react.createElement(Layer, _extends$10({ className: "recharts-bar-rectangle" }, adaptEventsOfChild(_this2.props, entry, i), { key: "rectangle-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value, "-").concat(i) }), /* @__PURE__ */ import_react.createElement(BarRectangle, props));
 				});
 			}
 		},
@@ -44851,7 +45193,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 							var interpolatorY = interpolateNumber(prev.y, entry.y);
 							var interpolatorWidth = interpolateNumber(prev.width, entry.width);
 							var interpolatorHeight = interpolateNumber(prev.height, entry.height);
-							return _objectSpread$10(_objectSpread$10({}, entry), {}, {
+							return _objectSpread$11(_objectSpread$11({}, entry), {}, {
 								x: interpolatorX(t),
 								y: interpolatorY(t),
 								width: interpolatorWidth(t),
@@ -44860,13 +45202,13 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 						}
 						if (layout === "horizontal") {
 							var h = interpolateNumber(0, entry.height)(t);
-							return _objectSpread$10(_objectSpread$10({}, entry), {}, {
+							return _objectSpread$11(_objectSpread$11({}, entry), {}, {
 								y: entry.y + entry.height - h,
 								height: h
 							});
 						}
 						var w = interpolateNumber(0, entry.width)(t);
-						return _objectSpread$10(_objectSpread$10({}, entry), {}, { width: w });
+						return _objectSpread$11(_objectSpread$11({}, entry), {}, { width: w });
 					});
 					return /* @__PURE__ */ import_react.createElement(Layer, null, _this3.renderRectanglesStatically(stepData));
 				});
@@ -44877,7 +45219,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderRectangles() {
 				var _this$props3 = this.props, data = _this$props3.data, isAnimationActive = _this$props3.isAnimationActive;
 				var prevData = this.state.prevData;
-				if (isAnimationActive && data && data.length && (!prevData || !(0, import_isEqual$1.default)(prevData, data))) return this.renderRectanglesWithAnimation();
+				if (isAnimationActive && data && data.length && (!prevData || !(0, import_isEqual$2.default)(prevData, data))) return this.renderRectanglesWithAnimation();
 				return this.renderRectanglesStatically(data);
 			}
 		},
@@ -44889,16 +45231,16 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 				var backgroundProps = filterProps(this.props.background, false);
 				return data.map(function(entry, i) {
 					entry.value;
-					var background = entry.background, rest = _objectWithoutProperties$4(entry, _excluded$4);
+					var background = entry.background, rest = _objectWithoutProperties$5(entry, _excluded$5);
 					if (!background) return null;
-					var props = _objectSpread$10(_objectSpread$10(_objectSpread$10(_objectSpread$10(_objectSpread$10({}, rest), {}, { fill: "#eee" }, background), backgroundProps), adaptEventsOfChild(_this4.props, entry, i)), {}, {
+					var props = _objectSpread$11(_objectSpread$11(_objectSpread$11(_objectSpread$11(_objectSpread$11({}, rest), {}, { fill: "#eee" }, background), backgroundProps), adaptEventsOfChild(_this4.props, entry, i)), {}, {
 						onAnimationStart: _this4.handleAnimationStart,
 						onAnimationEnd: _this4.handleAnimationEnd,
 						dataKey,
 						index: i,
 						className: "recharts-bar-background-rectangle"
 					});
-					return /* @__PURE__ */ import_react.createElement(BarRectangle, _extends$9({
+					return /* @__PURE__ */ import_react.createElement(BarRectangle, _extends$10({
 						key: "background-bar-".concat(i),
 						option: _this4.props.background,
 						isActive: i === activeIndex
@@ -44947,7 +45289,7 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 				var needClipX = xAxis && xAxis.allowDataOverflow;
 				var needClipY = yAxis && yAxis.allowDataOverflow;
 				var needClip = needClipX || needClipY;
-				var clipPathId = (0, import_isNil$2.default)(id) ? this.id : id;
+				var clipPathId = (0, import_isNil$3.default)(id) ? this.id : id;
 				return /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, needClipX || needClipY ? /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("clipPath", { id: "clipPath-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement("rect", {
 					x: needClipX ? left : left - width / 2,
 					y: needClipY ? top : top - height / 2,
@@ -44973,8 +45315,8 @@ var Bar = /* @__PURE__ */ function(_PureComponent) {
 	}]);
 }(import_react.PureComponent);
 _Bar = Bar;
-_defineProperty$13(Bar, "displayName", "Bar");
-_defineProperty$13(Bar, "defaultProps", {
+_defineProperty$14(Bar, "displayName", "Bar");
+_defineProperty$14(Bar, "defaultProps", {
 	xAxisId: 0,
 	yAxisId: 0,
 	legendType: "rect",
@@ -44988,19 +45330,19 @@ _defineProperty$13(Bar, "defaultProps", {
 	animationDuration: 400,
 	animationEasing: "ease"
 });
-_defineProperty$13(Bar, "getComposedData", function(_ref2) {
+_defineProperty$14(Bar, "getComposedData", function(_ref2) {
 	var props = _ref2.props, item = _ref2.item, barPosition = _ref2.barPosition, bandSize = _ref2.bandSize, xAxis = _ref2.xAxis, yAxis = _ref2.yAxis, xAxisTicks = _ref2.xAxisTicks, yAxisTicks = _ref2.yAxisTicks, stackedData = _ref2.stackedData, dataStartIndex = _ref2.dataStartIndex, displayedData = _ref2.displayedData, offset$3 = _ref2.offset;
 	var pos = findPositionOfBar(barPosition, item);
 	if (!pos) return null;
 	var layout = props.layout;
 	var itemDefaultProps = item.type.defaultProps;
-	var itemProps = itemDefaultProps !== void 0 ? _objectSpread$10(_objectSpread$10({}, itemDefaultProps), item.props) : item.props;
+	var itemProps = itemDefaultProps !== void 0 ? _objectSpread$11(_objectSpread$11({}, itemDefaultProps), item.props) : item.props;
 	var dataKey = itemProps.dataKey, children = itemProps.children, minPointSizeProp = itemProps.minPointSize;
 	var numericAxis = layout === "horizontal" ? yAxis : xAxis;
 	var stackedDomain = stackedData ? numericAxis.scale.domain() : null;
 	var baseValue = getBaseValueOfBar({ numericAxis });
 	var cells = findAllByType(children, Cell);
-	return _objectSpread$10({
+	return _objectSpread$11({
 		data: displayedData.map(function(entry, index$1) {
 			var value, x$2, y$1, width, height, background;
 			if (stackedData) value = truncateByDomain(stackedData[dataStartIndex + index$1], stackedDomain);
@@ -45059,7 +45401,7 @@ _defineProperty$13(Bar, "getComposedData", function(_ref2) {
 					width += _delta;
 				}
 			}
-			return _objectSpread$10(_objectSpread$10(_objectSpread$10({}, entry), {}, {
+			return _objectSpread$11(_objectSpread$11(_objectSpread$11({}, entry), {}, {
 				x: x$2,
 				y: y$1,
 				width,
@@ -45080,33 +45422,33 @@ _defineProperty$13(Bar, "getComposedData", function(_ref2) {
 });
 var import_mapValues = /* @__PURE__ */ __toESM(require_mapValues());
 var import_every$1 = /* @__PURE__ */ __toESM(require_every());
-function _typeof$13(o) {
+function _typeof$14(o) {
 	"@babel/helpers - typeof";
-	return _typeof$13 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$14 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$13(o);
+	}, _typeof$14(o);
 }
-function _classCallCheck$9(instance, Constructor) {
+function _classCallCheck$10(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$9(target, props) {
+function _defineProperties$10(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$12(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$13(descriptor.key), descriptor);
 	}
 }
-function _createClass$9(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$9(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$9(Constructor, staticProps);
+function _createClass$10(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$10(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$10(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function ownKeys$9(e, r$1) {
+function ownKeys$10(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -45116,19 +45458,19 @@ function ownKeys$9(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$9(e) {
+function _objectSpread$10(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$9(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$12(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$10(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$13(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$10(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$12(obj, key, value) {
-	key = _toPropertyKey$12(key);
+function _defineProperty$13(obj, key, value) {
+	key = _toPropertyKey$13(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -45138,21 +45480,21 @@ function _defineProperty$12(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$12(t) {
-	var i = _toPrimitive$12(t, "string");
-	return "symbol" == _typeof$13(i) ? i : i + "";
+function _toPropertyKey$13(t) {
+	var i = _toPrimitive$13(t, "string");
+	return "symbol" == _typeof$14(i) ? i : i + "";
 }
-function _toPrimitive$12(t, r$1) {
-	if ("object" != _typeof$13(t) || !t) return t;
+function _toPrimitive$13(t, r$1) {
+	if ("object" != _typeof$14(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$13(i)) return i;
+		if ("object" != _typeof$14(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-var formatAxisMap$1 = function formatAxisMap$2(props, axisMap, offset$3, axisType, chartName) {
+var formatAxisMap = function formatAxisMap$2(props, axisMap, offset$3, axisType, chartName) {
 	var width = props.width, height = props.height, layout = props.layout, children = props.children;
 	var ids = Object.keys(axisMap);
 	var steps = {
@@ -45196,7 +45538,7 @@ var formatAxisMap$1 = function formatAxisMap$2(props, axisMap, offset$3, axisTyp
 		var _parseScale = parseScale(axis, chartName, hasBar), scale = _parseScale.scale, realScaleType = _parseScale.realScaleType;
 		scale.domain(domain).range(range$5);
 		checkDomainOfScale(scale);
-		var ticks$1 = getTicksOfScale(scale, _objectSpread$9(_objectSpread$9({}, axis), {}, { realScaleType }));
+		var ticks$1 = getTicksOfScale(scale, _objectSpread$10(_objectSpread$10({}, axis), {}, { realScaleType }));
 		if (axisType === "xAxis") {
 			needSpace = orientation === "top" && !mirror || orientation === "bottom" && mirror;
 			x$2 = offset$3.left;
@@ -45206,7 +45548,7 @@ var formatAxisMap$1 = function formatAxisMap$2(props, axisMap, offset$3, axisTyp
 			x$2 = steps[offsetKey] - needSpace * axis.width;
 			y$1 = offset$3.top;
 		}
-		var finalAxis = _objectSpread$9(_objectSpread$9(_objectSpread$9({}, axis), ticks$1), {}, {
+		var finalAxis = _objectSpread$10(_objectSpread$10(_objectSpread$10({}, axis), ticks$1), {}, {
 			realScaleType,
 			x: x$2,
 			y: y$1,
@@ -45217,7 +45559,7 @@ var formatAxisMap$1 = function formatAxisMap$2(props, axisMap, offset$3, axisTyp
 		finalAxis.bandSize = getBandSizeOfAxis(finalAxis, ticks$1);
 		if (!axis.hide && axisType === "xAxis") steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.height;
 		else if (!axis.hide) steps[offsetKey] += (needSpace ? -1 : 1) * finalAxis.width;
-		return _objectSpread$9(_objectSpread$9({}, result), {}, _defineProperty$12({}, id, finalAxis));
+		return _objectSpread$10(_objectSpread$10({}, result), {}, _defineProperty$13({}, id, finalAxis));
 	}, {});
 };
 var rectWithPoints = function rectWithPoints$1(_ref, _ref2) {
@@ -45242,10 +45584,10 @@ var rectWithCoords = function rectWithCoords$1(_ref3) {
 };
 var ScaleHelper = /* @__PURE__ */ function() {
 	function ScaleHelper$1(scale) {
-		_classCallCheck$9(this, ScaleHelper$1);
+		_classCallCheck$10(this, ScaleHelper$1);
 		this.scale = scale;
 	}
-	return _createClass$9(ScaleHelper$1, [
+	return _createClass$10(ScaleHelper$1, [
 		{
 			key: "domain",
 			get: function get$8() {
@@ -45314,12 +45656,12 @@ var ScaleHelper = /* @__PURE__ */ function() {
 		}
 	}]);
 }();
-_defineProperty$12(ScaleHelper, "EPS", 1e-4);
+_defineProperty$13(ScaleHelper, "EPS", 1e-4);
 var createLabeledScales = function createLabeledScales$1(options$1) {
 	var scales = Object.keys(options$1).reduce(function(res, key) {
-		return _objectSpread$9(_objectSpread$9({}, res), {}, _defineProperty$12({}, key, ScaleHelper.create(options$1[key])));
+		return _objectSpread$10(_objectSpread$10({}, res), {}, _defineProperty$13({}, key, ScaleHelper.create(options$1[key])));
 	}, {});
-	return _objectSpread$9(_objectSpread$9({}, scales), {}, {
+	return _objectSpread$10(_objectSpread$10({}, scales), {}, {
 		apply: function apply$2(coord) {
 			var _ref5 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {}, bandAware = _ref5.bandAware, position = _ref5.position;
 			return (0, import_mapValues.default)(coord, function(value, label) {
@@ -45408,13 +45750,13 @@ var calculateViewBox = (0, (/* @__PURE__ */ __toESM(require_memoize())).default)
 });
 var import_find = /* @__PURE__ */ __toESM(require_find());
 var import_every = /* @__PURE__ */ __toESM(require_every());
-function _typeof$12(o) {
+function _typeof$13(o) {
 	"@babel/helpers - typeof";
-	return _typeof$12 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$13 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$12(o);
+	}, _typeof$13(o);
 }
 var XAxisContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
 var YAxisContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
@@ -45440,7 +45782,7 @@ var useXAxisOrThrow = function useXAxisOrThrow$1(xAxisId) {
 	var xAxisMap = (0, import_react.useContext)(XAxisContext);
 	!(xAxisMap != null) && invariant(false, "Could not find Recharts context; are you sure this is rendered inside a Recharts wrapper component?");
 	var xAxis = xAxisMap[xAxisId];
-	!(xAxis != null) && invariant(false, "Could not find xAxis by id \"".concat(xAxisId, "\" [").concat(_typeof$12(xAxisId), "]. ").concat(getKeysForDebug(xAxisMap)));
+	!(xAxis != null) && invariant(false, "Could not find xAxis by id \"".concat(xAxisId, "\" [").concat(_typeof$13(xAxisId), "]. ").concat(getKeysForDebug(xAxisMap)));
 	return xAxis;
 };
 var useArbitraryXAxis = function useArbitraryXAxis$1() {
@@ -45456,7 +45798,7 @@ var useYAxisOrThrow = function useYAxisOrThrow$1(yAxisId) {
 	var yAxisMap = (0, import_react.useContext)(YAxisContext);
 	!(yAxisMap != null) && invariant(false, "Could not find Recharts context; are you sure this is rendered inside a Recharts wrapper component?");
 	var yAxis = yAxisMap[yAxisId];
-	!(yAxis != null) && invariant(false, "Could not find yAxis by id \"".concat(yAxisId, "\" [").concat(_typeof$12(yAxisId), "]. ").concat(getKeysForDebug(yAxisMap)));
+	!(yAxis != null) && invariant(false, "Could not find yAxis by id \"".concat(yAxisId, "\" [").concat(_typeof$13(yAxisId), "]. ").concat(getKeysForDebug(yAxisMap)));
 	return yAxis;
 };
 var useViewBox = function useViewBox$1() {
@@ -45471,61 +45813,61 @@ var useChartWidth = function useChartWidth$1() {
 var useChartHeight = function useChartHeight$1() {
 	return (0, import_react.useContext)(ChartHeightContext);
 };
-var import_isFunction$7 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isFunction$8 = /* @__PURE__ */ __toESM(require_isFunction());
 var import_some = /* @__PURE__ */ __toESM(require_some());
-function _typeof$11(o) {
+function _typeof$12(o) {
 	"@babel/helpers - typeof";
-	return _typeof$11 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$12 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$11(o);
+	}, _typeof$12(o);
 }
-function _classCallCheck$8(instance, Constructor) {
+function _classCallCheck$9(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$8(target, props) {
+function _defineProperties$9(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$11(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$12(descriptor.key), descriptor);
 	}
 }
-function _createClass$8(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$8(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$8(Constructor, staticProps);
+function _createClass$9(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$9(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$9(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$7(t, o, e) {
-	return o = _getPrototypeOf$7(o), _possibleConstructorReturn$7(t, _isNativeReflectConstruct$7() ? Reflect.construct(o, e || [], _getPrototypeOf$7(t).constructor) : o.apply(t, e));
+function _callSuper$8(t, o, e) {
+	return o = _getPrototypeOf$8(o), _possibleConstructorReturn$8(t, _isNativeReflectConstruct$8() ? Reflect.construct(o, e || [], _getPrototypeOf$8(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$7(self$1, call) {
-	if (call && (_typeof$11(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$8(self$1, call) {
+	if (call && (_typeof$12(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$7(self$1);
+	return _assertThisInitialized$8(self$1);
 }
-function _assertThisInitialized$7(self$1) {
+function _assertThisInitialized$8(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$7() {
+function _isNativeReflectConstruct$8() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$7 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$8 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$7(o) {
-	_getPrototypeOf$7 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$8(o) {
+	_getPrototypeOf$8 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$7(o);
+	return _getPrototypeOf$8(o);
 }
-function _inherits$7(subClass, superClass) {
+function _inherits$8(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -45533,16 +45875,16 @@ function _inherits$7(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$7(subClass, superClass);
+	if (superClass) _setPrototypeOf$8(subClass, superClass);
 }
-function _setPrototypeOf$7(o, p) {
-	_setPrototypeOf$7 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$8(o, p) {
+	_setPrototypeOf$8 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$7(o, p);
+	return _setPrototypeOf$8(o, p);
 }
-function ownKeys$8(e, r$1) {
+function ownKeys$9(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -45552,19 +45894,19 @@ function ownKeys$8(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$8(e) {
+function _objectSpread$9(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$8(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$11(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$9(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$12(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$9(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$11(obj, key, value) {
-	key = _toPropertyKey$11(key);
+function _defineProperty$12(obj, key, value) {
+	key = _toPropertyKey$12(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -45574,16 +45916,16 @@ function _defineProperty$11(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$11(t) {
-	var i = _toPrimitive$11(t, "string");
-	return "symbol" == _typeof$11(i) ? i : i + "";
+function _toPropertyKey$12(t) {
+	var i = _toPrimitive$12(t, "string");
+	return "symbol" == _typeof$12(i) ? i : i + "";
 }
-function _toPrimitive$11(t, r$1) {
-	if ("object" != _typeof$11(t) || !t) return t;
+function _toPrimitive$12(t, r$1) {
+	if ("object" != _typeof$12(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$11(i)) return i;
+		if ("object" != _typeof$12(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -45631,21 +45973,21 @@ function _iterableToArrayLimit$1(r$1, l) {
 function _arrayWithHoles$1(arr) {
 	if (Array.isArray(arr)) return arr;
 }
-function _extends$8() {
-	_extends$8 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$9() {
+	_extends$9 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$8.apply(this, arguments);
+	return _extends$9.apply(this, arguments);
 }
 var renderLine = function renderLine$1(option, props) {
 	var line;
 	if (/* @__PURE__ */ import_react.isValidElement(option)) line = /* @__PURE__ */ import_react.cloneElement(option, props);
-	else if ((0, import_isFunction$7.default)(option)) line = option(props);
-	else line = /* @__PURE__ */ import_react.createElement("line", _extends$8({}, props, { className: "recharts-reference-line-line" }));
+	else if ((0, import_isFunction$8.default)(option)) line = option(props);
+	else line = /* @__PURE__ */ import_react.createElement("line", _extends$9({}, props, { className: "recharts-reference-line-line" }));
 	return line;
 };
 var getEndPoints = function getEndPoints$1(scales, isFixedX, isFixedY, isSegment, viewBox, position, xAxisOrientation, yAxisOrientation, props) {
@@ -45701,13 +46043,13 @@ function ReferenceLineImpl(props) {
 	}), isNumOrStr(fixedX), isNumOrStr(fixedY), segment && segment.length === 2, viewBox, props.position, xAxis.orientation, yAxis.orientation, props);
 	if (!endPoints) return null;
 	var _endPoints = _slicedToArray$1(endPoints, 2), _endPoints$ = _endPoints[0], x1 = _endPoints$.x, y1 = _endPoints$.y, _endPoints$2 = _endPoints[1], x2 = _endPoints$2.x, y2 = _endPoints$2.y;
-	var lineProps = _objectSpread$8(_objectSpread$8({ clipPath: ifOverflowMatches(props, "hidden") ? "url(#".concat(clipPathId, ")") : void 0 }, filterProps(props, true)), {}, {
+	var lineProps = _objectSpread$9(_objectSpread$9({ clipPath: ifOverflowMatches(props, "hidden") ? "url(#".concat(clipPathId, ")") : void 0 }, filterProps(props, true)), {}, {
 		x1,
 		y1,
 		x2,
 		y2
 	});
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-reference-line", className) }, renderLine(shape, lineProps), Label.renderCallByParent(props, rectWithCoords({
+	return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-reference-line", className) }, renderLine(shape, lineProps), Label$2.renderCallByParent(props, rectWithCoords({
 		x1,
 		y1,
 		x2,
@@ -45716,19 +46058,19 @@ function ReferenceLineImpl(props) {
 }
 var ReferenceLine = /* @__PURE__ */ function(_React$Component) {
 	function ReferenceLine$1() {
-		_classCallCheck$8(this, ReferenceLine$1);
-		return _callSuper$7(this, ReferenceLine$1, arguments);
+		_classCallCheck$9(this, ReferenceLine$1);
+		return _callSuper$8(this, ReferenceLine$1, arguments);
 	}
-	_inherits$7(ReferenceLine$1, _React$Component);
-	return _createClass$8(ReferenceLine$1, [{
+	_inherits$8(ReferenceLine$1, _React$Component);
+	return _createClass$9(ReferenceLine$1, [{
 		key: "render",
 		value: function render() {
 			return /* @__PURE__ */ import_react.createElement(ReferenceLineImpl, this.props);
 		}
 	}]);
 }(import_react.Component);
-_defineProperty$11(ReferenceLine, "displayName", "ReferenceLine");
-_defineProperty$11(ReferenceLine, "defaultProps", {
+_defineProperty$12(ReferenceLine, "displayName", "ReferenceLine");
+_defineProperty$12(ReferenceLine, "defaultProps", {
 	isFront: false,
 	ifOverflow: "discard",
 	xAxisId: 0,
@@ -45738,6 +46080,199 @@ _defineProperty$11(ReferenceLine, "defaultProps", {
 	fillOpacity: 1,
 	strokeWidth: 1,
 	position: "middle"
+});
+var import_isFunction$7 = /* @__PURE__ */ __toESM(require_isFunction());
+function _extends$8() {
+	_extends$8 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$8.apply(this, arguments);
+}
+function _typeof$11(o) {
+	"@babel/helpers - typeof";
+	return _typeof$11 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$11(o);
+}
+function ownKeys$8(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$8(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$8(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$11(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$8(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _classCallCheck$8(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$8(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$11(descriptor.key), descriptor);
+	}
+}
+function _createClass$8(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$8(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$8(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$7(t, o, e) {
+	return o = _getPrototypeOf$7(o), _possibleConstructorReturn$7(t, _isNativeReflectConstruct$7() ? Reflect.construct(o, e || [], _getPrototypeOf$7(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$7(self$1, call) {
+	if (call && (_typeof$11(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$7(self$1);
+}
+function _assertThisInitialized$7(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$7() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$7 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$7(o) {
+	_getPrototypeOf$7 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$7(o);
+}
+function _inherits$7(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$7(subClass, superClass);
+}
+function _setPrototypeOf$7(o, p) {
+	_setPrototypeOf$7 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$7(o, p);
+}
+function _defineProperty$11(obj, key, value) {
+	key = _toPropertyKey$11(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$11(t) {
+	var i = _toPrimitive$11(t, "string");
+	return "symbol" == _typeof$11(i) ? i : i + "";
+}
+function _toPrimitive$11(t, r$1) {
+	if ("object" != _typeof$11(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$11(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+var getCoordinate = function getCoordinate$1(props) {
+	var x$2 = props.x, y$1 = props.y, xAxis = props.xAxis, yAxis = props.yAxis;
+	var scales = createLabeledScales({
+		x: xAxis.scale,
+		y: yAxis.scale
+	});
+	var result = scales.apply({
+		x: x$2,
+		y: y$1
+	}, { bandAware: true });
+	if (ifOverflowMatches(props, "discard") && !scales.isInRange(result)) return null;
+	return result;
+};
+var ReferenceDot = /* @__PURE__ */ function(_React$Component) {
+	function ReferenceDot$1() {
+		_classCallCheck$8(this, ReferenceDot$1);
+		return _callSuper$7(this, ReferenceDot$1, arguments);
+	}
+	_inherits$7(ReferenceDot$1, _React$Component);
+	return _createClass$8(ReferenceDot$1, [{
+		key: "render",
+		value: function render() {
+			var _this$props = this.props, x$2 = _this$props.x, y$1 = _this$props.y, r$1 = _this$props.r, alwaysShow = _this$props.alwaysShow, clipPathId = _this$props.clipPathId;
+			var isX = isNumOrStr(x$2);
+			var isY = isNumOrStr(y$1);
+			warn(alwaysShow === void 0, "The alwaysShow prop is deprecated. Please use ifOverflow=\"extendDomain\" instead.");
+			if (!isX || !isY) return null;
+			var coordinate = getCoordinate(this.props);
+			if (!coordinate) return null;
+			var cx$1 = coordinate.x, cy = coordinate.y;
+			var _this$props2 = this.props, shape = _this$props2.shape, className = _this$props2.className;
+			var dotProps = _objectSpread$8(_objectSpread$8({ clipPath: ifOverflowMatches(this.props, "hidden") ? "url(#".concat(clipPathId, ")") : void 0 }, filterProps(this.props, true)), {}, {
+				cx: cx$1,
+				cy
+			});
+			return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-reference-dot", className) }, ReferenceDot$1.renderDot(shape, dotProps), Label$2.renderCallByParent(this.props, {
+				x: cx$1 - r$1,
+				y: cy - r$1,
+				width: 2 * r$1,
+				height: 2 * r$1
+			}));
+		}
+	}]);
+}(import_react.Component);
+_defineProperty$11(ReferenceDot, "displayName", "ReferenceDot");
+_defineProperty$11(ReferenceDot, "defaultProps", {
+	isFront: false,
+	ifOverflow: "discard",
+	xAxisId: 0,
+	yAxisId: 0,
+	r: 10,
+	fill: "#fff",
+	stroke: "#ccc",
+	fillOpacity: 1,
+	strokeWidth: 1
+});
+_defineProperty$11(ReferenceDot, "renderDot", function(option, props) {
+	var dot;
+	if (/* @__PURE__ */ import_react.isValidElement(option)) dot = /* @__PURE__ */ import_react.cloneElement(option, props);
+	else if ((0, import_isFunction$7.default)(option)) dot = option(props);
+	else dot = /* @__PURE__ */ import_react.createElement(Dot, _extends$8({}, props, {
+		cx: props.cx,
+		cy: props.cy,
+		className: "recharts-reference-dot-dot"
+	}));
+	return dot;
 });
 var import_isFunction$6 = /* @__PURE__ */ __toESM(require_isFunction());
 function _extends$7() {
@@ -45813,12 +46348,12 @@ function _isNativeReflectConstruct$6() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$6 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$6 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
 function _getPrototypeOf$6(o) {
-	_getPrototypeOf$6 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+	_getPrototypeOf$6 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
 	return _getPrototypeOf$6(o);
@@ -45834,7 +46369,7 @@ function _inherits$6(subClass, superClass) {
 	if (superClass) _setPrototypeOf$6(subClass, superClass);
 }
 function _setPrototypeOf$6(o, p) {
-	_setPrototypeOf$6 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+	_setPrototypeOf$6 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
@@ -45865,199 +46400,6 @@ function _toPrimitive$10(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-var getCoordinate = function getCoordinate$1(props) {
-	var x$2 = props.x, y$1 = props.y, xAxis = props.xAxis, yAxis = props.yAxis;
-	var scales = createLabeledScales({
-		x: xAxis.scale,
-		y: yAxis.scale
-	});
-	var result = scales.apply({
-		x: x$2,
-		y: y$1
-	}, { bandAware: true });
-	if (ifOverflowMatches(props, "discard") && !scales.isInRange(result)) return null;
-	return result;
-};
-var ReferenceDot = /* @__PURE__ */ function(_React$Component) {
-	function ReferenceDot$1() {
-		_classCallCheck$7(this, ReferenceDot$1);
-		return _callSuper$6(this, ReferenceDot$1, arguments);
-	}
-	_inherits$6(ReferenceDot$1, _React$Component);
-	return _createClass$7(ReferenceDot$1, [{
-		key: "render",
-		value: function render() {
-			var _this$props = this.props, x$2 = _this$props.x, y$1 = _this$props.y, r$1 = _this$props.r, alwaysShow = _this$props.alwaysShow, clipPathId = _this$props.clipPathId;
-			var isX = isNumOrStr(x$2);
-			var isY = isNumOrStr(y$1);
-			warn(alwaysShow === void 0, "The alwaysShow prop is deprecated. Please use ifOverflow=\"extendDomain\" instead.");
-			if (!isX || !isY) return null;
-			var coordinate = getCoordinate(this.props);
-			if (!coordinate) return null;
-			var cx$1 = coordinate.x, cy = coordinate.y;
-			var _this$props2 = this.props, shape = _this$props2.shape, className = _this$props2.className;
-			var dotProps = _objectSpread$7(_objectSpread$7({ clipPath: ifOverflowMatches(this.props, "hidden") ? "url(#".concat(clipPathId, ")") : void 0 }, filterProps(this.props, true)), {}, {
-				cx: cx$1,
-				cy
-			});
-			return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-reference-dot", className) }, ReferenceDot$1.renderDot(shape, dotProps), Label.renderCallByParent(this.props, {
-				x: cx$1 - r$1,
-				y: cy - r$1,
-				width: 2 * r$1,
-				height: 2 * r$1
-			}));
-		}
-	}]);
-}(import_react.Component);
-_defineProperty$10(ReferenceDot, "displayName", "ReferenceDot");
-_defineProperty$10(ReferenceDot, "defaultProps", {
-	isFront: false,
-	ifOverflow: "discard",
-	xAxisId: 0,
-	yAxisId: 0,
-	r: 10,
-	fill: "#fff",
-	stroke: "#ccc",
-	fillOpacity: 1,
-	strokeWidth: 1
-});
-_defineProperty$10(ReferenceDot, "renderDot", function(option, props) {
-	var dot;
-	if (/* @__PURE__ */ import_react.isValidElement(option)) dot = /* @__PURE__ */ import_react.cloneElement(option, props);
-	else if ((0, import_isFunction$6.default)(option)) dot = option(props);
-	else dot = /* @__PURE__ */ import_react.createElement(Dot, _extends$7({}, props, {
-		cx: props.cx,
-		cy: props.cy,
-		className: "recharts-reference-dot-dot"
-	}));
-	return dot;
-});
-var import_isFunction$5 = /* @__PURE__ */ __toESM(require_isFunction());
-function _extends$6() {
-	_extends$6 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$6.apply(this, arguments);
-}
-function _typeof$9(o) {
-	"@babel/helpers - typeof";
-	return _typeof$9 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$9(o);
-}
-function ownKeys$6(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$6(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$6(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$9(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _classCallCheck$6(instance, Constructor) {
-	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties$6(target, props) {
-	for (var i = 0; i < props.length; i++) {
-		var descriptor = props[i];
-		descriptor.enumerable = descriptor.enumerable || false;
-		descriptor.configurable = true;
-		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$9(descriptor.key), descriptor);
-	}
-}
-function _createClass$6(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$6(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$6(Constructor, staticProps);
-	Object.defineProperty(Constructor, "prototype", { writable: false });
-	return Constructor;
-}
-function _callSuper$5(t, o, e) {
-	return o = _getPrototypeOf$5(o), _possibleConstructorReturn$5(t, _isNativeReflectConstruct$5() ? Reflect.construct(o, e || [], _getPrototypeOf$5(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn$5(self$1, call) {
-	if (call && (_typeof$9(call) === "object" || typeof call === "function")) return call;
-	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$5(self$1);
-}
-function _assertThisInitialized$5(self$1) {
-	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	return self$1;
-}
-function _isNativeReflectConstruct$5() {
-	try {
-		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-	} catch (t$1) {}
-	return (_isNativeReflectConstruct$5 = function _isNativeReflectConstruct$19() {
-		return !!t;
-	})();
-}
-function _getPrototypeOf$5(o) {
-	_getPrototypeOf$5 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
-		return o$1.__proto__ || Object.getPrototypeOf(o$1);
-	};
-	return _getPrototypeOf$5(o);
-}
-function _inherits$5(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-		value: subClass,
-		writable: true,
-		configurable: true
-	} });
-	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$5(subClass, superClass);
-}
-function _setPrototypeOf$5(o, p) {
-	_setPrototypeOf$5 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
-		o$1.__proto__ = p$1;
-		return o$1;
-	};
-	return _setPrototypeOf$5(o, p);
-}
-function _defineProperty$9(obj, key, value) {
-	key = _toPropertyKey$9(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$9(t) {
-	var i = _toPrimitive$9(t, "string");
-	return "symbol" == _typeof$9(i) ? i : i + "";
-}
-function _toPrimitive$9(t, r$1) {
-	if ("object" != _typeof$9(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$9(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 var getRect = function getRect$1(hasX1, hasX2, hasY1, hasY2, props) {
 	var xValue1 = props.x1, xValue2 = props.x2, yValue1 = props.y1, yValue2 = props.y2, xAxis = props.xAxis, yAxis = props.yAxis;
 	if (!xAxis || !yAxis) return null;
@@ -46078,11 +46420,11 @@ var getRect = function getRect$1(hasX1, hasX2, hasY1, hasY2, props) {
 };
 var ReferenceArea = /* @__PURE__ */ function(_React$Component) {
 	function ReferenceArea$1() {
-		_classCallCheck$6(this, ReferenceArea$1);
-		return _callSuper$5(this, ReferenceArea$1, arguments);
+		_classCallCheck$7(this, ReferenceArea$1);
+		return _callSuper$6(this, ReferenceArea$1, arguments);
 	}
-	_inherits$5(ReferenceArea$1, _React$Component);
-	return _createClass$6(ReferenceArea$1, [{
+	_inherits$6(ReferenceArea$1, _React$Component);
+	return _createClass$7(ReferenceArea$1, [{
 		key: "render",
 		value: function render() {
 			var _this$props = this.props, x1 = _this$props.x1, x2 = _this$props.x2, y1 = _this$props.y1, y2 = _this$props.y2, className = _this$props.className, alwaysShow = _this$props.alwaysShow, clipPathId = _this$props.clipPathId;
@@ -46096,12 +46438,12 @@ var ReferenceArea = /* @__PURE__ */ function(_React$Component) {
 			var rect = getRect(hasX1, hasX2, hasY1, hasY2, this.props);
 			if (!rect && !shape) return null;
 			var clipPath = ifOverflowMatches(this.props, "hidden") ? "url(#".concat(clipPathId, ")") : void 0;
-			return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-reference-area", className) }, ReferenceArea$1.renderRect(shape, _objectSpread$6(_objectSpread$6({ clipPath }, filterProps(this.props, true)), rect)), Label.renderCallByParent(this.props, rect));
+			return /* @__PURE__ */ import_react.createElement(Layer, { className: clsx_default("recharts-reference-area", className) }, ReferenceArea$1.renderRect(shape, _objectSpread$7(_objectSpread$7({ clipPath }, filterProps(this.props, true)), rect)), Label$2.renderCallByParent(this.props, rect));
 		}
 	}]);
 }(import_react.Component);
-_defineProperty$9(ReferenceArea, "displayName", "ReferenceArea");
-_defineProperty$9(ReferenceArea, "defaultProps", {
+_defineProperty$10(ReferenceArea, "displayName", "ReferenceArea");
+_defineProperty$10(ReferenceArea, "defaultProps", {
 	isFront: false,
 	ifOverflow: "discard",
 	xAxisId: 0,
@@ -46112,11 +46454,11 @@ _defineProperty$9(ReferenceArea, "defaultProps", {
 	stroke: "none",
 	strokeWidth: 1
 });
-_defineProperty$9(ReferenceArea, "renderRect", function(option, props) {
+_defineProperty$10(ReferenceArea, "renderRect", function(option, props) {
 	var rect;
 	if (/* @__PURE__ */ import_react.isValidElement(option)) rect = /* @__PURE__ */ import_react.cloneElement(option, props);
-	else if ((0, import_isFunction$5.default)(option)) rect = option(props);
-	else rect = /* @__PURE__ */ import_react.createElement(Rectangle, _extends$6({}, props, { className: "recharts-reference-area-rect" }));
+	else if ((0, import_isFunction$6.default)(option)) rect = option(props);
+	else rect = /* @__PURE__ */ import_react.createElement(Rectangle, _extends$7({}, props, { className: "recharts-reference-area-rect" }));
 	return rect;
 });
 function getEveryNthWithCondition(array, n, isValid) {
@@ -46186,7 +46528,156 @@ function getEquidistantTicks(sign$1, boundaries, getTickSize, ticks$1, minTickGa
 	}
 	return [];
 }
+var import_isFunction$5 = /* @__PURE__ */ __toESM(require_isFunction());
+function _typeof$9(o) {
+	"@babel/helpers - typeof";
+	return _typeof$9 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$9(o);
+}
+function ownKeys$6(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$6(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$6(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$9(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$6(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _defineProperty$9(obj, key, value) {
+	key = _toPropertyKey$9(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$9(t) {
+	var i = _toPrimitive$9(t, "string");
+	return "symbol" == _typeof$9(i) ? i : i + "";
+}
+function _toPrimitive$9(t, r$1) {
+	if ("object" != _typeof$9(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$9(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+function getTicksEnd(sign$1, boundaries, getTickSize, ticks$1, minTickGap) {
+	var result = (ticks$1 || []).slice();
+	var len = result.length;
+	var start = boundaries.start;
+	var end = boundaries.end;
+	var _loop = function _loop$1(i$1) {
+		var entry = result[i$1];
+		var size$3;
+		var getSize = function getSize$1() {
+			if (size$3 === void 0) size$3 = getTickSize(entry, i$1);
+			return size$3;
+		};
+		if (i$1 === len - 1) {
+			var gap = sign$1 * (entry.coordinate + sign$1 * getSize() / 2 - end);
+			result[i$1] = entry = _objectSpread$6(_objectSpread$6({}, entry), {}, { tickCoord: gap > 0 ? entry.coordinate - gap * sign$1 : entry.coordinate });
+		} else result[i$1] = entry = _objectSpread$6(_objectSpread$6({}, entry), {}, { tickCoord: entry.coordinate });
+		if (isVisible(sign$1, entry.tickCoord, getSize, start, end)) {
+			end = entry.tickCoord - sign$1 * (getSize() / 2 + minTickGap);
+			result[i$1] = _objectSpread$6(_objectSpread$6({}, entry), {}, { isShow: true });
+		}
+	};
+	for (var i = len - 1; i >= 0; i--) _loop(i);
+	return result;
+}
+function getTicksStart(sign$1, boundaries, getTickSize, ticks$1, minTickGap, preserveEnd) {
+	var result = (ticks$1 || []).slice();
+	var len = result.length;
+	var start = boundaries.start, end = boundaries.end;
+	if (preserveEnd) {
+		var tail = ticks$1[len - 1];
+		var tailSize = getTickSize(tail, len - 1);
+		var tailGap = sign$1 * (tail.coordinate + sign$1 * tailSize / 2 - end);
+		result[len - 1] = tail = _objectSpread$6(_objectSpread$6({}, tail), {}, { tickCoord: tailGap > 0 ? tail.coordinate - tailGap * sign$1 : tail.coordinate });
+		if (isVisible(sign$1, tail.tickCoord, function() {
+			return tailSize;
+		}, start, end)) {
+			end = tail.tickCoord - sign$1 * (tailSize / 2 + minTickGap);
+			result[len - 1] = _objectSpread$6(_objectSpread$6({}, tail), {}, { isShow: true });
+		}
+	}
+	var count$3 = preserveEnd ? len - 1 : len;
+	var _loop2 = function _loop2$1(i$1) {
+		var entry = result[i$1];
+		var size$3;
+		var getSize = function getSize$1() {
+			if (size$3 === void 0) size$3 = getTickSize(entry, i$1);
+			return size$3;
+		};
+		if (i$1 === 0) {
+			var gap = sign$1 * (entry.coordinate - sign$1 * getSize() / 2 - start);
+			result[i$1] = entry = _objectSpread$6(_objectSpread$6({}, entry), {}, { tickCoord: gap < 0 ? entry.coordinate - gap * sign$1 : entry.coordinate });
+		} else result[i$1] = entry = _objectSpread$6(_objectSpread$6({}, entry), {}, { tickCoord: entry.coordinate });
+		if (isVisible(sign$1, entry.tickCoord, getSize, start, end)) {
+			start = entry.tickCoord + sign$1 * (getSize() / 2 + minTickGap);
+			result[i$1] = _objectSpread$6(_objectSpread$6({}, entry), {}, { isShow: true });
+		}
+	};
+	for (var i = 0; i < count$3; i++) _loop2(i);
+	return result;
+}
+function getTicks(props, fontSize, letterSpacing) {
+	var tick = props.tick, ticks$1 = props.ticks, viewBox = props.viewBox, minTickGap = props.minTickGap, orientation = props.orientation, interval = props.interval, tickFormatter = props.tickFormatter, unit$1 = props.unit, angle = props.angle;
+	if (!ticks$1 || !ticks$1.length || !tick) return [];
+	if (isNumber(interval) || Global.isSsr) return getNumberIntervalTicks(ticks$1, typeof interval === "number" && isNumber(interval) ? interval : 0);
+	var candidates = [];
+	var sizeKey = orientation === "top" || orientation === "bottom" ? "width" : "height";
+	var unitSize = unit$1 && sizeKey === "width" ? getStringSize(unit$1, {
+		fontSize,
+		letterSpacing
+	}) : {
+		width: 0,
+		height: 0
+	};
+	var getTickSize = function getTickSize$1(content, index$1) {
+		var value = (0, import_isFunction$5.default)(tickFormatter) ? tickFormatter(content.value, index$1) : content.value;
+		return sizeKey === "width" ? getAngledTickWidth(getStringSize(value, {
+			fontSize,
+			letterSpacing
+		}), unitSize, angle) : getStringSize(value, {
+			fontSize,
+			letterSpacing
+		})[sizeKey];
+	};
+	var sign$1 = ticks$1.length >= 2 ? mathSign(ticks$1[1].coordinate - ticks$1[0].coordinate) : 1;
+	var boundaries = getTickBoundaries(viewBox, sign$1, sizeKey);
+	if (interval === "equidistantPreserveStart") return getEquidistantTicks(sign$1, boundaries, getTickSize, ticks$1, minTickGap);
+	if (interval === "preserveStart" || interval === "preserveStartEnd") candidates = getTicksStart(sign$1, boundaries, getTickSize, ticks$1, minTickGap, interval === "preserveStartEnd");
+	else candidates = getTicksEnd(sign$1, boundaries, getTickSize, ticks$1, minTickGap);
+	return candidates.filter(function(entry) {
+		return entry.isShow;
+	});
+}
 var import_isFunction$4 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_get$1 = /* @__PURE__ */ __toESM(require_get());
+var _excluded$4 = ["viewBox"], _excluded2$4 = ["viewBox"], _excluded3 = ["ticks"];
 function _typeof$8(o) {
 	"@babel/helpers - typeof";
 	return _typeof$8 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
@@ -46194,6 +46685,16 @@ function _typeof$8(o) {
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
 	}, _typeof$8(o);
+}
+function _extends$6() {
+	_extends$6 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$6.apply(this, arguments);
 }
 function ownKeys$5(e, r$1) {
 	var t = Object.keys(e);
@@ -46215,6 +46716,91 @@ function _objectSpread$5(e) {
 		});
 	}
 	return e;
+}
+function _objectWithoutProperties$4(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$4(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$4(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+function _classCallCheck$6(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$6(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$8(descriptor.key), descriptor);
+	}
+}
+function _createClass$6(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$6(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$6(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$5(t, o, e) {
+	return o = _getPrototypeOf$5(o), _possibleConstructorReturn$5(t, _isNativeReflectConstruct$5() ? Reflect.construct(o, e || [], _getPrototypeOf$5(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$5(self$1, call) {
+	if (call && (_typeof$8(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$5(self$1);
+}
+function _assertThisInitialized$5(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$5() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$5 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$5(o) {
+	_getPrototypeOf$5 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$5(o);
+}
+function _inherits$5(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$5(subClass, superClass);
+}
+function _setPrototypeOf$5(o, p) {
+	_setPrototypeOf$5 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$5(o, p);
 }
 function _defineProperty$8(obj, key, value) {
 	key = _toPropertyKey$8(key);
@@ -46241,268 +46827,24 @@ function _toPrimitive$8(t, r$1) {
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function getTicksEnd(sign$1, boundaries, getTickSize, ticks$1, minTickGap) {
-	var result = (ticks$1 || []).slice();
-	var len = result.length;
-	var start = boundaries.start;
-	var end = boundaries.end;
-	var _loop = function _loop$1(i$1) {
-		var entry = result[i$1];
-		var size$3;
-		var getSize = function getSize$1() {
-			if (size$3 === void 0) size$3 = getTickSize(entry, i$1);
-			return size$3;
-		};
-		if (i$1 === len - 1) {
-			var gap = sign$1 * (entry.coordinate + sign$1 * getSize() / 2 - end);
-			result[i$1] = entry = _objectSpread$5(_objectSpread$5({}, entry), {}, { tickCoord: gap > 0 ? entry.coordinate - gap * sign$1 : entry.coordinate });
-		} else result[i$1] = entry = _objectSpread$5(_objectSpread$5({}, entry), {}, { tickCoord: entry.coordinate });
-		if (isVisible(sign$1, entry.tickCoord, getSize, start, end)) {
-			end = entry.tickCoord - sign$1 * (getSize() / 2 + minTickGap);
-			result[i$1] = _objectSpread$5(_objectSpread$5({}, entry), {}, { isShow: true });
-		}
-	};
-	for (var i = len - 1; i >= 0; i--) _loop(i);
-	return result;
-}
-function getTicksStart(sign$1, boundaries, getTickSize, ticks$1, minTickGap, preserveEnd) {
-	var result = (ticks$1 || []).slice();
-	var len = result.length;
-	var start = boundaries.start, end = boundaries.end;
-	if (preserveEnd) {
-		var tail = ticks$1[len - 1];
-		var tailSize = getTickSize(tail, len - 1);
-		var tailGap = sign$1 * (tail.coordinate + sign$1 * tailSize / 2 - end);
-		result[len - 1] = tail = _objectSpread$5(_objectSpread$5({}, tail), {}, { tickCoord: tailGap > 0 ? tail.coordinate - tailGap * sign$1 : tail.coordinate });
-		if (isVisible(sign$1, tail.tickCoord, function() {
-			return tailSize;
-		}, start, end)) {
-			end = tail.tickCoord - sign$1 * (tailSize / 2 + minTickGap);
-			result[len - 1] = _objectSpread$5(_objectSpread$5({}, tail), {}, { isShow: true });
-		}
-	}
-	var count$3 = preserveEnd ? len - 1 : len;
-	var _loop2 = function _loop2$1(i$1) {
-		var entry = result[i$1];
-		var size$3;
-		var getSize = function getSize$1() {
-			if (size$3 === void 0) size$3 = getTickSize(entry, i$1);
-			return size$3;
-		};
-		if (i$1 === 0) {
-			var gap = sign$1 * (entry.coordinate - sign$1 * getSize() / 2 - start);
-			result[i$1] = entry = _objectSpread$5(_objectSpread$5({}, entry), {}, { tickCoord: gap < 0 ? entry.coordinate - gap * sign$1 : entry.coordinate });
-		} else result[i$1] = entry = _objectSpread$5(_objectSpread$5({}, entry), {}, { tickCoord: entry.coordinate });
-		if (isVisible(sign$1, entry.tickCoord, getSize, start, end)) {
-			start = entry.tickCoord + sign$1 * (getSize() / 2 + minTickGap);
-			result[i$1] = _objectSpread$5(_objectSpread$5({}, entry), {}, { isShow: true });
-		}
-	};
-	for (var i = 0; i < count$3; i++) _loop2(i);
-	return result;
-}
-function getTicks(props, fontSize, letterSpacing) {
-	var tick = props.tick, ticks$1 = props.ticks, viewBox = props.viewBox, minTickGap = props.minTickGap, orientation = props.orientation, interval = props.interval, tickFormatter = props.tickFormatter, unit$1 = props.unit, angle = props.angle;
-	if (!ticks$1 || !ticks$1.length || !tick) return [];
-	if (isNumber(interval) || Global.isSsr) return getNumberIntervalTicks(ticks$1, typeof interval === "number" && isNumber(interval) ? interval : 0);
-	var candidates = [];
-	var sizeKey = orientation === "top" || orientation === "bottom" ? "width" : "height";
-	var unitSize = unit$1 && sizeKey === "width" ? getStringSize(unit$1, {
-		fontSize,
-		letterSpacing
-	}) : {
-		width: 0,
-		height: 0
-	};
-	var getTickSize = function getTickSize$1(content, index$1) {
-		var value = (0, import_isFunction$4.default)(tickFormatter) ? tickFormatter(content.value, index$1) : content.value;
-		return sizeKey === "width" ? getAngledTickWidth(getStringSize(value, {
-			fontSize,
-			letterSpacing
-		}), unitSize, angle) : getStringSize(value, {
-			fontSize,
-			letterSpacing
-		})[sizeKey];
-	};
-	var sign$1 = ticks$1.length >= 2 ? mathSign(ticks$1[1].coordinate - ticks$1[0].coordinate) : 1;
-	var boundaries = getTickBoundaries(viewBox, sign$1, sizeKey);
-	if (interval === "equidistantPreserveStart") return getEquidistantTicks(sign$1, boundaries, getTickSize, ticks$1, minTickGap);
-	if (interval === "preserveStart" || interval === "preserveStartEnd") candidates = getTicksStart(sign$1, boundaries, getTickSize, ticks$1, minTickGap, interval === "preserveStartEnd");
-	else candidates = getTicksEnd(sign$1, boundaries, getTickSize, ticks$1, minTickGap);
-	return candidates.filter(function(entry) {
-		return entry.isShow;
-	});
-}
-var import_isFunction$3 = /* @__PURE__ */ __toESM(require_isFunction());
-var import_get$1 = /* @__PURE__ */ __toESM(require_get());
-var _excluded$3 = ["viewBox"], _excluded2$3 = ["viewBox"], _excluded3 = ["ticks"];
-function _typeof$7(o) {
-	"@babel/helpers - typeof";
-	return _typeof$7 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
-		return typeof o$1;
-	} : function(o$1) {
-		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$7(o);
-}
-function _extends$5() {
-	_extends$5 = Object.assign ? Object.assign.bind() : function(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
-			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
-		}
-		return target;
-	};
-	return _extends$5.apply(this, arguments);
-}
-function ownKeys$4(e, r$1) {
-	var t = Object.keys(e);
-	if (Object.getOwnPropertySymbols) {
-		var o = Object.getOwnPropertySymbols(e);
-		r$1 && (o = o.filter(function(r$2) {
-			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
-		})), t.push.apply(t, o);
-	}
-	return t;
-}
-function _objectSpread$4(e) {
-	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
-		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$4(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$7(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function(r$2) {
-			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
-		});
-	}
-	return e;
-}
-function _objectWithoutProperties$3(source, excluded) {
-	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$3(source, excluded);
-	var key, i;
-	if (Object.getOwnPropertySymbols) {
-		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-		for (i = 0; i < sourceSymbolKeys.length; i++) {
-			key = sourceSymbolKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
-function _objectWithoutPropertiesLoose$3(source, excluded) {
-	if (source == null) return {};
-	var target = {};
-	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
-		if (excluded.indexOf(key) >= 0) continue;
-		target[key] = source[key];
-	}
-	return target;
-}
-function _classCallCheck$5(instance, Constructor) {
-	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties$5(target, props) {
-	for (var i = 0; i < props.length; i++) {
-		var descriptor = props[i];
-		descriptor.enumerable = descriptor.enumerable || false;
-		descriptor.configurable = true;
-		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$7(descriptor.key), descriptor);
-	}
-}
-function _createClass$5(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$5(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$5(Constructor, staticProps);
-	Object.defineProperty(Constructor, "prototype", { writable: false });
-	return Constructor;
-}
-function _callSuper$4(t, o, e) {
-	return o = _getPrototypeOf$4(o), _possibleConstructorReturn$4(t, _isNativeReflectConstruct$4() ? Reflect.construct(o, e || [], _getPrototypeOf$4(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn$4(self$1, call) {
-	if (call && (_typeof$7(call) === "object" || typeof call === "function")) return call;
-	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$4(self$1);
-}
-function _assertThisInitialized$4(self$1) {
-	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	return self$1;
-}
-function _isNativeReflectConstruct$4() {
-	try {
-		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-	} catch (t$1) {}
-	return (_isNativeReflectConstruct$4 = function _isNativeReflectConstruct$19() {
-		return !!t;
-	})();
-}
-function _getPrototypeOf$4(o) {
-	_getPrototypeOf$4 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
-		return o$1.__proto__ || Object.getPrototypeOf(o$1);
-	};
-	return _getPrototypeOf$4(o);
-}
-function _inherits$4(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-		value: subClass,
-		writable: true,
-		configurable: true
-	} });
-	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$4(subClass, superClass);
-}
-function _setPrototypeOf$4(o, p) {
-	_setPrototypeOf$4 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
-		o$1.__proto__ = p$1;
-		return o$1;
-	};
-	return _setPrototypeOf$4(o, p);
-}
-function _defineProperty$7(obj, key, value) {
-	key = _toPropertyKey$7(key);
-	if (key in obj) Object.defineProperty(obj, key, {
-		value,
-		enumerable: true,
-		configurable: true,
-		writable: true
-	});
-	else obj[key] = value;
-	return obj;
-}
-function _toPropertyKey$7(t) {
-	var i = _toPrimitive$7(t, "string");
-	return "symbol" == _typeof$7(i) ? i : i + "";
-}
-function _toPrimitive$7(t, r$1) {
-	if ("object" != _typeof$7(t) || !t) return t;
-	var e = t[Symbol.toPrimitive];
-	if (void 0 !== e) {
-		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$7(i)) return i;
-		throw new TypeError("@@toPrimitive must return a primitive value.");
-	}
-	return ("string" === r$1 ? String : Number)(t);
-}
 var CartesianAxis = /* @__PURE__ */ function(_Component) {
 	function CartesianAxis$1(props) {
 		var _this;
-		_classCallCheck$5(this, CartesianAxis$1);
-		_this = _callSuper$4(this, CartesianAxis$1, [props]);
+		_classCallCheck$6(this, CartesianAxis$1);
+		_this = _callSuper$5(this, CartesianAxis$1, [props]);
 		_this.state = {
 			fontSize: "",
 			letterSpacing: ""
 		};
 		return _this;
 	}
-	_inherits$4(CartesianAxis$1, _Component);
-	return _createClass$5(CartesianAxis$1, [
+	_inherits$5(CartesianAxis$1, _Component);
+	return _createClass$6(CartesianAxis$1, [
 		{
 			key: "shouldComponentUpdate",
 			value: function shouldComponentUpdate(_ref, nextState) {
-				var viewBox = _ref.viewBox, restProps = _objectWithoutProperties$3(_ref, _excluded$3);
-				var _this$props = this.props, viewBoxOld = _this$props.viewBox, restPropsOld = _objectWithoutProperties$3(_this$props, _excluded2$3);
+				var viewBox = _ref.viewBox, restProps = _objectWithoutProperties$4(_ref, _excluded$4);
+				var _this$props = this.props, viewBoxOld = _this$props.viewBox, restPropsOld = _objectWithoutProperties$4(_this$props, _excluded2$4);
 				return !shallowEqual(viewBox, viewBoxOld) || !shallowEqual(restProps, restPropsOld) || !shallowEqual(nextState, this.state);
 			}
 		},
@@ -46613,10 +46955,10 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 			key: "renderAxisLine",
 			value: function renderAxisLine() {
 				var _this$props5 = this.props, x$2 = _this$props5.x, y$1 = _this$props5.y, width = _this$props5.width, height = _this$props5.height, orientation = _this$props5.orientation, mirror = _this$props5.mirror, axisLine = _this$props5.axisLine;
-				var props = _objectSpread$4(_objectSpread$4(_objectSpread$4({}, filterProps(this.props, false)), filterProps(axisLine, false)), {}, { fill: "none" });
+				var props = _objectSpread$5(_objectSpread$5(_objectSpread$5({}, filterProps(this.props, false)), filterProps(axisLine, false)), {}, { fill: "none" });
 				if (orientation === "top" || orientation === "bottom") {
 					var needHeight = +(orientation === "top" && !mirror || orientation === "bottom" && mirror);
-					props = _objectSpread$4(_objectSpread$4({}, props), {}, {
+					props = _objectSpread$5(_objectSpread$5({}, props), {}, {
 						x1: x$2,
 						y1: y$1 + needHeight * height,
 						x2: x$2 + width,
@@ -46624,14 +46966,14 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 					});
 				} else {
 					var needWidth = +(orientation === "left" && !mirror || orientation === "right" && mirror);
-					props = _objectSpread$4(_objectSpread$4({}, props), {}, {
+					props = _objectSpread$5(_objectSpread$5({}, props), {}, {
 						x1: x$2 + needWidth * width,
 						y1: y$1,
 						x2: x$2 + needWidth * width,
 						y2: y$1 + height
 					});
 				}
-				return /* @__PURE__ */ import_react.createElement("line", _extends$5({}, props, { className: clsx_default("recharts-cartesian-axis-line", (0, import_get$1.default)(axisLine, "className")) }));
+				return /* @__PURE__ */ import_react.createElement("line", _extends$6({}, props, { className: clsx_default("recharts-cartesian-axis-line", (0, import_get$1.default)(axisLine, "className")) }));
 			}
 		},
 		{
@@ -46639,15 +46981,15 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 			value: function renderTicks(ticks$1, fontSize, letterSpacing) {
 				var _this2 = this;
 				var _this$props6 = this.props, tickLine = _this$props6.tickLine, stroke = _this$props6.stroke, tick = _this$props6.tick, tickFormatter = _this$props6.tickFormatter, unit$1 = _this$props6.unit;
-				var finalTicks = getTicks(_objectSpread$4(_objectSpread$4({}, this.props), {}, { ticks: ticks$1 }), fontSize, letterSpacing);
+				var finalTicks = getTicks(_objectSpread$5(_objectSpread$5({}, this.props), {}, { ticks: ticks$1 }), fontSize, letterSpacing);
 				var textAnchor = this.getTickTextAnchor();
 				var verticalAnchor = this.getTickVerticalAnchor();
 				var axisProps = filterProps(this.props, false);
 				var customTickProps = filterProps(tick, false);
-				var tickLineProps = _objectSpread$4(_objectSpread$4({}, axisProps), {}, { fill: "none" }, filterProps(tickLine, false));
+				var tickLineProps = _objectSpread$5(_objectSpread$5({}, axisProps), {}, { fill: "none" }, filterProps(tickLine, false));
 				var items = finalTicks.map(function(entry, i) {
 					var _this2$getTickLineCoo = _this2.getTickLineCoord(entry), lineCoord = _this2$getTickLineCoo.line, tickCoord = _this2$getTickLineCoo.tick;
-					var tickProps = _objectSpread$4(_objectSpread$4(_objectSpread$4(_objectSpread$4({
+					var tickProps = _objectSpread$5(_objectSpread$5(_objectSpread$5(_objectSpread$5({
 						textAnchor,
 						verticalAnchor
 					}, axisProps), {}, {
@@ -46659,10 +47001,10 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 						visibleTicksCount: finalTicks.length,
 						tickFormatter
 					});
-					return /* @__PURE__ */ import_react.createElement(Layer, _extends$5({
+					return /* @__PURE__ */ import_react.createElement(Layer, _extends$6({
 						className: "recharts-cartesian-axis-tick",
 						key: "tick-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
-					}, adaptEventsOfChild(_this2.props, entry, i)), tickLine && /* @__PURE__ */ import_react.createElement("line", _extends$5({}, tickLineProps, lineCoord, { className: clsx_default("recharts-cartesian-axis-tick-line", (0, import_get$1.default)(tickLine, "className")) })), tick && CartesianAxis$1.renderTickItem(tick, tickProps, "".concat((0, import_isFunction$3.default)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value).concat(unit$1 || "")));
+					}, adaptEventsOfChild(_this2.props, entry, i)), tickLine && /* @__PURE__ */ import_react.createElement("line", _extends$6({}, tickLineProps, lineCoord, { className: clsx_default("recharts-cartesian-axis-tick-line", (0, import_get$1.default)(tickLine, "className")) })), tick && CartesianAxis$1.renderTickItem(tick, tickProps, "".concat((0, import_isFunction$4.default)(tickFormatter) ? tickFormatter(entry.value, i) : entry.value).concat(unit$1 || "")));
 				});
 				return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-axis-ticks" }, items);
 			}
@@ -46673,16 +47015,16 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 				var _this3 = this;
 				var _this$props7 = this.props, axisLine = _this$props7.axisLine, width = _this$props7.width, height = _this$props7.height, ticksGenerator = _this$props7.ticksGenerator, className = _this$props7.className;
 				if (_this$props7.hide) return null;
-				var _this$props8 = this.props, ticks$1 = _this$props8.ticks, noTicksProps = _objectWithoutProperties$3(_this$props8, _excluded3);
+				var _this$props8 = this.props, ticks$1 = _this$props8.ticks, noTicksProps = _objectWithoutProperties$4(_this$props8, _excluded3);
 				var finalTicks = ticks$1;
-				if ((0, import_isFunction$3.default)(ticksGenerator)) finalTicks = ticks$1 && ticks$1.length > 0 ? ticksGenerator(this.props) : ticksGenerator(noTicksProps);
+				if ((0, import_isFunction$4.default)(ticksGenerator)) finalTicks = ticks$1 && ticks$1.length > 0 ? ticksGenerator(this.props) : ticksGenerator(noTicksProps);
 				if (width <= 0 || height <= 0 || !finalTicks || !finalTicks.length) return null;
 				return /* @__PURE__ */ import_react.createElement(Layer, {
 					className: clsx_default("recharts-cartesian-axis", className),
 					ref: function ref(_ref2) {
 						_this3.layerReference = _ref2;
 					}
-				}, axisLine && this.renderAxisLine(), this.renderTicks(finalTicks, this.state.fontSize, this.state.letterSpacing), Label.renderCallByParent(this.props));
+				}, axisLine && this.renderAxisLine(), this.renderTicks(finalTicks, this.state.fontSize, this.state.letterSpacing), Label$2.renderCallByParent(this.props));
 			}
 		}
 	], [{
@@ -46690,15 +47032,15 @@ var CartesianAxis = /* @__PURE__ */ function(_Component) {
 		value: function renderTickItem(option, props, value) {
 			var tickItem;
 			var combinedClassName = clsx_default(props.className, "recharts-cartesian-axis-tick-value");
-			if (/* @__PURE__ */ import_react.isValidElement(option)) tickItem = /* @__PURE__ */ import_react.cloneElement(option, _objectSpread$4(_objectSpread$4({}, props), {}, { className: combinedClassName }));
-			else if ((0, import_isFunction$3.default)(option)) tickItem = option(_objectSpread$4(_objectSpread$4({}, props), {}, { className: combinedClassName }));
-			else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$5({}, props, { className: "recharts-cartesian-axis-tick-value" }), value);
+			if (/* @__PURE__ */ import_react.isValidElement(option)) tickItem = /* @__PURE__ */ import_react.cloneElement(option, _objectSpread$5(_objectSpread$5({}, props), {}, { className: combinedClassName }));
+			else if ((0, import_isFunction$4.default)(option)) tickItem = option(_objectSpread$5(_objectSpread$5({}, props), {}, { className: combinedClassName }));
+			else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$6({}, props, { className: "recharts-cartesian-axis-tick-value" }), value);
 			return tickItem;
 		}
 	}]);
 }(import_react.Component);
-_defineProperty$7(CartesianAxis, "displayName", "CartesianAxis");
-_defineProperty$7(CartesianAxis, "defaultProps", {
+_defineProperty$8(CartesianAxis, "displayName", "CartesianAxis");
+_defineProperty$8(CartesianAxis, "defaultProps", {
 	x: 0,
 	y: 0,
 	width: 0,
@@ -46721,23 +47063,23 @@ _defineProperty$7(CartesianAxis, "defaultProps", {
 	tickMargin: 2,
 	interval: "preserveEnd"
 });
-var import_isFunction$2 = /* @__PURE__ */ __toESM(require_isFunction());
-var _excluded$2 = [
+var import_isFunction$3 = /* @__PURE__ */ __toESM(require_isFunction());
+var _excluded$3 = [
 	"x1",
 	"y1",
 	"x2",
 	"y2",
 	"key"
-], _excluded2$2 = ["offset"];
-function _typeof$6(o) {
+], _excluded2$3 = ["offset"];
+function _typeof$7(o) {
 	"@babel/helpers - typeof";
-	return _typeof$6 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$7 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$6(o);
+	}, _typeof$7(o);
 }
-function ownKeys$3(e, r$1) {
+function ownKeys$4(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -46747,19 +47089,19 @@ function ownKeys$3(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$3(e) {
+function _objectSpread$4(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$3(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$6(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$4(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$7(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$4(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
 	return e;
 }
-function _defineProperty$6(obj, key, value) {
-	key = _toPropertyKey$6(key);
+function _defineProperty$7(obj, key, value) {
+	key = _toPropertyKey$7(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -46769,33 +47111,33 @@ function _defineProperty$6(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$6(t) {
-	var i = _toPrimitive$6(t, "string");
-	return "symbol" == _typeof$6(i) ? i : i + "";
+function _toPropertyKey$7(t) {
+	var i = _toPrimitive$7(t, "string");
+	return "symbol" == _typeof$7(i) ? i : i + "";
 }
-function _toPrimitive$6(t, r$1) {
-	if ("object" != _typeof$6(t) || !t) return t;
+function _toPrimitive$7(t, r$1) {
+	if ("object" != _typeof$7(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$6(i)) return i;
+		if ("object" != _typeof$7(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
 }
-function _extends$4() {
-	_extends$4 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$5() {
+	_extends$5 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$4.apply(this, arguments);
+	return _extends$5.apply(this, arguments);
 }
-function _objectWithoutProperties$2(source, excluded) {
+function _objectWithoutProperties$3(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$2(source, excluded);
+	var target = _objectWithoutPropertiesLoose$3(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -46808,7 +47150,7 @@ function _objectWithoutProperties$2(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$2(source, excluded) {
+function _objectWithoutPropertiesLoose$3(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -46836,12 +47178,12 @@ var Background = function Background$1(props) {
 function renderLineItem(option, props) {
 	var lineItem;
 	if (/* @__PURE__ */ import_react.isValidElement(option)) lineItem = /* @__PURE__ */ import_react.cloneElement(option, props);
-	else if ((0, import_isFunction$2.default)(option)) lineItem = option(props);
+	else if ((0, import_isFunction$3.default)(option)) lineItem = option(props);
 	else {
-		var x1 = props.x1, y1 = props.y1, x2 = props.x2, y2 = props.y2, key = props.key, _filterProps = filterProps(_objectWithoutProperties$2(props, _excluded$2), false);
+		var x1 = props.x1, y1 = props.y1, x2 = props.x2, y2 = props.y2, key = props.key, _filterProps = filterProps(_objectWithoutProperties$3(props, _excluded$3), false);
 		_filterProps.offset;
-		var restOfFilteredProps = _objectWithoutProperties$2(_filterProps, _excluded2$2);
-		lineItem = /* @__PURE__ */ import_react.createElement("line", _extends$4({}, restOfFilteredProps, {
+		var restOfFilteredProps = _objectWithoutProperties$3(_filterProps, _excluded2$3);
+		lineItem = /* @__PURE__ */ import_react.createElement("line", _extends$5({}, restOfFilteredProps, {
 			x1,
 			y1,
 			x2,
@@ -46856,7 +47198,7 @@ function HorizontalGridLines(props) {
 	var x$2 = props.x, width = props.width, _props$horizontal = props.horizontal, horizontal = _props$horizontal === void 0 ? true : _props$horizontal, horizontalPoints = props.horizontalPoints;
 	if (!horizontal || !horizontalPoints || !horizontalPoints.length) return null;
 	var items = horizontalPoints.map(function(entry, i) {
-		return renderLineItem(horizontal, _objectSpread$3(_objectSpread$3({}, props), {}, {
+		return renderLineItem(horizontal, _objectSpread$4(_objectSpread$4({}, props), {}, {
 			x1: x$2,
 			y1: entry,
 			x2: x$2 + width,
@@ -46871,7 +47213,7 @@ function VerticalGridLines(props) {
 	var y$1 = props.y, height = props.height, _props$vertical = props.vertical, vertical = _props$vertical === void 0 ? true : _props$vertical, verticalPoints = props.verticalPoints;
 	if (!vertical || !verticalPoints || !verticalPoints.length) return null;
 	var items = verticalPoints.map(function(entry, i) {
-		return renderLineItem(vertical, _objectSpread$3(_objectSpread$3({}, props), {}, {
+		return renderLineItem(vertical, _objectSpread$4(_objectSpread$4({}, props), {}, {
 			x1: entry,
 			y1: y$1,
 			x2: entry,
@@ -46938,7 +47280,7 @@ function VerticalStripes(props) {
 }
 var defaultVerticalCoordinatesGenerator = function defaultVerticalCoordinatesGenerator$1(_ref, syncWithTicks) {
 	var xAxis = _ref.xAxis, width = _ref.width, height = _ref.height, offset$3 = _ref.offset;
-	return getCoordinatesOfGrid(getTicks(_objectSpread$3(_objectSpread$3(_objectSpread$3({}, CartesianAxis.defaultProps), xAxis), {}, {
+	return getCoordinatesOfGrid(getTicks(_objectSpread$4(_objectSpread$4(_objectSpread$4({}, CartesianAxis.defaultProps), xAxis), {}, {
 		ticks: getTicksOfAxis(xAxis, true),
 		viewBox: {
 			x: 0,
@@ -46950,7 +47292,7 @@ var defaultVerticalCoordinatesGenerator = function defaultVerticalCoordinatesGen
 };
 var defaultHorizontalCoordinatesGenerator = function defaultHorizontalCoordinatesGenerator$1(_ref2, syncWithTicks) {
 	var yAxis = _ref2.yAxis, width = _ref2.width, height = _ref2.height, offset$3 = _ref2.offset;
-	return getCoordinatesOfGrid(getTicks(_objectSpread$3(_objectSpread$3(_objectSpread$3({}, CartesianAxis.defaultProps), yAxis), {}, {
+	return getCoordinatesOfGrid(getTicks(_objectSpread$4(_objectSpread$4(_objectSpread$4({}, CartesianAxis.defaultProps), yAxis), {}, {
 		ticks: getTicksOfAxis(yAxis, true),
 		viewBox: {
 			x: 0,
@@ -46975,7 +47317,7 @@ function CartesianGrid(props) {
 	var chartWidth = useChartWidth();
 	var chartHeight = useChartHeight();
 	var offset$3 = useOffset();
-	var propsIncludingDefaults = _objectSpread$3(_objectSpread$3({}, props), {}, {
+	var propsIncludingDefaults = _objectSpread$4(_objectSpread$4({}, props), {}, {
 		stroke: (_props$stroke = props.stroke) !== null && _props$stroke !== void 0 ? _props$stroke : defaultProps.stroke,
 		fill: (_props$fill = props.fill) !== null && _props$fill !== void 0 ? _props$fill : defaultProps.fill,
 		horizontal: (_props$horizontal3 = props.horizontal) !== null && _props$horizontal3 !== void 0 ? _props$horizontal3 : defaultProps.horizontal,
@@ -46994,26 +47336,26 @@ function CartesianGrid(props) {
 	var verticalCoordinatesGenerator = propsIncludingDefaults.verticalCoordinatesGenerator || defaultVerticalCoordinatesGenerator;
 	var horizontalCoordinatesGenerator = propsIncludingDefaults.horizontalCoordinatesGenerator || defaultHorizontalCoordinatesGenerator;
 	var horizontalPoints = propsIncludingDefaults.horizontalPoints, verticalPoints = propsIncludingDefaults.verticalPoints;
-	if ((!horizontalPoints || !horizontalPoints.length) && (0, import_isFunction$2.default)(horizontalCoordinatesGenerator)) {
+	if ((!horizontalPoints || !horizontalPoints.length) && (0, import_isFunction$3.default)(horizontalCoordinatesGenerator)) {
 		var isHorizontalValues = horizontalValues && horizontalValues.length;
 		var generatorResult = horizontalCoordinatesGenerator({
-			yAxis: yAxis ? _objectSpread$3(_objectSpread$3({}, yAxis), {}, { ticks: isHorizontalValues ? horizontalValues : yAxis.ticks }) : void 0,
+			yAxis: yAxis ? _objectSpread$4(_objectSpread$4({}, yAxis), {}, { ticks: isHorizontalValues ? horizontalValues : yAxis.ticks }) : void 0,
 			width: chartWidth,
 			height: chartHeight,
 			offset: offset$3
 		}, isHorizontalValues ? true : syncWithTicks);
-		warn(Array.isArray(generatorResult), "horizontalCoordinatesGenerator should return Array but instead it returned [".concat(_typeof$6(generatorResult), "]"));
+		warn(Array.isArray(generatorResult), "horizontalCoordinatesGenerator should return Array but instead it returned [".concat(_typeof$7(generatorResult), "]"));
 		if (Array.isArray(generatorResult)) horizontalPoints = generatorResult;
 	}
-	if ((!verticalPoints || !verticalPoints.length) && (0, import_isFunction$2.default)(verticalCoordinatesGenerator)) {
+	if ((!verticalPoints || !verticalPoints.length) && (0, import_isFunction$3.default)(verticalCoordinatesGenerator)) {
 		var isVerticalValues = verticalValues && verticalValues.length;
 		var _generatorResult = verticalCoordinatesGenerator({
-			xAxis: xAxis ? _objectSpread$3(_objectSpread$3({}, xAxis), {}, { ticks: isVerticalValues ? verticalValues : xAxis.ticks }) : void 0,
+			xAxis: xAxis ? _objectSpread$4(_objectSpread$4({}, xAxis), {}, { ticks: isVerticalValues ? verticalValues : xAxis.ticks }) : void 0,
 			width: chartWidth,
 			height: chartHeight,
 			offset: offset$3
 		}, isVerticalValues ? true : syncWithTicks);
-		warn(Array.isArray(_generatorResult), "verticalCoordinatesGenerator should return Array but instead it returned [".concat(_typeof$6(_generatorResult), "]"));
+		warn(Array.isArray(_generatorResult), "verticalCoordinatesGenerator should return Array but instead it returned [".concat(_typeof$7(_generatorResult), "]"));
 		if (Array.isArray(_generatorResult)) verticalPoints = _generatorResult;
 	}
 	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-grid" }, /* @__PURE__ */ import_react.createElement(Background, {
@@ -47024,39 +47366,39 @@ function CartesianGrid(props) {
 		width: propsIncludingDefaults.width,
 		height: propsIncludingDefaults.height,
 		ry: propsIncludingDefaults.ry
-	}), /* @__PURE__ */ import_react.createElement(HorizontalGridLines, _extends$4({}, propsIncludingDefaults, {
+	}), /* @__PURE__ */ import_react.createElement(HorizontalGridLines, _extends$5({}, propsIncludingDefaults, {
 		offset: offset$3,
 		horizontalPoints,
 		xAxis,
 		yAxis
-	})), /* @__PURE__ */ import_react.createElement(VerticalGridLines, _extends$4({}, propsIncludingDefaults, {
+	})), /* @__PURE__ */ import_react.createElement(VerticalGridLines, _extends$5({}, propsIncludingDefaults, {
 		offset: offset$3,
 		verticalPoints,
 		xAxis,
 		yAxis
-	})), /* @__PURE__ */ import_react.createElement(HorizontalStripes, _extends$4({}, propsIncludingDefaults, { horizontalPoints })), /* @__PURE__ */ import_react.createElement(VerticalStripes, _extends$4({}, propsIncludingDefaults, { verticalPoints })));
+	})), /* @__PURE__ */ import_react.createElement(HorizontalStripes, _extends$5({}, propsIncludingDefaults, { horizontalPoints })), /* @__PURE__ */ import_react.createElement(VerticalStripes, _extends$5({}, propsIncludingDefaults, { verticalPoints })));
 }
 CartesianGrid.displayName = "CartesianGrid";
-var import_isFunction$1 = /* @__PURE__ */ __toESM(require_isFunction());
-var import_isNil$1 = /* @__PURE__ */ __toESM(require_isNil());
-var import_isEqual = /* @__PURE__ */ __toESM(require_isEqual());
-var _excluded$1 = [
+var import_isFunction$2 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_isNil$2 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isEqual$1 = /* @__PURE__ */ __toESM(require_isEqual());
+var _excluded$2 = [
 	"type",
 	"layout",
 	"connectNulls",
 	"ref"
-], _excluded2$1 = ["key"];
-function _typeof$5(o) {
+], _excluded2$2 = ["key"];
+function _typeof$6(o) {
 	"@babel/helpers - typeof";
-	return _typeof$5 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+	return _typeof$6 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
 		return typeof o$1;
 	} : function(o$1) {
 		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-	}, _typeof$5(o);
+	}, _typeof$6(o);
 }
-function _objectWithoutProperties$1(source, excluded) {
+function _objectWithoutProperties$2(source, excluded) {
 	if (source == null) return {};
-	var target = _objectWithoutPropertiesLoose$1(source, excluded);
+	var target = _objectWithoutPropertiesLoose$2(source, excluded);
 	var key, i;
 	if (Object.getOwnPropertySymbols) {
 		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -47069,7 +47411,7 @@ function _objectWithoutProperties$1(source, excluded) {
 	}
 	return target;
 }
-function _objectWithoutPropertiesLoose$1(source, excluded) {
+function _objectWithoutPropertiesLoose$2(source, excluded) {
 	if (source == null) return {};
 	var target = {};
 	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -47078,17 +47420,17 @@ function _objectWithoutPropertiesLoose$1(source, excluded) {
 	}
 	return target;
 }
-function _extends$3() {
-	_extends$3 = Object.assign ? Object.assign.bind() : function(target) {
+function _extends$4() {
+	_extends$4 = Object.assign ? Object.assign.bind() : function(target) {
 		for (var i = 1; i < arguments.length; i++) {
 			var source = arguments[i];
 			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
 		}
 		return target;
 	};
-	return _extends$3.apply(this, arguments);
+	return _extends$4.apply(this, arguments);
 }
-function ownKeys$2(e, r$1) {
+function ownKeys$3(e, r$1) {
 	var t = Object.keys(e);
 	if (Object.getOwnPropertySymbols) {
 		var o = Object.getOwnPropertySymbols(e);
@@ -47098,12 +47440,12 @@ function ownKeys$2(e, r$1) {
 	}
 	return t;
 }
-function _objectSpread$2(e) {
+function _objectSpread$3(e) {
 	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
 		var t = null != arguments[r$1] ? arguments[r$1] : {};
-		r$1 % 2 ? ownKeys$2(Object(t), !0).forEach(function(r$2) {
-			_defineProperty$5(e, r$2, t[r$2]);
-		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function(r$2) {
+		r$1 % 2 ? ownKeys$3(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$6(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$3(Object(t)).forEach(function(r$2) {
 			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
 		});
 	}
@@ -47134,51 +47476,51 @@ function _arrayLikeToArray$2(arr, len) {
 	for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 	return arr2;
 }
-function _classCallCheck$4(instance, Constructor) {
+function _classCallCheck$5(instance, Constructor) {
 	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
-function _defineProperties$4(target, props) {
+function _defineProperties$5(target, props) {
 	for (var i = 0; i < props.length; i++) {
 		var descriptor = props[i];
 		descriptor.enumerable = descriptor.enumerable || false;
 		descriptor.configurable = true;
 		if ("value" in descriptor) descriptor.writable = true;
-		Object.defineProperty(target, _toPropertyKey$5(descriptor.key), descriptor);
+		Object.defineProperty(target, _toPropertyKey$6(descriptor.key), descriptor);
 	}
 }
-function _createClass$4(Constructor, protoProps, staticProps) {
-	if (protoProps) _defineProperties$4(Constructor.prototype, protoProps);
-	if (staticProps) _defineProperties$4(Constructor, staticProps);
+function _createClass$5(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$5(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$5(Constructor, staticProps);
 	Object.defineProperty(Constructor, "prototype", { writable: false });
 	return Constructor;
 }
-function _callSuper$3(t, o, e) {
-	return o = _getPrototypeOf$3(o), _possibleConstructorReturn$3(t, _isNativeReflectConstruct$3() ? Reflect.construct(o, e || [], _getPrototypeOf$3(t).constructor) : o.apply(t, e));
+function _callSuper$4(t, o, e) {
+	return o = _getPrototypeOf$4(o), _possibleConstructorReturn$4(t, _isNativeReflectConstruct$4() ? Reflect.construct(o, e || [], _getPrototypeOf$4(t).constructor) : o.apply(t, e));
 }
-function _possibleConstructorReturn$3(self$1, call) {
-	if (call && (_typeof$5(call) === "object" || typeof call === "function")) return call;
+function _possibleConstructorReturn$4(self$1, call) {
+	if (call && (_typeof$6(call) === "object" || typeof call === "function")) return call;
 	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
-	return _assertThisInitialized$3(self$1);
+	return _assertThisInitialized$4(self$1);
 }
-function _assertThisInitialized$3(self$1) {
+function _assertThisInitialized$4(self$1) {
 	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	return self$1;
 }
-function _isNativeReflectConstruct$3() {
+function _isNativeReflectConstruct$4() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$3 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$4 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
-function _getPrototypeOf$3(o) {
-	_getPrototypeOf$3 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+function _getPrototypeOf$4(o) {
+	_getPrototypeOf$4 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
-	return _getPrototypeOf$3(o);
+	return _getPrototypeOf$4(o);
 }
-function _inherits$3(subClass, superClass) {
+function _inherits$4(subClass, superClass) {
 	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
 	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
 		value: subClass,
@@ -47186,17 +47528,17 @@ function _inherits$3(subClass, superClass) {
 		configurable: true
 	} });
 	Object.defineProperty(subClass, "prototype", { writable: false });
-	if (superClass) _setPrototypeOf$3(subClass, superClass);
+	if (superClass) _setPrototypeOf$4(subClass, superClass);
 }
-function _setPrototypeOf$3(o, p) {
-	_setPrototypeOf$3 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+function _setPrototypeOf$4(o, p) {
+	_setPrototypeOf$4 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$3(o, p);
+	return _setPrototypeOf$4(o, p);
 }
-function _defineProperty$5(obj, key, value) {
-	key = _toPropertyKey$5(key);
+function _defineProperty$6(obj, key, value) {
+	key = _toPropertyKey$6(key);
 	if (key in obj) Object.defineProperty(obj, key, {
 		value,
 		enumerable: true,
@@ -47206,16 +47548,16 @@ function _defineProperty$5(obj, key, value) {
 	else obj[key] = value;
 	return obj;
 }
-function _toPropertyKey$5(t) {
-	var i = _toPrimitive$5(t, "string");
-	return "symbol" == _typeof$5(i) ? i : i + "";
+function _toPropertyKey$6(t) {
+	var i = _toPrimitive$6(t, "string");
+	return "symbol" == _typeof$6(i) ? i : i + "";
 }
-function _toPrimitive$5(t, r$1) {
-	if ("object" != _typeof$5(t) || !t) return t;
+function _toPrimitive$6(t, r$1) {
+	if ("object" != _typeof$6(t) || !t) return t;
 	var e = t[Symbol.toPrimitive];
 	if (void 0 !== e) {
 		var i = e.call(t, r$1 || "default");
-		if ("object" != _typeof$5(i)) return i;
+		if ("object" != _typeof$6(i)) return i;
 		throw new TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return ("string" === r$1 ? String : Number)(t);
@@ -47223,17 +47565,17 @@ function _toPrimitive$5(t, r$1) {
 var Line = /* @__PURE__ */ function(_PureComponent) {
 	function Line$1() {
 		var _this;
-		_classCallCheck$4(this, Line$1);
+		_classCallCheck$5(this, Line$1);
 		for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-		_this = _callSuper$3(this, Line$1, [].concat(args));
-		_defineProperty$5(_this, "state", {
+		_this = _callSuper$4(this, Line$1, [].concat(args));
+		_defineProperty$6(_this, "state", {
 			isAnimationFinished: true,
 			totalLength: 0
 		});
-		_defineProperty$5(_this, "generateSimpleStrokeDasharray", function(totalLength, length) {
+		_defineProperty$6(_this, "generateSimpleStrokeDasharray", function(totalLength, length) {
 			return "".concat(length, "px ").concat(totalLength - length, "px");
 		});
-		_defineProperty$5(_this, "getStrokeDasharray", function(length, totalLength, lines) {
+		_defineProperty$6(_this, "getStrokeDasharray", function(length, totalLength, lines) {
 			var lineLength = lines.reduce(function(pre, next) {
 				return pre + next;
 			});
@@ -47251,22 +47593,22 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 				return "".concat(line, "px");
 			}).join(", ");
 		});
-		_defineProperty$5(_this, "id", uniqueId("recharts-line-"));
-		_defineProperty$5(_this, "pathRef", function(node) {
+		_defineProperty$6(_this, "id", uniqueId("recharts-line-"));
+		_defineProperty$6(_this, "pathRef", function(node) {
 			_this.mainCurve = node;
 		});
-		_defineProperty$5(_this, "handleAnimationEnd", function() {
+		_defineProperty$6(_this, "handleAnimationEnd", function() {
 			_this.setState({ isAnimationFinished: true });
 			if (_this.props.onAnimationEnd) _this.props.onAnimationEnd();
 		});
-		_defineProperty$5(_this, "handleAnimationStart", function() {
+		_defineProperty$6(_this, "handleAnimationStart", function() {
 			_this.setState({ isAnimationFinished: false });
 			if (_this.props.onAnimationStart) _this.props.onAnimationStart();
 		});
 		return _this;
 	}
-	_inherits$3(Line$1, _PureComponent);
-	return _createClass$4(Line$1, [
+	_inherits$4(Line$1, _PureComponent);
+	return _createClass$5(Line$1, [
 		{
 			key: "componentDidMount",
 			value: function componentDidMount() {
@@ -47330,7 +47672,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 				var lineProps = filterProps(this.props, false);
 				var customDotProps = filterProps(dot, true);
 				var dots = points.map(function(entry, i) {
-					var dotProps = _objectSpread$2(_objectSpread$2(_objectSpread$2({
+					var dotProps = _objectSpread$3(_objectSpread$3(_objectSpread$3({
 						key: "dot-".concat(i),
 						r: 3
 					}, lineProps), customDotProps), {}, {
@@ -47345,7 +47687,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 					return Line$1.renderDotItem(dot, dotProps);
 				});
 				var dotsProps = { clipPath: needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : null };
-				return /* @__PURE__ */ import_react.createElement(Layer, _extends$3({
+				return /* @__PURE__ */ import_react.createElement(Layer, _extends$4({
 					className: "recharts-line-dots",
 					key: "dots"
 				}, dotsProps), dots);
@@ -47356,7 +47698,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderCurveStatically(points, needClip, clipPathId, props) {
 				var _this$props3 = this.props, type = _this$props3.type, layout = _this$props3.layout, connectNulls = _this$props3.connectNulls;
 				_this$props3.ref;
-				var curveProps = _objectSpread$2(_objectSpread$2(_objectSpread$2({}, filterProps(_objectWithoutProperties$1(_this$props3, _excluded$1), true)), {}, {
+				var curveProps = _objectSpread$3(_objectSpread$3(_objectSpread$3({}, filterProps(_objectWithoutProperties$2(_this$props3, _excluded$2), true)), {}, {
 					fill: "none",
 					className: "recharts-line-curve",
 					clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : null,
@@ -47366,7 +47708,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 					layout,
 					connectNulls
 				});
-				return /* @__PURE__ */ import_react.createElement(Curve, _extends$3({}, curveProps, { pathRef: this.pathRef }));
+				return /* @__PURE__ */ import_react.createElement(Curve, _extends$4({}, curveProps, { pathRef: this.pathRef }));
 			}
 		},
 		{
@@ -47395,7 +47737,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 								var prev = prevPoints[prevPointIndex];
 								var interpolatorX = interpolateNumber(prev.x, entry.x);
 								var interpolatorY = interpolateNumber(prev.y, entry.y);
-								return _objectSpread$2(_objectSpread$2({}, entry), {}, {
+								return _objectSpread$3(_objectSpread$3({}, entry), {}, {
 									x: interpolatorX(t),
 									y: interpolatorY(t)
 								});
@@ -47403,12 +47745,12 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 							if (animateNewValues) {
 								var _interpolatorX = interpolateNumber(width * 2, entry.x);
 								var _interpolatorY = interpolateNumber(height / 2, entry.y);
-								return _objectSpread$2(_objectSpread$2({}, entry), {}, {
+								return _objectSpread$3(_objectSpread$3({}, entry), {}, {
 									x: _interpolatorX(t),
 									y: _interpolatorY(t)
 								});
 							}
-							return _objectSpread$2(_objectSpread$2({}, entry), {}, {
+							return _objectSpread$3(_objectSpread$3({}, entry), {}, {
 								x: entry.x,
 								y: entry.y
 							});
@@ -47432,7 +47774,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderCurve(needClip, clipPathId) {
 				var _this$props5 = this.props, points = _this$props5.points, isAnimationActive = _this$props5.isAnimationActive;
 				var _this$state2 = this.state, prevPoints = _this$state2.prevPoints, totalLength = _this$state2.totalLength;
-				if (isAnimationActive && points && points.length && (!prevPoints && totalLength > 0 || !(0, import_isEqual.default)(prevPoints, points))) return this.renderCurveWithAnimation(needClip, clipPathId);
+				if (isAnimationActive && points && points.length && (!prevPoints && totalLength > 0 || !(0, import_isEqual$1.default)(prevPoints, points))) return this.renderCurveWithAnimation(needClip, clipPathId);
 				return this.renderCurveStatically(points, needClip, clipPathId);
 			}
 		},
@@ -47448,7 +47790,7 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 				var needClipX = xAxis && xAxis.allowDataOverflow;
 				var needClipY = yAxis && yAxis.allowDataOverflow;
 				var needClip = needClipX || needClipY;
-				var clipPathId = (0, import_isNil$1.default)(id) ? this.id : id;
+				var clipPathId = (0, import_isNil$2.default)(id) ? this.id : id;
 				var _ref2 = (_filterProps = filterProps(dot, false)) !== null && _filterProps !== void 0 ? _filterProps : {
 					r: 3,
 					strokeWidth: 2
@@ -47495,19 +47837,19 @@ var Line = /* @__PURE__ */ function(_PureComponent) {
 			value: function renderDotItem(option, props) {
 				var dotItem;
 				if (/* @__PURE__ */ import_react.isValidElement(option)) dotItem = /* @__PURE__ */ import_react.cloneElement(option, props);
-				else if ((0, import_isFunction$1.default)(option)) dotItem = option(props);
+				else if ((0, import_isFunction$2.default)(option)) dotItem = option(props);
 				else {
-					var key = props.key, dotProps = _objectWithoutProperties$1(props, _excluded2$1);
+					var key = props.key, dotProps = _objectWithoutProperties$2(props, _excluded2$2);
 					var className = clsx_default("recharts-line-dot", typeof option !== "boolean" ? option.className : "");
-					dotItem = /* @__PURE__ */ import_react.createElement(Dot, _extends$3({ key }, dotProps, { className }));
+					dotItem = /* @__PURE__ */ import_react.createElement(Dot, _extends$4({ key }, dotProps, { className }));
 				}
 				return dotItem;
 			}
 		}
 	]);
 }(import_react.PureComponent);
-_defineProperty$5(Line, "displayName", "Line");
-_defineProperty$5(Line, "defaultProps", {
+_defineProperty$6(Line, "displayName", "Line");
+_defineProperty$6(Line, "defaultProps", {
 	xAxisId: 0,
 	yAxisId: 0,
 	connectNulls: false,
@@ -47526,10 +47868,10 @@ _defineProperty$5(Line, "defaultProps", {
 	hide: false,
 	label: false
 });
-_defineProperty$5(Line, "getComposedData", function(_ref4) {
+_defineProperty$6(Line, "getComposedData", function(_ref4) {
 	var props = _ref4.props, xAxis = _ref4.xAxis, yAxis = _ref4.yAxis, xAxisTicks = _ref4.xAxisTicks, yAxisTicks = _ref4.yAxisTicks, dataKey = _ref4.dataKey, bandSize = _ref4.bandSize, displayedData = _ref4.displayedData, offset$3 = _ref4.offset;
 	var layout = props.layout;
-	return _objectSpread$2({
+	return _objectSpread$3({
 		points: displayedData.map(function(entry, index$1) {
 			var value = getValueByDataKey(entry, dataKey);
 			if (layout === "horizontal") return {
@@ -47540,12 +47882,12 @@ _defineProperty$5(Line, "getComposedData", function(_ref4) {
 					entry,
 					index: index$1
 				}),
-				y: (0, import_isNil$1.default)(value) ? null : yAxis.scale(value),
+				y: (0, import_isNil$2.default)(value) ? null : yAxis.scale(value),
 				value,
 				payload: entry
 			};
 			return {
-				x: (0, import_isNil$1.default)(value) ? null : xAxis.scale(value),
+				x: (0, import_isNil$2.default)(value) ? null : xAxis.scale(value),
 				y: getCateCoordinateOfLine({
 					axis: yAxis,
 					ticks: yAxisTicks,
@@ -47559,6 +47901,529 @@ _defineProperty$5(Line, "getComposedData", function(_ref4) {
 		}),
 		layout
 	}, offset$3);
+});
+var import_isFunction$1 = /* @__PURE__ */ __toESM(require_isFunction());
+var import_max = /* @__PURE__ */ __toESM(require_max());
+var import_isNil$1 = /* @__PURE__ */ __toESM(require_isNil());
+var import_isNaN = /* @__PURE__ */ __toESM(require_isNaN());
+var import_isEqual = /* @__PURE__ */ __toESM(require_isEqual());
+var _excluded$1 = [
+	"layout",
+	"type",
+	"stroke",
+	"connectNulls",
+	"isRange",
+	"ref"
+], _excluded2$1 = ["key"];
+var _Area;
+function _typeof$5(o) {
+	"@babel/helpers - typeof";
+	return _typeof$5 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o$1) {
+		return typeof o$1;
+	} : function(o$1) {
+		return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+	}, _typeof$5(o);
+}
+function _objectWithoutProperties$1(source, excluded) {
+	if (source == null) return {};
+	var target = _objectWithoutPropertiesLoose$1(source, excluded);
+	var key, i;
+	if (Object.getOwnPropertySymbols) {
+		var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+		for (i = 0; i < sourceSymbolKeys.length; i++) {
+			key = sourceSymbolKeys[i];
+			if (excluded.indexOf(key) >= 0) continue;
+			if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+function _objectWithoutPropertiesLoose$1(source, excluded) {
+	if (source == null) return {};
+	var target = {};
+	for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) {
+		if (excluded.indexOf(key) >= 0) continue;
+		target[key] = source[key];
+	}
+	return target;
+}
+function _extends$3() {
+	_extends$3 = Object.assign ? Object.assign.bind() : function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+			for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		}
+		return target;
+	};
+	return _extends$3.apply(this, arguments);
+}
+function ownKeys$2(e, r$1) {
+	var t = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var o = Object.getOwnPropertySymbols(e);
+		r$1 && (o = o.filter(function(r$2) {
+			return Object.getOwnPropertyDescriptor(e, r$2).enumerable;
+		})), t.push.apply(t, o);
+	}
+	return t;
+}
+function _objectSpread$2(e) {
+	for (var r$1 = 1; r$1 < arguments.length; r$1++) {
+		var t = null != arguments[r$1] ? arguments[r$1] : {};
+		r$1 % 2 ? ownKeys$2(Object(t), !0).forEach(function(r$2) {
+			_defineProperty$5(e, r$2, t[r$2]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function(r$2) {
+			Object.defineProperty(e, r$2, Object.getOwnPropertyDescriptor(t, r$2));
+		});
+	}
+	return e;
+}
+function _classCallCheck$4(instance, Constructor) {
+	if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties$4(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, _toPropertyKey$5(descriptor.key), descriptor);
+	}
+}
+function _createClass$4(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties$4(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties$4(Constructor, staticProps);
+	Object.defineProperty(Constructor, "prototype", { writable: false });
+	return Constructor;
+}
+function _callSuper$3(t, o, e) {
+	return o = _getPrototypeOf$3(o), _possibleConstructorReturn$3(t, _isNativeReflectConstruct$3() ? Reflect.construct(o, e || [], _getPrototypeOf$3(t).constructor) : o.apply(t, e));
+}
+function _possibleConstructorReturn$3(self$1, call) {
+	if (call && (_typeof$5(call) === "object" || typeof call === "function")) return call;
+	else if (call !== void 0) throw new TypeError("Derived constructors may only return object or undefined");
+	return _assertThisInitialized$3(self$1);
+}
+function _assertThisInitialized$3(self$1) {
+	if (self$1 === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	return self$1;
+}
+function _isNativeReflectConstruct$3() {
+	try {
+		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
+	} catch (t$1) {}
+	return (_isNativeReflectConstruct$3 = function _isNativeReflectConstruct$20() {
+		return !!t;
+	})();
+}
+function _getPrototypeOf$3(o) {
+	_getPrototypeOf$3 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
+		return o$1.__proto__ || Object.getPrototypeOf(o$1);
+	};
+	return _getPrototypeOf$3(o);
+}
+function _inherits$3(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+	subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
+		value: subClass,
+		writable: true,
+		configurable: true
+	} });
+	Object.defineProperty(subClass, "prototype", { writable: false });
+	if (superClass) _setPrototypeOf$3(subClass, superClass);
+}
+function _setPrototypeOf$3(o, p) {
+	_setPrototypeOf$3 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
+		o$1.__proto__ = p$1;
+		return o$1;
+	};
+	return _setPrototypeOf$3(o, p);
+}
+function _defineProperty$5(obj, key, value) {
+	key = _toPropertyKey$5(key);
+	if (key in obj) Object.defineProperty(obj, key, {
+		value,
+		enumerable: true,
+		configurable: true,
+		writable: true
+	});
+	else obj[key] = value;
+	return obj;
+}
+function _toPropertyKey$5(t) {
+	var i = _toPrimitive$5(t, "string");
+	return "symbol" == _typeof$5(i) ? i : i + "";
+}
+function _toPrimitive$5(t, r$1) {
+	if ("object" != _typeof$5(t) || !t) return t;
+	var e = t[Symbol.toPrimitive];
+	if (void 0 !== e) {
+		var i = e.call(t, r$1 || "default");
+		if ("object" != _typeof$5(i)) return i;
+		throw new TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return ("string" === r$1 ? String : Number)(t);
+}
+var Area = /* @__PURE__ */ function(_PureComponent) {
+	function Area$1() {
+		var _this;
+		_classCallCheck$4(this, Area$1);
+		for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+		_this = _callSuper$3(this, Area$1, [].concat(args));
+		_defineProperty$5(_this, "state", { isAnimationFinished: true });
+		_defineProperty$5(_this, "id", uniqueId("recharts-area-"));
+		_defineProperty$5(_this, "handleAnimationEnd", function() {
+			var onAnimationEnd = _this.props.onAnimationEnd;
+			_this.setState({ isAnimationFinished: true });
+			if ((0, import_isFunction$1.default)(onAnimationEnd)) onAnimationEnd();
+		});
+		_defineProperty$5(_this, "handleAnimationStart", function() {
+			var onAnimationStart = _this.props.onAnimationStart;
+			_this.setState({ isAnimationFinished: false });
+			if ((0, import_isFunction$1.default)(onAnimationStart)) onAnimationStart();
+		});
+		return _this;
+	}
+	_inherits$3(Area$1, _PureComponent);
+	return _createClass$4(Area$1, [
+		{
+			key: "renderDots",
+			value: function renderDots(needClip, clipDot, clipPathId) {
+				var isAnimationActive = this.props.isAnimationActive;
+				var isAnimationFinished = this.state.isAnimationFinished;
+				if (isAnimationActive && !isAnimationFinished) return null;
+				var _this$props = this.props, dot = _this$props.dot, points = _this$props.points, dataKey = _this$props.dataKey;
+				var areaProps = filterProps(this.props, false);
+				var customDotProps = filterProps(dot, true);
+				var dots = points.map(function(entry, i) {
+					var dotProps = _objectSpread$2(_objectSpread$2(_objectSpread$2({
+						key: "dot-".concat(i),
+						r: 3
+					}, areaProps), customDotProps), {}, {
+						index: i,
+						cx: entry.x,
+						cy: entry.y,
+						dataKey,
+						value: entry.value,
+						payload: entry.payload,
+						points
+					});
+					return Area$1.renderDotItem(dot, dotProps);
+				});
+				var dotsProps = { clipPath: needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : null };
+				return /* @__PURE__ */ import_react.createElement(Layer, _extends$3({ className: "recharts-area-dots" }, dotsProps), dots);
+			}
+		},
+		{
+			key: "renderHorizontalRect",
+			value: function renderHorizontalRect(alpha$1) {
+				var _this$props2 = this.props, baseLine = _this$props2.baseLine, points = _this$props2.points, strokeWidth = _this$props2.strokeWidth;
+				var startX = points[0].x;
+				var endX = points[points.length - 1].x;
+				var width = alpha$1 * Math.abs(startX - endX);
+				var maxY = (0, import_max.default)(points.map(function(entry) {
+					return entry.y || 0;
+				}));
+				if (isNumber(baseLine) && typeof baseLine === "number") maxY = Math.max(baseLine, maxY);
+				else if (baseLine && Array.isArray(baseLine) && baseLine.length) maxY = Math.max((0, import_max.default)(baseLine.map(function(entry) {
+					return entry.y || 0;
+				})), maxY);
+				if (isNumber(maxY)) return /* @__PURE__ */ import_react.createElement("rect", {
+					x: startX < endX ? startX : startX - width,
+					y: 0,
+					width,
+					height: Math.floor(maxY + (strokeWidth ? parseInt("".concat(strokeWidth), 10) : 1))
+				});
+				return null;
+			}
+		},
+		{
+			key: "renderVerticalRect",
+			value: function renderVerticalRect(alpha$1) {
+				var _this$props3 = this.props, baseLine = _this$props3.baseLine, points = _this$props3.points, strokeWidth = _this$props3.strokeWidth;
+				var startY = points[0].y;
+				var endY = points[points.length - 1].y;
+				var height = alpha$1 * Math.abs(startY - endY);
+				var maxX = (0, import_max.default)(points.map(function(entry) {
+					return entry.x || 0;
+				}));
+				if (isNumber(baseLine) && typeof baseLine === "number") maxX = Math.max(baseLine, maxX);
+				else if (baseLine && Array.isArray(baseLine) && baseLine.length) maxX = Math.max((0, import_max.default)(baseLine.map(function(entry) {
+					return entry.x || 0;
+				})), maxX);
+				if (isNumber(maxX)) return /* @__PURE__ */ import_react.createElement("rect", {
+					x: 0,
+					y: startY < endY ? startY : startY - height,
+					width: maxX + (strokeWidth ? parseInt("".concat(strokeWidth), 10) : 1),
+					height: Math.floor(height)
+				});
+				return null;
+			}
+		},
+		{
+			key: "renderClipRect",
+			value: function renderClipRect(alpha$1) {
+				if (this.props.layout === "vertical") return this.renderVerticalRect(alpha$1);
+				return this.renderHorizontalRect(alpha$1);
+			}
+		},
+		{
+			key: "renderAreaStatically",
+			value: function renderAreaStatically(points, baseLine, needClip, clipPathId) {
+				var _this$props4 = this.props, layout = _this$props4.layout, type = _this$props4.type, stroke = _this$props4.stroke, connectNulls = _this$props4.connectNulls, isRange = _this$props4.isRange;
+				_this$props4.ref;
+				var others = _objectWithoutProperties$1(_this$props4, _excluded$1);
+				return /* @__PURE__ */ import_react.createElement(Layer, { clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : null }, /* @__PURE__ */ import_react.createElement(Curve, _extends$3({}, filterProps(others, true), {
+					points,
+					connectNulls,
+					type,
+					baseLine,
+					layout,
+					stroke: "none",
+					className: "recharts-area-area"
+				})), stroke !== "none" && /* @__PURE__ */ import_react.createElement(Curve, _extends$3({}, filterProps(this.props, false), {
+					className: "recharts-area-curve",
+					layout,
+					type,
+					connectNulls,
+					fill: "none",
+					points
+				})), stroke !== "none" && isRange && /* @__PURE__ */ import_react.createElement(Curve, _extends$3({}, filterProps(this.props, false), {
+					className: "recharts-area-curve",
+					layout,
+					type,
+					connectNulls,
+					fill: "none",
+					points: baseLine
+				})));
+			}
+		},
+		{
+			key: "renderAreaWithAnimation",
+			value: function renderAreaWithAnimation(needClip, clipPathId) {
+				var _this2 = this;
+				var _this$props5 = this.props, points = _this$props5.points, baseLine = _this$props5.baseLine, isAnimationActive = _this$props5.isAnimationActive, animationBegin = _this$props5.animationBegin, animationDuration = _this$props5.animationDuration, animationEasing = _this$props5.animationEasing, animationId = _this$props5.animationId;
+				var _this$state = this.state, prevPoints = _this$state.prevPoints, prevBaseLine = _this$state.prevBaseLine;
+				return /* @__PURE__ */ import_react.createElement(es6_default, {
+					begin: animationBegin,
+					duration: animationDuration,
+					isActive: isAnimationActive,
+					easing: animationEasing,
+					from: { t: 0 },
+					to: { t: 1 },
+					key: "area-".concat(animationId),
+					onAnimationEnd: this.handleAnimationEnd,
+					onAnimationStart: this.handleAnimationStart
+				}, function(_ref) {
+					var t = _ref.t;
+					if (prevPoints) {
+						var prevPointsDiffFactor = prevPoints.length / points.length;
+						var stepPoints = points.map(function(entry, index$1) {
+							var prevPointIndex = Math.floor(index$1 * prevPointsDiffFactor);
+							if (prevPoints[prevPointIndex]) {
+								var prev = prevPoints[prevPointIndex];
+								var interpolatorX = interpolateNumber(prev.x, entry.x);
+								var interpolatorY = interpolateNumber(prev.y, entry.y);
+								return _objectSpread$2(_objectSpread$2({}, entry), {}, {
+									x: interpolatorX(t),
+									y: interpolatorY(t)
+								});
+							}
+							return entry;
+						});
+						var stepBaseLine;
+						if (isNumber(baseLine) && typeof baseLine === "number") stepBaseLine = interpolateNumber(prevBaseLine, baseLine)(t);
+						else if ((0, import_isNil$1.default)(baseLine) || (0, import_isNaN.default)(baseLine)) stepBaseLine = interpolateNumber(prevBaseLine, 0)(t);
+						else stepBaseLine = baseLine.map(function(entry, index$1) {
+							var prevPointIndex = Math.floor(index$1 * prevPointsDiffFactor);
+							if (prevBaseLine[prevPointIndex]) {
+								var prev = prevBaseLine[prevPointIndex];
+								var interpolatorX = interpolateNumber(prev.x, entry.x);
+								var interpolatorY = interpolateNumber(prev.y, entry.y);
+								return _objectSpread$2(_objectSpread$2({}, entry), {}, {
+									x: interpolatorX(t),
+									y: interpolatorY(t)
+								});
+							}
+							return entry;
+						});
+						return _this2.renderAreaStatically(stepPoints, stepBaseLine, needClip, clipPathId);
+					}
+					return /* @__PURE__ */ import_react.createElement(Layer, null, /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("clipPath", { id: "animationClipPath-".concat(clipPathId) }, _this2.renderClipRect(t))), /* @__PURE__ */ import_react.createElement(Layer, { clipPath: "url(#animationClipPath-".concat(clipPathId, ")") }, _this2.renderAreaStatically(points, baseLine, needClip, clipPathId)));
+				});
+			}
+		},
+		{
+			key: "renderArea",
+			value: function renderArea(needClip, clipPathId) {
+				var _this$props6 = this.props, points = _this$props6.points, baseLine = _this$props6.baseLine, isAnimationActive = _this$props6.isAnimationActive;
+				var _this$state2 = this.state, prevPoints = _this$state2.prevPoints, prevBaseLine = _this$state2.prevBaseLine, totalLength = _this$state2.totalLength;
+				if (isAnimationActive && points && points.length && (!prevPoints && totalLength > 0 || !(0, import_isEqual.default)(prevPoints, points) || !(0, import_isEqual.default)(prevBaseLine, baseLine))) return this.renderAreaWithAnimation(needClip, clipPathId);
+				return this.renderAreaStatically(points, baseLine, needClip, clipPathId);
+			}
+		},
+		{
+			key: "render",
+			value: function render() {
+				var _filterProps;
+				var _this$props7 = this.props, hide$3 = _this$props7.hide, dot = _this$props7.dot, points = _this$props7.points, className = _this$props7.className, top = _this$props7.top, left = _this$props7.left, xAxis = _this$props7.xAxis, yAxis = _this$props7.yAxis, width = _this$props7.width, height = _this$props7.height, isAnimationActive = _this$props7.isAnimationActive, id = _this$props7.id;
+				if (hide$3 || !points || !points.length) return null;
+				var isAnimationFinished = this.state.isAnimationFinished;
+				var hasSinglePoint = points.length === 1;
+				var layerClass = clsx_default("recharts-area", className);
+				var needClipX = xAxis && xAxis.allowDataOverflow;
+				var needClipY = yAxis && yAxis.allowDataOverflow;
+				var needClip = needClipX || needClipY;
+				var clipPathId = (0, import_isNil$1.default)(id) ? this.id : id;
+				var _ref2 = (_filterProps = filterProps(dot, false)) !== null && _filterProps !== void 0 ? _filterProps : {
+					r: 3,
+					strokeWidth: 2
+				}, _ref2$r = _ref2.r, r$1 = _ref2$r === void 0 ? 3 : _ref2$r, _ref2$strokeWidth = _ref2.strokeWidth, strokeWidth = _ref2$strokeWidth === void 0 ? 2 : _ref2$strokeWidth;
+				var _ref3$clipDot = (hasClipDot(dot) ? dot : {}).clipDot, clipDot = _ref3$clipDot === void 0 ? true : _ref3$clipDot;
+				var dotSize = r$1 * 2 + strokeWidth;
+				return /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, needClipX || needClipY ? /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("clipPath", { id: "clipPath-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement("rect", {
+					x: needClipX ? left : left - width / 2,
+					y: needClipY ? top : top - height / 2,
+					width: needClipX ? width : width * 2,
+					height: needClipY ? height : height * 2
+				})), !clipDot && /* @__PURE__ */ import_react.createElement("clipPath", { id: "clipPath-dots-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement("rect", {
+					x: left - dotSize / 2,
+					y: top - dotSize / 2,
+					width: width + dotSize,
+					height: height + dotSize
+				}))) : null, !hasSinglePoint ? this.renderArea(needClip, clipPathId) : null, (dot || hasSinglePoint) && this.renderDots(needClip, clipDot, clipPathId), (!isAnimationActive || isAnimationFinished) && LabelList.renderCallByParent(this.props, points));
+			}
+		}
+	], [{
+		key: "getDerivedStateFromProps",
+		value: function getDerivedStateFromProps(nextProps, prevState) {
+			if (nextProps.animationId !== prevState.prevAnimationId) return {
+				prevAnimationId: nextProps.animationId,
+				curPoints: nextProps.points,
+				curBaseLine: nextProps.baseLine,
+				prevPoints: prevState.curPoints,
+				prevBaseLine: prevState.curBaseLine
+			};
+			if (nextProps.points !== prevState.curPoints || nextProps.baseLine !== prevState.curBaseLine) return {
+				curPoints: nextProps.points,
+				curBaseLine: nextProps.baseLine
+			};
+			return null;
+		}
+	}]);
+}(import_react.PureComponent);
+_Area = Area;
+_defineProperty$5(Area, "displayName", "Area");
+_defineProperty$5(Area, "defaultProps", {
+	stroke: "#3182bd",
+	fill: "#3182bd",
+	fillOpacity: .6,
+	xAxisId: 0,
+	yAxisId: 0,
+	legendType: "line",
+	connectNulls: false,
+	points: [],
+	dot: false,
+	activeDot: true,
+	hide: false,
+	isAnimationActive: !Global.isSsr,
+	animationBegin: 0,
+	animationDuration: 1500,
+	animationEasing: "ease"
+});
+_defineProperty$5(Area, "getBaseValue", function(props, item, xAxis, yAxis) {
+	var layout = props.layout, chartBaseValue = props.baseValue;
+	var itemBaseValue = item.props.baseValue;
+	var baseValue = itemBaseValue !== null && itemBaseValue !== void 0 ? itemBaseValue : chartBaseValue;
+	if (isNumber(baseValue) && typeof baseValue === "number") return baseValue;
+	var numericAxis = layout === "horizontal" ? yAxis : xAxis;
+	var domain = numericAxis.scale.domain();
+	if (numericAxis.type === "number") {
+		var domainMax = Math.max(domain[0], domain[1]);
+		var domainMin = Math.min(domain[0], domain[1]);
+		if (baseValue === "dataMin") return domainMin;
+		if (baseValue === "dataMax") return domainMax;
+		return domainMax < 0 ? domainMax : Math.max(Math.min(domain[0], domain[1]), 0);
+	}
+	if (baseValue === "dataMin") return domain[0];
+	if (baseValue === "dataMax") return domain[1];
+	return domain[0];
+});
+_defineProperty$5(Area, "getComposedData", function(_ref4) {
+	var props = _ref4.props, item = _ref4.item, xAxis = _ref4.xAxis, yAxis = _ref4.yAxis, xAxisTicks = _ref4.xAxisTicks, yAxisTicks = _ref4.yAxisTicks, bandSize = _ref4.bandSize, dataKey = _ref4.dataKey, stackedData = _ref4.stackedData, dataStartIndex = _ref4.dataStartIndex, displayedData = _ref4.displayedData, offset$3 = _ref4.offset;
+	var layout = props.layout;
+	var hasStack = stackedData && stackedData.length;
+	var baseValue = _Area.getBaseValue(props, item, xAxis, yAxis);
+	var isHorizontalLayout = layout === "horizontal";
+	var isRange = false;
+	var points = displayedData.map(function(entry, index$1) {
+		var value;
+		if (hasStack) value = stackedData[dataStartIndex + index$1];
+		else {
+			value = getValueByDataKey(entry, dataKey);
+			if (!Array.isArray(value)) value = [baseValue, value];
+			else isRange = true;
+		}
+		var isBreakPoint = value[1] == null || hasStack && getValueByDataKey(entry, dataKey) == null;
+		if (isHorizontalLayout) return {
+			x: getCateCoordinateOfLine({
+				axis: xAxis,
+				ticks: xAxisTicks,
+				bandSize,
+				entry,
+				index: index$1
+			}),
+			y: isBreakPoint ? null : yAxis.scale(value[1]),
+			value,
+			payload: entry
+		};
+		return {
+			x: isBreakPoint ? null : xAxis.scale(value[1]),
+			y: getCateCoordinateOfLine({
+				axis: yAxis,
+				ticks: yAxisTicks,
+				bandSize,
+				entry,
+				index: index$1
+			}),
+			value,
+			payload: entry
+		};
+	});
+	var baseLine;
+	if (hasStack || isRange) baseLine = points.map(function(entry) {
+		var x$2 = Array.isArray(entry.value) ? entry.value[0] : null;
+		if (isHorizontalLayout) return {
+			x: entry.x,
+			y: x$2 != null && entry.y != null ? yAxis.scale(x$2) : null
+		};
+		return {
+			x: x$2 != null ? xAxis.scale(x$2) : null,
+			y: entry.y
+		};
+	});
+	else baseLine = isHorizontalLayout ? yAxis.scale(baseValue) : xAxis.scale(baseValue);
+	return _objectSpread$2({
+		points,
+		baseLine,
+		layout,
+		isRange
+	}, offset$3);
+});
+_defineProperty$5(Area, "renderDotItem", function(option, props) {
+	var dotItem;
+	if (/* @__PURE__ */ import_react.isValidElement(option)) dotItem = /* @__PURE__ */ import_react.cloneElement(option, props);
+	else if ((0, import_isFunction$1.default)(option)) dotItem = option(props);
+	else {
+		var className = clsx_default("recharts-area-dot", typeof option !== "boolean" ? option.className : "");
+		var key = props.key, rest = _objectWithoutProperties$1(props, _excluded2$1);
+		dotItem = /* @__PURE__ */ import_react.createElement(Dot, _extends$3({}, rest, {
+			key,
+			className
+		}));
+	}
+	return dotItem;
 });
 function _typeof$4(o) {
 	"@babel/helpers - typeof";
@@ -47602,12 +48467,12 @@ function _isNativeReflectConstruct$2() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$2 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$2 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
 function _getPrototypeOf$2(o) {
-	_getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+	_getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
 	return _getPrototypeOf$2(o);
@@ -47623,7 +48488,7 @@ function _inherits$2(subClass, superClass) {
 	if (superClass) _setPrototypeOf$2(subClass, superClass);
 }
 function _setPrototypeOf$2(o, p) {
-	_setPrototypeOf$2 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+	_setPrototypeOf$2 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
@@ -47758,12 +48623,12 @@ function _isNativeReflectConstruct$1() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct$1 = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct$1 = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
 function _getPrototypeOf$1(o) {
-	_getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+	_getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
 	return _getPrototypeOf$1(o);
@@ -47779,7 +48644,7 @@ function _inherits$1(subClass, superClass) {
 	if (superClass) _setPrototypeOf$1(subClass, superClass);
 }
 function _setPrototypeOf$1(o, p) {
-	_setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+	_setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
@@ -48456,12 +49321,12 @@ function _isNativeReflectConstruct() {
 	try {
 		var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
 	} catch (t$1) {}
-	return (_isNativeReflectConstruct = function _isNativeReflectConstruct$19() {
+	return (_isNativeReflectConstruct = function _isNativeReflectConstruct$20() {
 		return !!t;
 	})();
 }
 function _getPrototypeOf(o) {
-	_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$19(o$1) {
+	_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf$20(o$1) {
 		return o$1.__proto__ || Object.getPrototypeOf(o$1);
 	};
 	return _getPrototypeOf(o);
@@ -48477,7 +49342,7 @@ function _inherits(subClass, superClass) {
 	if (superClass) _setPrototypeOf(subClass, superClass);
 }
 function _setPrototypeOf(o, p) {
-	_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$19(o$1, p$1) {
+	_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$20(o$1, p$1) {
 		o$1.__proto__ = p$1;
 		return o$1;
 	};
@@ -49891,7 +50756,7 @@ var LineChart = generateCategoricalChart({
 		axisType: "yAxis",
 		AxisComp: YAxis
 	}],
-	formatAxisMap: formatAxisMap$1
+	formatAxisMap
 });
 var PieChart = generateCategoricalChart({
 	chartName: "PieChart",
@@ -49906,7 +50771,7 @@ var PieChart = generateCategoricalChart({
 		axisType: "radiusAxis",
 		AxisComp: PolarRadiusAxis
 	}],
-	formatAxisMap,
+	formatAxisMap: formatAxisMap$1,
 	defaultProps: {
 		layout: "centric",
 		startAngle: 0,
@@ -49916,6 +50781,18 @@ var PieChart = generateCategoricalChart({
 		innerRadius: 0,
 		outerRadius: "80%"
 	}
+});
+var AreaChart = generateCategoricalChart({
+	chartName: "AreaChart",
+	GraphicalChild: Area,
+	axisComponents: [{
+		axisType: "xAxis",
+		AxisComp: XAxis
+	}, {
+		axisType: "yAxis",
+		AxisComp: YAxis
+	}],
+	formatAxisMap
 });
 var THEMES = {
 	light: "",
@@ -50147,6 +51024,13 @@ function DistributionChart() {
 	});
 }
 function Index() {
+	const inventoryAlerts = Object.values(inventoryData).flat().filter((item) => item.qtd < item.minQtd).map((item) => ({
+		id: `inv-${item.id}`,
+		title: `Estoque Crítico: ${item.item}`,
+		desc: `A quantidade atual (${item.qtd} ${item.unidade}) está abaixo do limite mínimo aceitável (${item.minQtd}).`,
+		type: "destructive"
+	}));
+	const allAlerts = [...dashboardData.alerts, ...inventoryAlerts];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6",
 		children: [
@@ -50159,7 +51043,7 @@ function Index() {
 			})] }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "grid gap-4 md:grid-cols-2",
-				children: dashboardData.alerts.map((alert) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
+				children: allAlerts.map((alert) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
 					variant: alert.type,
 					className: "hover-lift bg-background",
 					children: [
@@ -50345,8 +51229,146 @@ function Badge({ className, variant, ...props }) {
 		...props
 	});
 }
+var chartConfig = {
+	actual: {
+		label: "Ganho Real (kg)",
+		color: "hsl(var(--primary))"
+	},
+	expected: {
+		label: "Projetado (kg)",
+		color: "hsl(var(--muted-foreground))"
+	}
+};
+function WeightGainChart({ loteId }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "h-[300px] w-full",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+				data: weightGainData[loteId] || weightGainData["default"],
+				margin: {
+					top: 10,
+					right: 10,
+					left: -20,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillActual",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-actual)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-actual)",
+							stopOpacity: 0
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillExpected",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-expected)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-expected)",
+							stopOpacity: 0
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						strokeDasharray: "3 3",
+						vertical: false,
+						stroke: "hsl(var(--border))"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "month",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 12,
+						tick: { fill: "hsl(var(--muted-foreground))" }
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 12,
+						domain: ["dataMin - 10", "dataMax + 10"],
+						tick: { fill: "hsl(var(--muted-foreground))" }
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+						cursor: false,
+						content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "expected",
+						stroke: "var(--color-expected)",
+						fill: "url(#fillExpected)",
+						strokeWidth: 2,
+						strokeDasharray: "4 4"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "actual",
+						stroke: "var(--color-actual)",
+						fill: "url(#fillActual)",
+						strokeWidth: 2
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) })
+				]
+			})
+		})
+	});
+}
+function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sheet, {
+		open,
+		onOpenChange,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
+			className: "sm:max-w-xl w-[95vw] overflow-y-auto",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, {
+				className: "pb-6 border-b",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetTitle, {
+					className: "text-2xl flex items-center gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-6 w-6 text-primary" }),
+						"Desempenho: ",
+						loteId
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Acompanhamento de ganho de peso real vs projetado com base no plano nutricional." })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "py-6 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "bg-muted/30 rounded-lg p-4 flex items-start gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-5 w-5 text-muted-foreground mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "font-semibold text-sm",
+						children: "Monitoramento de Nutrição"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mt-1",
+						children: "A linha pontilhada representa a meta estipulada para a dieta atual. Desvios significativos podem indicar problemas na pastagem ou deficiência na suplementação."
+					})] })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "rounded-xl border bg-card p-4 shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "font-medium mb-4 text-sm",
+						children: "Curva de Evolução (Últimos 5 meses)"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WeightGainChart, { loteId: loteId || "" })]
+				})]
+			})]
+		})
+	});
+}
 function Setor() {
 	const { id } = useParams();
+	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
 	const data = sectorData[id];
 	if (!data) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
 		to: "/",
@@ -50412,25 +51434,47 @@ function Setor() {
 							children: "Cabeças"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Localização" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status Sanitário" })
-					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-							className: "font-medium",
-							children: lote.id
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status Sanitário" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 							className: "text-right",
-							children: lote.cabecas
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.pasto }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-							variant: lote.status === "Saudável" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
-							children: lote.status
-						}) })
-					] }, lote.id)) })] })
+							children: "Desempenho"
+						})
+					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+						className: "cursor-pointer hover:bg-muted/50 transition-colors",
+						onClick: () => setSelectedLote(lote.id),
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "font-medium text-primary",
+								children: lote.id
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-right",
+								children: lote.cabecas
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.pasto }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: lote.status === "Saudável" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
+								children: lote.status
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-right",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "ghost",
+									size: "sm",
+									className: "h-8 w-8 p-0 text-muted-foreground hover:text-primary",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-4 w-4" })
+								})
+							})
+						]
+					}, lote.id)) })] })
 				})
-			})] })
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LotPerformanceDrawer, {
+				loteId: selectedLote,
+				open: !!selectedLote,
+				onOpenChange: (open) => !open && setSelectedLote(null)
+			})
 		]
 	});
 }
@@ -50490,14 +51534,14 @@ var EVENT_OPTIONS = {
 	bubbles: false,
 	cancelable: true
 };
-var GROUP_NAME = "RovingFocusGroup";
-var [Collection, useCollection, createCollectionScope] = createCollection(GROUP_NAME);
-var [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(GROUP_NAME, [createCollectionScope]);
-var [RovingFocusProvider, useRovingFocusContext] = createRovingFocusGroupContext(GROUP_NAME);
+var GROUP_NAME$2 = "RovingFocusGroup";
+var [Collection$1, useCollection$1, createCollectionScope$1] = createCollection(GROUP_NAME$2);
+var [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(GROUP_NAME$2, [createCollectionScope$1]);
+var [RovingFocusProvider, useRovingFocusContext] = createRovingFocusGroupContext(GROUP_NAME$2);
 var RovingFocusGroup = import_react.forwardRef((props, forwardedRef) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Provider, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Provider, {
 		scope: props.__scopeRovingFocusGroup,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Slot, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Slot, {
 			scope: props.__scopeRovingFocusGroup,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RovingFocusGroupImpl, {
 				...props,
@@ -50506,7 +51550,7 @@ var RovingFocusGroup = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-RovingFocusGroup.displayName = GROUP_NAME;
+RovingFocusGroup.displayName = GROUP_NAME$2;
 var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, orientation, loop = false, dir, currentTabStopId: currentTabStopIdProp, defaultCurrentTabStopId, onCurrentTabStopIdChange, onEntryFocus, preventScrollOnEntryFocus = false, ...groupProps } = props;
 	const ref = import_react.useRef(null);
@@ -50516,11 +51560,11 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		prop: currentTabStopIdProp,
 		defaultProp: defaultCurrentTabStopId ?? null,
 		onChange: onCurrentTabStopIdChange,
-		caller: GROUP_NAME
+		caller: GROUP_NAME$2
 	});
 	const [isTabbingBackOut, setIsTabbingBackOut] = import_react.useState(false);
 	const handleEntryFocus = useCallbackRef(onEntryFocus);
-	const getItems = useCollection(__scopeRovingFocusGroup);
+	const getItems = useCollection$1(__scopeRovingFocusGroup);
 	const isClickFocusRef = import_react.useRef(false);
 	const [focusableItemsCount, setFocusableItemsCount] = import_react.useState(0);
 	import_react.useEffect(() => {
@@ -50559,7 +51603,7 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 					event.currentTarget.dispatchEvent(entryFocusEvent);
 					if (!entryFocusEvent.defaultPrevented) {
 						const items = getItems().filter((item) => item.focusable);
-						focusFirst([
+						focusFirst$1([
 							items.find((item) => item.active),
 							items.find((item) => item.id === currentTabStopId),
 							...items
@@ -50572,14 +51616,14 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var ITEM_NAME = "RovingFocusGroupItem";
+var ITEM_NAME$2 = "RovingFocusGroupItem";
 var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, focusable = true, active = false, tabStopId, children, ...itemProps } = props;
 	const autoId = useId();
 	const id = tabStopId || autoId;
-	const context = useRovingFocusContext(ITEM_NAME, __scopeRovingFocusGroup);
+	const context = useRovingFocusContext(ITEM_NAME$2, __scopeRovingFocusGroup);
 	const isCurrentTabStop = context.currentTabStopId === id;
-	const getItems = useCollection(__scopeRovingFocusGroup);
+	const getItems = useCollection$1(__scopeRovingFocusGroup);
 	const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
 	import_react.useEffect(() => {
 		if (focusable) {
@@ -50591,7 +51635,7 @@ var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 		onFocusableItemAdd,
 		onFocusableItemRemove
 	]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.ItemSlot, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.ItemSlot, {
 		scope: __scopeRovingFocusGroup,
 		id,
 		focusable,
@@ -50621,9 +51665,9 @@ var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 					else if (focusIntent === "prev" || focusIntent === "next") {
 						if (focusIntent === "prev") candidateNodes.reverse();
 						const currentIndex = candidateNodes.indexOf(event.currentTarget);
-						candidateNodes = context.loop ? wrapArray(candidateNodes, currentIndex + 1) : candidateNodes.slice(currentIndex + 1);
+						candidateNodes = context.loop ? wrapArray$1(candidateNodes, currentIndex + 1) : candidateNodes.slice(currentIndex + 1);
 					}
-					setTimeout(() => focusFirst(candidateNodes));
+					setTimeout(() => focusFirst$1(candidateNodes));
 				}
 			}),
 			children: typeof children === "function" ? children({
@@ -50633,7 +51677,7 @@ var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-RovingFocusGroupItem.displayName = ITEM_NAME;
+RovingFocusGroupItem.displayName = ITEM_NAME$2;
 var MAP_KEY_TO_FOCUS_INTENT = {
 	ArrowLeft: "prev",
 	ArrowUp: "prev",
@@ -50654,7 +51698,7 @@ function getFocusIntent(event, orientation, dir) {
 	if (orientation === "horizontal" && ["ArrowUp", "ArrowDown"].includes(key)) return void 0;
 	return MAP_KEY_TO_FOCUS_INTENT[key];
 }
-function focusFirst(candidates, preventScroll = false) {
+function focusFirst$1(candidates, preventScroll = false) {
 	const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
 	for (const candidate of candidates) {
 		if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return;
@@ -50662,14 +51706,14 @@ function focusFirst(candidates, preventScroll = false) {
 		if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
 	}
 }
-function wrapArray(array, startIndex) {
+function wrapArray$1(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
 var Root = RovingFocusGroup;
 var Item = RovingFocusGroupItem;
 var TABS_NAME = "Tabs";
 var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [createRovingFocusGroupScope]);
-var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
 var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
 var Tabs$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
@@ -50701,7 +51745,7 @@ var TAB_LIST_NAME = "TabsList";
 var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
 		asChild: true,
 		...rovingFocusGroupScope,
@@ -50717,11 +51761,11 @@ var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 TabsList$1.displayName = TAB_LIST_NAME;
-var TRIGGER_NAME = "TabsTrigger";
+var TRIGGER_NAME$1 = "TabsTrigger";
 var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
-	const context = useTabsContext(TRIGGER_NAME, __scopeTabs);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	const context = useTabsContext(TRIGGER_NAME$1, __scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
 	const triggerId = makeTriggerId(context.baseId, value);
 	const contentId = makeContentId(context.baseId, value);
 	const isSelected = value === context.value;
@@ -50755,11 +51799,11 @@ var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TabsTrigger$1.displayName = TRIGGER_NAME;
-var CONTENT_NAME = "TabsContent";
+TabsTrigger$1.displayName = TRIGGER_NAME$1;
+var CONTENT_NAME$2 = "TabsContent";
 var TabsContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
-	const context = useTabsContext(CONTENT_NAME, __scopeTabs);
+	const context = useTabsContext(CONTENT_NAME$2, __scopeTabs);
 	const triggerId = makeTriggerId(context.baseId, value);
 	const contentId = makeContentId(context.baseId, value);
 	const isSelected = value === context.value;
@@ -50788,30 +51832,30 @@ var TabsContent$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TabsContent$1.displayName = CONTENT_NAME;
+TabsContent$1.displayName = CONTENT_NAME$2;
 function makeTriggerId(baseId, value) {
 	return `${baseId}-trigger-${value}`;
 }
 function makeContentId(baseId, value) {
 	return `${baseId}-content-${value}`;
 }
-var Root2 = Tabs$1;
+var Root2$1 = Tabs$1;
 var List = TabsList$1;
-var Trigger = TabsTrigger$1;
+var Trigger$1 = TabsTrigger$1;
 var Content = TabsContent$1;
-var Tabs = Root2;
+var Tabs = Root2$1;
 var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
 	ref,
 	className: cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
 	...props
 }));
 TabsList.displayName = List.displayName;
-var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trigger, {
+var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trigger$1, {
 	ref,
 	className: cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm", className),
 	...props
 }));
-TabsTrigger.displayName = Trigger.displayName;
+TabsTrigger.displayName = Trigger$1.displayName;
 var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content, {
 	ref,
 	className: cn("mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className),
@@ -50826,27 +51870,41 @@ function Estoque() {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 				className: "text-right",
-				children: "Quantidade"
+				children: "Qtd Atual"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+				className: "text-right hidden sm:table-cell",
+				children: "Mínimo"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Unidade" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status de Estoque" })
-		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-				className: "font-medium",
-				children: item.item
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.tipo }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-				className: "text-right font-mono",
-				children: item.qtd
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.unidade }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-				variant: item.status === "Baixo" ? "destructive" : "secondary",
-				className: item.status === "Baixo" ? "animate-pulse-slow" : "",
-				children: item.status
-			}) })
-		] }, item.id)) })] })
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => {
+			const isCritical = item.qtd < item.minQtd;
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+				className: isCritical ? "bg-destructive/5" : "",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium",
+						children: item.item
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.tipo }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: `text-right font-mono ${isCritical ? "text-destructive font-bold" : ""}`,
+						children: item.qtd
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right font-mono text-muted-foreground hidden sm:table-cell",
+						children: item.minQtd
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.unidade }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: isCritical ? "destructive" : "secondary",
+						className: isCritical ? "animate-pulse-slow" : "",
+						children: isCritical ? "Crítico" : "Normal"
+					}) })
+				]
+			}, item.id);
+		}) })] })
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up",
@@ -50902,7 +51960,1096 @@ function Estoque() {
 		})]
 	});
 }
+var SELECTION_KEYS = ["Enter", " "];
+var FIRST_KEYS = [
+	"ArrowDown",
+	"PageUp",
+	"Home"
+];
+var LAST_KEYS = [
+	"ArrowUp",
+	"PageDown",
+	"End"
+];
+var FIRST_LAST_KEYS = [...FIRST_KEYS, ...LAST_KEYS];
+var SUB_OPEN_KEYS = {
+	ltr: [...SELECTION_KEYS, "ArrowRight"],
+	rtl: [...SELECTION_KEYS, "ArrowLeft"]
+};
+var SUB_CLOSE_KEYS = {
+	ltr: ["ArrowLeft"],
+	rtl: ["ArrowRight"]
+};
+var MENU_NAME = "Menu";
+var [Collection, useCollection, createCollectionScope] = createCollection(MENU_NAME);
+var [createMenuContext, createMenuScope] = createContextScope(MENU_NAME, [
+	createCollectionScope,
+	createPopperScope,
+	createRovingFocusGroupScope
+]);
+var usePopperScope = createPopperScope();
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var [MenuProvider, useMenuContext] = createMenuContext(MENU_NAME);
+var [MenuRootProvider, useMenuRootContext] = createMenuContext(MENU_NAME);
+var Menu = (props) => {
+	const { __scopeMenu, open = false, children, dir, onOpenChange, modal = true } = props;
+	const popperScope = usePopperScope(__scopeMenu);
+	const [content, setContent] = import_react.useState(null);
+	const isUsingKeyboardRef = import_react.useRef(false);
+	const handleOpenChange = useCallbackRef(onOpenChange);
+	const direction = useDirection(dir);
+	import_react.useEffect(() => {
+		const handleKeyDown = () => {
+			isUsingKeyboardRef.current = true;
+			document.addEventListener("pointerdown", handlePointer, {
+				capture: true,
+				once: true
+			});
+			document.addEventListener("pointermove", handlePointer, {
+				capture: true,
+				once: true
+			});
+		};
+		const handlePointer = () => isUsingKeyboardRef.current = false;
+		document.addEventListener("keydown", handleKeyDown, { capture: true });
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown, { capture: true });
+			document.removeEventListener("pointerdown", handlePointer, { capture: true });
+			document.removeEventListener("pointermove", handlePointer, { capture: true });
+		};
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+		...popperScope,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
+			scope: __scopeMenu,
+			open,
+			onOpenChange: handleOpenChange,
+			content,
+			onContentChange: setContent,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuRootProvider, {
+				scope: __scopeMenu,
+				onClose: import_react.useCallback(() => handleOpenChange(false), [handleOpenChange]),
+				isUsingKeyboardRef,
+				dir: direction,
+				modal,
+				children
+			})
+		})
+	});
+};
+Menu.displayName = MENU_NAME;
+var ANCHOR_NAME = "MenuAnchor";
+var MenuAnchor = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, ...anchorProps } = props;
+	const popperScope = usePopperScope(__scopeMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor, {
+		...popperScope,
+		...anchorProps,
+		ref: forwardedRef
+	});
+});
+MenuAnchor.displayName = ANCHOR_NAME;
+var PORTAL_NAME$1 = "MenuPortal";
+var [PortalProvider, usePortalContext] = createMenuContext(PORTAL_NAME$1, { forceMount: void 0 });
+var MenuPortal = (props) => {
+	const { __scopeMenu, forceMount, children, container } = props;
+	const context = useMenuContext(PORTAL_NAME$1, __scopeMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider, {
+		scope: __scopeMenu,
+		forceMount,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+			present: forceMount || context.open,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+				asChild: true,
+				container,
+				children
+			})
+		})
+	});
+};
+MenuPortal.displayName = PORTAL_NAME$1;
+var CONTENT_NAME$1 = "MenuContent";
+var [MenuContentProvider, useMenuContentContext] = createMenuContext(CONTENT_NAME$1);
+var MenuContent = import_react.forwardRef((props, forwardedRef) => {
+	const portalContext = usePortalContext(CONTENT_NAME$1, props.__scopeMenu);
+	const { forceMount = portalContext.forceMount, ...contentProps } = props;
+	const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
+	const rootContext = useMenuRootContext(CONTENT_NAME$1, props.__scopeMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Provider, {
+		scope: props.__scopeMenu,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+			present: forceMount || context.open,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Slot, {
+				scope: props.__scopeMenu,
+				children: rootContext.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuRootContentModal, {
+					...contentProps,
+					ref: forwardedRef
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuRootContentNonModal, {
+					...contentProps,
+					ref: forwardedRef
+				})
+			})
+		})
+	});
+});
+var MenuRootContentModal = import_react.forwardRef((props, forwardedRef) => {
+	const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
+	import_react.useEffect(() => {
+		const content = ref.current;
+		if (content) return hideOthers(content);
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuContentImpl, {
+		...props,
+		ref: composedRefs,
+		trapFocus: context.open,
+		disableOutsidePointerEvents: context.open,
+		disableOutsideScroll: true,
+		onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) => event.preventDefault(), { checkForDefaultPrevented: false }),
+		onDismiss: () => context.onOpenChange(false)
+	});
+});
+var MenuRootContentNonModal = import_react.forwardRef((props, forwardedRef) => {
+	const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuContentImpl, {
+		...props,
+		ref: forwardedRef,
+		trapFocus: false,
+		disableOutsidePointerEvents: false,
+		disableOutsideScroll: false,
+		onDismiss: () => context.onOpenChange(false)
+	});
+});
+var Slot = /* @__PURE__ */ createSlot("MenuContent.ScrollLock");
+var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, loop = false, trapFocus, onOpenAutoFocus, onCloseAutoFocus, disableOutsidePointerEvents, onEntryFocus, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, onDismiss, disableOutsideScroll, ...contentProps } = props;
+	const context = useMenuContext(CONTENT_NAME$1, __scopeMenu);
+	const rootContext = useMenuRootContext(CONTENT_NAME$1, __scopeMenu);
+	const popperScope = usePopperScope(__scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
+	const getItems = useCollection(__scopeMenu);
+	const [currentItemId, setCurrentItemId] = import_react.useState(null);
+	const contentRef = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, contentRef, context.onContentChange);
+	const timerRef = import_react.useRef(0);
+	const searchRef = import_react.useRef("");
+	const pointerGraceTimerRef = import_react.useRef(0);
+	const pointerGraceIntentRef = import_react.useRef(null);
+	const pointerDirRef = import_react.useRef("right");
+	const lastPointerXRef = import_react.useRef(0);
+	const ScrollLockWrapper = disableOutsideScroll ? Combination_default : import_react.Fragment;
+	const scrollLockWrapperProps = disableOutsideScroll ? {
+		as: Slot,
+		allowPinchZoom: true
+	} : void 0;
+	const handleTypeaheadSearch = (key) => {
+		const search = searchRef.current + key;
+		const items = getItems().filter((item) => !item.disabled);
+		const currentItem = document.activeElement;
+		const currentMatch = items.find((item) => item.ref.current === currentItem)?.textValue;
+		const nextMatch = getNextMatch(items.map((item) => item.textValue), search, currentMatch);
+		const newItem = items.find((item) => item.textValue === nextMatch)?.ref.current;
+		(function updateSearch(value) {
+			searchRef.current = value;
+			window.clearTimeout(timerRef.current);
+			if (value !== "") timerRef.current = window.setTimeout(() => updateSearch(""), 1e3);
+		})(search);
+		if (newItem) setTimeout(() => newItem.focus());
+	};
+	import_react.useEffect(() => {
+		return () => window.clearTimeout(timerRef.current);
+	}, []);
+	useFocusGuards();
+	const isPointerMovingToSubmenu = import_react.useCallback((event) => {
+		return pointerDirRef.current === pointerGraceIntentRef.current?.side && isPointerInGraceArea(event, pointerGraceIntentRef.current?.area);
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuContentProvider, {
+		scope: __scopeMenu,
+		searchRef,
+		onItemEnter: import_react.useCallback((event) => {
+			if (isPointerMovingToSubmenu(event)) event.preventDefault();
+		}, [isPointerMovingToSubmenu]),
+		onItemLeave: import_react.useCallback((event) => {
+			if (isPointerMovingToSubmenu(event)) return;
+			contentRef.current?.focus();
+			setCurrentItemId(null);
+		}, [isPointerMovingToSubmenu]),
+		onTriggerLeave: import_react.useCallback((event) => {
+			if (isPointerMovingToSubmenu(event)) event.preventDefault();
+		}, [isPointerMovingToSubmenu]),
+		pointerGraceTimerRef,
+		onPointerGraceIntentChange: import_react.useCallback((intent) => {
+			pointerGraceIntentRef.current = intent;
+		}, []),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScrollLockWrapper, {
+			...scrollLockWrapperProps,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
+				asChild: true,
+				trapped: trapFocus,
+				onMountAutoFocus: composeEventHandlers(onOpenAutoFocus, (event) => {
+					event.preventDefault();
+					contentRef.current?.focus({ preventScroll: true });
+				}),
+				onUnmountAutoFocus: onCloseAutoFocus,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DismissableLayer, {
+					asChild: true,
+					disableOutsidePointerEvents,
+					onEscapeKeyDown,
+					onPointerDownOutside,
+					onFocusOutside,
+					onInteractOutside,
+					onDismiss,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
+						asChild: true,
+						...rovingFocusGroupScope,
+						dir: rootContext.dir,
+						orientation: "vertical",
+						loop,
+						currentTabStopId: currentItemId,
+						onCurrentTabStopIdChange: setCurrentItemId,
+						onEntryFocus: composeEventHandlers(onEntryFocus, (event) => {
+							if (!rootContext.isUsingKeyboardRef.current) event.preventDefault();
+						}),
+						preventScrollOnEntryFocus: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
+							role: "menu",
+							"aria-orientation": "vertical",
+							"data-state": getOpenState(context.open),
+							"data-radix-menu-content": "",
+							dir: rootContext.dir,
+							...popperScope,
+							...contentProps,
+							ref: composedRefs,
+							style: {
+								outline: "none",
+								...contentProps.style
+							},
+							onKeyDown: composeEventHandlers(contentProps.onKeyDown, (event) => {
+								const isKeyDownInside = event.target.closest("[data-radix-menu-content]") === event.currentTarget;
+								const isModifierKey = event.ctrlKey || event.altKey || event.metaKey;
+								const isCharacterKey = event.key.length === 1;
+								if (isKeyDownInside) {
+									if (event.key === "Tab") event.preventDefault();
+									if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key);
+								}
+								const content = contentRef.current;
+								if (event.target !== content) return;
+								if (!FIRST_LAST_KEYS.includes(event.key)) return;
+								event.preventDefault();
+								const candidateNodes = getItems().filter((item) => !item.disabled).map((item) => item.ref.current);
+								if (LAST_KEYS.includes(event.key)) candidateNodes.reverse();
+								focusFirst(candidateNodes);
+							}),
+							onBlur: composeEventHandlers(props.onBlur, (event) => {
+								if (!event.currentTarget.contains(event.target)) {
+									window.clearTimeout(timerRef.current);
+									searchRef.current = "";
+								}
+							}),
+							onPointerMove: composeEventHandlers(props.onPointerMove, whenMouse((event) => {
+								const target = event.target;
+								const pointerXHasChanged = lastPointerXRef.current !== event.clientX;
+								if (event.currentTarget.contains(target) && pointerXHasChanged) {
+									pointerDirRef.current = event.clientX > lastPointerXRef.current ? "right" : "left";
+									lastPointerXRef.current = event.clientX;
+								}
+							}))
+						})
+					})
+				})
+			})
+		})
+	});
+});
+MenuContent.displayName = CONTENT_NAME$1;
+var GROUP_NAME$1 = "MenuGroup";
+var MenuGroup = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, ...groupProps } = props;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+		role: "group",
+		...groupProps,
+		ref: forwardedRef
+	});
+});
+MenuGroup.displayName = GROUP_NAME$1;
+var LABEL_NAME$1 = "MenuLabel";
+var MenuLabel = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, ...labelProps } = props;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+		...labelProps,
+		ref: forwardedRef
+	});
+});
+MenuLabel.displayName = LABEL_NAME$1;
+var ITEM_NAME$1 = "MenuItem";
+var ITEM_SELECT = "menu.itemSelect";
+var MenuItem = import_react.forwardRef((props, forwardedRef) => {
+	const { disabled = false, onSelect, ...itemProps } = props;
+	const ref = import_react.useRef(null);
+	const rootContext = useMenuRootContext(ITEM_NAME$1, props.__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$1, props.__scopeMenu);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const isPointerDownRef = import_react.useRef(false);
+	const handleSelect = () => {
+		const menuItem = ref.current;
+		if (!disabled && menuItem) {
+			const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
+				bubbles: true,
+				cancelable: true
+			});
+			menuItem.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), { once: true });
+			dispatchDiscreteCustomEvent(menuItem, itemSelectEvent);
+			if (itemSelectEvent.defaultPrevented) isPointerDownRef.current = false;
+			else rootContext.onClose();
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuItemImpl, {
+		...itemProps,
+		ref: composedRefs,
+		disabled,
+		onClick: composeEventHandlers(props.onClick, handleSelect),
+		onPointerDown: (event) => {
+			props.onPointerDown?.(event);
+			isPointerDownRef.current = true;
+		},
+		onPointerUp: composeEventHandlers(props.onPointerUp, (event) => {
+			if (!isPointerDownRef.current) event.currentTarget?.click();
+		}),
+		onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+			const isTypingAhead = contentContext.searchRef.current !== "";
+			if (disabled || isTypingAhead && event.key === " ") return;
+			if (SELECTION_KEYS.includes(event.key)) {
+				event.currentTarget.click();
+				event.preventDefault();
+			}
+		})
+	});
+});
+MenuItem.displayName = ITEM_NAME$1;
+var MenuItemImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, disabled = false, textValue, ...itemProps } = props;
+	const contentContext = useMenuContentContext(ITEM_NAME$1, __scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const [isFocused, setIsFocused] = import_react.useState(false);
+	const [textContent, setTextContent] = import_react.useState("");
+	import_react.useEffect(() => {
+		const menuItem = ref.current;
+		if (menuItem) setTextContent((menuItem.textContent ?? "").trim());
+	}, [itemProps.children]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.ItemSlot, {
+		scope: __scopeMenu,
+		disabled,
+		textValue: textValue ?? textContent,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item, {
+			asChild: true,
+			...rovingFocusGroupScope,
+			focusable: !disabled,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+				role: "menuitem",
+				"data-highlighted": isFocused ? "" : void 0,
+				"aria-disabled": disabled || void 0,
+				"data-disabled": disabled ? "" : void 0,
+				...itemProps,
+				ref: composedRefs,
+				onPointerMove: composeEventHandlers(props.onPointerMove, whenMouse((event) => {
+					if (disabled) contentContext.onItemLeave(event);
+					else {
+						contentContext.onItemEnter(event);
+						if (!event.defaultPrevented) event.currentTarget.focus({ preventScroll: true });
+					}
+				})),
+				onPointerLeave: composeEventHandlers(props.onPointerLeave, whenMouse((event) => contentContext.onItemLeave(event))),
+				onFocus: composeEventHandlers(props.onFocus, () => setIsFocused(true)),
+				onBlur: composeEventHandlers(props.onBlur, () => setIsFocused(false))
+			})
+		})
+	});
+});
+var CHECKBOX_ITEM_NAME$1 = "MenuCheckboxItem";
+var MenuCheckboxItem = import_react.forwardRef((props, forwardedRef) => {
+	const { checked = false, onCheckedChange, ...checkboxItemProps } = props;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicatorProvider, {
+		scope: props.__scopeMenu,
+		checked,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuItem, {
+			role: "menuitemcheckbox",
+			"aria-checked": isIndeterminate(checked) ? "mixed" : checked,
+			...checkboxItemProps,
+			ref: forwardedRef,
+			"data-state": getCheckedState(checked),
+			onSelect: composeEventHandlers(checkboxItemProps.onSelect, () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked), { checkForDefaultPrevented: false })
+		})
+	});
+});
+MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME$1;
+var RADIO_GROUP_NAME$1 = "MenuRadioGroup";
+var [RadioGroupProvider, useRadioGroupContext] = createMenuContext(RADIO_GROUP_NAME$1, {
+	value: void 0,
+	onValueChange: () => {}
+});
+var MenuRadioGroup = import_react.forwardRef((props, forwardedRef) => {
+	const { value, onValueChange, ...groupProps } = props;
+	const handleValueChange = useCallbackRef(onValueChange);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupProvider, {
+		scope: props.__scopeMenu,
+		value,
+		onValueChange: handleValueChange,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuGroup, {
+			...groupProps,
+			ref: forwardedRef
+		})
+	});
+});
+MenuRadioGroup.displayName = RADIO_GROUP_NAME$1;
+var RADIO_ITEM_NAME$1 = "MenuRadioItem";
+var MenuRadioItem = import_react.forwardRef((props, forwardedRef) => {
+	const { value, ...radioItemProps } = props;
+	const context = useRadioGroupContext(RADIO_ITEM_NAME$1, props.__scopeMenu);
+	const checked = value === context.value;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicatorProvider, {
+		scope: props.__scopeMenu,
+		checked,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuItem, {
+			role: "menuitemradio",
+			"aria-checked": checked,
+			...radioItemProps,
+			ref: forwardedRef,
+			"data-state": getCheckedState(checked),
+			onSelect: composeEventHandlers(radioItemProps.onSelect, () => context.onValueChange?.(value), { checkForDefaultPrevented: false })
+		})
+	});
+});
+MenuRadioItem.displayName = RADIO_ITEM_NAME$1;
+var ITEM_INDICATOR_NAME = "MenuItemIndicator";
+var [ItemIndicatorProvider, useItemIndicatorContext] = createMenuContext(ITEM_INDICATOR_NAME, { checked: false });
+var MenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, forceMount, ...itemIndicatorProps } = props;
+	const indicatorContext = useItemIndicatorContext(ITEM_INDICATOR_NAME, __scopeMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || isIndeterminate(indicatorContext.checked) || indicatorContext.checked === true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
+			...itemIndicatorProps,
+			ref: forwardedRef,
+			"data-state": getCheckedState(indicatorContext.checked)
+		})
+	});
+});
+MenuItemIndicator.displayName = ITEM_INDICATOR_NAME;
+var SEPARATOR_NAME$1 = "MenuSeparator";
+var MenuSeparator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, ...separatorProps } = props;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+		role: "separator",
+		"aria-orientation": "horizontal",
+		...separatorProps,
+		ref: forwardedRef
+	});
+});
+MenuSeparator.displayName = SEPARATOR_NAME$1;
+var ARROW_NAME$1 = "MenuArrow";
+var MenuArrow = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeMenu, ...arrowProps } = props;
+	const popperScope = usePopperScope(__scopeMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow, {
+		...popperScope,
+		...arrowProps,
+		ref: forwardedRef
+	});
+});
+MenuArrow.displayName = ARROW_NAME$1;
+var SUB_NAME = "MenuSub";
+var [MenuSubProvider, useMenuSubContext] = createMenuContext(SUB_NAME);
+var MenuSub = (props) => {
+	const { __scopeMenu, children, open = false, onOpenChange } = props;
+	const parentMenuContext = useMenuContext(SUB_NAME, __scopeMenu);
+	const popperScope = usePopperScope(__scopeMenu);
+	const [trigger, setTrigger] = import_react.useState(null);
+	const [content, setContent] = import_react.useState(null);
+	const handleOpenChange = useCallbackRef(onOpenChange);
+	import_react.useEffect(() => {
+		if (parentMenuContext.open === false) handleOpenChange(false);
+		return () => handleOpenChange(false);
+	}, [parentMenuContext.open, handleOpenChange]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+		...popperScope,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
+			scope: __scopeMenu,
+			open,
+			onOpenChange: handleOpenChange,
+			content,
+			onContentChange: setContent,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuSubProvider, {
+				scope: __scopeMenu,
+				contentId: useId(),
+				triggerId: useId(),
+				trigger,
+				onTriggerChange: setTrigger,
+				children
+			})
+		})
+	});
+};
+MenuSub.displayName = SUB_NAME;
+var SUB_TRIGGER_NAME$1 = "MenuSubTrigger";
+var MenuSubTrigger = import_react.forwardRef((props, forwardedRef) => {
+	const context = useMenuContext(SUB_TRIGGER_NAME$1, props.__scopeMenu);
+	const rootContext = useMenuRootContext(SUB_TRIGGER_NAME$1, props.__scopeMenu);
+	const subContext = useMenuSubContext(SUB_TRIGGER_NAME$1, props.__scopeMenu);
+	const contentContext = useMenuContentContext(SUB_TRIGGER_NAME$1, props.__scopeMenu);
+	const openTimerRef = import_react.useRef(null);
+	const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext;
+	const scope = { __scopeMenu: props.__scopeMenu };
+	const clearOpenTimer = import_react.useCallback(() => {
+		if (openTimerRef.current) window.clearTimeout(openTimerRef.current);
+		openTimerRef.current = null;
+	}, []);
+	import_react.useEffect(() => clearOpenTimer, [clearOpenTimer]);
+	import_react.useEffect(() => {
+		const pointerGraceTimer = pointerGraceTimerRef.current;
+		return () => {
+			window.clearTimeout(pointerGraceTimer);
+			onPointerGraceIntentChange(null);
+		};
+	}, [pointerGraceTimerRef, onPointerGraceIntentChange]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuAnchor, {
+		asChild: true,
+		...scope,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuItemImpl, {
+			id: subContext.triggerId,
+			"aria-haspopup": "menu",
+			"aria-expanded": context.open,
+			"aria-controls": subContext.contentId,
+			"data-state": getOpenState(context.open),
+			...props,
+			ref: composeRefs(forwardedRef, subContext.onTriggerChange),
+			onClick: (event) => {
+				props.onClick?.(event);
+				if (props.disabled || event.defaultPrevented) return;
+				event.currentTarget.focus();
+				if (!context.open) context.onOpenChange(true);
+			},
+			onPointerMove: composeEventHandlers(props.onPointerMove, whenMouse((event) => {
+				contentContext.onItemEnter(event);
+				if (event.defaultPrevented) return;
+				if (!props.disabled && !context.open && !openTimerRef.current) {
+					contentContext.onPointerGraceIntentChange(null);
+					openTimerRef.current = window.setTimeout(() => {
+						context.onOpenChange(true);
+						clearOpenTimer();
+					}, 100);
+				}
+			})),
+			onPointerLeave: composeEventHandlers(props.onPointerLeave, whenMouse((event) => {
+				clearOpenTimer();
+				const contentRect = context.content?.getBoundingClientRect();
+				if (contentRect) {
+					const side = context.content?.dataset.side;
+					const rightSide = side === "right";
+					const bleed = rightSide ? -5 : 5;
+					const contentNearEdge = contentRect[rightSide ? "left" : "right"];
+					const contentFarEdge = contentRect[rightSide ? "right" : "left"];
+					contentContext.onPointerGraceIntentChange({
+						area: [
+							{
+								x: event.clientX + bleed,
+								y: event.clientY
+							},
+							{
+								x: contentNearEdge,
+								y: contentRect.top
+							},
+							{
+								x: contentFarEdge,
+								y: contentRect.top
+							},
+							{
+								x: contentFarEdge,
+								y: contentRect.bottom
+							},
+							{
+								x: contentNearEdge,
+								y: contentRect.bottom
+							}
+						],
+						side
+					});
+					window.clearTimeout(pointerGraceTimerRef.current);
+					pointerGraceTimerRef.current = window.setTimeout(() => contentContext.onPointerGraceIntentChange(null), 300);
+				} else {
+					contentContext.onTriggerLeave(event);
+					if (event.defaultPrevented) return;
+					contentContext.onPointerGraceIntentChange(null);
+				}
+			})),
+			onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+				const isTypingAhead = contentContext.searchRef.current !== "";
+				if (props.disabled || isTypingAhead && event.key === " ") return;
+				if (SUB_OPEN_KEYS[rootContext.dir].includes(event.key)) {
+					context.onOpenChange(true);
+					context.content?.focus();
+					event.preventDefault();
+				}
+			})
+		})
+	});
+});
+MenuSubTrigger.displayName = SUB_TRIGGER_NAME$1;
+var SUB_CONTENT_NAME$1 = "MenuSubContent";
+var MenuSubContent = import_react.forwardRef((props, forwardedRef) => {
+	const portalContext = usePortalContext(CONTENT_NAME$1, props.__scopeMenu);
+	const { forceMount = portalContext.forceMount, ...subContentProps } = props;
+	const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
+	const rootContext = useMenuRootContext(CONTENT_NAME$1, props.__scopeMenu);
+	const subContext = useMenuSubContext(SUB_CONTENT_NAME$1, props.__scopeMenu);
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Provider, {
+		scope: props.__scopeMenu,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+			present: forceMount || context.open,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Slot, {
+				scope: props.__scopeMenu,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuContentImpl, {
+					id: subContext.contentId,
+					"aria-labelledby": subContext.triggerId,
+					...subContentProps,
+					ref: composedRefs,
+					align: "start",
+					side: rootContext.dir === "rtl" ? "left" : "right",
+					disableOutsidePointerEvents: false,
+					disableOutsideScroll: false,
+					trapFocus: false,
+					onOpenAutoFocus: (event) => {
+						if (rootContext.isUsingKeyboardRef.current) ref.current?.focus();
+						event.preventDefault();
+					},
+					onCloseAutoFocus: (event) => event.preventDefault(),
+					onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) => {
+						if (event.target !== subContext.trigger) context.onOpenChange(false);
+					}),
+					onEscapeKeyDown: composeEventHandlers(props.onEscapeKeyDown, (event) => {
+						rootContext.onClose();
+						event.preventDefault();
+					}),
+					onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+						const isKeyDownInside = event.currentTarget.contains(event.target);
+						const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir].includes(event.key);
+						if (isKeyDownInside && isCloseKey) {
+							context.onOpenChange(false);
+							subContext.trigger?.focus();
+							event.preventDefault();
+						}
+					})
+				})
+			})
+		})
+	});
+});
+MenuSubContent.displayName = SUB_CONTENT_NAME$1;
+function getOpenState(open) {
+	return open ? "open" : "closed";
+}
+function isIndeterminate(checked) {
+	return checked === "indeterminate";
+}
+function getCheckedState(checked) {
+	return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
+}
+function focusFirst(candidates) {
+	const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
+	for (const candidate of candidates) {
+		if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return;
+		candidate.focus();
+		if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
+	}
+}
+function wrapArray(array, startIndex) {
+	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
+}
+function getNextMatch(values, search, currentMatch) {
+	const normalizedSearch = search.length > 1 && Array.from(search).every((char) => char === search[0]) ? search[0] : search;
+	const currentMatchIndex = currentMatch ? values.indexOf(currentMatch) : -1;
+	let wrappedValues = wrapArray(values, Math.max(currentMatchIndex, 0));
+	if (normalizedSearch.length === 1) wrappedValues = wrappedValues.filter((v) => v !== currentMatch);
+	const nextMatch = wrappedValues.find((value) => value.toLowerCase().startsWith(normalizedSearch.toLowerCase()));
+	return nextMatch !== currentMatch ? nextMatch : void 0;
+}
+function isPointInPolygon(point$3, polygon) {
+	const { x: x$2, y: y$1 } = point$3;
+	let inside = false;
+	for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+		const ii = polygon[i];
+		const jj = polygon[j];
+		const xi = ii.x;
+		const yi = ii.y;
+		const xj = jj.x;
+		const yj = jj.y;
+		if (yi > y$1 !== yj > y$1 && x$2 < (xj - xi) * (y$1 - yi) / (yj - yi) + xi) inside = !inside;
+	}
+	return inside;
+}
+function isPointerInGraceArea(event, area) {
+	if (!area) return false;
+	return isPointInPolygon({
+		x: event.clientX,
+		y: event.clientY
+	}, area);
+}
+function whenMouse(handler) {
+	return (event) => event.pointerType === "mouse" ? handler(event) : void 0;
+}
+var Root3 = Menu;
+var Anchor2 = MenuAnchor;
+var Portal$1 = MenuPortal;
+var Content2$1 = MenuContent;
+var Group = MenuGroup;
+var Label$1 = MenuLabel;
+var Item2$1 = MenuItem;
+var CheckboxItem = MenuCheckboxItem;
+var RadioGroup = MenuRadioGroup;
+var RadioItem = MenuRadioItem;
+var ItemIndicator = MenuItemIndicator;
+var Separator = MenuSeparator;
+var Arrow2 = MenuArrow;
+var SubTrigger = MenuSubTrigger;
+var SubContent = MenuSubContent;
+var DROPDOWN_MENU_NAME = "DropdownMenu";
+var [createDropdownMenuContext, createDropdownMenuScope] = createContextScope(DROPDOWN_MENU_NAME, [createMenuScope]);
+var useMenuScope = createMenuScope();
+var [DropdownMenuProvider, useDropdownMenuContext] = createDropdownMenuContext(DROPDOWN_MENU_NAME);
+var DropdownMenu$1 = (props) => {
+	const { __scopeDropdownMenu, children, dir, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	const triggerRef = import_react.useRef(null);
+	const [open, setOpen] = useControllableState({
+		prop: openProp,
+		defaultProp: defaultOpen ?? false,
+		onChange: onOpenChange,
+		caller: DROPDOWN_MENU_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuProvider, {
+		scope: __scopeDropdownMenu,
+		triggerId: useId(),
+		triggerRef,
+		contentId: useId(),
+		open,
+		onOpenChange: setOpen,
+		onOpenToggle: import_react.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
+		modal,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root3, {
+			...menuScope,
+			open,
+			onOpenChange: setOpen,
+			dir,
+			modal,
+			children
+		})
+	});
+};
+DropdownMenu$1.displayName = DROPDOWN_MENU_NAME;
+var TRIGGER_NAME = "DropdownMenuTrigger";
+var DropdownMenuTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, disabled = false, ...triggerProps } = props;
+	const context = useDropdownMenuContext(TRIGGER_NAME, __scopeDropdownMenu);
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor2, {
+		asChild: true,
+		...menuScope,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+			type: "button",
+			id: context.triggerId,
+			"aria-haspopup": "menu",
+			"aria-expanded": context.open,
+			"aria-controls": context.open ? context.contentId : void 0,
+			"data-state": context.open ? "open" : "closed",
+			"data-disabled": disabled ? "" : void 0,
+			disabled,
+			...triggerProps,
+			ref: composeRefs(forwardedRef, context.triggerRef),
+			onPointerDown: composeEventHandlers(props.onPointerDown, (event) => {
+				if (!disabled && event.button === 0 && event.ctrlKey === false) {
+					context.onOpenToggle();
+					if (!context.open) event.preventDefault();
+				}
+			}),
+			onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+				if (disabled) return;
+				if (["Enter", " "].includes(event.key)) context.onOpenToggle();
+				if (event.key === "ArrowDown") context.onOpenChange(true);
+				if ([
+					"Enter",
+					" ",
+					"ArrowDown"
+				].includes(event.key)) event.preventDefault();
+			})
+		})
+	});
+});
+DropdownMenuTrigger$1.displayName = TRIGGER_NAME;
+var PORTAL_NAME = "DropdownMenuPortal";
+var DropdownMenuPortal$1 = (props) => {
+	const { __scopeDropdownMenu, ...portalProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
+		...menuScope,
+		...portalProps
+	});
+};
+DropdownMenuPortal$1.displayName = PORTAL_NAME;
+var CONTENT_NAME = "DropdownMenuContent";
+var DropdownMenuContent$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...contentProps } = props;
+	const context = useDropdownMenuContext(CONTENT_NAME, __scopeDropdownMenu);
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	const hasInteractedOutsideRef = import_react.useRef(false);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$1, {
+		id: context.contentId,
+		"aria-labelledby": context.triggerId,
+		...menuScope,
+		...contentProps,
+		ref: forwardedRef,
+		onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
+			if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus();
+			hasInteractedOutsideRef.current = false;
+			event.preventDefault();
+		}),
+		onInteractOutside: composeEventHandlers(props.onInteractOutside, (event) => {
+			const originalEvent = event.detail.originalEvent;
+			const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
+			const isRightClick = originalEvent.button === 2 || ctrlLeftClick;
+			if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true;
+		}),
+		style: {
+			...props.style,
+			"--radix-dropdown-menu-content-transform-origin": "var(--radix-popper-transform-origin)",
+			"--radix-dropdown-menu-content-available-width": "var(--radix-popper-available-width)",
+			"--radix-dropdown-menu-content-available-height": "var(--radix-popper-available-height)",
+			"--radix-dropdown-menu-trigger-width": "var(--radix-popper-anchor-width)",
+			"--radix-dropdown-menu-trigger-height": "var(--radix-popper-anchor-height)"
+		}
+	});
+});
+DropdownMenuContent$1.displayName = CONTENT_NAME;
+var GROUP_NAME = "DropdownMenuGroup";
+var DropdownMenuGroup$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...groupProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
+		...menuScope,
+		...groupProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuGroup$1.displayName = GROUP_NAME;
+var LABEL_NAME = "DropdownMenuLabel";
+var DropdownMenuLabel$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...labelProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label$1, {
+		...menuScope,
+		...labelProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuLabel$1.displayName = LABEL_NAME;
+var ITEM_NAME = "DropdownMenuItem";
+var DropdownMenuItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...itemProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
+		...menuScope,
+		...itemProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuItem$1.displayName = ITEM_NAME;
+var CHECKBOX_ITEM_NAME = "DropdownMenuCheckboxItem";
+var DropdownMenuCheckboxItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...checkboxItemProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxItem, {
+		...menuScope,
+		...checkboxItemProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuCheckboxItem$1.displayName = CHECKBOX_ITEM_NAME;
+var RADIO_GROUP_NAME = "DropdownMenuRadioGroup";
+var DropdownMenuRadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...radioGroupProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroup, {
+		...menuScope,
+		...radioGroupProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuRadioGroup$1.displayName = RADIO_GROUP_NAME;
+var RADIO_ITEM_NAME = "DropdownMenuRadioItem";
+var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...radioItemProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioItem, {
+		...menuScope,
+		...radioItemProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuRadioItem$1.displayName = RADIO_ITEM_NAME;
+var INDICATOR_NAME = "DropdownMenuItemIndicator";
+var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...itemIndicatorProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator, {
+		...menuScope,
+		...itemIndicatorProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuItemIndicator.displayName = INDICATOR_NAME;
+var SEPARATOR_NAME = "DropdownMenuSeparator";
+var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...separatorProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
+		...menuScope,
+		...separatorProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuSeparator$1.displayName = SEPARATOR_NAME;
+var ARROW_NAME = "DropdownMenuArrow";
+var DropdownMenuArrow = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...arrowProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow2, {
+		...menuScope,
+		...arrowProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuArrow.displayName = ARROW_NAME;
+var SUB_TRIGGER_NAME = "DropdownMenuSubTrigger";
+var DropdownMenuSubTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...subTriggerProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SubTrigger, {
+		...menuScope,
+		...subTriggerProps,
+		ref: forwardedRef
+	});
+});
+DropdownMenuSubTrigger$1.displayName = SUB_TRIGGER_NAME;
+var SUB_CONTENT_NAME = "DropdownMenuSubContent";
+var DropdownMenuSubContent$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDropdownMenu, ...subContentProps } = props;
+	const menuScope = useMenuScope(__scopeDropdownMenu);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SubContent, {
+		...menuScope,
+		...subContentProps,
+		ref: forwardedRef,
+		style: {
+			...props.style,
+			"--radix-dropdown-menu-content-transform-origin": "var(--radix-popper-transform-origin)",
+			"--radix-dropdown-menu-content-available-width": "var(--radix-popper-available-width)",
+			"--radix-dropdown-menu-content-available-height": "var(--radix-popper-available-height)",
+			"--radix-dropdown-menu-trigger-width": "var(--radix-popper-anchor-width)",
+			"--radix-dropdown-menu-trigger-height": "var(--radix-popper-anchor-height)"
+		}
+	});
+});
+DropdownMenuSubContent$1.displayName = SUB_CONTENT_NAME;
+var Root2 = DropdownMenu$1;
+var Trigger = DropdownMenuTrigger$1;
+var Portal2 = DropdownMenuPortal$1;
+var Content2 = DropdownMenuContent$1;
+var Label2 = DropdownMenuLabel$1;
+var Item2 = DropdownMenuItem$1;
+var CheckboxItem2 = DropdownMenuCheckboxItem$1;
+var RadioItem2 = DropdownMenuRadioItem$1;
+var ItemIndicator2 = DropdownMenuItemIndicator;
+var Separator2 = DropdownMenuSeparator$1;
+var SubTrigger2 = DropdownMenuSubTrigger$1;
+var SubContent2 = DropdownMenuSubContent$1;
+var DropdownMenu = Root2;
+var DropdownMenuTrigger = Trigger;
+var DropdownMenuSubTrigger = import_react.forwardRef(({ className, inset, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SubTrigger2, {
+	ref,
+	className: cn("flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
+	...props,
+	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "ml-auto" })]
+}));
+DropdownMenuSubTrigger.displayName = SubTrigger2.displayName;
+var DropdownMenuSubContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SubContent2, {
+	ref,
+	className: cn("z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]", className),
+	...props
+}));
+DropdownMenuSubContent.displayName = SubContent2.displayName;
+var DropdownMenuContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2, {
+	ref,
+	sideOffset,
+	className: cn("z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]", className),
+	...props
+}) }));
+DropdownMenuContent.displayName = Content2.displayName;
+var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+	ref,
+	className: cn("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
+	...props
+}));
+DropdownMenuItem.displayName = Item2.displayName;
+var DropdownMenuCheckboxItem = import_react.forwardRef(({ className, children, checked, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CheckboxItem2, {
+	ref,
+	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
+	checked,
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+		className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" }) })
+	}), children]
+}));
+DropdownMenuCheckboxItem.displayName = CheckboxItem2.displayName;
+var DropdownMenuRadioItem = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadioItem2, {
+	ref,
+	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+		className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Circle, { className: "h-2 w-2 fill-current" }) })
+	}), children]
+}));
+DropdownMenuRadioItem.displayName = RadioItem2.displayName;
+var DropdownMenuLabel = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label2, {
+	ref,
+	className: cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className),
+	...props
+}));
+DropdownMenuLabel.displayName = Label2.displayName;
+var DropdownMenuSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator2, {
+	ref,
+	className: cn("-mx-1 my-1 h-px bg-muted", className),
+	...props
+}));
+DropdownMenuSeparator.displayName = Separator2.displayName;
+var DropdownMenuShortcut = ({ className, ...props }) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+		className: cn("ml-auto text-xs tracking-widest opacity-60", className),
+		...props
+	});
+};
+DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 function Financeiro() {
+	const { toast: toast$2 } = useToast();
+	const handleExport = (format$1) => {
+		toast$2({
+			title: "Relatório Gerado",
+			description: `O balanço financeiro está sendo baixado em formato ${format$1.toUpperCase()}.`
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up",
 		children: [
@@ -50916,11 +53063,30 @@ function Financeiro() {
 					children: "Acompanhamento de fluxo de caixa e centro de custos."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex gap-2 w-full sm:w-auto",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						variant: "outline",
-						className: "flex-1 sm:flex-none gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" }), " Relatório"]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "outline",
+							className: "flex-1 sm:flex-none gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" }), " Exportar Balanço"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+						align: "end",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Formato do Relatório" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+								onClick: () => handleExport("pdf"),
+								className: "gap-2 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" }), " Exportar em PDF"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+								onClick: () => handleExport("excel"),
+								className: "gap-2 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "h-4 w-4" }), " Exportar em Excel"]
+							})
+						]
+					})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 						className: "flex-1 sm:flex-none gap-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Lançamento"]
 					})]
@@ -51005,6 +53171,166 @@ function Financeiro() {
 		]
 	});
 }
+function QuickEventModal({ animalId }) {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const handleSave = () => {
+		toast$2({
+			title: "Evento registrado",
+			description: `Novo evento salvo para o animal ${animalId}.`
+		});
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				size: "sm",
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Registrar Evento"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Novo Evento Sanitário ou Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogDescription, { children: [
+			"Atualize o histórico individual do animal ",
+			animalId,
+			"."
+		] })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "space-y-4 py-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Evento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+						defaultValue: "pesagem",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "pesagem",
+								children: "Pesagem"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "vacinacao",
+								children: "Vacinação"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "medicacao",
+								children: "Medicação"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "transferencia",
+								children: "Transferência de Lote"
+							})
+						] })]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Valor / Detalhe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, { placeholder: "Ex: 250 kg ou Nome da Vacina" })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					onClick: handleSave,
+					className: "w-full",
+					children: "Salvar Histórico"
+				})
+			]
+		})] })]
+	});
+}
+function AnimalProfile() {
+	const { id } = useParams();
+	const animal = animalData[id || ""] || animalData["TAG-1234"];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					variant: "ghost",
+					size: "icon",
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+						to: "/",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-4 w-4" })
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+					className: "text-3xl font-bold tracking-tight",
+					children: ["Ficha do Animal: ", animal.id]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Histórico de ciclo de vida, saúde e pesagens."
+				})] })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 sm:grid-cols-2 lg:grid-cols-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm text-muted-foreground",
+							children: "Categoria"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-xl font-bold",
+						children: animal.categoria
+					}) })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm text-muted-foreground",
+							children: "Lote"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-xl font-bold",
+						children: animal.lote
+					}) })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm text-muted-foreground",
+							children: "Peso Atual"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-xl font-bold text-primary",
+						children: animal.pesoAtual
+					}) })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm text-muted-foreground",
+							children: "Nascimento"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-xl font-bold",
+						children: animal.nascimento
+					}) })] })
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Eventos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickEventModal, { animalId: animal.id })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Valor / Detalhe" })
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: animal.historico.map((ev, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "whitespace-nowrap",
+						children: ev.data
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: "outline",
+						children: ev.tipo
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium",
+						children: ev.valor
+					})
+				] }, idx)) })] })
+			}) })] })
+		]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -51063,6 +53389,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/financeiro",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Financeiro, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/animal/:id",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalProfile, {})
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
@@ -51074,4 +53404,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-bXVOK-Vl.js.map
+//# sourceMappingURL=index-BOJ7NPwX.js.map

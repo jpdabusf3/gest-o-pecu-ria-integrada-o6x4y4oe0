@@ -1,11 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertTriangle, TrendingUp, TrendingDown, Beef, Wallet } from 'lucide-react'
-import { dashboardData } from '@/data/mock'
+import { dashboardData, inventoryData } from '@/data/mock'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 
 export default function Index() {
+  const inventoryAlerts = Object.values(inventoryData)
+    .flat()
+    .filter((item) => item.qtd < item.minQtd)
+    .map((item) => ({
+      id: `inv-${item.id}`,
+      title: `Estoque Crítico: ${item.item}`,
+      desc: `A quantidade atual (${item.qtd} ${item.unidade}) está abaixo do limite mínimo aceitável (${item.minQtd}).`,
+      type: 'destructive',
+    }))
+
+  const allAlerts = [...dashboardData.alerts, ...inventoryAlerts]
+
   return (
     <div className="space-y-6">
       <div>
@@ -13,9 +25,8 @@ export default function Index() {
         <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
       </div>
 
-      {/* Alerts */}
       <div className="grid gap-4 md:grid-cols-2">
-        {dashboardData.alerts.map((alert) => (
+        {allAlerts.map((alert) => (
           <Alert key={alert.id} variant={alert.type as any} className="hover-lift bg-background">
             <AlertTriangle className="h-5 w-5" />
             <AlertTitle className="font-semibold">{alert.title}</AlertTitle>
@@ -24,7 +35,6 @@ export default function Index() {
         ))}
       </div>
 
-      {/* KPIs */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -78,7 +88,6 @@ export default function Index() {
         </Card>
       </div>
 
-      {/* Charts */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="lg:col-span-4 flex flex-col">
           <CardHeader>
@@ -98,7 +107,6 @@ export default function Index() {
         </Card>
       </div>
 
-      {/* Recent Activities */}
       <Card>
         <CardHeader>
           <CardTitle>Últimas Movimentações</CardTitle>

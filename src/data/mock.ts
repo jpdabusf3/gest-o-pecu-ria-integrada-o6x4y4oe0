@@ -7,16 +7,10 @@ export const dashboardData = {
   },
   alerts: [
     {
-      id: 1,
+      id: '1',
       title: 'Atenção: Orçamento de Nutrição',
       desc: 'As despesas no setor de Engorda ultrapassaram o limite previsto em 12%.',
       type: 'warning',
-    },
-    {
-      id: 2,
-      title: 'Estoque Crítico',
-      desc: 'Vacina contra Aftosa está abaixo do estoque mínimo (restam 50 doses).',
-      type: 'destructive',
     },
   ],
   chartCashflow: [
@@ -217,7 +211,8 @@ export const inventoryData = {
       id: 'F1',
       item: 'Vacina Febre Aftosa',
       tipo: 'Biológico',
-      qtd: 50,
+      qtd: 40,
+      minQtd: 100,
       unidade: 'Doses',
       status: 'Baixo',
     },
@@ -226,6 +221,7 @@ export const inventoryData = {
       item: 'Ivermectina 1%',
       tipo: 'Antiparasitário',
       qtd: 15,
+      minQtd: 10,
       unidade: 'Frascos (500ml)',
       status: 'Normal',
     },
@@ -234,6 +230,7 @@ export const inventoryData = {
       item: 'Anticorpo Mastite',
       tipo: 'Antibiótico',
       qtd: 8,
+      minQtd: 5,
       unidade: 'Caixas',
       status: 'Normal',
     },
@@ -244,6 +241,7 @@ export const inventoryData = {
       item: 'Arame Liso 17x15',
       tipo: 'Material Cerca',
       qtd: 12,
+      minQtd: 10,
       unidade: 'Rolos',
       status: 'Normal',
     },
@@ -252,6 +250,7 @@ export const inventoryData = {
       item: 'Grampo Cerca',
       tipo: 'Material Cerca',
       qtd: 2,
+      minQtd: 5,
       unidade: 'Caixas (20kg)',
       status: 'Baixo',
     },
@@ -260,6 +259,7 @@ export const inventoryData = {
       item: 'Filtro Diesel Trator',
       tipo: 'Peça Máquina',
       qtd: 4,
+      minQtd: 2,
       unidade: 'Unidades',
       status: 'Normal',
     },
@@ -270,6 +270,7 @@ export const inventoryData = {
       item: 'Sal Mineral Reprodução',
       tipo: 'Suplemento',
       qtd: 45,
+      minQtd: 30,
       unidade: 'Sacos (30kg)',
       status: 'Normal',
     },
@@ -278,6 +279,7 @@ export const inventoryData = {
       item: 'Ração Concentrada Engorda',
       tipo: 'Ração',
       qtd: 120,
+      minQtd: 100,
       unidade: 'Sacos (40kg)',
       status: 'Normal',
     },
@@ -286,6 +288,7 @@ export const inventoryData = {
       item: 'Milho Moído',
       tipo: 'Insumo',
       qtd: 5,
+      minQtd: 15,
       unidade: 'Toneladas',
       status: 'Baixo',
     },
@@ -334,3 +337,36 @@ export const financialData = [
     valor: 'R$ 85.000,00',
   },
 ]
+
+export const weightGainData: Record<string, any[]> = {
+  'LRE-01': [
+    { month: 'Jan', actual: 180, expected: 185 },
+    { month: 'Fev', actual: 195, expected: 198 },
+    { month: 'Mar', actual: 215, expected: 210 },
+    { month: 'Abr', actual: 235, expected: 225 },
+    { month: 'Mai', actual: 260, expected: 240 },
+  ],
+  default: [
+    { month: 'Jan', actual: 200, expected: 200 },
+    { month: 'Fev', actual: 220, expected: 215 },
+    { month: 'Mar', actual: 235, expected: 230 },
+    { month: 'Abr', actual: 250, expected: 245 },
+    { month: 'Mai', actual: 265, expected: 260 },
+  ],
+}
+
+export const animalData: Record<string, any> = {
+  'TAG-1234': {
+    id: 'TAG-1234',
+    categoria: 'Garrote',
+    raca: 'Nelore',
+    nascimento: '15/04/2025',
+    pesoAtual: '245 kg',
+    lote: 'LRE-01',
+    historico: [
+      { data: '10/03/2026', tipo: 'Pesagem', valor: '245 kg' },
+      { data: '01/12/2025', tipo: 'Vacinação', valor: 'Febre Aftosa' },
+      { data: '15/04/2025', tipo: 'Nascimento', valor: '32 kg' },
+    ],
+  },
+}

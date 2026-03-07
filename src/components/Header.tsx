@@ -1,6 +1,7 @@
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { QuickAddModal } from './QuickAddModal'
+import { ScannerModal } from './ScannerModal'
 import { Bell } from 'lucide-react'
 import { Button } from './ui/button'
 
@@ -14,7 +15,8 @@ export function Header() {
           <span className="text-xs text-muted-foreground">Fazenda Boa Esperança</span>
         </div>
       </div>
-      <div className="flex items-center gap-3 sm:gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
+        <ScannerModal />
         <Button
           variant="ghost"
           size="icon"
@@ -25,7 +27,7 @@ export function Header() {
         </Button>
         <QuickAddModal />
         <div className="h-8 w-px bg-border hidden sm:block"></div>
-        <Avatar className="h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105">
+        <Avatar className="h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105 hidden sm:flex">
           <AvatarImage
             src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42"
             alt="Avatar do Usuário"

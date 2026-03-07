@@ -9,10 +9,28 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Download, Plus } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from '@/components/ui/dropdown-menu'
+import { Download, Plus, FileText, FileSpreadsheet } from 'lucide-react'
 import { financialData } from '@/data/mock'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Financeiro() {
+  const { toast } = useToast()
+
+  const handleExport = (format: string) => {
+    toast({
+      title: 'Relatório Gerado',
+      description: `O balanço financeiro está sendo baixado em formato ${format.toUpperCase()}.`,
+    })
+  }
+
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -23,9 +41,29 @@ export default function Financeiro() {
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <Button variant="outline" className="flex-1 sm:flex-none gap-2">
-            <Download className="h-4 w-4" /> Relatório
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex-1 sm:flex-none gap-2">
+                <Download className="h-4 w-4" /> Exportar Balanço
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Formato do Relatório</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => handleExport('pdf')}
+                className="gap-2 cursor-pointer"
+              >
+                <FileText className="h-4 w-4" /> Exportar em PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleExport('excel')}
+                className="gap-2 cursor-pointer"
+              >
+                <FileSpreadsheet className="h-4 w-4" /> Exportar em Excel
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button className="flex-1 sm:flex-none gap-2">
             <Plus className="h-4 w-4" /> Lançamento
           </Button>
