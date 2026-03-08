@@ -18,14 +18,16 @@ import {
   Package,
   DollarSign,
   Tractor,
+  Wheat,
 } from 'lucide-react'
 
 const navItems = [
   { title: 'Painel Principal', icon: LayoutDashboard, url: '/' },
+  { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
+  { title: 'Confinamento', icon: Wheat, url: '/confinamento' },
   { title: 'Setor: Cria', icon: Baby, url: '/setor/cria' },
   { title: 'Setor: Recria', icon: TrendingUp, url: '/setor/recria' },
   { title: 'Setor: Engorda', icon: Beef, url: '/setor/engorda' },
-  { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
   { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
   { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
 ]

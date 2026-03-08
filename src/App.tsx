@@ -11,6 +11,7 @@ import Financeiro from './pages/Financeiro'
 import AnimalProfile from './pages/AnimalProfile'
 import Sanidade from './pages/Sanidade'
 import Calendario from './pages/Calendario'
+import Confinamento from './pages/Confinamento'
 import NotFound from './pages/NotFound'
 
 const App = () => (
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/setor/:id" element={<Setor />} />
           <Route path="/pastos" element={<Pastos />} />
+          <Route path="/confinamento" element={<Confinamento />} />
           <Route path="/estoque" element={<Estoque />} />
           <Route path="/financeiro" element={<Financeiro />} />
           <Route path="/sanidade" element={<Sanidade />} />

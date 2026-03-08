@@ -18,11 +18,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useToast } from '@/hooks/use-toast'
 
 export function SectorCalendarTab({ sectorId }: { sectorId: string }) {
   const [filterType, setFilterType] = useState('Todos')
   const [dateStart, setDateStart] = useState('')
   const [dateEnd, setDateEnd] = useState('')
+  const { toast } = useToast()
 
   const types = [
     'Todos',
@@ -44,6 +46,13 @@ export function SectorCalendarTab({ sectorId }: { sectorId: string }) {
     if (dateEnd && new Date(e.date) > new Date(dateEnd)) return false
     return true
   })
+
+  const handleRowClick = (item: any) => {
+    toast({
+      title: `Detalhes da Atividade`,
+      description: `Evento: ${item.title}\nData: ${item.date}\nAlvo: ${item.target}`,
+    })
+  }
 
   return (
     <Card>
@@ -86,13 +95,17 @@ export function SectorCalendarTab({ sectorId }: { sectorId: string }) {
               <TableHead>Data</TableHead>
               <TableHead>Evento</TableHead>
               <TableHead>Tipo</TableHead>
-              <TableHead>Alvo (Lote/Animal)</TableHead>
+              <TableHead>Alvo</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length > 0 ? (
               filtered.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow
+                  key={item.id}
+                  className="cursor-pointer hover:bg-muted/50 transition-colors"
+                  onClick={() => handleRowClick(item)}
+                >
                   <TableCell className="font-medium whitespace-nowrap">{item.date}</TableCell>
                   <TableCell>{item.title}</TableCell>
                   <TableCell>
@@ -104,7 +117,7 @@ export function SectorCalendarTab({ sectorId }: { sectorId: string }) {
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-6 text-muted-foreground">
-                  Nenhum evento encontrado para os filtros selecionados.
+                  Nenhum evento encontrado.
                 </TableCell>
               </TableRow>
             )}
