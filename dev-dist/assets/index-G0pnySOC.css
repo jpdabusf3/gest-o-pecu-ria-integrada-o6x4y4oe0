@@ -614,6 +614,12 @@ section[aria-label='Notifications alt+T'] {
 .left-2{
   left: 0.5rem;
 }
+.left-2\.5{
+  left: 0.625rem;
+}
+.left-3{
+  left: 0.75rem;
+}
 .left-\[20\%\]{
   left: 20%;
 }
@@ -655,6 +661,12 @@ section[aria-label='Notifications alt+T'] {
 }
 .top-2{
   top: 0.5rem;
+}
+.top-2\.5{
+  top: 0.625rem;
+}
+.top-3{
+  top: 0.75rem;
 }
 .top-3\.5{
   top: 0.875rem;
@@ -701,6 +713,14 @@ section[aria-label='Notifications alt+T'] {
 .-mx-1{
   margin-left: -0.25rem;
   margin-right: -0.25rem;
+}
+.-mx-4{
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+.mx-1{
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }
 .mx-2{
   margin-left: 0.5rem;
@@ -833,6 +853,9 @@ section[aria-label='Notifications alt+T'] {
 .h-2\.5{
   height: 0.625rem;
 }
+.h-24{
+  height: 6rem;
+}
 .h-3{
   height: 0.75rem;
 }
@@ -907,6 +930,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-h-\[300px\]{
   max-height: 300px;
+}
+.max-h-\[95vh\]{
+  max-height: 95vh;
 }
 .max-h-\[var\(--radix-dropdown-menu-content-available-height\)\]{
   max-height: var(--radix-dropdown-menu-content-available-height);
@@ -1068,6 +1094,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .min-w-\[12rem\]{
   min-width: 12rem;
+}
+.min-w-\[250px\]{
+  min-width: 250px;
 }
 .min-w-\[44px\]{
   min-width: 44px;
@@ -1334,6 +1363,11 @@ section[aria-label='Notifications alt+T'] {
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
+.space-y-5 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
 .space-y-6 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -1416,6 +1450,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .border{
   border-width: 1px;
+}
+.border-0{
+  border-width: 0px;
 }
 .border-2{
   border-width: 2px;
@@ -1590,6 +1627,9 @@ section[aria-label='Notifications alt+T'] {
 .bg-primary{
   background-color: hsl(var(--primary));
 }
+.bg-primary\/10{
+  background-color: hsl(var(--primary) / 0.1);
+}
 .bg-primary\/5{
   background-color: hsl(var(--primary) / 0.05);
 }
@@ -1657,6 +1697,10 @@ section[aria-label='Notifications alt+T'] {
 .px-1{
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+}
+.px-1\.5{
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
 }
 .px-2{
   padding-left: 0.5rem;
@@ -1737,6 +1781,9 @@ section[aria-label='Notifications alt+T'] {
 .pb-6{
   padding-bottom: 1.5rem;
 }
+.pb-8{
+  padding-bottom: 2rem;
+}
 .pl-2{
   padding-left: 0.5rem;
 }
@@ -1751,6 +1798,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .pl-8{
   padding-left: 2rem;
+}
+.pl-9{
+  padding-left: 2.25rem;
 }
 .pr-1{
   padding-right: 0.25rem;
@@ -1917,6 +1967,10 @@ section[aria-label='Notifications alt+T'] {
 .text-muted-foreground\/50{
   color: hsl(var(--muted-foreground) / 0.5);
 }
+.text-orange-500{
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
 .text-popover-foreground{
   color: hsl(var(--popover-foreground));
 }
@@ -1925,6 +1979,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .text-primary-foreground{
   color: hsl(var(--primary-foreground));
+}
+.text-primary-foreground\/80{
+  color: hsl(var(--primary-foreground) / 0.8);
 }
 .text-secondary-foreground{
   color: hsl(var(--secondary-foreground));
@@ -2113,6 +2170,9 @@ section[aria-label='Notifications alt+T'] {
   --tw-enter-translate-x: initial;
   --tw-enter-translate-y: initial;
 }
+.fade-in{
+  --tw-enter-opacity: 0;
+}
 .fade-in-0{
   --tw-enter-opacity: 0;
 }
@@ -2121,6 +2181,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .zoom-in-95{
   --tw-enter-scale: .95;
+}
+.slide-in-from-bottom-2{
+  --tw-enter-translate-y: 0.5rem;
 }
 .duration-1000{
   animation-duration: 1000ms;
@@ -2251,6 +2314,9 @@ section[aria-label='Notifications alt+T'] {
   --tw-scale-y: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.hover\:border-primary:hover{
+  border-color: hsl(var(--primary));
+}
 .hover\:bg-accent:hover{
   background-color: hsl(var(--accent));
 }
@@ -2354,6 +2420,11 @@ section[aria-label='Notifications alt+T'] {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+.focus\:ring-1:focus{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
 .focus\:ring-2:focus{
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -2393,6 +2464,11 @@ section[aria-label='Notifications alt+T'] {
 }
 .focus-visible\:ring-offset-background:focus-visible{
   --tw-ring-offset-color: hsl(var(--background));
+}
+.active\:scale-\[0\.98\]:active{
+  --tw-scale-x: 0.98;
+  --tw-scale-y: 0.98;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .active\:bg-sidebar-accent:active{
   background-color: hsl(var(--sidebar-accent));
@@ -3044,8 +3120,14 @@ section[aria-label='Notifications alt+T'] {
   .sm\:h-\[500px\]{
     height: 500px;
   }
+  .sm\:w-64{
+    width: 16rem;
+  }
   .sm\:w-\[130px\]{
     width: 130px;
+  }
+  .sm\:w-\[150px\]{
+    width: 150px;
   }
   .sm\:w-\[160px\]{
     width: 160px;
@@ -3099,6 +3181,10 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:rounded-lg{
     border-radius: var(--radius);
+  }
+  .sm\:rounded-b-2xl{
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
   }
   .sm\:border-0{
     border-width: 0px;

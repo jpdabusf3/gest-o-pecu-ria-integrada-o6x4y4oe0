@@ -340,7 +340,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			this.refs = emptyObject;
 			this.updater = updater || ReactNoopUpdateQueue;
 		}
-		function noop$2() {}
+		function noop$3() {}
 		function testStringCoercion(value) {
 			return "" + value;
 		}
@@ -501,7 +501,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			switch (thenable.status) {
 				case "fulfilled": return thenable.value;
 				case "rejected": throw thenable.reason;
-				default: switch ("string" === typeof thenable.status ? thenable.then(noop$2, noop$2) : (thenable.status = "pending", thenable.then(function(fulfilledValue) {
+				default: switch ("string" === typeof thenable.status ? thenable.then(noop$3, noop$3) : (thenable.status = "pending", thenable.then(function(fulfilledValue) {
 					"pending" === thenable.status && (thenable.status = "fulfilled", thenable.value = fulfilledValue);
 				}, function(error) {
 					"pending" === thenable.status && (thenable.status = "rejected", thenable.reason = error);
@@ -982,7 +982,7 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 			try {
 				var returnValue = scope(), onStartTransitionFinish = ReactSharedInternals.S;
 				null !== onStartTransitionFinish && onStartTransitionFinish(currentTransition, returnValue);
-				"object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && (ReactSharedInternals.asyncTransitions++, returnValue.then(releaseAsyncTransition, releaseAsyncTransition), returnValue.then(noop$2, reportGlobalError));
+				"object" === typeof returnValue && null !== returnValue && "function" === typeof returnValue.then && (ReactSharedInternals.asyncTransitions++, returnValue.then(releaseAsyncTransition, releaseAsyncTransition), returnValue.then(noop$3, reportGlobalError));
 			} catch (error) {
 				reportGlobalError(error);
 			} finally {
@@ -1072,7 +1072,7 @@ var require_react = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 */
 var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 	(function() {
-		function noop$2() {}
+		function noop$3() {}
 		function testStringCoercion(value) {
 			return "" + value;
 		}
@@ -1111,17 +1111,17 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
 		var React$64 = require_react(), Internals = {
 			d: {
-				f: noop$2,
+				f: noop$3,
 				r: function() {
 					throw Error("Invalid form element. requestFormReset must be passed a form that was rendered by React.");
 				},
-				D: noop$2,
-				C: noop$2,
-				L: noop$2,
-				m: noop$2,
-				X: noop$2,
-				S: noop$2,
-				M: noop$2
+				D: noop$3,
+				C: noop$3,
+				L: noop$3,
+				m: noop$3,
+				X: noop$3,
+				S: noop$3,
+				M: noop$3
 			},
 			p: 0,
 			findDOMNode: null
@@ -1291,11 +1291,11 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		function warnInvalidContextAccess() {
 			console.error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
 		}
-		function noop$2() {}
+		function noop$3() {}
 		function warnForMissingKey() {}
-		function setToSortedString(set) {
+		function setToSortedString(set$1) {
 			var array = [];
-			set.forEach(function(value) {
+			set$1.forEach(function(value) {
 				array.push(value);
 			});
 			return array.sort().join(", ");
@@ -2268,7 +2268,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		function trackValueOnNode(node, valueField, currentValue) {
 			var descriptor = Object.getOwnPropertyDescriptor(node.constructor.prototype, valueField);
 			if (!node.hasOwnProperty(valueField) && "undefined" !== typeof descriptor && "function" === typeof descriptor.get && "function" === typeof descriptor.set) {
-				var get$8 = descriptor.get, set = descriptor.set;
+				var get$8 = descriptor.get, set$1 = descriptor.set;
 				Object.defineProperty(node, valueField, {
 					configurable: !0,
 					get: function() {
@@ -2277,7 +2277,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 					set: function(value) {
 						checkFormFieldValueStringCoercion(value);
 						currentValue = "" + value;
-						set.call(this, value);
+						set$1.call(this, value);
 					}
 				});
 				Object.defineProperty(node, valueField, { enumerable: descriptor.enumerable });
@@ -4219,15 +4219,15 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 				refCount: 0
 			};
 		}
-		function retainCache(cache) {
-			cache.controller.signal.aborted && console.warn("A cache instance was retained after it was already freed. This likely indicates a bug in React.");
-			cache.refCount++;
+		function retainCache(cache$1) {
+			cache$1.controller.signal.aborted && console.warn("A cache instance was retained after it was already freed. This likely indicates a bug in React.");
+			cache$1.refCount++;
 		}
-		function releaseCache(cache) {
-			cache.refCount--;
-			0 > cache.refCount && console.warn("A cache instance was released after it was already freed. This likely indicates a bug in React.");
-			0 === cache.refCount && scheduleCallback$2(NormalPriority, function() {
-				cache.controller.abort();
+		function releaseCache(cache$1) {
+			cache$1.refCount--;
+			0 > cache$1.refCount && console.warn("A cache instance was released after it was already freed. This likely indicates a bug in React.");
+			0 === cache$1.refCount && scheduleCallback$2(NormalPriority, function() {
+				cache$1.controller.abort();
 			});
 		}
 		function startUpdateTimerByLane(lane, method, fiber) {
@@ -6004,7 +6004,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			if (5 !== formFiber.tag) throw Error("Expected the form instance to be a HostComponent. This is a bug in React.");
 			var queue = ensureFormComponentIsStateful(formFiber).queue;
 			startHostActionTimer(formFiber);
-			startTransition(formFiber, queue, pendingState, NotPendingTransition, null === action ? noop$2 : function() {
+			startTransition(formFiber, queue, pendingState, NotPendingTransition, null === action ? noop$3 : function() {
 				requestFormReset$1(formFiber);
 				return action(formData);
 			});
@@ -12015,23 +12015,23 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		}
 		function getHydratableHoistableCache(type, keyAttribute, ownerDocument) {
 			if (null === tagCaches) {
-				var cache = /* @__PURE__ */ new Map();
+				var cache$1 = /* @__PURE__ */ new Map();
 				var caches = tagCaches = /* @__PURE__ */ new Map();
-				caches.set(ownerDocument, cache);
-			} else caches = tagCaches, cache = caches.get(ownerDocument), cache || (cache = /* @__PURE__ */ new Map(), caches.set(ownerDocument, cache));
-			if (cache.has(type)) return cache;
-			cache.set(type, null);
+				caches.set(ownerDocument, cache$1);
+			} else caches = tagCaches, cache$1 = caches.get(ownerDocument), cache$1 || (cache$1 = /* @__PURE__ */ new Map(), caches.set(ownerDocument, cache$1));
+			if (cache$1.has(type)) return cache$1;
+			cache$1.set(type, null);
 			ownerDocument = ownerDocument.getElementsByTagName(type);
 			for (caches = 0; caches < ownerDocument.length; caches++) {
 				var node = ownerDocument[caches];
 				if (!(node[internalHoistableMarker] || node[internalInstanceKey] || "link" === type && "stylesheet" === node.getAttribute("rel")) && node.namespaceURI !== SVG_NAMESPACE) {
 					var nodeKey = node.getAttribute(keyAttribute) || "";
 					nodeKey = type + nodeKey;
-					var existing = cache.get(nodeKey);
-					existing ? existing.push(node) : cache.set(nodeKey, [node]);
+					var existing = cache$1.get(nodeKey);
+					existing ? existing.push(node) : cache$1.set(nodeKey, [node]);
 				}
 			}
-			return cache;
+			return cache$1;
 		}
 		function mountHoistable(hoistableRoot, type, instance) {
 			hoistableRoot = hoistableRoot.ownerDocument || hoistableRoot;
@@ -14979,8 +14979,8 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 		didWarnAboutUndefinedSnapshotBeforeUpdate = /* @__PURE__ */ new Set();
 		var offscreenSubtreeIsHidden = !1, offscreenSubtreeWasHidden = !1, needsFormReset = !1, PossiblyWeakSet = "function" === typeof WeakSet ? WeakSet : Set, nextEffect = null, inProgressLanes = null, inProgressRoot = null, hostParent = null, hostParentIsContainer = !1, currentHoistableRoot = null, inHydratedSubtree = !1, suspenseyCommitFlag = 8192, DefaultAsyncDispatcher = {
 			getCacheForType: function(resourceType) {
-				var cache = readContext(CacheContext), cacheForType = cache.data.get(resourceType);
-				void 0 === cacheForType && (cacheForType = resourceType(), cache.data.set(resourceType, cacheForType));
+				var cache$1 = readContext(CacheContext), cacheForType = cache$1.data.get(resourceType);
+				void 0 === cacheForType && (cacheForType = resourceType(), cache$1.data.set(resourceType, cacheForType));
 				return cacheForType;
 			},
 			cacheSignal: function() {
@@ -15972,7 +15972,7 @@ function useLocation() {
 	return import_react.useContext(LocationContext).location;
 }
 var navigateEffectWarning = `You should call navigate() in a React.useEffect(), not when your component is first rendered.`;
-function useIsomorphicLayoutEffect$1(cb) {
+function useIsomorphicLayoutEffect$2(cb) {
 	if (!import_react.useContext(NavigationContext).static) import_react.useLayoutEffect(cb);
 }
 function useNavigate() {
@@ -15987,7 +15987,7 @@ function useNavigateUnstable() {
 	let { pathname: locationPathname } = useLocation();
 	let routePathnamesJson = JSON.stringify(getResolveToMatches(matches));
 	let activeRef = import_react.useRef(false);
-	useIsomorphicLayoutEffect$1(() => {
+	useIsomorphicLayoutEffect$2(() => {
 		activeRef.current = true;
 	});
 	return import_react.useCallback((to, options$1 = {}) => {
@@ -16312,7 +16312,7 @@ function useNavigateStable() {
 	let { router } = useDataRouterContext("useNavigate");
 	let id = useCurrentRouteId("useNavigate");
 	let activeRef = import_react.useRef(false);
-	useIsomorphicLayoutEffect$1(() => {
+	useIsomorphicLayoutEffect$2(() => {
 		activeRef.current = true;
 	});
 	return import_react.useCallback(async (to, options$1 = {}) => {
@@ -16663,13 +16663,13 @@ function sortKeys(obj) {
 	return sorted;
 }
 function dedupeLinkDescriptors(descriptors, preloads) {
-	let set = /* @__PURE__ */ new Set();
+	let set$1 = /* @__PURE__ */ new Set();
 	let preloadsSet = new Set(preloads);
 	return descriptors.reduce((deduped, descriptor) => {
 		if (preloads && !isPageLinkDescriptor(descriptor) && descriptor.as === "script" && descriptor.href && preloadsSet.has(descriptor.href)) return deduped;
 		let key = JSON.stringify(sortKeys(descriptor));
-		if (!set.has(key)) {
-			set.add(key);
+		if (!set$1.has(key)) {
+			set$1.add(key);
 			deduped.push({
 				key,
 				link: descriptor
@@ -17410,15 +17410,15 @@ function composeEventHandlers(originalEventHandler, ourEventHandler, { checkForD
 		if (checkForDefaultPrevented === false || !event.defaultPrevented) return ourEventHandler?.(event);
 	};
 }
-function setRef(ref, value) {
+function setRef$1(ref, value) {
 	if (typeof ref === "function") return ref(value);
 	else if (ref !== null && ref !== void 0) ref.current = value;
 }
-function composeRefs(...refs) {
+function composeRefs$1(...refs) {
 	return (node) => {
 		let hasCleanup = false;
 		const cleanups = refs.map((ref) => {
-			const cleanup = setRef(ref, node);
+			const cleanup = setRef$1(ref, node);
 			if (!hasCleanup && typeof cleanup == "function") hasCleanup = true;
 			return cleanup;
 		});
@@ -17426,13 +17426,13 @@ function composeRefs(...refs) {
 			for (let i = 0; i < cleanups.length; i++) {
 				const cleanup = cleanups[i];
 				if (typeof cleanup == "function") cleanup();
-				else setRef(refs[i], null);
+				else setRef$1(refs[i], null);
 			}
 		};
 	};
 }
-function useComposedRefs(...refs) {
-	return import_react.useCallback(composeRefs(...refs), refs);
+function useComposedRefs$1(...refs) {
+	return import_react.useCallback(composeRefs$1(...refs), refs);
 }
 /**
 * @license React
@@ -17752,7 +17752,7 @@ function createSlotClone$1(ownerName) {
 		if (import_react.isValidElement(children)) {
 			const childrenRef = getElementRef$2(children);
 			const props2 = mergeProps$1(slotProps, children.props);
-			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs$1(forwardedRef, childrenRef) : childrenRef;
 			return import_react.cloneElement(children, props2);
 		}
 		return import_react.Children.count(children) > 1 ? import_react.Children.only(null) : null;
@@ -17829,7 +17829,7 @@ function createCollection(name) {
 	const CollectionSlot = import_react.forwardRef((props, forwardedRef) => {
 		const { scope, children } = props;
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CollectionSlotImpl, {
-			ref: useComposedRefs(forwardedRef, useCollectionContext(COLLECTION_SLOT_NAME, scope).collectionRef),
+			ref: useComposedRefs$1(forwardedRef, useCollectionContext(COLLECTION_SLOT_NAME, scope).collectionRef),
 			children
 		});
 	});
@@ -17840,7 +17840,7 @@ function createCollection(name) {
 	const CollectionItemSlot = import_react.forwardRef((props, forwardedRef) => {
 		const { scope, children, ...itemData } = props;
 		const ref = import_react.useRef(null);
-		const composedRefs = useComposedRefs(forwardedRef, ref);
+		const composedRefs = useComposedRefs$1(forwardedRef, ref);
 		const context = useCollectionContext(ITEM_SLOT_NAME, scope);
 		import_react.useEffect(() => {
 			context.itemMap.set(ref, {
@@ -17913,7 +17913,7 @@ var Primitive = [
 function dispatchDiscreteCustomEvent(target, event) {
 	if (target) import_react_dom$6.flushSync(() => target.dispatchEvent(event));
 }
-function useCallbackRef(callback) {
+function useCallbackRef$1(callback) {
 	const callbackRef = import_react.useRef(callback);
 	import_react.useEffect(() => {
 		callbackRef.current = callback;
@@ -17921,7 +17921,7 @@ function useCallbackRef(callback) {
 	return import_react.useMemo(() => (...args) => callbackRef.current?.(...args), []);
 }
 function useEscapeKeydown(onEscapeKeyDownProp, ownerDocument = globalThis?.document) {
-	const onEscapeKeyDown = useCallbackRef(onEscapeKeyDownProp);
+	const onEscapeKeyDown = useCallbackRef$1(onEscapeKeyDownProp);
 	import_react.useEffect(() => {
 		const handleKeyDown = (event) => {
 			if (event.key === "Escape") onEscapeKeyDown(event);
@@ -17946,7 +17946,7 @@ var DismissableLayer = import_react.forwardRef((props, forwardedRef) => {
 	const [node, setNode] = import_react.useState(null);
 	const ownerDocument = node?.ownerDocument ?? globalThis?.document;
 	const [, force] = import_react.useState({});
-	const composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node2) => setNode(node2));
 	const layers = Array.from(context.layers);
 	const [highestLayerWithOutsidePointerEventsDisabled] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1);
 	const highestLayerWithOutsidePointerEventsDisabledIndex = layers.indexOf(highestLayerWithOutsidePointerEventsDisabled);
@@ -18026,7 +18026,7 @@ var BRANCH_NAME = "DismissableLayerBranch";
 var DismissableLayerBranch = import_react.forwardRef((props, forwardedRef) => {
 	const context = import_react.useContext(DismissableLayerContext);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	import_react.useEffect(() => {
 		const node = ref.current;
 		if (node) {
@@ -18043,7 +18043,7 @@ var DismissableLayerBranch = import_react.forwardRef((props, forwardedRef) => {
 });
 DismissableLayerBranch.displayName = BRANCH_NAME;
 function usePointerDownOutside(onPointerDownOutside, ownerDocument = globalThis?.document) {
-	const handlePointerDownOutside = useCallbackRef(onPointerDownOutside);
+	const handlePointerDownOutside = useCallbackRef$1(onPointerDownOutside);
 	const isPointerInsideReactTreeRef = import_react.useRef(false);
 	const handleClickRef = import_react.useRef(() => {});
 	import_react.useEffect(() => {
@@ -18073,7 +18073,7 @@ function usePointerDownOutside(onPointerDownOutside, ownerDocument = globalThis?
 	return { onPointerDownCapture: () => isPointerInsideReactTreeRef.current = true };
 }
 function useFocusOutside(onFocusOutside, ownerDocument = globalThis?.document) {
-	const handleFocusOutside = useCallbackRef(onFocusOutside);
+	const handleFocusOutside = useCallbackRef$1(onFocusOutside);
 	const isFocusInsideReactTreeRef = import_react.useRef(false);
 	import_react.useEffect(() => {
 		const handleFocus = (event) => {
@@ -18102,12 +18102,12 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$10 = DismissableLayer;
+var Root$11 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PORTAL_NAME$5 = "Portal";
-var Portal = import_react.forwardRef((props, forwardedRef) => {
+var Portal$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { container: containerProp, ...portalProps } = props;
 	const [mounted, setMounted] = import_react.useState(false);
 	useLayoutEffect2(() => setMounted(true), []);
@@ -18117,7 +18117,7 @@ var Portal = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	}), container) : null;
 });
-Portal.displayName = PORTAL_NAME$5;
+Portal$1.displayName = PORTAL_NAME$5;
 function useStateMachine(initialState, machine) {
 	return import_react.useReducer((state, event) => {
 		return machine[state][event] ?? state;
@@ -18127,7 +18127,7 @@ var Presence = (props) => {
 	const { present, children } = props;
 	const presence = usePresence(present);
 	const child = typeof children === "function" ? children({ present: presence.isPresent }) : import_react.Children.only(children);
-	const ref = useComposedRefs(presence.ref, getElementRef$1(child));
+	const ref = useComposedRefs$1(presence.ref, getElementRef$1(child));
 	return typeof children === "function" || presence.isPresent ? import_react.cloneElement(child, { ref }) : null;
 };
 Presence.displayName = "Presence";
@@ -18216,8 +18216,8 @@ function getElementRef$1(element) {
 	return element.props.ref || element.ref;
 }
 var useInsertionEffect = import_react[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
-function useControllableState({ prop, defaultProp, onChange = () => {}, caller }) {
-	const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState({
+function useControllableState$1({ prop, defaultProp, onChange = () => {}, caller }) {
+	const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState$1({
 		defaultProp,
 		onChange
 	});
@@ -18247,7 +18247,7 @@ function useControllableState({ prop, defaultProp, onChange = () => {}, caller }
 		onChangeRef
 	])];
 }
-function useUncontrolledState({ defaultProp, onChange }) {
+function useUncontrolledState$1({ defaultProp, onChange }) {
 	const [value, setValue] = import_react.useState(defaultProp);
 	const prevValueRef = import_react.useRef(value);
 	const onChangeRef = import_react.useRef(onChange);
@@ -18293,7 +18293,7 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 VisuallyHidden.displayName = NAME$3;
-var Root$9 = VisuallyHidden;
+var Root$10 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$3, useCollection$3, createCollectionScope$3] = createCollection("Toast");
@@ -18338,7 +18338,7 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 	const headFocusProxyRef = import_react.useRef(null);
 	const tailFocusProxyRef = import_react.useRef(null);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref, context.onViewportChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref, context.onViewportChange);
 	const hotkeyLabel = hotkey.join("+").replace(/Key/g, "").replace(/Digit/g, "");
 	const hasToasts = context.toastCount > 0;
 	import_react.useEffect(() => {
@@ -18472,7 +18472,7 @@ var TOAST_SWIPE_CANCEL = "toast.swipeCancel";
 var TOAST_SWIPE_END = "toast.swipeEnd";
 var Toast$2 = import_react.forwardRef((props, forwardedRef) => {
 	const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props;
-	const [open, setOpen] = useControllableState({
+	const [open, setOpen] = useControllableState$1({
 		prop: openProp,
 		defaultProp: defaultOpen ?? true,
 		onChange: onOpenChange,
@@ -18485,8 +18485,8 @@ var Toast$2 = import_react.forwardRef((props, forwardedRef) => {
 			...toastProps,
 			ref: forwardedRef,
 			onClose: () => setOpen(false),
-			onPause: useCallbackRef(props.onPause),
-			onResume: useCallbackRef(props.onResume),
+			onPause: useCallbackRef$1(props.onPause),
+			onResume: useCallbackRef$1(props.onResume),
 			onSwipeStart: composeEventHandlers(props.onSwipeStart, (event) => {
 				event.currentTarget.setAttribute("data-swipe", "start");
 			}),
@@ -18521,7 +18521,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeToast, type = "foreground", duration: durationProp, open, onClose, onEscapeKeyDown, onPause, onResume, onSwipeStart, onSwipeMove, onSwipeCancel, onSwipeEnd, ...toastProps } = props;
 	const context = useToastProviderContext(TOAST_NAME, __scopeToast);
 	const [node, setNode] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node2) => setNode(node2));
 	const pointerStartRef = import_react.useRef(null);
 	const swipeDeltaRef = import_react.useRef(null);
 	const duration = durationProp || context.duration;
@@ -18529,7 +18529,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 	const closeTimerRemainingTimeRef = import_react.useRef(duration);
 	const closeTimerRef = import_react.useRef(0);
 	const { onToastAdd, onToastRemove } = context;
-	const handleClose = useCallbackRef(() => {
+	const handleClose = useCallbackRef$1(() => {
 		if (node?.contains(document.activeElement)) context.viewport?.focus();
 		onClose();
 	});
@@ -18592,7 +18592,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -18683,7 +18683,7 @@ var ToastAnnounce = (props) => {
 		const timer = window.setTimeout(() => setIsAnnounced(true), 1e3);
 		return () => window.clearTimeout(timer);
 	}, []);
-	return isAnnounced ? null : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+	return isAnnounced ? null : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
 		asChild: true,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHidden, {
 			...announceProps,
@@ -18788,7 +18788,7 @@ var isDeltaInDirection = (delta, direction, threshold$1 = 0) => {
 	else return !isDeltaX && deltaY > threshold$1;
 };
 function useNextFrame(callback = () => {}) {
-	const fn = useCallbackRef(callback);
+	const fn = useCallbackRef$1(callback);
 	useLayoutEffect2(() => {
 		let raf1 = 0;
 		let raf2 = 0;
@@ -19461,6 +19461,18 @@ var Search = createLucideIcon("search", [["path", {
 	r: "8",
 	key: "4ej97u"
 }]]);
+var Smartphone = createLucideIcon("smartphone", [["rect", {
+	width: "14",
+	height: "20",
+	x: "5",
+	y: "2",
+	rx: "2",
+	ry: "2",
+	key: "1yt0o3"
+}], ["path", {
+	d: "M12 18h.01",
+	key: "mhygvu"
+}]]);
 var Syringe = createLucideIcon("syringe", [
 	["path", {
 		d: "m18 2 4 4",
@@ -19704,20 +19716,20 @@ var createLruCache = (maxCacheSize) => {
 		set: () => {}
 	};
 	let cacheSize = 0;
-	let cache = /* @__PURE__ */ new Map();
+	let cache$1 = /* @__PURE__ */ new Map();
 	let previousCache = /* @__PURE__ */ new Map();
 	const update = (key, value) => {
-		cache.set(key, value);
+		cache$1.set(key, value);
 		cacheSize++;
 		if (cacheSize > maxCacheSize) {
 			cacheSize = 0;
-			previousCache = cache;
-			cache = /* @__PURE__ */ new Map();
+			previousCache = cache$1;
+			cache$1 = /* @__PURE__ */ new Map();
 		}
 	};
 	return {
 		get(key) {
-			let value = cache.get(key);
+			let value = cache$1.get(key);
 			if (value !== void 0) return value;
 			if ((value = previousCache.get(key)) !== void 0) {
 				update(key, value);
@@ -19725,7 +19737,7 @@ var createLruCache = (maxCacheSize) => {
 			}
 		},
 		set(key, value) {
-			if (cache.has(key)) cache.set(key, value);
+			if (cache$1.has(key)) cache$1.set(key, value);
 			else update(key, value);
 		}
 	};
@@ -21102,7 +21114,7 @@ import_react.memo(({ forcedTheme: e, storageKey: i, attribute: s$1, enableSystem
 	});
 });
 var import_react_dom$3 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
-function __insertCSS(code) {
+function __insertCSS$1(code) {
 	if (!code || typeof document == "undefined") return;
 	let head = document.head || document.getElementsByTagName("head")[0];
 	let style = document.createElement("style");
@@ -21441,7 +21453,7 @@ Object.assign(basicToast, {
 	getHistory,
 	getToasts
 });
-__insertCSS("[data-sonner-toaster][dir=ltr],html[dir=ltr]{--toast-icon-margin-start:-3px;--toast-icon-margin-end:4px;--toast-svg-margin-start:-1px;--toast-svg-margin-end:0px;--toast-button-margin-start:auto;--toast-button-margin-end:0;--toast-close-button-start:0;--toast-close-button-end:unset;--toast-close-button-transform:translate(-35%, -35%)}[data-sonner-toaster][dir=rtl],html[dir=rtl]{--toast-icon-margin-start:4px;--toast-icon-margin-end:-3px;--toast-svg-margin-start:0px;--toast-svg-margin-end:-1px;--toast-button-margin-start:0;--toast-button-margin-end:auto;--toast-close-button-start:unset;--toast-close-button-end:0;--toast-close-button-transform:translate(35%, -35%)}[data-sonner-toaster]{position:fixed;width:var(--width);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;--gray1:hsl(0, 0%, 99%);--gray2:hsl(0, 0%, 97.3%);--gray3:hsl(0, 0%, 95.1%);--gray4:hsl(0, 0%, 93%);--gray5:hsl(0, 0%, 90.9%);--gray6:hsl(0, 0%, 88.7%);--gray7:hsl(0, 0%, 85.8%);--gray8:hsl(0, 0%, 78%);--gray9:hsl(0, 0%, 56.1%);--gray10:hsl(0, 0%, 52.3%);--gray11:hsl(0, 0%, 43.5%);--gray12:hsl(0, 0%, 9%);--border-radius:8px;box-sizing:border-box;padding:0;margin:0;list-style:none;outline:0;z-index:999999999;transition:transform .4s ease}@media (hover:none) and (pointer:coarse){[data-sonner-toaster][data-lifted=true]{transform:none}}[data-sonner-toaster][data-x-position=right]{right:var(--offset-right)}[data-sonner-toaster][data-x-position=left]{left:var(--offset-left)}[data-sonner-toaster][data-x-position=center]{left:50%;transform:translateX(-50%)}[data-sonner-toaster][data-y-position=top]{top:var(--offset-top)}[data-sonner-toaster][data-y-position=bottom]{bottom:var(--offset-bottom)}[data-sonner-toast]{--y:translateY(100%);--lift-amount:calc(var(--lift) * var(--gap));z-index:var(--z-index);position:absolute;opacity:0;transform:var(--y);touch-action:none;transition:transform .4s,opacity .4s,height .4s,box-shadow .2s;box-sizing:border-box;outline:0;overflow-wrap:anywhere}[data-sonner-toast][data-styled=true]{padding:16px;background:var(--normal-bg);border:1px solid var(--normal-border);color:var(--normal-text);border-radius:var(--border-radius);box-shadow:0 4px 12px rgba(0,0,0,.1);width:var(--width);font-size:13px;display:flex;align-items:center;gap:6px}[data-sonner-toast]:focus-visible{box-shadow:0 4px 12px rgba(0,0,0,.1),0 0 0 2px rgba(0,0,0,.2)}[data-sonner-toast][data-y-position=top]{top:0;--y:translateY(-100%);--lift:1;--lift-amount:calc(1 * var(--gap))}[data-sonner-toast][data-y-position=bottom]{bottom:0;--y:translateY(100%);--lift:-1;--lift-amount:calc(var(--lift) * var(--gap))}[data-sonner-toast][data-styled=true] [data-description]{font-weight:400;line-height:1.4;color:#3f3f3f}[data-rich-colors=true][data-sonner-toast][data-styled=true] [data-description]{color:inherit}[data-sonner-toaster][data-sonner-theme=dark] [data-description]{color:#e8e8e8}[data-sonner-toast][data-styled=true] [data-title]{font-weight:500;line-height:1.5;color:inherit}[data-sonner-toast][data-styled=true] [data-icon]{display:flex;height:16px;width:16px;position:relative;justify-content:flex-start;align-items:center;flex-shrink:0;margin-left:var(--toast-icon-margin-start);margin-right:var(--toast-icon-margin-end)}[data-sonner-toast][data-promise=true] [data-icon]>svg{opacity:0;transform:scale(.8);transform-origin:center;animation:sonner-fade-in .3s ease forwards}[data-sonner-toast][data-styled=true] [data-icon]>*{flex-shrink:0}[data-sonner-toast][data-styled=true] [data-icon] svg{margin-left:var(--toast-svg-margin-start);margin-right:var(--toast-svg-margin-end)}[data-sonner-toast][data-styled=true] [data-content]{display:flex;flex-direction:column;gap:2px}[data-sonner-toast][data-styled=true] [data-button]{border-radius:4px;padding-left:8px;padding-right:8px;height:24px;font-size:12px;color:var(--normal-bg);background:var(--normal-text);margin-left:var(--toast-button-margin-start);margin-right:var(--toast-button-margin-end);border:none;font-weight:500;cursor:pointer;outline:0;display:flex;align-items:center;flex-shrink:0;transition:opacity .4s,box-shadow .2s}[data-sonner-toast][data-styled=true] [data-button]:focus-visible{box-shadow:0 0 0 2px rgba(0,0,0,.4)}[data-sonner-toast][data-styled=true] [data-button]:first-of-type{margin-left:var(--toast-button-margin-start);margin-right:var(--toast-button-margin-end)}[data-sonner-toast][data-styled=true] [data-cancel]{color:var(--normal-text);background:rgba(0,0,0,.08)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast][data-styled=true] [data-cancel]{background:rgba(255,255,255,.3)}[data-sonner-toast][data-styled=true] [data-close-button]{position:absolute;left:var(--toast-close-button-start);right:var(--toast-close-button-end);top:0;height:20px;width:20px;display:flex;justify-content:center;align-items:center;padding:0;color:var(--gray12);background:var(--normal-bg);border:1px solid var(--gray4);transform:var(--toast-close-button-transform);border-radius:50%;cursor:pointer;z-index:1;transition:opacity .1s,background .2s,border-color .2s}[data-sonner-toast][data-styled=true] [data-close-button]:focus-visible{box-shadow:0 4px 12px rgba(0,0,0,.1),0 0 0 2px rgba(0,0,0,.2)}[data-sonner-toast][data-styled=true] [data-disabled=true]{cursor:not-allowed}[data-sonner-toast][data-styled=true]:hover [data-close-button]:hover{background:var(--gray2);border-color:var(--gray5)}[data-sonner-toast][data-swiping=true]::before{content:'';position:absolute;left:-100%;right:-100%;height:100%;z-index:-1}[data-sonner-toast][data-y-position=top][data-swiping=true]::before{bottom:50%;transform:scaleY(3) translateY(50%)}[data-sonner-toast][data-y-position=bottom][data-swiping=true]::before{top:50%;transform:scaleY(3) translateY(-50%)}[data-sonner-toast][data-swiping=false][data-removed=true]::before{content:'';position:absolute;inset:0;transform:scaleY(2)}[data-sonner-toast][data-expanded=true]::after{content:'';position:absolute;left:0;height:calc(var(--gap) + 1px);bottom:100%;width:100%}[data-sonner-toast][data-mounted=true]{--y:translateY(0);opacity:1}[data-sonner-toast][data-expanded=false][data-front=false]{--scale:var(--toasts-before) * 0.05 + 1;--y:translateY(calc(var(--lift-amount) * var(--toasts-before))) scale(calc(-1 * var(--scale)));height:var(--front-toast-height)}[data-sonner-toast]>*{transition:opacity .4s}[data-sonner-toast][data-x-position=right]{right:0}[data-sonner-toast][data-x-position=left]{left:0}[data-sonner-toast][data-expanded=false][data-front=false][data-styled=true]>*{opacity:0}[data-sonner-toast][data-visible=false]{opacity:0;pointer-events:none}[data-sonner-toast][data-mounted=true][data-expanded=true]{--y:translateY(calc(var(--lift) * var(--offset)));height:var(--initial-height)}[data-sonner-toast][data-removed=true][data-front=true][data-swipe-out=false]{--y:translateY(calc(var(--lift) * -100%));opacity:0}[data-sonner-toast][data-removed=true][data-front=false][data-swipe-out=false][data-expanded=true]{--y:translateY(calc(var(--lift) * var(--offset) + var(--lift) * -100%));opacity:0}[data-sonner-toast][data-removed=true][data-front=false][data-swipe-out=false][data-expanded=false]{--y:translateY(40%);opacity:0;transition:transform .5s,opacity .2s}[data-sonner-toast][data-removed=true][data-front=false]::before{height:calc(var(--initial-height) + 20%)}[data-sonner-toast][data-swiping=true]{transform:var(--y) translateY(var(--swipe-amount-y,0)) translateX(var(--swipe-amount-x,0));transition:none}[data-sonner-toast][data-swiped=true]{user-select:none}[data-sonner-toast][data-swipe-out=true][data-y-position=bottom],[data-sonner-toast][data-swipe-out=true][data-y-position=top]{animation-duration:.2s;animation-timing-function:ease-out;animation-fill-mode:forwards}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=left]{animation-name:swipe-out-left}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=right]{animation-name:swipe-out-right}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=up]{animation-name:swipe-out-up}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=down]{animation-name:swipe-out-down}@keyframes swipe-out-left{from{transform:var(--y) translateX(var(--swipe-amount-x));opacity:1}to{transform:var(--y) translateX(calc(var(--swipe-amount-x) - 100%));opacity:0}}@keyframes swipe-out-right{from{transform:var(--y) translateX(var(--swipe-amount-x));opacity:1}to{transform:var(--y) translateX(calc(var(--swipe-amount-x) + 100%));opacity:0}}@keyframes swipe-out-up{from{transform:var(--y) translateY(var(--swipe-amount-y));opacity:1}to{transform:var(--y) translateY(calc(var(--swipe-amount-y) - 100%));opacity:0}}@keyframes swipe-out-down{from{transform:var(--y) translateY(var(--swipe-amount-y));opacity:1}to{transform:var(--y) translateY(calc(var(--swipe-amount-y) + 100%));opacity:0}}@media (max-width:600px){[data-sonner-toaster]{position:fixed;right:var(--mobile-offset-right);left:var(--mobile-offset-left);width:100%}[data-sonner-toaster][dir=rtl]{left:calc(var(--mobile-offset-left) * -1)}[data-sonner-toaster] [data-sonner-toast]{left:0;right:0;width:calc(100% - var(--mobile-offset-left) * 2)}[data-sonner-toaster][data-x-position=left]{left:var(--mobile-offset-left)}[data-sonner-toaster][data-y-position=bottom]{bottom:var(--mobile-offset-bottom)}[data-sonner-toaster][data-y-position=top]{top:var(--mobile-offset-top)}[data-sonner-toaster][data-x-position=center]{left:var(--mobile-offset-left);right:var(--mobile-offset-right);transform:none}}[data-sonner-toaster][data-sonner-theme=light]{--normal-bg:#fff;--normal-border:var(--gray4);--normal-text:var(--gray12);--success-bg:hsl(143, 85%, 96%);--success-border:hsl(145, 92%, 87%);--success-text:hsl(140, 100%, 27%);--info-bg:hsl(208, 100%, 97%);--info-border:hsl(221, 91%, 93%);--info-text:hsl(210, 92%, 45%);--warning-bg:hsl(49, 100%, 97%);--warning-border:hsl(49, 91%, 84%);--warning-text:hsl(31, 92%, 45%);--error-bg:hsl(359, 100%, 97%);--error-border:hsl(359, 100%, 94%);--error-text:hsl(360, 100%, 45%)}[data-sonner-toaster][data-sonner-theme=light] [data-sonner-toast][data-invert=true]{--normal-bg:#000;--normal-border:hsl(0, 0%, 20%);--normal-text:var(--gray1)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast][data-invert=true]{--normal-bg:#fff;--normal-border:var(--gray3);--normal-text:var(--gray12)}[data-sonner-toaster][data-sonner-theme=dark]{--normal-bg:#000;--normal-bg-hover:hsl(0, 0%, 12%);--normal-border:hsl(0, 0%, 20%);--normal-border-hover:hsl(0, 0%, 25%);--normal-text:var(--gray1);--success-bg:hsl(150, 100%, 6%);--success-border:hsl(147, 100%, 12%);--success-text:hsl(150, 86%, 65%);--info-bg:hsl(215, 100%, 6%);--info-border:hsl(223, 43%, 17%);--info-text:hsl(216, 87%, 65%);--warning-bg:hsl(64, 100%, 6%);--warning-border:hsl(60, 100%, 9%);--warning-text:hsl(46, 87%, 65%);--error-bg:hsl(358, 76%, 10%);--error-border:hsl(357, 89%, 16%);--error-text:hsl(358, 100%, 81%)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast] [data-close-button]{background:var(--normal-bg);border-color:var(--normal-border);color:var(--normal-text)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast] [data-close-button]:hover{background:var(--normal-bg-hover);border-color:var(--normal-border-hover)}[data-rich-colors=true][data-sonner-toast][data-type=success]{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}[data-rich-colors=true][data-sonner-toast][data-type=success] [data-close-button]{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}[data-rich-colors=true][data-sonner-toast][data-type=info]{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}[data-rich-colors=true][data-sonner-toast][data-type=info] [data-close-button]{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}[data-rich-colors=true][data-sonner-toast][data-type=warning]{background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text)}[data-rich-colors=true][data-sonner-toast][data-type=warning] [data-close-button]{background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text)}[data-rich-colors=true][data-sonner-toast][data-type=error]{background:var(--error-bg);border-color:var(--error-border);color:var(--error-text)}[data-rich-colors=true][data-sonner-toast][data-type=error] [data-close-button]{background:var(--error-bg);border-color:var(--error-border);color:var(--error-text)}.sonner-loading-wrapper{--size:16px;height:var(--size);width:var(--size);position:absolute;inset:0;z-index:10}.sonner-loading-wrapper[data-visible=false]{transform-origin:center;animation:sonner-fade-out .2s ease forwards}.sonner-spinner{position:relative;top:50%;left:50%;height:var(--size);width:var(--size)}.sonner-loading-bar{animation:sonner-spin 1.2s linear infinite;background:var(--gray11);border-radius:6px;height:8%;left:-10%;position:absolute;top:-3.9%;width:24%}.sonner-loading-bar:first-child{animation-delay:-1.2s;transform:rotate(.0001deg) translate(146%)}.sonner-loading-bar:nth-child(2){animation-delay:-1.1s;transform:rotate(30deg) translate(146%)}.sonner-loading-bar:nth-child(3){animation-delay:-1s;transform:rotate(60deg) translate(146%)}.sonner-loading-bar:nth-child(4){animation-delay:-.9s;transform:rotate(90deg) translate(146%)}.sonner-loading-bar:nth-child(5){animation-delay:-.8s;transform:rotate(120deg) translate(146%)}.sonner-loading-bar:nth-child(6){animation-delay:-.7s;transform:rotate(150deg) translate(146%)}.sonner-loading-bar:nth-child(7){animation-delay:-.6s;transform:rotate(180deg) translate(146%)}.sonner-loading-bar:nth-child(8){animation-delay:-.5s;transform:rotate(210deg) translate(146%)}.sonner-loading-bar:nth-child(9){animation-delay:-.4s;transform:rotate(240deg) translate(146%)}.sonner-loading-bar:nth-child(10){animation-delay:-.3s;transform:rotate(270deg) translate(146%)}.sonner-loading-bar:nth-child(11){animation-delay:-.2s;transform:rotate(300deg) translate(146%)}.sonner-loading-bar:nth-child(12){animation-delay:-.1s;transform:rotate(330deg) translate(146%)}@keyframes sonner-fade-in{0%{opacity:0;transform:scale(.8)}100%{opacity:1;transform:scale(1)}}@keyframes sonner-fade-out{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.8)}}@keyframes sonner-spin{0%{opacity:1}100%{opacity:.15}}@media (prefers-reduced-motion){.sonner-loading-bar,[data-sonner-toast],[data-sonner-toast]>*{transition:none!important;animation:none!important}}.sonner-loader{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transform-origin:center;transition:opacity .2s,transform .2s}.sonner-loader[data-visible=false]{opacity:0;transform:scale(.8) translate(-50%,-50%)}");
+__insertCSS$1("[data-sonner-toaster][dir=ltr],html[dir=ltr]{--toast-icon-margin-start:-3px;--toast-icon-margin-end:4px;--toast-svg-margin-start:-1px;--toast-svg-margin-end:0px;--toast-button-margin-start:auto;--toast-button-margin-end:0;--toast-close-button-start:0;--toast-close-button-end:unset;--toast-close-button-transform:translate(-35%, -35%)}[data-sonner-toaster][dir=rtl],html[dir=rtl]{--toast-icon-margin-start:4px;--toast-icon-margin-end:-3px;--toast-svg-margin-start:0px;--toast-svg-margin-end:-1px;--toast-button-margin-start:0;--toast-button-margin-end:auto;--toast-close-button-start:unset;--toast-close-button-end:0;--toast-close-button-transform:translate(35%, -35%)}[data-sonner-toaster]{position:fixed;width:var(--width);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;--gray1:hsl(0, 0%, 99%);--gray2:hsl(0, 0%, 97.3%);--gray3:hsl(0, 0%, 95.1%);--gray4:hsl(0, 0%, 93%);--gray5:hsl(0, 0%, 90.9%);--gray6:hsl(0, 0%, 88.7%);--gray7:hsl(0, 0%, 85.8%);--gray8:hsl(0, 0%, 78%);--gray9:hsl(0, 0%, 56.1%);--gray10:hsl(0, 0%, 52.3%);--gray11:hsl(0, 0%, 43.5%);--gray12:hsl(0, 0%, 9%);--border-radius:8px;box-sizing:border-box;padding:0;margin:0;list-style:none;outline:0;z-index:999999999;transition:transform .4s ease}@media (hover:none) and (pointer:coarse){[data-sonner-toaster][data-lifted=true]{transform:none}}[data-sonner-toaster][data-x-position=right]{right:var(--offset-right)}[data-sonner-toaster][data-x-position=left]{left:var(--offset-left)}[data-sonner-toaster][data-x-position=center]{left:50%;transform:translateX(-50%)}[data-sonner-toaster][data-y-position=top]{top:var(--offset-top)}[data-sonner-toaster][data-y-position=bottom]{bottom:var(--offset-bottom)}[data-sonner-toast]{--y:translateY(100%);--lift-amount:calc(var(--lift) * var(--gap));z-index:var(--z-index);position:absolute;opacity:0;transform:var(--y);touch-action:none;transition:transform .4s,opacity .4s,height .4s,box-shadow .2s;box-sizing:border-box;outline:0;overflow-wrap:anywhere}[data-sonner-toast][data-styled=true]{padding:16px;background:var(--normal-bg);border:1px solid var(--normal-border);color:var(--normal-text);border-radius:var(--border-radius);box-shadow:0 4px 12px rgba(0,0,0,.1);width:var(--width);font-size:13px;display:flex;align-items:center;gap:6px}[data-sonner-toast]:focus-visible{box-shadow:0 4px 12px rgba(0,0,0,.1),0 0 0 2px rgba(0,0,0,.2)}[data-sonner-toast][data-y-position=top]{top:0;--y:translateY(-100%);--lift:1;--lift-amount:calc(1 * var(--gap))}[data-sonner-toast][data-y-position=bottom]{bottom:0;--y:translateY(100%);--lift:-1;--lift-amount:calc(var(--lift) * var(--gap))}[data-sonner-toast][data-styled=true] [data-description]{font-weight:400;line-height:1.4;color:#3f3f3f}[data-rich-colors=true][data-sonner-toast][data-styled=true] [data-description]{color:inherit}[data-sonner-toaster][data-sonner-theme=dark] [data-description]{color:#e8e8e8}[data-sonner-toast][data-styled=true] [data-title]{font-weight:500;line-height:1.5;color:inherit}[data-sonner-toast][data-styled=true] [data-icon]{display:flex;height:16px;width:16px;position:relative;justify-content:flex-start;align-items:center;flex-shrink:0;margin-left:var(--toast-icon-margin-start);margin-right:var(--toast-icon-margin-end)}[data-sonner-toast][data-promise=true] [data-icon]>svg{opacity:0;transform:scale(.8);transform-origin:center;animation:sonner-fade-in .3s ease forwards}[data-sonner-toast][data-styled=true] [data-icon]>*{flex-shrink:0}[data-sonner-toast][data-styled=true] [data-icon] svg{margin-left:var(--toast-svg-margin-start);margin-right:var(--toast-svg-margin-end)}[data-sonner-toast][data-styled=true] [data-content]{display:flex;flex-direction:column;gap:2px}[data-sonner-toast][data-styled=true] [data-button]{border-radius:4px;padding-left:8px;padding-right:8px;height:24px;font-size:12px;color:var(--normal-bg);background:var(--normal-text);margin-left:var(--toast-button-margin-start);margin-right:var(--toast-button-margin-end);border:none;font-weight:500;cursor:pointer;outline:0;display:flex;align-items:center;flex-shrink:0;transition:opacity .4s,box-shadow .2s}[data-sonner-toast][data-styled=true] [data-button]:focus-visible{box-shadow:0 0 0 2px rgba(0,0,0,.4)}[data-sonner-toast][data-styled=true] [data-button]:first-of-type{margin-left:var(--toast-button-margin-start);margin-right:var(--toast-button-margin-end)}[data-sonner-toast][data-styled=true] [data-cancel]{color:var(--normal-text);background:rgba(0,0,0,.08)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast][data-styled=true] [data-cancel]{background:rgba(255,255,255,.3)}[data-sonner-toast][data-styled=true] [data-close-button]{position:absolute;left:var(--toast-close-button-start);right:var(--toast-close-button-end);top:0;height:20px;width:20px;display:flex;justify-content:center;align-items:center;padding:0;color:var(--gray12);background:var(--normal-bg);border:1px solid var(--gray4);transform:var(--toast-close-button-transform);border-radius:50%;cursor:pointer;z-index:1;transition:opacity .1s,background .2s,border-color .2s}[data-sonner-toast][data-styled=true] [data-close-button]:focus-visible{box-shadow:0 4px 12px rgba(0,0,0,.1),0 0 0 2px rgba(0,0,0,.2)}[data-sonner-toast][data-styled=true] [data-disabled=true]{cursor:not-allowed}[data-sonner-toast][data-styled=true]:hover [data-close-button]:hover{background:var(--gray2);border-color:var(--gray5)}[data-sonner-toast][data-swiping=true]::before{content:'';position:absolute;left:-100%;right:-100%;height:100%;z-index:-1}[data-sonner-toast][data-y-position=top][data-swiping=true]::before{bottom:50%;transform:scaleY(3) translateY(50%)}[data-sonner-toast][data-y-position=bottom][data-swiping=true]::before{top:50%;transform:scaleY(3) translateY(-50%)}[data-sonner-toast][data-swiping=false][data-removed=true]::before{content:'';position:absolute;inset:0;transform:scaleY(2)}[data-sonner-toast][data-expanded=true]::after{content:'';position:absolute;left:0;height:calc(var(--gap) + 1px);bottom:100%;width:100%}[data-sonner-toast][data-mounted=true]{--y:translateY(0);opacity:1}[data-sonner-toast][data-expanded=false][data-front=false]{--scale:var(--toasts-before) * 0.05 + 1;--y:translateY(calc(var(--lift-amount) * var(--toasts-before))) scale(calc(-1 * var(--scale)));height:var(--front-toast-height)}[data-sonner-toast]>*{transition:opacity .4s}[data-sonner-toast][data-x-position=right]{right:0}[data-sonner-toast][data-x-position=left]{left:0}[data-sonner-toast][data-expanded=false][data-front=false][data-styled=true]>*{opacity:0}[data-sonner-toast][data-visible=false]{opacity:0;pointer-events:none}[data-sonner-toast][data-mounted=true][data-expanded=true]{--y:translateY(calc(var(--lift) * var(--offset)));height:var(--initial-height)}[data-sonner-toast][data-removed=true][data-front=true][data-swipe-out=false]{--y:translateY(calc(var(--lift) * -100%));opacity:0}[data-sonner-toast][data-removed=true][data-front=false][data-swipe-out=false][data-expanded=true]{--y:translateY(calc(var(--lift) * var(--offset) + var(--lift) * -100%));opacity:0}[data-sonner-toast][data-removed=true][data-front=false][data-swipe-out=false][data-expanded=false]{--y:translateY(40%);opacity:0;transition:transform .5s,opacity .2s}[data-sonner-toast][data-removed=true][data-front=false]::before{height:calc(var(--initial-height) + 20%)}[data-sonner-toast][data-swiping=true]{transform:var(--y) translateY(var(--swipe-amount-y,0)) translateX(var(--swipe-amount-x,0));transition:none}[data-sonner-toast][data-swiped=true]{user-select:none}[data-sonner-toast][data-swipe-out=true][data-y-position=bottom],[data-sonner-toast][data-swipe-out=true][data-y-position=top]{animation-duration:.2s;animation-timing-function:ease-out;animation-fill-mode:forwards}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=left]{animation-name:swipe-out-left}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=right]{animation-name:swipe-out-right}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=up]{animation-name:swipe-out-up}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=down]{animation-name:swipe-out-down}@keyframes swipe-out-left{from{transform:var(--y) translateX(var(--swipe-amount-x));opacity:1}to{transform:var(--y) translateX(calc(var(--swipe-amount-x) - 100%));opacity:0}}@keyframes swipe-out-right{from{transform:var(--y) translateX(var(--swipe-amount-x));opacity:1}to{transform:var(--y) translateX(calc(var(--swipe-amount-x) + 100%));opacity:0}}@keyframes swipe-out-up{from{transform:var(--y) translateY(var(--swipe-amount-y));opacity:1}to{transform:var(--y) translateY(calc(var(--swipe-amount-y) - 100%));opacity:0}}@keyframes swipe-out-down{from{transform:var(--y) translateY(var(--swipe-amount-y));opacity:1}to{transform:var(--y) translateY(calc(var(--swipe-amount-y) + 100%));opacity:0}}@media (max-width:600px){[data-sonner-toaster]{position:fixed;right:var(--mobile-offset-right);left:var(--mobile-offset-left);width:100%}[data-sonner-toaster][dir=rtl]{left:calc(var(--mobile-offset-left) * -1)}[data-sonner-toaster] [data-sonner-toast]{left:0;right:0;width:calc(100% - var(--mobile-offset-left) * 2)}[data-sonner-toaster][data-x-position=left]{left:var(--mobile-offset-left)}[data-sonner-toaster][data-y-position=bottom]{bottom:var(--mobile-offset-bottom)}[data-sonner-toaster][data-y-position=top]{top:var(--mobile-offset-top)}[data-sonner-toaster][data-x-position=center]{left:var(--mobile-offset-left);right:var(--mobile-offset-right);transform:none}}[data-sonner-toaster][data-sonner-theme=light]{--normal-bg:#fff;--normal-border:var(--gray4);--normal-text:var(--gray12);--success-bg:hsl(143, 85%, 96%);--success-border:hsl(145, 92%, 87%);--success-text:hsl(140, 100%, 27%);--info-bg:hsl(208, 100%, 97%);--info-border:hsl(221, 91%, 93%);--info-text:hsl(210, 92%, 45%);--warning-bg:hsl(49, 100%, 97%);--warning-border:hsl(49, 91%, 84%);--warning-text:hsl(31, 92%, 45%);--error-bg:hsl(359, 100%, 97%);--error-border:hsl(359, 100%, 94%);--error-text:hsl(360, 100%, 45%)}[data-sonner-toaster][data-sonner-theme=light] [data-sonner-toast][data-invert=true]{--normal-bg:#000;--normal-border:hsl(0, 0%, 20%);--normal-text:var(--gray1)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast][data-invert=true]{--normal-bg:#fff;--normal-border:var(--gray3);--normal-text:var(--gray12)}[data-sonner-toaster][data-sonner-theme=dark]{--normal-bg:#000;--normal-bg-hover:hsl(0, 0%, 12%);--normal-border:hsl(0, 0%, 20%);--normal-border-hover:hsl(0, 0%, 25%);--normal-text:var(--gray1);--success-bg:hsl(150, 100%, 6%);--success-border:hsl(147, 100%, 12%);--success-text:hsl(150, 86%, 65%);--info-bg:hsl(215, 100%, 6%);--info-border:hsl(223, 43%, 17%);--info-text:hsl(216, 87%, 65%);--warning-bg:hsl(64, 100%, 6%);--warning-border:hsl(60, 100%, 9%);--warning-text:hsl(46, 87%, 65%);--error-bg:hsl(358, 76%, 10%);--error-border:hsl(357, 89%, 16%);--error-text:hsl(358, 100%, 81%)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast] [data-close-button]{background:var(--normal-bg);border-color:var(--normal-border);color:var(--normal-text)}[data-sonner-toaster][data-sonner-theme=dark] [data-sonner-toast] [data-close-button]:hover{background:var(--normal-bg-hover);border-color:var(--normal-border-hover)}[data-rich-colors=true][data-sonner-toast][data-type=success]{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}[data-rich-colors=true][data-sonner-toast][data-type=success] [data-close-button]{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}[data-rich-colors=true][data-sonner-toast][data-type=info]{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}[data-rich-colors=true][data-sonner-toast][data-type=info] [data-close-button]{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}[data-rich-colors=true][data-sonner-toast][data-type=warning]{background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text)}[data-rich-colors=true][data-sonner-toast][data-type=warning] [data-close-button]{background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text)}[data-rich-colors=true][data-sonner-toast][data-type=error]{background:var(--error-bg);border-color:var(--error-border);color:var(--error-text)}[data-rich-colors=true][data-sonner-toast][data-type=error] [data-close-button]{background:var(--error-bg);border-color:var(--error-border);color:var(--error-text)}.sonner-loading-wrapper{--size:16px;height:var(--size);width:var(--size);position:absolute;inset:0;z-index:10}.sonner-loading-wrapper[data-visible=false]{transform-origin:center;animation:sonner-fade-out .2s ease forwards}.sonner-spinner{position:relative;top:50%;left:50%;height:var(--size);width:var(--size)}.sonner-loading-bar{animation:sonner-spin 1.2s linear infinite;background:var(--gray11);border-radius:6px;height:8%;left:-10%;position:absolute;top:-3.9%;width:24%}.sonner-loading-bar:first-child{animation-delay:-1.2s;transform:rotate(.0001deg) translate(146%)}.sonner-loading-bar:nth-child(2){animation-delay:-1.1s;transform:rotate(30deg) translate(146%)}.sonner-loading-bar:nth-child(3){animation-delay:-1s;transform:rotate(60deg) translate(146%)}.sonner-loading-bar:nth-child(4){animation-delay:-.9s;transform:rotate(90deg) translate(146%)}.sonner-loading-bar:nth-child(5){animation-delay:-.8s;transform:rotate(120deg) translate(146%)}.sonner-loading-bar:nth-child(6){animation-delay:-.7s;transform:rotate(150deg) translate(146%)}.sonner-loading-bar:nth-child(7){animation-delay:-.6s;transform:rotate(180deg) translate(146%)}.sonner-loading-bar:nth-child(8){animation-delay:-.5s;transform:rotate(210deg) translate(146%)}.sonner-loading-bar:nth-child(9){animation-delay:-.4s;transform:rotate(240deg) translate(146%)}.sonner-loading-bar:nth-child(10){animation-delay:-.3s;transform:rotate(270deg) translate(146%)}.sonner-loading-bar:nth-child(11){animation-delay:-.2s;transform:rotate(300deg) translate(146%)}.sonner-loading-bar:nth-child(12){animation-delay:-.1s;transform:rotate(330deg) translate(146%)}@keyframes sonner-fade-in{0%{opacity:0;transform:scale(.8)}100%{opacity:1;transform:scale(1)}}@keyframes sonner-fade-out{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.8)}}@keyframes sonner-spin{0%{opacity:1}100%{opacity:.15}}@media (prefers-reduced-motion){.sonner-loading-bar,[data-sonner-toast],[data-sonner-toast]>*{transition:none!important;animation:none!important}}.sonner-loader{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transform-origin:center;transition:opacity .2s,transform .2s}.sonner-loader[data-visible=false]{opacity:0;transform:scale(.8) translate(-50%,-50%)}");
 function isAction(action) {
 	return action.label !== void 0;
 }
@@ -22158,7 +22170,7 @@ function computeCoordsFromPlacement(_ref, placement, rtl) {
 	const alignmentAxis = getAlignmentAxis(placement);
 	const alignLength = getAxisLength(alignmentAxis);
 	const side = getSide(placement);
-	const isVertical = sideAxis === "y";
+	const isVertical$1 = sideAxis === "y";
 	const commonX = reference.x + reference.width / 2 - floating.width / 2;
 	const commonY = reference.y + reference.height / 2 - floating.height / 2;
 	const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
@@ -22195,10 +22207,10 @@ function computeCoordsFromPlacement(_ref, placement, rtl) {
 	}
 	switch (getAlignment(placement)) {
 		case "start":
-			coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+			coords[alignmentAxis] -= commonAlign * (rtl && isVertical$1 ? -1 : 1);
 			break;
 		case "end":
-			coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+			coords[alignmentAxis] += commonAlign * (rtl && isVertical$1 ? -1 : 1);
 			break;
 	}
 	return coords;
@@ -22259,7 +22271,7 @@ var computePosition$1 = async (reference, floating, config) => {
 	for (let i = 0; i < validMiddleware.length; i++) {
 		var _platform$detectOverf;
 		const { name, fn } = validMiddleware[i];
-		const { x: nextX, y: nextY, data, reset } = await fn({
+		const { x: nextX, y: nextY, data, reset: reset$1 } = await fn({
 			x: x$2,
 			y: y$1,
 			initialPlacement: placement,
@@ -22285,15 +22297,15 @@ var computePosition$1 = async (reference, floating, config) => {
 				...data
 			}
 		};
-		if (reset && resetCount <= 50) {
+		if (reset$1 && resetCount <= 50) {
 			resetCount++;
-			if (typeof reset === "object") {
-				if (reset.placement) statefulPlacement = reset.placement;
-				if (reset.rects) rects = reset.rects === true ? await platform$1.getElementRects({
+			if (typeof reset$1 === "object") {
+				if (reset$1.placement) statefulPlacement = reset$1.placement;
+				if (reset$1.rects) rects = reset$1.rects === true ? await platform$1.getElementRects({
 					reference,
 					floating,
 					strategy
-				}) : reset.rects;
+				}) : reset$1.rects;
 				({x: x$2, y: y$1} = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
 			}
 			i = -1;
@@ -22470,9 +22482,9 @@ async function convertValueToCoords(state, options$1) {
 	const rtl = await (platform$1.isRTL == null ? void 0 : platform$1.isRTL(elements.floating));
 	const side = getSide(placement);
 	const alignment = getAlignment(placement);
-	const isVertical = getSideAxis(placement) === "y";
+	const isVertical$1 = getSideAxis(placement) === "y";
 	const mainAxisMulti = originSides.has(side) ? -1 : 1;
-	const crossAxisMulti = rtl && isVertical ? -1 : 1;
+	const crossAxisMulti = rtl && isVertical$1 ? -1 : 1;
 	const rawValue = evaluate(options$1, state);
 	let { mainAxis, crossAxis, alignmentAxis } = typeof rawValue === "number" ? {
 		mainAxis: rawValue,
@@ -22484,7 +22496,7 @@ async function convertValueToCoords(state, options$1) {
 		alignmentAxis: rawValue.alignmentAxis
 	};
 	if (alignment && typeof alignmentAxis === "number") crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
-	return isVertical ? {
+	return isVertical$1 ? {
 		x: crossAxis * crossAxisMulti,
 		y: mainAxis * mainAxisMulti
 	} : {
@@ -22964,18 +22976,18 @@ var SCROLLBAR_MAX = 25;
 function getViewportRect(element, strategy) {
 	const win = getWindow(element);
 	const html = getDocumentElement(element);
-	const visualViewport = win.visualViewport;
+	const visualViewport$1 = win.visualViewport;
 	let width = html.clientWidth;
 	let height = html.clientHeight;
 	let x$2 = 0;
 	let y$1 = 0;
-	if (visualViewport) {
-		width = visualViewport.width;
-		height = visualViewport.height;
+	if (visualViewport$1) {
+		width = visualViewport$1.width;
+		height = visualViewport$1.height;
 		const visualViewportBased = isWebKit();
 		if (!visualViewportBased || visualViewportBased && strategy === "fixed") {
-			x$2 = visualViewport.offsetLeft;
-			y$1 = visualViewport.offsetTop;
+			x$2 = visualViewport$1.offsetLeft;
+			y$1 = visualViewport$1.offsetTop;
 		}
 	}
 	const windowScrollbarX = getWindowScrollBarX(html);
@@ -23028,8 +23040,8 @@ function hasFixedPositionAncestor(element, stopNode) {
 	if (parentNode === stopNode || !isElement(parentNode) || isLastTraversableNode(parentNode)) return false;
 	return getComputedStyle$1(parentNode).position === "fixed" || hasFixedPositionAncestor(parentNode, stopNode);
 }
-function getClippingElementAncestors(element, cache) {
-	const cachedResult = cache.get(element);
+function getClippingElementAncestors(element, cache$1) {
+	const cachedResult = cache$1.get(element);
 	if (cachedResult) return cachedResult;
 	let result = getOverflowAncestors(element, [], false).filter((el) => isElement(el) && getNodeName(el) !== "body");
 	let currentContainingBlockComputedStyle = null;
@@ -23043,7 +23055,7 @@ function getClippingElementAncestors(element, cache) {
 		else currentContainingBlockComputedStyle = computedStyle;
 		currentNode = getParentNode(currentNode);
 	}
-	cache.set(element, result);
+	cache$1.set(element, result);
 	return result;
 }
 function getClippingRect(_ref) {
@@ -23270,14 +23282,14 @@ var hide$1 = hide$2;
 var arrow$1 = arrow$2;
 var limitShift$1 = limitShift$2;
 var computePosition = (reference, floating, options$1) => {
-	const cache = /* @__PURE__ */ new Map();
+	const cache$1 = /* @__PURE__ */ new Map();
 	const mergedOptions = {
 		platform,
 		...options$1
 	};
 	const platformWithCache = {
 		...mergedOptions.platform,
-		_c: cache
+		_c: cache$1
 	};
 	return computePosition$1(reference, floating, {
 		...mergedOptions,
@@ -23285,7 +23297,7 @@ var computePosition = (reference, floating, options$1) => {
 	});
 };
 var import_react_dom$2 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
-var index = typeof document !== "undefined" ? import_react.useLayoutEffect : function noop$2() {};
+var index = typeof document !== "undefined" ? import_react.useLayoutEffect : function noop$3() {};
 function deepEqual$1(a$1, b$1) {
 	if (a$1 === b$1) return true;
 	if (typeof a$1 !== typeof b$1) return false;
@@ -23537,7 +23549,7 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Arrow$1.displayName = NAME$2;
-var Root$8 = Arrow$1;
+var Root$9 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23591,7 +23603,7 @@ var PopperAnchor = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, virtualRef, ...anchorProps } = props;
 	const context = usePopperContext(ANCHOR_NAME$1, __scopePopper);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const anchorRef = import_react.useRef(null);
 	import_react.useEffect(() => {
 		const previousAnchor = anchorRef.current;
@@ -23610,7 +23622,7 @@ var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, side = "bottom", sideOffset = 0, align = "center", alignOffset = 0, arrowPadding = 0, avoidCollisions = true, collisionBoundary = [], collisionPadding: collisionPaddingProp = 0, sticky = "partial", hideWhenDetached = false, updatePositionStrategy = "optimized", onPlaced, ...contentProps } = props;
 	const context = usePopperContext(CONTENT_NAME$6, __scopePopper);
 	const [content, setContent] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContent(node));
 	const [arrow$3, setArrow] = import_react.useState(null);
 	const arrowSize = useSize(arrow$3);
 	const arrowWidth = arrowSize?.width ?? 0;
@@ -23675,7 +23687,7 @@ var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 		]
 	});
 	const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement);
-	const handlePlaced = useCallbackRef(onPlaced);
+	const handlePlaced = useCallbackRef$1(onPlaced);
 	useLayoutEffect2(() => {
 		if (isPositioned) handlePlaced?.();
 	}, [isPositioned, handlePlaced]);
@@ -23754,7 +23766,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -23811,7 +23823,7 @@ function getSideAndAlignFromPlacement(placement) {
 }
 var Root2$3 = Popper;
 var Anchor = PopperAnchor;
-var Content$2 = PopperContent;
+var Content$3 = PopperContent;
 var Arrow = PopperArrow;
 var [createTooltipContext, createTooltipScope] = createContextScope("Tooltip", [createPopperScope]);
 var usePopperScope$2 = createPopperScope();
@@ -23861,7 +23873,7 @@ var Tooltip$2 = (props) => {
 	const disableHoverableContent = disableHoverableContentProp ?? providerContext.disableHoverableContent;
 	const delayDuration = delayDurationProp ?? providerContext.delayDuration;
 	const wasOpenDelayedRef = import_react.useRef(false);
-	const [open, setOpen] = useControllableState({
+	const [open, setOpen] = useControllableState$1({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: (open2) => {
@@ -23941,7 +23953,7 @@ var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const context = useTooltipContext(TRIGGER_NAME$4, __scopeTooltip);
 	const providerContext = useTooltipProviderContext(TRIGGER_NAME$4, __scopeTooltip);
 	const popperScope = usePopperScope$2(__scopeTooltip);
-	const composedRefs = useComposedRefs(forwardedRef, import_react.useRef(null), context.onTriggerChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, import_react.useRef(null), context.onTriggerChange);
 	const isPointerDownRef = import_react.useRef(false);
 	const hasPointerMoveOpenedRef = import_react.useRef(false);
 	const handlePointerUp = import_react.useCallback(() => isPointerDownRef.current = false, []);
@@ -23991,7 +24003,7 @@ var TooltipPortal = (props) => {
 		forceMount,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 			present: forceMount || context.open,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
 				asChild: true,
 				container,
 				children
@@ -24022,7 +24034,7 @@ var TooltipContentHoverable = import_react.forwardRef((props, forwardedRef) => {
 	const context = useTooltipContext(CONTENT_NAME$5, props.__scopeTooltip);
 	const providerContext = useTooltipProviderContext(CONTENT_NAME$5, props.__scopeTooltip);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const [pointerGraceArea, setPointerGraceArea] = import_react.useState(null);
 	const { trigger, onClose } = context;
 	const content = ref.current;
@@ -24120,7 +24132,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		onPointerDownOutside,
 		onFocusOutside: (event) => event.preventDefault(),
 		onDismiss: onClose,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$3, {
 			"data-state": context.stateAttribute,
 			...popperScope,
 			...contentProps,
@@ -24136,7 +24148,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24349,7 +24361,7 @@ function createSlotClone(ownerName) {
 		if (import_react.isValidElement(children)) {
 			const childrenRef = getElementRef(children);
 			const props2 = mergeProps(slotProps, children.props);
-			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs$1(forwardedRef, childrenRef) : childrenRef;
 			return import_react.cloneElement(children, props2);
 		}
 		return import_react.Children.count(children) > 1 ? import_react.Children.only(null) : null;
@@ -24508,15 +24520,15 @@ Separator$3.displayName = NAME$1;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$7 = Separator$3;
-var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+var Root$8 = Separator$3;
+var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator$2.displayName = Root$7.displayName;
+Separator$2.displayName = Root$8.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -24527,10 +24539,10 @@ var FOCUS_SCOPE_NAME = "FocusScope";
 var FocusScope = import_react.forwardRef((props, forwardedRef) => {
 	const { loop = false, trapped = false, onMountAutoFocus: onMountAutoFocusProp, onUnmountAutoFocus: onUnmountAutoFocusProp, ...scopeProps } = props;
 	const [container, setContainer] = import_react.useState(null);
-	const onMountAutoFocus = useCallbackRef(onMountAutoFocusProp);
-	const onUnmountAutoFocus = useCallbackRef(onUnmountAutoFocusProp);
+	const onMountAutoFocus = useCallbackRef$1(onMountAutoFocusProp);
+	const onUnmountAutoFocus = useCallbackRef$1(onUnmountAutoFocusProp);
 	const lastFocusedElementRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContainer(node));
 	const focusScope = import_react.useRef({
 		paused: false,
 		pause() {
@@ -24763,7 +24775,7 @@ function assignRef(ref, value) {
 	else if (ref) ref.current = value;
 	return ref;
 }
-function useCallbackRef$1(initialValue, callback) {
+function useCallbackRef$2(initialValue, callback) {
 	var ref = (0, import_react.useState)(function() {
 		return {
 			value: initialValue,
@@ -24785,15 +24797,15 @@ function useCallbackRef$1(initialValue, callback) {
 	ref.callback = callback;
 	return ref.facade;
 }
-var useIsomorphicLayoutEffect = typeof window !== "undefined" ? import_react.useLayoutEffect : import_react.useEffect;
+var useIsomorphicLayoutEffect$1 = typeof window !== "undefined" ? import_react.useLayoutEffect : import_react.useEffect;
 var currentValues = /* @__PURE__ */ new WeakMap();
 function useMergeRefs(refs, defaultValue) {
-	var callbackRef = useCallbackRef$1(defaultValue || null, function(newValue) {
+	var callbackRef = useCallbackRef$2(defaultValue || null, function(newValue) {
 		return refs.forEach(function(ref) {
 			return assignRef(ref, newValue);
 		});
 	});
-	useIsomorphicLayoutEffect(function() {
+	useIsomorphicLayoutEffect$1(function() {
 		var oldValue = currentValues.get(callbackRef);
 		if (oldValue) {
 			var prevRefs_1 = new Set(oldValue);
@@ -25426,7 +25438,7 @@ var Dialog$1 = (props) => {
 	const { __scopeDialog, children, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
 	const triggerRef = import_react.useRef(null);
 	const contentRef = import_react.useRef(null);
-	const [open, setOpen] = useControllableState({
+	const [open, setOpen] = useControllableState$1({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: onOpenChange,
@@ -25451,7 +25463,7 @@ var TRIGGER_NAME$3 = "DialogTrigger";
 var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...triggerProps } = props;
 	const context = useDialogContext(TRIGGER_NAME$3, __scopeDialog);
-	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
+	const composedTriggerRef = useComposedRefs$1(forwardedRef, context.triggerRef);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
 		type: "button",
 		"aria-haspopup": "dialog",
@@ -25474,7 +25486,7 @@ var DialogPortal$1 = (props) => {
 		forceMount,
 		children: import_react.Children.map(children, (child) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 			present: forceMount || context.open,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
 				asChild: true,
 				container,
 				children: child
@@ -25536,7 +25548,7 @@ DialogContent$1.displayName = CONTENT_NAME$4;
 var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
 	const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
 	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
+	const composedRefs = useComposedRefs$1(forwardedRef, context.contentRef, contentRef);
 	import_react.useEffect(() => {
 		const content = contentRef.current;
 		if (content) return hideOthers(content);
@@ -25592,7 +25604,7 @@ var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
 	const context = useDialogContext(CONTENT_NAME$4, __scopeDialog);
 	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, contentRef);
+	const composedRefs = useComposedRefs$1(forwardedRef, contentRef);
 	useFocusGuards();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
 		asChild: true,
@@ -25687,22 +25699,22 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$6 = Dialog$1;
+var Root$7 = Dialog$1;
 var Trigger$3 = DialogTrigger$1;
-var Portal$3 = DialogPortal$1;
-var Overlay = DialogOverlay$1;
-var Content$1 = DialogContent$1;
+var Portal$4 = DialogPortal$1;
+var Overlay$1 = DialogOverlay$1;
+var Content$2 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
-var Sheet = Root$6;
-var SheetPortal = Portal$3;
-var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
+var Sheet = Root$7;
+var SheetPortal = Portal$4;
+var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay$1, {
 	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
 	...props,
 	ref
 }));
-SheetOverlay.displayName = Overlay.displayName;
+SheetOverlay.displayName = Overlay$1.displayName;
 var sheetVariants = cva("fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500", {
 	variants: { side: {
 		top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
@@ -25712,7 +25724,7 @@ var sheetVariants = cva("fixed z-50 gap-4 bg-background p-6 shadow-lg transition
 	} },
 	defaultVariants: { side: "right" }
 });
-var SheetContent = import_react.forwardRef(({ side = "right", className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
+var SheetContent = import_react.forwardRef(({ side = "right", className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
 	ref,
 	className: cn(sheetVariants({ side }), className),
 	...props,
@@ -25724,7 +25736,7 @@ var SheetContent = import_react.forwardRef(({ side = "right", className, childre
 		})]
 	})]
 })] }));
-SheetContent.displayName = Content$1.displayName;
+SheetContent.displayName = Content$2.displayName;
 var SheetHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	className: cn("flex flex-col space-y-2 text-center sm:text-left", className),
 	...props
@@ -26121,6 +26133,11 @@ var navItems = [
 		url: "/"
 	},
 	{
+		title: "Operações de Campo",
+		icon: Smartphone,
+		url: "/campo"
+	},
+	{
 		title: "Gestão de Pastos",
 		icon: Map$1,
 		url: "/pastos"
@@ -26154,6 +26171,11 @@ var navItems = [
 		title: "Financeiro",
 		icon: DollarSign,
 		url: "/financeiro"
+	},
+	{
+		title: "Relatórios",
+		icon: FileText,
+		url: "/relatorios"
 	}
 ];
 function AppSidebar() {
@@ -26274,12 +26296,12 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$17({ inst: {
+			cachedValue = useState$19({ inst: {
 				value,
 				getSnapshot
 			} });
 			var inst = cachedValue[0].inst, forceUpdate = cachedValue[1];
-			useLayoutEffect$2(function() {
+			useLayoutEffect$3(function() {
 				inst.value = value;
 				inst.getSnapshot = getSnapshot;
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26288,7 +26310,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$6(function() {
+			useEffect$7(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26311,7 +26333,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$17 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$19 = React$64.useState, useEffect$7 = React$64.useEffect, useLayoutEffect$3 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26347,7 +26369,7 @@ var AvatarImage$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeAvatar, src, onLoadingStatusChange = () => {}, ...imageProps } = props;
 	const context = useAvatarContext(IMAGE_NAME, __scopeAvatar);
 	const imageLoadingStatus = useImageLoadingStatus(src, imageProps);
-	const handleLoadingStatusChange = useCallbackRef((status) => {
+	const handleLoadingStatusChange = useCallbackRef$1((status) => {
 		onLoadingStatusChange(status);
 		context.onImageLoadingStatusChange(status);
 	});
@@ -26418,15 +26440,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$5 = Avatar$1;
+var Root$6 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$5.displayName;
+Avatar.displayName = Root$6.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26439,16 +26461,16 @@ var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /
 	...props
 }));
 AvatarFallback.displayName = Fallback.displayName;
-var Dialog = Root$6;
+var Dialog = Root$7;
 var DialogTrigger = Trigger$3;
-var DialogPortal = Portal$3;
-var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
+var DialogPortal = Portal$4;
+var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay$1, {
 	ref,
 	className: cn("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
 	...props
 }));
-DialogOverlay.displayName = Overlay.displayName;
-var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
+DialogOverlay.displayName = Overlay$1.displayName;
+var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
 	ref,
 	className: cn("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
 	...props,
@@ -26460,7 +26482,7 @@ var DialogContent = import_react.forwardRef(({ className, children, ...props }, 
 		})]
 	})]
 })] }));
-DialogContent.displayName = Content$1.displayName;
+DialogContent.displayName = Content$2.displayName;
 var DialogHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	className: cn("flex flex-col space-y-1.5 text-center sm:text-left", className),
 	...props
@@ -26496,14 +26518,14 @@ var Label$4 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Label$4.displayName = NAME;
-var Root$4 = Label$4;
+var Root$5 = Label$4;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 	ref,
 	className: cn(labelVariants(), className),
 	...props
 }));
-Label.displayName = Root$4.displayName;
+Label.displayName = Root$5.displayName;
 function clamp(value, [min$5, max$6]) {
 	return Math.min(max$6, Math.max(min$5, value));
 }
@@ -26546,13 +26568,13 @@ var Select$2 = (props) => {
 	const [valueNode, setValueNode] = import_react.useState(null);
 	const [valueNodeHasChildren, setValueNodeHasChildren] = import_react.useState(false);
 	const direction = useDirection(dir);
-	const [open, setOpen] = useControllableState({
+	const [open, setOpen] = useControllableState$1({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: onOpenChange,
 		caller: SELECT_NAME
 	});
-	const [value, setValue] = useControllableState({
+	const [value, setValue] = useControllableState$1({
 		prop: valueProp,
 		defaultProp: defaultValue,
 		onChange: onValueChange,
@@ -26619,7 +26641,7 @@ var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const popperScope = usePopperScope$1(__scopeSelect);
 	const context = useSelectContext(TRIGGER_NAME$2, __scopeSelect);
 	const isDisabled = context.disabled || disabled;
-	const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, context.onTriggerChange);
 	const getItems = useCollection$2(__scopeSelect);
 	const pointerTypeRef = import_react.useRef("touch");
 	const [searchRef, handleTypeaheadSearch, resetTypeahead] = useTypeaheadSearch((search) => {
@@ -26686,7 +26708,7 @@ var SelectValue$1 = import_react.forwardRef((props, forwardedRef) => {
 	const context = useSelectContext(VALUE_NAME, __scopeSelect);
 	const { onValueNodeHasChildrenChange } = context;
 	const hasChildren = children !== void 0;
-	const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, context.onValueNodeChange);
 	useLayoutEffect2(() => {
 		onValueNodeHasChildrenChange(hasChildren);
 	}, [onValueNodeHasChildrenChange, hasChildren]);
@@ -26711,7 +26733,7 @@ var SelectIcon = import_react.forwardRef((props, forwardedRef) => {
 SelectIcon.displayName = ICON_NAME;
 var PORTAL_NAME$2 = "SelectPortal";
 var SelectPortal = (props) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
 		asChild: true,
 		...props
 	});
@@ -26749,7 +26771,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const context = useSelectContext(CONTENT_NAME$3, __scopeSelect);
 	const [content, setContent] = import_react.useState(null);
 	const [viewport, setViewport] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContent(node));
 	const [selectedItem, setSelectedItem] = import_react.useState(null);
 	const [selectedItemText, setSelectedItemText] = import_react.useState(null);
 	const getItems = useCollection$2(__scopeSelect);
@@ -26940,7 +26962,7 @@ var SelectItemAlignedPosition = import_react.forwardRef((props, forwardedRef) =>
 	const contentContext = useSelectContentContext(CONTENT_NAME$3, __scopeSelect);
 	const [contentWrapper, setContentWrapper] = import_react.useState(null);
 	const [content, setContent] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContent(node));
 	const getItems = useCollection$2(__scopeSelect);
 	const shouldExpandOnScrollRef = import_react.useRef(false);
 	const shouldRepositionRef = import_react.useRef(true);
@@ -27063,7 +27085,7 @@ var POPPER_POSITION_NAME = "SelectPopperPosition";
 var SelectPopperPosition = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, align = "start", collisionPadding = CONTENT_MARGIN, ...popperProps } = props;
 	const popperScope = usePopperScope$1(__scopeSelect);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$3, {
 		...popperScope,
 		...popperProps,
 		ref: forwardedRef,
@@ -27087,7 +27109,7 @@ var SelectViewport = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, nonce, ...viewportProps } = props;
 	const contentContext = useSelectContentContext(VIEWPORT_NAME, __scopeSelect);
 	const viewportContext = useSelectViewportContext(VIEWPORT_NAME, __scopeSelect);
-	const composedRefs = useComposedRefs(forwardedRef, contentContext.onViewportChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, contentContext.onViewportChange);
 	const prevScrollTopRef = import_react.useRef(0);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", {
 		dangerouslySetInnerHTML: { __html: `[data-radix-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-select-viewport]::-webkit-scrollbar{display:none}` },
@@ -27170,7 +27192,7 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const isSelected = context.value === value;
 	const [textValue, setTextValue] = import_react.useState(textValueProp ?? "");
 	const [isFocused, setIsFocused] = import_react.useState(false);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => contentContext.itemRefCallback?.(node, value, disabled));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => contentContext.itemRefCallback?.(node, value, disabled));
 	const textId = useId();
 	const pointerTypeRef = import_react.useRef("touch");
 	const handleSelect = () => {
@@ -27242,7 +27264,7 @@ var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect);
 	const nativeOptionsContext = useSelectNativeOptionsContext(ITEM_TEXT_NAME, __scopeSelect);
 	const [itemTextNode, setItemTextNode] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setItemTextNode(node), itemContext.onItemTextChange, (node) => contentContext.itemTextRefCallback?.(node, itemContext.value, itemContext.disabled));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setItemTextNode(node), itemContext.onItemTextChange, (node) => contentContext.itemTextRefCallback?.(node, itemContext.value, itemContext.disabled));
 	const textContent = itemTextNode?.textContent;
 	const nativeOption = import_react.useMemo(() => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 		value: itemContext.value,
@@ -27284,7 +27306,7 @@ var SelectScrollUpButton$1 = import_react.forwardRef((props, forwardedRef) => {
 	const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
 	const viewportContext = useSelectViewportContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
 	const [canScrollUp, setCanScrollUp] = import_react.useState(false);
-	const composedRefs = useComposedRefs(forwardedRef, viewportContext.onScrollButtonChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, viewportContext.onScrollButtonChange);
 	useLayoutEffect2(() => {
 		if (contentContext.viewport && contentContext.isPositioned) {
 			let handleScroll2 = function() {
@@ -27311,7 +27333,7 @@ var SelectScrollDownButton$1 = import_react.forwardRef((props, forwardedRef) => 
 	const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect);
 	const viewportContext = useSelectViewportContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect);
 	const [canScrollDown, setCanScrollDown] = import_react.useState(false);
-	const composedRefs = useComposedRefs(forwardedRef, viewportContext.onScrollButtonChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, viewportContext.onScrollButtonChange);
 	useLayoutEffect2(() => {
 		if (contentContext.viewport && contentContext.isPositioned) {
 			let handleScroll2 = function() {
@@ -27397,7 +27419,7 @@ SelectArrow.displayName = ARROW_NAME$2;
 var BUBBLE_INPUT_NAME$1 = "SelectBubbleInput";
 var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const prevValue = usePrevious(value);
 	import_react.useEffect(() => {
 		const select = ref.current;
@@ -27425,7 +27447,7 @@ function shouldShowPlaceholder(value) {
 	return value === "" || value === void 0;
 }
 function useTypeaheadSearch(onSearchChange) {
-	const handleSearchChange = useCallbackRef(onSearchChange);
+	const handleSearchChange = useCallbackRef$1(onSearchChange);
 	const searchRef = import_react.useRef("");
 	const timerRef = import_react.useRef(0);
 	const handleTypeaheadSearch = import_react.useCallback((key) => {
@@ -27465,7 +27487,7 @@ var Root2$2 = Select$2;
 var Trigger$2 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
-var Portal$2 = SelectPortal;
+var Portal$3 = SelectPortal;
 var Content2$2 = SelectContent$1;
 var Viewport = SelectViewport;
 var Label$3 = SelectLabel$1;
@@ -27475,7 +27497,7 @@ var ItemIndicator$1 = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
 var Separator$1 = SelectSeparator$1;
-var Select$1 = Root2$2;
+var Select = Root2$2;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$2, {
 	ref,
@@ -27501,7 +27523,7 @@ var SelectScrollDownButton = import_react.forwardRef(({ className, ...props }, r
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-4 w-4" })
 }));
 SelectScrollDownButton.displayName = ScrollDownButton.displayName;
-var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2$2, {
+var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$3, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2$2, {
 	ref,
 	className: cn("relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]", position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className),
 	position,
@@ -27571,7 +27593,7 @@ function QuickAddModal() {
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 							htmlFor: "tipo",
 							children: "Tipo de Registro"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 							defaultValue: "despesa",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
 								id: "tipo",
@@ -27864,9 +27886,9 @@ function getInvalidValueError(propValue, componentName) {
 
 Defaulting to \`null\`.`;
 }
-var Root$3 = Progress$1;
+var Root$4 = Progress$1;
 var Indicator = ProgressIndicator;
-var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
+var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
 	ref,
 	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
 	...props,
@@ -27875,7 +27897,7 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 		style: { transform: `translateX(-${100 - (value || 0)}%)` }
 	})
 }));
-Progress.displayName = Root$3.displayName;
+Progress.displayName = Root$4.displayName;
 const dashboardData = {
 	kpis: {
 		animais: 3450,
@@ -28323,15 +28345,38 @@ const inventoryData = {
 		unidade: "Rolos",
 		status: "Normal"
 	}],
-	nutricao: [{
-		id: "N1",
-		item: "Sal Mineral Reprodução",
-		tipo: "Suplemento",
-		qtd: 45,
-		minQtd: 30,
-		unidade: "Sacos",
-		status: "Normal"
-	}]
+	nutricao: [
+		{
+			id: "N1",
+			item: "Sal Mineral Reprodução",
+			tipo: "Suplemento",
+			qtd: 1500,
+			consumoDiario: 50,
+			minQtd: 300,
+			unidade: "kg",
+			status: "Normal"
+		},
+		{
+			id: "N2",
+			item: "Ração Confinamento",
+			tipo: "Concentrado",
+			qtd: 2e3,
+			consumoDiario: 450,
+			minQtd: 1e3,
+			unidade: "kg",
+			status: "Crítico"
+		},
+		{
+			id: "N3",
+			item: "Sal Proteico 0.1%",
+			tipo: "Suplemento",
+			qtd: 800,
+			consumoDiario: 65,
+			minQtd: 500,
+			unidade: "kg",
+			status: "Baixo"
+		}
+	]
 };
 const financialData = [{
 	id: "TR-101",
@@ -28479,6 +28524,74 @@ const lotPerformanceData = [{
 	lucro: 56800,
 	margem: "40.0%"
 }];
+const costPerArrobaData = [
+	{
+		loteId: "LEN-01",
+		categoria: "Bois Magros",
+		custoAcumulado: 12500,
+		ganhoPesoKg: 3500,
+		ganhoArroba: 116.6,
+		custoPorArroba: 107.2
+	},
+	{
+		loteId: "LEN-02",
+		categoria: "Bois Terminação",
+		custoAcumulado: 28400,
+		ganhoPesoKg: 7200,
+		ganhoArroba: 240,
+		custoPorArroba: 118.33
+	},
+	{
+		loteId: "LRE-01",
+		categoria: "Garrotes",
+		custoAcumulado: 8500,
+		ganhoPesoKg: 4100,
+		ganhoArroba: 136.6,
+		custoPorArroba: 62.22
+	}
+];
+const managementHistory = [
+	{
+		id: "H-1",
+		data: "10/Mar/2026",
+		tipo: "Nutrição",
+		alvo: "Lote LEN-01",
+		descricao: "Ajuste de dieta para Terminação Alto Grão",
+		responsavel: "João S."
+	},
+	{
+		id: "H-2",
+		data: "09/Mar/2026",
+		tipo: "Manejo de Pasto",
+		alvo: "Pasto 02 - Fundo",
+		descricao: "Aplicação de Herbicida (Folha Larga)",
+		responsavel: "Carlos A."
+	},
+	{
+		id: "H-3",
+		data: "08/Mar/2026",
+		tipo: "Sanidade",
+		alvo: "Lote LCR-04",
+		descricao: "Vacinação Febre Aftosa",
+		responsavel: "Ana M."
+	},
+	{
+		id: "H-4",
+		data: "05/Mar/2026",
+		tipo: "Movimentação",
+		alvo: "Lote LRE-01",
+		descricao: "Transferência do Pasto 05 para Pasto 06",
+		responsavel: "João S."
+	},
+	{
+		id: "H-5",
+		data: "02/Mar/2026",
+		tipo: "Adubação",
+		alvo: "Pasto 01 - Sede",
+		descricao: "Aplicação de Ureia (50kg/ha)",
+		responsavel: "Carlos A."
+	}
+];
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Array.isArray;
 }));
@@ -28863,10 +28976,10 @@ var require_memoize = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	function memoize$3(func, resolver) {
 		if (typeof func != "function" || resolver != null && typeof resolver != "function") throw new TypeError(FUNC_ERROR_TEXT$2);
 		var memoized = function() {
-			var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache = memoized.cache;
-			if (cache.has(key)) return cache.get(key);
+			var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache$1 = memoized.cache;
+			if (cache$1.has(key)) return cache$1.get(key);
 			var result = func.apply(this, args);
-			memoized.cache = cache.set(key, result) || cache;
+			memoized.cache = cache$1.set(key, result) || cache$1;
 			return result;
 		};
 		memoized.cache = new (memoize$3.Cache || MapCache$2)();
@@ -28880,10 +28993,10 @@ var require__memoizeCapped = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	var MAX_MEMOIZE_SIZE = 500;
 	function memoizeCapped$1(func) {
 		var result = memoize$2(func, function(key) {
-			if (cache.size === MAX_MEMOIZE_SIZE) cache.clear();
+			if (cache$1.size === MAX_MEMOIZE_SIZE) cache$1.clear();
 			return key;
 		});
-		var cache = result.cache;
+		var cache$1 = result.cache;
 		return result;
 	}
 	module.exports = memoizeCapped$1;
@@ -29054,7 +29167,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		var Fragment$3 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
-		var Portal$4 = REACT_PORTAL_TYPE;
+		var Portal$5 = REACT_PORTAL_TYPE;
 		var Profiler = REACT_PROFILER_TYPE;
 		var StrictMode = REACT_STRICT_MODE_TYPE;
 		var Suspense = REACT_SUSPENSE_TYPE;
@@ -29118,7 +29231,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		exports.Fragment = Fragment$3;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
-		exports.Portal = Portal$4;
+		exports.Portal = Portal$5;
 		exports.Profiler = Profiler;
 		exports.StrictMode = StrictMode;
 		exports.Suspense = Suspense;
@@ -29208,8 +29321,8 @@ var getAnyElementOfObject = function getAnyElementOfObject$1(obj) {
 var hasDuplicate = function hasDuplicate$1(ary) {
 	if (!Array.isArray(ary)) return false;
 	var len = ary.length;
-	var cache = {};
-	for (var i = 0; i < len; i++) if (!cache[ary[i]]) cache[ary[i]] = true;
+	var cache$1 = {};
+	for (var i = 0; i < len; i++) if (!cache$1[ary[i]]) cache$1[ary[i]] = true;
 	else return true;
 	return false;
 };
@@ -31516,8 +31629,8 @@ var require__arraySome = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = arraySome$2;
 }));
 var require__cacheHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function cacheHas$2(cache, key) {
-		return cache.has(key);
+	function cacheHas$2(cache$1, key) {
+		return cache$1.has(key);
 	}
 	module.exports = cacheHas$2;
 }));
@@ -31573,9 +31686,9 @@ var require__mapToArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = mapToArray$1;
 }));
 var require__setToArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function setToArray$3(set) {
-		var index$1 = -1, result = Array(set.size);
-		set.forEach(function(value) {
+	function setToArray$3(set$1) {
+		var index$1 = -1, result = Array(set$1.size);
+		set$1.forEach(function(value) {
 			result[++index$1] = value;
 		});
 		return result;
@@ -32129,12 +32242,12 @@ var require__arrayIncludesWith = /* @__PURE__ */ __commonJSMin(((exports, module
 	module.exports = arrayIncludesWith$1;
 }));
 var require_noop = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function noop$1() {}
-	module.exports = noop$1;
+	function noop$2() {}
+	module.exports = noop$2;
 }));
 var require__createSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var Set$1 = require__Set(), noop = require_noop(), setToArray$1 = require__setToArray();
-	module.exports = !(Set$1 && 1 / setToArray$1(new Set$1([, -0]))[1] == Infinity) ? noop : function(values) {
+	var Set$1 = require__Set(), noop$1 = require_noop(), setToArray$1 = require__setToArray();
+	module.exports = !(Set$1 && 1 / setToArray$1(new Set$1([, -0]))[1] == Infinity) ? noop$1 : function(values) {
 		return new Set$1(values);
 	};
 }));
@@ -32147,8 +32260,8 @@ var require__baseUniq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			isCommon = false;
 			includes = arrayIncludesWith;
 		} else if (length >= LARGE_ARRAY_SIZE) {
-			var set = iteratee ? null : createSet(array);
-			if (set) return setToArray(set);
+			var set$1 = iteratee ? null : createSet(array);
+			if (set$1) return setToArray(set$1);
 			isCommon = false;
 			includes = cacheHas;
 			seen$1 = new SetCache();
@@ -33198,7 +33311,7 @@ var Global = {
 	get: function get$8(key) {
 		return Global[key];
 	},
-	set: function set(key, value) {
+	set: function set$1(key, value) {
 		if (typeof key === "string") Global[key] = value;
 		else {
 			var keys$6 = Object.keys(key);
@@ -40709,7 +40822,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var Fragment$3 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
-		var Portal$4 = REACT_PORTAL_TYPE;
+		var Portal$5 = REACT_PORTAL_TYPE;
 		var Profiler = REACT_PROFILER_TYPE;
 		var StrictMode = REACT_STRICT_MODE_TYPE;
 		var Suspense = REACT_SUSPENSE_TYPE;
@@ -40766,7 +40879,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		exports.Fragment = Fragment$3;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
-		exports.Portal = Portal$4;
+		exports.Portal = Portal$5;
 		exports.Profiler = Profiler;
 		exports.StrictMode = StrictMode;
 		exports.Suspense = Suspense;
@@ -41210,15 +41323,15 @@ function combineComparators(comparatorA, comparatorB) {
 function createIsCircular(areItemsEqual) {
 	return function isCircular(a$1, b$1, state) {
 		if (!a$1 || !b$1 || typeof a$1 !== "object" || typeof b$1 !== "object") return areItemsEqual(a$1, b$1, state);
-		const { cache } = state;
-		const cachedA = cache.get(a$1);
-		const cachedB = cache.get(b$1);
+		const { cache: cache$1 } = state;
+		const cachedA = cache$1.get(a$1);
+		const cachedB = cache$1.get(b$1);
 		if (cachedA && cachedB) return cachedA === b$1 && cachedB === a$1;
-		cache.set(a$1, b$1);
-		cache.set(b$1, a$1);
+		cache$1.set(a$1, b$1);
+		cache$1.set(b$1, a$1);
 		const result = areItemsEqual(a$1, b$1, state);
-		cache.delete(a$1);
-		cache.delete(b$1);
+		cache$1.delete(a$1);
+		cache$1.delete(b$1);
 		return result;
 	};
 }
@@ -41469,9 +41582,9 @@ function createInternalEqualityComparator(compare) {
 }
 function createIsEqual({ circular, comparator, createState, equals, strict }) {
 	if (createState) return function isEqual$7(a$1, b$1) {
-		const { cache = circular ? /* @__PURE__ */ new WeakMap() : void 0, meta } = createState();
+		const { cache: cache$1 = circular ? /* @__PURE__ */ new WeakMap() : void 0, meta } = createState();
 		return comparator(a$1, b$1, {
-			cache,
+			cache: cache$1,
 			equals,
 			meta,
 			strict
@@ -41580,17 +41693,17 @@ function createAnimateManager() {
 		return null;
 	};
 	var shouldStop = false;
-	var setStyle = function setStyle$1(_style) {
+	var setStyle$1 = function setStyle$2(_style) {
 		if (shouldStop) return;
 		if (Array.isArray(_style)) {
 			if (!_style.length) return;
 			var _styles = _toArray(_style), curr = _styles[0], restStyles = _styles.slice(1);
 			if (typeof curr === "number") {
-				setRafTimeout(setStyle$1.bind(null, restStyles), curr);
+				setRafTimeout(setStyle$2.bind(null, restStyles), curr);
 				return;
 			}
-			setStyle$1(curr);
-			setRafTimeout(setStyle$1.bind(null, restStyles));
+			setStyle$2(curr);
+			setRafTimeout(setStyle$2.bind(null, restStyles));
 			return;
 		}
 		if (_typeof$29(_style) === "object") {
@@ -41605,7 +41718,7 @@ function createAnimateManager() {
 		},
 		start: function start(style) {
 			shouldStop = false;
-			setStyle(style);
+			setStyle$1(style);
 		},
 		subscribe: function subscribe$1(_handleChange) {
 			handleChange = _handleChange;
@@ -51527,7 +51640,7 @@ function SectorCalendarTab({ sectorId }) {
 		className: "flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Eventos e Atividades" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-wrap gap-2 w-full md:w-auto",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 				value: filterType,
 				onValueChange: setFilterType,
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
@@ -51626,7 +51739,7 @@ function GoalDialog() {
 						})]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Período" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Período" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 							defaultValue: "mensal",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
@@ -51906,16 +52019,16 @@ RovingFocusGroup.displayName = GROUP_NAME$2;
 var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, orientation, loop = false, dir, currentTabStopId: currentTabStopIdProp, defaultCurrentTabStopId, onCurrentTabStopIdChange, onEntryFocus, preventScrollOnEntryFocus = false, ...groupProps } = props;
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const direction = useDirection(dir);
-	const [currentTabStopId, setCurrentTabStopId] = useControllableState({
+	const [currentTabStopId, setCurrentTabStopId] = useControllableState$1({
 		prop: currentTabStopIdProp,
 		defaultProp: defaultCurrentTabStopId ?? null,
 		onChange: onCurrentTabStopIdChange,
 		caller: GROUP_NAME$2
 	});
 	const [isTabbingBackOut, setIsTabbingBackOut] = import_react.useState(false);
-	const handleEntryFocus = useCallbackRef(onEntryFocus);
+	const handleEntryFocus = useCallbackRef$1(onEntryFocus);
 	const getItems = useCollection$1(__scopeRovingFocusGroup);
 	const isClickFocusRef = import_react.useRef(false);
 	const [focusableItemsCount, setFocusableItemsCount] = import_react.useState(0);
@@ -52061,7 +52174,7 @@ function focusFirst$1(candidates, preventScroll = false) {
 function wrapArray$1(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root$2 = RovingFocusGroup;
+var Root$3 = RovingFocusGroup;
 var Item = RovingFocusGroupItem;
 var TABS_NAME = "Tabs";
 var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [createRovingFocusGroupScope]);
@@ -52070,7 +52183,7 @@ var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
 var Tabs$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
 	const direction = useDirection(dir);
-	const [value, setValue] = useControllableState({
+	const [value, setValue] = useControllableState$1({
 		prop: valueProp,
 		onChange: onValueChange,
 		defaultProp: defaultValue ?? "",
@@ -52098,7 +52211,7 @@ var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
 	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
 		asChild: true,
 		...rovingFocusGroupScope,
 		orientation: context.orientation,
@@ -52194,7 +52307,7 @@ function makeContentId(baseId, value) {
 var Root2$1 = Tabs$1;
 var List = TabsList$1;
 var Trigger$1 = TabsTrigger$1;
-var Content = TabsContent$1;
+var Content$1 = TabsContent$1;
 var Tabs = Root2$1;
 var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
 	ref,
@@ -52208,12 +52321,12 @@ var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @
 	...props
 }));
 TabsTrigger.displayName = Trigger$1.displayName;
-var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content, {
+var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$1, {
 	ref,
 	className: cn("mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className),
 	...props
 }));
-TabsContent.displayName = Content.displayName;
+TabsContent.displayName = Content$1.displayName;
 var chartConfig$1 = {
 	actual: {
 		label: "Ganho Real (kg)",
@@ -52615,7 +52728,7 @@ function SectorPastureTab({ sectorId }) {
 							children: p.nome
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.area }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 							value: p.score.toString(),
 							onValueChange: (val) => handleScoreChange(p.id, val),
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
@@ -52896,10 +53009,10 @@ var [SwitchProvider, useSwitchContext] = createSwitchContext(SWITCH_NAME);
 var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSwitch, name, checked: checkedProp, defaultChecked, required, disabled, value = "on", onCheckedChange, form, ...switchProps } = props;
 	const [button, setButton] = import_react.useState(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
+	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setButton(node));
 	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
 	const isFormControl = button ? form || !!button.closest("form") : true;
-	const [checked, setChecked] = useControllableState({
+	const [checked, setChecked] = useControllableState$1({
 		prop: checkedProp,
 		defaultProp: defaultChecked ?? false,
 		onChange: onCheckedChange,
@@ -52956,7 +53069,7 @@ SwitchThumb.displayName = THUMB_NAME;
 var BUBBLE_INPUT_NAME = "SwitchBubbleInput";
 var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, checked, bubbles = true, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(ref, forwardedRef);
+	const composedRefs = useComposedRefs$1(ref, forwardedRef);
 	const prevChecked = usePrevious(checked);
 	const controlSize = useSize(control);
 	import_react.useEffect(() => {
@@ -52995,15 +53108,15 @@ SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME;
 function getState(checked) {
 	return checked ? "checked" : "unchecked";
 }
-var Root$1 = Switch$1;
+var Root$2 = Switch$1;
 var Thumb = SwitchThumb;
-var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
+var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
 	className: cn("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input", className),
 	...props,
 	ref,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
 }));
-Switch.displayName = Root$1.displayName;
+Switch.displayName = Root$2.displayName;
 function NotificationPreferences() {
 	const [prefs, setPrefs] = (0, import_react.useState)({
 		sms: false,
@@ -53292,7 +53405,7 @@ function ManagementTab() {
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "space-y-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 									value: newInvType,
 									onValueChange: setNewInvType,
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
@@ -53693,9 +53806,67 @@ function Estoque() {
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "nutricao",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Suplementação e Rações" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Suplementação e Rações (Previsão de Estoque)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhe o consumo diário e a estimativa de duração do estoque baseada no rebanho atual." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 						className: "px-0 sm:px-6",
-						children: renderTable(inventoryData.nutricao)
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Insumo" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Estoque Atual"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Consumo Diário"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Autonomia (Dias)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Alerta" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: inventoryData.nutricao.map((item) => {
+								const consumo = item.consumoDiario || 1;
+								const diasRestantes = Math.floor(item.qtd / consumo);
+								const isCritical = diasRestantes <= 7;
+								const isWarning = diasRestantes > 7 && diasRestantes <= 15;
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+									className: isCritical ? "bg-destructive/5" : "",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "font-medium",
+											children: item.item
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+											className: "text-right font-mono",
+											children: [
+												item.qtd,
+												" ",
+												item.unidade
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+											className: "text-right font-mono text-muted-foreground",
+											children: [
+												item.consumoDiario,
+												" ",
+												item.unidade,
+												"/dia"
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+											className: `text-right font-mono font-bold ${isCritical ? "text-destructive" : isWarning ? "text-orange-500" : "text-primary"}`,
+											children: [diasRestantes, " dias"]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
+											className: isCritical ? "animate-pulse-slow" : "",
+											children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta (Baixo)" : "Confortável"
+										}) })
+									]
+								}, item.id);
+							}) })] })
+						})
 					})] })
 				})
 			]
@@ -53738,7 +53909,7 @@ var Menu = (props) => {
 	const popperScope = usePopperScope(__scopeMenu);
 	const [content, setContent] = import_react.useState(null);
 	const isUsingKeyboardRef = import_react.useRef(false);
-	const handleOpenChange = useCallbackRef(onOpenChange);
+	const handleOpenChange = useCallbackRef$1(onOpenChange);
 	const direction = useDirection(dir);
 	import_react.useEffect(() => {
 		const handleKeyDown = () => {
@@ -53801,7 +53972,7 @@ var MenuPortal = (props) => {
 		forceMount,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 			present: forceMount || context.open,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
 				asChild: true,
 				container,
 				children
@@ -53837,7 +54008,7 @@ var MenuContent = import_react.forwardRef((props, forwardedRef) => {
 var MenuRootContentModal = import_react.forwardRef((props, forwardedRef) => {
 	const context = useMenuContext(CONTENT_NAME$1, props.__scopeMenu);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	import_react.useEffect(() => {
 		const content = ref.current;
 		if (content) return hideOthers(content);
@@ -53873,7 +54044,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const getItems = useCollection(__scopeMenu);
 	const [currentItemId, setCurrentItemId] = import_react.useState(null);
 	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, contentRef, context.onContentChange);
+	const composedRefs = useComposedRefs$1(forwardedRef, contentRef, context.onContentChange);
 	const timerRef = import_react.useRef(0);
 	const searchRef = import_react.useRef("");
 	const pointerGraceTimerRef = import_react.useRef(0);
@@ -53942,7 +54113,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 					onFocusOutside,
 					onInteractOutside,
 					onDismiss,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
 						asChild: true,
 						...rovingFocusGroupScope,
 						dir: rootContext.dir,
@@ -53954,7 +54125,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 							if (!rootContext.isUsingKeyboardRef.current) event.preventDefault();
 						}),
 						preventScrollOnEntryFocus: true,
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$3, {
 							role: "menu",
 							"aria-orientation": "vertical",
 							"data-state": getOpenState(context.open),
@@ -54031,7 +54202,7 @@ var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const rootContext = useMenuRootContext(ITEM_NAME$1, props.__scopeMenu);
 	const contentContext = useMenuContentContext(ITEM_NAME$1, props.__scopeMenu);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const isPointerDownRef = import_react.useRef(false);
 	const handleSelect = () => {
 		const menuItem = ref.current;
@@ -54074,7 +54245,7 @@ var MenuItemImpl = import_react.forwardRef((props, forwardedRef) => {
 	const contentContext = useMenuContentContext(ITEM_NAME$1, __scopeMenu);
 	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeMenu);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const [isFocused, setIsFocused] = import_react.useState(false);
 	const [textContent, setTextContent] = import_react.useState("");
 	import_react.useEffect(() => {
@@ -54134,7 +54305,7 @@ var [RadioGroupProvider, useRadioGroupContext] = createMenuContext(RADIO_GROUP_N
 });
 var MenuRadioGroup = import_react.forwardRef((props, forwardedRef) => {
 	const { value, onValueChange, ...groupProps } = props;
-	const handleValueChange = useCallbackRef(onValueChange);
+	const handleValueChange = useCallbackRef$1(onValueChange);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupProvider, {
 		scope: props.__scopeMenu,
 		value,
@@ -54210,7 +54381,7 @@ var MenuSub = (props) => {
 	const popperScope = usePopperScope(__scopeMenu);
 	const [trigger, setTrigger] = import_react.useState(null);
 	const [content, setContent] = import_react.useState(null);
-	const handleOpenChange = useCallbackRef(onOpenChange);
+	const handleOpenChange = useCallbackRef$1(onOpenChange);
 	import_react.useEffect(() => {
 		if (parentMenuContext.open === false) handleOpenChange(false);
 		return () => handleOpenChange(false);
@@ -54266,7 +54437,7 @@ var MenuSubTrigger = import_react.forwardRef((props, forwardedRef) => {
 			"aria-controls": subContext.contentId,
 			"data-state": getOpenState(context.open),
 			...props,
-			ref: composeRefs(forwardedRef, subContext.onTriggerChange),
+			ref: composeRefs$1(forwardedRef, subContext.onTriggerChange),
 			onClick: (event) => {
 				props.onClick?.(event);
 				if (props.disabled || event.defaultPrevented) return;
@@ -54347,7 +54518,7 @@ var MenuSubContent = import_react.forwardRef((props, forwardedRef) => {
 	const rootContext = useMenuRootContext(CONTENT_NAME$1, props.__scopeMenu);
 	const subContext = useMenuSubContext(SUB_CONTENT_NAME$1, props.__scopeMenu);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Provider, {
 		scope: props.__scopeMenu,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
@@ -54445,7 +54616,7 @@ function whenMouse(handler) {
 }
 var Root3 = Menu;
 var Anchor2 = MenuAnchor;
-var Portal$1 = MenuPortal;
+var Portal$2 = MenuPortal;
 var Content2$1 = MenuContent;
 var Group = MenuGroup;
 var Label$1 = MenuLabel;
@@ -54466,7 +54637,7 @@ var DropdownMenu$1 = (props) => {
 	const { __scopeDropdownMenu, children, dir, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
 	const triggerRef = import_react.useRef(null);
-	const [open, setOpen] = useControllableState({
+	const [open, setOpen] = useControllableState$1({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: onOpenChange,
@@ -54510,7 +54681,7 @@ var DropdownMenuTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 			"data-disabled": disabled ? "" : void 0,
 			disabled,
 			...triggerProps,
-			ref: composeRefs(forwardedRef, context.triggerRef),
+			ref: composeRefs$1(forwardedRef, context.triggerRef),
 			onPointerDown: composeEventHandlers(props.onPointerDown, (event) => {
 				if (!disabled && event.button === 0 && event.ctrlKey === false) {
 					context.onOpenToggle();
@@ -54535,7 +54706,7 @@ var PORTAL_NAME = "DropdownMenuPortal";
 var DropdownMenuPortal$1 = (props) => {
 	const { __scopeDropdownMenu, ...portalProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, {
 		...menuScope,
 		...portalProps
 	});
@@ -54841,14 +55012,21 @@ function Financeiro() {
 			className: "space-y-6",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "mb-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "fluxo",
-						children: "Fluxo de Caixa"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "desempenho",
-						children: "Desempenho por Lote"
-					})]
+					className: "mb-2 w-full sm:w-auto flex overflow-x-auto justify-start",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "fluxo",
+							children: "Fluxo de Caixa"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "desempenho",
+							children: "Desempenho por Lote"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "custo-arroba",
+							children: "Custo por @ Produzida"
+						})
+					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
 					value: "fluxo",
@@ -54976,6 +55154,62 @@ function Financeiro() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 									className: "text-right font-medium",
 									children: lote.margem
+								})
+							] }, lote.loteId)) })] })
+						})
+					})] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "custo-arroba",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Análise Analítica: Custo por @ Produzida" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Comparativo entre os custos de suplementação acumulados e o ganho real de peso de cada lote." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "px-0 sm:px-6",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Custo Nutrição"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Ganho Real (kg)"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Ganho em @"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right font-bold text-primary",
+									children: "Custo / @"
+								})
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: costPerArrobaData.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "font-medium",
+									children: lote.loteId
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right text-destructive",
+									children: ["R$ ", lote.custoAcumulado.toLocaleString("pt-BR")]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right font-mono",
+									children: [lote.ganhoPesoKg.toLocaleString("pt-BR"), " kg"]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right font-mono",
+									children: [lote.ganhoArroba.toLocaleString("pt-BR"), " @"]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right font-bold text-primary text-lg",
+									children: [
+										"R$",
+										" ",
+										lote.custoPorArroba.toLocaleString("pt-BR", { minimumFractionDigits: 2 })
+									]
 								})
 							] }, lote.loteId)) })] })
 						})
@@ -55135,7 +55369,7 @@ function QuickEventModal({ animalId }) {
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "space-y-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Evento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Evento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 						defaultValue: "pesagem",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
@@ -57364,14 +57598,14 @@ function PreviousMonthButton(props) {
 	const { components } = useDayPicker();
 	return import_react.createElement(components.Button, { ...props });
 }
-function Root(props) {
+function Root$1(props) {
 	const { rootRef, ...rest } = props;
 	return import_react.createElement("div", {
 		...rest,
 		ref: rootRef
 	});
 }
-function Select(props) {
+function Select$1(props) {
 	return import_react.createElement("select", { ...props });
 }
 function Week(props) {
@@ -57416,8 +57650,8 @@ var custom_components_exports = /* @__PURE__ */ __export({
 	NextMonthButton: () => NextMonthButton,
 	Option: () => Option,
 	PreviousMonthButton: () => PreviousMonthButton,
-	Root: () => Root,
-	Select: () => Select,
+	Root: () => Root$1,
+	Select: () => Select$1,
 	Week: () => Week,
 	WeekNumber: () => WeekNumber,
 	WeekNumberHeader: () => WeekNumberHeader,
@@ -59353,6 +59587,1663 @@ function Confinamento() {
 		]
 	});
 }
+function __insertCSS(code) {
+	if (!code || typeof document == "undefined") return;
+	let head = document.head || document.getElementsByTagName("head")[0];
+	let style = document.createElement("style");
+	style.type = "text/css";
+	head.appendChild(style);
+	style.styleSheet ? style.styleSheet.cssText = code : style.appendChild(document.createTextNode(code));
+}
+var DrawerContext = import_react.createContext({
+	drawerRef: { current: null },
+	overlayRef: { current: null },
+	onPress: () => {},
+	onRelease: () => {},
+	onDrag: () => {},
+	onNestedDrag: () => {},
+	onNestedOpenChange: () => {},
+	onNestedRelease: () => {},
+	openProp: void 0,
+	dismissible: false,
+	isOpen: false,
+	isDragging: false,
+	keyboardIsOpen: { current: false },
+	snapPointsOffset: null,
+	snapPoints: null,
+	handleOnly: false,
+	modal: false,
+	shouldFade: false,
+	activeSnapPoint: null,
+	onOpenChange: () => {},
+	setActiveSnapPoint: () => {},
+	closeDrawer: () => {},
+	direction: "bottom",
+	shouldAnimate: { current: true },
+	shouldScaleBackground: false,
+	setBackgroundColorOnScale: true,
+	noBodyStyles: false,
+	container: null,
+	autoFocus: false
+});
+var useDrawerContext = () => {
+	const context = import_react.useContext(DrawerContext);
+	if (!context) throw new Error("useDrawerContext must be used within a Drawer.Root");
+	return context;
+};
+__insertCSS("[data-vaul-drawer]{touch-action:none;will-change:transform;transition:transform .5s cubic-bezier(.32, .72, 0, 1);animation-duration:.5s;animation-timing-function:cubic-bezier(0.32,0.72,0,1)}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=bottom][data-state=open]{animation-name:slideFromBottom}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=bottom][data-state=closed]{animation-name:slideToBottom}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=top][data-state=open]{animation-name:slideFromTop}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=top][data-state=closed]{animation-name:slideToTop}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=left][data-state=open]{animation-name:slideFromLeft}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=left][data-state=closed]{animation-name:slideToLeft}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=right][data-state=open]{animation-name:slideFromRight}[data-vaul-drawer][data-vaul-snap-points=false][data-vaul-drawer-direction=right][data-state=closed]{animation-name:slideToRight}[data-vaul-drawer][data-vaul-snap-points=true][data-vaul-drawer-direction=bottom]{transform:translate3d(0,var(--initial-transform,100%),0)}[data-vaul-drawer][data-vaul-snap-points=true][data-vaul-drawer-direction=top]{transform:translate3d(0,calc(var(--initial-transform,100%) * -1),0)}[data-vaul-drawer][data-vaul-snap-points=true][data-vaul-drawer-direction=left]{transform:translate3d(calc(var(--initial-transform,100%) * -1),0,0)}[data-vaul-drawer][data-vaul-snap-points=true][data-vaul-drawer-direction=right]{transform:translate3d(var(--initial-transform,100%),0,0)}[data-vaul-drawer][data-vaul-delayed-snap-points=true][data-vaul-drawer-direction=top]{transform:translate3d(0,var(--snap-point-height,0),0)}[data-vaul-drawer][data-vaul-delayed-snap-points=true][data-vaul-drawer-direction=bottom]{transform:translate3d(0,var(--snap-point-height,0),0)}[data-vaul-drawer][data-vaul-delayed-snap-points=true][data-vaul-drawer-direction=left]{transform:translate3d(var(--snap-point-height,0),0,0)}[data-vaul-drawer][data-vaul-delayed-snap-points=true][data-vaul-drawer-direction=right]{transform:translate3d(var(--snap-point-height,0),0,0)}[data-vaul-overlay][data-vaul-snap-points=false]{animation-duration:.5s;animation-timing-function:cubic-bezier(0.32,0.72,0,1)}[data-vaul-overlay][data-vaul-snap-points=false][data-state=open]{animation-name:fadeIn}[data-vaul-overlay][data-state=closed]{animation-name:fadeOut}[data-vaul-animate=false]{animation:none!important}[data-vaul-overlay][data-vaul-snap-points=true]{opacity:0;transition:opacity .5s cubic-bezier(.32, .72, 0, 1)}[data-vaul-overlay][data-vaul-snap-points=true]{opacity:1}[data-vaul-drawer]:not([data-vaul-custom-container=true])::after{content:'';position:absolute;background:inherit;background-color:inherit}[data-vaul-drawer][data-vaul-drawer-direction=top]::after{top:initial;bottom:100%;left:0;right:0;height:200%}[data-vaul-drawer][data-vaul-drawer-direction=bottom]::after{top:100%;bottom:initial;left:0;right:0;height:200%}[data-vaul-drawer][data-vaul-drawer-direction=left]::after{left:initial;right:100%;top:0;bottom:0;width:200%}[data-vaul-drawer][data-vaul-drawer-direction=right]::after{left:100%;right:initial;top:0;bottom:0;width:200%}[data-vaul-overlay][data-vaul-snap-points=true]:not([data-vaul-snap-points-overlay=true]):not(\n[data-state=closed]\n){opacity:0}[data-vaul-overlay][data-vaul-snap-points-overlay=true]{opacity:1}[data-vaul-handle]{display:block;position:relative;opacity:.7;background:#e2e2e4;margin-left:auto;margin-right:auto;height:5px;width:32px;border-radius:1rem;touch-action:pan-y}[data-vaul-handle]:active,[data-vaul-handle]:hover{opacity:1}[data-vaul-handle-hitarea]{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100%,2.75rem);height:max(100%,2.75rem);touch-action:inherit}@media (hover:hover) and (pointer:fine){[data-vaul-drawer]{user-select:none}}@media (pointer:fine){[data-vaul-handle-hitarea]:{width:100%;height:100%}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeOut{to{opacity:0}}@keyframes slideFromBottom{from{transform:translate3d(0,var(--initial-transform,100%),0)}to{transform:translate3d(0,0,0)}}@keyframes slideToBottom{to{transform:translate3d(0,var(--initial-transform,100%),0)}}@keyframes slideFromTop{from{transform:translate3d(0,calc(var(--initial-transform,100%) * -1),0)}to{transform:translate3d(0,0,0)}}@keyframes slideToTop{to{transform:translate3d(0,calc(var(--initial-transform,100%) * -1),0)}}@keyframes slideFromLeft{from{transform:translate3d(calc(var(--initial-transform,100%) * -1),0,0)}to{transform:translate3d(0,0,0)}}@keyframes slideToLeft{to{transform:translate3d(calc(var(--initial-transform,100%) * -1),0,0)}}@keyframes slideFromRight{from{transform:translate3d(var(--initial-transform,100%),0,0)}to{transform:translate3d(0,0,0)}}@keyframes slideToRight{to{transform:translate3d(var(--initial-transform,100%),0,0)}}");
+function isMobileFirefox() {
+	const userAgent = navigator.userAgent;
+	return typeof window !== "undefined" && (/Firefox/.test(userAgent) && /Mobile/.test(userAgent) || /FxiOS/.test(userAgent));
+}
+function isMac() {
+	return testPlatform(/^Mac/);
+}
+function isIPhone() {
+	return testPlatform(/^iPhone/);
+}
+function isSafari() {
+	return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
+function isIPad() {
+	return testPlatform(/^iPad/) || isMac() && navigator.maxTouchPoints > 1;
+}
+function isIOS() {
+	return isIPhone() || isIPad();
+}
+function testPlatform(re$2) {
+	return typeof window !== "undefined" && window.navigator != null ? re$2.test(window.navigator.platform) : void 0;
+}
+var KEYBOARD_BUFFER = 24;
+var useIsomorphicLayoutEffect = typeof window !== "undefined" ? import_react.useLayoutEffect : import_react.useEffect;
+function chain$1(...callbacks) {
+	return (...args) => {
+		for (let callback of callbacks) if (typeof callback === "function") callback(...args);
+	};
+}
+var visualViewport = typeof document !== "undefined" && window.visualViewport;
+function isScrollable(node) {
+	let style = window.getComputedStyle(node);
+	return /(auto|scroll)/.test(style.overflow + style.overflowX + style.overflowY);
+}
+function getScrollParent(node) {
+	if (isScrollable(node)) node = node.parentElement;
+	while (node && !isScrollable(node)) node = node.parentElement;
+	return node || document.scrollingElement || document.documentElement;
+}
+var nonTextInputTypes = new Set([
+	"checkbox",
+	"radio",
+	"range",
+	"color",
+	"file",
+	"image",
+	"button",
+	"submit",
+	"reset"
+]);
+var preventScrollCount = 0;
+var restore;
+function usePreventScroll(options$1 = {}) {
+	let { isDisabled } = options$1;
+	useIsomorphicLayoutEffect(() => {
+		if (isDisabled) return;
+		preventScrollCount++;
+		if (preventScrollCount === 1) {
+			if (isIOS()) restore = preventScrollMobileSafari();
+		}
+		return () => {
+			preventScrollCount--;
+			if (preventScrollCount === 0) restore?.();
+		};
+	}, [isDisabled]);
+}
+function preventScrollMobileSafari() {
+	let scrollable;
+	let lastY = 0;
+	let onTouchStart = (e) => {
+		scrollable = getScrollParent(e.target);
+		if (scrollable === document.documentElement && scrollable === document.body) return;
+		lastY = e.changedTouches[0].pageY;
+	};
+	let onTouchMove = (e) => {
+		if (!scrollable || scrollable === document.documentElement || scrollable === document.body) {
+			e.preventDefault();
+			return;
+		}
+		let y$1 = e.changedTouches[0].pageY;
+		let scrollTop = scrollable.scrollTop;
+		let bottom = scrollable.scrollHeight - scrollable.clientHeight;
+		if (bottom === 0) return;
+		if (scrollTop <= 0 && y$1 > lastY || scrollTop >= bottom && y$1 < lastY) e.preventDefault();
+		lastY = y$1;
+	};
+	let onTouchEnd = (e) => {
+		let target = e.target;
+		if (isInput(target) && target !== document.activeElement) {
+			e.preventDefault();
+			target.style.transform = "translateY(-2000px)";
+			target.focus();
+			requestAnimationFrame(() => {
+				target.style.transform = "";
+			});
+		}
+	};
+	let onFocus = (e) => {
+		let target = e.target;
+		if (isInput(target)) {
+			target.style.transform = "translateY(-2000px)";
+			requestAnimationFrame(() => {
+				target.style.transform = "";
+				if (visualViewport) if (visualViewport.height < window.innerHeight) requestAnimationFrame(() => {
+					scrollIntoView(target);
+				});
+				else visualViewport.addEventListener("resize", () => scrollIntoView(target), { once: true });
+			});
+		}
+	};
+	let onWindowScroll = () => {
+		window.scrollTo(0, 0);
+	};
+	let scrollX = window.pageXOffset;
+	let scrollY = window.pageYOffset;
+	let restoreStyles = chain$1(setStyle(document.documentElement, "paddingRight", `${window.innerWidth - document.documentElement.clientWidth}px`));
+	window.scrollTo(0, 0);
+	let removeEvents = chain$1(addEvent(document, "touchstart", onTouchStart, {
+		passive: false,
+		capture: true
+	}), addEvent(document, "touchmove", onTouchMove, {
+		passive: false,
+		capture: true
+	}), addEvent(document, "touchend", onTouchEnd, {
+		passive: false,
+		capture: true
+	}), addEvent(document, "focus", onFocus, true), addEvent(window, "scroll", onWindowScroll));
+	return () => {
+		restoreStyles();
+		removeEvents();
+		window.scrollTo(scrollX, scrollY);
+	};
+}
+function setStyle(element, style, value) {
+	let cur = element.style[style];
+	element.style[style] = value;
+	return () => {
+		element.style[style] = cur;
+	};
+}
+function addEvent(target, event, handler, options$1) {
+	target.addEventListener(event, handler, options$1);
+	return () => {
+		target.removeEventListener(event, handler, options$1);
+	};
+}
+function scrollIntoView(target) {
+	let root$3 = document.scrollingElement || document.documentElement;
+	while (target && target !== root$3) {
+		let scrollable = getScrollParent(target);
+		if (scrollable !== document.documentElement && scrollable !== document.body && scrollable !== target) {
+			let scrollableTop = scrollable.getBoundingClientRect().top;
+			let targetTop = target.getBoundingClientRect().top;
+			if (target.getBoundingClientRect().bottom > scrollable.getBoundingClientRect().bottom + KEYBOARD_BUFFER) scrollable.scrollTop += targetTop - scrollableTop;
+		}
+		target = scrollable.parentElement;
+	}
+}
+function isInput(target) {
+	return target instanceof HTMLInputElement && !nonTextInputTypes.has(target.type) || target instanceof HTMLTextAreaElement || target instanceof HTMLElement && target.isContentEditable;
+}
+function setRef(ref, value) {
+	if (typeof ref === "function") ref(value);
+	else if (ref !== null && ref !== void 0) ref.current = value;
+}
+function composeRefs(...refs) {
+	return (node) => refs.forEach((ref) => setRef(ref, node));
+}
+function useComposedRefs(...refs) {
+	return import_react.useCallback(composeRefs(...refs), refs);
+}
+var cache = /* @__PURE__ */ new WeakMap();
+function set(el, styles, ignoreCache = false) {
+	if (!el || !(el instanceof HTMLElement)) return;
+	let originalStyles = {};
+	Object.entries(styles).forEach(([key, value]) => {
+		if (key.startsWith("--")) {
+			el.style.setProperty(key, value);
+			return;
+		}
+		originalStyles[key] = el.style[key];
+		el.style[key] = value;
+	});
+	if (ignoreCache) return;
+	cache.set(el, originalStyles);
+}
+function reset(el, prop) {
+	if (!el || !(el instanceof HTMLElement)) return;
+	let originalStyles = cache.get(el);
+	if (!originalStyles) return;
+	el.style[prop] = originalStyles[prop];
+}
+var isVertical = (direction) => {
+	switch (direction) {
+		case "top":
+		case "bottom": return true;
+		case "left":
+		case "right": return false;
+		default: return direction;
+	}
+};
+function getTranslate(element, direction) {
+	if (!element) return null;
+	const style = window.getComputedStyle(element);
+	const transform = style.transform || style.webkitTransform || style.mozTransform;
+	let mat = transform.match(/^matrix3d\((.+)\)$/);
+	if (mat) return parseFloat(mat[1].split(", ")[isVertical(direction) ? 13 : 12]);
+	mat = transform.match(/^matrix\((.+)\)$/);
+	return mat ? parseFloat(mat[1].split(", ")[isVertical(direction) ? 5 : 4]) : null;
+}
+function dampenValue(v) {
+	return 8 * (Math.log(v + 1) - 2);
+}
+function assignStyle(element, style) {
+	if (!element) return () => {};
+	const prevStyle = element.style.cssText;
+	Object.assign(element.style, style);
+	return () => {
+		element.style.cssText = prevStyle;
+	};
+}
+function chain(...fns) {
+	return (...args) => {
+		for (const fn of fns) if (typeof fn === "function") fn(...args);
+	};
+}
+var TRANSITIONS = {
+	DURATION: .5,
+	EASE: [
+		.32,
+		.72,
+		0,
+		1
+	]
+};
+var VELOCITY_THRESHOLD = .4;
+var CLOSE_THRESHOLD = .25;
+var SCROLL_LOCK_TIMEOUT = 100;
+var BORDER_RADIUS = 8;
+var NESTED_DISPLACEMENT = 16;
+var WINDOW_TOP_OFFSET = 26;
+var DRAG_CLASS = "vaul-dragging";
+function useCallbackRef(callback) {
+	const callbackRef = import_react.useRef(callback);
+	import_react.useEffect(() => {
+		callbackRef.current = callback;
+	});
+	return import_react.useMemo(() => (...args) => callbackRef.current == null ? void 0 : callbackRef.current.call(callbackRef, ...args), []);
+}
+function useUncontrolledState({ defaultProp, onChange }) {
+	const uncontrolledState = import_react.useState(defaultProp);
+	const [value] = uncontrolledState;
+	const prevValueRef = import_react.useRef(value);
+	const handleChange = useCallbackRef(onChange);
+	import_react.useEffect(() => {
+		if (prevValueRef.current !== value) {
+			handleChange(value);
+			prevValueRef.current = value;
+		}
+	}, [
+		value,
+		prevValueRef,
+		handleChange
+	]);
+	return uncontrolledState;
+}
+function useControllableState({ prop, defaultProp, onChange = () => {} }) {
+	const [uncontrolledProp, setUncontrolledProp] = useUncontrolledState({
+		defaultProp,
+		onChange
+	});
+	const isControlled = prop !== void 0;
+	const value = isControlled ? prop : uncontrolledProp;
+	const handleChange = useCallbackRef(onChange);
+	return [value, import_react.useCallback((nextValue) => {
+		if (isControlled) {
+			const value$1 = typeof nextValue === "function" ? nextValue(prop) : nextValue;
+			if (value$1 !== prop) handleChange(value$1);
+		} else setUncontrolledProp(nextValue);
+	}, [
+		isControlled,
+		prop,
+		setUncontrolledProp,
+		handleChange
+	])];
+}
+function useSnapPoints({ activeSnapPointProp, setActiveSnapPointProp, snapPoints, drawerRef, overlayRef, fadeFromIndex, onSnapPointChange, direction = "bottom", container, snapToSequentialPoint }) {
+	const [activeSnapPoint, setActiveSnapPoint] = useControllableState({
+		prop: activeSnapPointProp,
+		defaultProp: snapPoints == null ? void 0 : snapPoints[0],
+		onChange: setActiveSnapPointProp
+	});
+	const [windowDimensions, setWindowDimensions] = import_react.useState(typeof window !== "undefined" ? {
+		innerWidth: window.innerWidth,
+		innerHeight: window.innerHeight
+	} : void 0);
+	import_react.useEffect(() => {
+		function onResize() {
+			setWindowDimensions({
+				innerWidth: window.innerWidth,
+				innerHeight: window.innerHeight
+			});
+		}
+		window.addEventListener("resize", onResize);
+		return () => window.removeEventListener("resize", onResize);
+	}, []);
+	const isLastSnapPoint = import_react.useMemo(() => activeSnapPoint === (snapPoints == null ? void 0 : snapPoints[snapPoints.length - 1]) || null, [snapPoints, activeSnapPoint]);
+	const activeSnapPointIndex = import_react.useMemo(() => {
+		var _snapPoints_findIndex;
+		return (_snapPoints_findIndex = snapPoints == null ? void 0 : snapPoints.findIndex((snapPoint) => snapPoint === activeSnapPoint)) != null ? _snapPoints_findIndex : null;
+	}, [snapPoints, activeSnapPoint]);
+	const shouldFade = snapPoints && snapPoints.length > 0 && (fadeFromIndex || fadeFromIndex === 0) && !Number.isNaN(fadeFromIndex) && snapPoints[fadeFromIndex] === activeSnapPoint || !snapPoints;
+	const snapPointsOffset = import_react.useMemo(() => {
+		const containerSize = container ? {
+			width: container.getBoundingClientRect().width,
+			height: container.getBoundingClientRect().height
+		} : typeof window !== "undefined" ? {
+			width: window.innerWidth,
+			height: window.innerHeight
+		} : {
+			width: 0,
+			height: 0
+		};
+		var _snapPoints_map;
+		return (_snapPoints_map = snapPoints == null ? void 0 : snapPoints.map((snapPoint) => {
+			const isPx = typeof snapPoint === "string";
+			let snapPointAsNumber = 0;
+			if (isPx) snapPointAsNumber = parseInt(snapPoint, 10);
+			if (isVertical(direction)) {
+				const height = isPx ? snapPointAsNumber : windowDimensions ? snapPoint * containerSize.height : 0;
+				if (windowDimensions) return direction === "bottom" ? containerSize.height - height : -containerSize.height + height;
+				return height;
+			}
+			const width = isPx ? snapPointAsNumber : windowDimensions ? snapPoint * containerSize.width : 0;
+			if (windowDimensions) return direction === "right" ? containerSize.width - width : -containerSize.width + width;
+			return width;
+		})) != null ? _snapPoints_map : [];
+	}, [
+		snapPoints,
+		windowDimensions,
+		container
+	]);
+	const activeSnapPointOffset = import_react.useMemo(() => activeSnapPointIndex !== null ? snapPointsOffset == null ? void 0 : snapPointsOffset[activeSnapPointIndex] : null, [snapPointsOffset, activeSnapPointIndex]);
+	const snapToPoint = import_react.useCallback((dimension) => {
+		var _snapPointsOffset_findIndex;
+		const newSnapPointIndex = (_snapPointsOffset_findIndex = snapPointsOffset == null ? void 0 : snapPointsOffset.findIndex((snapPointDim) => snapPointDim === dimension)) != null ? _snapPointsOffset_findIndex : null;
+		onSnapPointChange(newSnapPointIndex);
+		set(drawerRef.current, {
+			transition: `transform ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
+			transform: isVertical(direction) ? `translate3d(0, ${dimension}px, 0)` : `translate3d(${dimension}px, 0, 0)`
+		});
+		if (snapPointsOffset && newSnapPointIndex !== snapPointsOffset.length - 1 && fadeFromIndex !== void 0 && newSnapPointIndex !== fadeFromIndex && newSnapPointIndex < fadeFromIndex) set(overlayRef.current, {
+			transition: `opacity ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
+			opacity: "0"
+		});
+		else set(overlayRef.current, {
+			transition: `opacity ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
+			opacity: "1"
+		});
+		setActiveSnapPoint(snapPoints == null ? void 0 : snapPoints[Math.max(newSnapPointIndex, 0)]);
+	}, [
+		drawerRef.current,
+		snapPoints,
+		snapPointsOffset,
+		fadeFromIndex,
+		overlayRef,
+		setActiveSnapPoint
+	]);
+	import_react.useEffect(() => {
+		if (activeSnapPoint || activeSnapPointProp) {
+			var _snapPoints_findIndex;
+			const newIndex = (_snapPoints_findIndex = snapPoints == null ? void 0 : snapPoints.findIndex((snapPoint) => snapPoint === activeSnapPointProp || snapPoint === activeSnapPoint)) != null ? _snapPoints_findIndex : -1;
+			if (snapPointsOffset && newIndex !== -1 && typeof snapPointsOffset[newIndex] === "number") snapToPoint(snapPointsOffset[newIndex]);
+		}
+	}, [
+		activeSnapPoint,
+		activeSnapPointProp,
+		snapPoints,
+		snapPointsOffset,
+		snapToPoint
+	]);
+	function onRelease({ draggedDistance, closeDrawer, velocity, dismissible }) {
+		if (fadeFromIndex === void 0) return;
+		const currentPosition = direction === "bottom" || direction === "right" ? (activeSnapPointOffset != null ? activeSnapPointOffset : 0) - draggedDistance : (activeSnapPointOffset != null ? activeSnapPointOffset : 0) + draggedDistance;
+		const isOverlaySnapPoint = activeSnapPointIndex === fadeFromIndex - 1;
+		const isFirst = activeSnapPointIndex === 0;
+		const hasDraggedUp = draggedDistance > 0;
+		if (isOverlaySnapPoint) set(overlayRef.current, { transition: `opacity ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})` });
+		if (!snapToSequentialPoint && velocity > 2 && !hasDraggedUp) {
+			if (dismissible) closeDrawer();
+			else snapToPoint(snapPointsOffset[0]);
+			return;
+		}
+		if (!snapToSequentialPoint && velocity > 2 && hasDraggedUp && snapPointsOffset && snapPoints) {
+			snapToPoint(snapPointsOffset[snapPoints.length - 1]);
+			return;
+		}
+		const closestSnapPoint = snapPointsOffset == null ? void 0 : snapPointsOffset.reduce((prev, curr) => {
+			if (typeof prev !== "number" || typeof curr !== "number") return prev;
+			return Math.abs(curr - currentPosition) < Math.abs(prev - currentPosition) ? curr : prev;
+		});
+		const dim = isVertical(direction) ? window.innerHeight : window.innerWidth;
+		if (velocity > VELOCITY_THRESHOLD && Math.abs(draggedDistance) < dim * .4) {
+			const dragDirection = hasDraggedUp ? 1 : -1;
+			if (dragDirection > 0 && isLastSnapPoint && snapPoints) {
+				snapToPoint(snapPointsOffset[snapPoints.length - 1]);
+				return;
+			}
+			if (isFirst && dragDirection < 0 && dismissible) closeDrawer();
+			if (activeSnapPointIndex === null) return;
+			snapToPoint(snapPointsOffset[activeSnapPointIndex + dragDirection]);
+			return;
+		}
+		snapToPoint(closestSnapPoint);
+	}
+	function onDrag({ draggedDistance }) {
+		if (activeSnapPointOffset === null) return;
+		const newValue = direction === "bottom" || direction === "right" ? activeSnapPointOffset - draggedDistance : activeSnapPointOffset + draggedDistance;
+		if ((direction === "bottom" || direction === "right") && newValue < snapPointsOffset[snapPointsOffset.length - 1]) return;
+		if ((direction === "top" || direction === "left") && newValue > snapPointsOffset[snapPointsOffset.length - 1]) return;
+		set(drawerRef.current, { transform: isVertical(direction) ? `translate3d(0, ${newValue}px, 0)` : `translate3d(${newValue}px, 0, 0)` });
+	}
+	function getPercentageDragged(absDraggedDistance, isDraggingDown) {
+		if (!snapPoints || typeof activeSnapPointIndex !== "number" || !snapPointsOffset || fadeFromIndex === void 0) return null;
+		const isOverlaySnapPoint = activeSnapPointIndex === fadeFromIndex - 1;
+		if (activeSnapPointIndex >= fadeFromIndex && isDraggingDown) return 0;
+		if (isOverlaySnapPoint && !isDraggingDown) return 1;
+		if (!shouldFade && !isOverlaySnapPoint) return null;
+		const targetSnapPointIndex = isOverlaySnapPoint ? activeSnapPointIndex + 1 : activeSnapPointIndex - 1;
+		const snapPointDistance = isOverlaySnapPoint ? snapPointsOffset[targetSnapPointIndex] - snapPointsOffset[targetSnapPointIndex - 1] : snapPointsOffset[targetSnapPointIndex + 1] - snapPointsOffset[targetSnapPointIndex];
+		const percentageDragged = absDraggedDistance / Math.abs(snapPointDistance);
+		if (isOverlaySnapPoint) return 1 - percentageDragged;
+		else return percentageDragged;
+	}
+	return {
+		isLastSnapPoint,
+		activeSnapPoint,
+		shouldFade,
+		getPercentageDragged,
+		setActiveSnapPoint,
+		activeSnapPointIndex,
+		onRelease,
+		onDrag,
+		snapPointsOffset
+	};
+}
+var noop = () => () => {};
+function useScaleBackground() {
+	const { direction, isOpen, shouldScaleBackground, setBackgroundColorOnScale, noBodyStyles } = useDrawerContext();
+	const timeoutIdRef = import_react.useRef(null);
+	const initialBackgroundColor = (0, import_react.useMemo)(() => document.body.style.backgroundColor, []);
+	function getScale$1() {
+		return (window.innerWidth - WINDOW_TOP_OFFSET) / window.innerWidth;
+	}
+	import_react.useEffect(() => {
+		if (isOpen && shouldScaleBackground) {
+			if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+			const wrapper = document.querySelector("[data-vaul-drawer-wrapper]") || document.querySelector("[vaul-drawer-wrapper]");
+			if (!wrapper) return;
+			chain(setBackgroundColorOnScale && !noBodyStyles ? assignStyle(document.body, { background: "black" }) : noop, assignStyle(wrapper, {
+				transformOrigin: isVertical(direction) ? "top" : "left",
+				transitionProperty: "transform, border-radius",
+				transitionDuration: `${TRANSITIONS.DURATION}s`,
+				transitionTimingFunction: `cubic-bezier(${TRANSITIONS.EASE.join(",")})`
+			}));
+			const wrapperStylesCleanup = assignStyle(wrapper, {
+				borderRadius: `${BORDER_RADIUS}px`,
+				overflow: "hidden",
+				...isVertical(direction) ? { transform: `scale(${getScale$1()}) translate3d(0, calc(env(safe-area-inset-top) + 14px), 0)` } : { transform: `scale(${getScale$1()}) translate3d(calc(env(safe-area-inset-top) + 14px), 0, 0)` }
+			});
+			return () => {
+				wrapperStylesCleanup();
+				timeoutIdRef.current = window.setTimeout(() => {
+					if (initialBackgroundColor) document.body.style.background = initialBackgroundColor;
+					else document.body.style.removeProperty("background");
+				}, TRANSITIONS.DURATION * 1e3);
+			};
+		}
+	}, [
+		isOpen,
+		shouldScaleBackground,
+		initialBackgroundColor
+	]);
+}
+var previousBodyPosition = null;
+function usePositionFixed({ isOpen, modal, nested, hasBeenOpened, preventScrollRestoration, noBodyStyles }) {
+	const [activeUrl, setActiveUrl] = import_react.useState(() => typeof window !== "undefined" ? window.location.href : "");
+	const scrollPos = import_react.useRef(0);
+	const setPositionFixed = import_react.useCallback(() => {
+		if (!isSafari()) return;
+		if (previousBodyPosition === null && isOpen && !noBodyStyles) {
+			previousBodyPosition = {
+				position: document.body.style.position,
+				top: document.body.style.top,
+				left: document.body.style.left,
+				height: document.body.style.height,
+				right: "unset"
+			};
+			const { scrollX, innerHeight } = window;
+			document.body.style.setProperty("position", "fixed", "important");
+			Object.assign(document.body.style, {
+				top: `${-scrollPos.current}px`,
+				left: `${-scrollX}px`,
+				right: "0px",
+				height: "auto"
+			});
+			window.setTimeout(() => window.requestAnimationFrame(() => {
+				const bottomBarHeight = innerHeight - window.innerHeight;
+				if (bottomBarHeight && scrollPos.current >= innerHeight) document.body.style.top = `${-(scrollPos.current + bottomBarHeight)}px`;
+			}), 300);
+		}
+	}, [isOpen]);
+	const restorePositionSetting = import_react.useCallback(() => {
+		if (!isSafari()) return;
+		if (previousBodyPosition !== null && !noBodyStyles) {
+			const y$1 = -parseInt(document.body.style.top, 10);
+			const x$2 = -parseInt(document.body.style.left, 10);
+			Object.assign(document.body.style, previousBodyPosition);
+			window.requestAnimationFrame(() => {
+				if (preventScrollRestoration && activeUrl !== window.location.href) {
+					setActiveUrl(window.location.href);
+					return;
+				}
+				window.scrollTo(x$2, y$1);
+			});
+			previousBodyPosition = null;
+		}
+	}, [activeUrl]);
+	import_react.useEffect(() => {
+		function onScroll() {
+			scrollPos.current = window.scrollY;
+		}
+		onScroll();
+		window.addEventListener("scroll", onScroll);
+		return () => {
+			window.removeEventListener("scroll", onScroll);
+		};
+	}, []);
+	import_react.useEffect(() => {
+		if (!modal) return;
+		return () => {
+			if (typeof document === "undefined") return;
+			if (!!document.querySelector("[data-vaul-drawer]")) return;
+			restorePositionSetting();
+		};
+	}, [modal, restorePositionSetting]);
+	import_react.useEffect(() => {
+		if (nested || !hasBeenOpened) return;
+		if (isOpen) {
+			!window.matchMedia("(display-mode: standalone)").matches && setPositionFixed();
+			if (!modal) window.setTimeout(() => {
+				restorePositionSetting();
+			}, 500);
+		} else restorePositionSetting();
+	}, [
+		isOpen,
+		hasBeenOpened,
+		activeUrl,
+		modal,
+		nested,
+		setPositionFixed,
+		restorePositionSetting
+	]);
+	return { restorePositionSetting };
+}
+function Root({ open: openProp, onOpenChange, children, onDrag: onDragProp, onRelease: onReleaseProp, snapPoints, shouldScaleBackground = false, setBackgroundColorOnScale = true, closeThreshold = CLOSE_THRESHOLD, scrollLockTimeout = SCROLL_LOCK_TIMEOUT, dismissible = true, handleOnly = false, fadeFromIndex = snapPoints && snapPoints.length - 1, activeSnapPoint: activeSnapPointProp, setActiveSnapPoint: setActiveSnapPointProp, fixed, modal = true, onClose, nested, noBodyStyles = false, direction = "bottom", defaultOpen = false, disablePreventScroll = true, snapToSequentialPoint = false, preventScrollRestoration = false, repositionInputs = true, onAnimationEnd, container, autoFocus = false }) {
+	var _drawerRef_current, _drawerRef_current1;
+	const [isOpen = false, setIsOpen] = useControllableState({
+		defaultProp: defaultOpen,
+		prop: openProp,
+		onChange: (o) => {
+			onOpenChange?.(o);
+			if (!o && !nested) restorePositionSetting();
+			setTimeout(() => {
+				onAnimationEnd?.(o);
+			}, TRANSITIONS.DURATION * 1e3);
+			if (o && !modal) {
+				if (typeof window !== "undefined") window.requestAnimationFrame(() => {
+					document.body.style.pointerEvents = "auto";
+				});
+			}
+			if (!o) document.body.style.pointerEvents = "auto";
+		}
+	});
+	const [hasBeenOpened, setHasBeenOpened] = import_react.useState(false);
+	const [isDragging, setIsDragging] = import_react.useState(false);
+	const [justReleased, setJustReleased] = import_react.useState(false);
+	const overlayRef = import_react.useRef(null);
+	const openTime = import_react.useRef(null);
+	const dragStartTime = import_react.useRef(null);
+	const dragEndTime = import_react.useRef(null);
+	const lastTimeDragPrevented = import_react.useRef(null);
+	const isAllowedToDrag = import_react.useRef(false);
+	const nestedOpenChangeTimer = import_react.useRef(null);
+	const pointerStart = import_react.useRef(0);
+	const keyboardIsOpen = import_react.useRef(false);
+	const shouldAnimate = import_react.useRef(!defaultOpen);
+	const previousDiffFromInitial = import_react.useRef(0);
+	const drawerRef = import_react.useRef(null);
+	const drawerHeightRef = import_react.useRef(((_drawerRef_current = drawerRef.current) == null ? void 0 : _drawerRef_current.getBoundingClientRect().height) || 0);
+	const drawerWidthRef = import_react.useRef(((_drawerRef_current1 = drawerRef.current) == null ? void 0 : _drawerRef_current1.getBoundingClientRect().width) || 0);
+	const initialDrawerHeight = import_react.useRef(0);
+	const { activeSnapPoint, activeSnapPointIndex, setActiveSnapPoint, onRelease: onReleaseSnapPoints, snapPointsOffset, onDrag: onDragSnapPoints, shouldFade, getPercentageDragged: getSnapPointsPercentageDragged } = useSnapPoints({
+		snapPoints,
+		activeSnapPointProp,
+		setActiveSnapPointProp,
+		drawerRef,
+		fadeFromIndex,
+		overlayRef,
+		onSnapPointChange: import_react.useCallback((activeSnapPointIndex$1) => {
+			if (snapPoints && activeSnapPointIndex$1 === snapPointsOffset.length - 1) openTime.current = /* @__PURE__ */ new Date();
+		}, []),
+		direction,
+		container,
+		snapToSequentialPoint
+	});
+	usePreventScroll({ isDisabled: !isOpen || isDragging || !modal || justReleased || !hasBeenOpened || !repositionInputs || !disablePreventScroll });
+	const { restorePositionSetting } = usePositionFixed({
+		isOpen,
+		modal,
+		nested: nested != null ? nested : false,
+		hasBeenOpened,
+		preventScrollRestoration,
+		noBodyStyles
+	});
+	function getScale$1() {
+		return (window.innerWidth - WINDOW_TOP_OFFSET) / window.innerWidth;
+	}
+	function onPress(event) {
+		var _drawerRef_current$1, _drawerRef_current1$1;
+		if (!dismissible && !snapPoints) return;
+		if (drawerRef.current && !drawerRef.current.contains(event.target)) return;
+		drawerHeightRef.current = ((_drawerRef_current$1 = drawerRef.current) == null ? void 0 : _drawerRef_current$1.getBoundingClientRect().height) || 0;
+		drawerWidthRef.current = ((_drawerRef_current1$1 = drawerRef.current) == null ? void 0 : _drawerRef_current1$1.getBoundingClientRect().width) || 0;
+		setIsDragging(true);
+		dragStartTime.current = /* @__PURE__ */ new Date();
+		if (isIOS()) window.addEventListener("touchend", () => isAllowedToDrag.current = false, { once: true });
+		event.target.setPointerCapture(event.pointerId);
+		pointerStart.current = isVertical(direction) ? event.pageY : event.pageX;
+	}
+	function shouldDrag(el, isDraggingInDirection) {
+		var _window_getSelection;
+		let element = el;
+		const highlightedText = (_window_getSelection = window.getSelection()) == null ? void 0 : _window_getSelection.toString();
+		const swipeAmount = drawerRef.current ? getTranslate(drawerRef.current, direction) : null;
+		const date$1 = /* @__PURE__ */ new Date();
+		if (element.tagName === "SELECT") return false;
+		if (element.hasAttribute("data-vaul-no-drag") || element.closest("[data-vaul-no-drag]")) return false;
+		if (direction === "right" || direction === "left") return true;
+		if (openTime.current && date$1.getTime() - openTime.current.getTime() < 500) return false;
+		if (swipeAmount !== null) {
+			if (direction === "bottom" ? swipeAmount > 0 : swipeAmount < 0) return true;
+		}
+		if (highlightedText && highlightedText.length > 0) return false;
+		if (lastTimeDragPrevented.current && date$1.getTime() - lastTimeDragPrevented.current.getTime() < scrollLockTimeout && swipeAmount === 0) {
+			lastTimeDragPrevented.current = date$1;
+			return false;
+		}
+		if (isDraggingInDirection) {
+			lastTimeDragPrevented.current = date$1;
+			return false;
+		}
+		while (element) {
+			if (element.scrollHeight > element.clientHeight) {
+				if (element.scrollTop !== 0) {
+					lastTimeDragPrevented.current = /* @__PURE__ */ new Date();
+					return false;
+				}
+				if (element.getAttribute("role") === "dialog") return true;
+			}
+			element = element.parentNode;
+		}
+		return true;
+	}
+	function onDrag(event) {
+		if (!drawerRef.current) return;
+		if (isDragging) {
+			const directionMultiplier = direction === "bottom" || direction === "right" ? 1 : -1;
+			const draggedDistance = (pointerStart.current - (isVertical(direction) ? event.pageY : event.pageX)) * directionMultiplier;
+			const isDraggingInDirection = draggedDistance > 0;
+			const noCloseSnapPointsPreCondition = snapPoints && !dismissible && !isDraggingInDirection;
+			if (noCloseSnapPointsPreCondition && activeSnapPointIndex === 0) return;
+			const absDraggedDistance = Math.abs(draggedDistance);
+			const wrapper = document.querySelector("[data-vaul-drawer-wrapper]");
+			let percentageDragged = absDraggedDistance / (direction === "bottom" || direction === "top" ? drawerHeightRef.current : drawerWidthRef.current);
+			const snapPointPercentageDragged = getSnapPointsPercentageDragged(absDraggedDistance, isDraggingInDirection);
+			if (snapPointPercentageDragged !== null) percentageDragged = snapPointPercentageDragged;
+			if (noCloseSnapPointsPreCondition && percentageDragged >= 1) return;
+			if (!isAllowedToDrag.current && !shouldDrag(event.target, isDraggingInDirection)) return;
+			drawerRef.current.classList.add(DRAG_CLASS);
+			isAllowedToDrag.current = true;
+			set(drawerRef.current, { transition: "none" });
+			set(overlayRef.current, { transition: "none" });
+			if (snapPoints) onDragSnapPoints({ draggedDistance });
+			if (isDraggingInDirection && !snapPoints) {
+				const dampenedDraggedDistance = dampenValue(draggedDistance);
+				const translateValue = Math.min(dampenedDraggedDistance * -1, 0) * directionMultiplier;
+				set(drawerRef.current, { transform: isVertical(direction) ? `translate3d(0, ${translateValue}px, 0)` : `translate3d(${translateValue}px, 0, 0)` });
+				return;
+			}
+			const opacityValue = 1 - percentageDragged;
+			if (shouldFade || fadeFromIndex && activeSnapPointIndex === fadeFromIndex - 1) {
+				onDragProp?.(event, percentageDragged);
+				set(overlayRef.current, {
+					opacity: `${opacityValue}`,
+					transition: "none"
+				}, true);
+			}
+			if (wrapper && overlayRef.current && shouldScaleBackground) {
+				const scaleValue = Math.min(getScale$1() + percentageDragged * (1 - getScale$1()), 1);
+				const borderRadiusValue = 8 - percentageDragged * 8;
+				const translateValue = Math.max(0, 14 - percentageDragged * 14);
+				set(wrapper, {
+					borderRadius: `${borderRadiusValue}px`,
+					transform: isVertical(direction) ? `scale(${scaleValue}) translate3d(0, ${translateValue}px, 0)` : `scale(${scaleValue}) translate3d(${translateValue}px, 0, 0)`,
+					transition: "none"
+				}, true);
+			}
+			if (!snapPoints) {
+				const translateValue = absDraggedDistance * directionMultiplier;
+				set(drawerRef.current, { transform: isVertical(direction) ? `translate3d(0, ${translateValue}px, 0)` : `translate3d(${translateValue}px, 0, 0)` });
+			}
+		}
+	}
+	import_react.useEffect(() => {
+		window.requestAnimationFrame(() => {
+			shouldAnimate.current = true;
+		});
+	}, []);
+	import_react.useEffect(() => {
+		var _window_visualViewport;
+		function onVisualViewportChange() {
+			if (!drawerRef.current || !repositionInputs) return;
+			const focusedElement = document.activeElement;
+			if (isInput(focusedElement) || keyboardIsOpen.current) {
+				var _window_visualViewport$1;
+				const visualViewportHeight = ((_window_visualViewport$1 = window.visualViewport) == null ? void 0 : _window_visualViewport$1.height) || 0;
+				const totalHeight = window.innerHeight;
+				let diffFromInitial = totalHeight - visualViewportHeight;
+				const drawerHeight = drawerRef.current.getBoundingClientRect().height || 0;
+				const isTallEnough = drawerHeight > totalHeight * .8;
+				if (!initialDrawerHeight.current) initialDrawerHeight.current = drawerHeight;
+				const offsetFromTop = drawerRef.current.getBoundingClientRect().top;
+				if (Math.abs(previousDiffFromInitial.current - diffFromInitial) > 60) keyboardIsOpen.current = !keyboardIsOpen.current;
+				if (snapPoints && snapPoints.length > 0 && snapPointsOffset && activeSnapPointIndex) {
+					const activeSnapPointHeight = snapPointsOffset[activeSnapPointIndex] || 0;
+					diffFromInitial += activeSnapPointHeight;
+				}
+				previousDiffFromInitial.current = diffFromInitial;
+				if (drawerHeight > visualViewportHeight || keyboardIsOpen.current) {
+					const height = drawerRef.current.getBoundingClientRect().height;
+					let newDrawerHeight = height;
+					if (height > visualViewportHeight) newDrawerHeight = visualViewportHeight - (isTallEnough ? offsetFromTop : WINDOW_TOP_OFFSET);
+					if (fixed) drawerRef.current.style.height = `${height - Math.max(diffFromInitial, 0)}px`;
+					else drawerRef.current.style.height = `${Math.max(newDrawerHeight, visualViewportHeight - offsetFromTop)}px`;
+				} else if (!isMobileFirefox()) drawerRef.current.style.height = `${initialDrawerHeight.current}px`;
+				if (snapPoints && snapPoints.length > 0 && !keyboardIsOpen.current) drawerRef.current.style.bottom = `0px`;
+				else drawerRef.current.style.bottom = `${Math.max(diffFromInitial, 0)}px`;
+			}
+		}
+		(_window_visualViewport = window.visualViewport) == null || _window_visualViewport.addEventListener("resize", onVisualViewportChange);
+		return () => {
+			var _window_visualViewport$1;
+			return (_window_visualViewport$1 = window.visualViewport) == null ? void 0 : _window_visualViewport$1.removeEventListener("resize", onVisualViewportChange);
+		};
+	}, [
+		activeSnapPointIndex,
+		snapPoints,
+		snapPointsOffset
+	]);
+	function closeDrawer(fromWithin) {
+		cancelDrag();
+		onClose?.();
+		if (!fromWithin) setIsOpen(false);
+		setTimeout(() => {
+			if (snapPoints) setActiveSnapPoint(snapPoints[0]);
+		}, TRANSITIONS.DURATION * 1e3);
+	}
+	function resetDrawer() {
+		if (!drawerRef.current) return;
+		const wrapper = document.querySelector("[data-vaul-drawer-wrapper]");
+		const currentSwipeAmount = getTranslate(drawerRef.current, direction);
+		set(drawerRef.current, {
+			transform: "translate3d(0, 0, 0)",
+			transition: `transform ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`
+		});
+		set(overlayRef.current, {
+			transition: `opacity ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
+			opacity: "1"
+		});
+		if (shouldScaleBackground && currentSwipeAmount && currentSwipeAmount > 0 && isOpen) set(wrapper, {
+			borderRadius: `${BORDER_RADIUS}px`,
+			overflow: "hidden",
+			...isVertical(direction) ? {
+				transform: `scale(${getScale$1()}) translate3d(0, calc(env(safe-area-inset-top) + 14px), 0)`,
+				transformOrigin: "top"
+			} : {
+				transform: `scale(${getScale$1()}) translate3d(calc(env(safe-area-inset-top) + 14px), 0, 0)`,
+				transformOrigin: "left"
+			},
+			transitionProperty: "transform, border-radius",
+			transitionDuration: `${TRANSITIONS.DURATION}s`,
+			transitionTimingFunction: `cubic-bezier(${TRANSITIONS.EASE.join(",")})`
+		}, true);
+	}
+	function cancelDrag() {
+		if (!isDragging || !drawerRef.current) return;
+		drawerRef.current.classList.remove(DRAG_CLASS);
+		isAllowedToDrag.current = false;
+		setIsDragging(false);
+		dragEndTime.current = /* @__PURE__ */ new Date();
+	}
+	function onRelease(event) {
+		if (!isDragging || !drawerRef.current) return;
+		drawerRef.current.classList.remove(DRAG_CLASS);
+		isAllowedToDrag.current = false;
+		setIsDragging(false);
+		dragEndTime.current = /* @__PURE__ */ new Date();
+		const swipeAmount = getTranslate(drawerRef.current, direction);
+		if (!event || !shouldDrag(event.target, false) || !swipeAmount || Number.isNaN(swipeAmount)) return;
+		if (dragStartTime.current === null) return;
+		const timeTaken = dragEndTime.current.getTime() - dragStartTime.current.getTime();
+		const distMoved = pointerStart.current - (isVertical(direction) ? event.pageY : event.pageX);
+		const velocity = Math.abs(distMoved) / timeTaken;
+		if (velocity > .05) {
+			setJustReleased(true);
+			setTimeout(() => {
+				setJustReleased(false);
+			}, 200);
+		}
+		if (snapPoints) {
+			onReleaseSnapPoints({
+				draggedDistance: distMoved * (direction === "bottom" || direction === "right" ? 1 : -1),
+				closeDrawer,
+				velocity,
+				dismissible
+			});
+			onReleaseProp?.(event, true);
+			return;
+		}
+		if (direction === "bottom" || direction === "right" ? distMoved > 0 : distMoved < 0) {
+			resetDrawer();
+			onReleaseProp?.(event, true);
+			return;
+		}
+		if (velocity > VELOCITY_THRESHOLD) {
+			closeDrawer();
+			onReleaseProp?.(event, false);
+			return;
+		}
+		var _drawerRef_current_getBoundingClientRect_height;
+		const visibleDrawerHeight = Math.min((_drawerRef_current_getBoundingClientRect_height = drawerRef.current.getBoundingClientRect().height) != null ? _drawerRef_current_getBoundingClientRect_height : 0, window.innerHeight);
+		var _drawerRef_current_getBoundingClientRect_width;
+		const visibleDrawerWidth = Math.min((_drawerRef_current_getBoundingClientRect_width = drawerRef.current.getBoundingClientRect().width) != null ? _drawerRef_current_getBoundingClientRect_width : 0, window.innerWidth);
+		const isHorizontalSwipe = direction === "left" || direction === "right";
+		if (Math.abs(swipeAmount) >= (isHorizontalSwipe ? visibleDrawerWidth : visibleDrawerHeight) * closeThreshold) {
+			closeDrawer();
+			onReleaseProp?.(event, false);
+			return;
+		}
+		onReleaseProp?.(event, true);
+		resetDrawer();
+	}
+	import_react.useEffect(() => {
+		if (isOpen) {
+			set(document.documentElement, { scrollBehavior: "auto" });
+			openTime.current = /* @__PURE__ */ new Date();
+		}
+		return () => {
+			reset(document.documentElement, "scrollBehavior");
+		};
+	}, [isOpen]);
+	function onNestedOpenChange(o) {
+		const scale = o ? (window.innerWidth - NESTED_DISPLACEMENT) / window.innerWidth : 1;
+		const initialTranslate = o ? -NESTED_DISPLACEMENT : 0;
+		if (nestedOpenChangeTimer.current) window.clearTimeout(nestedOpenChangeTimer.current);
+		set(drawerRef.current, {
+			transition: `transform ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
+			transform: isVertical(direction) ? `scale(${scale}) translate3d(0, ${initialTranslate}px, 0)` : `scale(${scale}) translate3d(${initialTranslate}px, 0, 0)`
+		});
+		if (!o && drawerRef.current) nestedOpenChangeTimer.current = setTimeout(() => {
+			const translateValue = getTranslate(drawerRef.current, direction);
+			set(drawerRef.current, {
+				transition: "none",
+				transform: isVertical(direction) ? `translate3d(0, ${translateValue}px, 0)` : `translate3d(${translateValue}px, 0, 0)`
+			});
+		}, 500);
+	}
+	function onNestedDrag(_event, percentageDragged) {
+		if (percentageDragged < 0) return;
+		const initialScale = (window.innerWidth - NESTED_DISPLACEMENT) / window.innerWidth;
+		const newScale = initialScale + percentageDragged * (1 - initialScale);
+		const newTranslate = -NESTED_DISPLACEMENT + percentageDragged * NESTED_DISPLACEMENT;
+		set(drawerRef.current, {
+			transform: isVertical(direction) ? `scale(${newScale}) translate3d(0, ${newTranslate}px, 0)` : `scale(${newScale}) translate3d(${newTranslate}px, 0, 0)`,
+			transition: "none"
+		});
+	}
+	function onNestedRelease(_event, o) {
+		const dim = isVertical(direction) ? window.innerHeight : window.innerWidth;
+		const scale = o ? (dim - NESTED_DISPLACEMENT) / dim : 1;
+		const translate = o ? -NESTED_DISPLACEMENT : 0;
+		if (o) set(drawerRef.current, {
+			transition: `transform ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
+			transform: isVertical(direction) ? `scale(${scale}) translate3d(0, ${translate}px, 0)` : `scale(${scale}) translate3d(${translate}px, 0, 0)`
+		});
+	}
+	import_react.useEffect(() => {
+		if (!modal) window.requestAnimationFrame(() => {
+			document.body.style.pointerEvents = "auto";
+		});
+	}, [modal]);
+	return /* @__PURE__ */ import_react.createElement(Root$7, {
+		defaultOpen,
+		onOpenChange: (open) => {
+			if (!dismissible && !open) return;
+			if (open) setHasBeenOpened(true);
+			else closeDrawer(true);
+			setIsOpen(open);
+		},
+		open: isOpen
+	}, /* @__PURE__ */ import_react.createElement(DrawerContext.Provider, { value: {
+		activeSnapPoint,
+		snapPoints,
+		setActiveSnapPoint,
+		drawerRef,
+		overlayRef,
+		onOpenChange,
+		onPress,
+		onRelease,
+		onDrag,
+		dismissible,
+		shouldAnimate,
+		handleOnly,
+		isOpen,
+		isDragging,
+		shouldFade,
+		closeDrawer,
+		onNestedDrag,
+		onNestedOpenChange,
+		onNestedRelease,
+		keyboardIsOpen,
+		modal,
+		snapPointsOffset,
+		activeSnapPointIndex,
+		direction,
+		shouldScaleBackground,
+		setBackgroundColorOnScale,
+		noBodyStyles,
+		container,
+		autoFocus
+	} }, children));
+}
+var Overlay = /* @__PURE__ */ import_react.forwardRef(function({ ...rest }, ref) {
+	const { overlayRef, snapPoints, onRelease, shouldFade, isOpen, modal, shouldAnimate } = useDrawerContext();
+	const composedRef = useComposedRefs(ref, overlayRef);
+	const hasSnapPoints = snapPoints && snapPoints.length > 0;
+	if (!modal) return null;
+	const onMouseUp = import_react.useCallback((event) => onRelease(event), [onRelease]);
+	return /* @__PURE__ */ import_react.createElement(Overlay$1, {
+		onMouseUp,
+		ref: composedRef,
+		"data-vaul-overlay": "",
+		"data-vaul-snap-points": isOpen && hasSnapPoints ? "true" : "false",
+		"data-vaul-snap-points-overlay": isOpen && shouldFade ? "true" : "false",
+		"data-vaul-animate": (shouldAnimate == null ? void 0 : shouldAnimate.current) ? "true" : "false",
+		...rest
+	});
+});
+Overlay.displayName = "Drawer.Overlay";
+var Content = /* @__PURE__ */ import_react.forwardRef(function({ onPointerDownOutside, style, onOpenAutoFocus, ...rest }, ref) {
+	const { drawerRef, onPress, onRelease, onDrag, keyboardIsOpen, snapPointsOffset, activeSnapPointIndex, modal, isOpen, direction, snapPoints, container, handleOnly, shouldAnimate, autoFocus } = useDrawerContext();
+	const [delayedSnapPoints, setDelayedSnapPoints] = import_react.useState(false);
+	const composedRef = useComposedRefs(ref, drawerRef);
+	const pointerStartRef = import_react.useRef(null);
+	const lastKnownPointerEventRef = import_react.useRef(null);
+	const wasBeyondThePointRef = import_react.useRef(false);
+	const hasSnapPoints = snapPoints && snapPoints.length > 0;
+	useScaleBackground();
+	const isDeltaInDirection$1 = (delta, direction$1, threshold$1 = 0) => {
+		if (wasBeyondThePointRef.current) return true;
+		const deltaY = Math.abs(delta.y);
+		const deltaX = Math.abs(delta.x);
+		const isDeltaX = deltaX > deltaY;
+		const dFactor = ["bottom", "right"].includes(direction$1) ? 1 : -1;
+		if (direction$1 === "left" || direction$1 === "right") {
+			if (!(delta.x * dFactor < 0) && deltaX >= 0 && deltaX <= threshold$1) return isDeltaX;
+		} else if (!(delta.y * dFactor < 0) && deltaY >= 0 && deltaY <= threshold$1) return !isDeltaX;
+		wasBeyondThePointRef.current = true;
+		return true;
+	};
+	import_react.useEffect(() => {
+		if (hasSnapPoints) window.requestAnimationFrame(() => {
+			setDelayedSnapPoints(true);
+		});
+	}, []);
+	function handleOnPointerUp(event) {
+		pointerStartRef.current = null;
+		wasBeyondThePointRef.current = false;
+		onRelease(event);
+	}
+	return /* @__PURE__ */ import_react.createElement(Content$2, {
+		"data-vaul-drawer-direction": direction,
+		"data-vaul-drawer": "",
+		"data-vaul-delayed-snap-points": delayedSnapPoints ? "true" : "false",
+		"data-vaul-snap-points": isOpen && hasSnapPoints ? "true" : "false",
+		"data-vaul-custom-container": container ? "true" : "false",
+		"data-vaul-animate": (shouldAnimate == null ? void 0 : shouldAnimate.current) ? "true" : "false",
+		...rest,
+		ref: composedRef,
+		style: snapPointsOffset && snapPointsOffset.length > 0 ? {
+			"--snap-point-height": `${snapPointsOffset[activeSnapPointIndex != null ? activeSnapPointIndex : 0]}px`,
+			...style
+		} : style,
+		onPointerDown: (event) => {
+			if (handleOnly) return;
+			rest.onPointerDown == null || rest.onPointerDown.call(rest, event);
+			pointerStartRef.current = {
+				x: event.pageX,
+				y: event.pageY
+			};
+			onPress(event);
+		},
+		onOpenAutoFocus: (e) => {
+			onOpenAutoFocus?.(e);
+			if (!autoFocus) e.preventDefault();
+		},
+		onPointerDownOutside: (e) => {
+			onPointerDownOutside?.(e);
+			if (!modal || e.defaultPrevented) {
+				e.preventDefault();
+				return;
+			}
+			if (keyboardIsOpen.current) keyboardIsOpen.current = false;
+		},
+		onFocusOutside: (e) => {
+			if (!modal) {
+				e.preventDefault();
+				return;
+			}
+		},
+		onPointerMove: (event) => {
+			lastKnownPointerEventRef.current = event;
+			if (handleOnly) return;
+			rest.onPointerMove == null || rest.onPointerMove.call(rest, event);
+			if (!pointerStartRef.current) return;
+			const yPosition = event.pageY - pointerStartRef.current.y;
+			const xPosition = event.pageX - pointerStartRef.current.x;
+			const swipeStartThreshold = event.pointerType === "touch" ? 10 : 2;
+			if (isDeltaInDirection$1({
+				x: xPosition,
+				y: yPosition
+			}, direction, swipeStartThreshold)) onDrag(event);
+			else if (Math.abs(xPosition) > swipeStartThreshold || Math.abs(yPosition) > swipeStartThreshold) pointerStartRef.current = null;
+		},
+		onPointerUp: (event) => {
+			rest.onPointerUp == null || rest.onPointerUp.call(rest, event);
+			pointerStartRef.current = null;
+			wasBeyondThePointRef.current = false;
+			onRelease(event);
+		},
+		onPointerOut: (event) => {
+			rest.onPointerOut == null || rest.onPointerOut.call(rest, event);
+			handleOnPointerUp(lastKnownPointerEventRef.current);
+		},
+		onContextMenu: (event) => {
+			rest.onContextMenu == null || rest.onContextMenu.call(rest, event);
+			if (lastKnownPointerEventRef.current) handleOnPointerUp(lastKnownPointerEventRef.current);
+		}
+	});
+});
+Content.displayName = "Drawer.Content";
+var LONG_HANDLE_PRESS_TIMEOUT = 250;
+var DOUBLE_TAP_TIMEOUT = 120;
+var Handle = /* @__PURE__ */ import_react.forwardRef(function({ preventCycle = false, children, ...rest }, ref) {
+	const { closeDrawer, isDragging, snapPoints, activeSnapPoint, setActiveSnapPoint, dismissible, handleOnly, isOpen, onPress, onDrag } = useDrawerContext();
+	const closeTimeoutIdRef = import_react.useRef(null);
+	const shouldCancelInteractionRef = import_react.useRef(false);
+	function handleStartCycle() {
+		if (shouldCancelInteractionRef.current) {
+			handleCancelInteraction();
+			return;
+		}
+		window.setTimeout(() => {
+			handleCycleSnapPoints();
+		}, DOUBLE_TAP_TIMEOUT);
+	}
+	function handleCycleSnapPoints() {
+		if (isDragging || preventCycle || shouldCancelInteractionRef.current) {
+			handleCancelInteraction();
+			return;
+		}
+		handleCancelInteraction();
+		if (!snapPoints || snapPoints.length === 0) {
+			if (!dismissible) closeDrawer();
+			return;
+		}
+		if (activeSnapPoint === snapPoints[snapPoints.length - 1] && dismissible) {
+			closeDrawer();
+			return;
+		}
+		const currentSnapIndex = snapPoints.findIndex((point$3) => point$3 === activeSnapPoint);
+		if (currentSnapIndex === -1) return;
+		const nextSnapPoint = snapPoints[currentSnapIndex + 1];
+		setActiveSnapPoint(nextSnapPoint);
+	}
+	function handleStartInteraction() {
+		closeTimeoutIdRef.current = window.setTimeout(() => {
+			shouldCancelInteractionRef.current = true;
+		}, LONG_HANDLE_PRESS_TIMEOUT);
+	}
+	function handleCancelInteraction() {
+		if (closeTimeoutIdRef.current) window.clearTimeout(closeTimeoutIdRef.current);
+		shouldCancelInteractionRef.current = false;
+	}
+	return /* @__PURE__ */ import_react.createElement("div", {
+		onClick: handleStartCycle,
+		onPointerCancel: handleCancelInteraction,
+		onPointerDown: (e) => {
+			if (handleOnly) onPress(e);
+			handleStartInteraction();
+		},
+		onPointerMove: (e) => {
+			if (handleOnly) onDrag(e);
+		},
+		ref,
+		"data-vaul-drawer-visible": isOpen ? "true" : "false",
+		"data-vaul-handle": "",
+		"aria-hidden": "true",
+		...rest
+	}, /* @__PURE__ */ import_react.createElement("span", {
+		"data-vaul-handle-hitarea": "",
+		"aria-hidden": "true"
+	}, children));
+});
+Handle.displayName = "Drawer.Handle";
+function NestedRoot({ onDrag, onOpenChange, open: nestedIsOpen, ...rest }) {
+	const { onNestedDrag, onNestedOpenChange, onNestedRelease } = useDrawerContext();
+	if (!onNestedDrag) throw new Error("Drawer.NestedRoot must be placed in another drawer");
+	return /* @__PURE__ */ import_react.createElement(Root, {
+		nested: true,
+		open: nestedIsOpen,
+		onClose: () => {
+			onNestedOpenChange(false);
+		},
+		onDrag: (e, p) => {
+			onNestedDrag(e, p);
+			onDrag?.(e, p);
+		},
+		onOpenChange: (o) => {
+			if (o) onNestedOpenChange(o);
+			onOpenChange?.(o);
+		},
+		onRelease: onNestedRelease,
+		...rest
+	});
+}
+function Portal(props) {
+	const context = useDrawerContext();
+	const { container = context.container, ...portalProps } = props;
+	return /* @__PURE__ */ import_react.createElement(Portal$4, {
+		container,
+		...portalProps
+	});
+}
+var Drawer$1 = {
+	Root,
+	NestedRoot,
+	Content,
+	Overlay,
+	Trigger: Trigger$3,
+	Portal,
+	Handle,
+	Close,
+	Title,
+	Description
+};
+var Drawer = ({ shouldScaleBackground = true, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Drawer$1.Root, {
+	shouldScaleBackground,
+	...props
+});
+Drawer.displayName = "Drawer";
+Drawer$1.Trigger;
+var DrawerPortal = Drawer$1.Portal;
+var DrawerClose = Drawer$1.Close;
+var DrawerOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Drawer$1.Overlay, {
+	ref,
+	className: cn("fixed inset-0 z-50 bg-black/80", className),
+	...props
+}));
+DrawerOverlay.displayName = Drawer$1.Overlay.displayName;
+var DrawerContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DrawerOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Drawer$1.Content, {
+	ref,
+	className: cn("fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background", className),
+	...props,
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" }), children]
+})] }));
+DrawerContent.displayName = "DrawerContent";
+var DrawerHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: cn("grid gap-1.5 p-4 text-center sm:text-left", className),
+	...props
+});
+DrawerHeader.displayName = "DrawerHeader";
+var DrawerFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: cn("mt-auto flex flex-col gap-2 p-4", className),
+	...props
+});
+DrawerFooter.displayName = "DrawerFooter";
+var DrawerTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Drawer$1.Title, {
+	ref,
+	className: cn("text-lg font-semibold leading-none tracking-tight", className),
+	...props
+}));
+DrawerTitle.displayName = Drawer$1.Title.displayName;
+var DrawerDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Drawer$1.Description, {
+	ref,
+	className: cn("text-sm text-muted-foreground", className),
+	...props
+}));
+DrawerDescription.displayName = Drawer$1.Description.displayName;
+function Campo() {
+	const { toast: toast$2 } = useToast();
+	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
+	const [drawerOpen, setDrawerOpen] = (0, import_react.useState)(false);
+	const [actionType, setActionType] = (0, import_react.useState)("movimentar");
+	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
+	const filteredLotes = [
+		...sectorData.cria.lotes.map((l) => ({
+			...l,
+			setor: "Cria"
+		})),
+		...sectorData.recria.lotes.map((l) => ({
+			...l,
+			setor: "Recria"
+		})),
+		...sectorData.engorda.lotes.map((l) => ({
+			...l,
+			setor: "Engorda"
+		}))
+	].filter((l) => l.id.toLowerCase().includes(searchTerm.toLowerCase()) || l.pasto.toLowerCase().includes(searchTerm.toLowerCase()));
+	const handleAction = () => {
+		toast$2({
+			title: "Operação de Campo Registrada",
+			description: `Ação de "${actionType}" no lote ${selectedLote?.id} salva e sincronizada com sucesso.`
+		});
+		setDrawerOpen(false);
+	};
+	const openDrawer = (lote) => {
+		setSelectedLote(lote);
+		setDrawerOpen(true);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-4 pb-20 sm:pb-6 max-w-md mx-auto",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					className: "text-2xl font-bold tracking-tight",
+					children: "Operações de Campo"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-primary-foreground/80 mt-1 text-sm",
+					children: "Módulo mobile. Sincronização em tempo real ativada."
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-3 top-3 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+					placeholder: "Buscar lote ou pasto...",
+					className: "pl-9 bg-background shadow-sm h-10",
+					value: searchTerm,
+					onChange: (e) => setSearchTerm(e.target.value)
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "grid gap-3 mt-4",
+				children: filteredLotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+					className: "cursor-pointer hover:border-primary transition-colors active:scale-[0.98]",
+					onClick: () => openDrawer(lote),
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "p-4 flex justify-between items-center",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-bold text-lg",
+								children: lote.id
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: "secondary",
+								className: "text-[10px] px-1.5",
+								children: lote.setor
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-sm text-muted-foreground mt-1 flex items-center gap-1.5",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-3.5 w-3.5" }),
+								" ",
+								lote.cabecas,
+								" cab",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "mx-1",
+									children: "•"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-3.5 w-3.5" }),
+								" ",
+								lote.pasto
+							]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							className: "text-primary rounded-full h-10 w-10 bg-primary/10",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-5 w-5" })
+						})]
+					})
+				}, lote.id))
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Drawer, {
+				open: drawerOpen,
+				onOpenChange: setDrawerOpen,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerContent, {
+					className: "max-h-[95vh]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerHeader, {
+							className: "text-left pb-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerTitle, {
+								className: "flex justify-between items-center text-xl",
+								children: [
+									"Lote ",
+									selectedLote?.id,
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+										className: "text-sm px-2 py-1",
+										children: [selectedLote?.cabecas, " cab"]
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerDescription, {
+								className: "text-sm mt-1",
+								children: [
+									"Local atual:",
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-medium text-foreground",
+										children: selectedLote?.pasto
+									}),
+									" (",
+									selectedLote?.setor,
+									")"
+								]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "px-4 py-2 space-y-5 overflow-y-auto",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										className: "text-sm font-semibold",
+										children: "Tipo de Operação Rápida"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+										value: actionType,
+										onValueChange: setActionType,
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+											className: "h-12 bg-muted/50 border-0 focus:ring-1",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {})
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "movimentar",
+												children: "Troca de Pasto / Retiro"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "contagem",
+												children: "Atualizar Contagem (Mortalidade)"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "abate",
+												children: "Saída para Abate / Venda"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "servico",
+												children: "Lançar Manejo Sanitário"
+											})
+										] })]
+									})]
+								}),
+								actionType === "movimentar" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "space-y-3 animate-in fade-in slide-in-from-bottom-2",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Destino" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+											defaultValue: "pasto-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+												className: "h-12",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {})
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "pasto-1",
+													children: "Pasto 01 - Sede"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "pasto-2",
+													children: "Pasto 02 - Fundo"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "pasto-3",
+													children: "Pasto 03 - Represa"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "conf-1",
+													children: "Confinamento A"
+												})
+											] })]
+										})]
+									})
+								}),
+								actionType === "contagem" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "space-y-3 animate-in fade-in slide-in-from-bottom-2",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-2 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nova Contagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												type: "number",
+												defaultValue: selectedLote?.cabecas,
+												className: "h-12 text-lg font-mono"
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Motivo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+												defaultValue: "morte",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+													className: "h-12",
+													children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {})
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+														value: "ajuste",
+														children: "Ajuste / Erro"
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+														value: "morte",
+														children: "Mortalidade"
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+														value: "nascimento",
+														children: "Nascimento"
+													})
+												] })]
+											})]
+										})]
+									})
+								}),
+								actionType === "abate" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-3 animate-in fade-in slide-in-from-bottom-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Qtd de Cabeças Desembarcadas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											placeholder: "Ex: 40",
+											className: "h-12 text-lg"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Comprador / Frigorífico" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											placeholder: "Nome do destino...",
+											className: "h-12"
+										})]
+									})]
+								}),
+								actionType === "servico" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "space-y-3 animate-in fade-in slide-in-from-bottom-2",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Descrição do Serviço / Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											placeholder: "Ex: Aplicação de vermífugo, carrapaticida...",
+											className: "h-12"
+										})]
+									})
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerFooter, {
+							className: "pt-4 pb-8",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleAction,
+								size: "lg",
+								className: "w-full text-base h-12 shadow-md",
+								children: "Confirmar Ação"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DrawerClose, {
+								asChild: true,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "ghost",
+									size: "lg",
+									className: "w-full h-12",
+									children: "Cancelar"
+								})
+							})]
+						})
+					]
+				})
+			})
+		]
+	});
+}
+function Relatorios() {
+	const { toast: toast$2 } = useToast();
+	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
+	const [typeFilter, setTypeFilter] = (0, import_react.useState)("todos");
+	const handleExport = () => {
+		toast$2({
+			title: "Relatório Gerado PDF",
+			description: "O histórico detalhado de manejo foi exportado com sucesso."
+		});
+	};
+	const filteredHistory = managementHistory.filter((item) => {
+		const matchesSearch = item.alvo.toLowerCase().includes(searchTerm.toLowerCase()) || item.descricao.toLowerCase().includes(searchTerm.toLowerCase());
+		const matchesType = typeFilter === "todos" || item.tipo.toLowerCase().includes(typeFilter.toLowerCase());
+		return matchesSearch && matchesType;
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-3xl font-bold tracking-tight",
+				children: "Histórico de Manejo"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Registro detalhado de intervenções em pastagens, suplementação e sanidade."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick: handleExport,
+				className: "gap-2 w-full sm:w-auto",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" }), " Exportar Histórico (PDF)"]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Log de Intervenções e Atividades" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Filtre por lote, pasto ou tipo de manejo" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex gap-2 w-full sm:w-auto",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative w-full sm:w-64",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						type: "search",
+						placeholder: "Buscar alvo ou descrição...",
+						className: "pl-8",
+						value: searchTerm,
+						onChange: (e) => setSearchTerm(e.target.value)
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: typeFilter,
+					onValueChange: setTypeFilter,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+						className: "w-full sm:w-[150px]",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Tipo" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "todos",
+							children: "Todos"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "sanidade",
+							children: "Sanidade"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "nutrição",
+							children: "Nutrição"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "pasto",
+							children: "Pasto"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "adubação",
+							children: "Adubação"
+						})
+					] })]
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "px-0 sm:px-6",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alvo (Lote/Pasto)" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição da Intervenção" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" })
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [filteredHistory.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "whitespace-nowrap font-medium",
+						children: item.data
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: "outline",
+						children: item.tipo
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-semibold text-primary whitespace-nowrap",
+						children: item.alvo
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "min-w-[250px]",
+						children: item.descricao
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-muted-foreground whitespace-nowrap",
+						children: item.responsavel
+					})
+				] }, item.id)), filteredHistory.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 5,
+					className: "h-24 text-center text-muted-foreground",
+					children: "Nenhum registro encontrado com os filtros atuais."
+				}) })] })] })
+			})
+		})] })]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -59397,6 +61288,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Index, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/campo",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Campo, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/setor/:id",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Setor, {})
 				}),
@@ -59425,6 +61320,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendario, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/relatorios",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Relatorios, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/animal/:id",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalProfile, {})
 				})
@@ -59438,4 +61337,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CJjAX_Em.js.map
+//# sourceMappingURL=index-D6i_YZpN.js.map

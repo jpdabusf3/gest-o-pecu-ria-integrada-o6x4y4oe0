@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu'
 import { Download, Plus, FileText, FileSpreadsheet } from 'lucide-react'
-import { financialData, lotPerformanceData } from '@/data/mock'
+import { financialData, lotPerformanceData, costPerArrobaData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 
@@ -74,9 +74,10 @@ export default function Financeiro() {
       </div>
 
       <Tabs defaultValue="fluxo" className="space-y-6">
-        <TabsList className="mb-2">
+        <TabsList className="mb-2 w-full sm:w-auto flex overflow-x-auto justify-start">
           <TabsTrigger value="fluxo">Fluxo de Caixa</TabsTrigger>
           <TabsTrigger value="desempenho">Desempenho por Lote</TabsTrigger>
+          <TabsTrigger value="custo-arroba">Custo por @ Produzida</TabsTrigger>
         </TabsList>
 
         <TabsContent value="fluxo" className="space-y-6 mt-0">
@@ -192,6 +193,57 @@ export default function Financeiro() {
                           R$ {lote.lucro.toLocaleString('pt-BR')}
                         </TableCell>
                         <TableCell className="text-right font-medium">{lote.margem}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="custo-arroba" className="space-y-6 mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Análise Analítica: Custo por @ Produzida</CardTitle>
+              <CardDescription>
+                Comparativo entre os custos de suplementação acumulados e o ganho real de peso de
+                cada lote.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Lote</TableHead>
+                      <TableHead>Categoria</TableHead>
+                      <TableHead className="text-right">Custo Nutrição</TableHead>
+                      <TableHead className="text-right">Ganho Real (kg)</TableHead>
+                      <TableHead className="text-right">Ganho em @</TableHead>
+                      <TableHead className="text-right font-bold text-primary">Custo / @</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {costPerArrobaData.map((lote) => (
+                      <TableRow key={lote.loteId}>
+                        <TableCell className="font-medium">{lote.loteId}</TableCell>
+                        <TableCell>{lote.categoria}</TableCell>
+                        <TableCell className="text-right text-destructive">
+                          R$ {lote.custoAcumulado.toLocaleString('pt-BR')}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {lote.ganhoPesoKg.toLocaleString('pt-BR')} kg
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {lote.ganhoArroba.toLocaleString('pt-BR')} @
+                        </TableCell>
+                        <TableCell className="text-right font-bold text-primary text-lg">
+                          R${' '}
+                          {lote.custoPorArroba.toLocaleString('pt-BR', {
+                            minimumFractionDigits: 2,
+                          })}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

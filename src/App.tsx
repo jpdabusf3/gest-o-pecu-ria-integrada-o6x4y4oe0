@@ -12,6 +12,8 @@ import AnimalProfile from './pages/AnimalProfile'
 import Sanidade from './pages/Sanidade'
 import Calendario from './pages/Calendario'
 import Confinamento from './pages/Confinamento'
+import Campo from './pages/Campo'
+import Relatorios from './pages/Relatorios'
 import NotFound from './pages/NotFound'
 
 const App = () => (
@@ -22,6 +24,7 @@ const App = () => (
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
+          <Route path="/campo" element={<Campo />} />
           <Route path="/setor/:id" element={<Setor />} />
           <Route path="/pastos" element={<Pastos />} />
           <Route path="/confinamento" element={<Confinamento />} />
@@ -29,6 +32,7 @@ const App = () => (
           <Route path="/financeiro" element={<Financeiro />} />
           <Route path="/sanidade" element={<Sanidade />} />
           <Route path="/calendario" element={<Calendario />} />
+          <Route path="/relatorios" element={<Relatorios />} />
           <Route path="/animal/:id" element={<AnimalProfile />} />
         </Route>
         <Route path="*" element={<NotFound />} />

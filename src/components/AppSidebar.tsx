@@ -19,10 +19,13 @@ import {
   DollarSign,
   Tractor,
   Wheat,
+  Smartphone,
+  FileText,
 } from 'lucide-react'
 
 const navItems = [
   { title: 'Painel Principal', icon: LayoutDashboard, url: '/' },
+  { title: 'Operações de Campo', icon: Smartphone, url: '/campo' },
   { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
   { title: 'Confinamento', icon: Wheat, url: '/confinamento' },
   { title: 'Setor: Cria', icon: Baby, url: '/setor/cria' },
@@ -30,6 +33,7 @@ const navItems = [
   { title: 'Setor: Engorda', icon: Beef, url: '/setor/engorda' },
   { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
   { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
+  { title: 'Relatórios', icon: FileText, url: '/relatorios' },
 ]
 
 export function AppSidebar() {
