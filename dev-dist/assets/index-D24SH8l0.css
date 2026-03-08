@@ -2066,6 +2066,9 @@ section[aria-label='Notifications alt+T'] {
 .pt-6{
   padding-top: 1.5rem;
 }
+.pt-8{
+  padding-top: 2rem;
+}
 .text-left{
   text-align: left;
 }
@@ -2539,6 +2542,9 @@ section[aria-label='Notifications alt+T'] {
 .slide-in-from-bottom-2{
   --tw-enter-translate-y: 0.5rem;
 }
+.slide-in-from-left-2{
+  --tw-enter-translate-x: -0.5rem;
+}
 .slide-in-from-top-2{
   --tw-enter-translate-y: -0.5rem;
 }
@@ -2668,6 +2674,12 @@ section[aria-label='Notifications alt+T'] {
 .last\:rounded-r-md:last-child{
   border-top-right-radius: calc(var(--radius) - 2px);
   border-bottom-right-radius: calc(var(--radius) - 2px);
+}
+.last\:border-0:last-child{
+  border-width: 0px;
+}
+.last\:pb-0:last-child{
+  padding-bottom: 0px;
 }
 .hover\:scale-105:hover{
   --tw-scale-x: 1.05;
@@ -3578,8 +3590,8 @@ section[aria-label='Notifications alt+T'] {
   .sm\:w-\[250px\]{
     width: 250px;
   }
-  .sm\:w-\[400px\]{
-    width: 400px;
+  .sm\:w-\[500px\]{
+    width: 500px;
   }
   .sm\:w-auto{
     width: auto;

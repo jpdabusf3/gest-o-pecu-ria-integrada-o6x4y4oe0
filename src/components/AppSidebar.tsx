@@ -118,10 +118,13 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         {navigationGroups.map((group) => {
-          // RBAC: Restricted view for field operators
+          // RBAC: Restricted view for operators and managers
           const visibleItems = group.items.filter((item) => {
             if (user.role === 'operador') {
               return ['/', '/campo', '/tarefas', '/sanidade'].includes(item.url)
+            }
+            if (user.role === 'gerente') {
+              return !['/administrativo', '/fazendas'].includes(item.url)
             }
             return true
           })

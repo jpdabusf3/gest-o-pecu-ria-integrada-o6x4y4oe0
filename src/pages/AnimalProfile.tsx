@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,21 +30,36 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
+import { useAuth } from '@/contexts/AuthContext'
+import useAuditStore from '@/stores/useAuditStore'
 import { animalData } from '@/data/mock'
-import { ArrowLeft, Plus, History, Files } from 'lucide-react'
+import { ArrowLeft, Plus, History, Files, ShieldCheck } from 'lucide-react'
 import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
 import { DocumentManager } from '@/components/DocumentManager'
 
 function QuickEventModal({ animalId }: { animalId: string }) {
   const [open, setOpen] = useState(false)
+  const [eventType, setEventType] = useState('pesagem')
+  const [value, setValue] = useState('')
   const { toast } = useToast()
+  const { user } = useAuth()
+  const { addLog } = useAuditStore()
 
   const handleSave = () => {
     toast({
       title: 'Evento registrado',
       description: `Novo evento salvo para o animal ${animalId}.`,
     })
+    addLog({
+      userId: user.id,
+      userName: user.name,
+      entityType: 'Animal',
+      entityId: animalId,
+      action: 'Update',
+      details: `Registrou manualmente o evento de ${eventType}: ${value || 'Sem detalhes'}`,
+    })
     setOpen(false)
+    setValue('')
   }
 
   return (
@@ -64,7 +79,7 @@ function QuickEventModal({ animalId }: { animalId: string }) {
         <div className="space-y-4 py-4">
           <div className="space-y-2">
             <Label>Tipo de Evento</Label>
-            <Select defaultValue="pesagem">
+            <Select value={eventType} onValueChange={setEventType}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -78,7 +93,12 @@ function QuickEventModal({ animalId }: { animalId: string }) {
           </div>
           <div className="space-y-2">
             <Label>Valor / Detalhe</Label>
-            <Input placeholder="Ex: 250 kg ou Nome da Vacina" className="min-h-[44px]" />
+            <Input
+              placeholder="Ex: 250 kg ou Nome da Vacina"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              className="min-h-[44px]"
+            />
           </div>
           <Button onClick={handleSave} className="w-full min-h-[44px]">
             Salvar Histórico
@@ -91,6 +111,9 @@ function QuickEventModal({ animalId }: { animalId: string }) {
 
 export default function AnimalProfile() {
   const { id } = useParams<{ id: string }>()
+  const { user } = useAuth()
+  const { logs, addLog } = useAuditStore()
+
   const animal = animalData[id || ''] || animalData['TAG-1234']
   const [historico, setHistorico] = useState(animal.historico)
   const [pesoAtual, setPesoAtual] = useState(animal.pesoAtual)
@@ -102,10 +125,20 @@ export default function AnimalProfile() {
       { data: new Date().toLocaleDateString('pt-BR'), tipo: 'Pesagem (Sensor)', valor: newData },
       ...historico,
     ])
+    addLog({
+      userId: user.id,
+      userName: user.name,
+      entityType: 'Animal',
+      entityId: animal.id,
+      action: 'Update',
+      details: `Pesagem automática via balança eletrônica integrada: ${newData}`,
+    })
   }
 
+  const animalLogs = logs.filter((l) => l.entityType === 'Animal' && l.entityId === animal.id)
+
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild className="min-h-[44px] min-w-[44px]">
           <Link to="/">
@@ -156,12 +189,15 @@ export default function AnimalProfile() {
       </div>
 
       <Tabs defaultValue="history" className="w-full">
-        <TabsList className="grid w-full sm:w-[400px] grid-cols-2 mb-4">
+        <TabsList className="grid w-full sm:w-[500px] grid-cols-3 mb-4">
           <TabsTrigger value="history" className="gap-2">
-            <History className="h-4 w-4" /> Histórico Operacional
+            <History className="h-4 w-4 hidden sm:block" /> Operacional
           </TabsTrigger>
           <TabsTrigger value="documents" className="gap-2">
-            <Files className="h-4 w-4" /> Documentos Digitais
+            <Files className="h-4 w-4 hidden sm:block" /> Documentos
+          </TabsTrigger>
+          <TabsTrigger value="audit" className="gap-2">
+            <ShieldCheck className="h-4 w-4 hidden sm:block" /> Auditoria
           </TabsTrigger>
         </TabsList>
 
@@ -205,6 +241,54 @@ export default function AnimalProfile() {
 
         <TabsContent value="documents" className="mt-2 outline-none">
           <DocumentManager entityId={animal.id} />
+        </TabsContent>
+
+        <TabsContent value="audit" className="mt-2 outline-none">
+          <Card>
+            <CardHeader>
+              <CardTitle>Log de Atividades (Auditoria)</CardTitle>
+              <CardDescription>
+                Acompanhamento de todas as alterações feitas na ficha e dados deste animal.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data/Hora</TableHead>
+                      <TableHead>Ação</TableHead>
+                      <TableHead>Detalhes</TableHead>
+                      <TableHead>Usuário</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {animalLogs.map((log) => (
+                      <TableRow key={log.id}>
+                        <TableCell className="whitespace-nowrap text-muted-foreground">
+                          {new Date(log.timestamp).toLocaleString('pt-BR')}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="secondary" className="font-normal">
+                            {log.action}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-medium text-sm">{log.details}</TableCell>
+                        <TableCell className="text-muted-foreground">{log.userName}</TableCell>
+                      </TableRow>
+                    ))}
+                    {animalLogs.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
+                          Nenhum log de auditoria encontrado para este animal.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

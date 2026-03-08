@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
-export type Role = 'admin' | 'operador'
+export type Role = 'admin' | 'gerente' | 'operador'
+
+export interface UserPreferences {
+  whatsappEnabled: boolean
+  notifyHealth: boolean
+  notifyFinancial: boolean
+  notifyManagement: boolean
+}
 
 export interface User {
   id: string
@@ -9,6 +16,7 @@ export interface User {
   avatar: string
   email: string
   whatsapp?: string
+  preferences: UserPreferences
 }
 
 export const mockUsers: User[] = [
@@ -19,6 +27,26 @@ export const mockUsers: User[] = [
     avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42',
     email: 'admin@fazenda.com',
     whatsapp: '(11) 99999-9999',
+    preferences: {
+      whatsappEnabled: true,
+      notifyHealth: true,
+      notifyFinancial: true,
+      notifyManagement: true,
+    },
+  },
+  {
+    id: 'U3',
+    name: 'Carlos (Gerente)',
+    role: 'gerente',
+    avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=22',
+    email: 'gerente@fazenda.com',
+    whatsapp: '(11) 97777-7777',
+    preferences: {
+      whatsappEnabled: true,
+      notifyHealth: true,
+      notifyFinancial: false,
+      notifyManagement: true,
+    },
   },
   {
     id: 'U2',
@@ -27,6 +55,12 @@ export const mockUsers: User[] = [
     avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15',
     email: 'joao@fazenda.com',
     whatsapp: '(16) 98888-8888',
+    preferences: {
+      whatsappEnabled: false,
+      notifyHealth: false,
+      notifyFinancial: false,
+      notifyManagement: false,
+    },
   },
 ]
 

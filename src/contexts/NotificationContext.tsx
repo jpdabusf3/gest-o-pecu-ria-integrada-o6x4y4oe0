@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
+import { useAuth } from './AuthContext'
+import { useToast } from '@/hooks/use-toast'
 
 export type AppNotification = {
   id: string
@@ -31,6 +33,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     },
   ])
 
+  const auth = useAuth()
+  const { toast } = useToast()
+
   const addNotification = (notif: Omit<AppNotification, 'id' | 'date' | 'read'>) => {
     const newNotif: AppNotification = {
       ...notif,
@@ -39,6 +44,45 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       read: false,
     }
     setNotifications((prev) => [newNotif, ...prev])
+
+    // WhatsApp Simulation Logic
+    if (auth.user.preferences.whatsappEnabled && auth.user.whatsapp) {
+      const prefs = auth.user.preferences
+      let shouldSend = false
+      const lowerTitle = notif.title.toLowerCase()
+
+      if (
+        notif.type === 'alert' &&
+        prefs.notifyHealth &&
+        (lowerTitle.includes('sanit') ||
+          lowerTitle.includes('vacina') ||
+          lowerTitle.includes('peso'))
+      ) {
+        shouldSend = true
+      } else if (
+        notif.type === 'alert' &&
+        prefs.notifyFinancial &&
+        (lowerTitle.includes('finan') ||
+          lowerTitle.includes('custo') ||
+          lowerTitle.includes('orçamento'))
+      ) {
+        shouldSend = true
+      } else if ((notif.type === 'task' || notif.type === 'goal') && prefs.notifyManagement) {
+        shouldSend = true
+      } else if (notif.type === 'alert' && prefs.notifyManagement) {
+        shouldSend = true // default fallback for general alerts if management is on
+      }
+
+      if (shouldSend) {
+        setTimeout(() => {
+          toast({
+            title: '📱 WhatsApp Enviado',
+            description: `Alerta automatizado despachado para ${auth.user.whatsapp}: "${notif.title}"`,
+            variant: 'default',
+          })
+        }, 1500)
+      }
+    }
   }
 
   const markAsRead = (id: string) => {

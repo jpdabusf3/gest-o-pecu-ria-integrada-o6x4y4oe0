@@ -25017,21 +25017,50 @@ var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...pr
 	...props
 }));
 TooltipContent.displayName = Content2$3.displayName;
-const mockUsers = [{
-	id: "U1",
-	name: "Administrador (Sede)",
-	role: "admin",
-	avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42",
-	email: "admin@fazenda.com",
-	whatsapp: "(11) 99999-9999"
-}, {
-	id: "U2",
-	name: "João (Operador Campo)",
-	role: "operador",
-	avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15",
-	email: "joao@fazenda.com",
-	whatsapp: "(16) 98888-8888"
-}];
+const mockUsers = [
+	{
+		id: "U1",
+		name: "Administrador (Sede)",
+		role: "admin",
+		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42",
+		email: "admin@fazenda.com",
+		whatsapp: "(11) 99999-9999",
+		preferences: {
+			whatsappEnabled: true,
+			notifyHealth: true,
+			notifyFinancial: true,
+			notifyManagement: true
+		}
+	},
+	{
+		id: "U3",
+		name: "Carlos (Gerente)",
+		role: "gerente",
+		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=22",
+		email: "gerente@fazenda.com",
+		whatsapp: "(11) 97777-7777",
+		preferences: {
+			whatsappEnabled: true,
+			notifyHealth: true,
+			notifyFinancial: false,
+			notifyManagement: true
+		}
+	},
+	{
+		id: "U2",
+		name: "João (Operador Campo)",
+		role: "operador",
+		avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15",
+		email: "joao@fazenda.com",
+		whatsapp: "(16) 98888-8888",
+		preferences: {
+			whatsappEnabled: false,
+			notifyHealth: false,
+			notifyFinancial: false,
+			notifyManagement: false
+		}
+	}
+];
 var AuthContext = (0, import_react.createContext)(void 0);
 function AuthProvider({ children }) {
 	const [user, setUser] = (0, import_react.useState)(mockUsers[0]);
@@ -26295,6 +26324,8 @@ function NotificationProvider({ children }) {
 		read: false,
 		type: "goal"
 	}]);
+	const auth = useAuth();
+	const { toast: toast$2 } = useToast();
 	const addNotification = (notif) => {
 		const newNotif = {
 			...notif,
@@ -26303,6 +26334,22 @@ function NotificationProvider({ children }) {
 			read: false
 		};
 		setNotifications((prev) => [newNotif, ...prev]);
+		if (auth.user.preferences.whatsappEnabled && auth.user.whatsapp) {
+			const prefs = auth.user.preferences;
+			let shouldSend = false;
+			const lowerTitle = notif.title.toLowerCase();
+			if (notif.type === "alert" && prefs.notifyHealth && (lowerTitle.includes("sanit") || lowerTitle.includes("vacina") || lowerTitle.includes("peso"))) shouldSend = true;
+			else if (notif.type === "alert" && prefs.notifyFinancial && (lowerTitle.includes("finan") || lowerTitle.includes("custo") || lowerTitle.includes("orçamento"))) shouldSend = true;
+			else if ((notif.type === "task" || notif.type === "goal") && prefs.notifyManagement) shouldSend = true;
+			else if (notif.type === "alert" && prefs.notifyManagement) shouldSend = true;
+			if (shouldSend) setTimeout(() => {
+				toast$2({
+					title: "📱 WhatsApp Enviado",
+					description: `Alerta automatizado despachado para ${auth.user.whatsapp}: "${notif.title}"`,
+					variant: "default"
+				});
+			}, 1500);
+		}
 	};
 	const markAsRead = (id) => {
 		setNotifications((prev) => prev.map((n) => n.id === id ? {
@@ -28819,7 +28866,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$51({ inst: {
+			cachedValue = useState$52({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28833,7 +28880,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$18(function() {
+			useEffect$19(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28856,7 +28903,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$51 = React$70.useState, useEffect$18 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$52 = React$70.useState, useEffect$19 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29148,6 +29195,7 @@ function AppSidebar() {
 					"/tarefas",
 					"/sanidade"
 				].includes(item.url);
+				if (user.role === "gerente") return !["/administrativo", "/fazendas"].includes(item.url);
 				return true;
 			});
 			if (visibleItems.length === 0) return null;
@@ -31776,7 +31824,7 @@ function Header() {
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScannerModal, {}),
-				user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+				(user.role === "admin" || user.role === "gerente") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
 					asChild: true,
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 						variant: "ghost",
@@ -31835,7 +31883,7 @@ function Header() {
 						})
 					]
 				})] }),
-				user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickAddModal, {}),
+				(user.role === "admin" || user.role === "gerente") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickAddModal, {}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-8 w-px bg-border hidden sm:block" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
 					asChild: true,
@@ -31877,7 +31925,7 @@ function Header() {
 							children: [
 								u.name,
 								" ",
-								u.role === "admin" && "(Admin)"
+								u.role === "admin" ? "(Admin)" : u.role === "gerente" ? "(Gerente)" : ""
 							]
 						}, u.id))
 					]
@@ -55861,11 +55909,11 @@ function OperatorDashboard() {
 		})]
 	});
 }
-var STORAGE_KEY$3 = "@f3_animais";
+var STORAGE_KEY$4 = "@f3_animais";
 function useAnimalStore() {
 	const [animais, setAnimais] = (0, import_react.useState)(() => {
 		try {
-			const saved = localStorage.getItem(STORAGE_KEY$3);
+			const saved = localStorage.getItem(STORAGE_KEY$4);
 			if (saved) return JSON.parse(saved);
 		} catch (e) {
 			console.error(e);
@@ -55875,7 +55923,7 @@ function useAnimalStore() {
 	(0, import_react.useEffect)(() => {
 		const handleUpdate = () => {
 			try {
-				const saved = localStorage.getItem(STORAGE_KEY$3);
+				const saved = localStorage.getItem(STORAGE_KEY$4);
 				if (saved) setAnimais(JSON.parse(saved));
 			} catch (e) {
 				console.error(e);
@@ -55889,7 +55937,7 @@ function useAnimalStore() {
 		addRegistro: (0, import_react.useCallback)((registro) => {
 			setAnimais((prev) => {
 				const updated = [registro, ...prev];
-				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$4, JSON.stringify(updated));
 				window.dispatchEvent(new Event("animais-updated"));
 				return updated;
 			});
@@ -55897,18 +55945,18 @@ function useAnimalStore() {
 		deleteRegistro: (0, import_react.useCallback)((id) => {
 			setAnimais((prev) => {
 				const updated = prev.filter((a$1) => a$1.id !== id);
-				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$4, JSON.stringify(updated));
 				window.dispatchEvent(new Event("animais-updated"));
 				return updated;
 			});
 		}, [])
 	};
 }
-var STORAGE_KEY$2 = "@f3_fazendas";
+var STORAGE_KEY$3 = "@f3_fazendas";
 function useFazendaStore() {
 	const [fazendas, setFazendas] = (0, import_react.useState)(() => {
 		try {
-			const saved = localStorage.getItem(STORAGE_KEY$2);
+			const saved = localStorage.getItem(STORAGE_KEY$3);
 			if (saved) return JSON.parse(saved);
 		} catch (e) {
 			console.error(e);
@@ -55930,7 +55978,7 @@ function useFazendaStore() {
 	(0, import_react.useEffect)(() => {
 		const handleUpdate = () => {
 			try {
-				const saved = localStorage.getItem(STORAGE_KEY$2);
+				const saved = localStorage.getItem(STORAGE_KEY$3);
 				if (saved) setFazendas(JSON.parse(saved));
 			} catch (e) {
 				console.error(e);
@@ -55944,7 +55992,7 @@ function useFazendaStore() {
 		addFazenda: (0, import_react.useCallback)((fazenda) => {
 			setFazendas((prev) => {
 				const updated = [...prev, fazenda];
-				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
 				window.dispatchEvent(new Event("fazendas-updated"));
 				return updated;
 			});
@@ -55952,7 +56000,7 @@ function useFazendaStore() {
 		deleteFazenda: (0, import_react.useCallback)((id) => {
 			setFazendas((prev) => {
 				const updated = prev.filter((f) => f.id !== id);
-				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
 				window.dispatchEvent(new Event("fazendas-updated"));
 				return updated;
 			});
@@ -55963,18 +56011,18 @@ function useFazendaStore() {
 					...f,
 					...data
 				} : f);
-				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
 				window.dispatchEvent(new Event("fazendas-updated"));
 				return updated;
 			});
 		}, [])
 	};
 }
-var STORAGE_KEY$1 = "@f3_animal_targets";
+var STORAGE_KEY$2 = "@f3_animal_targets";
 function useAnimalTargetsStore() {
 	const [targets, setTargets] = (0, import_react.useState)(() => {
 		try {
-			const saved = localStorage.getItem(STORAGE_KEY$1);
+			const saved = localStorage.getItem(STORAGE_KEY$2);
 			if (saved) return JSON.parse(saved);
 		} catch (e) {
 			console.error(e);
@@ -55987,7 +56035,7 @@ function useAnimalTargetsStore() {
 	(0, import_react.useEffect)(() => {
 		const handleUpdate = () => {
 			try {
-				const saved = localStorage.getItem(STORAGE_KEY$1);
+				const saved = localStorage.getItem(STORAGE_KEY$2);
 				if (saved) setTargets(JSON.parse(saved));
 			} catch (e) {
 				console.error(e);
@@ -56004,7 +56052,7 @@ function useAnimalTargetsStore() {
 					...prev,
 					...newTargets
 				};
-				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
 				window.dispatchEvent(new Event("animal-targets-updated"));
 				return updated;
 			});
@@ -58925,6 +58973,54 @@ function Financeiro() {
 		})]
 	});
 }
+var STORAGE_KEY$1 = "@f3_audit_logs";
+function useAuditStore() {
+	const [logs, setLogs] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY$1);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return [{
+			id: "mock-1",
+			timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+			userId: "U1",
+			userName: "Administrador (Sede)",
+			entityType: "Animal",
+			entityId: "TAG-1234",
+			action: "Create",
+			details: "Registro inicial do animal no sistema."
+		}];
+	});
+	(0, import_react.useEffect)(() => {
+		const handleUpdate = () => {
+			try {
+				const saved = localStorage.getItem(STORAGE_KEY$1);
+				if (saved) setLogs(JSON.parse(saved));
+			} catch (e) {
+				console.error(e);
+			}
+		};
+		window.addEventListener("audit-updated", handleUpdate);
+		return () => window.removeEventListener("audit-updated", handleUpdate);
+	}, []);
+	return {
+		logs,
+		addLog: (0, import_react.useCallback)((log$1) => {
+			setLogs((prev) => {
+				const updated = [{
+					...log$1,
+					id: crypto.randomUUID(),
+					timestamp: (/* @__PURE__ */ new Date()).toISOString()
+				}, ...prev];
+				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				window.dispatchEvent(new Event("audit-updated"));
+				return updated;
+			});
+		}, [])
+	};
+}
 function ScaleIntegrationModal({ animalId, onSaveWeight }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const [connectionType, setConnectionType] = (0, import_react.useState)("bluetooth");
@@ -59236,13 +59332,26 @@ function DocumentManager({ entityId }) {
 }
 function QuickEventModal({ animalId }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
+	const [eventType, setEventType] = (0, import_react.useState)("pesagem");
+	const [value, setValue] = (0, import_react.useState)("");
 	const { toast: toast$2 } = useToast();
+	const { user } = useAuth();
+	const { addLog } = useAuditStore();
 	const handleSave = () => {
 		toast$2({
 			title: "Evento registrado",
 			description: `Novo evento salvo para o animal ${animalId}.`
 		});
+		addLog({
+			userId: user.id,
+			userName: user.name,
+			entityType: "Animal",
+			entityId: animalId,
+			action: "Update",
+			details: `Registrou manualmente o evento de ${eventType}: ${value || "Sem detalhes"}`
+		});
 		setOpen(false);
+		setValue("");
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
 		open,
@@ -59264,7 +59373,8 @@ function QuickEventModal({ animalId }) {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "space-y-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Evento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-						defaultValue: "pesagem",
+						value: eventType,
+						onValueChange: setEventType,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 								value: "pesagem",
@@ -59289,6 +59399,8 @@ function QuickEventModal({ animalId }) {
 					className: "space-y-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Valor / Detalhe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 						placeholder: "Ex: 250 kg ou Nome da Vacina",
+						value,
+						onChange: (e) => setValue(e.target.value),
 						className: "min-h-[44px]"
 					})]
 				}),
@@ -59303,6 +59415,8 @@ function QuickEventModal({ animalId }) {
 }
 function AnimalProfile() {
 	const { id } = useParams();
+	const { user } = useAuth();
+	const { logs, addLog } = useAuditStore();
 	const animal = animalData[id || ""] || animalData["TAG-1234"];
 	const [historico, setHistorico] = (0, import_react.useState)(animal.historico);
 	const [pesoAtual, setPesoAtual] = (0, import_react.useState)(animal.pesoAtual);
@@ -59314,9 +59428,18 @@ function AnimalProfile() {
 			tipo: "Pesagem (Sensor)",
 			valor: newData
 		}, ...historico]);
+		addLog({
+			userId: user.id,
+			userName: user.name,
+			entityType: "Animal",
+			entityId: animal.id,
+			action: "Update",
+			details: `Pesagem automática via balança eletrônica integrada: ${newData}`
+		});
 	};
+	const animalLogs = logs.filter((l) => l.entityType === "Animal" && l.entityId === animal.id);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex items-center gap-4",
@@ -59387,16 +59510,24 @@ function AnimalProfile() {
 				className: "w-full",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-						className: "grid w-full sm:w-[400px] grid-cols-2 mb-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
-							value: "history",
-							className: "gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-4 w-4" }), " Histórico Operacional"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
-							value: "documents",
-							className: "gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Files, { className: "h-4 w-4" }), " Documentos Digitais"]
-						})]
+						className: "grid w-full sm:w-[500px] grid-cols-3 mb-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "history",
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-4 w-4 hidden sm:block" }), " Operacional"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "documents",
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Files, { className: "h-4 w-4 hidden sm:block" }), " Documentos"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "audit",
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 hidden sm:block" }), " Auditoria"]
+							})
+						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "history",
@@ -59436,6 +59567,41 @@ function AnimalProfile() {
 						value: "documents",
 						className: "mt-2 outline-none",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DocumentManager, { entityId: animal.id })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "audit",
+						className: "mt-2 outline-none",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Log de Atividades (Auditoria)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhamento de todas as alterações feitas na ficha e dados deste animal." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data/Hora" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Ação" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Detalhes" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Usuário" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [animalLogs.map((log$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "whitespace-nowrap text-muted-foreground",
+									children: new Date(log$1.timestamp).toLocaleString("pt-BR")
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: "secondary",
+									className: "font-normal",
+									children: log$1.action
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "font-medium text-sm",
+									children: log$1.details
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-muted-foreground",
+									children: log$1.userName
+								})
+							] }, log$1.id)), animalLogs.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								colSpan: 4,
+								className: "h-32 text-center text-muted-foreground",
+								children: "Nenhum log de auditoria encontrado para este animal."
+							}) })] })] })
+						}) })] })
 					})
 				]
 			})
@@ -68324,6 +68490,9 @@ function ProjecaoVendas() {
 	});
 }
 function Colaboradores() {
+	const { user } = useAuth();
+	const isAdmin = user.role === "admin";
+	const { logs, addLog } = useAuditStore();
 	const [members, setMembers] = (0, import_react.useState)(teamMembers);
 	const { toast: toast$2 } = useToast();
 	const [isModalOpen, setIsModalOpen] = (0, import_react.useState)(false);
@@ -68360,27 +68529,54 @@ function Colaboradores() {
 				...formData
 			} : m));
 			toast$2({ title: "Colaborador atualizado com sucesso." });
+			addLog({
+				userId: user.id,
+				userName: user.name,
+				entityType: "Colaborador",
+				entityId: editingId,
+				action: "Update",
+				details: `Atualizou os dados e permissões do colaborador ${formData.name}.`
+			});
 		} else {
+			const newId = Date.now().toString();
 			setMembers([...members, {
-				id: Date.now().toString(),
+				id: newId,
 				status: "Ativo",
 				lastActive: "Nunca",
 				...formData
 			}]);
 			toast$2({ title: "Novo colaborador cadastrado." });
+			addLog({
+				userId: user.id,
+				userName: user.name,
+				entityType: "Colaborador",
+				entityId: newId,
+				action: "Create",
+				details: `Cadastrou o novo colaborador ${formData.name}.`
+			});
 		}
 		setIsModalOpen(false);
 	};
 	const handleDelete = () => {
 		if (deleteId) {
+			const member = members.find((m) => m.id === deleteId);
 			setMembers(members.filter((m) => m.id !== deleteId));
 			toast$2({
 				title: "Colaborador removido.",
 				variant: "destructive"
 			});
+			addLog({
+				userId: user.id,
+				userName: user.name,
+				entityType: "Colaborador",
+				entityId: deleteId,
+				action: "Delete",
+				details: `Removeu o colaborador ${member?.name}.`
+			});
 		}
 		setIsDeleteOpen(false);
 	};
+	const memberLogs = logs.filter((l) => l.entityType === "Colaborador" && l.entityId === editingId);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
@@ -68392,19 +68588,19 @@ function Colaboradores() {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
 					children: "Gestão de equipe, controle de acessos e cadastro de pessoal."
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				})] }), isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 					className: "gap-2",
 					onClick: () => handleOpenModal(),
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserPlus, { className: "h-4 w-4" }), " Adicionar Colaborador"]
 				})]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Membros da Equipe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Gerencie os acessos e informações dos colaboradores da fazenda." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Membros da Equipe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: isAdmin ? "Gerencie os acessos e informações dos colaboradores da fazenda." : "Visualização da equipe da fazenda e seus papéis." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "overflow-x-auto",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Papel" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Nível de Acesso" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 						className: "text-right",
 						children: "Ações"
 					})
@@ -68417,15 +68613,15 @@ function Colaboradores() {
 						children: m.email
 					})] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-						variant: m.role === "Admin" ? "default" : "secondary",
+						variant: m.role === "Admin" ? "default" : m.role === "Gerente" ? "secondary" : "outline",
 						className: "gap-1 font-normal",
-						children: [m.role === "Admin" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3 w-3" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-3 w-3" }), m.role]
+						children: [m.role === "Admin" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3 w-3" }) : m.role === "Gerente" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-3 w-3" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-3 w-3" }), m.role]
 					}) }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-center gap-1.5 text-xs text-muted-foreground font-medium",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-2 w-2 rounded-full ${m.status === "Ativo" ? "bg-emerald-500" : "bg-muted-foreground"}` }), m.status]
 					}) }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+					isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 						className: "text-right space-x-1",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 							variant: "ghost",
@@ -68448,62 +68644,123 @@ function Colaboradores() {
 				open: isModalOpen,
 				onOpenChange: setIsModalOpen,
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
-					className: "sm:max-w-[425px]",
+					className: "sm:max-w-[550px]",
 					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: editingId ? "Editar Colaborador" : "Novo Colaborador" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Preencha os dados do membro da equipe abaixo." })] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-4 py-4",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: editingId ? "Ficha do Colaborador" : "Novo Colaborador" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: editingId ? "Edite as informações ou visualize o histórico de auditoria." : "Preencha os dados e defina o nível de acesso (RBAC)." })] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+							defaultValue: "dados",
+							className: "mt-2",
 							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome Completo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-										value: formData.name,
-										onChange: (e) => setFormData({
-											...formData,
-											name: e.target.value
-										}),
-										placeholder: "Ex: João da Silva"
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+									className: "grid w-full grid-cols-2 mb-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+										value: "dados",
+										children: "Dados de Acesso"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+										value: "historico",
+										disabled: !editingId,
+										children: "Log de Auditoria"
 									})]
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "E-mail de Acesso" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-										type: "email",
-										value: formData.email,
-										onChange: (e) => setFormData({
-											...formData,
-											email: e.target.value
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+									value: "dados",
+									className: "space-y-4 py-2 outline-none",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome Completo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												value: formData.name,
+												onChange: (e) => setFormData({
+													...formData,
+													name: e.target.value
+												}),
+												placeholder: "Ex: João da Silva"
+											})]
 										}),
-										placeholder: "email@exemplo.com"
-									})]
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "E-mail de Acesso" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												type: "email",
+												value: formData.email,
+												onChange: (e) => setFormData({
+													...formData,
+													email: e.target.value
+												}),
+												placeholder: "email@exemplo.com"
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nível de Acesso (RBAC)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+												value: formData.role,
+												onValueChange: (v) => setFormData({
+													...formData,
+													role: v
+												}),
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+														value: "Admin",
+														children: "Administrador (Acesso Total)"
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+														value: "Gerente",
+														children: "Gerente (Relatórios e Operacional)"
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+														value: "Operador",
+														children: "Operador de Campo (Dados e Tarefas)"
+													})
+												] })]
+											})]
+										})
+									]
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Papel e Permissões" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-										value: formData.role,
-										onValueChange: (v) => setFormData({
-											...formData,
-											role: v
-										}),
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "Admin",
-											children: "Administrador (Acesso Total)"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "Operador",
-											children: "Operador de Campo (Módulo Restrito)"
-										})] })]
-									})]
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+									value: "historico",
+									className: "py-2 outline-none",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "rounded-md border h-[250px] overflow-y-auto p-4 space-y-4 bg-muted/20",
+										children: memberLogs.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-sm text-muted-foreground text-center pt-8",
+											children: "Nenhum registro de auditoria encontrado."
+										}) : memberLogs.map((log$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex flex-col gap-1 text-sm border-b border-border pb-3 last:border-0 last:pb-0",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex justify-between items-start",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+														className: "font-medium text-foreground",
+														children: log$1.action === "Create" ? "Criação" : log$1.action === "Update" ? "Atualização" : "Remoção"
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+														className: "text-xs text-muted-foreground",
+														children: new Date(log$1.timestamp).toLocaleString("pt-BR")
+													})]
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-muted-foreground",
+													children: log$1.details
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: "text-xs text-muted-foreground mt-1",
+													children: ["Por: ", log$1.userName]
+												})
+											]
+										}, log$1.id))
+									})
 								})
 							]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							variant: "outline",
-							onClick: () => setIsModalOpen(false),
-							children: "Cancelar"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							onClick: handleSave,
-							children: "Salvar Colaborador"
-						})] })
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, {
+							className: "mt-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "outline",
+								onClick: () => setIsModalOpen(false),
+								children: "Cancelar"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleSave,
+								children: "Salvar Colaborador"
+							})]
+						})
 					]
 				})
 			}),
@@ -68532,32 +68789,42 @@ function Colaboradores() {
 function Configuracoes() {
 	const { user, setUser } = useAuth();
 	const { toast: toast$2 } = useToast();
+	const { addNotification } = useAppNotifications();
 	const [email, setEmail] = (0, import_react.useState)(user.email);
 	const [whatsapp, setWhatsapp] = (0, import_react.useState)(user.whatsapp || "");
 	const [password, setPassword] = (0, import_react.useState)("");
+	const [prefs, setPrefs] = (0, import_react.useState)(user.preferences);
 	const handleSave = () => {
 		setUser({
 			...user,
 			email,
-			whatsapp
+			whatsapp,
+			preferences: prefs
 		});
 		toast$2({
 			title: "Configurações salvas",
-			description: "Seu perfil foi atualizado com sucesso."
+			description: "Seu perfil e preferências foram atualizados com sucesso."
 		});
 		setPassword("");
 	};
+	const handleTestWhatsApp = () => {
+		addNotification({
+			title: "Alerta Sanitário de Teste 🚨",
+			message: "Esta é uma mensagem de teste enviada via integração WhatsApp.",
+			type: "alert"
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "max-w-2xl mx-auto space-y-6 animate-fade-in-up pb-8",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-			className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserCog, { className: "h-8 w-8 text-primary" }), "Configurações"]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-			className: "text-muted-foreground mt-1",
-			children: "Gerencie suas credenciais e informações de contato do sistema."
-		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Meu Perfil" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Atualize seu e-mail, telefone de contato e credenciais de segurança." })] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserCog, { className: "h-8 w-8 text-primary" }), "Configurações"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Gerencie suas credenciais, contatos e preferências do sistema."
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Meu Perfil" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Atualize seu e-mail, telefone de contato e credenciais de segurança." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 				className: "space-y-5",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -68598,16 +68865,101 @@ function Configuracoes() {
 						})]
 					})
 				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
-				className: "flex justify-end border-t bg-muted/20 pt-4",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-					onClick: handleSave,
-					className: "gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Alterações"]
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-5 w-5 text-emerald-500" }), "Notificações por WhatsApp"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure o envio automatizado de alertas críticos diretamente para o seu número registrado." })] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+					className: "space-y-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+							htmlFor: "whatsappEnabled",
+							className: "flex flex-col gap-1 cursor-pointer",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Ativar Integração WhatsApp" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-normal text-xs text-muted-foreground",
+								children: "Habilita o envio de mensagens"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+							id: "whatsappEnabled",
+							checked: prefs.whatsappEnabled,
+							onCheckedChange: (c$1) => setPrefs({
+								...prefs,
+								whatsappEnabled: c$1
+							})
+						})]
+					}), prefs.whatsappEnabled && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "pl-4 border-l-2 border-border space-y-4 animate-in fade-in slide-in-from-left-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "notifyHealth",
+									className: "cursor-pointer text-sm",
+									children: "Alertas Sanitários (Vacinas, Pesagem)"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+									id: "notifyHealth",
+									checked: prefs.notifyHealth,
+									onCheckedChange: (c$1) => setPrefs({
+										...prefs,
+										notifyHealth: c$1
+									})
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "notifyManagement",
+									className: "cursor-pointer text-sm",
+									children: "Alertas de Manejo & Tarefas"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+									id: "notifyManagement",
+									checked: prefs.notifyManagement,
+									onCheckedChange: (c$1) => setPrefs({
+										...prefs,
+										notifyManagement: c$1
+									})
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "notifyFinancial",
+									className: "cursor-pointer text-sm",
+									children: "Alertas Financeiros & Orçamento"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+									id: "notifyFinancial",
+									checked: prefs.notifyFinancial,
+									onCheckedChange: (c$1) => setPrefs({
+										...prefs,
+										notifyFinancial: c$1
+									})
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "pt-4 border-t border-border",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									variant: "outline",
+									onClick: handleTestWhatsApp,
+									className: "gap-2 w-full sm:w-auto",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-4 w-4 text-emerald-500" }), " Simular Alerta WhatsApp"]
+								})
+							})
+						]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
+					className: "flex justify-end border-t bg-muted/20 pt-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						onClick: handleSave,
+						className: "gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Alterações"]
+					})
 				})
-			})
-		] })]
+			] })
+		]
 	});
 }
 function ContactDialog({ onSave }) {
@@ -70794,4 +71146,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-C8-4iGQ3.js.map
+//# sourceMappingURL=index-Q-LlR389.js.map

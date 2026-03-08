@@ -98,7 +98,7 @@ export function Header() {
 
         <ScannerModal />
 
-        {user.role === 'admin' && (
+        {(user.role === 'admin' || user.role === 'gerente') && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -167,7 +167,7 @@ export function Header() {
           </DropdownMenu>
         )}
 
-        {user.role === 'admin' && <QuickAddModal />}
+        {(user.role === 'admin' || user.role === 'gerente') && <QuickAddModal />}
 
         <div className="h-8 w-px bg-border hidden sm:block"></div>
 
@@ -200,7 +200,7 @@ export function Header() {
                 onClick={() => handleUserSwitch(u)}
                 className={`cursor-pointer ${user.id === u.id ? 'bg-muted' : ''}`}
               >
-                {u.name} {u.role === 'admin' && '(Admin)'}
+                {u.name} {u.role === 'admin' ? '(Admin)' : u.role === 'gerente' ? '(Gerente)' : ''}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
