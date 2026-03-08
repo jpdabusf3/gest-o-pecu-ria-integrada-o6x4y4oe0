@@ -116,17 +116,17 @@ export default function Index() {
       .reduce((sum, a) => sum + a.quantidade, 0),
   }))
 
-  const weightCorte = animais
-    .filter((a) => a.categoria === 'Corte')
+  const weightMachos = animais
+    .filter((a) => a.sexo === 'Macho')
     .reduce((sum, a) => sum + a.pesoMedio * a.quantidade, 0)
 
-  const weightRepro = animais
-    .filter((a) => a.categoria === 'Reprodução')
+  const weightFemeas = animais
+    .filter((a) => a.sexo === 'Fêmea')
     .reduce((sum, a) => sum + a.pesoMedio * a.quantidade, 0)
 
   const readyAnimals = animais.filter(
     (a) =>
-      a.categoria === 'Corte' &&
+      ['Bois', 'Novilhas', 'Vacas (Matrizes)', 'Touros'].includes(a.categoria) &&
       (a.pesoMedio >= targets.pesoAlvoCorte ||
         (a.idadeMeses && a.idadeMeses >= targets.idadeAlvoMesesCorte)),
   )
@@ -236,17 +236,17 @@ export default function Index() {
         <Card className="bg-primary/5 border-primary/20">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Beef className="h-4 w-4" /> Peso Total por Categoria
+              <Beef className="h-4 w-4" /> Peso Total por Sexo
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-between items-center text-sm">
-              <span>Corte</span>
-              <span className="font-bold">{(weightCorte / 1000).toFixed(1)} t</span>
+              <span>Machos</span>
+              <span className="font-bold">{(weightMachos / 1000).toFixed(1)} t</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span>Reprodução</span>
-              <span className="font-bold">{(weightRepro / 1000).toFixed(1)} t</span>
+              <span>Fêmeas</span>
+              <span className="font-bold">{(weightFemeas / 1000).toFixed(1)} t</span>
             </div>
           </CardContent>
         </Card>

@@ -3,11 +3,28 @@ import { AnimalRegistro } from '@/types/animal'
 
 const STORAGE_KEY = '@f3_animais'
 
+const migrateData = (data: any[]): AnimalRegistro[] => {
+  return data.map((a) => {
+    if (['Corte', 'Reprodução'].includes(a.categoria)) {
+      let newCat = a.categoria
+      if (a.categoria === 'Corte') {
+        newCat = a.sexo === 'Fêmea' ? 'Novilhas' : 'Bois'
+      } else if (a.categoria === 'Reprodução') {
+        newCat = a.sexo === 'Fêmea' ? 'Vacas (Matrizes)' : 'Touros'
+      }
+      return { ...a, categoria: newCat }
+    }
+    return a
+  })
+}
+
 export default function useAnimalStore() {
   const [animais, setAnimais] = useState<AnimalRegistro[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
-      if (saved) return JSON.parse(saved)
+      if (saved) {
+        return migrateData(JSON.parse(saved))
+      }
     } catch (e) {
       console.error(e)
     }
@@ -18,7 +35,9 @@ export default function useAnimalStore() {
     const handleUpdate = () => {
       try {
         const saved = localStorage.getItem(STORAGE_KEY)
-        if (saved) setAnimais(JSON.parse(saved))
+        if (saved) {
+          setAnimais(migrateData(JSON.parse(saved)))
+        }
       } catch (e) {
         console.error(e)
       }

@@ -22,11 +22,13 @@ export const dashboardData = {
     { month: 'Jun', receitas: 350, despesas: 155 },
   ],
   chartDistribution: [
-    { name: 'Bezerras/Novilhas', value: 850, fill: 'hsl(var(--chart-1))' },
-    { name: 'Vacas', value: 1200, fill: 'hsl(var(--chart-2))' },
-    { name: 'Bezerros/Garrotes', value: 700, fill: 'hsl(var(--chart-3))' },
+    { name: 'Bezerras', value: 850, fill: 'hsl(var(--chart-1))' },
+    { name: 'Vacas (Matrizes)', value: 1200, fill: 'hsl(var(--chart-2))' },
+    { name: 'Bezerros', value: 700, fill: 'hsl(var(--chart-3))' },
     { name: 'Bois', value: 650, fill: 'hsl(var(--chart-4))' },
-    { name: 'Touros', value: 50, fill: 'hsl(var(--chart-5))' },
+    { name: 'Novilhas', value: 350, fill: 'hsl(var(--chart-5))' },
+    { name: 'Garrotes', value: 300, fill: 'hsl(var(--chart-1))' },
+    { name: 'Touros', value: 50, fill: 'hsl(var(--chart-2))' },
   ],
   activities: [
     {
@@ -912,15 +914,18 @@ export const performanceGoalsList = [
 
 export const biMetricsList = [
   { id: 'ganhoPeso', name: 'GMD Médio Rebanho', color: 'hsl(var(--chart-1))', unit: 'kg' },
-  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R$' },
+  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R
+ },
   {
     id: 'custoManutencao',
     name: 'Custo Manutenção Frota',
     color: 'hsl(var(--chart-3))',
-    unit: 'R$',
+    unit: 'R
+,
   },
   { id: 'arrobasProduzidas', name: 'Arrobas Produzidas', color: 'hsl(var(--chart-4))', unit: '@' },
-  { id: 'custoNutricao', name: 'Custo Nutrição', color: 'hsl(var(--chart-5))', unit: 'R$' },
+  { id: 'custoNutricao', name: 'Custo Nutrição', color: 'hsl(var(--chart-5))', unit: 'R
+ },
 ]
 
 export const biData = [
@@ -983,3 +988,4 @@ export const defaultSavedReports = [
   },
   { id: 'R2', name: 'GMD vs Custo Nutrição', m1: 'custoNutricao', m2: 'ganhoPeso' },
 ]
+

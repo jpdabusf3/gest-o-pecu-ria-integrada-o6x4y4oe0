@@ -48,7 +48,7 @@ function TargetsConfigDialog() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Configurar Metas de Abate (Corte)</DialogTitle>
+          <DialogTitle>Configurar Metas de Abate</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
@@ -141,7 +141,7 @@ export default function Animais() {
         <div className="grid gap-4">
           {animais.map((animal) => {
             const isReady =
-              animal.categoria === 'Corte' &&
+              ['Bois', 'Novilhas', 'Vacas (Matrizes)', 'Touros'].includes(animal.categoria) &&
               (animal.pesoMedio >= targets.pesoAlvoCorte ||
                 (animal.idadeMeses && animal.idadeMeses >= targets.idadeAlvoMesesCorte))
 

@@ -1,3 +1,13 @@
+export type CategoriaAnimal =
+  | 'Bezerros'
+  | 'Garrotes'
+  | 'Bois'
+  | 'Touros'
+  | 'Bezerras'
+  | 'Novilhas'
+  | 'Vacas (Matrizes)'
+  | string
+
 export interface AnimalRegistro {
   id: string
   tipoRegistro: 'individual' | 'lote'
@@ -5,7 +15,7 @@ export interface AnimalRegistro {
   pesoMedio: number
   sexo: 'Macho' | 'Fêmea'
   raca: string
-  categoria: 'Corte' | 'Reprodução'
+  categoria: CategoriaAnimal
   faixaEtaria: string
   idadeMeses?: number
   origem: 'Compra' | 'Nativo'

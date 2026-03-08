@@ -22,7 +22,7 @@ import { Plus, Beef } from 'lucide-react'
 import useFazendaStore from '@/stores/useFazendaStore'
 import useAnimalStore from '@/stores/useAnimalStore'
 import { useToast } from '@/hooks/use-toast'
-import { AnimalRegistro } from '@/types/animal'
+import { AnimalRegistro, CategoriaAnimal } from '@/types/animal'
 
 export function AnimalRegistrationModal() {
   const [open, setOpen] = useState(false)
@@ -32,6 +32,7 @@ export function AnimalRegistrationModal() {
 
   const [tipoRegistro, setTipoRegistro] = useState<'individual' | 'lote'>('lote')
   const [origem, setOrigem] = useState<'Compra' | 'Nativo'>('Compra')
+  const [sexo, setSexo] = useState<'Macho' | 'Fêmea'>('Macho')
 
   const [quantidade, setQuantidade] = useState<number>(10)
   const [precoCompra, setPrecoCompra] = useState<number>(0)
@@ -67,9 +68,9 @@ export function AnimalRegistrationModal() {
       tipoRegistro,
       quantidade: qty,
       pesoMedio: Number(fd.get('pesoMedio')),
-      sexo: fd.get('sexo') as 'Macho' | 'Fêmea',
+      sexo,
       raca: fd.get('raca') as string,
-      categoria: fd.get('categoria') as 'Corte' | 'Reprodução',
+      categoria: fd.get('categoria') as CategoriaAnimal,
       faixaEtaria,
       idadeMeses,
       origem,
@@ -97,6 +98,7 @@ export function AnimalRegistrationModal() {
   const resetForm = () => {
     setTipoRegistro('lote')
     setOrigem('Compra')
+    setSexo('Macho')
     setQuantidade(10)
     setPrecoCompra(0)
     setFrete(0)
@@ -189,7 +191,7 @@ export function AnimalRegistrationModal() {
             </div>
             <div className="space-y-2">
               <Label>Sexo *</Label>
-              <Select name="sexo" defaultValue="Macho">
+              <Select name="sexo" value={sexo} onValueChange={(val: any) => setSexo(val)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -201,13 +203,29 @@ export function AnimalRegistrationModal() {
             </div>
             <div className="space-y-2">
               <Label>Categoria *</Label>
-              <Select name="categoria" defaultValue="Corte">
+              <Select
+                name="categoria"
+                defaultValue={sexo === 'Macho' ? 'Bezerros' : 'Bezerras'}
+                key={sexo}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Corte">Corte</SelectItem>
-                  <SelectItem value="Reprodução">Reprodução</SelectItem>
+                  {sexo === 'Macho' ? (
+                    <>
+                      <SelectItem value="Bezerros">Bezerros</SelectItem>
+                      <SelectItem value="Garrotes">Garrotes</SelectItem>
+                      <SelectItem value="Bois">Bois</SelectItem>
+                      <SelectItem value="Touros">Touros</SelectItem>
+                    </>
+                  ) : (
+                    <>
+                      <SelectItem value="Bezerras">Bezerras</SelectItem>
+                      <SelectItem value="Novilhas">Novilhas</SelectItem>
+                      <SelectItem value="Vacas (Matrizes)">Vacas (Matrizes)</SelectItem>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   ChartContainer,
   ChartTooltip,
@@ -7,13 +8,44 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import { PieChart, Pie, Cell } from 'recharts'
+import useAnimalStore from '@/stores/useAnimalStore'
 import { dashboardData } from '@/data/mock'
 
 export function DistributionChart() {
+  const { animais } = useAnimalStore()
+
+  const chartData = useMemo(() => {
+    if (!animais || animais.length === 0) {
+      return dashboardData.chartDistribution
+    }
+
+    const grouped = animais.reduce(
+      (acc, curr) => {
+        acc[curr.categoria] = (acc[curr.categoria] || 0) + curr.quantidade
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+
+    const colors = [
+      'hsl(var(--chart-1))',
+      'hsl(var(--chart-2))',
+      'hsl(var(--chart-3))',
+      'hsl(var(--chart-4))',
+      'hsl(var(--chart-5))',
+    ]
+
+    return Object.entries(grouped).map(([name, value], index) => ({
+      name,
+      value,
+      fill: colors[index % colors.length],
+    }))
+  }, [animais])
+
   // Generate the chart config dynamically to map names to labels and colors
   const chartConfig = {
     value: { label: 'Cabeças' },
-    ...dashboardData.chartDistribution.reduce(
+    ...chartData.reduce(
       (acc, curr) => {
         acc[curr.name] = { label: curr.name, color: curr.fill }
         return acc
@@ -26,7 +58,7 @@ export function DistributionChart() {
     <ChartContainer config={chartConfig} className="h-full w-full min-h-[300px]">
       <PieChart margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
         <Pie
-          data={dashboardData.chartDistribution}
+          data={chartData}
           dataKey="value"
           nameKey="name"
           cx="50%"
@@ -35,7 +67,7 @@ export function DistributionChart() {
           outerRadius={90}
           paddingAngle={2}
         >
-          {dashboardData.chartDistribution.map((entry, index) => (
+          {chartData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.fill} />
           ))}
         </Pie>
