@@ -19676,6 +19676,13 @@ var Smartphone = createLucideIcon("smartphone", [["rect", {
 	d: "M12 18h.01",
 	key: "mhygvu"
 }]]);
+var SquareCheckBig = createLucideIcon("square-check-big", [["path", {
+	d: "M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344",
+	key: "2acyp4"
+}], ["path", {
+	d: "m9 11 3 3L22 4",
+	key: "1pflzl"
+}]]);
 var Syringe = createLucideIcon("syringe", [
 	["path", {
 		d: "m18 2 4 4",
@@ -27785,7 +27792,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$32({ inst: {
+			cachedValue = useState$33({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -27822,7 +27829,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$32 = React$67.useState, useEffect$8 = React$67.useEffect, useLayoutEffect$3 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$33 = React$67.useState, useEffect$8 = React$67.useEffect, useLayoutEffect$3 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -63589,17 +63596,35 @@ function ProjecaoVendas() {
 	}))], []);
 	const projections = (0, import_react.useMemo)(() => lots.map((lot) => {
 		const days = Math.max(0, Math.ceil((targetWeight - lot.pesoMedio) / lot.gmd)) || 0;
+		const activeTrend = selectedMarketId ? marketIndicators.find((i) => i.id === selectedMarketId)?.trend : "stable";
+		const totalCostHead = lot.pesoMedio * 4.2 + days * 10;
+		const grossRevHead = targetWeight / 30 * arrobaPrice;
+		let rec = "Em Desenv.";
+		let color$1 = "text-muted-foreground";
+		if (days === 0) {
+			rec = activeTrend === "up" ? "Vender (Alta)" : "Vender (Pronto)";
+			color$1 = "text-emerald-500";
+		} else if (days <= 15) {
+			rec = activeTrend === "down" ? "Antecipar (Baixa)" : "Aguardar Alvo";
+			color$1 = activeTrend === "down" ? "text-amber-500" : "text-blue-500";
+		}
 		return {
 			...lot,
 			daysNeeded: days,
 			targetDate: new Date(Date.now() + days * 864e5).toLocaleDateString("pt-BR"),
-			projRevenue: targetWeight / 30 * arrobaPrice * lot.cabecas
+			projRevenue: grossRevHead * lot.cabecas,
+			netProfitHead: grossRevHead - totalCostHead,
+			totalCostHead,
+			rec,
+			color: color$1
 		};
 	}).sort((a$1, b$1) => a$1.daysNeeded - b$1.daysNeeded), [
 		lots,
 		arrobaPrice,
-		targetWeight
+		targetWeight,
+		selectedMarketId
 	]);
+	const totalProjNetProfit = projections.reduce((a$1, c$1) => a$1 + c$1.netProfitHead * c$1.cabecas, 0);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
@@ -63607,10 +63632,10 @@ function ProjecaoVendas() {
 				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Dashboard de Inteligência de Vendas"]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Inteligência de Vendas e Mercado"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Projeções baseadas no GMD e sincronizadas com dados de mercado em tempo real."
+					children: "Projeções integrando GMD, custos totais (Mão de obra e Nutrição) e tendências de mercado."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceAlertModal, {})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketIndicators, {
@@ -63683,41 +63708,44 @@ function ProjecaoVendas() {
 							className: "pb-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 								className: "text-sm font-medium text-emerald-700 dark:text-emerald-500",
-								children: "Receita Total Projetada"
+								children: "Lucro Líquido Global Proj."
 							})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-3xl font-bold text-emerald-700 dark:text-emerald-500",
 							children: [
 								"R$",
 								" ",
-								projections.reduce((a$1, c$1) => a$1 + c$1.projRevenue, 0).toLocaleString("pt-BR", {
+								totalProjNetProfit.toLocaleString("pt-BR", {
 									minimumFractionDigits: 2,
 									maximumFractionDigits: 2
 								})
 							]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium",
-							children: [projections.filter((p) => p.daysNeeded <= 30).length, " lotes prontos em até 30 dias"]
+							children: "Receita deduzida de custos de nutrição e mão de obra"
 						})] })]
 					})
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Cronograma de Lotes em Preparação" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Estimativa de dias para atingir o peso alvo calculada via Inteligência baseada no GMD atual." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-				className: "px-0 sm:px-6",
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel Analítico de Oportunidades de Venda" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Motor de inteligência cruzando previsão de ganho de peso, custos operacionais por cabeça e cotação da B3." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+				className: "px-0 sm:px-6 overflow-x-auto",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote / Origem" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Peso Atual / GMD"
+						className: "text-center",
+						children: "Janela Ideal / Ação"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-center",
-						children: "Dias p/ Alvo"
+						className: "text-right",
+						children: "Custos Proj. / Cab."
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data Est. Venda" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right text-primary",
+						children: "Lucro Líq. / Cab."
+					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 						className: "text-right font-bold text-primary",
-						children: "Receita Bruta Est."
+						children: "Receita Bruta Total"
 					})
 				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: projections.map((p, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -63734,53 +63762,38 @@ function ProjecaoVendas() {
 								]
 							})
 						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: "outline",
-						className: "mt-1 font-normal text-xs",
-						children: p.origin
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-xs text-muted-foreground flex items-center mt-1 gap-1",
+						children: [
+							p.pesoMedio,
+							"kg • ",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3 text-emerald-500" }),
+							" ",
+							p.gmd,
+							"kg/dia"
+						]
 					})] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "font-medium",
-							children: [p.pesoMedio, " kg"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-xs text-muted-foreground flex items-center justify-end gap-1",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3 text-emerald-500" }),
-								" ",
-								p.gmd,
-								" kg/dia"
-							]
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 						className: "text-center",
-						children: p.daysNeeded === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-							className: "bg-emerald-500 hover:bg-emerald-600 border-transparent",
-							children: "Pronto"
-						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "font-mono bg-muted px-2 py-1 rounded text-sm",
-							children: [p.daysNeeded, " d"]
-						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: p.daysNeeded === 0 ? "font-bold text-emerald-500" : "font-medium",
-							children: p.targetDate
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: cn("text-xs font-semibold whitespace-nowrap", p.color),
+							children: p.rec
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3" }), p.daysNeeded === 0 ? "Disponível" : `Em ${p.daysNeeded} d`]
 						})]
-					}) }),
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right text-destructive font-medium whitespace-nowrap",
+						children: ["- R$ ", p.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right font-bold text-primary whitespace-nowrap",
+						children: ["R$ ", p.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 						className: "text-right font-bold text-primary whitespace-nowrap text-base",
-						children: [
-							"R$",
-							" ",
-							p.projRevenue.toLocaleString("pt-BR", {
-								minimumFractionDigits: 2,
-								maximumFractionDigits: 2
-							})
-						]
+						children: ["R$ ", p.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 					})
 				] }, idx)) })] })
 			})] })
@@ -64179,6 +64192,311 @@ function Administrativo() {
 		})]
 	});
 }
+var initialTasks = [
+	{
+		id: "T1",
+		title: "Vacinação Febre Aftosa",
+		frequency: "Semestral",
+		assignedTo: "João (Operador)",
+		duration: 8,
+		costPerHour: 25,
+		status: "Pendente",
+		lotId: "LCR-04"
+	},
+	{
+		id: "T2",
+		title: "Limpeza de Cochos Baia 01",
+		frequency: "Semanal",
+		assignedTo: "Carlos (Tratorista)",
+		duration: 2,
+		costPerHour: 20,
+		status: "Concluído",
+		lotId: "LEN-02"
+	},
+	{
+		id: "T3",
+		title: "Manutenção de Cerca",
+		frequency: "Mensal",
+		assignedTo: "João (Operador)",
+		duration: 6,
+		costPerHour: 25,
+		status: "Pendente",
+		lotId: "Pasto 02"
+	},
+	{
+		id: "T4",
+		title: "Pesagem Lote LEN-01",
+		frequency: "Mensal",
+		assignedTo: "Carlos (Tratorista)",
+		duration: 4,
+		costPerHour: 20,
+		status: "Pendente",
+		lotId: "LEN-01"
+	}
+];
+function Tarefas() {
+	const [tasks, setTasks] = (0, import_react.useState)(initialTasks);
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const [newTask, setNewTask] = (0, import_react.useState)({
+		title: "",
+		frequency: "Semanal",
+		assignedTo: "",
+		duration: 2,
+		costPerHour: 20,
+		lotId: ""
+	});
+	const handleSave = () => {
+		if (!newTask.title || !newTask.assignedTo) return;
+		setTasks([...tasks, {
+			...newTask,
+			id: `T${Date.now()}`,
+			status: "Pendente"
+		}]);
+		setOpen(false);
+		toast$2({
+			title: "Tarefa Criada",
+			description: "Nova atividade operacional registrada com sucesso."
+		});
+	};
+	const handleComplete = (t) => {
+		setTasks(tasks.map((x$2) => x$2.id === t.id ? {
+			...x$2,
+			status: "Concluído"
+		} : x$2));
+		toast$2({
+			title: "Atividade Concluída",
+			description: `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.`
+		});
+	};
+	const pending = tasks.filter((t) => t.status === "Pendente");
+	const completed = tasks.filter((t) => t.status === "Concluído");
+	const pendingCost = pending.reduce((acc, t) => acc + t.duration * t.costPerHour, 0);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up pb-8",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-8 w-8 text-primary" }), " Gestão de Tarefas"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Controle de atividades de campo, horas trabalhadas e alocação de custos operacionais por lote."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+					open,
+					onOpenChange: setOpen,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							className: "gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Nova Tarefa"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Criar Atividade Operacional" }) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-4 py-2",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome da Tarefa" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										onChange: (e) => setNewTask({
+											...newTask,
+											title: e.target.value
+										}),
+										placeholder: "Ex: Manutenção de Cerca"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 gap-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Frequência" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											onChange: (e) => setNewTask({
+												...newTask,
+												frequency: e.target.value
+											}),
+											defaultValue: "Semanal"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Lote / Alvo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											onChange: (e) => setNewTask({
+												...newTask,
+												lotId: e.target.value
+											}),
+											placeholder: "Ex: LEN-01"
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Responsável" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										onChange: (e) => setNewTask({
+											...newTask,
+											assignedTo: e.target.value
+										}),
+										placeholder: "Nome do colaborador"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 gap-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Duração Estimada (h)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											onChange: (e) => setNewTask({
+												...newTask,
+												duration: Number(e.target.value)
+											}),
+											defaultValue: 2
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Hora (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											onChange: (e) => setNewTask({
+												...newTask,
+												costPerHour: Number(e.target.value)
+											}),
+											defaultValue: 20
+										})]
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogFooter, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							onClick: handleSave,
+							children: "Salvar Tarefa"
+						}) })
+					] })]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 sm:grid-cols-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "bg-amber-500/10 border-amber-500/20",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-amber-700 dark:text-amber-500",
+							children: "Tarefas Pendentes"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-2xl font-bold text-amber-700 dark:text-amber-500 flex items-center gap-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-5 w-5" }),
+							" ",
+							pending.length,
+							" atividades"
+						]
+					}) })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "bg-destructive/5 border-destructive/20",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-destructive",
+							children: "Custo Pendente Projetado (Mão de Obra)"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-2xl font-bold text-destructive flex items-center gap-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5" }),
+							" R$ ",
+							pendingCost.toFixed(2)
+						]
+					}) })]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				defaultValue: "pendentes",
+				className: "space-y-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "pendentes",
+						children: "Pendentes"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "concluidas",
+						children: "Concluídas"
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "pendentes",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "p-0 overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tarefa" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Duração" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo Proj." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Ação"
+								})
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [pending.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "font-medium",
+									children: t.title
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-xs text-muted-foreground flex gap-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t.frequency }),
+										"•",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Alvo: ", t.lotId] })
+									]
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [t.duration, "h"] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+										size: "sm",
+										variant: "outline",
+										className: "text-emerald-600 border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950",
+										onClick: () => handleComplete(t),
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4 mr-1" }), " Concluir"]
+									})
+								})
+							] }, t.id)), pending.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								colSpan: 5,
+								className: "text-center py-6 text-muted-foreground",
+								children: "Nenhuma tarefa pendente."
+							}) })] })] })
+						}) })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "concluidas",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "p-0 overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tarefa" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo Efetivado" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: completed.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "font-medium",
+									children: t.title
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-xs text-muted-foreground",
+									children: t.lotId
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: "outline",
+									className: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+									children: "Concluído"
+								}) })
+							] }, t.id)) })] })
+						}) })
+					})
+				]
+			})
+		]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -64271,6 +64589,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Equipe, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/tarefas",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tarefas, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/administrativo",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Administrativo, {})
 				})
@@ -64284,4 +64606,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CWqXnXWE.js.map
+//# sourceMappingURL=index-DmU2YAkB.js.map

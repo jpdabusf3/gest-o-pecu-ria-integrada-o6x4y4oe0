@@ -16,6 +16,7 @@ import { MarketIndicators } from '@/components/MarketIndicators'
 import { marketIndicators } from '@/data/market'
 import { MarketTrendsChart } from '@/components/MarketTrendsChart'
 import { PriceAlertModal } from '@/components/PriceAlertModal'
+import { cn } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>('sp')
@@ -52,26 +53,52 @@ export default function ProjecaoVendas() {
       lots
         .map((lot) => {
           const days = Math.max(0, Math.ceil((targetWeight - lot.pesoMedio) / lot.gmd)) || 0
+          const activeTrend = selectedMarketId
+            ? marketIndicators.find((i) => i.id === selectedMarketId)?.trend
+            : 'stable'
+
+          // Financial Analytics Engine: Combine labor & nutritional costs
+          const totalCostHead = lot.pesoMedio * 4.2 + days * 10 // Baseline + R$10/dia (8.5 Nutrição + 1.5 Mão de Obra de tarefas)
+          const grossRevHead = (targetWeight / 30) * arrobaPrice
+
+          // Recommendation Logic (Selling Opportunity Tool)
+          let rec = 'Em Desenv.'
+          let color = 'text-muted-foreground'
+          if (days === 0) {
+            rec = activeTrend === 'up' ? 'Vender (Alta)' : 'Vender (Pronto)'
+            color = 'text-emerald-500'
+          } else if (days <= 15) {
+            rec = activeTrend === 'down' ? 'Antecipar (Baixa)' : 'Aguardar Alvo'
+            color = activeTrend === 'down' ? 'text-amber-500' : 'text-blue-500'
+          }
+
           return {
             ...lot,
             daysNeeded: days,
             targetDate: new Date(Date.now() + days * 86400000).toLocaleDateString('pt-BR'),
-            projRevenue: (targetWeight / 30) * arrobaPrice * lot.cabecas,
+            projRevenue: grossRevHead * lot.cabecas,
+            netProfitHead: grossRevHead - totalCostHead,
+            totalCostHead,
+            rec,
+            color,
           }
         })
         .sort((a, b) => a.daysNeeded - b.daysNeeded),
-    [lots, arrobaPrice, targetWeight],
+    [lots, arrobaPrice, targetWeight, selectedMarketId],
   )
+
+  const totalProjNetProfit = projections.reduce((a, c) => a + c.netProfitHead * c.cabecas, 0)
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <BrainCircuit className="h-8 w-8 text-primary" /> Dashboard de Inteligência de Vendas
+            <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas e Mercado
           </h2>
           <p className="text-muted-foreground mt-1">
-            Projeções baseadas no GMD e sincronizadas com dados de mercado em tempo real.
+            Projeções integrando GMD, custos totais (Mão de obra e Nutrição) e tendências de
+            mercado.
           </p>
         </div>
         <PriceAlertModal />
@@ -144,18 +171,19 @@ export default function ProjecaoVendas() {
         <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-500">
-              Receita Total Projetada
+              Lucro Líquido Global Proj.
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-500">
               R${' '}
-              {projections
-                .reduce((a, c) => a + c.projRevenue, 0)
-                .toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {totalProjNetProfit.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
             <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium">
-              {projections.filter((p) => p.daysNeeded <= 30).length} lotes prontos em até 30 dias
+              Receita deduzida de custos de nutrição e mão de obra
             </p>
           </CardContent>
         </Card>
@@ -163,22 +191,22 @@ export default function ProjecaoVendas() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Cronograma de Lotes em Preparação</CardTitle>
+          <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>
           <CardDescription>
-            Estimativa de dias para atingir o peso alvo calculada via Inteligência baseada no GMD
-            atual.
+            Motor de inteligência cruzando previsão de ganho de peso, custos operacionais por cabeça
+            e cotação da B3.
           </CardDescription>
         </CardHeader>
-        <CardContent className="px-0 sm:px-6">
+        <CardContent className="px-0 sm:px-6 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Lote / Origem</TableHead>
-                <TableHead className="text-right">Peso Atual / GMD</TableHead>
-                <TableHead className="text-center">Dias p/ Alvo</TableHead>
-                <TableHead>Data Est. Venda</TableHead>
+                <TableHead className="text-center">Janela Ideal / Ação</TableHead>
+                <TableHead className="text-right">Custos Proj. / Cab.</TableHead>
+                <TableHead className="text-right text-primary">Lucro Líq. / Cab.</TableHead>
                 <TableHead className="text-right font-bold text-primary">
-                  Receita Bruta Est.
+                  Receita Bruta Total
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -192,45 +220,28 @@ export default function ProjecaoVendas() {
                         ({p.cabecas} cab.)
                       </span>
                     </div>
-                    <Badge variant="outline" className="mt-1 font-normal text-xs">
-                      {p.origin}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="font-medium">{p.pesoMedio} kg</div>
-                    <div className="text-xs text-muted-foreground flex items-center justify-end gap-1">
-                      <TrendingUp className="h-3 w-3 text-emerald-500" /> {p.gmd} kg/dia
+                    <div className="text-xs text-muted-foreground flex items-center mt-1 gap-1">
+                      {p.pesoMedio}kg • <TrendingUp className="h-3 w-3 text-emerald-500" /> {p.gmd}
+                      kg/dia
                     </div>
                   </TableCell>
                   <TableCell className="text-center">
-                    {p.daysNeeded === 0 ? (
-                      <Badge className="bg-emerald-500 hover:bg-emerald-600 border-transparent">
-                        Pronto
-                      </Badge>
-                    ) : (
-                      <span className="font-mono bg-muted px-2 py-1 rounded text-sm">
-                        {p.daysNeeded} d
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                      <span
-                        className={
-                          p.daysNeeded === 0 ? 'font-bold text-emerald-500' : 'font-medium'
-                        }
-                      >
-                        {p.targetDate}
-                      </span>
+                    <div className={cn('text-xs font-semibold whitespace-nowrap', p.color)}>
+                      {p.rec}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1">
+                      <CalendarIcon className="h-3 w-3" />
+                      {p.daysNeeded === 0 ? 'Disponível' : `Em ${p.daysNeeded} d`}
                     </div>
                   </TableCell>
+                  <TableCell className="text-right text-destructive font-medium whitespace-nowrap">
+                    - R$ {p.totalCostHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                  </TableCell>
+                  <TableCell className="text-right font-bold text-primary whitespace-nowrap">
+                    R$ {p.netProfitHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                  </TableCell>
                   <TableCell className="text-right font-bold text-primary whitespace-nowrap text-base">
-                    R${' '}
-                    {p.projRevenue.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                    R$ {p.projRevenue.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
                   </TableCell>
                 </TableRow>
               ))}

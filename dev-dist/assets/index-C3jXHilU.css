@@ -1494,6 +1494,9 @@ section[aria-label='Notifications alt+T'] {
 .border-\[--color-border\]{
   border-color: var(--color-border);
 }
+.border-amber-500\/20{
+  border-color: rgb(245 158 11 / 0.2);
+}
 .border-blue-200{
   --tw-border-opacity: 1;
   border-color: rgb(191 219 254 / var(--tw-border-opacity, 1));
@@ -1518,6 +1521,10 @@ section[aria-label='Notifications alt+T'] {
 }
 .border-destructive\/50{
   border-color: hsl(var(--destructive) / 0.5);
+}
+.border-emerald-200{
+  --tw-border-opacity: 1;
+  border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
 }
 .border-emerald-500\/20{
   border-color: rgb(16 185 129 / 0.2);
@@ -1579,6 +1586,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .bg-accent{
   background-color: hsl(var(--accent));
+}
+.bg-amber-500\/10{
+  background-color: rgb(245 158 11 / 0.1);
 }
 .bg-background{
   background-color: hsl(var(--background));
@@ -1969,9 +1979,17 @@ section[aria-label='Notifications alt+T'] {
 .text-accent-foreground{
   color: hsl(var(--accent-foreground));
 }
+.text-amber-500{
+  --tw-text-opacity: 1;
+  color: rgb(245 158 11 / var(--tw-text-opacity, 1));
+}
 .text-amber-600{
   --tw-text-opacity: 1;
   color: rgb(217 119 6 / var(--tw-text-opacity, 1));
+}
+.text-amber-700{
+  --tw-text-opacity: 1;
+  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
 }
 .text-blue-500{
   --tw-text-opacity: 1;
@@ -2448,9 +2466,9 @@ section[aria-label='Notifications alt+T'] {
 .hover\:bg-destructive\/90:hover{
   background-color: hsl(var(--destructive) / 0.9);
 }
-.hover\:bg-emerald-600:hover{
+.hover\:bg-emerald-50:hover{
   --tw-bg-opacity: 1;
-  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-muted:hover{
   background-color: hsl(var(--muted));
@@ -3204,6 +3222,10 @@ section[aria-label='Notifications alt+T'] {
   --tw-text-opacity: 1;
   color: rgb(251 191 36 / var(--tw-text-opacity, 1));
 }
+.dark\:text-amber-500:is(.dark *){
+  --tw-text-opacity: 1;
+  color: rgb(245 158 11 / var(--tw-text-opacity, 1));
+}
 .dark\:text-blue-400:is(.dark *){
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity, 1));
@@ -3222,6 +3244,10 @@ section[aria-label='Notifications alt+T'] {
 .dark\:text-green-400:is(.dark *){
   --tw-text-opacity: 1;
   color: rgb(74 222 128 / var(--tw-text-opacity, 1));
+}
+.dark\:hover\:bg-emerald-950:hover:is(.dark *){
+  --tw-bg-opacity: 1;
+  background-color: rgb(2 44 34 / var(--tw-bg-opacity, 1));
 }
 @media (min-width: 640px){
   .sm\:bottom-0{
