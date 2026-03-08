@@ -616,3 +616,67 @@ export const managementHistory = [
     responsavel: 'Administrador (Sede)',
   },
 ]
+
+export const costPerArrobaData = [
+  {
+    loteId: 'LEN-01',
+    categoria: 'Bois Magros',
+    custoAcumulado: 4500,
+    ganhoPesoKg: 150,
+    ganhoArroba: 5,
+    custoPorArroba: 180,
+  },
+  {
+    loteId: 'LEN-02',
+    categoria: 'Bois Terminação',
+    custoAcumulado: 8200,
+    ganhoPesoKg: 210,
+    ganhoArroba: 7,
+    custoPorArroba: 195,
+  },
+]
+
+export const reproductionForecast = [
+  {
+    id: 'R1',
+    month: 'Setembro',
+    partosPrevistos: 45,
+    lote: 'LCR-01',
+    status: 'Aguardando',
+    vacasPrenhas: 45,
+    nascimentosConfirmados: 0,
+  },
+  {
+    id: 'R2',
+    month: 'Outubro',
+    partosPrevistos: 80,
+    lote: 'LCR-02',
+    status: 'Em andamento',
+    vacasPrenhas: 85,
+    nascimentosConfirmados: 5,
+  },
+  {
+    id: 'R3',
+    month: 'Novembro',
+    partosPrevistos: 120,
+    lote: 'LCR-03',
+    status: 'Normal',
+    vacasPrenhas: 125,
+    nascimentosConfirmados: 0,
+  },
+]
+
+export const weightGainData = [
+  { name: 'Jan', pesoAtual: 210, meta: 220 },
+  { name: 'Fev', pesoAtual: 235, meta: 240 },
+  { name: 'Mar', pesoAtual: 250, meta: 260 },
+  { name: 'Abr', pesoAtual: 280, meta: 280 },
+]
+
+export const dailyWeightData = [
+  { dia: '01', gmd: 1.1, peso: 450 },
+  { dia: '05', gmd: 1.2, peso: 455 },
+  { dia: '10', gmd: 1.3, peso: 462 },
+  { dia: '15', gmd: 1.4, peso: 469 },
+  { dia: '20', gmd: 1.3, peso: 476 },
+]
