@@ -11,36 +11,28 @@ export interface MarketIndicator {
 
 export const marketIndicators: MarketIndicator[] = [
   {
-    id: 'sp',
-    label: 'Boi Gordo - SP (À vista)',
-    source: 'Datagro',
-    price: 245.5,
-    trend: 'up',
-    change: '+1.2%',
-  },
-  {
-    id: 'mt',
+    id: 'boi-gordo-mt',
     label: 'Boi Gordo - MT (À vista)',
     source: 'Datagro',
-    price: 238.0,
-    trend: 'down',
-    change: '-0.5%',
+    price: 215.5,
+    trend: 'up',
+    change: '+1.2%',
   },
   {
     id: 'novilha-mt',
     label: 'Novilha Gorda - MT',
     source: 'Datagro',
-    price: 228.0,
-    trend: 'up',
-    change: '+1.0%',
+    price: 205.0,
+    trend: 'stable',
+    change: '0.0%',
   },
   {
     id: 'vaca-mt',
     label: 'Vaca Gorda - MT',
     source: 'Datagro',
-    price: 215.0,
-    trend: 'stable',
-    change: '0.0%',
+    price: 190.0,
+    trend: 'down',
+    change: '-0.5%',
   },
 ]
 
@@ -127,9 +119,9 @@ export const b3FuturesData: Record<
   { ticker: string; month: string; price: number; trend: MarketTrend; change: string }[]
 > = {
   'boi-gordo': [
-    { ticker: 'BGIK26', month: 'Mai/26', price: 245.5, trend: 'up', change: '+0.5%' },
-    { ticker: 'BGIV26', month: 'Out/26', price: 255.0, trend: 'up', change: '+1.2%' },
-    { ticker: 'BGIZ26', month: 'Dez/26', price: 260.0, trend: 'up', change: '+1.5%' },
+    { ticker: 'BGIK26', month: 'Mai/26', price: 220.5, trend: 'up', change: '+0.5%' },
+    { ticker: 'BGIV26', month: 'Out/26', price: 225.0, trend: 'up', change: '+1.2%' },
+    { ticker: 'BGIZ26', month: 'Dez/26', price: 230.0, trend: 'up', change: '+1.5%' },
   ],
   milho: [
     { ticker: 'CCMK26', month: 'Mai/26', price: 59.5, trend: 'down', change: '-0.2%' },
@@ -156,5 +148,5 @@ export const historicalMarketData = [
   { month: 'Dez/25', sp: 238, mt: 230, b3: 242 },
   { month: 'Jan/26', sp: 240, mt: 235, b3: 241 },
   { month: 'Fev/26', sp: 242, mt: 237, b3: 245 },
-  { month: 'Mar/26', sp: 245.5, mt: 238, b3: 242 },
+  { month: 'Mar/26', sp: 245.5, mt: 215.5, b3: 220.5 },
 ]

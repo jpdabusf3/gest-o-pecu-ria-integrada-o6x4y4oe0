@@ -19151,6 +19151,58 @@ var Building2 = createLucideIcon("building-2", [
 		key: "16ra0t"
 	}]
 ]);
+var Calculator = createLucideIcon("calculator", [
+	["rect", {
+		width: "16",
+		height: "20",
+		x: "4",
+		y: "2",
+		rx: "2",
+		key: "1nb95v"
+	}],
+	["line", {
+		x1: "8",
+		x2: "16",
+		y1: "6",
+		y2: "6",
+		key: "x4nwl0"
+	}],
+	["line", {
+		x1: "16",
+		x2: "16",
+		y1: "14",
+		y2: "18",
+		key: "wjye3r"
+	}],
+	["path", {
+		d: "M16 10h.01",
+		key: "1m94wz"
+	}],
+	["path", {
+		d: "M12 10h.01",
+		key: "1nrarc"
+	}],
+	["path", {
+		d: "M8 10h.01",
+		key: "19clt8"
+	}],
+	["path", {
+		d: "M12 14h.01",
+		key: "1etili"
+	}],
+	["path", {
+		d: "M8 14h.01",
+		key: "6423bh"
+	}],
+	["path", {
+		d: "M12 18h.01",
+		key: "mhygvu"
+	}],
+	["path", {
+		d: "M8 18h.01",
+		key: "lrp35t"
+	}]
+]);
 var Calendar = createLucideIcon("calendar", [
 	["path", {
 		d: "M8 2v4",
@@ -26326,36 +26378,28 @@ function useTasks() {
 }
 const marketIndicators = [
 	{
-		id: "sp",
-		label: "Boi Gordo - SP (À vista)",
-		source: "Datagro",
-		price: 245.5,
-		trend: "up",
-		change: "+1.2%"
-	},
-	{
-		id: "mt",
+		id: "boi-gordo-mt",
 		label: "Boi Gordo - MT (À vista)",
 		source: "Datagro",
-		price: 238,
-		trend: "down",
-		change: "-0.5%"
+		price: 215.5,
+		trend: "up",
+		change: "+1.2%"
 	},
 	{
 		id: "novilha-mt",
 		label: "Novilha Gorda - MT",
 		source: "Datagro",
-		price: 228,
-		trend: "up",
-		change: "+1.0%"
+		price: 205,
+		trend: "stable",
+		change: "0.0%"
 	},
 	{
 		id: "vaca-mt",
 		label: "Vaca Gorda - MT",
 		source: "Datagro",
-		price: 215,
-		trend: "stable",
-		change: "0.0%"
+		price: 190,
+		trend: "down",
+		change: "-0.5%"
 	}
 ];
 const replacementIndicators = [
@@ -26439,21 +26483,21 @@ const b3FuturesData = {
 		{
 			ticker: "BGIK26",
 			month: "Mai/26",
-			price: 245.5,
+			price: 220.5,
 			trend: "up",
 			change: "+0.5%"
 		},
 		{
 			ticker: "BGIV26",
 			month: "Out/26",
-			price: 255,
+			price: 225,
 			trend: "up",
 			change: "+1.2%"
 		},
 		{
 			ticker: "BGIZ26",
 			month: "Dez/26",
-			price: 260,
+			price: 230,
 			trend: "up",
 			change: "+1.5%"
 		}
@@ -26565,8 +26609,8 @@ const historicalMarketData = [
 	{
 		month: "Mar/26",
 		sp: 245.5,
-		mt: 238,
-		b3: 242
+		mt: 215.5,
+		b3: 220.5
 	}
 ];
 var MarketContext = (0, import_react.createContext)(void 0);
@@ -26593,10 +26637,10 @@ function MarketProvider({ children }) {
 	const { toast: toast$2 } = useToast();
 	const [alerts, setAlerts] = (0, import_react.useState)([{
 		id: "mock-1",
-		indicatorId: "sp",
-		indicatorLabel: "Boi Gordo - SP (À vista)",
+		indicatorId: "boi-gordo-mt",
+		indicatorLabel: "Boi Gordo - MT (À vista)",
 		condition: "above",
-		targetPrice: 250,
+		targetPrice: 220,
 		notifyWhatsApp: true,
 		active: true
 	}]);
@@ -28765,7 +28809,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$40({ inst: {
+			cachedValue = useState$41({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28779,7 +28823,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$12(function() {
+			useEffect$13(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28802,7 +28846,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$40 = React$70.useState, useEffect$12 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$41 = React$70.useState, useEffect$13 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -64931,7 +64975,7 @@ function MarketIndicators({ selectedId, onSelect }) {
 				]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "grid grid-cols-2 md:grid-cols-4 gap-4",
+			className: "grid grid-cols-1 md:grid-cols-3 gap-4",
 			children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
 				className: cn("cursor-pointer transition-all duration-300 hover:border-primary/50 group relative overflow-hidden", selectedId === ind.id ? "border-primary bg-primary/5 shadow-md ring-1 ring-primary" : ""),
 				onClick: () => onSelect(ind.id, ind.price, ind.label),
@@ -65338,7 +65382,7 @@ function MarketTrendsChart() {
 function PriceAlertModal() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { marketData, b3Data, replacementData, commodityData, getPrice, alerts, addAlert, toggleAlert, deleteAlert } = useMarket();
-	const [indicatorId, setIndicatorId] = (0, import_react.useState)("sp");
+	const [indicatorId, setIndicatorId] = (0, import_react.useState)("boi-gordo-mt");
 	const [condition, setCondition] = (0, import_react.useState)("above");
 	const [targetPrice, setTargetPrice] = (0, import_react.useState)("");
 	const [notifyWhatsApp, setNotifyWhatsApp] = (0, import_react.useState)(true);
@@ -65841,6 +65885,188 @@ function ExportMenu({ onExportCSV, onExportPDF, className, label = "Exportar" })
 		})]
 	})] });
 }
+function SalesSimulator() {
+	const { marketData } = useMarket();
+	const [category, setCategory] = (0, import_react.useState)(marketData[0]?.id || "");
+	const [weight, setWeight] = (0, import_react.useState)(540);
+	const [productionCost, setProductionCost] = (0, import_react.useState)(2500);
+	const [salesPrice, setSalesPrice] = (0, import_react.useState)(marketData[0]?.price || 215);
+	(0, import_react.useEffect)(() => {
+		if (!category && marketData.length > 0) setCategory(marketData[0].id);
+	}, [marketData, category]);
+	const handleCategoryChange = (val) => {
+		setCategory(val);
+		const indicator = marketData.find((m) => m.id === val);
+		if (indicator) {
+			setSalesPrice(indicator.price);
+			if (val.includes("vaca")) setWeight(420);
+			else if (val.includes("novilha")) setWeight(380);
+			else setWeight(540);
+		}
+	};
+	const results = (0, import_react.useMemo)(() => {
+		const arrobas = weight / 30;
+		const revenue = arrobas * salesPrice;
+		const profit = revenue - productionCost;
+		return {
+			arrobas,
+			revenue,
+			profit,
+			margin: revenue > 0 ? profit / revenue * 100 : 0
+		};
+	}, [
+		weight,
+		salesPrice,
+		productionCost
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "border-primary/20 shadow-sm animate-fade-in-up mt-6 print:hidden",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "bg-primary/5 pb-4 rounded-t-lg",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "flex items-center gap-2 text-lg",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calculator, { className: "h-5 w-5 text-primary" }), "Simulador de Cenários de Venda (Datagro - MT)"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Simule a margem de lucro projetada inserindo o custo de produção e o preço esperado de venda." })]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "pt-6",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-1 lg:grid-cols-2 gap-8",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-5",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria Animal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								value: category,
+								onValueChange: handleCategoryChange,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a categoria" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: ind.id,
+									children: ind.label
+								}, ind.id)) })]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-2 gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Peso Vivo Atual (kg)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "number",
+									value: weight,
+									onChange: (e) => setWeight(Number(e.target.value))
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço Venda Esperado (R$/@)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "relative",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										type: "number",
+										className: "pl-9",
+										value: salesPrice,
+										onChange: (e) => setSalesPrice(Number(e.target.value))
+									})]
+								})]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Total de Produção por Cabeça (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "relative",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "number",
+									className: "pl-9",
+									value: productionCost,
+									onChange: (e) => setProductionCost(Number(e.target.value))
+								})]
+							})]
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "bg-muted/40 rounded-xl p-6 border flex flex-col justify-center",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4",
+						children: "Resultado da Projeção"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center pb-3 border-b border-border/50",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm text-muted-foreground",
+									children: "Rendimento Estimado (50%)"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-medium",
+									children: [results.arrobas.toFixed(1), " @"]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center pb-3 border-b border-border/50",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm text-muted-foreground",
+									children: "Receita Bruta Projetada"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-medium",
+									children: [
+										"R$",
+										" ",
+										results.revenue.toLocaleString("pt-BR", {
+											minimumFractionDigits: 2,
+											maximumFractionDigits: 2
+										})
+									]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center pb-3 border-b border-border/50",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm text-muted-foreground",
+									children: "Custo de Produção"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-medium text-destructive",
+									children: [
+										"- R$",
+										" ",
+										productionCost.toLocaleString("pt-BR", {
+											minimumFractionDigits: 2,
+											maximumFractionDigits: 2
+										})
+									]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-end pt-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-bold text-base",
+									children: "Lucro Líquido Estimado"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-right",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: cn("font-bold text-2xl tracking-tight", results.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+										children: [
+											"R$",
+											" ",
+											results.profit.toLocaleString("pt-BR", {
+												minimumFractionDigits: 2,
+												maximumFractionDigits: 2
+											})
+										]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: cn("text-xs font-semibold flex items-center justify-end gap-1 mt-1", results.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3.5 w-3.5" }),
+											" Margem: ",
+											results.margin.toFixed(1),
+											"%"
+										]
+									})]
+								})]
+							})
+						]
+					})]
+				})]
+			})
+		})]
+	});
+}
 function downloadCSV(data, filename) {
 	if (!data || data.length === 0) return;
 	const headers = Object.keys(data[0]);
@@ -65868,9 +66094,9 @@ function triggerPDFPrint() {
 }
 function ProjecaoVendas() {
 	const { getPrice, b3Data, marketData } = useMarket();
-	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("mt");
+	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("boi-gordo-mt");
 	const [selectedMarketLabel, setSelectedMarketLabel] = (0, import_react.useState)("Boi Gordo - MT");
-	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(238);
+	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(215.5);
 	const [targetWeight, setTargetWeight] = (0, import_react.useState)(540);
 	const { toast: toast$2 } = useToast();
 	(0, import_react.useEffect)(() => {
@@ -66001,6 +66227,7 @@ function ProjecaoVendas() {
 				className: "print:hidden",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketTrendsChart, {})
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesSimulator, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid gap-4 sm:grid-cols-3 print:grid-cols-3",
 				children: [
@@ -66029,7 +66256,7 @@ function ProjecaoVendas() {
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-xs text-primary/70 mt-2 font-medium print:hidden",
-							children: "Usado para cálculo da receita projetada"
+							children: "Usado para cálculo da receita projetada na tabela"
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -66080,7 +66307,7 @@ function ProjecaoVendas() {
 							]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden",
-							children: "Receita deduzida de custos de nutrição e mão de obra"
+							children: "Receita deduzida de custos da tabela"
 						})] })]
 					})
 				]
@@ -67364,4 +67591,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DEfR5y9X.js.map
+//# sourceMappingURL=index-DxSJQXqr.js.map

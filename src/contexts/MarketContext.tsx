@@ -66,10 +66,10 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
   const [alerts, setAlerts] = useState<MarketAlert[]>([
     {
       id: 'mock-1',
-      indicatorId: 'sp',
-      indicatorLabel: 'Boi Gordo - SP (À vista)',
+      indicatorId: 'boi-gordo-mt',
+      indicatorLabel: 'Boi Gordo - MT (À vista)',
       condition: 'above',
-      targetPrice: 250.0,
+      targetPrice: 220.0,
       notifyWhatsApp: true,
       active: true,
     },

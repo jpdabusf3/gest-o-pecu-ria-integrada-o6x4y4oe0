@@ -22,7 +22,7 @@ export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps
           <Clock className="h-3 w-3" /> Status: Sincronizado ({lastUpdate})
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {marketData.map((ind) => (
           <Card
             key={ind.id}
@@ -34,7 +34,6 @@ export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps
             )}
             onClick={() => onSelect(ind.id, ind.price, ind.label)}
           >
-            {/* Subtle flash effect on update could go here if we tracked individual update flashes */}
             <CardContent className="p-4">
               <div className="text-xs text-muted-foreground font-medium mb-2 flex justify-between items-center">
                 <span

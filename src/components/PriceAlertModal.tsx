@@ -38,12 +38,11 @@ export function PriceAlertModal() {
     deleteAlert,
   } = useMarket()
 
-  const [indicatorId, setIndicatorId] = useState('sp')
+  const [indicatorId, setIndicatorId] = useState('boi-gordo-mt')
   const [condition, setCondition] = useState<AlertCondition>('above')
   const [targetPrice, setTargetPrice] = useState('')
   const [notifyWhatsApp, setNotifyWhatsApp] = useState(true)
 
-  // Flatten all indicators for the select dropdown
   const allIndicators = useMemo(() => {
     const list = [
       ...marketData.map((i) => ({ id: i.id, label: i.label, group: 'Mercado Físico' })),

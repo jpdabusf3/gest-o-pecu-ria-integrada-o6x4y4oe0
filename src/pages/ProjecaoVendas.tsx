@@ -20,6 +20,7 @@ import { CommoditiesQuotes } from '@/components/CommoditiesQuotes'
 import { B3FuturesSelector } from '@/components/B3FuturesSelector'
 import { GpbBalizadorButton } from '@/components/GpbBalizadorButton'
 import { ExportMenu } from '@/components/ExportMenu'
+import { SalesSimulator } from '@/components/SalesSimulator'
 import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
 import { useToast } from '@/hooks/use-toast'
 import { useMarket } from '@/contexts/MarketContext'
@@ -27,9 +28,9 @@ import { cn } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
   const { getPrice, b3Data, marketData } = useMarket()
-  const [selectedMarketId, setSelectedMarketId] = useState<string | null>('mt')
+  const [selectedMarketId, setSelectedMarketId] = useState<string | null>('boi-gordo-mt')
   const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - MT')
-  const [arrobaPrice, setArrobaPrice] = useState<number>(238.0)
+  const [arrobaPrice, setArrobaPrice] = useState<number>(215.5)
   const [targetWeight, setTargetWeight] = useState<number>(540)
   const { toast } = useToast()
 
@@ -180,6 +181,8 @@ export default function ProjecaoVendas() {
         <MarketTrendsChart />
       </div>
 
+      <SalesSimulator />
+
       <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3">
         <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
           <CardHeader className="pb-2">
@@ -207,7 +210,7 @@ export default function ProjecaoVendas() {
               />
             </div>
             <p className="text-xs text-primary/70 mt-2 font-medium print:hidden">
-              Usado para cálculo da receita projetada
+              Usado para cálculo da receita projetada na tabela
             </p>
           </CardContent>
         </Card>
@@ -251,7 +254,7 @@ export default function ProjecaoVendas() {
               })}
             </div>
             <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden">
-              Receita deduzida de custos de nutrição e mão de obra
+              Receita deduzida de custos da tabela
             </p>
           </CardContent>
         </Card>
