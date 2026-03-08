@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -7,34 +7,36 @@
     <meta name="description" content="Sistema de gestão agropecuária otimizado para produtividade no campo." />
     <meta name="theme-color" content="#16a34a" />
     <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" href="https://img.usecurling.com/i?q=cow&color=solid-black&shape=fill" />
     <link rel="apple-touch-icon" href="https://img.usecurling.com/i?q=cow&color=solid-black&shape=fill" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <script type="module" crossorigin src="/assets/index-DcHSnvrz.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-sUMEetMT.css">
+    <meta name="apple-mobile-web-app-title" content="GPI Farm" />
+    <script type="module" crossorigin src="/assets/index-Dgn2uUo-.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DTcMCEeU.css">
   </head>
 
   <body>
     <div id="root"></div>
     <!-- @skip-protected: Do not remove. Required for app features. -->
     <script src="https://goskip.dev/skip.js"></script>
-    
+
     <!-- PWA Service Worker Registration -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js').then(
             (registration) => {
-              console.log('PWA ServiceWorker registration successful with scope: ', registration.scope);
+              console.log('PWA ServiceWorker registration successful with scope: ', registration.scope)
             },
             (err) => {
-              console.log('PWA ServiceWorker registration failed: ', err);
-            }
-          );
-        });
+              console.log('PWA ServiceWorker registration failed: ', err)
+            },
+          )
+        })
       }
     </script>
-    
+
     <!-- @skip-protected: Do not remove. App entrypoint. -->
   </body>
 </html>

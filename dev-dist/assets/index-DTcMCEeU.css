@@ -614,6 +614,9 @@ section[aria-label='Notifications alt+T'] {
 .bottom-0{
   bottom: 0px;
 }
+.bottom-4{
+  bottom: 1rem;
+}
 .left-0{
   left: 0px;
 }
@@ -628,6 +631,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .left-3{
   left: 0.75rem;
+}
+.left-4{
+  left: 1rem;
 }
 .left-\[50\%\]{
   left: 50%;
@@ -2081,6 +2087,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .pr-2\.5{
   padding-right: 0.625rem;
+}
+.pr-4{
+  padding-right: 1rem;
 }
 .pr-8{
   padding-right: 2rem;
@@ -3606,8 +3615,14 @@ section[aria-label='Notifications alt+T'] {
   .sm\:bottom-0{
     bottom: 0px;
   }
+  .sm\:left-auto{
+    left: auto;
+  }
   .sm\:right-0{
     right: 0px;
+  }
+  .sm\:right-4{
+    right: 1rem;
   }
   .sm\:top-auto{
     top: auto;
@@ -3641,6 +3656,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:w-64{
     width: 16rem;
+  }
+  .sm\:w-96{
+    width: 24rem;
   }
   .sm\:w-\[130px\]{
     width: 130px;

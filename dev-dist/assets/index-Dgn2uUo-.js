@@ -28866,7 +28866,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$53({ inst: {
+			cachedValue = useState$54({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28880,7 +28880,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$19(function() {
+			useEffect$20(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28903,7 +28903,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$53 = React$70.useState, useEffect$19 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$54 = React$70.useState, useEffect$20 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -71289,6 +71289,75 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
+function InstallPWA() {
+	const [supportsPWA, setSupportsPWA] = (0, import_react.useState)(false);
+	const [promptInstall, setPromptInstall] = (0, import_react.useState)(null);
+	const [isInstalled, setIsInstalled] = (0, import_react.useState)(false);
+	const [showPrompt, setShowPrompt] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		const handler = (e) => {
+			e.preventDefault();
+			setSupportsPWA(true);
+			setPromptInstall(e);
+			if (!localStorage.getItem("pwa-prompt-dismissed")) setShowPrompt(true);
+		};
+		window.addEventListener("beforeinstallprompt", handler);
+		window.addEventListener("appinstalled", () => {
+			setIsInstalled(true);
+			setShowPrompt(false);
+		});
+		if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) setIsInstalled(true);
+		return () => {
+			window.removeEventListener("beforeinstallprompt", handler);
+		};
+	}, []);
+	const onClick = async () => {
+		if (!promptInstall) return;
+		await promptInstall.prompt();
+		if ((await promptInstall.userChoice).outcome === "accepted") setShowPrompt(false);
+	};
+	const onDismiss = () => {
+		setShowPrompt(false);
+		localStorage.setItem("pwa-prompt-dismissed", "true");
+	};
+	if (!supportsPWA || isInstalled || !showPrompt) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "fixed bottom-4 left-4 right-4 z-[100] flex animate-fade-in-up flex-col gap-3 rounded-xl border bg-card p-4 shadow-xl sm:left-auto sm:right-4 sm:w-96",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-start justify-between",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col pr-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "text-sm font-semibold text-foreground",
+					children: "Instalar Aplicativo"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "mt-1 text-xs text-muted-foreground",
+					children: "Adicione o sistema à sua tela inicial para acesso rápido e modo offline no campo."
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+				onClick: onDismiss,
+				className: "shrink-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:text-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "sr-only",
+					children: "Fechar"
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "mt-1 flex w-full gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick,
+				className: "flex-1 gap-2",
+				size: "sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" }), "Instalar Agora"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				variant: "outline",
+				onClick: onDismiss,
+				size: "sm",
+				children: "Mais tarde"
+			})]
+		})]
+	});
+}
 var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OfflineProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
@@ -71297,6 +71366,7 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TooltipProvider, { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toaster, {}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toaster$1, {}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(InstallPWA, {}),
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Route, {
 			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layout, {}),
 			children: [
@@ -71394,4 +71464,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DcHSnvrz.js.map
+//# sourceMappingURL=index-Dgn2uUo-.js.map

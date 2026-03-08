@@ -21,5 +21,6 @@
     }
   ],
   "orientation": "portrait",
-  "categories": ["business", "productivity", "agriculture"]
+  "categories": ["business", "productivity", "agriculture"],
+  "id": "/"
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gpi-farm-cache-v1'
+const CACHE_NAME = 'gpi-farm-cache-v2'
 const ASSETS_TO_CACHE = ['/', '/index.html', '/manifest.json']
 
 // Install event: cache core assets
@@ -30,6 +30,8 @@ self.addEventListener('activate', (event) => {
 // Fetch event: Network first, fallback to cache for offline capabilities
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return
+  // Don't cache extension requests or non-http
+  if (!event.request.url.startsWith('http')) return
 
   event.respondWith(
     fetch(event.request)
@@ -53,9 +55,9 @@ self.addEventListener('fetch', (event) => {
           if (event.request.mode === 'navigate') {
             return caches.match('/index.html')
           }
-          return new Response('Network error happened', {
-            status: 408,
-            headers: { 'Content-Type': 'text/plain' },
+          return new Response('Offline - Rede Indisponível', {
+            status: 503,
+            headers: { 'Content-Type': 'text/plain; charset=utf-8' },
           })
         })
       }),

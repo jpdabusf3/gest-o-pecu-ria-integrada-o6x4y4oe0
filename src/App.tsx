@@ -31,6 +31,7 @@ import Animais from './pages/Animais'
 import MapaPropriedade from './pages/MapaPropriedade'
 import BI from './pages/BI'
 import NotFound from './pages/NotFound'
+import { InstallPWA } from './components/InstallPWA'
 
 const App = () => (
   <AuthProvider>
@@ -43,6 +44,7 @@ const App = () => (
                 <TooltipProvider>
                   <Toaster />
                   <Sonner />
+                  <InstallPWA />
                   <Routes>
                     <Route element={<Layout />}>
                       <Route path="/" element={<Index />} />
