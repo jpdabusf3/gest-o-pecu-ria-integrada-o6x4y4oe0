@@ -17,6 +17,7 @@ import Campo from './pages/Campo'
 import Relatorios from './pages/Relatorios'
 import ProjecaoVendas from './pages/ProjecaoVendas'
 import Equipe from './pages/Equipe'
+import Administrativo from './pages/Administrativo'
 import NotFound from './pages/NotFound'
 
 const App = () => (
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/animal/:id" element={<AnimalProfile />} />
             <Route path="/projecoes" element={<ProjecaoVendas />} />
             <Route path="/equipe" element={<Equipe />} />
+            <Route path="/administrativo" element={<Administrativo />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

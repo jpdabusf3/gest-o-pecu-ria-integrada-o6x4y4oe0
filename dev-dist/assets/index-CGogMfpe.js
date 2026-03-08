@@ -19107,6 +19107,28 @@ var BrainCircuit = createLucideIcon("brain-circuit", [
 		key: "1e43v0"
 	}]
 ]);
+var Building2 = createLucideIcon("building-2", [
+	["path", {
+		d: "M10 12h4",
+		key: "a56b0p"
+	}],
+	["path", {
+		d: "M10 8h4",
+		key: "1sr2af"
+	}],
+	["path", {
+		d: "M14 21v-3a2 2 0 0 0-4 0v3",
+		key: "1rgiei"
+	}],
+	["path", {
+		d: "M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2",
+		key: "secmi2"
+	}],
+	["path", {
+		d: "M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16",
+		key: "16ra0t"
+	}]
+]);
 var Calendar = createLucideIcon("calendar", [
 	["path", {
 		d: "M8 2v4",
@@ -19561,6 +19583,13 @@ var RefreshCw = createLucideIcon("refresh-cw", [
 		key: "1cv678"
 	}]
 ]);
+var RotateCw = createLucideIcon("rotate-cw", [["path", {
+	d: "M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8",
+	key: "1p45f6"
+}], ["path", {
+	d: "M21 3v5h-5",
+	key: "1q7to0"
+}]]);
 var Save = createLucideIcon("save", [
 	["path", {
 		d: "M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
@@ -19799,6 +19828,26 @@ var Upload = createLucideIcon("upload", [
 		key: "ih7n3h"
 	}]
 ]);
+var Users = createLucideIcon("users", [
+	["path", {
+		d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
+		key: "1yyitq"
+	}],
+	["path", {
+		d: "M16 3.128a4 4 0 0 1 0 7.744",
+		key: "16gr8j"
+	}],
+	["path", {
+		d: "M22 21v-2a4 4 0 0 0-3-3.87",
+		key: "kshegd"
+	}],
+	["circle", {
+		cx: "9",
+		cy: "7",
+		r: "4",
+		key: "nufk8"
+	}]
+]);
 var Wallet = createLucideIcon("wallet", [["path", {
 	d: "M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1",
 	key: "18etb6"
@@ -19838,6 +19887,24 @@ var Wheat = createLucideIcon("wheat", [
 	["path", {
 		d: "M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z",
 		key: "vex3ng"
+	}]
+]);
+var Wifi = createLucideIcon("wifi", [
+	["path", {
+		d: "M12 20h.01",
+		key: "zekei9"
+	}],
+	["path", {
+		d: "M2 8.82a15 15 0 0 1 20 0",
+		key: "dnpr2z"
+	}],
+	["path", {
+		d: "M5 12.859a10 10 0 0 1 14 0",
+		key: "1x1e6c"
+	}],
+	["path", {
+		d: "M8.5 16.429a5 5 0 0 1 7 0",
+		key: "1bycff"
 	}]
 ]);
 var X = createLucideIcon("x", [["path", {
@@ -26450,6 +26517,11 @@ var navItems = [
 		title: "Equipe & Acessos",
 		icon: ShieldCheck,
 		url: "/equipe"
+	},
+	{
+		title: "Administrativo",
+		icon: Building2,
+		url: "/administrativo"
 	}
 ];
 function AppSidebar() {
@@ -26580,7 +26652,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$24({ inst: {
+			cachedValue = useState$26({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26617,7 +26689,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$24 = React$66.useState, useEffect$7 = React$66.useEffect, useLayoutEffect$3 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$26 = React$66.useState, useEffect$7 = React$66.useEffect, useLayoutEffect$3 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$66.useSyncExternalStore ? React$66.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29860,7 +29932,8 @@ const pasturesData = [
 		daysOfRest: 0,
 		optimalRestDuration: 30,
 		recommendedLotSize: 120,
-		interventions: []
+		interventions: [],
+		ocupanteAtual: "LCR-01"
 	},
 	{
 		id: 2,
@@ -29882,7 +29955,8 @@ const pasturesData = [
 		daysOfRest: 0,
 		optimalRestDuration: 35,
 		recommendedLotSize: 180,
-		interventions: []
+		interventions: [],
+		ocupanteAtual: "LCR-04"
 	},
 	{
 		id: 3,
@@ -29904,9 +29978,75 @@ const pasturesData = [
 		daysOfRest: 28,
 		optimalRestDuration: 30,
 		recommendedLotSize: 90,
-		interventions: []
+		interventions: [],
+		ocupanteAtual: null
+	},
+	{
+		id: 4,
+		nome: "Pasto 04 - Baixada",
+		sector: "recria",
+		area: 50,
+		cultivar: "Brachiaria brizantha",
+		estacao: "Águas",
+		lotacaoProjetada: 2,
+		lotacaoExecutada: 0,
+		alturaEntradaAlvo: 30,
+		alturaSaidaAlvo: 15,
+		alturaAtual: 32,
+		pesoMedioAtual: 0,
+		pesoMedioHistorico: 0,
+		status: "Vedado",
+		ndvi: .88,
+		score: 5,
+		daysOfRest: 45,
+		optimalRestDuration: 30,
+		recommendedLotSize: 150,
+		interventions: [],
+		ocupanteAtual: null
+	},
+	{
+		id: 5,
+		nome: "Pasto 05 - Morro",
+		sector: "recria",
+		area: 80,
+		cultivar: "Andropogon",
+		estacao: "Águas",
+		lotacaoProjetada: 1.5,
+		lotacaoExecutada: 1.4,
+		alturaEntradaAlvo: 40,
+		alturaSaidaAlvo: 20,
+		alturaAtual: 25,
+		pesoMedioAtual: 310,
+		pesoMedioHistorico: 300,
+		status: "Bom",
+		ndvi: .7,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 40,
+		recommendedLotSize: 120,
+		interventions: [],
+		ocupanteAtual: "LRE-01"
 	}
 ];
+const rotationalSchedule = [{
+	id: "R1",
+	pastoId: 3,
+	pastoNome: "Pasto 03 - Represa",
+	nextLot: "LCR-02",
+	entryDate: "15/03/2026",
+	requiredRest: 30,
+	currentRest: 28,
+	nutritionReq: "Sal Mineral Reprodução (0.12kg/dia)"
+}, {
+	id: "R2",
+	pastoId: 4,
+	pastoNome: "Pasto 04 - Baixada",
+	nextLot: "LRE-02",
+	entryDate: "10/03/2026",
+	requiredRest: 30,
+	currentRest: 45,
+	nutritionReq: "Sal Proteico 0.1% (0.22kg/dia)"
+}];
 const inventoryData = {
 	farmacia: [{
 		id: "F1",
@@ -30273,6 +30413,57 @@ const dailyWeightData = [
 		dia: "20",
 		gmd: 1.3,
 		peso: 476
+	}
+];
+const farmRegistry = {
+	nome: "Fazenda Vale do Sol",
+	proprietario: "Grupo Agro GPI",
+	cnpj: "12.345.678/0001-90",
+	inscricaoEstadual: "123.456.789.000",
+	car: "SP-1234567-ABCD.EFGH.IJKL",
+	endereco: "Rodovia BR-123, Km 45, Zona Rural",
+	cidade: "Ribeirão Preto",
+	estado: "SP",
+	areaTotal: 1500,
+	areaPastagem: 1200,
+	areaReserva: 300
+};
+const businessContacts = [
+	{
+		id: "C1",
+		nome: "Frigorífico Boi Forte",
+		categoria: "Comprador",
+		contato: "(11) 99999-1111",
+		email: "compras@boiforte.com",
+		empresa: "Boi Forte SA",
+		status: "Ativo"
+	},
+	{
+		id: "C2",
+		nome: "AgroInsumos Certo",
+		categoria: "Fornecedor",
+		contato: "(16) 88888-2222",
+		email: "vendas@agroinsumos.com",
+		empresa: "AgroInsumos Ltda",
+		status: "Ativo"
+	},
+	{
+		id: "C3",
+		nome: "Dr. Marcos Veterinário",
+		categoria: "Serviços",
+		contato: "(16) 77777-3333",
+		email: "marcos.vet@gmail.com",
+		empresa: "Autônomo",
+		status: "Ativo"
+	},
+	{
+		id: "C4",
+		nome: "Sementes Pasto Verde",
+		categoria: "Fornecedor",
+		contato: "(11) 55555-4444",
+		email: "contato@pastoverde.com",
+		empresa: "Pasto Verde SA",
+		status: "Inativo"
 	}
 ];
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
@@ -54990,6 +55181,7 @@ function ManagementTab() {
 }
 function Pastos() {
 	const { toast: toast$2 } = useToast();
+	const [selectedPaddock, setSelectedPaddock] = (0, import_react.useState)(null);
 	const handleSync = () => {
 		const alerts = pasturesData.filter((p) => p.alturaAtual < p.alturaSaidaAlvo || p.alturaAtual > p.alturaEntradaAlvo);
 		toast$2({
@@ -54998,8 +55190,9 @@ function Pastos() {
 			variant: alerts.length > 0 ? "destructive" : "default"
 		});
 	};
+	const activePaddockData = selectedPaddock ? pasturesData.find((p) => p.id === selectedPaddock) : null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
@@ -55007,7 +55200,7 @@ function Pastos() {
 				children: "Gestão de Pastos"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
-				children: "Acompanhamento de áreas, capacidade de suporte e cultivares."
+				children: "Acompanhamento de áreas, capacidade de suporte e rotacionamento."
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
@@ -55019,12 +55212,17 @@ function Pastos() {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationPreferences, {})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
-			defaultValue: "inventario",
+			defaultValue: "mapa",
 			className: "space-y-6",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
 					className: "mb-2 w-full sm:w-auto overflow-x-auto justify-start",
 					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "mapa",
+							className: "gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "h-4 w-4" }), " Mapa Interativo"]
+						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "inventario",
 							children: "Inventário e Métricas"
@@ -55032,12 +55230,186 @@ function Pastos() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "manejo",
 							children: "Manejo e Intervenções"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-							value: "satelite",
-							children: "Satélite (NDVI)"
 						})
 					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "mapa",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+							className: "lg:col-span-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Mapa de Piquetes" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Selecione uma área para visualizar a lotação (UA/ha) e planejar a rotação." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-muted/30 p-4 sm:p-6 rounded-xl border aspect-[4/3] sm:aspect-[16/9] relative overflow-hidden flex flex-col justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "relative z-10 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 h-full",
+									children: pasturesData.map((pasto) => {
+										const isStockingAlert = pasto.lotacaoExecutada > pasto.lotacaoProjetada * 1.1;
+										return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											onClick: () => setSelectedPaddock(pasto.id),
+											className: cn("rounded-lg border-2 p-3 flex flex-col justify-between cursor-pointer transition-all hover:scale-[1.02] shadow-sm", pasto.status === "Vedado" ? "bg-slate-200 border-slate-300 text-slate-500" : pasto.status === "Alerta" ? "bg-orange-100 border-orange-300 text-orange-800" : "bg-green-100 border-green-300 text-green-800", selectedPaddock === pasto.id ? "ring-2 ring-primary ring-offset-2" : ""),
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex justify-between items-start",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "font-bold text-sm sm:text-base leading-tight",
+													children: pasto.nome
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+													variant: "outline",
+													className: "bg-white/50 text-[10px] px-1.5",
+													children: [pasto.area, "ha"]
+												})]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "mt-4 space-y-1",
+												children: [pasto.ocupanteAtual ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex items-center gap-1.5 text-xs font-semibold bg-white/40 px-2 py-1 rounded-md w-fit",
+													children: [
+														/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-3.5 w-3.5" }),
+														" ",
+														pasto.ocupanteAtual
+													]
+												}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "text-xs font-medium bg-white/40 px-2 py-1 rounded-md w-fit text-muted-foreground",
+													children: [
+														"Vazio (",
+														pasto.daysOfRest,
+														" dias)"
+													]
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex items-center justify-between mt-2",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+														className: "text-[10px] uppercase font-bold tracking-wider opacity-70",
+														children: "Lotação"
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+														className: cn("text-sm font-mono font-bold", isStockingAlert ? "text-destructive" : ""),
+														children: [pasto.lotacaoExecutada.toFixed(1), " UA/ha"]
+													})]
+												})]
+											})]
+										}, pasto.id);
+									})
+								})]
+							}) })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-6",
+							children: [activePaddockData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+								className: "animate-fade-in",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+									className: "pb-3",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+										className: "text-lg flex justify-between items-center",
+										children: ["Detalhes da Área", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, { children: activePaddockData.status })]
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+									className: "space-y-4",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+											className: "font-bold text-xl",
+											children: activePaddockData.nome
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-sm text-muted-foreground",
+											children: [
+												activePaddockData.cultivar,
+												" • ",
+												activePaddockData.area,
+												" hectares"
+											]
+										})] }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "grid grid-cols-2 gap-2 text-sm bg-muted/50 p-3 rounded-lg",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-muted-foreground block text-xs",
+													children: "Lotação Atual"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: "font-mono font-bold",
+													children: [activePaddockData.lotacaoExecutada, " UA/ha"]
+												})] }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-muted-foreground block text-xs",
+													children: "Lotação Alvo"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: "font-mono",
+													children: [activePaddockData.lotacaoProjetada, " UA/ha"]
+												})] }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-muted-foreground block text-xs",
+													children: "Altura Atual"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: "font-mono font-bold",
+													children: [activePaddockData.alturaAtual, " cm"]
+												})] }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "text-muted-foreground block text-xs",
+													children: "Meta Saída"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: "font-mono",
+													children: [activePaddockData.alturaSaidaAlvo, " cm"]
+												})] })
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+											className: "w-full gap-2",
+											children: "Registrar Altura de Entrada/Saída"
+										})
+									]
+								})]
+							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+								className: "bg-muted/30 border-dashed border-2 flex items-center justify-center h-[250px]",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-muted-foreground text-sm text-center px-6",
+									children: "Selecione um piquete no mapa para visualizar os detalhes operacionais."
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+								className: "pb-3",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+									className: "text-lg flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RotateCw, { className: "h-5 w-5 text-primary" }), "Cronograma de Rotação"]
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "space-y-4",
+								children: rotationalSchedule.map((schedule) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "border-l-2 border-primary pl-4 py-1 relative",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute -left-[5px] top-2 h-2 w-2 rounded-full bg-primary" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h5", {
+											className: "font-semibold text-sm",
+											children: schedule.pastoNome
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-xs text-muted-foreground mt-0.5",
+											children: [
+												"Próx. Lote:",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "font-medium text-foreground",
+													children: schedule.nextLot
+												}),
+												" em",
+												" ",
+												schedule.entryDate
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "mt-2 flex items-center justify-between bg-muted/50 rounded px-2 py-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-[10px] font-medium uppercase text-muted-foreground",
+												children: "Descanso"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: cn("text-xs font-bold", schedule.currentRest >= schedule.requiredRest ? "text-green-600" : "text-amber-600"),
+												children: [
+													schedule.currentRest,
+													" / ",
+													schedule.requiredRest,
+													" dias"
+												]
+											})]
+										})
+									]
+								}, schedule.id))
+							}) })] })]
+						})]
+					})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "inventario",
@@ -55157,62 +55529,6 @@ function Pastos() {
 					value: "manejo",
 					className: "space-y-6 mt-0",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManagementTab, {})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-					value: "satelite",
-					className: "space-y-6 mt-0",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Monitoramento Satélite (NDVI)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Visualização de índices de vegetação e saúde das pastagens da propriedade." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "px-0 sm:px-6 pb-6",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "relative w-full aspect-video sm:h-[500px] bg-muted rounded-xl overflow-hidden border mx-auto",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-									src: "https://img.usecurling.com/p/1200/800?q=farm%20satellite%20fields&color=green",
-									className: "w-full h-full object-cover opacity-80",
-									alt: "Farm Satellite Map"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "absolute top-[20%] left-[20%] w-[30%] h-[40%] bg-green-500/30 border-2 border-green-500 rounded-bl-3xl flex items-center justify-center backdrop-blur-[2px] hover:bg-green-500/50 transition-colors cursor-pointer group",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/90 px-3 py-1.5 rounded-md shadow-sm text-center opacity-0 group-hover:opacity-100 transition-opacity",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm font-bold",
-											children: "Pasto 01"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-xs text-muted-foreground",
-											children: "NDVI: 0.75"
-										})]
-									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "absolute top-[30%] right-[15%] w-[25%] h-[35%] bg-red-500/30 border-2 border-red-500 rounded-tr-2xl flex items-center justify-center backdrop-blur-[2px] hover:bg-red-500/50 transition-colors cursor-pointer group",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/90 px-3 py-1.5 rounded-md shadow-sm text-center opacity-0 group-hover:opacity-100 transition-opacity",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm font-bold",
-											children: "Pasto 02"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-xs text-destructive font-medium",
-											children: "NDVI: 0.45 (Alerta)"
-										})]
-									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "absolute bottom-[10%] left-[40%] w-[20%] h-[30%] bg-emerald-500/30 border-2 border-emerald-500 rounded-t-xl flex items-center justify-center backdrop-blur-[2px] hover:bg-emerald-500/50 transition-colors cursor-pointer group",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/90 px-3 py-1.5 rounded-md shadow-sm text-center opacity-0 group-hover:opacity-100 transition-opacity",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm font-bold",
-											children: "Pasto 03 (Vedado)"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-xs text-muted-foreground",
-											children: "NDVI: 0.82"
-										})]
-									})
-								})
-							]
-						})
-					})] })
 				})
 			]
 		})]
@@ -55640,6 +55956,7 @@ function Financeiro() {
 }
 function ScaleIntegrationModal({ animalId, onSaveWeight }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
+	const [connectionType, setConnectionType] = (0, import_react.useState)("bluetooth");
 	const [connectionState, setConnectionState] = (0, import_react.useState)("idle");
 	const [reading, setReading] = (0, import_react.useState)("");
 	const { toast: toast$2 } = useToast();
@@ -55660,11 +55977,12 @@ function ScaleIntegrationModal({ animalId, onSaveWeight }) {
 			}, 300);
 			setTimeout(() => {
 				clearInterval(interval);
-				setReading((245.5 + Math.random() * 2).toFixed(1));
+				const finalWeight = (245.5 + Math.random() * 2).toFixed(1);
+				setReading(finalWeight);
 				setConnectionState("success");
 				toast$2({
 					title: "Leitura Estabilizada",
-					description: "O peso foi capturado com sucesso da balança eletrônica."
+					description: `Peso de ${finalWeight} kg capturado via ${connectionType.toUpperCase()} e associado ao animal ${animalId}.`
 				});
 			}, 3e3);
 		}, 1500);
@@ -55672,8 +55990,8 @@ function ScaleIntegrationModal({ animalId, onSaveWeight }) {
 	const handleSave = () => {
 		if (onSaveWeight) onSaveWeight(reading);
 		toast$2({
-			title: "Peso Registrado",
-			description: `O peso de ${reading} kg foi salvo no histórico do animal ${animalId}.`
+			title: "Histórico Atualizado",
+			description: `Sincronização concluída. O peso de ${reading} kg foi salvo para ${animalId}.`
 		});
 		setOpen(false);
 	};
@@ -55686,76 +56004,90 @@ function ScaleIntegrationModal({ animalId, onSaveWeight }) {
 				variant: "outline",
 				size: "sm",
 				className: "gap-2 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }), " Importar Balança"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }), " Conectar Balança"]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
 			className: "sm:max-w-[425px]",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
-				className: "flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-5 w-5" }), " Integração com Balança"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Conecte ao sensor Bluetooth/Wi-Fi da balança para leitura automática." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col items-center justify-center py-8 space-y-6",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative w-40 h-40 rounded-full border-4 border-muted flex items-center justify-center bg-background shadow-inner",
-					children: [
-						connectionState === "idle" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-12 w-12 text-muted-foreground opacity-50" }),
-						connectionState === "connecting" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col items-center text-primary",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-10 w-10 animate-spin mb-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-xs font-semibold animate-pulse",
-								children: "Conectando..."
-							})]
-						}),
-						(connectionState === "reading" || connectionState === "success") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col items-center",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: `text-4xl font-bold font-mono tracking-tighter ${connectionState === "success" ? "text-primary" : "text-muted-foreground"}`,
-								children: reading
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-sm text-muted-foreground mt-1",
-								children: "KG"
-							})]
-						}),
-						connectionState === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "absolute -bottom-2 -right-2 bg-background rounded-full",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-8 w-8 text-primary" })
-						})
-					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "w-full space-y-3",
-					children: [
-						connectionState === "idle" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							onClick: handleStartIntegration,
-							className: "w-full gap-2",
-							size: "lg",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }), " Buscar Dispositivos"]
-						}),
-						connectionState === "connecting" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							disabled: true,
-							className: "w-full",
-							size: "lg",
-							children: "Aguarde..."
-						}),
-						connectionState === "reading" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							disabled: true,
-							className: "w-full gap-2",
-							size: "lg",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-4 w-4 animate-spin" }), " Estabilizando Peso"]
-						}),
-						connectionState === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							onClick: handleSave,
-							className: "w-full gap-2",
-							size: "lg",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }),
-								" Salvar ",
-								reading,
-								" kg"
-							]
-						})
-					]
-				})]
-			})]
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-5 w-5 text-primary" }), " Integração de Balança Eletrônica"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Conecte ao equipamento via Bluetooth/Wi-Fi para captura automática do lote/animal atual, eliminando digitação manual." })] }),
+				connectionState === "idle" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex justify-center gap-4 py-2 border-b",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: connectionType === "bluetooth" ? "default" : "outline",
+						size: "sm",
+						onClick: () => setConnectionType("bluetooth"),
+						className: "gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }), " Bluetooth"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: connectionType === "wifi" ? "default" : "outline",
+						size: "sm",
+						onClick: () => setConnectionType("wifi"),
+						className: "gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-4 w-4" }), " Wi-Fi (Rede)"]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-center justify-center py-6 space-y-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative w-40 h-40 rounded-full border-4 border-muted flex items-center justify-center bg-background shadow-inner",
+						children: [
+							connectionState === "idle" && (connectionType === "bluetooth" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-12 w-12 text-muted-foreground opacity-50" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-12 w-12 text-muted-foreground opacity-50" })),
+							connectionState === "connecting" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col items-center text-primary",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-10 w-10 animate-spin mb-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs font-semibold animate-pulse",
+									children: "Pareando..."
+								})]
+							}),
+							(connectionState === "reading" || connectionState === "success") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col items-center",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: `text-4xl font-bold font-mono tracking-tighter ${connectionState === "success" ? "text-primary" : "text-muted-foreground"}`,
+									children: reading
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm text-muted-foreground mt-1",
+									children: "KG"
+								})]
+							}),
+							connectionState === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "absolute -bottom-2 -right-2 bg-background rounded-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-8 w-8 text-primary" })
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "w-full space-y-3",
+						children: [
+							connectionState === "idle" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: handleStartIntegration,
+								className: "w-full gap-2",
+								size: "lg",
+								children: [connectionType === "bluetooth" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bluetooth, { className: "h-4 w-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-4 w-4" }), "Buscar Dispositivos Próximos"]
+							}),
+							connectionState === "connecting" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								disabled: true,
+								className: "w-full",
+								size: "lg",
+								children: "Aguarde..."
+							}),
+							connectionState === "reading" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								disabled: true,
+								className: "w-full gap-2",
+								size: "lg",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "h-4 w-4 animate-spin" }), " Estabilizando Peso"]
+							}),
+							connectionState === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: handleSave,
+								className: "w-full gap-2",
+								size: "lg",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Associar e Salvar"]
+							})
+						]
+					})]
+				})
+			]
 		})]
 	});
 }
@@ -62910,6 +63242,304 @@ function Equipe() {
 		})]
 	});
 }
+function ContactDialog({ onSave }) {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const handleSave = () => {
+		onSave();
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Novo Contato"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Adicionar Parceiro de Negócios" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "space-y-4 py-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome do Contato ou Empresa" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, { placeholder: "Ex: Frigorífico ABC" })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							defaultValue: "comprador",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "comprador",
+									children: "Comprador"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "fornecedor",
+									children: "Fornecedor"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "servicos",
+									children: "Serviços"
+								})
+							] })]
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Telefone" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, { placeholder: "(00) 00000-0000" })]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Email" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						type: "email",
+						placeholder: "contato@empresa.com"
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					onClick: handleSave,
+					className: "w-full mt-2",
+					children: "Salvar Contato"
+				})
+			]
+		})] })]
+	});
+}
+function Administrativo() {
+	const { toast: toast$2 } = useToast();
+	const [farmData, setFarmData] = (0, import_react.useState)(farmRegistry);
+	const handleSaveRegistry = () => {
+		toast$2({
+			title: "Registro Atualizado",
+			description: "Os dados da propriedade foram salvos com sucesso na base administrativa."
+		});
+	};
+	const handleSaveContact = () => {
+		toast$2({
+			title: "Contato Adicionado",
+			description: "Novo parceiro de negócio registrado no sistema."
+		});
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+			className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Building2, { className: "h-8 w-8 text-primary" }), "Cadastro Administrativo"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-1",
+			children: "Gerencie os dados oficiais da propriedade e centralize sua rede de contatos."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			defaultValue: "registro",
+			className: "space-y-6",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					className: "mb-2 w-full sm:w-auto overflow-x-auto justify-start",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+						value: "registro",
+						className: "gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-4 w-4" }), " Registro da Fazenda"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+						value: "contatos",
+						className: "gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4" }), " Contatos Comerciais"]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "registro",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Dados Principais da Propriedade" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Informações utilizadas para emissão de relatórios, notas fiscais e controle interno." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "space-y-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid gap-6 md:grid-cols-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-4",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+										className: "font-semibold text-lg border-b pb-2",
+										children: "Identificação"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome da Fazenda" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											value: farmData.nome,
+											onChange: (e) => setFarmData({
+												...farmData,
+												nome: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Razão Social / Proprietário" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											value: farmData.proprietario,
+											onChange: (e) => setFarmData({
+												...farmData,
+												proprietario: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-2 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "CNPJ / CPF" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												value: farmData.cnpj,
+												onChange: (e) => setFarmData({
+													...farmData,
+													cnpj: e.target.value
+												})
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Inscrição Estadual" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												value: farmData.inscricaoEstadual,
+												onChange: (e) => setFarmData({
+													...farmData,
+													inscricaoEstadual: e.target.value
+												})
+											})]
+										})]
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-4",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+										className: "font-semibold text-lg border-b pb-2",
+										children: "Localização e Áreas"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Cadastro Ambiental Rural (CAR)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											value: farmData.car,
+											onChange: (e) => setFarmData({
+												...farmData,
+												car: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-3 gap-4",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "space-y-2",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Área Total (ha)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													type: "number",
+													value: farmData.areaTotal,
+													onChange: (e) => setFarmData({
+														...farmData,
+														areaTotal: Number(e.target.value)
+													})
+												})]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "space-y-2",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Área Pastagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													type: "number",
+													value: farmData.areaPastagem,
+													onChange: (e) => setFarmData({
+														...farmData,
+														areaPastagem: Number(e.target.value)
+													})
+												})]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "space-y-2",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Área Reserva" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													type: "number",
+													value: farmData.areaReserva,
+													onChange: (e) => setFarmData({
+														...farmData,
+														areaReserva: Number(e.target.value)
+													})
+												})]
+											})
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "grid grid-cols-3 gap-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2 col-span-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Endereço / Roteiro" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												value: farmData.endereco,
+												onChange: (e) => setFarmData({
+													...farmData,
+													endereco: e.target.value
+												})
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Cidade/UF" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												value: `${farmData.cidade} - ${farmData.estado}`,
+												onChange: (e) => setFarmData({
+													...farmData,
+													cidade: e.target.value.split("-")[0].trim()
+												})
+											})]
+										})]
+									})
+								]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex justify-end pt-4 border-t",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: handleSaveRegistry,
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Atualizar Registro"]
+							})
+						})]
+					})] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "contatos",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+						className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Diretório de Contatos Comerciais" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Gestão centralizada de compradores, frigoríficos e fornecedores de insumos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContactDialog, { onSave: handleSaveContact })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "px-0 sm:px-6",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Nome / Empresa" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Telefone" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Email" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: businessContacts.map((contact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "font-medium text-foreground",
+									children: contact.nome
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-xs text-muted-foreground",
+									children: contact.empresa
+								})] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: contact.categoria === "Comprador" ? "default" : contact.categoria === "Fornecedor" ? "secondary" : "outline",
+									children: contact.categoria
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "whitespace-nowrap",
+									children: contact.contato
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-muted-foreground",
+									children: contact.email
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: contact.status === "Ativo" ? "outline" : "secondary",
+									className: contact.status === "Ativo" ? "text-green-600 border-green-200 bg-green-50" : "",
+									children: contact.status
+								}) })
+							] }, contact.id)) })] })
+						})
+					})] })
+				})
+			]
+		})]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -63000,6 +63630,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/equipe",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Equipe, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/administrativo",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Administrativo, {})
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
@@ -63011,4 +63645,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CIF7yd9S.js.map
+//# sourceMappingURL=index-CGogMfpe.js.map

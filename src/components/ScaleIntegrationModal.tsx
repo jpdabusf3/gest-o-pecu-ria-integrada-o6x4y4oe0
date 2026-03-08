@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { Bluetooth, Scale, Loader2, CheckCircle2, Save } from 'lucide-react'
+import { Bluetooth, Scale, Loader2, CheckCircle2, Save, Wifi } from 'lucide-react'
 
 interface ScaleIntegrationModalProps {
   animalId: string
@@ -18,6 +18,7 @@ interface ScaleIntegrationModalProps {
 
 export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrationModalProps) {
   const [open, setOpen] = useState(false)
+  const [connectionType, setConnectionType] = useState<'bluetooth' | 'wifi'>('bluetooth')
   const [connectionState, setConnectionState] = useState<
     'idle' | 'connecting' | 'reading' | 'success'
   >('idle')
@@ -53,7 +54,7 @@ export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrati
         setConnectionState('success')
         toast({
           title: 'Leitura Estabilizada',
-          description: 'O peso foi capturado com sucesso da balança eletrônica.',
+          description: `Peso de ${finalWeight} kg capturado via ${connectionType.toUpperCase()} e associado ao animal ${animalId}.`,
         })
       }, 3000)
     }, 1500)
@@ -62,8 +63,8 @@ export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrati
   const handleSave = () => {
     if (onSaveWeight) onSaveWeight(reading)
     toast({
-      title: 'Peso Registrado',
-      description: `O peso de ${reading} kg foi salvo no histórico do animal ${animalId}.`,
+      title: 'Histórico Atualizado',
+      description: `Sincronização concluída. O peso de ${reading} kg foi salvo para ${animalId}.`,
     })
     setOpen(false)
   }
@@ -76,29 +77,54 @@ export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrati
           size="sm"
           className="gap-2 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800"
         >
-          <Bluetooth className="h-4 w-4" /> Importar Balança
+          <Bluetooth className="h-4 w-4" /> Conectar Balança
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Scale className="h-5 w-5" /> Integração com Balança
+            <Scale className="h-5 w-5 text-primary" /> Integração de Balança Eletrônica
           </DialogTitle>
           <DialogDescription>
-            Conecte ao sensor Bluetooth/Wi-Fi da balança para leitura automática.
+            Conecte ao equipamento via Bluetooth/Wi-Fi para captura automática do lote/animal atual,
+            eliminando digitação manual.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col items-center justify-center py-8 space-y-6">
+        {connectionState === 'idle' && (
+          <div className="flex justify-center gap-4 py-2 border-b">
+            <Button
+              variant={connectionType === 'bluetooth' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setConnectionType('bluetooth')}
+              className="gap-2"
+            >
+              <Bluetooth className="h-4 w-4" /> Bluetooth
+            </Button>
+            <Button
+              variant={connectionType === 'wifi' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setConnectionType('wifi')}
+              className="gap-2"
+            >
+              <Wifi className="h-4 w-4" /> Wi-Fi (Rede)
+            </Button>
+          </div>
+        )}
+
+        <div className="flex flex-col items-center justify-center py-6 space-y-6">
           <div className="relative w-40 h-40 rounded-full border-4 border-muted flex items-center justify-center bg-background shadow-inner">
-            {connectionState === 'idle' && (
-              <Bluetooth className="h-12 w-12 text-muted-foreground opacity-50" />
-            )}
+            {connectionState === 'idle' &&
+              (connectionType === 'bluetooth' ? (
+                <Bluetooth className="h-12 w-12 text-muted-foreground opacity-50" />
+              ) : (
+                <Wifi className="h-12 w-12 text-muted-foreground opacity-50" />
+              ))}
 
             {connectionState === 'connecting' && (
               <div className="flex flex-col items-center text-primary">
                 <Loader2 className="h-10 w-10 animate-spin mb-2" />
-                <span className="text-xs font-semibold animate-pulse">Conectando...</span>
+                <span className="text-xs font-semibold animate-pulse">Pareando...</span>
               </div>
             )}
 
@@ -123,7 +149,12 @@ export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrati
           <div className="w-full space-y-3">
             {connectionState === 'idle' && (
               <Button onClick={handleStartIntegration} className="w-full gap-2" size="lg">
-                <Bluetooth className="h-4 w-4" /> Buscar Dispositivos
+                {connectionType === 'bluetooth' ? (
+                  <Bluetooth className="h-4 w-4" />
+                ) : (
+                  <Wifi className="h-4 w-4" />
+                )}
+                Buscar Dispositivos Próximos
               </Button>
             )}
 
@@ -141,7 +172,7 @@ export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrati
 
             {connectionState === 'success' && (
               <Button onClick={handleSave} className="w-full gap-2" size="lg">
-                <Save className="h-4 w-4" /> Salvar {reading} kg
+                <Save className="h-4 w-4" /> Associar e Salvar
               </Button>
             )}
           </div>

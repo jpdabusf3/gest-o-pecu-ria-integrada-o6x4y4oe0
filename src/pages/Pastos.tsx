@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -10,14 +11,16 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { pasturesData } from '@/data/mock'
+import { pasturesData, rotationalSchedule } from '@/data/mock'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { useToast } from '@/hooks/use-toast'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, Map as MapIcon, RotateCw, Beef } from 'lucide-react'
 import { ManagementTab } from '@/components/pastures/ManagementTab'
+import { cn } from '@/lib/utils'
 
 export default function Pastos() {
   const { toast } = useToast()
+  const [selectedPaddock, setSelectedPaddock] = useState<number | null>(null)
 
   const handleSync = () => {
     const alerts = pasturesData.filter(
@@ -30,13 +33,17 @@ export default function Pastos() {
     })
   }
 
+  const activePaddockData = selectedPaddock
+    ? pasturesData.find((p) => p.id === selectedPaddock)
+    : null
+
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Gestão de Pastos</h2>
           <p className="text-muted-foreground mt-1">
-            Acompanhamento de áreas, capacidade de suporte e cultivares.
+            Acompanhamento de áreas, capacidade de suporte e rotacionamento.
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap">
@@ -47,12 +54,188 @@ export default function Pastos() {
         </div>
       </div>
 
-      <Tabs defaultValue="inventario" className="space-y-6">
+      <Tabs defaultValue="mapa" className="space-y-6">
         <TabsList className="mb-2 w-full sm:w-auto overflow-x-auto justify-start">
+          <TabsTrigger value="mapa" className="gap-2">
+            <MapIcon className="h-4 w-4" /> Mapa Interativo
+          </TabsTrigger>
           <TabsTrigger value="inventario">Inventário e Métricas</TabsTrigger>
           <TabsTrigger value="manejo">Manejo e Intervenções</TabsTrigger>
-          <TabsTrigger value="satelite">Satélite (NDVI)</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="mapa" className="space-y-6 mt-0">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>Mapa de Piquetes</CardTitle>
+                <CardDescription>
+                  Selecione uma área para visualizar a lotação (UA/ha) e planejar a rotação.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-muted/30 p-4 sm:p-6 rounded-xl border aspect-[4/3] sm:aspect-[16/9] relative overflow-hidden flex flex-col justify-between">
+                  {/* Decorative background grid */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+                  <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 h-full">
+                    {pasturesData.map((pasto) => {
+                      const isStockingAlert = pasto.lotacaoExecutada > pasto.lotacaoProjetada * 1.1
+                      const statusColor =
+                        pasto.status === 'Vedado'
+                          ? 'bg-slate-200 border-slate-300 text-slate-500'
+                          : pasto.status === 'Alerta'
+                            ? 'bg-orange-100 border-orange-300 text-orange-800'
+                            : 'bg-green-100 border-green-300 text-green-800'
+
+                      return (
+                        <div
+                          key={pasto.id}
+                          onClick={() => setSelectedPaddock(pasto.id)}
+                          className={cn(
+                            'rounded-lg border-2 p-3 flex flex-col justify-between cursor-pointer transition-all hover:scale-[1.02] shadow-sm',
+                            statusColor,
+                            selectedPaddock === pasto.id ? 'ring-2 ring-primary ring-offset-2' : '',
+                          )}
+                        >
+                          <div className="flex justify-between items-start">
+                            <span className="font-bold text-sm sm:text-base leading-tight">
+                              {pasto.nome}
+                            </span>
+                            <Badge variant="outline" className="bg-white/50 text-[10px] px-1.5">
+                              {pasto.area}ha
+                            </Badge>
+                          </div>
+
+                          <div className="mt-4 space-y-1">
+                            {pasto.ocupanteAtual ? (
+                              <div className="flex items-center gap-1.5 text-xs font-semibold bg-white/40 px-2 py-1 rounded-md w-fit">
+                                <Beef className="h-3.5 w-3.5" /> {pasto.ocupanteAtual}
+                              </div>
+                            ) : (
+                              <div className="text-xs font-medium bg-white/40 px-2 py-1 rounded-md w-fit text-muted-foreground">
+                                Vazio ({pasto.daysOfRest} dias)
+                              </div>
+                            )}
+
+                            <div className="flex items-center justify-between mt-2">
+                              <span className="text-[10px] uppercase font-bold tracking-wider opacity-70">
+                                Lotação
+                              </span>
+                              <span
+                                className={cn(
+                                  'text-sm font-mono font-bold',
+                                  isStockingAlert ? 'text-destructive' : '',
+                                )}
+                              >
+                                {pasto.lotacaoExecutada.toFixed(1)} UA/ha
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="space-y-6">
+              {activePaddockData ? (
+                <Card className="animate-fade-in">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex justify-between items-center">
+                      Detalhes da Área
+                      <Badge>{activePaddockData.status}</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-bold text-xl">{activePaddockData.nome}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {activePaddockData.cultivar} • {activePaddockData.area} hectares
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-sm bg-muted/50 p-3 rounded-lg">
+                      <div>
+                        <span className="text-muted-foreground block text-xs">Lotação Atual</span>
+                        <span className="font-mono font-bold">
+                          {activePaddockData.lotacaoExecutada} UA/ha
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block text-xs">Lotação Alvo</span>
+                        <span className="font-mono">
+                          {activePaddockData.lotacaoProjetada} UA/ha
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block text-xs">Altura Atual</span>
+                        <span className="font-mono font-bold">
+                          {activePaddockData.alturaAtual} cm
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block text-xs">Meta Saída</span>
+                        <span className="font-mono">{activePaddockData.alturaSaidaAlvo} cm</span>
+                      </div>
+                    </div>
+
+                    <Button className="w-full gap-2">Registrar Altura de Entrada/Saída</Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="bg-muted/30 border-dashed border-2 flex items-center justify-center h-[250px]">
+                  <p className="text-muted-foreground text-sm text-center px-6">
+                    Selecione um piquete no mapa para visualizar os detalhes operacionais.
+                  </p>
+                </Card>
+              )}
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <RotateCw className="h-5 w-5 text-primary" />
+                    Cronograma de Rotação
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {rotationalSchedule.map((schedule) => (
+                      <div
+                        key={schedule.id}
+                        className="border-l-2 border-primary pl-4 py-1 relative"
+                      >
+                        <div className="absolute -left-[5px] top-2 h-2 w-2 rounded-full bg-primary" />
+                        <h5 className="font-semibold text-sm">{schedule.pastoNome}</h5>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Próx. Lote:{' '}
+                          <span className="font-medium text-foreground">{schedule.nextLot}</span> em{' '}
+                          {schedule.entryDate}
+                        </p>
+                        <div className="mt-2 flex items-center justify-between bg-muted/50 rounded px-2 py-1">
+                          <span className="text-[10px] font-medium uppercase text-muted-foreground">
+                            Descanso
+                          </span>
+                          <span
+                            className={cn(
+                              'text-xs font-bold',
+                              schedule.currentRest >= schedule.requiredRest
+                                ? 'text-green-600'
+                                : 'text-amber-600',
+                            )}
+                          >
+                            {schedule.currentRest} / {schedule.requiredRest} dias
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
 
         <TabsContent value="inventario" className="space-y-6 mt-0">
           <Card>
@@ -158,47 +341,6 @@ export default function Pastos() {
 
         <TabsContent value="manejo" className="space-y-6 mt-0">
           <ManagementTab />
-        </TabsContent>
-
-        <TabsContent value="satelite" className="space-y-6 mt-0">
-          <Card>
-            <CardHeader>
-              <CardTitle>Monitoramento Satélite (NDVI)</CardTitle>
-              <CardDescription>
-                Visualização de índices de vegetação e saúde das pastagens da propriedade.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-0 sm:px-6 pb-6">
-              <div className="relative w-full aspect-video sm:h-[500px] bg-muted rounded-xl overflow-hidden border mx-auto">
-                <img
-                  src="https://img.usecurling.com/p/1200/800?q=farm%20satellite%20fields&color=green"
-                  className="w-full h-full object-cover opacity-80"
-                  alt="Farm Satellite Map"
-                />
-
-                <div className="absolute top-[20%] left-[20%] w-[30%] h-[40%] bg-green-500/30 border-2 border-green-500 rounded-bl-3xl flex items-center justify-center backdrop-blur-[2px] hover:bg-green-500/50 transition-colors cursor-pointer group">
-                  <div className="bg-background/90 px-3 py-1.5 rounded-md shadow-sm text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-sm font-bold">Pasto 01</p>
-                    <p className="text-xs text-muted-foreground">NDVI: 0.75</p>
-                  </div>
-                </div>
-
-                <div className="absolute top-[30%] right-[15%] w-[25%] h-[35%] bg-red-500/30 border-2 border-red-500 rounded-tr-2xl flex items-center justify-center backdrop-blur-[2px] hover:bg-red-500/50 transition-colors cursor-pointer group">
-                  <div className="bg-background/90 px-3 py-1.5 rounded-md shadow-sm text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-sm font-bold">Pasto 02</p>
-                    <p className="text-xs text-destructive font-medium">NDVI: 0.45 (Alerta)</p>
-                  </div>
-                </div>
-
-                <div className="absolute bottom-[10%] left-[40%] w-[20%] h-[30%] bg-emerald-500/30 border-2 border-emerald-500 rounded-t-xl flex items-center justify-center backdrop-blur-[2px] hover:bg-emerald-500/50 transition-colors cursor-pointer group">
-                  <div className="bg-background/90 px-3 py-1.5 rounded-md shadow-sm text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-sm font-bold">Pasto 03 (Vedado)</p>
-                    <p className="text-xs text-muted-foreground">NDVI: 0.82</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
       </Tabs>
     </div>

@@ -24,6 +24,7 @@ import {
   BrainCircuit,
   Syringe,
   ShieldCheck,
+  Building2,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -41,6 +42,7 @@ const navItems = [
   { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
   { title: 'Relatórios', icon: FileText, url: '/relatorios' },
   { title: 'Equipe & Acessos', icon: ShieldCheck, url: '/equipe' },
+  { title: 'Administrativo', icon: Building2, url: '/administrativo' },
 ]
 
 export function AppSidebar() {
