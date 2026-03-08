@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Select,
@@ -9,8 +9,10 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { biMetricsList, defaultSavedReports } from '@/data/mock'
+import { biMetricsList, defaultSavedReports, biData } from '@/data/mock'
 import { DynamicBIChart } from '@/components/charts/DynamicBIChart'
+import { ExportMenu } from '@/components/ExportMenu'
+import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
 import { Save, Bookmark } from 'lucide-react'
 
 export default function BI() {
@@ -41,9 +43,32 @@ export default function BI() {
     })
   }
 
+  const filteredData = useMemo(() => {
+    if (dateRange === 'ultimos_6') return biData.slice(-6)
+    if (dateRange === 'este_ano') return biData.slice(-3) // Mocking different timeframe
+    return biData
+  }, [dateRange])
+
+  const handleExportCSV = () => {
+    const metric1Name = biMetricsList.find((m) => m.id === m1)?.name || m1
+    const metric2Name = biMetricsList.find((m) => m.id === m2)?.name || m2
+
+    const csvData = filteredData.map((d) => ({
+      Período: d.period,
+      [metric1Name]: d[m1 as keyof typeof d],
+      [metric2Name]: d[m2 as keyof typeof d],
+    }))
+    downloadCSV(csvData, `bi_report_${m1}_${m2}`)
+
+    toast({
+      title: 'Exportação Concluída',
+      description: 'O arquivo Excel (CSV) foi baixado com sucesso.',
+    })
+  }
+
   return (
-    <div className="space-y-6 animate-fade-in-up pb-20 sm:pb-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-6 animate-fade-in-up pb-20 sm:pb-6 print:pb-0 print:space-y-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             BI & Relatórios Dinâmicos
@@ -57,8 +82,8 @@ export default function BI() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-4">
-        <div className="md:col-span-1 space-y-6">
+      <div className="grid gap-6 md:grid-cols-4 print:grid-cols-1 print:gap-2">
+        <div className="md:col-span-1 space-y-6 print:hidden">
           <Card>
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Configurar Eixos</CardTitle>
@@ -131,15 +156,20 @@ export default function BI() {
         </div>
 
         <div className="md:col-span-3">
-          <Card className="h-full flex flex-col min-h-[500px]">
-            <CardHeader>
-              <CardTitle>Gráfico Comparativo</CardTitle>
-              <CardDescription>
-                Análise temporal cruzada interagindo indicadores de custo e produção.
-              </CardDescription>
+          <Card className="h-full flex flex-col min-h-[500px] print:min-h-[auto] print:border-none print:shadow-none">
+            <CardHeader className="flex flex-row items-start justify-between">
+              <div>
+                <CardTitle>Gráfico Comparativo</CardTitle>
+                <CardDescription>
+                  Análise temporal cruzada interagindo indicadores de custo e produção.
+                </CardDescription>
+              </div>
+              <div className="print:hidden">
+                <ExportMenu onExportCSV={handleExportCSV} onExportPDF={triggerPDFPrint} />
+              </div>
             </CardHeader>
             <CardContent className="flex-1 pb-4">
-              <DynamicBIChart m1={m1} m2={m2} />
+              <DynamicBIChart m1={m1} m2={m2} data={filteredData} />
             </CardContent>
           </Card>
         </div>

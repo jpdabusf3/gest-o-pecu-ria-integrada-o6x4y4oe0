@@ -64489,18 +64489,18 @@ const marketIndicators = [
 		change: "-0.5%"
 	},
 	{
-		id: "novilha-sp",
-		label: "Novilha Gorda - SP",
+		id: "novilha-mt",
+		label: "Novilha Gorda - MT",
 		source: "Datagro",
-		price: 235,
+		price: 228,
 		trend: "up",
 		change: "+1.0%"
 	},
 	{
-		id: "vaca-sp",
-		label: "Vaca Gorda - SP",
+		id: "vaca-mt",
+		label: "Vaca Gorda - MT",
 		source: "Datagro",
-		price: 220,
+		price: 215,
 		trend: "stable",
 		change: "0.0%"
 	}
@@ -64508,41 +64508,41 @@ const marketIndicators = [
 const replacementIndicators = [
 	{
 		id: "rep-boi-magro",
-		label: "Boi Magro (12@)",
+		label: "Boi Magro (12@) - MT",
 		source: "Datagro",
-		price: 3100,
+		price: 2900,
 		trend: "up",
 		change: "+2.0%"
 	},
 	{
 		id: "rep-garrote",
-		label: "Garrote (9,5@)",
+		label: "Garrote (9,5@) - MT",
 		source: "Datagro",
-		price: 2500,
+		price: 2350,
 		trend: "up",
 		change: "+1.5%"
 	},
 	{
 		id: "rep-bezerro",
-		label: "Bezerro (8 a 12m)",
+		label: "Bezerro (8 a 12m) - MT",
 		source: "Datagro",
-		price: 2200,
+		price: 2050,
 		trend: "stable",
 		change: "0.0%"
 	},
 	{
 		id: "rep-novilha",
-		label: "Novilha (13 a 18m)",
+		label: "Novilha (13 a 18m) - MT",
 		source: "Datagro",
-		price: 2100,
+		price: 1950,
 		trend: "down",
 		change: "-1.0%"
 	},
 	{
 		id: "rep-bezerra",
-		label: "Bezerra (8 a 12m)",
+		label: "Bezerra (8 a 12m) - MT",
 		source: "Datagro",
-		price: 1800,
+		price: 1650,
 		trend: "stable",
 		change: "0.0%"
 	}
@@ -65432,11 +65432,59 @@ function GpbBalizadorButton() {
 		})]
 	});
 }
+function ExportMenu({ onExportCSV, onExportPDF, className, label = "Exportar" }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+		asChild: true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+			variant: "outline",
+			size: "sm",
+			className,
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "mr-2 h-4 w-4" }), label]
+		})
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+		align: "end",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+			onClick: onExportPDF,
+			className: "cursor-pointer",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "mr-2 h-4 w-4 text-rose-500" }), "Exportar para PDF"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+			onClick: onExportCSV,
+			className: "cursor-pointer",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "mr-2 h-4 w-4 text-emerald-500" }), "Exportar para Excel (CSV)"]
+		})]
+	})] });
+}
+function downloadCSV(data, filename) {
+	if (!data || data.length === 0) return;
+	const headers = Object.keys(data[0]);
+	const csvContent = [headers.join(","), ...data.map((row) => headers.map((header) => {
+		const val = row[header];
+		if (typeof val === "string") return `"${val.replace(/"/g, "\"\"")}"`;
+		return val !== null && val !== void 0 ? val : "";
+	}).join(","))].join("\n");
+	const blob = new Blob([new Uint8Array([
+		239,
+		187,
+		191
+	]), csvContent], { type: "text/csv;charset=utf-8;" });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = `${filename}.csv`;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+	URL.revokeObjectURL(url);
+}
+function triggerPDFPrint() {
+	window.print();
+}
 function ProjecaoVendas() {
-	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("sp");
-	const [selectedMarketLabel, setSelectedMarketLabel] = (0, import_react.useState)("Boi Gordo - SP");
-	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(245.5);
+	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("mt");
+	const [selectedMarketLabel, setSelectedMarketLabel] = (0, import_react.useState)("Boi Gordo - MT");
+	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(238);
 	const [targetWeight, setTargetWeight] = (0, import_react.useState)(540);
+	const { toast: toast$2 } = useToast();
 	const activeLabel = (0, import_react.useMemo)(() => selectedMarketId ? selectedMarketLabel : "Valor Manual Customizado", [selectedMarketId, selectedMarketLabel]);
 	const activeTrend = (0, import_react.useMemo)(() => {
 		if (!selectedMarketId) return "stable";
@@ -65489,32 +65537,54 @@ function ProjecaoVendas() {
 		activeTrend
 	]);
 	const totalProjNetProfit = projections.reduce((a$1, c$1) => a$1 + c$1.netProfitHead * c$1.cabecas, 0);
+	const handleExportCSV = () => {
+		downloadCSV(projections.map((p) => ({
+			Lote: p.id,
+			Origem: p.origin,
+			Categoria: p.categoria,
+			Cabeças: p.cabecas,
+			"Peso Médio (kg)": p.pesoMedio,
+			"GMD (kg/dia)": p.gmd,
+			"Dias p/ Abate": p.daysNeeded,
+			"Ação Recomendada": p.rec,
+			"Custo Proj. Total/Cab (R$)": p.totalCostHead.toFixed(2),
+			"Lucro Líq. Proj/Cab (R$)": p.netProfitHead.toFixed(2),
+			"Receita Bruta Total (R$)": p.projRevenue.toFixed(2)
+		})), "projecao_vendas_inteligencia");
+		toast$2({
+			title: "Exportação Concluída",
+			description: "Relatório de Inteligência de Vendas exportado com sucesso."
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up pb-8",
+		className: "space-y-6 animate-fade-in-up pb-8 print:pb-0",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Inteligência de Vendas"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Projeções integrando GMD, custos totais e tendências de mercado e reposição."
+					children: "Projeções integrando GMD, custos totais e tendências de mercado (Foco MT)."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-wrap items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GpbBalizadorButton, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceAlertModal, {})]
 				})]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketIndicators, {
-				selectedId: selectedMarketId,
-				onSelect: (id, price, label) => {
-					setSelectedMarketId(id);
-					setArrobaPrice(price);
-					setSelectedMarketLabel(label);
-				}
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "print:hidden",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketIndicators, {
+					selectedId: selectedMarketId,
+					onSelect: (id, price, label) => {
+						setSelectedMarketId(id);
+						setArrobaPrice(price);
+						setSelectedMarketLabel(label);
+					}
+				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6",
+				className: "grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 print:hidden",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReplacementFilter, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CommoditiesQuotes, {}),
@@ -65525,65 +65595,71 @@ function ProjecaoVendas() {
 					} })
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketTrendsChart, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "print:hidden",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketTrendsChart, {})
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 sm:grid-cols-3",
+				className: "grid gap-4 sm:grid-cols-3 print:grid-cols-3",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "bg-primary/5 border-primary/20 shadow-sm",
+						className: "bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 							className: "pb-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 								className: "text-sm font-medium text-primary flex items-center justify-between",
 								children: ["Preço Base da Arroba (R$)", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 									variant: "outline",
-									className: "text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate",
+									className: "text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate print:border print:bg-transparent",
 									children: activeLabel
 								})]
 							})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-primary print:hidden" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 								type: "number",
 								value: arrobaPrice,
 								onChange: (e) => {
 									setArrobaPrice(Number(e.target.value));
 									setSelectedMarketId(null);
 								},
-								className: "text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner"
+								className: "text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-primary/70 mt-2 font-medium",
+							className: "text-xs text-primary/70 mt-2 font-medium print:hidden",
 							children: "Usado para cálculo da receita projetada"
 						})] })]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-						className: "pb-2",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							className: "text-sm font-medium text-muted-foreground",
-							children: "Peso Alvo p/ Abate (kg)"
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							type: "number",
-							value: targetWeight,
-							onChange: (e) => setTargetWeight(Number(e.target.value)),
-							className: "text-2xl font-bold h-12 w-32 shadow-sm"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "text-muted-foreground font-medium flex-1",
-							children: [
-								"≈ ",
-								(targetWeight / 30).toFixed(1),
-								" @"
-							]
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-xs text-muted-foreground mt-2",
-						children: "Meta desejada por animal"
-					})] })] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "bg-emerald-500/10 border-emerald-500/20 shadow-sm",
+						className: "print:border print:shadow-none print:bg-transparent",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+							className: "pb-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+								className: "text-sm font-medium text-muted-foreground",
+								children: "Peso Alvo p/ Abate (kg)"
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: targetWeight,
+								onChange: (e) => setTargetWeight(Number(e.target.value)),
+								className: "text-2xl font-bold h-12 w-32 shadow-sm print:border-none print:shadow-none print:p-0"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "text-muted-foreground font-medium flex-1",
+								children: [
+									"≈ ",
+									(targetWeight / 30).toFixed(1),
+									" @"
+								]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground mt-2 print:hidden",
+							children: "Meta desejada por animal"
+						})] })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 							className: "pb-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
@@ -65601,82 +65677,101 @@ function ProjecaoVendas() {
 								})
 							]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium",
+							className: "text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden",
 							children: "Receita deduzida de custos de nutrição e mão de obra"
 						})] })]
 					})
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel Analítico de Oportunidades de Venda" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e cotações." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-				className: "px-0 sm:px-6 overflow-x-auto",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote / Origem" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-center",
-						children: "Janela Ideal / Ação"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Custos Proj. / Cab."
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right text-primary",
-						children: "Lucro Líq. / Cab."
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right font-bold text-primary",
-						children: "Receita Bruta Total"
-					})
-				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: projections.map((p, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "font-medium text-primary",
-						children: [
-							p.id,
-							" ",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "text-xs font-normal text-muted-foreground",
-								children: [
-									"(",
-									p.cabecas,
-									" cab.)"
-								]
-							})
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-xs text-muted-foreground flex items-center mt-1 gap-1",
-						children: [
-							p.pesoMedio,
-							"kg • ",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3 text-emerald-500" }),
-							" ",
-							p.gmd,
-							"kg/dia"
-						]
-					})] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-center",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: cn("text-xs font-semibold whitespace-nowrap", p.color),
-							children: p.rec
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3" }), p.daysNeeded === 0 ? "Disponível" : `Em ${p.daysNeeded} d`]
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "print:border-none print:shadow-none",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row items-start justify-between",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel Analítico de Oportunidades de Venda" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+							className: "print:hidden",
+							children: "Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e cotações."
 						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right text-destructive font-medium whitespace-nowrap",
-						children: ["- R$ ", p.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right font-bold text-primary whitespace-nowrap",
-						children: ["R$ ", p.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right font-bold text-primary whitespace-nowrap text-base",
-						children: ["R$ ", p.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
-					})
-				] }, idx)) })] })
-			})] })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "print:hidden",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+							onExportCSV: handleExportCSV,
+							onExportPDF: triggerPDFPrint
+						})
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "px-0 sm:px-6 overflow-x-auto print:px-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote / Origem" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-center",
+							children: "Janela Ideal / Ação"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Custos Proj. / Cab."
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right text-primary",
+							children: "Lucro Líq. / Cab."
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right font-bold text-primary",
+							children: "Receita Bruta Total"
+						})
+					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: projections.map((p, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "font-medium text-primary",
+							children: [
+								p.id,
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "text-xs font-normal text-muted-foreground",
+									children: [
+										"(",
+										p.cabecas,
+										" cab.)"
+									]
+								})
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-xs text-muted-foreground flex items-center mt-1 gap-1",
+							children: [
+								p.pesoMedio,
+								"kg •",
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3 text-emerald-500 print:hidden" }),
+								" ",
+								p.gmd,
+								"kg/dia"
+							]
+						})] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: "text-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: cn("text-xs font-semibold whitespace-nowrap", p.color),
+								children: p.rec
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3 print:hidden" }), p.daysNeeded === 0 ? "Disponível" : `Em ${p.daysNeeded} d`]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: "text-right text-destructive font-medium whitespace-nowrap",
+							children: ["- R$ ", p.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: "text-right font-bold text-primary whitespace-nowrap",
+							children: ["R$ ", p.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: "text-right font-bold text-primary whitespace-nowrap text-base",
+							children: ["R$ ", p.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+						})
+					] }, idx)) })] })
+				})]
+			})
 		]
 	});
 }
@@ -66487,7 +66582,7 @@ function Tarefas() {
 		]
 	});
 }
-function DynamicBIChart({ m1, m2 }) {
+function DynamicBIChart({ m1, m2, data }) {
 	const metric1 = biMetricsList.find((m) => m.id === m1);
 	const metric2 = biMetricsList.find((m) => m.id === m2);
 	const chartConfig$2 = (0, import_react.useMemo)(() => {
@@ -66508,12 +66603,12 @@ function DynamicBIChart({ m1, m2 }) {
 		metric1,
 		metric2
 	]);
-	if (!metric1 || !metric2) return null;
+	if (!metric1 || !metric2 || !data || data.length === 0) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
 		config: chartConfig$2,
 		className: "h-full w-full min-h-[400px]",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ComposedChart, {
-			data: biData,
+			data,
 			margin: {
 				top: 20,
 				right: 20,
@@ -66606,10 +66701,28 @@ function BI() {
 			description: "Os eixos do gráfico foram atualizados."
 		});
 	};
+	const filteredData = (0, import_react.useMemo)(() => {
+		if (dateRange === "ultimos_6") return biData.slice(-6);
+		if (dateRange === "este_ano") return biData.slice(-3);
+		return biData;
+	}, [dateRange]);
+	const handleExportCSV = () => {
+		const metric1Name = biMetricsList.find((m) => m.id === m1)?.name || m1;
+		const metric2Name = biMetricsList.find((m) => m.id === m2)?.name || m2;
+		downloadCSV(filteredData.map((d) => ({
+			Período: d.period,
+			[metric1Name]: d[m1],
+			[metric2Name]: d[m2]
+		})), `bi_report_${m1}_${m2}`);
+		toast$2({
+			title: "Exportação Concluída",
+			description: "O arquivo Excel (CSV) foi baixado com sucesso."
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up pb-20 sm:pb-6",
+		className: "space-y-6 animate-fade-in-up pb-20 sm:pb-6 print:pb-0 print:space-y-2",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 				className: "text-3xl font-bold tracking-tight text-foreground",
 				children: "BI & Relatórios Dinâmicos"
@@ -66622,9 +66735,9 @@ function BI() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Visão"]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid gap-6 md:grid-cols-4",
+			className: "grid gap-6 md:grid-cols-4 print:grid-cols-1 print:gap-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "md:col-span-1 space-y-6",
+				className: "md:col-span-1 space-y-6 print:hidden",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 					className: "pb-4",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
@@ -66709,12 +66822,22 @@ function BI() {
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "md:col-span-3",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-					className: "h-full flex flex-col min-h-[500px]",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Gráfico Comparativo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise temporal cruzada interagindo indicadores de custo e produção." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "h-full flex flex-col min-h-[500px] print:min-h-[auto] print:border-none print:shadow-none",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+						className: "flex flex-row items-start justify-between",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Gráfico Comparativo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise temporal cruzada interagindo indicadores de custo e produção." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "print:hidden",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+								onExportCSV: handleExportCSV,
+								onExportPDF: triggerPDFPrint
+							})
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 						className: "flex-1 pb-4",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DynamicBIChart, {
 							m1,
-							m2
+							m2,
+							data: filteredData
 						})
 					})]
 				})
@@ -66839,4 +66962,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Ckhw5THl.js.map
+//# sourceMappingURL=index-bvt6e7S_.js.map

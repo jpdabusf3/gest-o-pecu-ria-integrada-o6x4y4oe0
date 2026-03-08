@@ -7,9 +7,15 @@ import {
   ChartLegendContent,
 } from '@/components/ui/chart'
 import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
-import { biData, biMetricsList } from '@/data/mock'
+import { biMetricsList } from '@/data/mock'
 
-export function DynamicBIChart({ m1, m2 }: { m1: string; m2: string }) {
+interface DynamicBIChartProps {
+  m1: string
+  m2: string
+  data: any[]
+}
+
+export function DynamicBIChart({ m1, m2, data }: DynamicBIChartProps) {
   const metric1 = biMetricsList.find((m) => m.id === m1)
   const metric2 = biMetricsList.find((m) => m.id === m2)
 
@@ -21,11 +27,11 @@ export function DynamicBIChart({ m1, m2 }: { m1: string; m2: string }) {
     }
   }, [m1, m2, metric1, metric2])
 
-  if (!metric1 || !metric2) return null
+  if (!metric1 || !metric2 || !data || data.length === 0) return null
 
   return (
     <ChartContainer config={chartConfig} className="h-full w-full min-h-[400px]">
-      <ComposedChart data={biData} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+      <ComposedChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <XAxis dataKey="period" tickLine={false} axisLine={false} tickMargin={8} />
         <YAxis

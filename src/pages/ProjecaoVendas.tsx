@@ -20,13 +20,17 @@ import { ReplacementFilter } from '@/components/ReplacementFilter'
 import { CommoditiesQuotes } from '@/components/CommoditiesQuotes'
 import { B3FuturesSelector } from '@/components/B3FuturesSelector'
 import { GpbBalizadorButton } from '@/components/GpbBalizadorButton'
+import { ExportMenu } from '@/components/ExportMenu'
+import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
+import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
-  const [selectedMarketId, setSelectedMarketId] = useState<string | null>('sp')
-  const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - SP')
-  const [arrobaPrice, setArrobaPrice] = useState<number>(245.5)
+  const [selectedMarketId, setSelectedMarketId] = useState<string | null>('mt')
+  const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - MT')
+  const [arrobaPrice, setArrobaPrice] = useState<number>(238.0)
   const [targetWeight, setTargetWeight] = useState<number>(540)
+  const { toast } = useToast()
 
   const activeLabel = useMemo(
     () => (selectedMarketId ? selectedMarketLabel : 'Valor Manual Customizado'),
@@ -100,15 +104,36 @@ export default function ProjecaoVendas() {
 
   const totalProjNetProfit = projections.reduce((a, c) => a + c.netProfitHead * c.cabecas, 0)
 
+  const handleExportCSV = () => {
+    const csvData = projections.map((p) => ({
+      Lote: p.id,
+      Origem: p.origin,
+      Categoria: p.categoria,
+      Cabeças: p.cabecas,
+      'Peso Médio (kg)': p.pesoMedio,
+      'GMD (kg/dia)': p.gmd,
+      'Dias p/ Abate': p.daysNeeded,
+      'Ação Recomendada': p.rec,
+      'Custo Proj. Total/Cab (R$)': p.totalCostHead.toFixed(2),
+      'Lucro Líq. Proj/Cab (R$)': p.netProfitHead.toFixed(2),
+      'Receita Bruta Total (R$)': p.projRevenue.toFixed(2),
+    }))
+    downloadCSV(csvData, 'projecao_vendas_inteligencia')
+    toast({
+      title: 'Exportação Concluída',
+      description: 'Relatório de Inteligência de Vendas exportado com sucesso.',
+    })
+  }
+
   return (
-    <div className="space-y-6 animate-fade-in-up pb-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-6 animate-fade-in-up pb-8 print:pb-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden">
         <div>
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
             <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas
           </h2>
           <p className="text-muted-foreground mt-1">
-            Projeções integrando GMD, custos totais e tendências de mercado e reposição.
+            Projeções integrando GMD, custos totais e tendências de mercado (Foco MT).
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -117,16 +142,18 @@ export default function ProjecaoVendas() {
         </div>
       </div>
 
-      <MarketIndicators
-        selectedId={selectedMarketId}
-        onSelect={(id, price, label) => {
-          setSelectedMarketId(id)
-          setArrobaPrice(price)
-          setSelectedMarketLabel(label)
-        }}
-      />
+      <div className="print:hidden">
+        <MarketIndicators
+          selectedId={selectedMarketId}
+          onSelect={(id, price, label) => {
+            setSelectedMarketId(id)
+            setArrobaPrice(price)
+            setSelectedMarketLabel(label)
+          }}
+        />
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 print:hidden">
         <ReplacementFilter />
         <CommoditiesQuotes />
         <B3FuturesSelector
@@ -138,16 +165,18 @@ export default function ProjecaoVendas() {
         />
       </div>
 
-      <MarketTrendsChart />
+      <div className="print:hidden">
+        <MarketTrendsChart />
+      </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="bg-primary/5 border-primary/20 shadow-sm">
+      <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3">
+        <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-primary flex items-center justify-between">
               Preço Base da Arroba (R$)
               <Badge
                 variant="outline"
-                className="text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate"
+                className="text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate print:border print:bg-transparent"
               >
                 {activeLabel}
               </Badge>
@@ -155,7 +184,7 @@ export default function ProjecaoVendas() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-primary" />
+              <DollarSign className="h-5 w-5 text-primary print:hidden" />
               <Input
                 type="number"
                 value={arrobaPrice}
@@ -163,16 +192,16 @@ export default function ProjecaoVendas() {
                   setArrobaPrice(Number(e.target.value))
                   setSelectedMarketId(null)
                 }}
-                className="text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner"
+                className="text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0"
               />
             </div>
-            <p className="text-xs text-primary/70 mt-2 font-medium">
+            <p className="text-xs text-primary/70 mt-2 font-medium print:hidden">
               Usado para cálculo da receita projetada
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="print:border print:shadow-none print:bg-transparent">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Peso Alvo p/ Abate (kg)
@@ -184,17 +213,19 @@ export default function ProjecaoVendas() {
                 type="number"
                 value={targetWeight}
                 onChange={(e) => setTargetWeight(Number(e.target.value))}
-                className="text-2xl font-bold h-12 w-32 shadow-sm"
+                className="text-2xl font-bold h-12 w-32 shadow-sm print:border-none print:shadow-none print:p-0"
               />
               <span className="text-muted-foreground font-medium flex-1">
                 ≈ {(targetWeight / 30).toFixed(1)} @
               </span>
             </div>
-            <p className="text-xs text-muted-foreground mt-2">Meta desejada por animal</p>
+            <p className="text-xs text-muted-foreground mt-2 print:hidden">
+              Meta desejada por animal
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm">
+        <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-500">
               Lucro Líquido Global Proj.
@@ -208,22 +239,27 @@ export default function ProjecaoVendas() {
                 maximumFractionDigits: 2,
               })}
             </div>
-            <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium">
+            <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden">
               Receita deduzida de custos de nutrição e mão de obra
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>
-          <CardDescription>
-            Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e
-            cotações.
-          </CardDescription>
+      <Card className="print:border-none print:shadow-none">
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div className="space-y-1">
+            <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>
+            <CardDescription className="print:hidden">
+              Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e
+              cotações.
+            </CardDescription>
+          </div>
+          <div className="print:hidden">
+            <ExportMenu onExportCSV={handleExportCSV} onExportPDF={triggerPDFPrint} />
+          </div>
         </CardHeader>
-        <CardContent className="px-0 sm:px-6 overflow-x-auto">
+        <CardContent className="px-0 sm:px-6 overflow-x-auto print:px-0">
           <Table>
             <TableHeader>
               <TableRow>
@@ -247,7 +283,8 @@ export default function ProjecaoVendas() {
                       </span>
                     </div>
                     <div className="text-xs text-muted-foreground flex items-center mt-1 gap-1">
-                      {p.pesoMedio}kg • <TrendingUp className="h-3 w-3 text-emerald-500" /> {p.gmd}
+                      {p.pesoMedio}kg •{' '}
+                      <TrendingUp className="h-3 w-3 text-emerald-500 print:hidden" /> {p.gmd}
                       kg/dia
                     </div>
                   </TableCell>
@@ -256,7 +293,7 @@ export default function ProjecaoVendas() {
                       {p.rec}
                     </div>
                     <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1">
-                      <CalendarIcon className="h-3 w-3" />
+                      <CalendarIcon className="h-3 w-3 print:hidden" />
                       {p.daysNeeded === 0 ? 'Disponível' : `Em ${p.daysNeeded} d`}
                     </div>
                   </TableCell>
