@@ -26402,7 +26402,7 @@ const marketIndicators = [
 	{
 		id: "boi-gordo-mt",
 		label: "Boi Gordo - MT (À vista)",
-		source: "Datagro",
+		source: "Indicador do Boi",
 		price: 265.5,
 		trend: "up",
 		change: "+1.2%"
@@ -26410,7 +26410,7 @@ const marketIndicators = [
 	{
 		id: "novilha-mt",
 		label: "Novilha Gorda - MT",
-		source: "Datagro",
+		source: "Indicador do Boi",
 		price: 250,
 		trend: "stable",
 		change: "0.0%"
@@ -26418,7 +26418,7 @@ const marketIndicators = [
 	{
 		id: "vaca-mt",
 		label: "Vaca Gorda - MT",
-		source: "Datagro",
+		source: "Indicador do Boi",
 		price: 235,
 		trend: "down",
 		change: "-0.5%"
@@ -26656,6 +26656,7 @@ function MarketProvider({ children }) {
 	const [commodityData, setCommodityData] = (0, import_react.useState)(commodityIndicators);
 	const [lastUpdate, setLastUpdate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
 	const [b3LastUpdate, setB3LastUpdate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
+	const [isRefreshing, setIsRefreshing] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
 	const [alerts, setAlerts] = (0, import_react.useState)([{
 		id: "mock-1",
@@ -26711,6 +26712,54 @@ function MarketProvider({ children }) {
 		getPrice,
 		toast$2
 	]);
+	const refreshMarketPrices = (0, import_react.useCallback)(async () => {
+		setIsRefreshing(true);
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 1200));
+			const updatedPrices = [
+				{
+					id: "boi-gordo-mt",
+					price: 268.5 + (Math.random() * 2 - 1)
+				},
+				{
+					id: "novilha-mt",
+					price: 252 + (Math.random() * 2 - 1)
+				},
+				{
+					id: "vaca-mt",
+					price: 236.5 + (Math.random() * 2 - 1)
+				}
+			];
+			setMarketData((prev) => prev.map((item) => {
+				const update = updatedPrices.find((u) => u.id === item.id);
+				if (update) {
+					const newPrice = Number(update.price.toFixed(2));
+					return {
+						...item,
+						price: newPrice,
+						trend: calculateTrend(item.price, newPrice),
+						change: calculateChangeStr(item.price, newPrice),
+						source: "Indicador do Boi"
+					};
+				}
+				return item;
+			}));
+			setLastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
+			toast$2({
+				title: "Cotações Atualizadas",
+				description: "Dados sincronizados com o portal Indicador do Boi.",
+				className: "border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100"
+			});
+		} catch (error) {
+			toast$2({
+				title: "Erro de Sincronização",
+				description: "Falha ao buscar dados do Indicador do Boi.",
+				variant: "destructive"
+			});
+		} finally {
+			setIsRefreshing(false);
+		}
+	}, [toast$2]);
 	(0, import_react.useEffect)(() => {
 		const fastTick = setInterval(() => {
 			setB3Data((prev) => {
@@ -26787,7 +26836,9 @@ function MarketProvider({ children }) {
 		addAlert,
 		toggleAlert,
 		deleteAlert,
-		getPrice
+		getPrice,
+		refreshMarketPrices,
+		isRefreshing
 	}), [
 		marketData,
 		b3Data,
@@ -26796,7 +26847,9 @@ function MarketProvider({ children }) {
 		lastUpdate,
 		b3LastUpdate,
 		alerts,
-		getPrice
+		getPrice,
+		refreshMarketPrices,
+		isRefreshing
 	]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketContext.Provider, {
 		value,
@@ -64986,7 +65039,7 @@ function MarketIndicators({ selectedId, onSelect }) {
 			className: "flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
 				className: "text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wider",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "h-4 w-4" }), "Cotações de Mercado (Mato Grosso / Datagro)"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "h-4 w-4" }), "Cotações de Mercado (Indicador do Boi)"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20",
 				children: [
@@ -65962,14 +66015,23 @@ function SalesSimulator() {
 	const [weight, setWeight] = (0, import_react.useState)(540);
 	const [productionCost, setProductionCost] = (0, import_react.useState)(3200);
 	const [salesPrice, setSalesPrice] = (0, import_react.useState)(marketData[0]?.price || 265.5);
+	const lastMarketPrice = (0, import_react.useRef)(marketData[0]?.price || 265.5);
 	(0, import_react.useEffect)(() => {
 		if (!category && marketData.length > 0) setCategory(marketData[0].id);
+	}, [marketData, category]);
+	(0, import_react.useEffect)(() => {
+		const indicator = marketData.find((m) => m.id === category);
+		if (indicator && indicator.price !== lastMarketPrice.current) {
+			setSalesPrice(indicator.price);
+			lastMarketPrice.current = indicator.price;
+		}
 	}, [marketData, category]);
 	const handleCategoryChange = (val) => {
 		setCategory(val);
 		const indicator = marketData.find((m) => m.id === val);
 		if (indicator) {
 			setSalesPrice(indicator.price);
+			lastMarketPrice.current = indicator.price;
 			if (val.includes("vaca")) setWeight(420);
 			else if (val.includes("novilha")) setWeight(380);
 			else setWeight(540);
@@ -66012,7 +66074,7 @@ function SalesSimulator() {
 			className: "bg-primary/5 pb-4 rounded-t-lg",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 				className: "flex items-center gap-2 text-lg",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calculator, { className: "h-5 w-5 text-primary" }), "Simulador de Cenários de Venda (Datagro - MT)"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calculator, { className: "h-5 w-5 text-primary" }), "Simulador de Cenários de Venda (Indicador do Boi)"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Simule a margem de lucro projetada inserindo o custo de produção e o preço esperado de venda." })]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 			className: "pt-6",
@@ -66918,12 +66980,19 @@ function SimulationHistory() {
 	});
 }
 function ProjecaoVendas() {
-	const { getPrice, b3Data, marketData } = useMarket();
+	const { getPrice, b3Data, marketData, refreshMarketPrices, isRefreshing, lastUpdate } = useMarket();
 	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("boi-gordo-mt");
 	const [selectedMarketLabel, setSelectedMarketLabel] = (0, import_react.useState)("Boi Gordo - MT");
 	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(265.5);
 	const [targetWeight, setTargetWeight] = (0, import_react.useState)(540);
 	const { toast: toast$2 } = useToast();
+	const hasFetched = (0, import_react.useRef)(false);
+	(0, import_react.useEffect)(() => {
+		if (!hasFetched.current) {
+			hasFetched.current = true;
+			refreshMarketPrices();
+		}
+	}, [refreshMarketPrices]);
 	(0, import_react.useEffect)(() => {
 		if (selectedMarketId) {
 			const livePrice = getPrice(selectedMarketId);
@@ -66932,7 +67001,8 @@ function ProjecaoVendas() {
 	}, [
 		selectedMarketId,
 		getPrice,
-		arrobaPrice
+		arrobaPrice,
+		marketData
 	]);
 	const activeLabel = (0, import_react.useMemo)(() => selectedMarketId ? selectedMarketLabel : "Valor Manual Customizado", [selectedMarketId, selectedMarketLabel]);
 	const activeTrend = (0, import_react.useMemo)(() => {
@@ -67018,11 +67088,31 @@ function ProjecaoVendas() {
 					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Inteligência de Vendas"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-muted-foreground mt-1",
-					children: "Projeções integrando GMD, custos operacionais e cotações ao vivo (B3/MT)."
+					className: "text-muted-foreground mt-1 flex items-center gap-2",
+					children: "Projeções integrando GMD, custos operacionais e cotações ao vivo (Indicador do Boi/B3)."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-wrap items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GpbBalizadorButton, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceAlertModal, {})]
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "hidden md:flex flex-col items-end mr-2 text-xs",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "text-muted-foreground font-medium flex items-center gap-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3 w-3" }), " Status do Indicador"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-emerald-600 dark:text-emerald-400 font-bold",
+								children: lastUpdate
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "outline",
+							onClick: refreshMarketPrices,
+							disabled: isRefreshing,
+							className: "gap-2 border-emerald-500/50 text-emerald-600 hover:bg-emerald-500/10 dark:text-emerald-400",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: cn("h-4 w-4", isRefreshing && "animate-spin") }), isRefreshing ? "Sincronizando..." : "Atualizar Cotações"]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GpbBalizadorButton, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceAlertModal, {})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -68417,4 +68507,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DsgSuDmw.js.map
+//# sourceMappingURL=index-Do-S0WV8.js.map

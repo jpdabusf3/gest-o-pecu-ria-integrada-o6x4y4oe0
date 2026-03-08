@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -26,9 +26,19 @@ export function SalesSimulator() {
   const [productionCost, setProductionCost] = useState(3200)
   const [salesPrice, setSalesPrice] = useState(marketData[0]?.price || 265.5)
 
+  const lastMarketPrice = useRef<number>(marketData[0]?.price || 265.5)
+
   useEffect(() => {
     if (!category && marketData.length > 0) {
       setCategory(marketData[0].id)
+    }
+  }, [marketData, category])
+
+  useEffect(() => {
+    const indicator = marketData.find((m) => m.id === category)
+    if (indicator && indicator.price !== lastMarketPrice.current) {
+      setSalesPrice(indicator.price)
+      lastMarketPrice.current = indicator.price
     }
   }, [marketData, category])
 
@@ -37,6 +47,7 @@ export function SalesSimulator() {
     const indicator = marketData.find((m) => m.id === val)
     if (indicator) {
       setSalesPrice(indicator.price)
+      lastMarketPrice.current = indicator.price
       if (val.includes('vaca')) setWeight(420)
       else if (val.includes('novilha')) setWeight(380)
       else setWeight(540)
@@ -74,7 +85,7 @@ export function SalesSimulator() {
       <CardHeader className="bg-primary/5 pb-4 rounded-t-lg">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calculator className="h-5 w-5 text-primary" />
-          Simulador de Cenários de Venda (Datagro - MT)
+          Simulador de Cenários de Venda (Indicador do Boi)
         </CardTitle>
         <CardDescription>
           Simule a margem de lucro projetada inserindo o custo de produção e o preço esperado de

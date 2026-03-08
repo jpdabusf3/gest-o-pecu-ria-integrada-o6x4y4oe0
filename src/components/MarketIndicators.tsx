@@ -16,7 +16,7 @@ export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <h3 className="text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wider">
           <Database className="h-4 w-4" />
-          Cotações de Mercado (Mato Grosso / Datagro)
+          Cotações de Mercado (Indicador do Boi)
         </h3>
         <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">
           <Clock className="h-3 w-3" /> Status: Sincronizado ({lastUpdate})

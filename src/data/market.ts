@@ -13,7 +13,7 @@ export const marketIndicators: MarketIndicator[] = [
   {
     id: 'boi-gordo-mt',
     label: 'Boi Gordo - MT (À vista)',
-    source: 'Datagro',
+    source: 'Indicador do Boi',
     price: 265.5,
     trend: 'up',
     change: '+1.2%',
@@ -21,7 +21,7 @@ export const marketIndicators: MarketIndicator[] = [
   {
     id: 'novilha-mt',
     label: 'Novilha Gorda - MT',
-    source: 'Datagro',
+    source: 'Indicador do Boi',
     price: 250.0,
     trend: 'stable',
     change: '0.0%',
@@ -29,7 +29,7 @@ export const marketIndicators: MarketIndicator[] = [
   {
     id: 'vaca-mt',
     label: 'Vaca Gorda - MT',
-    source: 'Datagro',
+    source: 'Indicador do Boi',
     price: 235.0,
     trend: 'down',
     change: '-0.5%',

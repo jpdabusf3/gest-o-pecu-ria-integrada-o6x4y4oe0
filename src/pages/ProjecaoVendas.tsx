@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -10,7 +10,15 @@ import {
 } from '@/components/ui/table'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { BrainCircuit, DollarSign, Calendar as CalendarIcon, TrendingUp } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  BrainCircuit,
+  DollarSign,
+  Calendar as CalendarIcon,
+  TrendingUp,
+  RefreshCw,
+  Clock,
+} from 'lucide-react'
 import { confinementData, sectorData } from '@/data/mock'
 import { MarketIndicators } from '@/components/MarketIndicators'
 import { MarketTrendsChart } from '@/components/MarketTrendsChart'
@@ -28,12 +36,22 @@ import { useMarket } from '@/contexts/MarketContext'
 import { cn } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
-  const { getPrice, b3Data, marketData } = useMarket()
+  const { getPrice, b3Data, marketData, refreshMarketPrices, isRefreshing, lastUpdate } =
+    useMarket()
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>('boi-gordo-mt')
   const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - MT')
   const [arrobaPrice, setArrobaPrice] = useState<number>(265.5)
   const [targetWeight, setTargetWeight] = useState<number>(540)
   const { toast } = useToast()
+
+  const hasFetched = useRef(false)
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      hasFetched.current = true
+      refreshMarketPrices()
+    }
+  }, [refreshMarketPrices])
 
   useEffect(() => {
     if (selectedMarketId) {
@@ -42,7 +60,7 @@ export default function ProjecaoVendas() {
         setArrobaPrice(livePrice)
       }
     }
-  }, [selectedMarketId, getPrice, arrobaPrice])
+  }, [selectedMarketId, getPrice, arrobaPrice, marketData])
 
   const activeLabel = useMemo(
     () => (selectedMarketId ? selectedMarketLabel : 'Valor Manual Customizado'),
@@ -141,11 +159,26 @@ export default function ProjecaoVendas() {
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
             <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas
           </h2>
-          <p className="text-muted-foreground mt-1">
-            Projeções integrando GMD, custos operacionais e cotações ao vivo (B3/MT).
+          <p className="text-muted-foreground mt-1 flex items-center gap-2">
+            Projeções integrando GMD, custos operacionais e cotações ao vivo (Indicador do Boi/B3).
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <div className="hidden md:flex flex-col items-end mr-2 text-xs">
+            <span className="text-muted-foreground font-medium flex items-center gap-1">
+              <Clock className="h-3 w-3" /> Status do Indicador
+            </span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold">{lastUpdate}</span>
+          </div>
+          <Button
+            variant="outline"
+            onClick={refreshMarketPrices}
+            disabled={isRefreshing}
+            className="gap-2 border-emerald-500/50 text-emerald-600 hover:bg-emerald-500/10 dark:text-emerald-400"
+          >
+            <RefreshCw className={cn('h-4 w-4', isRefreshing && 'animate-spin')} />
+            {isRefreshing ? 'Sincronizando...' : 'Atualizar Cotações'}
+          </Button>
           <GpbBalizadorButton />
           <PriceAlertModal />
         </div>

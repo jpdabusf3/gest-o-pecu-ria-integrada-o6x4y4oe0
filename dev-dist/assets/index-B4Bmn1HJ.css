@@ -1624,6 +1624,9 @@ section[aria-label='Notifications alt+T'] {
 .border-emerald-500\/20{
   border-color: rgb(16 185 129 / 0.2);
 }
+.border-emerald-500\/50{
+  border-color: rgb(16 185 129 / 0.5);
+}
 .border-gray-100{
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));

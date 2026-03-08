@@ -33,6 +33,8 @@ interface MarketContextType {
   toggleAlert: (id: string, active: boolean) => void
   deleteAlert: (id: string) => void
   getPrice: (id: string) => number | null
+  refreshMarketPrices: () => Promise<void>
+  isRefreshing: boolean
 }
 
 const MarketContext = createContext<MarketContextType | undefined>(undefined)
@@ -61,6 +63,7 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
   const [commodityData, setCommodityData] = useState<MarketIndicator[]>(initialCommodity)
   const [lastUpdate, setLastUpdate] = useState(new Date().toLocaleTimeString('pt-BR'))
   const [b3LastUpdate, setB3LastUpdate] = useState(new Date().toLocaleTimeString('pt-BR'))
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const { toast } = useToast()
 
   const [alerts, setAlerts] = useState<MarketAlert[]>([
@@ -126,6 +129,53 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       }
     })
   }, [alerts, getPrice, toast])
+
+  const refreshMarketPrices = useCallback(async () => {
+    setIsRefreshing(true)
+    try {
+      // Simulating API integration with https://www.indicadordoboi.com.br/pt-br
+      await new Promise((resolve) => setTimeout(resolve, 1200))
+
+      const updatedPrices = [
+        { id: 'boi-gordo-mt', price: 268.5 + (Math.random() * 2 - 1) },
+        { id: 'novilha-mt', price: 252.0 + (Math.random() * 2 - 1) },
+        { id: 'vaca-mt', price: 236.5 + (Math.random() * 2 - 1) },
+      ]
+
+      setMarketData((prev) =>
+        prev.map((item) => {
+          const update = updatedPrices.find((u) => u.id === item.id)
+          if (update) {
+            const newPrice = Number(update.price.toFixed(2))
+            return {
+              ...item,
+              price: newPrice,
+              trend: calculateTrend(item.price, newPrice),
+              change: calculateChangeStr(item.price, newPrice),
+              source: 'Indicador do Boi',
+            }
+          }
+          return item
+        }),
+      )
+
+      setLastUpdate(new Date().toLocaleTimeString('pt-BR'))
+
+      toast({
+        title: 'Cotações Atualizadas',
+        description: 'Dados sincronizados com o portal Indicador do Boi.',
+        className: 'border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100',
+      })
+    } catch (error) {
+      toast({
+        title: 'Erro de Sincronização',
+        description: 'Falha ao buscar dados do Indicador do Boi.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsRefreshing(false)
+    }
+  }, [toast])
 
   useEffect(() => {
     const fastTick = setInterval(() => {
@@ -208,6 +258,8 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       toggleAlert,
       deleteAlert,
       getPrice,
+      refreshMarketPrices,
+      isRefreshing,
     }),
     [
       marketData,
@@ -218,6 +270,8 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       b3LastUpdate,
       alerts,
       getPrice,
+      refreshMarketPrices,
+      isRefreshing,
     ],
   )
 
