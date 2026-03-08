@@ -24,6 +24,7 @@ import { Label } from '@/components/ui/label'
 import { TriangleAlert, BellRing } from 'lucide-react'
 import { inventoryData } from '@/data/mock'
 import { useFarm } from '@/contexts/FarmContext'
+import useFazendaStore from '@/stores/useFazendaStore'
 
 function EditThresholdModal({ item, updateMinThreshold }: { item: any; updateMinThreshold: any }) {
   const [open, setOpen] = useState(false)
@@ -69,6 +70,7 @@ function EditThresholdModal({ item, updateMinThreshold }: { item: any; updateMin
 
 export default function Estoque() {
   const { inventory, updateMinThreshold } = useFarm()
+  const { fazendas, updateFazenda } = useFazendaStore()
   const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd)
 
   const renderGenericTable = (items: any[]) => (
@@ -115,44 +117,43 @@ export default function Estoque() {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Estoque & Insumos</h2>
         <p className="text-muted-foreground mt-1">
-          Gestão de almoxarifado e controle automatizado de nutrição animal.
+          Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda.
         </p>
       </div>
 
       {criticalItems.length > 0 && (
-        <Alert
-          variant="destructive"
-          className="border-destructive/50 bg-destructive/10 animate-in slide-in-from-top-4"
-        >
+        <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
           <TriangleAlert className="h-5 w-5" />
           <AlertTitle className="text-base font-bold">Alerta de Compras Necessárias</AlertTitle>
           <AlertDescription className="mt-2 text-destructive-foreground/90">
             Atenção: {criticalItems.length} itens de nutrição operando abaixo do nível de segurança.
-            <ul className="mt-2 space-y-1 ml-6 list-disc">
-              {criticalItems.map((i) => (
-                <li key={i.id} className="font-medium">
-                  {i.item} — Atual: {i.qtd} {i.unidade} (Mínimo estipulado: {i.minQtd})
-                </li>
-              ))}
-            </ul>
           </AlertDescription>
         </Alert>
       )}
 
       <Tabs defaultValue="nutricao" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-md mb-6">
-          <TabsTrigger value="nutricao">Nutrição</TabsTrigger>
-          <TabsTrigger value="farmacia">Farmácia</TabsTrigger>
-          <TabsTrigger value="almoxarifado">Almoxarifado</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mb-6 h-auto md:h-10">
+          <TabsTrigger value="nutricao" className="py-2 md:py-1.5">
+            Nutrição
+          </TabsTrigger>
+          <TabsTrigger value="farmacia" className="py-2 md:py-1.5">
+            Farmácia
+          </TabsTrigger>
+          <TabsTrigger value="almoxarifado" className="py-2 md:py-1.5">
+            Almoxarifado
+          </TabsTrigger>
+          <TabsTrigger
+            value="custos"
+            className="py-2 md:py-1.5 whitespace-normal sm:whitespace-nowrap"
+          >
+            Custos por Fazenda
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="nutricao">
           <Card>
             <CardHeader>
               <CardTitle>Suplementação e Rações</CardTitle>
-              <CardDescription>
-                O estoque deduz automaticamente quando registros de trato são efetuados nos lotes.
-              </CardDescription>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
               <div className="overflow-x-auto">
@@ -169,7 +170,6 @@ export default function Estoque() {
                     {inventory.map((item) => {
                       const isCritical = item.qtd <= item.minQtd
                       const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5
-
                       return (
                         <TableRow key={item.id} className={isCritical ? 'bg-destructive/5' : ''}>
                           <TableCell className="font-medium">{item.item}</TableCell>
@@ -185,7 +185,6 @@ export default function Estoque() {
                                 variant={
                                   isCritical ? 'destructive' : isWarning ? 'secondary' : 'default'
                                 }
-                                className={isCritical ? 'animate-pulse-slow' : ''}
                               >
                                 {isCritical
                                   ? 'Estoque Crítico'
@@ -218,6 +217,79 @@ export default function Estoque() {
           <Card>
             <CardContent className="pt-6">
               {renderGenericTable(inventoryData.almoxarifado)}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="custos">
+          <Card>
+            <CardHeader>
+              <CardTitle>Custos Operacionais (Nutrição & Manejo)</CardTitle>
+              <CardDescription>
+                Registre os custos de insumos alocados por unidade. Eles serão deduzidos no cálculo
+                de lucro nas Simulações.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6 overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Fazenda</TableHead>
+                    <TableHead>Custo Nutrição (R$)</TableHead>
+                    <TableHead>Custo Manejo/Sanidade (R$)</TableHead>
+                    <TableHead className="text-right">Custo Total / Cab</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {fazendas.map((f) => {
+                    const total = (f.custoNutricao || 0) + (f.custoManejo || 0)
+                    const porCab = f.rebanho > 0 ? total / f.rebanho : 0
+                    return (
+                      <TableRow key={f.id}>
+                        <TableCell className="font-medium">{f.nome}</TableCell>
+                        <TableCell>
+                          <div className="relative max-w-[150px]">
+                            <span className="absolute left-2.5 top-2 text-xs text-muted-foreground font-medium">
+                              R$
+                            </span>
+                            <Input
+                              type="number"
+                              className="pl-8 h-8 text-sm"
+                              value={f.custoNutricao || ''}
+                              onChange={(e) =>
+                                updateFazenda(f.id, { custoNutricao: Number(e.target.value) })
+                              }
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="relative max-w-[150px]">
+                            <span className="absolute left-2.5 top-2 text-xs text-muted-foreground font-medium">
+                              R$
+                            </span>
+                            <Input
+                              type="number"
+                              className="pl-8 h-8 text-sm"
+                              value={f.custoManejo || ''}
+                              onChange={(e) =>
+                                updateFazenda(f.id, { custoManejo: Number(e.target.value) })
+                              }
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right font-medium text-muted-foreground whitespace-nowrap">
+                          R${' '}
+                          {porCab.toLocaleString('pt-BR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}{' '}
+                          / cab
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>

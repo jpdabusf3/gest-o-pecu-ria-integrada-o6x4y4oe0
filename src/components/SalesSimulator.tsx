@@ -9,9 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+} from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { useMarket } from '@/contexts/MarketContext'
 import useSimulationStore from '@/stores/useSimulationStore'
+import useFazendaStore from '@/stores/useFazendaStore'
 import { Calculator, TrendingUp, DollarSign, Save } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
@@ -19,12 +26,14 @@ import { cn } from '@/lib/utils'
 export function SalesSimulator() {
   const { marketData } = useMarket()
   const { addSimulation } = useSimulationStore()
+  const { fazendas } = useFazendaStore()
   const { toast } = useToast()
 
   const [category, setCategory] = useState(marketData[0]?.id || '')
   const [weight, setWeight] = useState(540)
   const [productionCost, setProductionCost] = useState(3200)
   const [salesPrice, setSalesPrice] = useState(marketData[0]?.price || 265.5)
+  const [selectedFarms, setSelectedFarms] = useState<string[]>([])
 
   const lastMarketPrice = useRef<number>(marketData[0]?.price || 265.5)
 
@@ -54,14 +63,26 @@ export function SalesSimulator() {
     }
   }
 
+  const farmCost = useMemo(() => {
+    if (selectedFarms.length === 0) return 0
+    const farms = fazendas.filter((f) => selectedFarms.includes(f.id))
+    const totalCost = farms.reduce(
+      (acc, f) => acc + ((f.custoNutricao || 0) + (f.custoManejo || 0)),
+      0,
+    )
+    const totalHerd = farms.reduce((acc, f) => acc + (f.rebanho || 1), 0)
+    return totalCost / (totalHerd || 1)
+  }, [selectedFarms, fazendas])
+
   const results = useMemo(() => {
     const arrobas = weight / 30
     const revenue = arrobas * salesPrice
-    const profit = revenue - productionCost
+    const totalProductionCost = productionCost + farmCost
+    const profit = revenue - totalProductionCost
     const margin = revenue > 0 ? (profit / revenue) * 100 : 0
 
-    return { arrobas, revenue, profit, margin }
-  }, [weight, salesPrice, productionCost])
+    return { arrobas, revenue, profit, margin, totalProductionCost }
+  }, [weight, salesPrice, productionCost, farmCost])
 
   const handleSave = () => {
     addSimulation({
@@ -69,10 +90,12 @@ export function SalesSimulator() {
       weight,
       salesPrice,
       productionCost,
+      farmCost,
       arrobas: results.arrobas,
       revenue: results.revenue,
       profit: results.profit,
       margin: results.margin,
+      farmIds: selectedFarms,
     })
     toast({
       title: 'Simulação Salva',
@@ -88,8 +111,8 @@ export function SalesSimulator() {
           Simulador de Cenários de Venda (Indicador do Boi)
         </CardTitle>
         <CardDescription>
-          Simule a margem de lucro projetada inserindo o custo de produção e o preço esperado de
-          venda.
+          Simule a margem de lucro projetada inserindo o custo de produção e vinculando fazendas
+          cadastradas.
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
@@ -135,7 +158,7 @@ export function SalesSimulator() {
             </div>
 
             <div className="space-y-2">
-              <Label>Custo Total de Produção por Cabeça (R$)</Label>
+              <Label>Custo Base de Produção (R$/Cab)</Label>
               <div className="relative">
                 <DollarSign className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -145,6 +168,44 @@ export function SalesSimulator() {
                   onChange={(e) => setProductionCost(Number(e.target.value))}
                 />
               </div>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t">
+              <Label>Vincular Fazenda (Opcional)</Label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal bg-background"
+                  >
+                    {selectedFarms.length > 0
+                      ? `${selectedFarms.length} Fazenda(s) Vinculada(s)`
+                      : 'Selecione para puxar custos...'}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[300px]">
+                  {fazendas.map((f) => (
+                    <DropdownMenuCheckboxItem
+                      key={f.id}
+                      checked={selectedFarms.includes(f.id)}
+                      onCheckedChange={(c) => {
+                        if (c) setSelectedFarms([...selectedFarms, f.id])
+                        else setSelectedFarms(selectedFarms.filter((id) => id !== f.id))
+                      }}
+                    >
+                      {f.nome}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {farmCost > 0 && (
+                <p className="text-xs text-muted-foreground mt-1 flex justify-between">
+                  <span>Custo calculado de nutrição/manejo:</span>
+                  <span className="font-semibold text-rose-500">
+                    + R$ {farmCost.toFixed(2)}/cab
+                  </span>
+                </p>
+              )}
             </div>
           </div>
 
@@ -170,8 +231,8 @@ export function SalesSimulator() {
                 </span>
               </div>
 
-              <div className="flex justify-between items-center pb-3 border-b border-border/50">
-                <span className="text-sm text-muted-foreground">Custo de Produção</span>
+              <div className="flex justify-between items-center pb-2 border-b border-border/50">
+                <span className="text-sm text-muted-foreground">Custo Base de Produção</span>
                 <span className="font-medium text-destructive">
                   - R${' '}
                   {productionCost.toLocaleString('pt-BR', {
@@ -180,6 +241,21 @@ export function SalesSimulator() {
                   })}
                 </span>
               </div>
+
+              {farmCost > 0 && (
+                <div className="flex justify-between items-center pb-2 border-b border-border/50">
+                  <span className="text-sm text-muted-foreground">
+                    Custos Operacionais (Fazendas)
+                  </span>
+                  <span className="font-medium text-destructive">
+                    - R${' '}
+                    {farmCost.toLocaleString('pt-BR', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+              )}
 
               <div className="flex justify-between items-end pt-3">
                 <span className="font-bold text-base">Lucro Líquido Estimado</span>

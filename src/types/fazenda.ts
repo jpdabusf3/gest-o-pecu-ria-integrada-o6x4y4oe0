@@ -8,4 +8,6 @@ export interface Fazenda {
   sistemas: string[]
   arrendamento: boolean
   atividades: string[]
+  custoNutricao?: number
+  custoManejo?: number
 }

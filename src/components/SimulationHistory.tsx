@@ -48,7 +48,8 @@ export function SimulationHistory() {
       Categoria: sim.category,
       'Peso Vivo (kg)': sim.weight,
       'Preço Venda (R$/@)': sim.salesPrice.toFixed(2),
-      'Custo Prod. (R$)': sim.productionCost.toFixed(2),
+      'Custo Base (R$)': sim.productionCost.toFixed(2),
+      'Custo Fazenda (R$)': (sim.farmCost || 0).toFixed(2),
       'Lucro Líquido (R$)': sim.profit.toFixed(2),
       'Margem (%)': sim.margin.toFixed(1),
     }))
@@ -93,7 +94,7 @@ export function SimulationHistory() {
               Histórico de Simulações
             </CardTitle>
             <CardDescription>
-              Selecione simulações para comparar os cenários de margem ou exportar para PDF.
+              Selecione simulações para comparar cenários ou exportar agrupado por Fazenda.
             </CardDescription>
           </div>
           <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -121,55 +122,65 @@ export function SimulationHistory() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {simulations.map((sim) => (
-                  <TableRow
-                    key={sim.id}
-                    className={selected.includes(sim.id) ? 'bg-primary/5' : ''}
-                  >
-                    <TableCell className="text-center">
-                      <Checkbox
-                        checked={selected.includes(sim.id)}
-                        onCheckedChange={() => toggleSelect(sim.id)}
-                      />
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
-                      {new Date(sim.date).toLocaleDateString('pt-BR', {
-                        day: '2-digit',
-                        month: 'short',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </TableCell>
-                    <TableCell className="font-medium text-xs">{sim.category}</TableCell>
-                    <TableCell className="text-right text-xs">{sim.weight}</TableCell>
-                    <TableCell className="text-right text-xs">
-                      R$ {sim.salesPrice.toFixed(2)}
-                    </TableCell>
-                    <TableCell className="text-right text-xs">
-                      R$ {sim.productionCost.toFixed(2)}
-                    </TableCell>
-                    <TableCell
-                      className={`text-right font-semibold text-xs ${sim.profit >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
+                {simulations.map((sim) => {
+                  const totalCost = sim.productionCost + (sim.farmCost || 0)
+                  return (
+                    <TableRow
+                      key={sim.id}
+                      className={selected.includes(sim.id) ? 'bg-primary/5' : ''}
                     >
-                      R$ {sim.profit.toFixed(2)}
-                    </TableCell>
-                    <TableCell
-                      className={`text-right font-medium text-xs ${sim.margin >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
-                    >
-                      {sim.margin.toFixed(1)}%
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => deleteSimulation(sim.id)}
-                        className="text-muted-foreground hover:text-destructive h-7 w-7"
+                      <TableCell className="text-center">
+                        <Checkbox
+                          checked={selected.includes(sim.id)}
+                          onCheckedChange={() => toggleSelect(sim.id)}
+                        />
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                        {new Date(sim.date).toLocaleDateString('pt-BR', {
+                          day: '2-digit',
+                          month: 'short',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </TableCell>
+                      <TableCell className="font-medium text-xs">
+                        {sim.category}
+                        {sim.farmIds && sim.farmIds.length > 0 && (
+                          <div className="text-[10px] text-muted-foreground mt-0.5 whitespace-nowrap">
+                            Vinculado: {sim.farmIds.length} Fazenda(s)
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right text-xs">{sim.weight}</TableCell>
+                      <TableCell className="text-right text-xs">
+                        R$ {sim.salesPrice.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right text-xs">
+                        R$ {totalCost.toFixed(2)}
+                      </TableCell>
+                      <TableCell
+                        className={`text-right font-semibold text-xs ${sim.profit >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
                       >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        R$ {sim.profit.toFixed(2)}
+                      </TableCell>
+                      <TableCell
+                        className={`text-right font-medium text-xs ${sim.margin >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
+                      >
+                        {sim.margin.toFixed(1)}%
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => deleteSimulation(sim.id)}
+                          className="text-muted-foreground hover:text-destructive h-7 w-7"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
               </TableBody>
             </Table>
           </div>

@@ -7,10 +7,12 @@ export interface SimulationResult {
   weight: number
   salesPrice: number
   productionCost: number
+  farmCost?: number
   arrobas: number
   revenue: number
   profit: number
   margin: number
+  farmIds?: string[]
 }
 
 const STORAGE_KEY = '@fazenda-simulations'

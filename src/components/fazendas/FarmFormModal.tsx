@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -16,19 +16,35 @@ import { Fazenda } from '@/types/fazenda'
 import { useToast } from '@/hooks/use-toast'
 import { Plus } from 'lucide-react'
 
-export function FarmFormModal({ onSave }: { onSave: (f: Fazenda) => void }) {
+export function FarmFormModal({
+  fazenda,
+  onSave,
+  trigger,
+}: {
+  fazenda?: Fazenda
+  onSave: (f: Fazenda) => void
+  trigger?: React.ReactNode
+}) {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
 
-  const [sistemas, setSistemas] = useState<string[]>([])
-  const [atividades, setAtividades] = useState<string[]>([])
-  const [arrendamento, setArrendamento] = useState(false)
+  const [sistemas, setSistemas] = useState<string[]>(fazenda?.sistemas || [])
+  const [atividades, setAtividades] = useState<string[]>(fazenda?.atividades || [])
+  const [arrendamento, setArrendamento] = useState(fazenda?.arrendamento || false)
+
+  useEffect(() => {
+    if (open && fazenda) {
+      setSistemas(fazenda.sistemas || [])
+      setAtividades(fazenda.atividades || [])
+      setArrendamento(fazenda.arrendamento || false)
+    }
+  }, [open, fazenda])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     onSave({
-      id: crypto.randomUUID(),
+      id: fazenda ? fazenda.id : crypto.randomUUID(),
       nome: fd.get('nome') as string,
       proprietario: fd.get('proprietario') as string,
       localizacao: fd.get('localizacao') as string,
@@ -37,12 +53,19 @@ export function FarmFormModal({ onSave }: { onSave: (f: Fazenda) => void }) {
       sistemas,
       atividades,
       arrendamento,
+      custoNutricao: fazenda?.custoNutricao || 0,
+      custoManejo: fazenda?.custoManejo || 0,
     })
-    toast({ title: 'Fazenda registrada', description: 'Os dados da propriedade foram salvos.' })
+    toast({
+      title: fazenda ? 'Fazenda atualizada' : 'Fazenda registrada',
+      description: 'Os dados da propriedade foram salvos.',
+    })
     setOpen(false)
-    setSistemas([])
-    setAtividades([])
-    setArrendamento(false)
+    if (!fazenda) {
+      setSistemas([])
+      setAtividades([])
+      setArrendamento(false)
+    }
   }
 
   const toggleArray = (
@@ -59,13 +82,15 @@ export function FarmFormModal({ onSave }: { onSave: (f: Fazenda) => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2 shadow-sm w-full sm:w-auto">
-          <Plus className="h-4 w-4" /> Registrar Fazenda
-        </Button>
+        {trigger || (
+          <Button className="gap-2 shadow-sm w-full sm:w-auto">
+            <Plus className="h-4 w-4" /> Registrar Fazenda
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Nova Propriedade</DialogTitle>
+          <DialogTitle>{fazenda ? 'Editar Propriedade' : 'Nova Propriedade'}</DialogTitle>
           <DialogDescription>
             Preencha os dados operacionais e de propriedade da fazenda.
           </DialogDescription>
@@ -74,27 +99,57 @@ export function FarmFormModal({ onSave }: { onSave: (f: Fazenda) => void }) {
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Nome da Propriedade *</Label>
-              <Input name="nome" required placeholder="Ex: Fazenda São João" />
+              <Input
+                name="nome"
+                required
+                defaultValue={fazenda?.nome}
+                placeholder="Ex: Fazenda São João"
+              />
             </div>
             <div className="space-y-2">
               <Label>Proprietário / Grupo *</Label>
-              <Input name="proprietario" required placeholder="Nome do titular" />
+              <Input
+                name="proprietario"
+                required
+                defaultValue={fazenda?.proprietario}
+                placeholder="Nome do titular"
+              />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label>Localização *</Label>
-            <Input name="localizacao" required placeholder="Cidade - UF ou Endereço" />
+            <Input
+              name="localizacao"
+              required
+              defaultValue={fazenda?.localizacao}
+              placeholder="Cidade - UF ou Endereço"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Área Total (ha) *</Label>
-              <Input name="area" type="number" required placeholder="1500" min="1" step="0.1" />
+              <Input
+                name="area"
+                type="number"
+                required
+                defaultValue={fazenda?.area}
+                placeholder="1500"
+                min="1"
+                step="0.1"
+              />
             </div>
             <div className="space-y-2">
               <Label>Rebanho Total (Cab) *</Label>
-              <Input name="rebanho" type="number" required placeholder="3500" min="0" />
+              <Input
+                name="rebanho"
+                type="number"
+                required
+                defaultValue={fazenda?.rebanho}
+                placeholder="3500"
+                min="0"
+              />
             </div>
           </div>
 

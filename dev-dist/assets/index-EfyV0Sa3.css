@@ -755,6 +755,9 @@ section[aria-label='Notifications alt+T'] {
 .mb-1{
   margin-bottom: 0.25rem;
 }
+.mb-10{
+  margin-bottom: 2.5rem;
+}
 .mb-2{
   margin-bottom: 0.5rem;
 }
@@ -772,9 +775,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .ml-4{
   margin-left: 1rem;
-}
-.ml-6{
-  margin-left: 1.5rem;
 }
 .ml-auto{
   margin-left: auto;
@@ -1094,6 +1094,9 @@ section[aria-label='Notifications alt+T'] {
 .w-\[1px\]{
   width: 1px;
 }
+.w-\[300px\]{
+  width: 300px;
+}
 .w-\[40px\]{
   width: 40px;
 }
@@ -1156,6 +1159,9 @@ section[aria-label='Notifications alt+T'] {
 .min-w-\[var\(--radix-select-trigger-width\)\]{
   min-width: var(--radix-select-trigger-width);
 }
+.max-w-2xl{
+  max-width: 42rem;
+}
 .max-w-4xl{
   max-width: 56rem;
 }
@@ -1167,6 +1173,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-w-\[120px\]{
   max-width: 120px;
+}
+.max-w-\[150px\]{
+  max-width: 150px;
 }
 .max-w-\[210mm\]{
   max-width: 210mm;
@@ -1317,9 +1326,6 @@ section[aria-label='Notifications alt+T'] {
      -moz-user-select: none;
           user-select: none;
 }
-.list-disc{
-  list-style-type: disc;
-}
 .list-none{
   list-style-type: none;
 }
@@ -1461,11 +1467,6 @@ section[aria-label='Notifications alt+T'] {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-}
-.space-y-8 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse: 0;
-  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 .self-end{
   align-self: flex-end;
@@ -2485,9 +2486,6 @@ section[aria-label='Notifications alt+T'] {
 .slide-in-from-bottom-2{
   --tw-enter-translate-y: 0.5rem;
 }
-.slide-in-from-top-4{
-  --tw-enter-translate-y: -1rem;
-}
 .duration-1000{
   animation-duration: 1000ms;
 }
@@ -2535,9 +2533,6 @@ section[aria-label='Notifications alt+T'] {
   }
 .animate-fade-in-up {
     animation: fade-in-up 0.5s ease-out forwards;
-  }
-.animate-pulse-slow {
-    animation: pulse-slow 3s ease-in-out infinite;
   }
 .hover-lift{
   transition-property: transform;
@@ -3590,6 +3585,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:self-auto{
     align-self: auto;
   }
+  .sm\:whitespace-nowrap{
+    white-space: nowrap;
+  }
   .sm\:rounded-lg{
     border-radius: var(--radius);
   }
@@ -3653,6 +3651,9 @@ section[aria-label='Notifications alt+T'] {
   .md\:flex{
     display: flex;
   }
+  .md\:h-10{
+    height: 2.5rem;
+  }
   .md\:w-\[var\(--radix-navigation-menu-viewport-width\)\]{
     width: var(--radix-navigation-menu-viewport-width);
   }
@@ -3685,6 +3686,10 @@ section[aria-label='Notifications alt+T'] {
   }
   .md\:p-6{
     padding: 1.5rem;
+  }
+  .md\:py-1\.5{
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
   }
   .md\:text-base{
     font-size: 1rem;
