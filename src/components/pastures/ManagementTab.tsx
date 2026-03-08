@@ -65,6 +65,11 @@ export function ManagementTab() {
       status: 'Bom',
       ndvi: 0,
       interventions: [],
+      sector: 'todos',
+      score: 3,
+      daysOfRest: 0,
+      optimalRestDuration: 30,
+      recommendedLotSize: 100,
     }
     setPastures([...pastures, newPasto])
     setIsPastoOpen(false)

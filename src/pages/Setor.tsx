@@ -17,6 +17,7 @@ import { Beef, Activity, DollarSign, LineChart } from 'lucide-react'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
 import { ReproductionTab } from '@/components/sector/ReproductionTab'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
+import { SectorPastureTab } from '@/components/sector/SectorPastureTab'
 
 export default function Setor() {
   const { id } = useParams<{ id: string }>()
@@ -39,6 +40,12 @@ export default function Setor() {
             className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3"
           >
             Visão Geral & Lotes
+          </TabsTrigger>
+          <TabsTrigger
+            value="pastures"
+            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3"
+          >
+            Pastagens & Nutrição
           </TabsTrigger>
           {id === 'cria' && (
             <TabsTrigger
@@ -148,6 +155,10 @@ export default function Setor() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="pastures" className="mt-4">
+          <SectorPastureTab sectorId={id || ''} />
         </TabsContent>
 
         {id === 'cria' && (

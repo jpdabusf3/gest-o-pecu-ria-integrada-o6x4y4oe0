@@ -19194,6 +19194,22 @@ var FileText = createLucideIcon("file-text", [
 		key: "z1uh3a"
 	}]
 ]);
+var Info = createLucideIcon("info", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["path", {
+		d: "M12 16v-4",
+		key: "1dtifu"
+	}],
+	["path", {
+		d: "M12 8h.01",
+		key: "e9boi3"
+	}]
+]);
 var LayoutDashboard = createLucideIcon("layout-dashboard", [
 	["rect", {
 		width: "7",
@@ -19228,6 +19244,13 @@ var LayoutDashboard = createLucideIcon("layout-dashboard", [
 		key: "ldoo1y"
 	}]
 ]);
+var Leaf = createLucideIcon("leaf", [["path", {
+	d: "M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z",
+	key: "nnexq3"
+}], ["path", {
+	d: "M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12",
+	key: "mt58a7"
+}]]);
 var LoaderCircle = createLucideIcon("loader-circle", [["path", {
 	d: "M21 12a9 9 0 1 1-6.219-8.56",
 	key: "13zald"
@@ -26226,7 +26249,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$15({ inst: {
+			cachedValue = useState$16({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26263,7 +26286,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$15 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$16 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -27892,28 +27915,48 @@ const sectorData = {
 				categoria: "Vacas Solteiras",
 				cabecas: 120,
 				pasto: "Pasto 01",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Sal Mineral 80",
+					costPerKg: 3.5,
+					consumptionPerAnimal: .1
+				}
 			},
 			{
 				id: "LCR-02",
 				categoria: "Vacas Paridas",
 				cabecas: 85,
 				pasto: "Pasto 03",
-				status: "Atenção"
+				status: "Atenção",
+				supplement: {
+					name: "Sal Mineral Reprodução",
+					costPerKg: 4.2,
+					consumptionPerAnimal: .12
+				}
 			},
 			{
 				id: "LCR-03",
 				categoria: "Touros",
 				cabecas: 15,
 				pasto: "Pasto 04",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Ração Touros",
+					costPerKg: 2.8,
+					consumptionPerAnimal: 3
+				}
 			},
 			{
 				id: "LCR-04",
 				categoria: "Bezerras Desmame",
 				cabecas: 140,
 				pasto: "Pasto 02",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Ração Creep",
+					costPerKg: 3.1,
+					consumptionPerAnimal: .5
+				}
 			}
 		]
 	},
@@ -27932,21 +27975,36 @@ const sectorData = {
 				categoria: "Garrotes",
 				cabecas: 220,
 				pasto: "Pasto 05",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Sal Proteico 0.1%",
+					costPerKg: 2.9,
+					consumptionPerAnimal: .25
+				}
 			},
 			{
 				id: "LRE-02",
 				categoria: "Novilhas 12m",
 				cabecas: 180,
 				pasto: "Pasto 06",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Sal Proteico 0.1%",
+					costPerKg: 2.9,
+					consumptionPerAnimal: .22
+				}
 			},
 			{
 				id: "LRE-03",
 				categoria: "Garrotes 18m",
 				cabecas: 150,
 				pasto: "Pasto 08",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Proteico Energético",
+					costPerKg: 2.6,
+					consumptionPerAnimal: .8
+				}
 			}
 		]
 	},
@@ -27965,21 +28023,36 @@ const sectorData = {
 				categoria: "Bois Magros",
 				cabecas: 150,
 				pasto: "Confinamento A",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Ração Confinamento Inicial",
+					costPerKg: 1.8,
+					consumptionPerAnimal: 8.5
+				}
 			},
 			{
 				id: "LEN-02",
 				categoria: "Bois Terminação",
 				cabecas: 200,
 				pasto: "Confinamento B",
-				status: "Pronto p/ Abate"
+				status: "Pronto p/ Abate",
+				supplement: {
+					name: "Ração Confinamento Final",
+					costPerKg: 1.95,
+					consumptionPerAnimal: 11
+				}
 			},
 			{
 				id: "LEN-03",
 				categoria: "Vacas Descarte",
 				cabecas: 80,
 				pasto: "Pasto 10",
-				status: "Saudável"
+				status: "Saudável",
+				supplement: {
+					name: "Proteico Energético 0.5%",
+					costPerKg: 2.6,
+					consumptionPerAnimal: 2.5
+				}
 			}
 		]
 	}
@@ -27988,6 +28061,7 @@ const pasturesData = [
 	{
 		id: 1,
 		nome: "Pasto 01 - Sede",
+		sector: "cria",
 		area: 45.5,
 		cultivar: "Brachiaria brizantha",
 		estacao: "Águas",
@@ -28000,6 +28074,10 @@ const pasturesData = [
 		pesoMedioHistorico: 205,
 		status: "Bom",
 		ndvi: .75,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 30,
+		recommendedLotSize: 120,
 		interventions: [{
 			id: "I-1",
 			data: "2025-10-15",
@@ -28015,6 +28093,7 @@ const pasturesData = [
 	{
 		id: 2,
 		nome: "Pasto 02 - Fundo",
+		sector: "cria",
 		area: 60,
 		cultivar: "Panicum maximum (Mombaça)",
 		estacao: "Águas",
@@ -28027,11 +28106,16 @@ const pasturesData = [
 		pesoMedioHistorico: 295,
 		status: "Alerta",
 		ndvi: .45,
+		score: 5,
+		daysOfRest: 0,
+		optimalRestDuration: 35,
+		recommendedLotSize: 180,
 		interventions: []
 	},
 	{
 		id: 3,
 		nome: "Pasto 03 - Represa",
+		sector: "cria",
 		area: 35,
 		cultivar: "Brachiaria decumbens",
 		estacao: "Seca (Vedado)",
@@ -28044,11 +28128,16 @@ const pasturesData = [
 		pesoMedioHistorico: 0,
 		status: "Vedado",
 		ndvi: .82,
+		score: 1,
+		daysOfRest: 28,
+		optimalRestDuration: 30,
+		recommendedLotSize: 90,
 		interventions: []
 	},
 	{
 		id: 4,
 		nome: "Pasto 04 - Maternidade",
+		sector: "cria",
 		area: 15,
 		cultivar: "Cynodon (Tifton 85)",
 		estacao: "Águas",
@@ -28061,11 +28150,16 @@ const pasturesData = [
 		pesoMedioHistorico: 180,
 		status: "Bom",
 		ndvi: .68,
+		score: 5,
+		daysOfRest: 32,
+		optimalRestDuration: 30,
+		recommendedLotSize: 45,
 		interventions: []
 	},
 	{
 		id: 5,
 		nome: "Pasto 05 - Morro",
+		sector: "recria",
 		area: 85,
 		cultivar: "Andropogon",
 		estacao: "Águas",
@@ -28078,6 +28172,120 @@ const pasturesData = [
 		pesoMedioHistorico: 235,
 		status: "Bom",
 		ndvi: .7,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 40,
+		recommendedLotSize: 200,
+		interventions: []
+	},
+	{
+		id: 6,
+		nome: "Pasto 06 - Vale",
+		sector: "recria",
+		area: 70,
+		cultivar: "Brachiaria brizantha",
+		estacao: "Águas",
+		lotacaoProjetada: 2,
+		lotacaoExecutada: 0,
+		alturaEntradaAlvo: 30,
+		alturaSaidaAlvo: 15,
+		alturaAtual: 28,
+		pesoMedioAtual: 0,
+		pesoMedioHistorico: 0,
+		status: "Bom",
+		ndvi: .8,
+		score: 5,
+		daysOfRest: 45,
+		optimalRestDuration: 40,
+		recommendedLotSize: 180,
+		interventions: []
+	},
+	{
+		id: 7,
+		nome: "Pasto 08 - Alto",
+		sector: "recria",
+		area: 55,
+		cultivar: "Panicum maximum",
+		estacao: "Águas",
+		lotacaoProjetada: 2.5,
+		lotacaoExecutada: 2.5,
+		alturaEntradaAlvo: 80,
+		alturaSaidaAlvo: 40,
+		alturaAtual: 45,
+		pesoMedioAtual: 260,
+		pesoMedioHistorico: 250,
+		status: "Atenção",
+		ndvi: .6,
+		score: 1,
+		daysOfRest: 10,
+		optimalRestDuration: 35,
+		recommendedLotSize: 150,
+		interventions: []
+	},
+	{
+		id: 8,
+		nome: "Confinamento A",
+		sector: "engorda",
+		area: 5,
+		cultivar: "N/A",
+		estacao: "Todas",
+		lotacaoProjetada: 50,
+		lotacaoExecutada: 30,
+		alturaEntradaAlvo: 0,
+		alturaSaidaAlvo: 0,
+		alturaAtual: 0,
+		pesoMedioAtual: 450,
+		pesoMedioHistorico: 440,
+		status: "Bom",
+		ndvi: 0,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 10,
+		recommendedLotSize: 150,
+		interventions: []
+	},
+	{
+		id: 9,
+		nome: "Confinamento B",
+		sector: "engorda",
+		area: 5,
+		cultivar: "N/A",
+		estacao: "Todas",
+		lotacaoProjetada: 50,
+		lotacaoExecutada: 40,
+		alturaEntradaAlvo: 0,
+		alturaSaidaAlvo: 0,
+		alturaAtual: 0,
+		pesoMedioAtual: 500,
+		pesoMedioHistorico: 490,
+		status: "Bom",
+		ndvi: 0,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 10,
+		recommendedLotSize: 200,
+		interventions: []
+	},
+	{
+		id: 10,
+		nome: "Pasto 10 - Varjão",
+		sector: "engorda",
+		area: 40,
+		cultivar: "Brachiaria humidicola",
+		estacao: "Águas",
+		lotacaoProjetada: 2,
+		lotacaoExecutada: 2,
+		alturaEntradaAlvo: 25,
+		alturaSaidaAlvo: 10,
+		alturaAtual: 22,
+		pesoMedioAtual: 380,
+		pesoMedioHistorico: 370,
+		status: "Bom",
+		ndvi: .7,
+		score: 5,
+		daysOfRest: 20,
+		optimalRestDuration: 30,
+		recommendedLotSize: 80,
 		interventions: []
 	}
 ];
@@ -52375,6 +52583,212 @@ function SectorCalendarTab({ sectorId }) {
 		children: "Nenhum evento encontrado para os filtros selecionados."
 	}) }) })] }) })] });
 }
+function SectorPastureTab({ sectorId }) {
+	const [pastures, setPastures] = (0, import_react.useState)(pasturesData.filter((p) => p.sector === sectorId || p.sector === "todos"));
+	const [lotes, setLotes] = (0, import_react.useState)(sectorData[sectorId]?.lotes || []);
+	const handleScoreChange = (id, score) => {
+		setPastures((prev) => prev.map((p) => p.id === id ? {
+			...p,
+			score: parseInt(score)
+		} : p));
+	};
+	const handleSupplementChange = (loteId, field, value) => {
+		setLotes((prev) => prev.map((l) => {
+			if (l.id === loteId) {
+				const parsed = parseFloat(value);
+				return {
+					...l,
+					supplement: {
+						...l.supplement,
+						[field]: field === "name" ? value : isNaN(parsed) ? 0 : parsed
+					}
+				};
+			}
+			return l;
+		}));
+	};
+	const getScoreStatus = (score) => {
+		if (score === 1) return {
+			label: "Remover Animais",
+			variant: "destructive"
+		};
+		if (score === 3) return {
+			label: "Manter Lote",
+			variant: "secondary"
+		};
+		if (score === 5) return {
+			label: "Entrada / Aumentar Lote",
+			variant: "default"
+		};
+		return {
+			label: "-",
+			variant: "outline"
+		};
+	};
+	const restedPastures = pastures.filter((p) => p.daysOfRest > 0 && p.daysOfRest >= p.optimalRestDuration);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaf, { className: "h-5 w-5 text-primary" }), "Manejo de Pastagens (Escore e Descanso)"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Avalie o escore das pastagens (1, 3 ou 5) e monitore o período de descanso para otimizar o pastejo." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "space-y-4",
+			children: [restedPastures.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-3 mb-6",
+				children: restedPastures.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
+					className: "bg-green-50/50 border-green-200 dark:bg-green-950/20 dark:border-green-900",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, { className: "h-4 w-4 text-green-600 dark:text-green-400" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AlertTitle, {
+							className: "text-green-800 dark:text-green-300",
+							children: ["Pasto Pronto: ", p.nome]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AlertDescription, {
+							className: "text-green-700 dark:text-green-400",
+							children: [
+								"O pasto atingiu ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [p.daysOfRest, " dias"] }),
+								" de descanso (Meta:",
+								" ",
+								p.optimalRestDuration,
+								" dias). Lotação recomendada para entrada:",
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [p.recommendedLotSize, " cabeças"] }),
+								"."
+							]
+						})
+					]
+				}, p.id))
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Pasto" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Área (ha)" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Escore (1-5)" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Ação Recomendada" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descanso (Dias / Meta)" })
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [pastures.map((p) => {
+					const status = getScoreStatus(p.score);
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "font-medium",
+							children: p.nome
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.area }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+							value: p.score.toString(),
+							onValueChange: (val) => handleScoreChange(p.id, val),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+								className: "w-[80px]",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "1",
+									children: "1"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "3",
+									children: "3"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "5",
+									children: "5"
+								})
+							] })]
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: status.variant,
+							children: status.label
+						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: p.daysOfRest >= p.optimalRestDuration ? "text-green-600 font-medium" : "",
+								children: p.daysOfRest
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "text-muted-foreground",
+								children: ["/ ", p.optimalRestDuration]
+							})]
+						}) })
+					] }, p.id);
+				}), pastures.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 5,
+					className: "text-center text-muted-foreground py-6",
+					children: "Nenhum pasto associado a este setor."
+				}) })] })] })
+			})]
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-primary" }), "Controle de Suplementação por Lote"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhe o consumo diário e os custos de suplementação/ração para cada lote." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "overflow-x-auto",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Cabeças" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Suplemento / Ração" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo (R$/kg)" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Consumo (kg/cab/dia)" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Invest. Cab/Dia"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Invest. Lote/Dia"
+				})
+			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: lotes.map((lote) => {
+				const supp = lote.supplement || {
+					name: "",
+					costPerKg: 0,
+					consumptionPerAnimal: 0
+				};
+				const investCab = supp.costPerKg * supp.consumptionPerAnimal;
+				const investLote = investCab * lote.cabecas;
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium",
+						children: lote.id
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.cabecas }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						value: supp.name,
+						onChange: (e) => handleSupplementChange(lote.id, "name", e.target.value),
+						className: "w-[180px] h-8",
+						placeholder: "Ex: Sal Mineral"
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						type: "number",
+						step: "0.01",
+						value: supp.costPerKg || "",
+						onChange: (e) => handleSupplementChange(lote.id, "costPerKg", e.target.value),
+						className: "w-[100px] h-8"
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						type: "number",
+						step: "0.001",
+						value: supp.consumptionPerAnimal || "",
+						onChange: (e) => handleSupplementChange(lote.id, "consumptionPerAnimal", e.target.value),
+						className: "w-[100px] h-8"
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right font-medium",
+						children: new Intl.NumberFormat("pt-BR", {
+							style: "currency",
+							currency: "BRL"
+						}).format(investCab)
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right font-bold text-primary",
+						children: new Intl.NumberFormat("pt-BR", {
+							style: "currency",
+							currency: "BRL"
+						}).format(investLote)
+					})
+				] }, lote.id);
+			}) })] })
+		}) })] })]
+	});
+}
 function Setor() {
 	const { id } = useParams();
 	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
@@ -52404,6 +52818,11 @@ function Setor() {
 								value: "overview",
 								className: "data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3",
 								children: "Visão Geral & Lotes"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "pastures",
+								className: "data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3",
+								children: "Pastagens & Nutrição"
 							}),
 							id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "reproduction",
@@ -52505,6 +52924,11 @@ function Setor() {
 								}, lote.id)) })] })
 							})
 						})] })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "pastures",
+						className: "mt-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectorPastureTab, { sectorId: id || "" })
 					}),
 					id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "reproduction",
@@ -52790,7 +53214,12 @@ function ManagementTab() {
 			pesoMedioHistorico: 0,
 			status: "Bom",
 			ndvi: 0,
-			interventions: []
+			interventions: [],
+			sector: "todos",
+			score: 3,
+			daysOfRest: 0,
+			optimalRestDuration: 30,
+			recommendedLotSize: 100
 		};
 		setPastures([...pastures, newPasto]);
 		setIsPastoOpen(false);
@@ -58854,4 +59283,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-jSMSOcF4.js.map
+//# sourceMappingURL=index-BPoFOmqr.js.map
