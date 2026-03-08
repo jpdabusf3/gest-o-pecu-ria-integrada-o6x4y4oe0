@@ -5,7 +5,9 @@ export type CategoriaAnimal =
   | 'Touros'
   | 'Bezerras'
   | 'Novilhas'
+  | 'Novilhas matrizes'
   | 'Vacas (Matrizes)'
+  | 'Vacas de corte'
   | string
 
 export interface AnimalRegistro {

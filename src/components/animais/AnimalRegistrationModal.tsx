@@ -223,7 +223,9 @@ export function AnimalRegistrationModal() {
                     <>
                       <SelectItem value="Bezerras">Bezerras</SelectItem>
                       <SelectItem value="Novilhas">Novilhas</SelectItem>
+                      <SelectItem value="Novilhas matrizes">Novilhas matrizes</SelectItem>
                       <SelectItem value="Vacas (Matrizes)">Vacas (Matrizes)</SelectItem>
+                      <SelectItem value="Vacas de corte">Vacas de corte</SelectItem>
                     </>
                   )}
                 </SelectContent>

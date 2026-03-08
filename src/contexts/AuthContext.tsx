@@ -8,6 +8,8 @@ export interface UserPreferences {
   notifyHealth: boolean
   notifyFinancial: boolean
   notifyManagement: boolean
+  notifyVacasCorte: boolean
+  notifyNovilhasMatrizes: boolean
 }
 
 export interface User {
@@ -34,6 +36,8 @@ export const mockUsers: User[] = [
       notifyHealth: true,
       notifyFinancial: true,
       notifyManagement: true,
+      notifyVacasCorte: true,
+      notifyNovilhasMatrizes: true,
     },
   },
   {
@@ -49,6 +53,8 @@ export const mockUsers: User[] = [
       notifyHealth: true,
       notifyFinancial: false,
       notifyManagement: true,
+      notifyVacasCorte: true,
+      notifyNovilhasMatrizes: false,
     },
   },
   {
@@ -64,6 +70,8 @@ export const mockUsers: User[] = [
       notifyHealth: false,
       notifyFinancial: false,
       notifyManagement: false,
+      notifyVacasCorte: false,
+      notifyNovilhasMatrizes: false,
     },
   },
 ]

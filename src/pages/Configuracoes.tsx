@@ -181,7 +181,7 @@ export default function Configuracoes() {
 
           <div className="space-y-4 animate-in fade-in slide-in-from-left-2">
             <h4 className="text-sm font-semibold mb-2">
-              Quais eventos devem disparar notificação?
+              Quais eventos gerais devem disparar notificação?
             </h4>
             <div className="flex items-center justify-between">
               <Label htmlFor="notifyHealth" className="cursor-pointer text-sm">
@@ -214,7 +214,37 @@ export default function Configuracoes() {
               />
             </div>
 
-            <div className="pt-4 border-t border-border">
+            <div className="pt-4 border-t border-border space-y-4 mt-4">
+              <h4 className="text-sm font-semibold mb-2">Alertas Específicos por Categoria</h4>
+              <div className="flex items-center justify-between">
+                <Label
+                  htmlFor="notifyVacasCorte"
+                  className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Protocolos para Vacas de corte
+                </Label>
+                <Switch
+                  id="notifyVacasCorte"
+                  checked={prefs.notifyVacasCorte}
+                  onCheckedChange={(c) => setPrefs({ ...prefs, notifyVacasCorte: c })}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <Label
+                  htmlFor="notifyNovilhasMatrizes"
+                  className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Manejo de Novilhas matrizes
+                </Label>
+                <Switch
+                  id="notifyNovilhasMatrizes"
+                  checked={prefs.notifyNovilhasMatrizes}
+                  onCheckedChange={(c) => setPrefs({ ...prefs, notifyNovilhasMatrizes: c })}
+                />
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-border mt-4">
               <Button
                 variant="outline"
                 onClick={handleTestAlert}

@@ -21,6 +21,7 @@ import Calendario from './pages/Calendario'
 import Confinamento from './pages/Confinamento'
 import Campo from './pages/Campo'
 import Relatorios from './pages/Relatorios'
+import RelatoriosDesempenho from './pages/RelatoriosDesempenho'
 import ProjecaoVendas from './pages/ProjecaoVendas'
 import Colaboradores from './pages/Colaboradores'
 import Configuracoes from './pages/Configuracoes'
@@ -58,6 +59,7 @@ const App = () => (
                       <Route path="/sanidade" element={<Sanidade />} />
                       <Route path="/calendario" element={<Calendario />} />
                       <Route path="/relatorios" element={<Relatorios />} />
+                      <Route path="/desempenho" element={<RelatoriosDesempenho />} />
                       <Route path="/bi" element={<BI />} />
                       <Route path="/animal/:id" element={<AnimalProfile />} />
                       <Route path="/animais" element={<Animais />} />

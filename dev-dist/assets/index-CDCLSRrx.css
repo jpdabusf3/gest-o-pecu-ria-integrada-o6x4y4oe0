@@ -952,6 +952,9 @@ section[aria-label='Notifications alt+T'] {
 .h-\[350px\]{
   height: 350px;
 }
+.h-\[400px\]{
+  height: 400px;
+}
 .h-\[var\(--radix-navigation-menu-viewport-height\)\]{
   height: var(--radix-navigation-menu-viewport-height);
 }
@@ -996,6 +999,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .min-h-0{
   min-height: 0px;
+}
+.min-h-\[260px\]{
+  min-height: 260px;
 }
 .min-h-\[300px\]{
   min-height: 300px;
@@ -1101,6 +1107,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .w-\[100px\]{
   width: 100px;
+}
+.w-\[160px\]{
+  width: 160px;
 }
 .w-\[180px\]{
   width: 180px;
@@ -1933,6 +1942,9 @@ section[aria-label='Notifications alt+T'] {
 .fill-current{
   fill: currentColor;
 }
+.stroke-muted{
+  stroke: hsl(var(--muted));
+}
 .p-0{
   padding: 0px;
 }
@@ -2571,6 +2583,9 @@ section[aria-label='Notifications alt+T'] {
 .ease-linear{
   transition-timing-function: linear;
 }
+.ease-out{
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
 @keyframes enter{
   from{
     opacity: var(--tw-enter-opacity, 1);
@@ -2630,6 +2645,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .ease-linear{
   animation-timing-function: linear;
+}
+.ease-out{
+  animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 @keyframes fade-in {
     from {
@@ -2901,6 +2919,11 @@ section[aria-label='Notifications alt+T'] {
 .focus\:outline-none:focus{
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.focus\:ring-0:focus{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 .focus\:ring-1:focus{
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
@@ -3672,6 +3695,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:w-\[160px\]{
     width: 160px;
   }
+  .sm\:w-\[240px\]{
+    width: 240px;
+  }
   .sm\:w-\[250px\]{
     width: 250px;
   }
@@ -3722,6 +3748,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:flex-nowrap{
     flex-wrap: nowrap;
+  }
+  .sm\:items-start{
+    align-items: flex-start;
   }
   .sm\:items-center{
     align-items: center;
