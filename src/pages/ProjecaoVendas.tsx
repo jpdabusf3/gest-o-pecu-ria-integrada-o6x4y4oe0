@@ -14,6 +14,8 @@ import { BrainCircuit, DollarSign, Calendar as CalendarIcon, TrendingUp } from '
 import { confinementData, sectorData } from '@/data/mock'
 import { MarketIndicators } from '@/components/MarketIndicators'
 import { marketIndicators } from '@/data/market'
+import { MarketTrendsChart } from '@/components/MarketTrendsChart'
+import { PriceAlertModal } from '@/components/PriceAlertModal'
 
 export default function ProjecaoVendas() {
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>('sp')
@@ -63,14 +65,16 @@ export default function ProjecaoVendas() {
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-          <BrainCircuit className="h-8 w-8 text-primary" /> Dashboard de Inteligência de Vendas
-        </h2>
-        <p className="text-muted-foreground mt-1">
-          Projeções baseadas no GMD e sincronizadas com dados de mercado em tempo real (Datagro e
-          B3).
-        </p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+            <BrainCircuit className="h-8 w-8 text-primary" /> Dashboard de Inteligência de Vendas
+          </h2>
+          <p className="text-muted-foreground mt-1">
+            Projeções baseadas no GMD e sincronizadas com dados de mercado em tempo real.
+          </p>
+        </div>
+        <PriceAlertModal />
       </div>
 
       <MarketIndicators
@@ -80,6 +84,8 @@ export default function ProjecaoVendas() {
           setArrobaPrice(price)
         }}
       />
+
+      <MarketTrendsChart />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="bg-primary/5 border-primary/20 shadow-sm">

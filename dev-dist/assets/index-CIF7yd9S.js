@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$65 = require_react(), Internals = {
+		var React$66 = require_react(), Internals = {
 			d: {
 				f: noop$3,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$65.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$65.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$66.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$65 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$66 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$65.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$65.version;
+			var isomorphicReactPackageVersion = React$66.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17609,15 +17609,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$65 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$65.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$66 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$65 = { react_stack_bottom_frame: function(callStackForError) {
+		React$66 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$65.react_stack_bottom_frame.bind(React$65, UnknownOwner)();
+		var unknownOwnerDebugStack = React$66.react_stack_bottom_frame.bind(React$66, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -18102,7 +18102,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$11 = DismissableLayer;
+var Root$12 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18216,7 +18216,7 @@ function getElementRef$1(element) {
 	return element.props.ref || element.ref;
 }
 var useInsertionEffect = import_react[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
-function useControllableState$1({ prop, defaultProp, onChange = () => {}, caller }) {
+function useControllableState({ prop, defaultProp, onChange = () => {}, caller }) {
 	const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState$1({
 		defaultProp,
 		onChange
@@ -18281,7 +18281,7 @@ var VISUALLY_HIDDEN_STYLES = Object.freeze({
 	whiteSpace: "nowrap",
 	wordWrap: "normal"
 });
-var NAME$3 = "VisuallyHidden";
+var NAME$4 = "VisuallyHidden";
 var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
 		...props,
@@ -18292,8 +18292,8 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-VisuallyHidden.displayName = NAME$3;
-var Root$10 = VisuallyHidden;
+VisuallyHidden.displayName = NAME$4;
+var Root$11 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$3, useCollection$3, createCollectionScope$3] = createCollection("Toast");
@@ -18472,7 +18472,7 @@ var TOAST_SWIPE_CANCEL = "toast.swipeCancel";
 var TOAST_SWIPE_END = "toast.swipeEnd";
 var Toast$2 = import_react.forwardRef((props, forwardedRef) => {
 	const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props;
-	const [open, setOpen] = useControllableState$1({
+	const [open, setOpen] = useControllableState({
 		prop: openProp,
 		defaultProp: defaultOpen ?? true,
 		onChange: onOpenChange,
@@ -18592,7 +18592,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -18822,7 +18822,7 @@ function focusFirst$3(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport$1 = ToastViewport$1;
-var Root2$4 = Toast$2;
+var Root2$5 = Toast$2;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action = ToastAction$1;
@@ -19014,6 +19014,24 @@ var Beef = createLucideIcon("beef", [
 		cy: "8.5",
 		r: "2.5",
 		key: "9738u8"
+	}]
+]);
+var BellRing = createLucideIcon("bell-ring", [
+	["path", {
+		d: "M10.268 21a2 2 0 0 0 3.464 0",
+		key: "vwvbt9"
+	}],
+	["path", {
+		d: "M22 8c0-2.3-.8-4.3-2-6",
+		key: "5bb3ad"
+	}],
+	["path", {
+		d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
+		key: "11g9vi"
+	}],
+	["path", {
+		d: "M4 2C2.8 3.7 2 5.7 2 8",
+		key: "tap9e0"
 	}]
 ]);
 var Bell = createLucideIcon("bell", [["path", {
@@ -19243,6 +19261,26 @@ var Download = createLucideIcon("download", [
 		key: "brsn70"
 	}]
 ]);
+var FileImage = createLucideIcon("file-image", [
+	["path", {
+		d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+		key: "1oefj6"
+	}],
+	["path", {
+		d: "M14 2v5a1 1 0 0 0 1 1h5",
+		key: "wfsgrz"
+	}],
+	["circle", {
+		cx: "10",
+		cy: "12",
+		r: "2",
+		key: "737tya"
+	}],
+	["path", {
+		d: "m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22",
+		key: "wt3hpn"
+	}]
+]);
 var FileSpreadsheet = createLucideIcon("file-spreadsheet", [
 	["path", {
 		d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
@@ -19289,6 +19327,20 @@ var FileText = createLucideIcon("file-text", [
 	["path", {
 		d: "M16 17H8",
 		key: "z1uh3a"
+	}]
+]);
+var Files = createLucideIcon("files", [
+	["path", {
+		d: "M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8",
+		key: "14sh0y"
+	}],
+	["path", {
+		d: "M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z",
+		key: "1970lx"
+	}],
+	["path", {
+		d: "M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1",
+		key: "l4dndm"
 	}]
 ]);
 var History = createLucideIcon("history", [
@@ -19621,6 +19673,26 @@ var Syringe = createLucideIcon("syringe", [
 		key: "yqp9t2"
 	}]
 ]);
+var Target = createLucideIcon("target", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "6",
+		key: "1vlfrh"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "2",
+		key: "1c9p78"
+	}]
+]);
 var Tractor = createLucideIcon("tractor", [
 	["path", {
 		d: "m10 11 11 .9a1 1 0 0 1 .8 1.1l-.665 4.158a1 1 0 0 1-.988.842H20",
@@ -19663,6 +19735,28 @@ var Tractor = createLucideIcon("tractor", [
 		key: "ddtuc"
 	}]
 ]);
+var Trash2 = createLucideIcon("trash-2", [
+	["path", {
+		d: "M10 11v6",
+		key: "nco0om"
+	}],
+	["path", {
+		d: "M14 11v6",
+		key: "outv1u"
+	}],
+	["path", {
+		d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6",
+		key: "miytrc"
+	}],
+	["path", {
+		d: "M3 6h18",
+		key: "d0wm0j"
+	}],
+	["path", {
+		d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+		key: "e791ji"
+	}]
+]);
 var Trash = createLucideIcon("trash", [
 	["path", {
 		d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6",
@@ -19691,6 +19785,20 @@ var TrendingUp = createLucideIcon("trending-up", [["path", {
 	d: "m22 7-8.5 8.5-5-5L2 17",
 	key: "1t1m79"
 }]]);
+var Upload = createLucideIcon("upload", [
+	["path", {
+		d: "M12 3v12",
+		key: "1x0j5s"
+	}],
+	["path", {
+		d: "m17 8-5-5-5 5",
+		key: "7q97r8"
+	}],
+	["path", {
+		d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
+		key: "ih7n3h"
+	}]
+]);
 var Wallet = createLucideIcon("wallet", [["path", {
 	d: "M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1",
 	key: "18etb6"
@@ -21142,13 +21250,13 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 	defaultVariants: { variant: "default" }
 });
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		ref,
 		className: cn(toastVariants({ variant }), className),
 		...props
 	});
 });
-Toast$1.displayName = Root2$4.displayName;
+Toast$1.displayName = Root2$5.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action, {
 	ref,
 	className: cn("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
@@ -21528,10 +21636,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$27, data) => {
+		this.custom = (jsx$29, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$27(id),
+				jsx: jsx$29(id),
 				id,
 				...data
 			});
@@ -23657,7 +23765,7 @@ var arrow = (options$1, deps) => ({
 	...arrow$1$1(options$1),
 	options: [options$1, deps]
 });
-var NAME$2 = "Arrow";
+var NAME$3 = "Arrow";
 var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { children, width = 10, height = 5, ...arrowProps } = props;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.svg, {
@@ -23670,8 +23778,8 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 		children: props.asChild ? children : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", { points: "0,0 30,0 15,10" })
 	});
 });
-Arrow$1.displayName = NAME$2;
-var Root$9 = Arrow$1;
+Arrow$1.displayName = NAME$3;
+var Root$10 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23888,7 +23996,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -23943,7 +24051,7 @@ function getSideAndAlignFromPlacement(placement) {
 	const [side, align = "center"] = placement.split("-");
 	return [side, align];
 }
-var Root2$3 = Popper;
+var Root2$4 = Popper;
 var Anchor = PopperAnchor;
 var Content$3 = PopperContent;
 var Arrow = PopperArrow;
@@ -23995,7 +24103,7 @@ var Tooltip$2 = (props) => {
 	const disableHoverableContent = disableHoverableContentProp ?? providerContext.disableHoverableContent;
 	const delayDuration = delayDurationProp ?? providerContext.delayDuration;
 	const wasOpenDelayedRef = import_react.useRef(false);
-	const [open, setOpen] = useControllableState$1({
+	const [open, setOpen] = useControllableState({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: (open2) => {
@@ -24037,7 +24145,7 @@ var Tooltip$2 = (props) => {
 			}
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContextProvider, {
 			scope: __scopeTooltip,
@@ -24270,7 +24378,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$10, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$11, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24649,7 +24757,7 @@ var Primitive$1 = [
 		[node]: Node$1
 	};
 }, {});
-var NAME$1 = "Separator";
+var NAME$2 = "Separator";
 var DEFAULT_ORIENTATION = "horizontal";
 var ORIENTATIONS = ["horizontal", "vertical"];
 var Separator$3 = import_react.forwardRef((props, forwardedRef) => {
@@ -24667,19 +24775,19 @@ var Separator$3 = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-Separator$3.displayName = NAME$1;
+Separator$3.displayName = NAME$2;
 function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
-var Root$8 = Separator$3;
-var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+var Root$9 = Separator$3;
+var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator$2.displayName = Root$8.displayName;
+Separator$2.displayName = Root$9.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -25054,9 +25162,9 @@ function createSidecarMedium(options$1) {
 var SideCar = function(_a) {
 	var sideCar = _a.sideCar, rest = __rest(_a, ["sideCar"]);
 	if (!sideCar) throw new Error("Sidecar: please provide `sideCar` property to import the right car");
-	var Target = sideCar.read();
-	if (!Target) throw new Error("Sidecar medium not found");
-	return import_react.createElement(Target, __assign({}, rest));
+	var Target$1 = sideCar.read();
+	if (!Target$1) throw new Error("Sidecar medium not found");
+	return import_react.createElement(Target$1, __assign({}, rest));
 };
 SideCar.isSideCarExport = true;
 function exportSidecar(medium, exported) {
@@ -25589,7 +25697,7 @@ var Dialog$1 = (props) => {
 	const { __scopeDialog, children, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
 	const triggerRef = import_react.useRef(null);
 	const contentRef = import_react.useRef(null);
-	const [open, setOpen] = useControllableState$1({
+	const [open, setOpen] = useControllableState({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: onOpenChange,
@@ -25850,7 +25958,7 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$7 = Dialog$1;
+var Root$8 = Dialog$1;
 var Trigger$3 = DialogTrigger$1;
 var Portal$4 = DialogPortal$1;
 var Overlay$1 = DialogOverlay$1;
@@ -25858,7 +25966,7 @@ var Content$2 = DialogContent$1;
 var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
-var Sheet = Root$7;
+var Sheet = Root$8;
 var SheetPortal = Portal$4;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay$1, {
 	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
@@ -26466,13 +26574,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$65.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$66.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$21({ inst: {
+			cachedValue = useState$24({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26509,8 +26617,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$65 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$21 = React$65.useState, useEffect$7 = React$65.useEffect, useLayoutEffect$3 = React$65.useLayoutEffect, useDebugValue = React$65.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$65.useSyncExternalStore ? React$65.useSyncExternalStore : shim;
+		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$24 = React$66.useState, useEffect$7 = React$66.useEffect, useLayoutEffect$3 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$66.useSyncExternalStore ? React$66.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -26616,15 +26724,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$6 = Avatar$1;
+var Root$7 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$6.displayName;
+Avatar.displayName = Root$7.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26637,7 +26745,7 @@ var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /
 	...props
 }));
 AvatarFallback.displayName = Fallback.displayName;
-var Dialog = Root$7;
+var Dialog = Root$8;
 var DialogTrigger = Trigger$3;
 var DialogPortal = Portal$4;
 var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay$1, {
@@ -26681,7 +26789,7 @@ var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) =
 	...props
 }));
 DialogDescription.displayName = Description.displayName;
-var NAME = "Label";
+var NAME$1 = "Label";
 var Label$4 = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.label, {
 		...props,
@@ -26693,15 +26801,15 @@ var Label$4 = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-Label$4.displayName = NAME;
-var Root$5 = Label$4;
+Label$4.displayName = NAME$1;
+var Root$6 = Label$4;
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 	ref,
 	className: cn(labelVariants(), className),
 	...props
 }));
-Label.displayName = Root$5.displayName;
+Label.displayName = Root$6.displayName;
 function clamp(value, [min$5, max$6]) {
 	return Math.min(max$6, Math.max(min$5, value));
 }
@@ -26744,13 +26852,13 @@ var Select$2 = (props) => {
 	const [valueNode, setValueNode] = import_react.useState(null);
 	const [valueNodeHasChildren, setValueNodeHasChildren] = import_react.useState(false);
 	const direction = useDirection(dir);
-	const [open, setOpen] = useControllableState$1({
+	const [open, setOpen] = useControllableState({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: onOpenChange,
 		caller: SELECT_NAME
 	});
-	const [value, setValue] = useControllableState$1({
+	const [value, setValue] = useControllableState({
 		prop: valueProp,
 		defaultProp: defaultValue,
 		onChange: onValueChange,
@@ -26760,7 +26868,7 @@ var Select$2 = (props) => {
 	const isFormControl = trigger ? form || !!trigger.closest("form") : true;
 	const [nativeOptionsSet, setNativeOptionsSet] = import_react.useState(/* @__PURE__ */ new Set());
 	const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectProvider, {
 			required,
@@ -27359,12 +27467,12 @@ var SelectLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 SelectLabel$1.displayName = LABEL_NAME$2;
-var ITEM_NAME$3 = "SelectItem";
-var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$3);
+var ITEM_NAME$4 = "SelectItem";
+var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$4);
 var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, value, disabled = false, textValue: textValueProp, ...itemProps } = props;
-	const context = useSelectContext(ITEM_NAME$3, __scopeSelect);
-	const contentContext = useSelectContentContext(ITEM_NAME$3, __scopeSelect);
+	const context = useSelectContext(ITEM_NAME$4, __scopeSelect);
+	const contentContext = useSelectContentContext(ITEM_NAME$4, __scopeSelect);
 	const isSelected = context.value === value;
 	const [textValue, setTextValue] = import_react.useState(textValueProp ?? "");
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -27431,7 +27539,7 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectItem$1.displayName = ITEM_NAME$3;
+SelectItem$1.displayName = ITEM_NAME$4;
 var ITEM_TEXT_NAME = "SelectItemText";
 var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, ...itemTextProps } = props;
@@ -27659,7 +27767,7 @@ function findNextItem(items, search, currentItem) {
 function wrapArray$2(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root2$2 = Select$2;
+var Root2$3 = Select$2;
 var Trigger$2 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
@@ -27673,7 +27781,7 @@ var ItemIndicator$1 = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
 var Separator$1 = SelectSeparator$1;
-var Select = Root2$2;
+var Select = Root2$3;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$2, {
 	ref,
@@ -27934,7 +28042,7 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const direction = useDirection(dir);
-	const [currentTabStopId, setCurrentTabStopId] = useControllableState$1({
+	const [currentTabStopId, setCurrentTabStopId] = useControllableState({
 		prop: currentTabStopIdProp,
 		defaultProp: defaultCurrentTabStopId ?? null,
 		onChange: onCurrentTabStopIdChange,
@@ -27994,12 +28102,12 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var ITEM_NAME$2 = "RovingFocusGroupItem";
+var ITEM_NAME$3 = "RovingFocusGroupItem";
 var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, focusable = true, active = false, tabStopId, children, ...itemProps } = props;
 	const autoId = useId();
 	const id = tabStopId || autoId;
-	const context = useRovingFocusContext(ITEM_NAME$2, __scopeRovingFocusGroup);
+	const context = useRovingFocusContext(ITEM_NAME$3, __scopeRovingFocusGroup);
 	const isCurrentTabStop = context.currentTabStopId === id;
 	const getItems = useCollection$1(__scopeRovingFocusGroup);
 	const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
@@ -28055,7 +28163,7 @@ var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-RovingFocusGroupItem.displayName = ITEM_NAME$2;
+RovingFocusGroupItem.displayName = ITEM_NAME$3;
 var MAP_KEY_TO_FOCUS_INTENT = {
 	ArrowLeft: "prev",
 	ArrowUp: "prev",
@@ -28087,7 +28195,7 @@ function focusFirst$1(candidates, preventScroll = false) {
 function wrapArray$1(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root$4 = RovingFocusGroup;
+var Root$5 = RovingFocusGroup;
 var Item = RovingFocusGroupItem;
 var SELECTION_KEYS = ["Enter", " "];
 var FIRST_KEYS = [
@@ -28117,7 +28225,7 @@ var [createMenuContext, createMenuScope] = createContextScope(MENU_NAME, [
 	createRovingFocusGroupScope
 ]);
 var usePopperScope = createPopperScope();
-var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$2 = createRovingFocusGroupScope();
 var [MenuProvider, useMenuContext] = createMenuContext(MENU_NAME);
 var [MenuRootProvider, useMenuRootContext] = createMenuContext(MENU_NAME);
 var Menu = (props) => {
@@ -28147,7 +28255,7 @@ var Menu = (props) => {
 			document.removeEventListener("pointermove", handlePointer, { capture: true });
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
 			scope: __scopeMenu,
@@ -28256,7 +28364,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const context = useMenuContext(CONTENT_NAME$2, __scopeMenu);
 	const rootContext = useMenuRootContext(CONTENT_NAME$2, __scopeMenu);
 	const popperScope = usePopperScope(__scopeMenu);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeMenu);
 	const getItems = useCollection(__scopeMenu);
 	const [currentItemId, setCurrentItemId] = import_react.useState(null);
 	const contentRef = import_react.useRef(null);
@@ -28329,7 +28437,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 					onFocusOutside,
 					onInteractOutside,
 					onDismiss,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 						asChild: true,
 						...rovingFocusGroupScope,
 						dir: rootContext.dir,
@@ -28411,13 +28519,13 @@ var MenuLabel = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 MenuLabel.displayName = LABEL_NAME$1;
-var ITEM_NAME$1 = "MenuItem";
+var ITEM_NAME$2 = "MenuItem";
 var ITEM_SELECT = "menu.itemSelect";
 var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 	const { disabled = false, onSelect, ...itemProps } = props;
 	const ref = import_react.useRef(null);
-	const rootContext = useMenuRootContext(ITEM_NAME$1, props.__scopeMenu);
-	const contentContext = useMenuContentContext(ITEM_NAME$1, props.__scopeMenu);
+	const rootContext = useMenuRootContext(ITEM_NAME$2, props.__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$2, props.__scopeMenu);
 	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const isPointerDownRef = import_react.useRef(false);
 	const handleSelect = () => {
@@ -28455,11 +28563,11 @@ var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-MenuItem.displayName = ITEM_NAME$1;
+MenuItem.displayName = ITEM_NAME$2;
 var MenuItemImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeMenu, disabled = false, textValue, ...itemProps } = props;
-	const contentContext = useMenuContentContext(ITEM_NAME$1, __scopeMenu);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$2, __scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeMenu);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs$1(forwardedRef, ref);
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -28602,7 +28710,7 @@ var MenuSub = (props) => {
 		if (parentMenuContext.open === false) handleOpenChange(false);
 		return () => handleOpenChange(false);
 	}, [parentMenuContext.open, handleOpenChange]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
 			scope: __scopeMenu,
@@ -28836,7 +28944,7 @@ var Portal$2 = MenuPortal;
 var Content2$1 = MenuContent;
 var Group = MenuGroup;
 var Label$2 = MenuLabel;
-var Item2$1 = MenuItem;
+var Item2$2 = MenuItem;
 var CheckboxItem = MenuCheckboxItem;
 var RadioGroup = MenuRadioGroup;
 var RadioItem = MenuRadioItem;
@@ -28853,7 +28961,7 @@ var DropdownMenu$1 = (props) => {
 	const { __scopeDropdownMenu, children, dir, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
 	const triggerRef = import_react.useRef(null);
-	const [open, setOpen] = useControllableState$1({
+	const [open, setOpen] = useControllableState({
 		prop: openProp,
 		defaultProp: defaultOpen ?? false,
 		onChange: onOpenChange,
@@ -28984,17 +29092,17 @@ var DropdownMenuLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuLabel$1.displayName = LABEL_NAME;
-var ITEM_NAME = "DropdownMenuItem";
+var ITEM_NAME$1 = "DropdownMenuItem";
 var DropdownMenuItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$2, {
 		...menuScope,
 		...itemProps,
 		ref: forwardedRef
 	});
 });
-DropdownMenuItem$1.displayName = ITEM_NAME;
+DropdownMenuItem$1.displayName = ITEM_NAME$1;
 var CHECKBOX_ITEM_NAME = "DropdownMenuCheckboxItem";
 var DropdownMenuCheckboxItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...checkboxItemProps } = props;
@@ -29091,19 +29199,19 @@ var DropdownMenuSubContent$1 = import_react.forwardRef((props, forwardedRef) => 
 	});
 });
 DropdownMenuSubContent$1.displayName = SUB_CONTENT_NAME;
-var Root2$1 = DropdownMenu$1;
+var Root2$2 = DropdownMenu$1;
 var Trigger$1 = DropdownMenuTrigger$1;
 var Portal2 = DropdownMenuPortal$1;
 var Content2 = DropdownMenuContent$1;
 var Label2 = DropdownMenuLabel$1;
-var Item2 = DropdownMenuItem$1;
+var Item2$1 = DropdownMenuItem$1;
 var CheckboxItem2 = DropdownMenuCheckboxItem$1;
 var RadioItem2 = DropdownMenuRadioItem$1;
 var ItemIndicator2 = DropdownMenuItemIndicator;
 var Separator2 = DropdownMenuSeparator$1;
 var SubTrigger2 = DropdownMenuSubTrigger$1;
 var SubContent2 = DropdownMenuSubContent$1;
-var DropdownMenu = Root2$1;
+var DropdownMenu = Root2$2;
 var DropdownMenuTrigger = Trigger$1;
 var DropdownMenuSubTrigger = import_react.forwardRef(({ className, inset, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SubTrigger2, {
 	ref,
@@ -29125,12 +29233,12 @@ var DropdownMenuContent = import_react.forwardRef(({ className, sideOffset = 4, 
 	...props
 }) }));
 DropdownMenuContent.displayName = Content2.displayName;
-var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
 	ref,
 	className: cn("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
 	...props
 }));
-DropdownMenuItem.displayName = Item2.displayName;
+DropdownMenuItem.displayName = Item2$1.displayName;
 var DropdownMenuCheckboxItem = import_react.forwardRef(({ className, children, checked, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CheckboxItem2, {
 	ref,
 	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
@@ -29367,9 +29475,9 @@ function getInvalidValueError(propValue, componentName) {
 
 Defaulting to \`null\`.`;
 }
-var Root$3 = Progress$1;
+var Root$4 = Progress$1;
 var Indicator = ProgressIndicator;
-var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
+var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
 	ref,
 	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
 	...props,
@@ -29378,7 +29486,7 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 		style: { transform: `translateX(-${100 - (value || 0)}%)` }
 	})
 }));
-Progress.displayName = Root$3.displayName;
+Progress.displayName = Root$4.displayName;
 const dashboardData = {
 	kpis: {
 		animais: 3450,
@@ -53571,12 +53679,12 @@ function Index() {
 }
 var TABS_NAME = "Tabs";
 var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [createRovingFocusGroupScope]);
-var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
 var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
 var Tabs$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
 	const direction = useDirection(dir);
-	const [value, setValue] = useControllableState$1({
+	const [value, setValue] = useControllableState({
 		prop: valueProp,
 		onChange: onValueChange,
 		defaultProp: defaultValue ?? "",
@@ -53603,8 +53711,8 @@ var TAB_LIST_NAME = "TabsList";
 var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 		asChild: true,
 		...rovingFocusGroupScope,
 		orientation: context.orientation,
@@ -53623,7 +53731,7 @@ var TRIGGER_NAME = "TabsTrigger";
 var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
 	const context = useTabsContext(TRIGGER_NAME, __scopeTabs);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
 	const triggerId = makeTriggerId(context.baseId, value);
 	const contentId = makeContentId(context.baseId, value);
 	const isSelected = value === context.value;
@@ -53697,11 +53805,11 @@ function makeTriggerId(baseId, value) {
 function makeContentId(baseId, value) {
 	return `${baseId}-content-${value}`;
 }
-var Root2 = Tabs$1;
+var Root2$1 = Tabs$1;
 var List = TabsList$1;
 var Trigger = TabsTrigger$1;
 var Content$1 = TabsContent$1;
-var Tabs = Root2;
+var Tabs = Root2$1;
 var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
 	ref,
 	className: cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
@@ -54405,7 +54513,7 @@ var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
 	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setButton(node));
 	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
 	const isFormControl = button ? form || !!button.closest("form") : true;
-	const [checked, setChecked] = useControllableState$1({
+	const [checked, setChecked] = useControllableState({
 		prop: checkedProp,
 		defaultProp: defaultChecked ?? false,
 		onChange: onCheckedChange,
@@ -54501,15 +54609,15 @@ SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME;
 function getState(checked) {
 	return checked ? "checked" : "unchecked";
 }
-var Root$2 = Switch$1;
+var Root$3 = Switch$1;
 var Thumb = SwitchThumb;
-var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+var Switch = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
 	className: cn("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input", className),
 	...props,
 	ref,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Thumb, { className: cn("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0") })
 }));
-Switch.displayName = Root$2.displayName;
+Switch.displayName = Root$3.displayName;
 function NotificationPreferences() {
 	const [prefs, setPrefs] = (0, import_react.useState)({
 		sms: false,
@@ -55651,6 +55759,178 @@ function ScaleIntegrationModal({ animalId, onSaveWeight }) {
 		})]
 	});
 }
+function DocumentManager({ entityId }) {
+	const [documents, setDocuments] = (0, import_react.useState)([
+		{
+			id: "1",
+			name: "GTA_Entrada_45091.pdf",
+			type: "GTA",
+			date: "15/04/2025",
+			size: "245 KB"
+		},
+		{
+			id: "2",
+			name: "Exame_Brucelose.pdf",
+			type: "Laboratório",
+			date: "10/03/2026",
+			size: "1.2 MB"
+		},
+		{
+			id: "3",
+			name: "NF_Compra_Insumos.pdf",
+			type: "Nota Fiscal",
+			date: "01/02/2026",
+			size: "512 KB"
+		}
+	]);
+	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
+	const [uploadType, setUploadType] = (0, import_react.useState)("Outros");
+	const fileInputRef = (0, import_react.useRef)(null);
+	const { toast: toast$2 } = useToast();
+	const handleFileUpload = (e) => {
+		if (e.target.files && e.target.files.length > 0) {
+			const file = e.target.files[0];
+			setDocuments([{
+				id: Math.random().toString(36).substring(2, 9),
+				name: file.name,
+				type: uploadType,
+				date: (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR"),
+				size: `${(file.size / 1024).toFixed(1)} KB`
+			}, ...documents]);
+			toast$2({
+				title: "Documento Anexado",
+				description: `${file.name} foi salvo com sucesso no repositório.`
+			});
+			if (fileInputRef.current) fileInputRef.current.value = "";
+		}
+	};
+	const handleDelete = (id, name) => {
+		setDocuments(documents.filter((d) => d.id !== id));
+		toast$2({
+			title: "Documento Removido",
+			description: `${name} foi excluído do sistema.`,
+			variant: "destructive"
+		});
+	};
+	const filteredDocs = documents.filter((d) => d.name.toLowerCase().includes(searchTerm.toLowerCase()) || d.type.toLowerCase().includes(searchTerm.toLowerCase()));
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Upload de Documento Digital" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, { children: [
+			"Anexe arquivos importantes como GTAs, Notas Fiscais e exames para o registro ",
+			entityId,
+			"."
+		] })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row items-end gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-2 w-full sm:w-[250px]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria do Documento" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: uploadType,
+					onValueChange: setUploadType,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "GTA",
+							children: "Guia de Trânsito (GTA)"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "Nota Fiscal",
+							children: "Nota Fiscal"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "Laboratório",
+							children: "Exame Laboratorial"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "Receituário",
+							children: "Receituário"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "Outros",
+							children: "Outros"
+						})
+					] })]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "w-full sm:w-auto flex-1 max-w-sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+					type: "file",
+					ref: fileInputRef,
+					className: "hidden",
+					onChange: handleFileUpload,
+					accept: ".pdf,.jpg,.jpeg,.png"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					onClick: () => fileInputRef.current?.click(),
+					className: "w-full gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "h-4 w-4" }), " Selecionar e Enviar Arquivo"]
+				})]
+			})]
+		}) })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Repositório de Documentos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Gerencie todos os arquivos vinculados a esta entidade." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative w-full sm:w-64",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+					type: "search",
+					placeholder: "Buscar por nome ou tipo...",
+					className: "pl-8",
+					value: searchTerm,
+					onChange: (e) => setSearchTerm(e.target.value)
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "px-0 sm:px-6",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Nome do Arquivo" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data de Envio" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tamanho" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Ações"
+					})
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [filteredDocs.map((doc) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "font-medium flex items-center gap-2 whitespace-nowrap",
+						children: [doc.name.endsWith(".pdf") ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4 text-red-500" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileImage, { className: "h-4 w-4 text-blue-500" }), doc.name]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: "secondary",
+						className: "font-normal",
+						children: doc.type
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-muted-foreground whitespace-nowrap",
+						children: doc.date
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-muted-foreground whitespace-nowrap",
+						children: doc.size
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right whitespace-nowrap",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							title: "Baixar",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							className: "text-destructive hover:text-destructive hover:bg-destructive/10",
+							onClick: () => handleDelete(doc.id, doc.name),
+							title: "Excluir",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+						})]
+					})
+				] }, doc.id)), filteredDocs.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 5,
+					className: "h-32 text-center text-muted-foreground",
+					children: "Nenhum documento encontrado com os critérios atuais."
+				}) })] })] })
+			})
+		})] })]
+	});
+}
 function QuickEventModal({ animalId }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
@@ -55751,7 +56031,7 @@ function AnimalProfile() {
 					children: ["Ficha do Animal: ", animal.id]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Histórico de ciclo de vida, saúde e pesagens."
+					children: "Gestão individual de histórico, pesagens e documentação digital."
 				})] })]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -55799,36 +56079,63 @@ function AnimalProfile() {
 					}) })] })
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-				className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Eventos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-wrap gap-2 w-full sm:w-auto",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScaleIntegrationModal, {
-						animalId: animal.id,
-						onSaveWeight: handleNewWeight
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickEventModal, { animalId: animal.id })]
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "overflow-x-auto",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Valor / Detalhe" })
-				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: historico.map((ev, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "whitespace-nowrap",
-						children: ev.data
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				defaultValue: "history",
+				className: "w-full",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+						className: "grid w-full sm:w-[400px] grid-cols-2 mb-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "history",
+							className: "gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-4 w-4" }), " Histórico Operacional"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "documents",
+							className: "gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Files, { className: "h-4 w-4" }), " Documentos Digitais"]
+						})]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: ev.tipo.includes("Sensor") ? "default" : "outline",
-						children: ev.tipo
-					}) }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "font-medium",
-						children: ev.valor
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "history",
+						className: "mt-2 outline-none",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Eventos e Pesagens" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-wrap gap-2 w-full sm:w-auto",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScaleIntegrationModal, {
+									animalId: animal.id,
+									onSaveWeight: handleNewWeight
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickEventModal, { animalId: animal.id })]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Valor / Detalhe" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: historico.map((ev, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "whitespace-nowrap",
+									children: ev.data
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: ev.tipo.includes("Sensor") ? "default" : "outline",
+									children: ev.tipo
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "font-medium",
+									children: ev.valor
+								})
+							] }, idx)) })] })
+						}) })] })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "documents",
+						className: "mt-2 outline-none",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DocumentManager, { entityId: animal.id })
 					})
-				] }, idx)) })] })
-			}) })] })
+				]
+			})
 		]
 	});
 }
@@ -57909,7 +58216,7 @@ function PreviousMonthButton(props) {
 	const { components } = useDayPicker();
 	return import_react.createElement(components.Button, { ...props });
 }
-function Root$1(props) {
+function Root$2(props) {
 	const { rootRef, ...rest } = props;
 	return import_react.createElement("div", {
 		...rest,
@@ -57961,7 +58268,7 @@ var custom_components_exports = /* @__PURE__ */ __export({
 	NextMonthButton: () => NextMonthButton,
 	Option: () => Option,
 	PreviousMonthButton: () => PreviousMonthButton,
-	Root: () => Root$1,
+	Root: () => Root$2,
 	Select: () => Select$1,
 	Week: () => Week,
 	WeekNumber: () => WeekNumber,
@@ -60331,7 +60638,7 @@ function useUncontrolledState({ defaultProp, onChange }) {
 	]);
 	return uncontrolledState;
 }
-function useControllableState({ prop, defaultProp, onChange = () => {} }) {
+function useControllableState$1({ prop, defaultProp, onChange = () => {} }) {
 	const [uncontrolledProp, setUncontrolledProp] = useUncontrolledState({
 		defaultProp,
 		onChange
@@ -60352,7 +60659,7 @@ function useControllableState({ prop, defaultProp, onChange = () => {} }) {
 	])];
 }
 function useSnapPoints({ activeSnapPointProp, setActiveSnapPointProp, snapPoints, drawerRef, overlayRef, fadeFromIndex, onSnapPointChange, direction = "bottom", container, snapToSequentialPoint }) {
-	const [activeSnapPoint, setActiveSnapPoint] = useControllableState({
+	const [activeSnapPoint, setActiveSnapPoint] = useControllableState$1({
 		prop: activeSnapPointProp,
 		defaultProp: snapPoints == null ? void 0 : snapPoints[0],
 		onChange: setActiveSnapPointProp
@@ -60630,9 +60937,9 @@ function usePositionFixed({ isOpen, modal, nested, hasBeenOpened, preventScrollR
 	]);
 	return { restorePositionSetting };
 }
-function Root({ open: openProp, onOpenChange, children, onDrag: onDragProp, onRelease: onReleaseProp, snapPoints, shouldScaleBackground = false, setBackgroundColorOnScale = true, closeThreshold = CLOSE_THRESHOLD, scrollLockTimeout = SCROLL_LOCK_TIMEOUT, dismissible = true, handleOnly = false, fadeFromIndex = snapPoints && snapPoints.length - 1, activeSnapPoint: activeSnapPointProp, setActiveSnapPoint: setActiveSnapPointProp, fixed, modal = true, onClose, nested, noBodyStyles = false, direction = "bottom", defaultOpen = false, disablePreventScroll = true, snapToSequentialPoint = false, preventScrollRestoration = false, repositionInputs = true, onAnimationEnd, container, autoFocus = false }) {
+function Root$1({ open: openProp, onOpenChange, children, onDrag: onDragProp, onRelease: onReleaseProp, snapPoints, shouldScaleBackground = false, setBackgroundColorOnScale = true, closeThreshold = CLOSE_THRESHOLD, scrollLockTimeout = SCROLL_LOCK_TIMEOUT, dismissible = true, handleOnly = false, fadeFromIndex = snapPoints && snapPoints.length - 1, activeSnapPoint: activeSnapPointProp, setActiveSnapPoint: setActiveSnapPointProp, fixed, modal = true, onClose, nested, noBodyStyles = false, direction = "bottom", defaultOpen = false, disablePreventScroll = true, snapToSequentialPoint = false, preventScrollRestoration = false, repositionInputs = true, onAnimationEnd, container, autoFocus = false }) {
 	var _drawerRef_current, _drawerRef_current1;
-	const [isOpen = false, setIsOpen] = useControllableState({
+	const [isOpen = false, setIsOpen] = useControllableState$1({
 		defaultProp: defaultOpen,
 		prop: openProp,
 		onChange: (o) => {
@@ -60977,7 +61284,7 @@ function Root({ open: openProp, onOpenChange, children, onDrag: onDragProp, onRe
 			document.body.style.pointerEvents = "auto";
 		});
 	}, [modal]);
-	return /* @__PURE__ */ import_react.createElement(Root$7, {
+	return /* @__PURE__ */ import_react.createElement(Root$8, {
 		defaultOpen,
 		onOpenChange: (open) => {
 			if (!dismissible && !open) return;
@@ -61204,7 +61511,7 @@ Handle.displayName = "Drawer.Handle";
 function NestedRoot({ onDrag, onOpenChange, open: nestedIsOpen, ...rest }) {
 	const { onNestedDrag, onNestedOpenChange, onNestedRelease } = useDrawerContext();
 	if (!onNestedDrag) throw new Error("Drawer.NestedRoot must be placed in another drawer");
-	return /* @__PURE__ */ import_react.createElement(Root, {
+	return /* @__PURE__ */ import_react.createElement(Root$1, {
 		nested: true,
 		open: nestedIsOpen,
 		onClose: () => {
@@ -61231,7 +61538,7 @@ function Portal(props) {
 	});
 }
 var Drawer$1 = {
-	Root,
+	Root: Root$1,
 	NestedRoot,
 	Content,
 	Overlay,
@@ -61716,6 +62023,80 @@ const marketIndicators = [
 	}
 ];
 const marketLastUpdate = "07/03/2026 14:30";
+const historicalMarketData = [
+	{
+		month: "Abr/25",
+		sp: 215,
+		mt: 205,
+		b3: 220
+	},
+	{
+		month: "Mai/25",
+		sp: 218,
+		mt: 208,
+		b3: 222
+	},
+	{
+		month: "Jun/25",
+		sp: 220,
+		mt: 210,
+		b3: 225
+	},
+	{
+		month: "Jul/25",
+		sp: 222,
+		mt: 215,
+		b3: 228
+	},
+	{
+		month: "Ago/25",
+		sp: 225,
+		mt: 218,
+		b3: 230
+	},
+	{
+		month: "Set/25",
+		sp: 228,
+		mt: 222,
+		b3: 232
+	},
+	{
+		month: "Out/25",
+		sp: 230,
+		mt: 225,
+		b3: 235
+	},
+	{
+		month: "Nov/25",
+		sp: 235,
+		mt: 228,
+		b3: 240
+	},
+	{
+		month: "Dez/25",
+		sp: 238,
+		mt: 230,
+		b3: 242
+	},
+	{
+		month: "Jan/26",
+		sp: 240,
+		mt: 235,
+		b3: 241
+	},
+	{
+		month: "Fev/26",
+		sp: 242,
+		mt: 237,
+		b3: 245
+	},
+	{
+		month: "Mar/26",
+		sp: 245.5,
+		mt: 238,
+		b3: 242
+	}
+];
 function MarketIndicators({ selectedId, onSelect }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-3 animate-fade-in-up",
@@ -61772,6 +62153,453 @@ function MarketIndicators({ selectedId, onSelect }) {
 		})]
 	});
 }
+var NAME = "Toggle";
+var Toggle$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { pressed: pressedProp, defaultPressed, onPressedChange, ...buttonProps } = props;
+	const [pressed, setPressed] = useControllableState({
+		prop: pressedProp,
+		onChange: onPressedChange,
+		defaultProp: defaultPressed ?? false,
+		caller: NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+		type: "button",
+		"aria-pressed": pressed,
+		"data-state": pressed ? "on" : "off",
+		"data-disabled": props.disabled ? "" : void 0,
+		...buttonProps,
+		ref: forwardedRef,
+		onClick: composeEventHandlers(props.onClick, () => {
+			if (!props.disabled) setPressed(!pressed);
+		})
+	});
+});
+Toggle$1.displayName = NAME;
+var Root = Toggle$1;
+var TOGGLE_GROUP_NAME = "ToggleGroup";
+var [createToggleGroupContext, createToggleGroupScope] = createContextScope(TOGGLE_GROUP_NAME, [createRovingFocusGroupScope]);
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var ToggleGroup$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { type, ...toggleGroupProps } = props;
+	if (type === "single") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplSingle, {
+		...toggleGroupProps,
+		ref: forwardedRef
+	});
+	if (type === "multiple") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplMultiple, {
+		...toggleGroupProps,
+		ref: forwardedRef
+	});
+	throw new Error(`Missing prop \`type\` expected on \`${TOGGLE_GROUP_NAME}\``);
+});
+ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
+var [ToggleGroupValueProvider, useToggleGroupValueContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
+var ToggleGroupImplSingle = import_react.forwardRef((props, forwardedRef) => {
+	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupSingleProps } = props;
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? "",
+		onChange: onValueChange,
+		caller: TOGGLE_GROUP_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
+		scope: props.__scopeToggleGroup,
+		type: "single",
+		value: import_react.useMemo(() => value ? [value] : [], [value]),
+		onItemActivate: setValue,
+		onItemDeactivate: import_react.useCallback(() => setValue(""), [setValue]),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
+			...toggleGroupSingleProps,
+			ref: forwardedRef
+		})
+	});
+});
+var ToggleGroupImplMultiple = import_react.forwardRef((props, forwardedRef) => {
+	const { value: valueProp, defaultValue, onValueChange = () => {}, ...toggleGroupMultipleProps } = props;
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? [],
+		onChange: onValueChange,
+		caller: TOGGLE_GROUP_NAME
+	});
+	const handleButtonActivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => [...prevValue, itemValue]), [setValue]);
+	const handleButtonDeactivate = import_react.useCallback((itemValue) => setValue((prevValue = []) => prevValue.filter((value2) => value2 !== itemValue)), [setValue]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupValueProvider, {
+		scope: props.__scopeToggleGroup,
+		type: "multiple",
+		value,
+		onItemActivate: handleButtonActivate,
+		onItemDeactivate: handleButtonDeactivate,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImpl, {
+			...toggleGroupMultipleProps,
+			ref: forwardedRef
+		})
+	});
+});
+ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
+var [ToggleGroupContext$1, useToggleGroupContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
+var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeToggleGroup, disabled = false, rovingFocus = true, orientation, dir, loop = true, ...toggleGroupProps } = props;
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeToggleGroup);
+	const direction = useDirection(dir);
+	const commonProps = {
+		role: "group",
+		dir: direction,
+		...toggleGroupProps
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext$1, {
+		scope: __scopeToggleGroup,
+		rovingFocus,
+		disabled,
+		children: rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+			asChild: true,
+			...rovingFocusGroupScope,
+			orientation,
+			dir: direction,
+			loop,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+				...commonProps,
+				ref: forwardedRef
+			})
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+			...commonProps,
+			ref: forwardedRef
+		})
+	});
+});
+var ITEM_NAME = "ToggleGroupItem";
+var ToggleGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const valueContext = useToggleGroupValueContext(ITEM_NAME, props.__scopeToggleGroup);
+	const context = useToggleGroupContext(ITEM_NAME, props.__scopeToggleGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(props.__scopeToggleGroup);
+	const pressed = valueContext.value.includes(props.value);
+	const disabled = context.disabled || props.disabled;
+	const commonProps = {
+		...props,
+		pressed,
+		disabled
+	};
+	const ref = import_react.useRef(null);
+	return context.rovingFocus ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		focusable: !disabled,
+		active: pressed,
+		ref,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
+			...commonProps,
+			ref: forwardedRef
+		})
+	}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItemImpl, {
+		...commonProps,
+		ref: forwardedRef
+	});
+});
+ToggleGroupItem$1.displayName = ITEM_NAME;
+var ToggleGroupItemImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeToggleGroup, value, ...itemProps } = props;
+	const valueContext = useToggleGroupValueContext(ITEM_NAME, __scopeToggleGroup);
+	const singleProps = {
+		role: "radio",
+		"aria-checked": props.pressed,
+		"aria-pressed": void 0
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toggle$1, {
+		...valueContext.type === "single" ? singleProps : void 0,
+		...itemProps,
+		ref: forwardedRef,
+		onPressedChange: (pressed) => {
+			if (pressed) valueContext.onItemActivate(value);
+			else valueContext.onItemDeactivate(value);
+		}
+	});
+});
+var Root2 = ToggleGroup$1;
+var Item2 = ToggleGroupItem$1;
+var toggleVariants = cva("inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2", {
+	variants: {
+		variant: {
+			default: "bg-transparent",
+			outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+		},
+		size: {
+			default: "h-10 px-3 min-w-10",
+			sm: "h-9 px-2.5 min-w-9",
+			lg: "h-11 px-5 min-w-11"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var Toggle = import_react.forwardRef(({ className, variant, size: size$3, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
+	ref,
+	className: cn(toggleVariants({
+		variant,
+		size: size$3,
+		className
+	})),
+	...props
+}));
+Toggle.displayName = Root.displayName;
+var ToggleGroupContext = import_react.createContext({
+	size: "default",
+	variant: "default"
+});
+var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2, {
+	ref,
+	className: cn("flex items-center justify-center gap-1", className),
+	...props,
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupContext.Provider, {
+		value: {
+			variant,
+			size: size$3
+		},
+		children
+	})
+}));
+ToggleGroup.displayName = Root2.displayName;
+var ToggleGroupItem = import_react.forwardRef(({ className, children, variant, size: size$3, ...props }, ref) => {
+	const context = import_react.useContext(ToggleGroupContext);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+		ref,
+		className: cn(toggleVariants({
+			variant: context.variant || variant,
+			size: context.size || size$3
+		}), className),
+		...props,
+		children
+	});
+});
+ToggleGroupItem.displayName = Item2.displayName;
+function MarketTrendsChart() {
+	const [period, setPeriod] = (0, import_react.useState)("12");
+	const [visibleSeries, setVisibleSeries] = (0, import_react.useState)([
+		"sp",
+		"mt",
+		"b3"
+	]);
+	const chartData = (0, import_react.useMemo)(() => {
+		const months = parseInt(period);
+		return historicalMarketData.slice(-months);
+	}, [period]);
+	const chartConfig$2 = {
+		sp: {
+			label: "SP (Datagro)",
+			color: "hsl(var(--chart-1))"
+		},
+		mt: {
+			label: "MT (Datagro)",
+			color: "hsl(var(--chart-2))"
+		},
+		b3: {
+			label: "B3 (Futuro)",
+			color: "hsl(var(--chart-3))"
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+		className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Cotações (@)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Evolução de preços Mercado Físico vs Futuro (B3)" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row gap-3 items-start sm:items-center w-full md:w-auto",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ToggleGroup, {
+				type: "multiple",
+				value: visibleSeries,
+				onValueChange: (val) => {
+					if (val.length) setVisibleSeries(val);
+				},
+				className: "justify-start sm:justify-center",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+						value: "sp",
+						"aria-label": "Toggle SP",
+						className: "text-xs px-2 sm:px-3",
+						children: "SP (Físico)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+						value: "mt",
+						"aria-label": "Toggle MT",
+						className: "text-xs px-2 sm:px-3",
+						children: "MT (Físico)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupItem, {
+						value: "b3",
+						"aria-label": "Toggle B3",
+						className: "text-xs px-2 sm:px-3",
+						children: "B3 (Futuro)"
+					})
+				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+				value: period,
+				onValueChange: setPeriod,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+					className: "w-full sm:w-[150px]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Período" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "3",
+						children: "Últ. 3 meses"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "6",
+						children: "Últ. 6 meses"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "12",
+						children: "Últ. 12 meses"
+					})
+				] })]
+			})]
+		})]
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "h-[350px] w-full",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$2,
+			className: "h-full w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
+				data: chartData,
+				margin: {
+					top: 10,
+					right: 10,
+					left: 0,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						strokeDasharray: "3 3",
+						vertical: false,
+						stroke: "hsl(var(--border))"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "month",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 8,
+						minTickGap: 30
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						domain: ["dataMin - 5", "dataMax + 5"],
+						tickLine: false,
+						axisLine: false,
+						tickFormatter: (val) => `R$${val}`,
+						width: 60
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+					visibleSeries.includes("sp") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+						type: "monotone",
+						dataKey: "sp",
+						stroke: "var(--color-sp)",
+						strokeWidth: 2,
+						dot: { r: 4 },
+						activeDot: { r: 6 },
+						name: "sp"
+					}),
+					visibleSeries.includes("mt") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+						type: "monotone",
+						dataKey: "mt",
+						stroke: "var(--color-mt)",
+						strokeWidth: 2,
+						dot: { r: 4 },
+						activeDot: { r: 6 },
+						name: "mt"
+					}),
+					visibleSeries.includes("b3") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+						type: "monotone",
+						dataKey: "b3",
+						stroke: "var(--color-b3)",
+						strokeWidth: 2,
+						strokeDasharray: "5 5",
+						dot: { r: 4 },
+						activeDot: { r: 6 },
+						name: "b3"
+					})
+				]
+			})
+		})
+	}) })] });
+}
+function PriceAlertModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [indicator, setIndicator] = (0, import_react.useState)("sp");
+	const [targetPrice, setTargetPrice] = (0, import_react.useState)("250.00");
+	const { toast: toast$2 } = useToast();
+	const handleSaveAlert = () => {
+		const selectedMarket = marketIndicators.find((m) => m.id === indicator);
+		const currentPrice = selectedMarket?.price || 0;
+		const target = parseFloat(targetPrice);
+		toast$2({
+			title: "Alerta Configurado",
+			description: `Notificaremos quando ${selectedMarket?.label} atingir R$ ${target.toFixed(2)}.`
+		});
+		if (currentPrice >= target) setTimeout(() => {
+			toast$2({
+				title: "🚨 Alerta de Oportunidade!",
+				description: `O mercado atingiu seu alvo! ${selectedMarket?.label} está cotado a R$ ${currentPrice.toFixed(2)}.`,
+				variant: "destructive"
+			});
+		}, 1500);
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "outline",
+				className: "gap-2 border-primary/50 text-primary hover:bg-primary/10",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }), " Alertas de Preço"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Novo Alerta de Oportunidade"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Configure um gatilho para receber notificação push quando o mercado atingir o alvo desejado." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Indicador de Referência" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: indicator,
+							onValueChange: setIndicator,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o mercado" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: marketIndicators.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: m.id,
+								children: [
+									m.label,
+									" (Atual: R$ ",
+									m.price.toFixed(2),
+									")"
+								]
+							}, m.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço Alvo (R$ por @)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "relative",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "absolute left-3 top-2.5 text-muted-foreground font-medium",
+								children: "R$"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								step: "0.5",
+								value: targetPrice,
+								onChange: (e) => setTargetPrice(e.target.value),
+								className: "pl-10 text-lg font-bold"
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						onClick: handleSaveAlert,
+						className: "w-full gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }), " Salvar Alerta"]
+					})
+				]
+			})]
+		})]
+	});
+}
 function ProjecaoVendas() {
 	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("sp");
 	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(245.5);
@@ -61804,13 +62632,16 @@ function ProjecaoVendas() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Dashboard de Inteligência de Vendas"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Projeções baseadas no GMD e sincronizadas com dados de mercado em tempo real (Datagro e B3)."
-			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Dashboard de Inteligência de Vendas"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Projeções baseadas no GMD e sincronizadas com dados de mercado em tempo real."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceAlertModal, {})]
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketIndicators, {
 				selectedId: selectedMarketId,
 				onSelect: (id, price) => {
@@ -61818,6 +62649,7 @@ function ProjecaoVendas() {
 					setArrobaPrice(price);
 				}
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketTrendsChart, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid gap-4 sm:grid-cols-3",
 				children: [
@@ -62179,4 +63011,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DXS4wkzz.js.map
+//# sourceMappingURL=index-CIF7yd9S.js.map

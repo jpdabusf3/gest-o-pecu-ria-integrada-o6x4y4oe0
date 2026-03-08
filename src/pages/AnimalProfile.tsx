@@ -28,10 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/hooks/use-toast'
 import { animalData } from '@/data/mock'
-import { ArrowLeft, Plus } from 'lucide-react'
+import { ArrowLeft, Plus, History, Files } from 'lucide-react'
 import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
+import { DocumentManager } from '@/components/DocumentManager'
 
 function QuickEventModal({ animalId }: { animalId: string }) {
   const [open, setOpen] = useState(false)
@@ -113,7 +115,7 @@ export default function AnimalProfile() {
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Ficha do Animal: {animal.id}</h2>
           <p className="text-muted-foreground mt-1">
-            Histórico de ciclo de vida, saúde e pesagens.
+            Gestão individual de histórico, pesagens e documentação digital.
           </p>
         </div>
       </div>
@@ -153,41 +155,58 @@ export default function AnimalProfile() {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <CardTitle>Histórico de Eventos</CardTitle>
-          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-            <ScaleIntegrationModal animalId={animal.id} onSaveWeight={handleNewWeight} />
-            <QuickEventModal animalId={animal.id} />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Valor / Detalhe</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {historico.map((ev: any, idx: number) => (
-                  <TableRow key={idx}>
-                    <TableCell className="whitespace-nowrap">{ev.data}</TableCell>
-                    <TableCell>
-                      <Badge variant={ev.tipo.includes('Sensor') ? 'default' : 'outline'}>
-                        {ev.tipo}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-medium">{ev.valor}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="history" className="w-full">
+        <TabsList className="grid w-full sm:w-[400px] grid-cols-2 mb-4">
+          <TabsTrigger value="history" className="gap-2">
+            <History className="h-4 w-4" /> Histórico Operacional
+          </TabsTrigger>
+          <TabsTrigger value="documents" className="gap-2">
+            <Files className="h-4 w-4" /> Documentos Digitais
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="history" className="mt-2 outline-none">
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <CardTitle>Histórico de Eventos e Pesagens</CardTitle>
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <ScaleIntegrationModal animalId={animal.id} onSaveWeight={handleNewWeight} />
+                <QuickEventModal animalId={animal.id} />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Valor / Detalhe</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {historico.map((ev: any, idx: number) => (
+                      <TableRow key={idx}>
+                        <TableCell className="whitespace-nowrap">{ev.data}</TableCell>
+                        <TableCell>
+                          <Badge variant={ev.tipo.includes('Sensor') ? 'default' : 'outline'}>
+                            {ev.tipo}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-medium">{ev.valor}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="documents" className="mt-2 outline-none">
+          <DocumentManager entityId={animal.id} />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

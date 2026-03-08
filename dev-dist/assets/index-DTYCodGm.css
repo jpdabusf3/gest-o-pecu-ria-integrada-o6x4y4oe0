@@ -862,6 +862,9 @@ section[aria-label='Notifications alt+T'] {
 .h-3\.5{
   height: 0.875rem;
 }
+.h-32{
+  height: 8rem;
+}
 .h-4{
   height: 1rem;
 }
@@ -900,6 +903,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .h-\[35\%\]{
   height: 35%;
+}
+.h-\[350px\]{
+  height: 350px;
 }
 .h-\[40\%\]{
   height: 40%;
@@ -1132,6 +1138,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-w-md{
   max-width: 28rem;
+}
+.max-w-sm{
+  max-width: 24rem;
 }
 .flex-1{
   flex: 1 1 0%;
@@ -1819,6 +1828,9 @@ section[aria-label='Notifications alt+T'] {
 .pb-8{
   padding-bottom: 2rem;
 }
+.pl-10{
+  padding-left: 2.5rem;
+}
 .pl-2{
   padding-left: 0.5rem;
 }
@@ -2039,6 +2051,10 @@ section[aria-label='Notifications alt+T'] {
 }
 .text-primary\/70{
   color: hsl(var(--primary) / 0.7);
+}
+.text-red-500{
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
 }
 .text-secondary-foreground{
   color: hsl(var(--secondary-foreground));
@@ -2454,6 +2470,9 @@ section[aria-label='Notifications alt+T'] {
 .hover\:text-blue-800:hover{
   --tw-text-opacity: 1;
   color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+.hover\:text-destructive:hover{
+  color: hsl(var(--destructive));
 }
 .hover\:text-foreground:hover{
   color: hsl(var(--foreground));
@@ -3225,6 +3244,12 @@ section[aria-label='Notifications alt+T'] {
   .sm\:w-\[160px\]{
     width: 160px;
   }
+  .sm\:w-\[250px\]{
+    width: 250px;
+  }
+  .sm\:w-\[400px\]{
+    width: 400px;
+  }
   .sm\:w-auto{
     width: auto;
   }
@@ -3261,6 +3286,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:justify-end{
     justify-content: flex-end;
   }
+  .sm\:justify-center{
+    justify-content: center;
+  }
   .sm\:gap-2\.5{
     gap: 0.625rem;
   }
@@ -3281,6 +3309,10 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:border-0{
     border-width: 0px;
+  }
+  .sm\:px-3{
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
   .sm\:px-6{
     padding-left: 1.5rem;
