@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router-dom'
+import { useRef } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -10,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarHeader,
 } from '@/components/ui/sidebar'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import {
   LayoutDashboard,
   Baby,
@@ -18,18 +20,18 @@ import {
   Map,
   Package,
   DollarSign,
-  Tractor,
   Wheat,
   Smartphone,
   FileText,
   BrainCircuit,
   Syringe,
-  ShieldCheck,
   Building2,
   Truck,
   CheckSquare,
   MapPinned,
   Tags,
+  Users,
+  Camera,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -39,7 +41,7 @@ const navigationGroups = [
     items: [
       { title: 'Administrativo', icon: Building2, url: '/administrativo' },
       { title: 'Cadastro de Fazendas', icon: MapPinned, url: '/fazendas' },
-      { title: 'Equipe & Desempenho', icon: ShieldCheck, url: '/equipe' },
+      { title: 'Colaboradores', icon: Users, url: '/colaboradores' },
       { title: 'Painel Principal', icon: LayoutDashboard, url: '/' },
       { title: 'Relatórios', icon: FileText, url: '/relatorios' },
     ].sort((a, b) => a.title.localeCompare(b.title)),
@@ -76,14 +78,42 @@ const navigationGroups = [
 
 export function AppSidebar() {
   const location = useLocation()
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setUser({ ...user, avatar: url })
+    }
+  }
 
   return (
     <Sidebar variant="inset" className="border-r border-sidebar-border">
       <SidebarHeader className="h-16 flex items-center justify-center border-b border-sidebar-border/50">
-        <div className="flex items-center gap-2 px-2 w-full text-sidebar-primary">
-          <Tractor className="h-6 w-6 shrink-0" />
-          <span className="font-bold text-lg tracking-tight truncate">Pecuária Inteligente F3</span>
+        <div className="flex items-center gap-3 px-3 w-full text-sidebar-primary">
+          <div
+            className="relative group cursor-pointer shrink-0"
+            onClick={() => fileInputRef.current?.click()}
+            title="Alterar foto de perfil"
+          >
+            <Avatar className="h-8 w-8 transition-opacity group-hover:opacity-80">
+              <AvatarImage src={user.avatar} />
+              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="absolute inset-0 hidden group-hover:flex items-center justify-center rounded-full bg-black/40">
+              <Camera className="h-3 w-3 text-white" />
+            </div>
+          </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={handleImageUpload}
+          />
+          <span className="font-bold text-lg tracking-tight truncate">GPI F3</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

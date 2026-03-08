@@ -22,7 +22,8 @@ import Confinamento from './pages/Confinamento'
 import Campo from './pages/Campo'
 import Relatorios from './pages/Relatorios'
 import ProjecaoVendas from './pages/ProjecaoVendas'
-import Equipe from './pages/Equipe'
+import Colaboradores from './pages/Colaboradores'
+import Configuracoes from './pages/Configuracoes'
 import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
 import Fazendas from './pages/Fazendas'
@@ -58,7 +59,8 @@ const App = () => (
                       <Route path="/animal/:id" element={<AnimalProfile />} />
                       <Route path="/animais" element={<Animais />} />
                       <Route path="/projecoes" element={<ProjecaoVendas />} />
-                      <Route path="/equipe" element={<Equipe />} />
+                      <Route path="/colaboradores" element={<Colaboradores />} />
+                      <Route path="/configuracoes" element={<Configuracoes />} />
                       <Route path="/tarefas" element={<Tarefas />} />
                       <Route path="/administrativo" element={<Administrativo />} />
                       <Route path="/fazendas" element={<Fazendas />} />

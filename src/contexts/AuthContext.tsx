@@ -8,6 +8,7 @@ export interface User {
   role: Role
   avatar: string
   email: string
+  whatsapp?: string
 }
 
 export const mockUsers: User[] = [
@@ -17,6 +18,7 @@ export const mockUsers: User[] = [
     role: 'admin',
     avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42',
     email: 'admin@fazenda.com',
+    whatsapp: '(11) 99999-9999',
   },
   {
     id: 'U2',
@@ -24,6 +26,7 @@ export const mockUsers: User[] = [
     role: 'operador',
     avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15',
     email: 'joao@fazenda.com',
+    whatsapp: '(16) 98888-8888',
   },
 ]
 

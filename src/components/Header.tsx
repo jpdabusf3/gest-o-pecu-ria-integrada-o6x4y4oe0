@@ -28,12 +28,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
+import { useNavigate } from 'react-router-dom'
 
 export function Header() {
   const { user, setUser } = useAuth()
   const { toast } = useToast()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications()
   const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline()
+  const navigate = useNavigate()
 
   const handleUserSwitch = (newUser: (typeof mockUsers)[0]) => {
     setUser(newUser)
@@ -55,7 +57,6 @@ export function Header() {
         </div>
       </div>
       <div className="flex items-center gap-2 sm:gap-4">
-        {/* Offline Sync Status Indicator */}
         <div className="flex items-center gap-1 sm:mr-2">
           <Button
             variant="ghost"
@@ -184,6 +185,11 @@ export function Header() {
                 <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/configuracoes')}>
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Configurações</span>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Alternar Acesso (Demo RBAC)

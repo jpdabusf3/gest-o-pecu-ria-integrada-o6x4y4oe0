@@ -19225,6 +19225,15 @@ var Calendar = createLucideIcon("calendar", [
 		key: "8toen8"
 	}]
 ]);
+var Camera = createLucideIcon("camera", [["path", {
+	d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
+	key: "18u6gg"
+}], ["circle", {
+	cx: "12",
+	cy: "13",
+	r: "3",
+	key: "1vg3eu"
+}]]);
 var ChartLine = createLucideIcon("chart-line", [["path", {
 	d: "M3 3v16a2 2 0 0 0 2 2h16",
 	key: "c24i48"
@@ -19283,24 +19292,6 @@ var CircleCheck = createLucideIcon("circle-check", [["circle", {
 	d: "m9 12 2 2 4-4",
 	key: "dzmm74"
 }]]);
-var CircleUser = createLucideIcon("circle-user", [
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "10",
-		key: "1mglay"
-	}],
-	["circle", {
-		cx: "12",
-		cy: "10",
-		r: "3",
-		key: "ilqhr7"
-	}],
-	["path", {
-		d: "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662",
-		key: "154egf"
-	}]
-]);
 var Circle = createLucideIcon("circle", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -20132,6 +20123,82 @@ var Upload = createLucideIcon("upload", [
 	["path", {
 		d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
 		key: "ih7n3h"
+	}]
+]);
+var UserCog = createLucideIcon("user-cog", [
+	["path", {
+		d: "M10 15H6a4 4 0 0 0-4 4v2",
+		key: "1nfge6"
+	}],
+	["path", {
+		d: "m14.305 16.53.923-.382",
+		key: "1itpsq"
+	}],
+	["path", {
+		d: "m15.228 13.852-.923-.383",
+		key: "eplpkm"
+	}],
+	["path", {
+		d: "m16.852 12.228-.383-.923",
+		key: "13v3q0"
+	}],
+	["path", {
+		d: "m16.852 17.772-.383.924",
+		key: "1i8mnm"
+	}],
+	["path", {
+		d: "m19.148 12.228.383-.923",
+		key: "1q8j1v"
+	}],
+	["path", {
+		d: "m19.53 18.696-.382-.924",
+		key: "vk1qj3"
+	}],
+	["path", {
+		d: "m20.772 13.852.924-.383",
+		key: "n880s0"
+	}],
+	["path", {
+		d: "m20.772 16.148.924.383",
+		key: "1g6xey"
+	}],
+	["circle", {
+		cx: "18",
+		cy: "15",
+		r: "3",
+		key: "gjjjvw"
+	}],
+	["circle", {
+		cx: "9",
+		cy: "7",
+		r: "4",
+		key: "nufk8"
+	}]
+]);
+var UserPlus = createLucideIcon("user-plus", [
+	["path", {
+		d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
+		key: "1yyitq"
+	}],
+	["circle", {
+		cx: "9",
+		cy: "7",
+		r: "4",
+		key: "nufk8"
+	}],
+	["line", {
+		x1: "19",
+		x2: "19",
+		y1: "8",
+		y2: "14",
+		key: "1bvyxn"
+	}],
+	["line", {
+		x1: "22",
+		x2: "16",
+		y1: "11",
+		y2: "11",
+		key: "1shjgl"
 	}]
 ]);
 var Users = createLucideIcon("users", [
@@ -24955,13 +25022,15 @@ const mockUsers = [{
 	name: "Administrador (Sede)",
 	role: "admin",
 	avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42",
-	email: "admin@fazenda.com"
+	email: "admin@fazenda.com",
+	whatsapp: "(11) 99999-9999"
 }, {
 	id: "U2",
 	name: "João (Operador Campo)",
 	role: "operador",
 	avatar: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15",
-	email: "joao@fazenda.com"
+	email: "joao@fazenda.com",
+	whatsapp: "(16) 98888-8888"
 }];
 var AuthContext = (0, import_react.createContext)(void 0);
 function AuthProvider({ children }) {
@@ -25953,51 +26022,6 @@ const fleetData = [
 		maintenanceCost: 1200,
 		depreciation: 4200,
 		status: "Ativo"
-	}
-];
-const employeePerformance = [
-	{
-		employeeId: "U1",
-		name: "Administrador (Sede)",
-		points: 450,
-		bonusEstimate: 4500,
-		goalsAchieved: 4
-	},
-	{
-		employeeId: "U2",
-		name: "João (Operador Campo)",
-		points: 320,
-		bonusEstimate: 3200,
-		goalsAchieved: 3
-	},
-	{
-		employeeId: "U3",
-		name: "Carlos (Tratorista)",
-		points: 280,
-		bonusEstimate: 2800,
-		goalsAchieved: 2
-	}
-];
-const performanceGoalsList = [
-	{
-		id: "G1",
-		title: "Mortalidade < 2% ao ano na recria",
-		points: 100
-	},
-	{
-		id: "G2",
-		title: "Economia de Combustível > 5% no semestre",
-		points: 80
-	},
-	{
-		id: "G3",
-		title: "GMD Confinamento > 1.4kg/dia no lote total",
-		points: 150
-	},
-	{
-		id: "G4",
-		title: "Taxa de Prenhez > 85% na estação",
-		points: 120
 	}
 ];
 const biMetricsList = [
@@ -28711,159 +28735,6 @@ var SidebarMenuSubButton = import_react.forwardRef(({ asChild = false, size: siz
 	});
 });
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
-var navigationGroups = [
-	{
-		sector: "Administrativo",
-		items: [
-			{
-				title: "Administrativo",
-				icon: Building2,
-				url: "/administrativo"
-			},
-			{
-				title: "Cadastro de Fazendas",
-				icon: MapPinned,
-				url: "/fazendas"
-			},
-			{
-				title: "Equipe & Desempenho",
-				icon: ShieldCheck,
-				url: "/equipe"
-			},
-			{
-				title: "Painel Principal",
-				icon: LayoutDashboard,
-				url: "/"
-			},
-			{
-				title: "Relatórios",
-				icon: FileText,
-				url: "/relatorios"
-			}
-		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
-	},
-	{
-		sector: "Financeiro",
-		items: [{
-			title: "Financeiro",
-			icon: DollarSign,
-			url: "/financeiro"
-		}, {
-			title: "Projeções & AI",
-			icon: BrainCircuit,
-			url: "/projecoes"
-		}].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
-	},
-	{
-		sector: "Operacional",
-		items: [
-			{
-				title: "Estoque & Insumos",
-				icon: Package,
-				url: "/estoque"
-			},
-			{
-				title: "Frota & Maquinário",
-				icon: Truck,
-				url: "/frota"
-			},
-			{
-				title: "Gestão de Tarefas",
-				icon: SquareCheckBig,
-				url: "/tarefas"
-			},
-			{
-				title: "Operações de Campo",
-				icon: Smartphone,
-				url: "/campo"
-			}
-		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
-	},
-	{
-		sector: "Zootécnico",
-		items: [
-			{
-				title: "Confinamento",
-				icon: Wheat,
-				url: "/confinamento"
-			},
-			{
-				title: "Gestão de Pastos",
-				icon: Map$1,
-				url: "/pastos"
-			},
-			{
-				title: "Gestão de Rebanho",
-				icon: Tags,
-				url: "/animais"
-			},
-			{
-				title: "Sanidade",
-				icon: Syringe,
-				url: "/sanidade"
-			},
-			{
-				title: "Setor: Cria",
-				icon: Baby,
-				url: "/setor/cria"
-			},
-			{
-				title: "Setor: Engorda",
-				icon: Beef,
-				url: "/setor/engorda"
-			},
-			{
-				title: "Setor: Recria",
-				icon: TrendingUp,
-				url: "/setor/recria"
-			}
-		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
-	}
-];
-function AppSidebar() {
-	const location = useLocation();
-	const { user } = useAuth();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sidebar, {
-		variant: "inset",
-		className: "border-r border-sidebar-border",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
-			className: "h-16 flex items-center justify-center border-b border-sidebar-border/50",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-2 px-2 w-full text-sidebar-primary",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tractor, { className: "h-6 w-6 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "font-bold text-lg tracking-tight truncate",
-					children: "Pecuária Inteligente F3"
-				})]
-			})
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, { children: navigationGroups.map((group) => {
-			const visibleItems = group.items.filter((item) => {
-				if (user.role === "operador") return [
-					"/",
-					"/campo",
-					"/tarefas",
-					"/sanidade"
-				].includes(item.url);
-				return true;
-			});
-			if (visibleItems.length === 0) return null;
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, { children: group.sector }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: visibleItems.map((item) => {
-				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuButton, {
-					asChild: true,
-					isActive: location.pathname === item.url || item.url !== "/" && location.pathname.startsWith(item.url),
-					tooltip: item.title,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-						to: item.url,
-						className: "flex items-center gap-3",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(item.icon, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-medium",
-							children: item.title
-						})]
-					})
-				}) }, item.url);
-			}) }) })] }, group.sector);
-		}) })]
-	});
-}
 function createContextScope$1(scopeName, createContextScopeDeps = []) {
 	let defaultContexts = [];
 	function createContext3(rootComponentName, defaultContext) {
@@ -28948,7 +28819,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$49({ inst: {
+			cachedValue = useState$51({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28985,7 +28856,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$49 = React$70.useState, useEffect$18 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$51 = React$70.useState, useEffect$18 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29113,6 +28984,191 @@ var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /
 	...props
 }));
 AvatarFallback.displayName = Fallback.displayName;
+var navigationGroups = [
+	{
+		sector: "Administrativo",
+		items: [
+			{
+				title: "Administrativo",
+				icon: Building2,
+				url: "/administrativo"
+			},
+			{
+				title: "Cadastro de Fazendas",
+				icon: MapPinned,
+				url: "/fazendas"
+			},
+			{
+				title: "Colaboradores",
+				icon: Users,
+				url: "/colaboradores"
+			},
+			{
+				title: "Painel Principal",
+				icon: LayoutDashboard,
+				url: "/"
+			},
+			{
+				title: "Relatórios",
+				icon: FileText,
+				url: "/relatorios"
+			}
+		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
+	},
+	{
+		sector: "Financeiro",
+		items: [{
+			title: "Financeiro",
+			icon: DollarSign,
+			url: "/financeiro"
+		}, {
+			title: "Projeções & AI",
+			icon: BrainCircuit,
+			url: "/projecoes"
+		}].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
+	},
+	{
+		sector: "Operacional",
+		items: [
+			{
+				title: "Estoque & Insumos",
+				icon: Package,
+				url: "/estoque"
+			},
+			{
+				title: "Frota & Maquinário",
+				icon: Truck,
+				url: "/frota"
+			},
+			{
+				title: "Gestão de Tarefas",
+				icon: SquareCheckBig,
+				url: "/tarefas"
+			},
+			{
+				title: "Operações de Campo",
+				icon: Smartphone,
+				url: "/campo"
+			}
+		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
+	},
+	{
+		sector: "Zootécnico",
+		items: [
+			{
+				title: "Confinamento",
+				icon: Wheat,
+				url: "/confinamento"
+			},
+			{
+				title: "Gestão de Pastos",
+				icon: Map$1,
+				url: "/pastos"
+			},
+			{
+				title: "Gestão de Rebanho",
+				icon: Tags,
+				url: "/animais"
+			},
+			{
+				title: "Sanidade",
+				icon: Syringe,
+				url: "/sanidade"
+			},
+			{
+				title: "Setor: Cria",
+				icon: Baby,
+				url: "/setor/cria"
+			},
+			{
+				title: "Setor: Engorda",
+				icon: Beef,
+				url: "/setor/engorda"
+			},
+			{
+				title: "Setor: Recria",
+				icon: TrendingUp,
+				url: "/setor/recria"
+			}
+		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
+	}
+];
+function AppSidebar() {
+	const location = useLocation();
+	const { user, setUser } = useAuth();
+	const fileInputRef = (0, import_react.useRef)(null);
+	const handleImageUpload = (e) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			const url = URL.createObjectURL(file);
+			setUser({
+				...user,
+				avatar: url
+			});
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sidebar, {
+		variant: "inset",
+		className: "border-r border-sidebar-border",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
+			className: "h-16 flex items-center justify-center border-b border-sidebar-border/50",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-3 px-3 w-full text-sidebar-primary",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative group cursor-pointer shrink-0",
+						onClick: () => fileInputRef.current?.click(),
+						title: "Alterar foto de perfil",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+							className: "h-8 w-8 transition-opacity group-hover:opacity-80",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: user.avatar }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: user.name.charAt(0) })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "absolute inset-0 hidden group-hover:flex items-center justify-center rounded-full bg-black/40",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Camera, { className: "h-3 w-3 text-white" })
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+						type: "file",
+						ref: fileInputRef,
+						className: "hidden",
+						accept: "image/*",
+						onChange: handleImageUpload
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-bold text-lg tracking-tight truncate",
+						children: "GPI F3"
+					})
+				]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, { children: navigationGroups.map((group) => {
+			const visibleItems = group.items.filter((item) => {
+				if (user.role === "operador") return [
+					"/",
+					"/campo",
+					"/tarefas",
+					"/sanidade"
+				].includes(item.url);
+				return true;
+			});
+			if (visibleItems.length === 0) return null;
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, { children: group.sector }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: visibleItems.map((item) => {
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuButton, {
+					asChild: true,
+					isActive: location.pathname === item.url || item.url !== "/" && location.pathname.startsWith(item.url),
+					tooltip: item.title,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+						to: item.url,
+						className: "flex items-center gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(item.icon, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium",
+							children: item.title
+						})]
+					})
+				}) }, item.url);
+			}) }) })] }, group.sector);
+		}) })]
+	});
+}
 var Dialog = Root$8;
 var DialogTrigger = Trigger$3;
 var DialogPortal = Portal$4;
@@ -31667,6 +31723,7 @@ function Header() {
 	const { toast: toast$2 } = useToast();
 	const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications();
 	const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline();
+	const navigate = useNavigate();
 	const handleUserSwitch = (newUser) => {
 		setUser(newUser);
 		toast$2({
@@ -31803,6 +31860,12 @@ function Header() {
 								children: user.email
 							})]
 						}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+							className: "cursor-pointer",
+							onClick: () => navigate("/configuracoes"),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, { className: "mr-2 h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Configurações" })]
+						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, {
 							className: "text-xs text-muted-foreground",
@@ -68260,218 +68323,291 @@ function ProjecaoVendas() {
 		]
 	});
 }
-function Equipe() {
-	const { addNotification } = useAppNotifications();
+function Colaboradores() {
+	const [members, setMembers] = (0, import_react.useState)(teamMembers);
 	const { toast: toast$2 } = useToast();
-	const handleSimulateGoal = (employee) => {
-		addNotification({
-			title: "Meta Atingida! 🎯",
-			message: `O colaborador ${employee.name} alcançou uma nova meta de performance!`,
-			type: "goal"
-		});
-		toast$2({
-			title: "Notificação de Meta Disparada",
-			description: `O administrador recebeu um push alert em tempo real sobre a conquista.`
-		});
+	const [isModalOpen, setIsModalOpen] = (0, import_react.useState)(false);
+	const [isDeleteOpen, setIsDeleteOpen] = (0, import_react.useState)(false);
+	const [editingId, setEditingId] = (0, import_react.useState)(null);
+	const [deleteId, setDeleteId] = (0, import_react.useState)(null);
+	const [formData, setFormData] = (0, import_react.useState)({
+		name: "",
+		email: "",
+		role: "Operador"
+	});
+	const handleOpenModal = (member) => {
+		if (member) {
+			setEditingId(member.id);
+			setFormData({
+				name: member.name,
+				email: member.email,
+				role: member.role
+			});
+		} else {
+			setEditingId(null);
+			setFormData({
+				name: "",
+				email: "",
+				role: "Operador"
+			});
+		}
+		setIsModalOpen(true);
+	};
+	const handleSave = () => {
+		if (editingId) {
+			setMembers(members.map((m) => m.id === editingId ? {
+				...m,
+				...formData
+			} : m));
+			toast$2({ title: "Colaborador atualizado com sucesso." });
+		} else {
+			setMembers([...members, {
+				id: Date.now().toString(),
+				status: "Ativo",
+				lastActive: "Nunca",
+				...formData
+			}]);
+			toast$2({ title: "Novo colaborador cadastrado." });
+		}
+		setIsModalOpen(false);
+	};
+	const handleDelete = () => {
+		if (deleteId) {
+			setMembers(members.filter((m) => m.id !== deleteId));
+			toast$2({
+				title: "Colaborador removido.",
+				variant: "destructive"
+			});
+		}
+		setIsDeleteOpen(false);
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-8 w-8 text-primary" }), "Equipe & Desempenho"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Gestão de acessos, auditoria e sistema de pontuação de colaboradores para bônus."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				className: "gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleUser, { className: "h-4 w-4" }), " Convidar Colaborador"]
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
-			defaultValue: "acessos",
-			className: "space-y-6",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "w-full sm:w-auto grid grid-cols-2 max-w-[400px]",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "acessos",
-						children: "Controle de Acessos"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "desempenho",
-						children: "Desempenho & Metas"
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-					value: "acessos",
-					className: "mt-0",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid gap-6 md:grid-cols-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-							className: "h-fit",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel de Colaboradores" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, { children: [
-								"Acesso total para ",
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Administradores" }),
-								", restrito ao módulo de apontamentos para",
-								" ",
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Operadores de Campo" }),
-								"."
-							] })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-								className: "px-0 sm:px-6",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Papel" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Acesso" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: teamMembers.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "font-medium text-sm",
-										children: m.name
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "text-xs text-muted-foreground",
-										children: m.email
-									})] }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-										variant: m.role === "Admin" ? "default" : "secondary",
-										className: "gap-1",
-										children: [m.role === "Operador" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-3 w-3" }), m.role]
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "text-muted-foreground text-xs whitespace-nowrap",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: "flex items-center gap-1",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-2 w-2 rounded-full ${m.status === "Ativo" ? "bg-emerald-500" : "bg-muted-foreground"}` }), m.lastActive]
-										})
-									})
-								] }, m.id)) })] })
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-							className: "flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-5 w-5 text-primary" }), "Auditoria de Campo Recente"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ações rastreadas e vinculadas ao perfil de cada operador." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "space-y-4",
-							children: managementHistory.slice(0, 6).map((h) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between items-start border-b pb-3 last:border-0 hover:bg-muted/30 p-2 rounded-md transition-colors",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "font-medium text-sm leading-tight text-foreground",
-									children: h.descricao
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "text-xs text-muted-foreground mt-1",
-									children: [
-										"Alvo: ",
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-medium text-primary",
-											children: h.alvo
-										}),
-										" •",
-										" ",
-										h.tipo
-									]
-								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "text-right flex flex-col items-end",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-										variant: "outline",
-										className: "text-[10px] px-1.5 mb-1 bg-background",
-										children: h.responsavel
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-[10px] text-muted-foreground font-mono",
-										children: h.data
-									})]
-								})]
-							}, h.id))
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-8 w-8 text-primary" }), "Colaboradores"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Gestão de equipe, controle de acessos e cadastro de pessoal."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					className: "gap-2",
+					onClick: () => handleOpenModal(),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserPlus, { className: "h-4 w-4" }), " Adicionar Colaborador"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Membros da Equipe" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Gerencie os acessos e informações dos colaboradores da fazenda." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Papel" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Ações"
+					})
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: members.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "font-medium text-sm",
+						children: m.name
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-xs text-muted-foreground",
+						children: m.email
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+						variant: m.role === "Admin" ? "default" : "secondary",
+						className: "gap-1 font-normal",
+						children: [m.role === "Admin" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3 w-3" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-3 w-3" }), m.role]
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-1.5 text-xs text-muted-foreground font-medium",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-2 w-2 rounded-full ${m.status === "Ativo" ? "bg-emerald-500" : "bg-muted-foreground"}` }), m.status]
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right space-x-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							onClick: () => handleOpenModal(m),
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pen, { className: "h-4 w-4 text-muted-foreground" })
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 							variant: "ghost",
-							className: "w-full mt-4 text-sm text-primary",
-							children: "Ver Relatório Completo"
-						})] })] })]
+							size: "icon",
+							onClick: () => {
+								setDeleteId(m.id);
+								setIsDeleteOpen(true);
+							},
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4 text-destructive" })
+						})]
 					})
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-					value: "desempenho",
-					className: "mt-0",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid gap-6 md:grid-cols-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-							className: "flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-5 w-5 text-primary" }), " Ranking e Pontuação"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acúmulo de pontos para cálculo do bônus anual (Safra Pecuária) integrado aos custos totais." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-							className: "px-0 sm:px-6",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "overflow-x-auto",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-center",
-										children: "Metas"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Pontos"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Ações"
-									})
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: employeePerformance.map((e) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium whitespace-nowrap",
-										children: e.name
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "text-center",
-										children: e.goalsAchieved
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right font-bold text-primary",
-										children: [e.points, " pts"]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "text-right",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											variant: "ghost",
-											size: "sm",
-											onClick: () => handleSimulateGoal(e),
-											className: "text-amber-600 hover:text-amber-700 hover:bg-amber-50",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4 mr-1" }), " Simular"]
-										})
-									})
-								] }, e.employeeId)) })] })
-							})
-						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-							className: "flex flex-row items-start justify-between space-y-0",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-								className: "flex items-center gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Metas Ativas"]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
-								className: "mt-1.5",
-								children: "Objetivos vinculados ao sistema de recompensa."
-							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-								size: "sm",
-								variant: "outline",
-								className: "h-8",
-								children: "Nova Meta"
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "space-y-4",
-							children: performanceGoalsList.map((g) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between items-center p-3 border rounded-lg bg-card hover:bg-muted/50 transition-colors",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-medium text-sm text-foreground",
-									children: g.title
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-									variant: "secondary",
-									className: "whitespace-nowrap ml-4",
-									children: [
-										"+",
-										g.points,
-										" pts"
-									]
-								})]
-							}, g.id))
-						}) })] })]
-					})
+				] }, m.id)) })] })
+			}) })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+				open: isModalOpen,
+				onOpenChange: setIsModalOpen,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[425px]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: editingId ? "Editar Colaborador" : "Novo Colaborador" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Preencha os dados do membro da equipe abaixo." })] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-4 py-4",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome Completo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										value: formData.name,
+										onChange: (e) => setFormData({
+											...formData,
+											name: e.target.value
+										}),
+										placeholder: "Ex: João da Silva"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "E-mail de Acesso" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										type: "email",
+										value: formData.email,
+										onChange: (e) => setFormData({
+											...formData,
+											email: e.target.value
+										}),
+										placeholder: "email@exemplo.com"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Papel e Permissões" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+										value: formData.role,
+										onValueChange: (v) => setFormData({
+											...formData,
+											role: v
+										}),
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Admin",
+											children: "Administrador (Acesso Total)"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Operador",
+											children: "Operador de Campo (Módulo Restrito)"
+										})] })]
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "outline",
+							onClick: () => setIsModalOpen(false),
+							children: "Cancelar"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							onClick: handleSave,
+							children: "Salvar Colaborador"
+						})] })
+					]
 				})
-			]
-		})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+				open: isDeleteOpen,
+				onOpenChange: setIsDeleteOpen,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[425px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Remover Colaborador" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Tem certeza que deseja excluir este colaborador? Todo o acesso dele ao sistema será revogado imediatamente." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, {
+						className: "mt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "outline",
+							onClick: () => setIsDeleteOpen(false),
+							children: "Cancelar"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "destructive",
+							onClick: handleDelete,
+							children: "Confirmar Exclusão"
+						})]
+					})]
+				})
+			})
+		]
+	});
+}
+function Configuracoes() {
+	const { user, setUser } = useAuth();
+	const { toast: toast$2 } = useToast();
+	const [email, setEmail] = (0, import_react.useState)(user.email);
+	const [whatsapp, setWhatsapp] = (0, import_react.useState)(user.whatsapp || "");
+	const [password, setPassword] = (0, import_react.useState)("");
+	const handleSave = () => {
+		setUser({
+			...user,
+			email,
+			whatsapp
+		});
+		toast$2({
+			title: "Configurações salvas",
+			description: "Seu perfil foi atualizado com sucesso."
+		});
+		setPassword("");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "max-w-2xl mx-auto space-y-6 animate-fade-in-up pb-8",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+			className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserCog, { className: "h-8 w-8 text-primary" }), "Configurações"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-1",
+			children: "Gerencie suas credenciais e informações de contato do sistema."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Meu Perfil" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Atualize seu e-mail, telefone de contato e credenciais de segurança." })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+				className: "space-y-5",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+							htmlFor: "email",
+							children: "E-mail de Acesso"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							id: "email",
+							type: "email",
+							value: email,
+							onChange: (e) => setEmail(e.target.value)
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+							htmlFor: "whatsapp",
+							children: "Número de WhatsApp"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							id: "whatsapp",
+							placeholder: "(00) 00000-0000",
+							value: whatsapp,
+							onChange: (e) => setWhatsapp(e.target.value)
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2 pt-2 border-t border-border",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+							htmlFor: "password",
+							children: "Nova Senha (deixe em branco para não alterar)"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							id: "password",
+							type: "password",
+							placeholder: "••••••••",
+							value: password,
+							onChange: (e) => setPassword(e.target.value)
+						})]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
+				className: "flex justify-end border-t bg-muted/20 pt-4",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					onClick: handleSave,
+					className: "gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Alterações"]
+				})
+			})
+		] })]
 	});
 }
 function ContactDialog({ onSave }) {
@@ -70629,8 +70765,12 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProjecaoVendas, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-					path: "/equipe",
-					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Equipe, {})
+					path: "/colaboradores",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Colaboradores, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/configuracoes",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Configuracoes, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/tarefas",
@@ -70654,4 +70794,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DFIy09-9.js.map
+//# sourceMappingURL=index-C8-4iGQ3.js.map

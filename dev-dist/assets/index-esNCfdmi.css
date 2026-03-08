@@ -773,9 +773,6 @@ section[aria-label='Notifications alt+T'] {
 .ml-2{
   margin-left: 0.5rem;
 }
-.ml-4{
-  margin-left: 1rem;
-}
 .ml-auto{
   margin-left: auto;
 }
@@ -954,10 +951,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .h-auto{
   height: auto;
-}
-.h-fit{
-  height: -moz-fit-content;
-  height: fit-content;
 }
 .h-full{
   height: 100%;
@@ -1194,9 +1187,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-w-\[210mm\]{
   max-width: 210mm;
-}
-.max-w-\[400px\]{
-  max-width: 400px;
 }
 .max-w-lg{
   max-width: 32rem;
@@ -1739,6 +1729,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .bg-background{
   background-color: hsl(var(--background));
+}
+.bg-black\/40{
+  background-color: rgb(0 0 0 / 0.4);
 }
 .bg-black\/80{
   background-color: rgb(0 0 0 / 0.8);
@@ -2676,9 +2669,6 @@ section[aria-label='Notifications alt+T'] {
   border-top-right-radius: calc(var(--radius) - 2px);
   border-bottom-right-radius: calc(var(--radius) - 2px);
 }
-.last\:border-0:last-child{
-  border-width: 0px;
-}
 .hover\:scale-105:hover{
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
@@ -2708,10 +2698,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .hover\:bg-accent:hover{
   background-color: hsl(var(--accent));
-}
-.hover\:bg-amber-50:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 251 235 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-amber-600:hover{
   --tw-bg-opacity: 1;
@@ -2776,10 +2762,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .hover\:text-accent-foreground:hover{
   color: hsl(var(--accent-foreground));
-}
-.hover\:text-amber-700:hover{
-  --tw-text-opacity: 1;
-  color: rgb(180 83 9 / var(--tw-text-opacity, 1));
 }
 .hover\:text-blue-700:hover{
   --tw-text-opacity: 1;
@@ -2900,6 +2882,9 @@ section[aria-label='Notifications alt+T'] {
 .group\/menu-item:focus-within .group-focus-within\/menu-item\:opacity-100{
   opacity: 1;
 }
+.group:hover .group-hover\:flex{
+  display: flex;
+}
 .group:hover .group-hover\:text-primary{
   color: hsl(var(--primary));
 }
@@ -2908,6 +2893,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .group:hover .group-hover\:opacity-100{
   opacity: 1;
+}
+.group:hover .group-hover\:opacity-80{
+  opacity: 0.8;
 }
 .group.destructive .group-\[\.destructive\]\:border-muted\/40{
   border-color: hsl(var(--muted) / 0.4);
