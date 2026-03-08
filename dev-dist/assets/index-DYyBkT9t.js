@@ -55752,14 +55752,23 @@ function CashflowChart() {
 }
 function DistributionChart() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-		config: { value: { label: "Cabeças" } },
+		config: {
+			value: { label: "Cabeças" },
+			...dashboardData.chartDistribution.reduce((acc, curr) => {
+				acc[curr.name] = {
+					label: curr.name,
+					color: curr.fill
+				};
+				return acc;
+			}, {})
+		},
 		className: "h-full w-full min-h-[300px]",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, {
 			margin: {
 				top: 10,
 				right: 10,
 				left: 10,
-				bottom: 10
+				bottom: 20
 			},
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
@@ -55773,11 +55782,17 @@ function DistributionChart() {
 					paddingAngle: 2,
 					children: dashboardData.chartDistribution.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { fill: entry.fill }, `cell-${index$1}`))
 				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { hideLabel: true }) }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-					content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}),
-					className: "-translate-y-4 flex-wrap"
-				})
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+					cursor: false,
+					content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
+						nameKey: "name",
+						hideLabel: true
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
+					nameKey: "name",
+					className: "flex-wrap gap-x-4 gap-y-2 mt-4"
+				}) })
 			]
 		})
 	});
@@ -71618,4 +71633,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Boe6WQxz.js.map
+//# sourceMappingURL=index-DYyBkT9t.js.map
