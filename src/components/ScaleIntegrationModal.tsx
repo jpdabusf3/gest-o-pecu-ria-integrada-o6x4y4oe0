@@ -48,6 +48,19 @@ export function ScaleIntegrationModal({ animalId, onSaveWeight }: ScaleIntegrati
 
       setTimeout(() => {
         clearInterval(interval)
+
+        // Error handling notification: 20% chance of failure to meet criteria
+        if (Math.random() < 0.2) {
+          setConnectionState('idle')
+          setReading('')
+          toast({
+            title: 'Falha na Conexão Bluetooth',
+            description: 'A conexão foi interrompida ou os dados são inválidos. Tente reconectar.',
+            variant: 'destructive',
+          })
+          return
+        }
+
         // Final locked weight
         const finalWeight = (245.5 + Math.random() * 2).toFixed(1)
         setReading(finalWeight)

@@ -28,12 +28,38 @@ export default function MapaPropriedade() {
     ? allLotes.find((l) => l.id === activePastoData.ocupanteAtual)
     : null
 
+  const getPastoStatusInfo = (pasto: (typeof pasturesData)[0]) => {
+    if (pasto.status === 'Vedado') {
+      return {
+        color: 'bg-slate-300/60 border-slate-500 text-slate-800',
+        text: 'Vedado (Sem animais)',
+      }
+    }
+
+    const occupancyRate =
+      pasto.lotacaoProjetada > 0 ? pasto.lotacaoExecutada / pasto.lotacaoProjetada : 0
+
+    if (occupancyRate > 1.05) {
+      return { color: 'bg-red-400/50 border-red-600 text-red-950', text: 'Superlotação' }
+    } else if (occupancyRate >= 0.85) {
+      return {
+        color: 'bg-amber-400/50 border-amber-600 text-amber-950',
+        text: 'Alerta (Próximo à capacidade)',
+      }
+    } else {
+      return {
+        color: 'bg-emerald-400/50 border-emerald-600 text-emerald-950',
+        text: 'Adequado (Abaixo da capacidade)',
+      }
+    }
+  }
+
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Mapa da Propriedade</h2>
         <p className="text-muted-foreground mt-1">
-          Visualização espacial interativa da fazenda e distribuição do rebanho.
+          Visualização espacial interativa da fazenda e distribuição do rebanho por densidade.
         </p>
       </div>
 
@@ -43,7 +69,9 @@ export default function MapaPropriedade() {
             <CardTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5" /> Layout Agronômico
             </CardTitle>
-            <CardDescription>Clique nas divisões de pasto para ver detalhes.</CardDescription>
+            <CardDescription>
+              Clique nas divisões de pasto para ver detalhes de ocupação.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="relative w-full aspect-video min-h-[300px] bg-emerald-50/50 rounded-xl border-2 border-emerald-100 overflow-hidden shadow-inner">
@@ -52,20 +80,15 @@ export default function MapaPropriedade() {
                 if (!pasto) return null
                 const occupant = allLotes.find((l) => l.id === pasto.ocupanteAtual)
                 const isSelected = selectedPasto === pos.id
+                const statusInfo = getPastoStatusInfo(pasto)
 
                 return (
                   <div
                     key={pos.id}
                     onClick={() => setSelectedPasto(pos.id)}
                     className={`absolute border-2 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center p-2 rounded-lg shadow-sm
-                      ${isSelected ? 'ring-4 ring-primary ring-offset-2 z-10 scale-[1.02]' : 'hover:scale-[1.01] hover:z-10'}
-                      ${
-                        pasto.status === 'Bom'
-                          ? 'bg-emerald-400/40 border-emerald-500'
-                          : pasto.status === 'Alerta'
-                            ? 'bg-amber-400/40 border-amber-500'
-                            : 'bg-slate-400/40 border-slate-500'
-                      }
+                      ${isSelected ? 'ring-4 ring-primary ring-offset-2 z-10 scale-[1.03]' : 'hover:scale-[1.01] hover:z-10'}
+                      ${statusInfo.color}
                     `}
                     style={{
                       top: pos.top,
@@ -74,13 +97,13 @@ export default function MapaPropriedade() {
                       height: pos.height,
                     }}
                   >
-                    <span className="font-bold text-emerald-950 text-xs sm:text-sm md:text-base text-center leading-tight drop-shadow-md">
+                    <span className="font-bold text-xs sm:text-sm md:text-base text-center leading-tight drop-shadow-md">
                       {pasto.nome.split('-')[0].trim()}
                     </span>
                     {occupant && (
                       <Badge
                         variant="secondary"
-                        className="mt-1 md:mt-2 flex items-center gap-1 bg-white/90 text-emerald-900 border-emerald-200"
+                        className="mt-1 md:mt-2 flex items-center gap-1 bg-white/90 text-foreground border-border shadow-sm"
                       >
                         <Beef className="h-3 w-3 hidden sm:block" /> {occupant.cabecas} cab
                       </Badge>
@@ -97,6 +120,25 @@ export default function MapaPropriedade() {
                 )
               })}
             </div>
+
+            <div className="mt-6 flex flex-wrap gap-4 items-center justify-center text-xs font-medium">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-emerald-400/50 border border-emerald-600"></div>{' '}
+                Adequado
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-amber-400/50 border border-amber-600"></div>{' '}
+                Alerta de Ocupação
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-red-400/50 border border-red-600"></div>{' '}
+                Superlotação
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-slate-300/60 border border-slate-500"></div>{' '}
+                Vedado
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -110,7 +152,7 @@ export default function MapaPropriedade() {
             {!activePastoData ? (
               <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-12 text-center animate-pulse">
                 <MapPin className="h-12 w-12 mb-4 opacity-20" />
-                <p>Selecione um pasto no mapa para ver informações detalhadas.</p>
+                <p>Selecione um pasto no mapa para ver a ocupação detalhada.</p>
               </div>
             ) : (
               <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
@@ -126,21 +168,25 @@ export default function MapaPropriedade() {
 
                 <div className="space-y-3">
                   <div className="flex justify-between border-b pb-2">
-                    <span className="text-muted-foreground">Status Agronômico</span>
+                    <span className="text-muted-foreground">Densidade Real</span>
+                    <span className="font-medium text-right">
+                      {activePastoData.lotacaoExecutada} UA/ha
+                    </span>
+                  </div>
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-muted-foreground">Densidade Projetada</span>
+                    <span className="font-medium text-right">
+                      {activePastoData.lotacaoProjetada} UA/ha
+                    </span>
+                  </div>
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-muted-foreground">Status de Ocupação</span>
                     <Badge
-                      variant={activePastoData.status === 'Alerta' ? 'destructive' : 'default'}
-                      className={activePastoData.status === 'Bom' ? 'bg-emerald-500' : ''}
+                      variant="outline"
+                      className={getPastoStatusInfo(activePastoData).color.split(' ')[0]}
                     >
-                      {activePastoData.status}
+                      {getPastoStatusInfo(activePastoData).text}
                     </Badge>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span className="text-muted-foreground">Cultivar</span>
-                    <span className="font-medium text-right">{activePastoData.cultivar}</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span className="text-muted-foreground">Altura Atual</span>
-                    <span className="font-medium">{activePastoData.alturaAtual} cm</span>
                   </div>
                 </div>
 

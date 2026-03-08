@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -19,14 +20,16 @@ import {
   DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu'
 import { Download, Plus, FileText, FileSpreadsheet } from 'lucide-react'
-import { financialData, lotPerformanceData, costPerArrobaData } from '@/data/mock'
+import { financialData, lotPerformanceData, costPerArrobaData, animalData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
 import { CashflowChart } from '@/components/charts/CashflowChart'
+import useFinanceStore from '@/stores/useFinanceStore'
 
 export default function Financeiro() {
   const { toast } = useToast()
+  const { ledger } = useFinanceStore()
 
   const handleExport = (format: string) => {
     toast({
@@ -34,6 +37,34 @@ export default function Financeiro() {
       description: `O balanço financeiro está sendo baixado em formato ${format.toUpperCase()}.`,
     })
   }
+
+  // Calculate Net Profit per Head for the detailed financial module
+  const animalProfitList = useMemo(() => {
+    const baseAnimals = Object.values(animalData)
+    // Mock additional animals for a better report display without touching mock.ts
+    const extraAnimals = [
+      { id: 'TAG-8899', categoria: 'Boi Terminação', pesoAtual: '480 kg', lote: 'LEN-02' },
+      { id: 'TAG-4455', categoria: 'Vaca Solteira', pesoAtual: '380 kg', lote: 'LCR-01' },
+      { id: 'TAG-3322', categoria: 'Bezerro', pesoAtual: '180 kg', lote: 'LCR-04' },
+    ]
+
+    return [...baseAnimals, ...extraAnimals].map((animal) => {
+      const expenses = ledger
+        .filter((l) => l.animalId === animal.id && l.type === 'expense')
+        .reduce((a, b) => a + b.amount, 0)
+
+      const weightNum = parseFloat(animal.pesoAtual.replace('kg', '').trim()) || 0
+      const estimatedValue = weightNum * 12.5 // Using simulated market price of R$ 12.50 / kg
+      const netProfit = estimatedValue - expenses
+
+      return {
+        ...animal,
+        expenses,
+        estimatedValue,
+        netProfit,
+      }
+    })
+  }, [ledger])
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
@@ -76,18 +107,21 @@ export default function Financeiro() {
       </div>
 
       <Tabs defaultValue="dashboard-custos" className="space-y-6">
-        <TabsList className="mb-2 w-full sm:w-auto flex overflow-x-auto justify-start h-auto p-1 py-1.5">
+        <TabsList className="mb-2 w-full sm:w-auto flex flex-wrap sm:flex-nowrap overflow-x-auto justify-start h-auto p-1 py-1.5">
           <TabsTrigger value="dashboard-custos" className="py-2">
-            Análise de Custos Globais
+            Análise de Custos
           </TabsTrigger>
           <TabsTrigger value="fluxo" className="py-2">
             Fluxo de Caixa
           </TabsTrigger>
+          <TabsTrigger value="lucro-cabeca" className="py-2 text-primary font-medium">
+            Lucro por Cabeça (Real)
+          </TabsTrigger>
           <TabsTrigger value="desempenho" className="py-2">
-            Rentabilidade por Lote
+            Rentabilidade Lotes
           </TabsTrigger>
           <TabsTrigger value="custo-arroba" className="py-2">
-            Custo / Lote Detalhado
+            Custo / @
           </TabsTrigger>
         </TabsList>
 
@@ -172,6 +206,59 @@ export default function Financeiro() {
                           <Badge variant="outline" className="text-muted-foreground">
                             Efetivado
                           </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="lucro-cabeca" className="space-y-6 mt-0">
+          <Card className="border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-primary">Relatório de Lucro Líquido por Cabeça</CardTitle>
+              <CardDescription>
+                Cálculo de rentabilidade individual subtraindo os custos reais acumulados do livro
+                razão do animal (nutrição, vacinas) pelo valor estimado de mercado.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Animal / TAG</TableHead>
+                      <TableHead>Categoria</TableHead>
+                      <TableHead>Lote</TableHead>
+                      <TableHead className="text-right">Valor Mercado</TableHead>
+                      <TableHead className="text-right">Custos</TableHead>
+                      <TableHead className="text-right font-bold text-primary">
+                        Lucro Líquido
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {animalProfitList.map((a) => (
+                      <TableRow key={a.id}>
+                        <TableCell className="font-medium">{a.id}</TableCell>
+                        <TableCell>{a.categoria}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary" className="font-normal">
+                            {a.lote}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          R${' '}
+                          {a.estimatedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </TableCell>
+                        <TableCell className="text-right text-destructive">
+                          - R$ {a.expenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </TableCell>
+                        <TableCell className="text-right font-bold text-primary text-base">
+                          R$ {a.netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
                       </TableRow>
                     ))}
