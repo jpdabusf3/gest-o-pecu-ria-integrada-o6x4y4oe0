@@ -10,15 +10,40 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ShieldCheck, UserCircle, History, Smartphone, Trophy, Target } from 'lucide-react'
+import {
+  ShieldCheck,
+  UserCircle,
+  History,
+  Smartphone,
+  Trophy,
+  Target,
+  BellRing,
+} from 'lucide-react'
 import {
   teamMembers,
   managementHistory,
   employeePerformance,
   performanceGoalsList,
 } from '@/data/mock'
+import { useAppNotifications } from '@/contexts/NotificationContext'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Equipe() {
+  const { addNotification } = useAppNotifications()
+  const { toast } = useToast()
+
+  const handleSimulateGoal = (employee: any) => {
+    addNotification({
+      title: 'Meta Atingida! 🎯',
+      message: `O colaborador ${employee.name} alcançou uma nova meta de performance!`,
+      type: 'goal',
+    })
+    toast({
+      title: 'Notificação de Meta Disparada',
+      description: `O administrador recebeu um push alert em tempo real sobre a conquista.`,
+    })
+  }
+
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -148,30 +173,39 @@ export default function Equipe() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="px-0 sm:px-6">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Colaborador</TableHead>
-                      <TableHead className="text-center">Metas Atingidas</TableHead>
-                      <TableHead className="text-right">Pontos</TableHead>
-                      <TableHead className="text-right">Bônus Est. (R$)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {employeePerformance.map((e) => (
-                      <TableRow key={e.employeeId}>
-                        <TableCell className="font-medium">{e.name}</TableCell>
-                        <TableCell className="text-center">{e.goalsAchieved}</TableCell>
-                        <TableCell className="text-right font-bold text-primary">
-                          {e.points} pts
-                        </TableCell>
-                        <TableCell className="text-right font-mono text-emerald-600 dark:text-emerald-400">
-                          R$ {e.bonusEstimate.toLocaleString('pt-BR')}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Colaborador</TableHead>
+                        <TableHead className="text-center">Metas</TableHead>
+                        <TableHead className="text-right">Pontos</TableHead>
+                        <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {employeePerformance.map((e) => (
+                        <TableRow key={e.employeeId}>
+                          <TableCell className="font-medium whitespace-nowrap">{e.name}</TableCell>
+                          <TableCell className="text-center">{e.goalsAchieved}</TableCell>
+                          <TableCell className="text-right font-bold text-primary">
+                            {e.points} pts
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleSimulateGoal(e)}
+                              className="text-amber-600 hover:text-amber-700 hover:bg-amber-50"
+                            >
+                              <BellRing className="h-4 w-4 mr-1" /> Simular
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
 

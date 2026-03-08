@@ -26,6 +26,7 @@ import {
   ShieldCheck,
   Building2,
   Truck,
+  CheckSquare,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -33,6 +34,7 @@ const navItems = [
   { title: 'Painel Principal', icon: LayoutDashboard, url: '/' },
   { title: 'Projeções & AI', icon: BrainCircuit, url: '/projecoes' },
   { title: 'Operações de Campo', icon: Smartphone, url: '/campo' },
+  { title: 'Gestão de Tarefas', icon: CheckSquare, url: '/tarefas' },
   { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
   { title: 'Confinamento', icon: Wheat, url: '/confinamento' },
   { title: 'Sanidade', icon: Syringe, url: '/sanidade' },
@@ -54,7 +56,7 @@ export function AppSidebar() {
   // RBAC: Restricted view for field operators
   const visibleNavItems = navItems.filter((item) => {
     if (user.role === 'operador') {
-      return ['/', '/campo', '/pastos', '/sanidade'].includes(item.url)
+      return ['/', '/campo', '/tarefas', '/sanidade'].includes(item.url)
     }
     return true
   })

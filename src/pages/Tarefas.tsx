@@ -23,6 +23,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CheckSquare, Clock, Plus, DollarSign, CheckCircle2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import { useAuth } from '@/contexts/AuthContext'
+import { useAppNotifications } from '@/contexts/NotificationContext'
 
 export type Task = {
   id: string
@@ -40,7 +42,7 @@ const initialTasks: Task[] = [
     id: 'T1',
     title: 'Vacinação Febre Aftosa',
     frequency: 'Semestral',
-    assignedTo: 'João (Operador)',
+    assignedTo: 'João (Operador Campo)',
     duration: 8,
     costPerHour: 25,
     status: 'Pendente',
@@ -60,7 +62,7 @@ const initialTasks: Task[] = [
     id: 'T3',
     title: 'Manutenção de Cerca',
     frequency: 'Mensal',
-    assignedTo: 'João (Operador)',
+    assignedTo: 'João (Operador Campo)',
     duration: 6,
     costPerHour: 25,
     status: 'Pendente',
@@ -82,6 +84,8 @@ export default function Tarefas() {
   const [tasks, setTasks] = useState(initialTasks)
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
+  const { user } = useAuth()
+  const { addNotification } = useAppNotifications()
 
   const [newTask, setNewTask] = useState<Partial<Task>>({
     title: '',
@@ -95,6 +99,14 @@ export default function Tarefas() {
   const handleSave = () => {
     if (!newTask.title || !newTask.assignedTo) return
     setTasks([...tasks, { ...newTask, id: `T${Date.now()}`, status: 'Pendente' } as Task])
+
+    // Trigger push notification to Manager
+    addNotification({
+      title: 'Nova Tarefa Atribuída',
+      message: `A atividade "${newTask.title}" foi atribuída para ${newTask.assignedTo}.`,
+      type: 'task',
+    })
+
     setOpen(false)
     toast({
       title: 'Tarefa Criada',
@@ -106,12 +118,21 @@ export default function Tarefas() {
     setTasks(tasks.map((x) => (x.id === t.id ? { ...x, status: 'Concluído' } : x)))
     toast({
       title: 'Atividade Concluída',
-      description: `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.`,
+      description:
+        user.role === 'admin'
+          ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.`
+          : `Sua tarefa "${t.title}" foi marcada como concluída.`,
     })
   }
 
-  const pending = tasks.filter((t) => t.status === 'Pendente')
-  const completed = tasks.filter((t) => t.status === 'Concluído')
+  // Filter tasks based on Role-Based Access Control
+  const visibleTasks =
+    user.role === 'operador'
+      ? tasks.filter((t) => t.assignedTo.includes('João')) // Filter for current logged in operator
+      : tasks
+
+  const pending = visibleTasks.filter((t) => t.status === 'Pendente')
+  const completed = visibleTasks.filter((t) => t.status === 'Concluído')
   const pendingCost = pending.reduce((acc, t) => acc + t.duration * t.costPerHour, 0)
 
   return (
@@ -119,84 +140,87 @@ export default function Tarefas() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <CheckSquare className="h-8 w-8 text-primary" /> Gestão de Tarefas
+            <CheckSquare className="h-8 w-8 text-primary" /> Minhas Tarefas
           </h2>
           <p className="text-muted-foreground mt-1">
-            Controle de atividades de campo, horas trabalhadas e alocação de custos operacionais por
-            lote.
+            {user.role === 'admin'
+              ? 'Controle de atividades de campo, horas trabalhadas e alocação de custos.'
+              : 'Acompanhe e conclua suas atividades operacionais do dia a dia.'}
           </p>
         </div>
 
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" /> Nova Tarefa
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Criar Atividade Operacional</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-2">
-              <div className="space-y-2">
-                <Label>Nome da Tarefa</Label>
-                <Input
-                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  placeholder="Ex: Manutenção de Cerca"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+        {user.role === 'admin' && (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" /> Nova Tarefa
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Criar Atividade Operacional</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
                 <div className="space-y-2">
-                  <Label>Frequência</Label>
+                  <Label>Nome da Tarefa</Label>
                   <Input
-                    onChange={(e) => setNewTask({ ...newTask, frequency: e.target.value })}
-                    defaultValue="Semanal"
+                    onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                    placeholder="Ex: Manutenção de Cerca"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label>Lote / Alvo</Label>
-                  <Input
-                    onChange={(e) => setNewTask({ ...newTask, lotId: e.target.value })}
-                    placeholder="Ex: LEN-01"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Responsável</Label>
-                <Input
-                  onChange={(e) => setNewTask({ ...newTask, assignedTo: e.target.value })}
-                  placeholder="Nome do colaborador"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Duração Estimada (h)</Label>
-                  <Input
-                    type="number"
-                    onChange={(e) => setNewTask({ ...newTask, duration: Number(e.target.value) })}
-                    defaultValue={2}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Frequência</Label>
+                    <Input
+                      onChange={(e) => setNewTask({ ...newTask, frequency: e.target.value })}
+                      defaultValue="Semanal"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Lote / Alvo</Label>
+                    <Input
+                      onChange={(e) => setNewTask({ ...newTask, lotId: e.target.value })}
+                      placeholder="Ex: LEN-01"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Custo Hora (R$)</Label>
+                  <Label>Responsável</Label>
                   <Input
-                    type="number"
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, costPerHour: Number(e.target.value) })
-                    }
-                    defaultValue={20}
+                    onChange={(e) => setNewTask({ ...newTask, assignedTo: e.target.value })}
+                    placeholder="Nome do colaborador"
                   />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Duração Estimada (h)</Label>
+                    <Input
+                      type="number"
+                      onChange={(e) => setNewTask({ ...newTask, duration: Number(e.target.value) })}
+                      defaultValue={2}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Custo Hora (R$)</Label>
+                    <Input
+                      type="number"
+                      onChange={(e) =>
+                        setNewTask({ ...newTask, costPerHour: Number(e.target.value) })
+                      }
+                      defaultValue={20}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <DialogFooter>
-              <Button onClick={handleSave}>Salvar Tarefa</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              <DialogFooter>
+                <Button onClick={handleSave}>Salvar Tarefa</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className={`grid gap-4 ${user.role === 'admin' ? 'sm:grid-cols-2' : 'sm:grid-cols-1'}`}>
         <Card className="bg-amber-500/10 border-amber-500/20">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-amber-700 dark:text-amber-500">
@@ -209,18 +233,21 @@ export default function Tarefas() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-destructive/5 border-destructive/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-destructive">
-              Custo Pendente Projetado (Mão de Obra)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive flex items-center gap-2">
-              <DollarSign className="h-5 w-5" /> R$ {pendingCost.toFixed(2)}
-            </div>
-          </CardContent>
-        </Card>
+
+        {user.role === 'admin' && (
+          <Card className="bg-destructive/5 border-destructive/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-destructive">
+                Custo Pendente Projetado (Mão de Obra)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-destructive flex items-center gap-2">
+                <DollarSign className="h-5 w-5" /> R$ {pendingCost.toFixed(2)}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       <Tabs defaultValue="pendentes" className="space-y-4">
@@ -237,7 +264,7 @@ export default function Tarefas() {
                     <TableHead>Tarefa</TableHead>
                     <TableHead>Responsável</TableHead>
                     <TableHead>Duração</TableHead>
-                    <TableHead>Custo Proj.</TableHead>
+                    {user.role === 'admin' && <TableHead>Custo Proj.</TableHead>}
                     <TableHead className="text-right">Ação</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -252,7 +279,9 @@ export default function Tarefas() {
                       </TableCell>
                       <TableCell>{t.assignedTo}</TableCell>
                       <TableCell>{t.duration}h</TableCell>
-                      <TableCell>R$ {t.duration * t.costPerHour}</TableCell>
+                      {user.role === 'admin' && (
+                        <TableCell>R$ {t.duration * t.costPerHour}</TableCell>
+                      )}
                       <TableCell className="text-right">
                         <Button
                           size="sm"
@@ -267,7 +296,10 @@ export default function Tarefas() {
                   ))}
                   {pending.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                      <TableCell
+                        colSpan={user.role === 'admin' ? 5 : 4}
+                        className="text-center py-6 text-muted-foreground"
+                      >
                         Nenhuma tarefa pendente.
                       </TableCell>
                     </TableRow>
@@ -285,7 +317,7 @@ export default function Tarefas() {
                   <TableRow>
                     <TableHead>Tarefa</TableHead>
                     <TableHead>Responsável</TableHead>
-                    <TableHead>Custo Efetivado</TableHead>
+                    {user.role === 'admin' && <TableHead>Custo Efetivado</TableHead>}
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -297,7 +329,9 @@ export default function Tarefas() {
                         <div className="text-xs text-muted-foreground">{t.lotId}</div>
                       </TableCell>
                       <TableCell>{t.assignedTo}</TableCell>
-                      <TableCell>R$ {t.duration * t.costPerHour}</TableCell>
+                      {user.role === 'admin' && (
+                        <TableCell>R$ {t.duration * t.costPerHour}</TableCell>
+                      )}
                       <TableCell>
                         <Badge
                           variant="outline"
@@ -308,6 +342,16 @@ export default function Tarefas() {
                       </TableCell>
                     </TableRow>
                   ))}
+                  {completed.length === 0 && (
+                    <TableRow>
+                      <TableCell
+                        colSpan={user.role === 'admin' ? 4 : 3}
+                        className="text-center py-6 text-muted-foreground"
+                      >
+                        Nenhuma tarefa concluída.
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

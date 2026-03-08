@@ -24,6 +24,8 @@ import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
 import { useToast } from '@/hooks/use-toast'
+import { useAuth } from '@/contexts/AuthContext'
+import { OperatorDashboard } from '@/components/OperatorDashboard'
 
 function GoalDialog() {
   const [open, setOpen] = useState(false)
@@ -83,6 +85,12 @@ function GoalDialog() {
 }
 
 export default function Index() {
+  const { user } = useAuth()
+
+  if (user.role === 'operador') {
+    return <OperatorDashboard />
+  }
+
   return (
     <div className="space-y-6 pb-20 sm:pb-6 animate-fade-in-up">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

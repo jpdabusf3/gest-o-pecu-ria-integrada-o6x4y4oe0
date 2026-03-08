@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$67 = require_react(), Internals = {
+		var React$68 = require_react(), Internals = {
 			d: {
 				f: noop$3,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$68.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$67.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$68.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$67 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$68 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$68.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$67.version;
+			var isomorphicReactPackageVersion = React$68.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17609,15 +17609,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$67 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$68 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$68.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$67 = { react_stack_bottom_frame: function(callStackForError) {
+		React$68 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$67.react_stack_bottom_frame.bind(React$67, UnknownOwner)();
+		var unknownOwnerDebugStack = React$68.react_stack_bottom_frame.bind(React$68, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -19674,6 +19674,15 @@ var Search = createLucideIcon("search", [["path", {
 	cy: "11",
 	r: "8",
 	key: "4ej97u"
+}]]);
+var Settings = createLucideIcon("settings", [["path", {
+	d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
+	key: "1i5ecw"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "3",
+	key: "1v7zrd"
 }]]);
 var ShieldCheck = createLucideIcon("shield-check", [["path", {
 	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
@@ -25953,6 +25962,54 @@ function useFarm() {
 	if (!context) throw new Error("useFarm must be used within FarmProvider");
 	return context;
 }
+var NotificationContext = (0, import_react.createContext)(void 0);
+function NotificationProvider({ children }) {
+	const [notifications, setNotifications] = (0, import_react.useState)([{
+		id: "init-1",
+		title: "Meta Atingida! 🎯",
+		message: "João (Operador Campo) atingiu a meta: GMD Confinamento > 1.4kg/dia.",
+		date: /* @__PURE__ */ new Date(Date.now() - 1e3 * 60 * 30),
+		read: false,
+		type: "goal"
+	}]);
+	const addNotification = (notif) => {
+		const newNotif = {
+			...notif,
+			id: Date.now().toString(),
+			date: /* @__PURE__ */ new Date(),
+			read: false
+		};
+		setNotifications((prev) => [newNotif, ...prev]);
+	};
+	const markAsRead = (id) => {
+		setNotifications((prev) => prev.map((n) => n.id === id ? {
+			...n,
+			read: true
+		} : n));
+	};
+	const markAllAsRead = () => {
+		setNotifications((prev) => prev.map((n) => ({
+			...n,
+			read: true
+		})));
+	};
+	const unreadCount = notifications.filter((n) => !n.read).length;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationContext.Provider, {
+		value: {
+			notifications,
+			addNotification,
+			markAsRead,
+			markAllAsRead,
+			unreadCount
+		},
+		children
+	});
+}
+const useAppNotifications = () => {
+	const context = (0, import_react.useContext)(NotificationContext);
+	if (!context) throw new Error("useAppNotifications must be used within NotificationProvider");
+	return context;
+};
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
 var use = import_react[" use ".trim().toString()];
 function isPromiseLike(value) {
@@ -27783,6 +27840,11 @@ var navItems = [
 		url: "/campo"
 	},
 	{
+		title: "Gestão de Tarefas",
+		icon: SquareCheckBig,
+		url: "/tarefas"
+	},
+	{
 		title: "Gestão de Pastos",
 		icon: Map$1,
 		url: "/pastos"
@@ -27850,7 +27912,7 @@ function AppSidebar() {
 		if (user.role === "operador") return [
 			"/",
 			"/campo",
-			"/pastos",
+			"/tarefas",
 			"/sanidade"
 		].includes(item.url);
 		return true;
@@ -27965,13 +28027,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$67.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$68.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$33({ inst: {
+			cachedValue = useState$34({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28008,8 +28070,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$33 = React$67.useState, useEffect$8 = React$67.useEffect, useLayoutEffect$3 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
+		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$34 = React$68.useState, useEffect$8 = React$68.useEffect, useLayoutEffect$3 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$68.useSyncExternalStore ? React$68.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -30673,6 +30735,7 @@ DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 function Header() {
 	const { user, setUser } = useAuth();
 	const { toast: toast$2 } = useToast();
+	const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications();
 	const handleUserSwitch = (newUser) => {
 		setUser(newUser);
 		toast$2({
@@ -30698,12 +30761,65 @@ function Header() {
 			className: "flex items-center gap-2 sm:gap-4",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScannerModal, {}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-					variant: "ghost",
-					size: "icon",
-					className: "relative text-muted-foreground hover:text-foreground",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1 right-1 h-2 w-2 rounded-full bg-destructive border-2 border-card" })]
-				}),
+				user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+					asChild: true,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "ghost",
+						size: "icon",
+						className: "relative text-muted-foreground hover:text-foreground",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-5 w-5" }), unreadCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-destructive border-2 border-card animate-pulse" })]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+					align: "end",
+					className: "w-80",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuLabel, {
+							className: "flex justify-between items-center py-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Notificações Sistema" }), unreadCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "ghost",
+								size: "sm",
+								onClick: markAllAsRead,
+								className: "h-auto p-0 text-xs font-normal",
+								children: "Marcar lidas"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "max-h-[300px] overflow-y-auto",
+							children: notifications.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "p-4 text-center text-sm text-muted-foreground",
+								children: "Você não possui novas notificações."
+							}) : notifications.map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+								className: cn("flex flex-col items-start gap-1 p-3 cursor-pointer", n.read ? "opacity-60" : "bg-muted/50"),
+								onClick: () => markAsRead(n.id),
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-2 w-full",
+										children: [
+											n.type === "goal" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-4 w-4 text-amber-500" }) : n.type === "task" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-4 w-4 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, { className: "h-4 w-4 text-muted-foreground" }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-semibold text-sm flex-1",
+												children: n.title
+											}),
+											!n.read && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-2 w-2 rounded-full bg-primary" })
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-xs text-muted-foreground line-clamp-2",
+										children: n.message
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-[10px] text-muted-foreground mt-1",
+										children: n.date.toLocaleTimeString("pt-BR", {
+											hour: "2-digit",
+											minute: "2-digit"
+										})
+									})
+								]
+							}, n.id))
+						})
+					]
+				})] }),
 				user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickAddModal, {}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-8 w-px bg-border hidden sm:block" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
@@ -53987,6 +54103,88 @@ function SectorCalendarTab({ sectorId }) {
 		children: "Nenhum evento encontrado."
 	}) }) })] }) })] });
 }
+function OperatorDashboard() {
+	const { user } = useAuth();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up pb-20 sm:pb-6 max-w-4xl mx-auto",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "bg-primary text-primary-foreground p-6 rounded-2xl shadow-sm mb-6 mt-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+				className: "text-3xl font-bold tracking-tight",
+				children: ["Olá, ", user.name.split(" ")[0]]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-primary-foreground/80 mt-1 text-sm md:text-base",
+				children: "Bem-vindo ao seu painel de operações diárias."
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid gap-4 sm:grid-cols-2 lg:grid-cols-3",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "hover:border-primary/50 transition-colors bg-primary/5 border-primary/20 shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-lg flex items-center gap-2 text-primary",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-5 w-5" }), " Minhas Tarefas"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mb-4",
+						children: "Veja as atividades operacionais atribuídas a você."
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						asChild: true,
+						className: "w-full shadow-sm",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+							to: "/tarefas",
+							children: "Acessar Tarefas"
+						})
+					})] })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "hover:border-border transition-colors shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-lg flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-5 w-5 text-blue-500" }), " App de Campo"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mb-4",
+						children: "Registre movimentações, contagens de lotes e abates."
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						asChild: true,
+						variant: "outline",
+						className: "w-full",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+							to: "/campo",
+							children: "Abrir Operações"
+						})
+					})] })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "hover:border-border transition-colors shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-lg flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Syringe, { className: "h-5 w-5 text-emerald-500" }), " Manejo Sanitário"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mb-4",
+						children: "Acompanhe as vacinações e protocolos programados."
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						asChild: true,
+						variant: "outline",
+						className: "w-full",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+							to: "/sanidade",
+							children: "Ver Protocolos"
+						})
+					})] })]
+				})
+			]
+		})]
+	});
+}
 function GoalDialog() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
@@ -54054,6 +54252,8 @@ function GoalDialog() {
 	});
 }
 function Index() {
+	const { user } = useAuth();
+	if (user.role === "operador") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OperatorDashboard, {});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 pb-20 sm:pb-6 animate-fade-in-up",
 		children: [
@@ -64167,6 +64367,19 @@ function ProjecaoVendas() {
 	});
 }
 function Equipe() {
+	const { addNotification } = useAppNotifications();
+	const { toast: toast$2 } = useToast();
+	const handleSimulateGoal = (employee) => {
+		addNotification({
+			title: "Meta Atingida! 🎯",
+			message: `O colaborador ${employee.name} alcançou uma nova meta de performance!`,
+			type: "goal"
+		});
+		toast$2({
+			title: "Notificação de Meta Disparada",
+			description: `O administrador recebeu um push alert em tempo real sobre a conquista.`
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -64288,38 +64501,47 @@ function Equipe() {
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-5 w-5 text-primary" }), " Ranking e Pontuação"]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acúmulo de pontos para cálculo do bônus anual (Safra Pecuária) integrado aos custos totais." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-center",
-									children: "Metas Atingidas"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-right",
-									children: "Pontos"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-right",
-									children: "Bônus Est. (R$)"
-								})
-							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: employeePerformance.map((e) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-									className: "font-medium",
-									children: e.name
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-									className: "text-center",
-									children: e.goalsAchieved
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-									className: "text-right font-bold text-primary",
-									children: [e.points, " pts"]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-									className: "text-right font-mono text-emerald-600 dark:text-emerald-400",
-									children: ["R$ ", e.bonusEstimate.toLocaleString("pt-BR")]
-								})
-							] }, e.employeeId)) })] })
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "overflow-x-auto",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-center",
+										children: "Metas"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Pontos"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Ações"
+									})
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: employeePerformance.map((e) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "font-medium whitespace-nowrap",
+										children: e.name
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "text-center",
+										children: e.goalsAchieved
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+										className: "text-right font-bold text-primary",
+										children: [e.points, " pts"]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "text-right",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											variant: "ghost",
+											size: "sm",
+											onClick: () => handleSimulateGoal(e),
+											className: "text-amber-600 hover:text-amber-700 hover:bg-amber-50",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4 mr-1" }), " Simular"]
+										})
+									})
+								] }, e.employeeId)) })] })
+							})
 						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 							className: "flex flex-row items-start justify-between space-y-0",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
@@ -64661,7 +64883,7 @@ var initialTasks = [
 		id: "T1",
 		title: "Vacinação Febre Aftosa",
 		frequency: "Semestral",
-		assignedTo: "João (Operador)",
+		assignedTo: "João (Operador Campo)",
 		duration: 8,
 		costPerHour: 25,
 		status: "Pendente",
@@ -64681,7 +64903,7 @@ var initialTasks = [
 		id: "T3",
 		title: "Manutenção de Cerca",
 		frequency: "Mensal",
-		assignedTo: "João (Operador)",
+		assignedTo: "João (Operador Campo)",
 		duration: 6,
 		costPerHour: 25,
 		status: "Pendente",
@@ -64702,6 +64924,8 @@ function Tarefas() {
 	const [tasks, setTasks] = (0, import_react.useState)(initialTasks);
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
+	const { user } = useAuth();
+	const { addNotification } = useAppNotifications();
 	const [newTask, setNewTask] = (0, import_react.useState)({
 		title: "",
 		frequency: "Semanal",
@@ -64717,6 +64941,11 @@ function Tarefas() {
 			id: `T${Date.now()}`,
 			status: "Pendente"
 		}]);
+		addNotification({
+			title: "Nova Tarefa Atribuída",
+			message: `A atividade "${newTask.title}" foi atribuída para ${newTask.assignedTo}.`,
+			type: "task"
+		});
 		setOpen(false);
 		toast$2({
 			title: "Tarefa Criada",
@@ -64730,11 +64959,12 @@ function Tarefas() {
 		} : x$2));
 		toast$2({
 			title: "Atividade Concluída",
-			description: `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.`
+			description: user.role === "admin" ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.` : `Sua tarefa "${t.title}" foi marcada como concluída.`
 		});
 	};
-	const pending = tasks.filter((t) => t.status === "Pendente");
-	const completed = tasks.filter((t) => t.status === "Concluído");
+	const visibleTasks = user.role === "operador" ? tasks.filter((t) => t.assignedTo.includes("João")) : tasks;
+	const pending = visibleTasks.filter((t) => t.status === "Pendente");
+	const completed = visibleTasks.filter((t) => t.status === "Concluído");
 	const pendingCost = pending.reduce((acc, t) => acc + t.duration * t.costPerHour, 0);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
@@ -64743,11 +64973,11 @@ function Tarefas() {
 				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 					className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-8 w-8 text-primary" }), " Gestão de Tarefas"]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-8 w-8 text-primary" }), " Minhas Tarefas"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Controle de atividades de campo, horas trabalhadas e alocação de custos operacionais por lote."
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+					children: user.role === "admin" ? "Controle de atividades de campo, horas trabalhadas e alocação de custos." : "Acompanhe e conclua suas atividades operacionais do dia a dia."
+				})] }), user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
 					open,
 					onOpenChange: setOpen,
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
@@ -64837,7 +65067,7 @@ function Tarefas() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 sm:grid-cols-2",
+				className: `grid gap-4 ${user.role === "admin" ? "sm:grid-cols-2" : "sm:grid-cols-1"}`,
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 					className: "bg-amber-500/10 border-amber-500/20",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
@@ -64855,7 +65085,7 @@ function Tarefas() {
 							" atividades"
 						]
 					}) })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				}), user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 					className: "bg-destructive/5 border-destructive/20",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 						className: "pb-2",
@@ -64892,7 +65122,7 @@ function Tarefas() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tarefa" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Duração" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo Proj." }),
+								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo Proj." }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 									className: "text-right",
 									children: "Ação"
@@ -64911,7 +65141,7 @@ function Tarefas() {
 								})] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [t.duration, "h"] }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
+								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 									className: "text-right",
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
@@ -64923,7 +65153,7 @@ function Tarefas() {
 									})
 								})
 							] }, t.id)), pending.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-								colSpan: 5,
+								colSpan: user.role === "admin" ? 5 : 4,
 								className: "text-center py-6 text-muted-foreground",
 								children: "Nenhuma tarefa pendente."
 							}) })] })] })
@@ -64936,9 +65166,9 @@ function Tarefas() {
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tarefa" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo Efetivado" }),
+								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Custo Efetivado" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
-							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: completed.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [completed.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "font-medium",
 									children: t.title
@@ -64947,13 +65177,17 @@ function Tarefas() {
 									children: t.lotId
 								})] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
+								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 									variant: "outline",
 									className: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
 									children: "Concluído"
 								}) })
-							] }, t.id)) })] })
+							] }, t.id)), completed.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								colSpan: user.role === "admin" ? 4 : 3,
+								className: "text-center py-6 text-muted-foreground",
+								children: "Nenhuma tarefa concluída."
+							}) })] })] })
 						}) })
 					})
 				]
@@ -64989,7 +65223,7 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
+var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
 		v7_relativeSplatPath: false
@@ -65070,8 +65304,8 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
 		})] })
 	] })
-}) }) });
+}) }) }) });
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-suOElTcK.js.map
+//# sourceMappingURL=index-DO2r0mUR.js.map
