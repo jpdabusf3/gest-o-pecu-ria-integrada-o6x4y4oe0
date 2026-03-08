@@ -13,23 +13,37 @@ import { Badge } from '@/components/ui/badge'
 import { BrainCircuit, DollarSign, Calendar as CalendarIcon, TrendingUp } from 'lucide-react'
 import { confinementData, sectorData } from '@/data/mock'
 import { MarketIndicators } from '@/components/MarketIndicators'
-import { marketIndicators } from '@/data/market'
+import { marketIndicators, b3FuturesData } from '@/data/market'
 import { MarketTrendsChart } from '@/components/MarketTrendsChart'
 import { PriceAlertModal } from '@/components/PriceAlertModal'
+import { ReplacementFilter } from '@/components/ReplacementFilter'
+import { CommoditiesQuotes } from '@/components/CommoditiesQuotes'
+import { B3FuturesSelector } from '@/components/B3FuturesSelector'
+import { GpbBalizadorButton } from '@/components/GpbBalizadorButton'
 import { cn } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>('sp')
+  const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - SP')
   const [arrobaPrice, setArrobaPrice] = useState<number>(245.5)
   const [targetWeight, setTargetWeight] = useState<number>(540)
 
   const activeLabel = useMemo(
-    () =>
-      selectedMarketId
-        ? marketIndicators.find((i) => i.id === selectedMarketId)?.label
-        : 'Valor Manual Customizado',
-    [selectedMarketId],
+    () => (selectedMarketId ? selectedMarketLabel : 'Valor Manual Customizado'),
+    [selectedMarketId, selectedMarketLabel],
   )
+
+  const activeTrend = useMemo(() => {
+    if (!selectedMarketId) return 'stable'
+    let ind = marketIndicators.find((i) => i.id === selectedMarketId)
+    if (ind) return ind.trend
+
+    for (const commodity in b3FuturesData) {
+      const found = b3FuturesData[commodity].find((i) => i.ticker === selectedMarketId)
+      if (found) return found.trend
+    }
+    return 'stable'
+  }, [selectedMarketId])
 
   const lots = useMemo(
     () => [
@@ -53,15 +67,12 @@ export default function ProjecaoVendas() {
       lots
         .map((lot) => {
           const days = Math.max(0, Math.ceil((targetWeight - lot.pesoMedio) / lot.gmd)) || 0
-          const activeTrend = selectedMarketId
-            ? marketIndicators.find((i) => i.id === selectedMarketId)?.trend
-            : 'stable'
 
           // Financial Analytics Engine: Combine labor & nutritional costs
-          const totalCostHead = lot.pesoMedio * 4.2 + days * 10 // Baseline + R$10/dia (8.5 Nutrição + 1.5 Mão de Obra de tarefas)
+          const totalCostHead = lot.pesoMedio * 4.2 + days * 10 // Baseline + R$10/dia
           const grossRevHead = (targetWeight / 30) * arrobaPrice
 
-          // Recommendation Logic (Selling Opportunity Tool)
+          // Recommendation Logic
           let rec = 'Em Desenv.'
           let color = 'text-muted-foreground'
           if (days === 0) {
@@ -84,7 +95,7 @@ export default function ProjecaoVendas() {
           }
         })
         .sort((a, b) => a.daysNeeded - b.daysNeeded),
-    [lots, arrobaPrice, targetWeight, selectedMarketId],
+    [lots, arrobaPrice, targetWeight, activeTrend],
   )
 
   const totalProjNetProfit = projections.reduce((a, c) => a + c.netProfitHead * c.cabecas, 0)
@@ -94,23 +105,38 @@ export default function ProjecaoVendas() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas e Mercado
+            <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas
           </h2>
           <p className="text-muted-foreground mt-1">
-            Projeções integrando GMD, custos totais (Mão de obra e Nutrição) e tendências de
-            mercado.
+            Projeções integrando GMD, custos totais e tendências de mercado e reposição.
           </p>
         </div>
-        <PriceAlertModal />
+        <div className="flex flex-wrap items-center gap-2">
+          <GpbBalizadorButton />
+          <PriceAlertModal />
+        </div>
       </div>
 
       <MarketIndicators
         selectedId={selectedMarketId}
-        onSelect={(id, price) => {
+        onSelect={(id, price, label) => {
           setSelectedMarketId(id)
           setArrobaPrice(price)
+          setSelectedMarketLabel(label)
         }}
       />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+        <ReplacementFilter />
+        <CommoditiesQuotes />
+        <B3FuturesSelector
+          onSelectPrice={(id, price, label) => {
+            setSelectedMarketId(id)
+            setArrobaPrice(price)
+            setSelectedMarketLabel(label)
+          }}
+        />
+      </div>
 
       <MarketTrendsChart />
 
@@ -121,7 +147,7 @@ export default function ProjecaoVendas() {
               Preço Base da Arroba (R$)
               <Badge
                 variant="outline"
-                className="text-[10px] bg-background text-muted-foreground border-primary/20"
+                className="text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate"
               >
                 {activeLabel}
               </Badge>
@@ -193,8 +219,8 @@ export default function ProjecaoVendas() {
         <CardHeader>
           <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>
           <CardDescription>
-            Motor de inteligência cruzando previsão de ganho de peso, custos operacionais por cabeça
-            e cotação da B3.
+            Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e
+            cotações.
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0 sm:px-6 overflow-x-auto">

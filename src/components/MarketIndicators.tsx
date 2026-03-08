@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 interface MarketIndicatorsProps {
   selectedId: string | null
-  onSelect: (id: string, price: number) => void
+  onSelect: (id: string, price: number, label: string) => void
 }
 
 export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps) {
@@ -14,7 +14,7 @@ export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <h3 className="text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wider">
           <Database className="h-4 w-4" />
-          Cotações de Mercado (Datagro & B3)
+          Cotações de Mercado (Gado Gordo / Datagro)
         </h3>
         <div className="text-xs text-muted-foreground flex items-center gap-1 bg-muted px-2 py-1 rounded-md">
           <Clock className="h-3 w-3" /> Atualizado: {marketLastUpdate}
@@ -30,7 +30,7 @@ export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps
                 ? 'border-primary bg-primary/5 shadow-md ring-1 ring-primary'
                 : '',
             )}
-            onClick={() => onSelect(ind.id, ind.price)}
+            onClick={() => onSelect(ind.id, ind.price, ind.label)}
           >
             <CardContent className="p-4">
               <div className="text-xs text-muted-foreground font-medium mb-2 flex justify-between items-center">

@@ -27,22 +27,120 @@ export const marketIndicators: MarketIndicator[] = [
     change: '-0.5%',
   },
   {
-    id: 'b3-mar',
-    label: 'B3 - Contrato Mar/26',
-    source: 'B3',
-    price: 242.0,
+    id: 'novilha-sp',
+    label: 'Novilha Gorda - SP',
+    source: 'Datagro',
+    price: 235.0,
+    trend: 'up',
+    change: '+1.0%',
+  },
+  {
+    id: 'vaca-sp',
+    label: 'Vaca Gorda - SP',
+    source: 'Datagro',
+    price: 220.0,
+    trend: 'stable',
+    change: '0.0%',
+  },
+]
+
+export const replacementIndicators: MarketIndicator[] = [
+  {
+    id: 'rep-boi-magro',
+    label: 'Boi Magro (12@)',
+    source: 'Datagro',
+    price: 3100,
+    trend: 'up',
+    change: '+2.0%',
+  },
+  {
+    id: 'rep-garrote',
+    label: 'Garrote (9,5@)',
+    source: 'Datagro',
+    price: 2500,
+    trend: 'up',
+    change: '+1.5%',
+  },
+  {
+    id: 'rep-bezerro',
+    label: 'Bezerro (8 a 12m)',
+    source: 'Datagro',
+    price: 2200,
     trend: 'stable',
     change: '0.0%',
   },
   {
-    id: 'b3-abr',
-    label: 'B3 - Contrato Abr/26',
-    source: 'B3',
-    price: 248.5,
-    trend: 'up',
-    change: '+2.1%',
+    id: 'rep-novilha',
+    label: 'Novilha (13 a 18m)',
+    source: 'Datagro',
+    price: 2100,
+    trend: 'down',
+    change: '-1.0%',
+  },
+  {
+    id: 'rep-bezerra',
+    label: 'Bezerra (8 a 12m)',
+    source: 'Datagro',
+    price: 1800,
+    trend: 'stable',
+    change: '0.0%',
   },
 ]
+
+export const commodityIndicators: MarketIndicator[] = [
+  {
+    id: 'milho-mt',
+    label: 'Milho - MT (sc 60kg)',
+    source: 'Físico',
+    price: 45.5,
+    trend: 'down',
+    change: '-1.2%',
+  },
+  {
+    id: 'milho-b3',
+    label: 'Milho - B3 (sc 60kg)',
+    source: 'B3',
+    price: 58.2,
+    trend: 'up',
+    change: '+0.8%',
+  },
+  {
+    id: 'soja-mt',
+    label: 'Soja - MT (sc 60kg)',
+    source: 'Físico',
+    price: 115.0,
+    trend: 'stable',
+    change: '0.0%',
+  },
+  {
+    id: 'soja-b3',
+    label: 'Soja - B3 (sc 60kg)',
+    source: 'B3',
+    price: 130.5,
+    trend: 'up',
+    change: '+1.5%',
+  },
+]
+
+export const b3FuturesData: Record<
+  string,
+  { ticker: string; month: string; price: number; trend: MarketTrend; change: string }[]
+> = {
+  'boi-gordo': [
+    { ticker: 'BGIK26', month: 'Mai/26', price: 245.5, trend: 'up', change: '+0.5%' },
+    { ticker: 'BGIV26', month: 'Out/26', price: 255.0, trend: 'up', change: '+1.2%' },
+    { ticker: 'BGIZ26', month: 'Dez/26', price: 260.0, trend: 'up', change: '+1.5%' },
+  ],
+  milho: [
+    { ticker: 'CCMK26', month: 'Mai/26', price: 59.5, trend: 'down', change: '-0.2%' },
+    { ticker: 'CCMU26', month: 'Set/26', price: 62.0, trend: 'up', change: '+1.0%' },
+    { ticker: 'CCMX26', month: 'Nov/26', price: 65.0, trend: 'up', change: '+1.8%' },
+  ],
+  soja: [
+    { ticker: 'SJCJ26', month: 'Abr/26', price: 132.0, trend: 'stable', change: '0.0%' },
+    { ticker: 'SJCN26', month: 'Jul/26', price: 135.5, trend: 'up', change: '+0.8%' },
+  ],
+}
 
 export const marketLastUpdate = '07/03/2026 14:30'
 
