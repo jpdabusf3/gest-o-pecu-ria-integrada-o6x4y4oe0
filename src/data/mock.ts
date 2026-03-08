@@ -914,18 +914,15 @@ export const performanceGoalsList = [
 
 export const biMetricsList = [
   { id: 'ganhoPeso', name: 'GMD Médio Rebanho', color: 'hsl(var(--chart-1))', unit: 'kg' },
-  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R
- },
+  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R$' },
   {
     id: 'custoManutencao',
     name: 'Custo Manutenção Frota',
     color: 'hsl(var(--chart-3))',
-    unit: 'R
-,
+    unit: 'R$',
   },
   { id: 'arrobasProduzidas', name: 'Arrobas Produzidas', color: 'hsl(var(--chart-4))', unit: '@' },
-  { id: 'custoNutricao', name: 'Custo Nutrição', color: 'hsl(var(--chart-5))', unit: 'R
- },
+  { id: 'custoNutricao', name: 'Custo Nutrição', color: 'hsl(var(--chart-5))', unit: 'R$' },
 ]
 
 export const biData = [
@@ -988,4 +985,3 @@ export const defaultSavedReports = [
   },
   { id: 'R2', name: 'GMD vs Custo Nutrição', m1: 'custoNutricao', m2: 'ganhoPeso' },
 ]
-
