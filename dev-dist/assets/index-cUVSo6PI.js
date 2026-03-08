@@ -19925,6 +19925,23 @@ var Syringe = createLucideIcon("syringe", [
 		key: "yqp9t2"
 	}]
 ]);
+var Tags = createLucideIcon("tags", [
+	["path", {
+		d: "M13.172 2a2 2 0 0 1 1.414.586l6.71 6.71a2.4 2.4 0 0 1 0 3.408l-4.592 4.592a2.4 2.4 0 0 1-3.408 0l-6.71-6.71A2 2 0 0 1 6 9.172V3a1 1 0 0 1 1-1z",
+		key: "16rjxf"
+	}],
+	["path", {
+		d: "M2 7v6.172a2 2 0 0 0 .586 1.414l6.71 6.71a2.4 2.4 0 0 0 3.191.193",
+		key: "178nd4"
+	}],
+	["circle", {
+		cx: "10.5",
+		cy: "6.5",
+		r: ".5",
+		fill: "currentColor",
+		key: "12ikhr"
+	}]
+]);
 var Target = createLucideIcon("target", [
 	["circle", {
 		cx: "12",
@@ -28744,6 +28761,11 @@ var navItems = [
 		title: "Setor: Engorda",
 		icon: Beef,
 		url: "/setor/engorda"
+	},
+	{
+		title: "Gestão de Rebanho",
+		icon: Tags,
+		url: "/animais"
 	},
 	{
 		title: "Estoque & Insumos",
@@ -70385,4 +70407,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CsHN7gpD.js.map
+//# sourceMappingURL=index-cUVSo6PI.js.map

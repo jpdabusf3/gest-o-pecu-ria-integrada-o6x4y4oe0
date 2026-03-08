@@ -28,6 +28,7 @@ import {
   Truck,
   CheckSquare,
   MapPinned,
+  Tags,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -42,6 +43,7 @@ const navItems = [
   { title: 'Setor: Cria', icon: Baby, url: '/setor/cria' },
   { title: 'Setor: Recria', icon: TrendingUp, url: '/setor/recria' },
   { title: 'Setor: Engorda', icon: Beef, url: '/setor/engorda' },
+  { title: 'Gestão de Rebanho', icon: Tags, url: '/animais' },
   { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
   { title: 'Frota & Maquinário', icon: Truck, url: '/frota' },
   { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
