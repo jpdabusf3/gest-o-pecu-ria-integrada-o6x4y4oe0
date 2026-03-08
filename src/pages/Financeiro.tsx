@@ -23,6 +23,7 @@ import { financialData, lotPerformanceData, costPerArrobaData } from '@/data/moc
 import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
+import { CashflowChart } from '@/components/charts/CashflowChart'
 
 export default function Financeiro() {
   const { toast } = useToast()
@@ -125,6 +126,19 @@ export default function Financeiro() {
               </CardContent>
             </Card>
           </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Tendência de Fluxo de Caixa</CardTitle>
+              <CardDescription>
+                Análise agregada de receitas contra custos operacionais (nutrição, sanidade, e
+                manejo).
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="h-[350px]">
+              <CashflowChart />
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader>

@@ -28866,7 +28866,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$52({ inst: {
+			cachedValue = useState$53({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28903,7 +28903,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$52 = React$70.useState, useEffect$19 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$53 = React$70.useState, useEffect$19 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29093,6 +29093,11 @@ var navigationGroups = [
 				url: "/tarefas"
 			},
 			{
+				title: "Mapa da Propriedade",
+				icon: MapPinned,
+				url: "/mapa"
+			},
+			{
 				title: "Operações de Campo",
 				icon: Smartphone,
 				url: "/campo"
@@ -29193,7 +29198,8 @@ function AppSidebar() {
 					"/",
 					"/campo",
 					"/tarefas",
-					"/sanidade"
+					"/sanidade",
+					"/mapa"
 				].includes(item.url);
 				if (user.role === "gerente") return !["/administrativo", "/fazendas"].includes(item.url);
 				return true;
@@ -31806,21 +31812,21 @@ function Header() {
 						title: "Alternar Simulação de Rede",
 						children: [!isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WifiOff, { className: "h-4 w-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "hidden lg:inline",
-							children: !isOnline ? "Modo Offline" : "Rede Ativa"
+							children: !isOnline ? "Offline Mode" : "Online"
 						})]
-					}), (!isOnline || queue.length > 0 || isSyncing) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: !isOnline ? "destructive" : "secondary",
-						className: "gap-1.5 h-8 px-3 pointer-events-none hidden sm:flex",
-						children: isSyncing ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-3 w-3 animate-spin" }), " Sincronizando..."] }) : !isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: !isOnline ? "destructive" : queue.length === 0 ? "outline" : "secondary",
+						className: cn("gap-1.5 h-8 px-3 pointer-events-none hidden sm:flex", isOnline && queue.length === 0 && "text-emerald-600 bg-emerald-50 border-emerald-200"),
+						children: !isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CloudOff, { className: "h-3 w-3" }),
-							" ",
+							" Offline (",
 							queue.length,
-							" pendentes"
-						] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cloud, { className: "h-3 w-3 text-emerald-500" }),
+							" pendentes)"
+						] }) : isSyncing ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-3 w-3 animate-spin" }), " Syncing..."] }) : queue.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cloud, { className: "h-3 w-3 text-amber-500" }),
 							" Fila: ",
 							queue.length
-						] })
+						] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cloud, { className: "h-3 w-3 text-emerald-500" }), " All data up to date"] })
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScannerModal, {}),
@@ -58785,81 +58791,88 @@ function Financeiro() {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
 					value: "fluxo",
 					className: "space-y-6 mt-0",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid gap-4 sm:grid-cols-3",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-								className: "bg-primary/5 border-primary/20",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid gap-4 sm:grid-cols-3",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+									className: "bg-primary/5 border-primary/20",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+										className: "pb-2",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+											className: "text-sm font-medium text-primary",
+											children: "Receitas do Mês"
+										})
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "text-2xl font-bold text-primary",
+										children: "R$ 335.000,00"
+									}) })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+									className: "bg-destructive/5 border-destructive/20",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+										className: "pb-2",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+											className: "text-sm font-medium text-destructive",
+											children: "Despesas do Mês"
+										})
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "text-2xl font-bold text-destructive",
+										children: "R$ 87.700,00"
+									}) })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 									className: "pb-2",
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-										className: "text-sm font-medium text-primary",
-										children: "Receitas do Mês"
+										className: "text-sm font-medium text-muted-foreground",
+										children: "Saldo Líquido Operacional"
 									})
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "text-2xl font-bold text-primary",
-									children: "R$ 335.000,00"
-								}) })]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-								className: "bg-destructive/5 border-destructive/20",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-									className: "pb-2",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-										className: "text-sm font-medium text-destructive",
-										children: "Despesas do Mês"
-									})
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "text-2xl font-bold text-destructive",
-									children: "R$ 87.700,00"
-								}) })]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-								className: "pb-2",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-									className: "text-sm font-medium text-muted-foreground",
-									children: "Saldo Líquido Operacional"
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "text-2xl font-bold",
-								children: "R$ 247.300,00"
-							}) })] })
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Transações" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "px-0 sm:px-6",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "overflow-x-auto",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-right",
-									children: "Valor"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
-							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: financialData.map((tx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-									className: "whitespace-nowrap",
-									children: tx.data
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-									className: "font-medium",
-									children: tx.descricao
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: tx.categoria }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-									className: `text-right font-mono font-medium whitespace-nowrap ${tx.tipo === "entrada" ? "text-primary" : "text-destructive"}`,
-									children: [tx.tipo === "entrada" ? "+ " : "- ", tx.valor]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-									variant: "outline",
-									className: "text-muted-foreground",
-									children: "Efetivado"
-								}) })
-							] }, tx.id)) })] })
-						})
-					})] })]
+									className: "text-2xl font-bold",
+									children: "R$ 247.300,00"
+								}) })] })
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Tendência de Fluxo de Caixa" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise agregada de receitas contra custos operacionais (nutrição, sanidade, e manejo)." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "h-[350px]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CashflowChart, {})
+						})] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Transações" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "px-0 sm:px-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "overflow-x-auto",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Valor"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: financialData.map((tx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "whitespace-nowrap",
+										children: tx.data
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "font-medium",
+										children: tx.descricao
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: tx.categoria }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+										className: `text-right font-mono font-medium whitespace-nowrap ${tx.tipo === "entrada" ? "text-primary" : "text-destructive"}`,
+										children: [tx.tipo === "entrada" ? "+ " : "- ", tx.valor]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "outline",
+										className: "text-muted-foreground",
+										children: "Efetivado"
+									}) })
+								] }, tx.id)) })] })
+							})
+						})] })
+					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "desempenho",
@@ -70754,6 +70767,237 @@ function Animais() {
 		})]
 	});
 }
+function MapaPropriedade() {
+	const [selectedPasto, setSelectedPasto] = (0, import_react.useState)(null);
+	const allLotes = [
+		...sectorData.cria.lotes.map((l) => ({
+			...l,
+			setor: "Cria"
+		})),
+		...sectorData.recria.lotes.map((l) => ({
+			...l,
+			setor: "Recria"
+		})),
+		...sectorData.engorda.lotes.map((l) => ({
+			...l,
+			setor: "Engorda"
+		}))
+	];
+	const mapLayout = [
+		{
+			id: 1,
+			top: "5%",
+			left: "5%",
+			width: "40%",
+			height: "40%"
+		},
+		{
+			id: 2,
+			top: "5%",
+			left: "50%",
+			width: "45%",
+			height: "55%"
+		},
+		{
+			id: 3,
+			top: "50%",
+			left: "5%",
+			width: "30%",
+			height: "45%"
+		},
+		{
+			id: 4,
+			top: "65%",
+			left: "40%",
+			width: "35%",
+			height: "30%"
+		},
+		{
+			id: 5,
+			top: "40%",
+			left: "80%",
+			width: "15%",
+			height: "55%"
+		}
+	];
+	const activePastoData = pasturesData.find((p) => p.id === selectedPasto);
+	const activeOccupant = activePastoData ? allLotes.find((l) => l.id === activePastoData.ocupanteAtual) : null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up pb-8",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+			className: "text-3xl font-bold tracking-tight",
+			children: "Mapa da Propriedade"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-1",
+			children: "Visualização espacial interativa da fazenda e distribuição do rebanho."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "lg:col-span-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-5 w-5" }), " Layout Agronômico"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Clique nas divisões de pasto para ver detalhes." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "relative w-full aspect-video min-h-[300px] bg-emerald-50/50 rounded-xl border-2 border-emerald-100 overflow-hidden shadow-inner",
+					children: mapLayout.map((pos) => {
+						const pasto = pasturesData.find((p) => p.id === pos.id);
+						if (!pasto) return null;
+						const occupant = allLotes.find((l) => l.id === pasto.ocupanteAtual);
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							onClick: () => setSelectedPasto(pos.id),
+							className: `absolute border-2 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center p-2 rounded-lg shadow-sm
+                      ${selectedPasto === pos.id ? "ring-4 ring-primary ring-offset-2 z-10 scale-[1.02]" : "hover:scale-[1.01] hover:z-10"}
+                      ${pasto.status === "Bom" ? "bg-emerald-400/40 border-emerald-500" : pasto.status === "Alerta" ? "bg-amber-400/40 border-amber-500" : "bg-slate-400/40 border-slate-500"}
+                    `,
+							style: {
+								top: pos.top,
+								left: pos.left,
+								width: pos.width,
+								height: pos.height
+							},
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-bold text-emerald-950 text-xs sm:text-sm md:text-base text-center leading-tight drop-shadow-md",
+									children: pasto.nome.split("-")[0].trim()
+								}),
+								occupant && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+									variant: "secondary",
+									className: "mt-1 md:mt-2 flex items-center gap-1 bg-white/90 text-emerald-900 border-emerald-200",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-3 w-3 hidden sm:block" }),
+										" ",
+										occupant.cabecas,
+										" cab"
+									]
+								}),
+								!occupant && pasto.status === "Vedado" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: "outline",
+									className: "mt-1 md:mt-2 bg-white/60 text-[10px] md:text-xs",
+									children: "Vedado"
+								})
+							]
+						}, pos.id);
+					})
+				}) })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, { className: "h-5 w-5" }), " Detalhes da Divisão"]
+			}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: !activePastoData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "h-full flex flex-col items-center justify-center text-muted-foreground py-12 text-center animate-pulse",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-12 w-12 mb-4 opacity-20" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Selecione um pasto no mapa para ver informações detalhadas." })]
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-6 animate-in fade-in slide-in-from-right-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between items-start",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+							className: "text-xl font-bold",
+							children: activePastoData.nome
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-sm text-muted-foreground",
+							children: [activePastoData.area, " hectares"]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							onClick: () => setSelectedPasto(null),
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" })
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between border-b pb-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-muted-foreground",
+									children: "Status Agronômico"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: activePastoData.status === "Alerta" ? "destructive" : "default",
+									className: activePastoData.status === "Bom" ? "bg-emerald-500" : "",
+									children: activePastoData.status
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between border-b pb-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-muted-foreground",
+									children: "Cultivar"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-medium text-right",
+									children: activePastoData.cultivar
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between border-b pb-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-muted-foreground",
+									children: "Altura Atual"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-medium",
+									children: [activePastoData.alturaAtual, " cm"]
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "bg-muted p-4 rounded-lg",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h4", {
+							className: "font-semibold mb-3 flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-4 w-4" }), " Rebanho Alocado"]
+						}), activeOccupant ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted-foreground",
+										children: "Lote"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold",
+										children: activeOccupant.id
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted-foreground",
+										children: "Categoria"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-medium text-right",
+										children: activeOccupant.categoria
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted-foreground",
+										children: "Cabeças"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-medium",
+										children: activeOccupant.cabecas
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted-foreground",
+										children: "Setor"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-medium",
+										children: activeOccupant.setor
+									})]
+								})
+							]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-sm text-muted-foreground italic text-center py-2",
+							children: "Área atualmente sem animais."
+						})]
+					})
+				]
+			}) })] })]
+		})]
+	});
+}
 function DynamicBIChart({ m1, m2, data }) {
 	const metric1 = biMetricsList.find((m) => m.id === m1);
 	const metric2 = biMetricsList.find((m) => m.id === m2);
@@ -71135,6 +71379,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/fazendas",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Fazendas, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/mapa",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapaPropriedade, {})
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
@@ -71146,4 +71394,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Q-LlR389.js.map
+//# sourceMappingURL=index-DcHSnvrz.js.map

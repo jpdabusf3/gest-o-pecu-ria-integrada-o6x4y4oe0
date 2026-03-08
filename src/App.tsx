@@ -28,6 +28,7 @@ import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
 import Fazendas from './pages/Fazendas'
 import Animais from './pages/Animais'
+import MapaPropriedade from './pages/MapaPropriedade'
 import BI from './pages/BI'
 import NotFound from './pages/NotFound'
 
@@ -64,6 +65,7 @@ const App = () => (
                       <Route path="/tarefas" element={<Tarefas />} />
                       <Route path="/administrativo" element={<Administrativo />} />
                       <Route path="/fazendas" element={<Fazendas />} />
+                      <Route path="/mapa" element={<MapaPropriedade />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>

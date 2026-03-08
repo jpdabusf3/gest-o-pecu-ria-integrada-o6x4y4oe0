@@ -761,6 +761,9 @@ section[aria-label='Notifications alt+T'] {
 .mb-2{
   margin-bottom: 0.5rem;
 }
+.mb-3{
+  margin-bottom: 0.75rem;
+}
 .mb-4{
   margin-bottom: 1rem;
 }
@@ -1285,6 +1288,11 @@ section[aria-label='Notifications alt+T'] {
   --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.scale-\[1\.02\]{
+  --tw-scale-x: 1.02;
+  --tw-scale-y: 1.02;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 .transform{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -1637,6 +1645,10 @@ section[aria-label='Notifications alt+T'] {
 .border-destructive\/50{
   border-color: hsl(var(--destructive) / 0.5);
 }
+.border-emerald-100{
+  --tw-border-opacity: 1;
+  border-color: rgb(209 250 229 / var(--tw-border-opacity, 1));
+}
 .border-emerald-200{
   --tw-border-opacity: 1;
   border-color: rgb(167 243 208 / var(--tw-border-opacity, 1));
@@ -1702,6 +1714,10 @@ section[aria-label='Notifications alt+T'] {
   --tw-border-opacity: 1;
   border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
 }
+.border-slate-500{
+  --tw-border-opacity: 1;
+  border-color: rgb(100 116 139 / var(--tw-border-opacity, 1));
+}
 .border-transparent{
   border-color: transparent;
 }
@@ -1716,6 +1732,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .bg-accent{
   background-color: hsl(var(--accent));
+}
+.bg-amber-400\/40{
+  background-color: rgb(251 191 36 / 0.4);
 }
 .bg-amber-500{
   --tw-bg-opacity: 1;
@@ -1762,9 +1781,15 @@ section[aria-label='Notifications alt+T'] {
 .bg-destructive\/5{
   background-color: hsl(var(--destructive) / 0.05);
 }
+.bg-emerald-400\/40{
+  background-color: rgb(52 211 153 / 0.4);
+}
 .bg-emerald-50{
   --tw-bg-opacity: 1;
   background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+.bg-emerald-50\/50{
+  background-color: rgb(236 253 245 / 0.5);
 }
 .bg-emerald-500{
   --tw-bg-opacity: 1;
@@ -1854,6 +1879,9 @@ section[aria-label='Notifications alt+T'] {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
 }
+.bg-slate-400\/40{
+  background-color: rgb(148 163 184 / 0.4);
+}
 .bg-transparent{
   background-color: transparent;
 }
@@ -1869,6 +1897,12 @@ section[aria-label='Notifications alt+T'] {
 }
 .bg-white\/50{
   background-color: rgb(255 255 255 / 0.5);
+}
+.bg-white\/60{
+  background-color: rgb(255 255 255 / 0.6);
+}
+.bg-white\/90{
+  background-color: rgb(255 255 255 / 0.9);
 }
 .bg-\[linear-gradient\(to_right\2c \#80808012_1px\2c transparent_1px\)\2c linear-gradient\(to_bottom\2c \#80808012_1px\2c transparent_1px\)\]{
   background-image: linear-gradient(to right,#80808012 1px,transparent 1px),linear-gradient(to bottom,#80808012 1px,transparent 1px);
@@ -2143,6 +2177,9 @@ section[aria-label='Notifications alt+T'] {
 .uppercase{
   text-transform: uppercase;
 }
+.italic{
+  font-style: italic;
+}
 .tabular-nums{
   --tw-numeric-spacing: tabular-nums;
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
@@ -2239,6 +2276,10 @@ section[aria-label='Notifications alt+T'] {
 .text-emerald-900{
   --tw-text-opacity: 1;
   color: rgb(6 78 59 / var(--tw-text-opacity, 1));
+}
+.text-emerald-950{
+  --tw-text-opacity: 1;
+  color: rgb(2 44 34 / var(--tw-text-opacity, 1));
 }
 .text-foreground{
   color: hsl(var(--foreground));
@@ -2350,6 +2391,9 @@ section[aria-label='Notifications alt+T'] {
 .opacity-0{
   opacity: 0;
 }
+.opacity-20{
+  opacity: 0.2;
+}
 .opacity-50{
   opacity: 0.5;
 }
@@ -2428,6 +2472,11 @@ section[aria-label='Notifications alt+T'] {
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
+.ring-4{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
 .ring-primary{
   --tw-ring-color: hsl(var(--primary));
 }
@@ -2442,6 +2491,10 @@ section[aria-label='Notifications alt+T'] {
 }
 .ring-offset-background{
   --tw-ring-offset-color: hsl(var(--background));
+}
+.drop-shadow-md{
+  --tw-drop-shadow: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2544,6 +2597,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .slide-in-from-left-2{
   --tw-enter-translate-x: -0.5rem;
+}
+.slide-in-from-right-4{
+  --tw-enter-translate-x: 1rem;
 }
 .slide-in-from-top-2{
   --tw-enter-translate-y: -0.5rem;
@@ -2681,9 +2737,17 @@ section[aria-label='Notifications alt+T'] {
 .last\:pb-0:last-child{
   padding-bottom: 0px;
 }
+.hover\:z-10:hover{
+  z-index: 10;
+}
 .hover\:scale-105:hover{
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.hover\:scale-\[1\.01\]:hover{
+  --tw-scale-x: 1.01;
+  --tw-scale-y: 1.01;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .hover\:scale-\[1\.02\]:hover{
@@ -3704,6 +3768,10 @@ section[aria-label='Notifications alt+T'] {
     font-size: 1rem;
     line-height: 1.5rem;
   }
+  .sm\:text-sm{
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
   .data-\[state\=open\]\:sm\:slide-in-from-bottom-full[data-state="open"]{
     --tw-enter-translate-y: 100%;
   }
@@ -3726,6 +3794,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .md\:col-span-8{
     grid-column: span 8 / span 8;
+  }
+  .md\:mt-2{
+    margin-top: 0.5rem;
   }
   .md\:block{
     display: block;
@@ -3780,6 +3851,10 @@ section[aria-label='Notifications alt+T'] {
   .md\:text-sm{
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+  .md\:text-xs{
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
   .md\:opacity-0{
     opacity: 0;

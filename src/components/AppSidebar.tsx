@@ -59,6 +59,7 @@ const navigationGroups = [
       { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
       { title: 'Frota & Maquinário', icon: Truck, url: '/frota' },
       { title: 'Gestão de Tarefas', icon: CheckSquare, url: '/tarefas' },
+      { title: 'Mapa da Propriedade', icon: MapPinned, url: '/mapa' },
       { title: 'Operações de Campo', icon: Smartphone, url: '/campo' },
     ].sort((a, b) => a.title.localeCompare(b.title)),
   },
@@ -121,7 +122,7 @@ export function AppSidebar() {
           // RBAC: Restricted view for operators and managers
           const visibleItems = group.items.filter((item) => {
             if (user.role === 'operador') {
-              return ['/', '/campo', '/tarefas', '/sanidade'].includes(item.url)
+              return ['/', '/campo', '/tarefas', '/sanidade', '/mapa'].includes(item.url)
             }
             if (user.role === 'gerente') {
               return !['/administrativo', '/fazendas'].includes(item.url)

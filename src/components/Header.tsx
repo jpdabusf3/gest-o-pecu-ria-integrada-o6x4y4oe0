@@ -71,29 +71,34 @@ export function Header() {
             title="Alternar Simulação de Rede"
           >
             {!isOnline ? <WifiOff className="h-4 w-4" /> : <Wifi className="h-4 w-4" />}
-            <span className="hidden lg:inline">{!isOnline ? 'Modo Offline' : 'Rede Ativa'}</span>
+            <span className="hidden lg:inline">{!isOnline ? 'Offline Mode' : 'Online'}</span>
           </Button>
 
-          {(!isOnline || queue.length > 0 || isSyncing) && (
-            <Badge
-              variant={!isOnline ? 'destructive' : 'secondary'}
-              className="gap-1.5 h-8 px-3 pointer-events-none hidden sm:flex"
-            >
-              {isSyncing ? (
-                <>
-                  <RefreshCw className="h-3 w-3 animate-spin" /> Sincronizando...
-                </>
-              ) : !isOnline ? (
-                <>
-                  <CloudOff className="h-3 w-3" /> {queue.length} pendentes
-                </>
-              ) : (
-                <>
-                  <Cloud className="h-3 w-3 text-emerald-500" /> Fila: {queue.length}
-                </>
-              )}
-            </Badge>
-          )}
+          <Badge
+            variant={!isOnline ? 'destructive' : queue.length === 0 ? 'outline' : 'secondary'}
+            className={cn(
+              'gap-1.5 h-8 px-3 pointer-events-none hidden sm:flex',
+              isOnline && queue.length === 0 && 'text-emerald-600 bg-emerald-50 border-emerald-200',
+            )}
+          >
+            {!isOnline ? (
+              <>
+                <CloudOff className="h-3 w-3" /> Offline ({queue.length} pendentes)
+              </>
+            ) : isSyncing ? (
+              <>
+                <RefreshCw className="h-3 w-3 animate-spin" /> Syncing...
+              </>
+            ) : queue.length > 0 ? (
+              <>
+                <Cloud className="h-3 w-3 text-amber-500" /> Fila: {queue.length}
+              </>
+            ) : (
+              <>
+                <Cloud className="h-3 w-3 text-emerald-500" /> All data up to date
+              </>
+            )}
+          </Badge>
         </div>
 
         <ScannerModal />
