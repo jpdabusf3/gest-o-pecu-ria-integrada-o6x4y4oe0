@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { commodityIndicators } from '@/data/market'
+import { useMarket } from '@/contexts/MarketContext'
 import { TrendingDown, TrendingUp, Minus, Wheat } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function CommoditiesQuotes() {
+  const { commodityData } = useMarket()
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-3">
@@ -14,10 +16,10 @@ export function CommoditiesQuotes() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-2.5">
-          {commodityIndicators.map((ind) => (
+          {commodityData.map((ind) => (
             <div
               key={ind.id}
-              className="flex items-center justify-between p-2.5 rounded-md border bg-muted/30"
+              className="flex items-center justify-between p-2.5 rounded-md border bg-muted/30 transition-all duration-300"
             >
               <div>
                 <div className="font-semibold text-sm leading-none">{ind.label}</div>
@@ -29,7 +31,7 @@ export function CommoditiesQuotes() {
                 <div className="font-bold text-sm">R$ {ind.price.toFixed(2)}</div>
                 <div
                   className={cn(
-                    'text-xs font-medium flex items-center justify-end gap-0.5 mt-0.5',
+                    'text-xs font-medium flex items-center justify-end gap-0.5 mt-0.5 transition-colors',
                     ind.trend === 'up'
                       ? 'text-emerald-500'
                       : ind.trend === 'down'

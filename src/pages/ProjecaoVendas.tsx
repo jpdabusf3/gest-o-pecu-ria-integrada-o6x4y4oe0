@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -13,7 +13,6 @@ import { Badge } from '@/components/ui/badge'
 import { BrainCircuit, DollarSign, Calendar as CalendarIcon, TrendingUp } from 'lucide-react'
 import { confinementData, sectorData } from '@/data/mock'
 import { MarketIndicators } from '@/components/MarketIndicators'
-import { marketIndicators, b3FuturesData } from '@/data/market'
 import { MarketTrendsChart } from '@/components/MarketTrendsChart'
 import { PriceAlertModal } from '@/components/PriceAlertModal'
 import { ReplacementFilter } from '@/components/ReplacementFilter'
@@ -23,14 +22,26 @@ import { GpbBalizadorButton } from '@/components/GpbBalizadorButton'
 import { ExportMenu } from '@/components/ExportMenu'
 import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
 import { useToast } from '@/hooks/use-toast'
+import { useMarket } from '@/contexts/MarketContext'
 import { cn } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
+  const { getPrice, b3Data, marketData } = useMarket()
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>('mt')
   const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - MT')
   const [arrobaPrice, setArrobaPrice] = useState<number>(238.0)
   const [targetWeight, setTargetWeight] = useState<number>(540)
   const { toast } = useToast()
+
+  // Sync arrobaPrice with real-time context if a market is selected
+  useEffect(() => {
+    if (selectedMarketId) {
+      const livePrice = getPrice(selectedMarketId)
+      if (livePrice !== null && livePrice !== arrobaPrice) {
+        setArrobaPrice(livePrice)
+      }
+    }
+  }, [selectedMarketId, getPrice, arrobaPrice])
 
   const activeLabel = useMemo(
     () => (selectedMarketId ? selectedMarketLabel : 'Valor Manual Customizado'),
@@ -39,15 +50,15 @@ export default function ProjecaoVendas() {
 
   const activeTrend = useMemo(() => {
     if (!selectedMarketId) return 'stable'
-    let ind = marketIndicators.find((i) => i.id === selectedMarketId)
+    let ind = marketData.find((i) => i.id === selectedMarketId)
     if (ind) return ind.trend
 
-    for (const commodity in b3FuturesData) {
-      const found = b3FuturesData[commodity].find((i) => i.ticker === selectedMarketId)
+    for (const commodity in b3Data) {
+      const found = b3Data[commodity].find((i: any) => i.ticker === selectedMarketId)
       if (found) return found.trend
     }
     return 'stable'
-  }, [selectedMarketId])
+  }, [selectedMarketId, marketData, b3Data])
 
   const lots = useMemo(
     () => [
@@ -133,7 +144,7 @@ export default function ProjecaoVendas() {
             <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas
           </h2>
           <p className="text-muted-foreground mt-1">
-            Projeções integrando GMD, custos totais e tendências de mercado (Foco MT).
+            Projeções integrando GMD, custos operacionais e cotações ao vivo (B3/MT).
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -170,7 +181,7 @@ export default function ProjecaoVendas() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3">
-        <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent">
+        <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-primary flex items-center justify-between">
               Preço Base da Arroba (R$)
@@ -187,12 +198,12 @@ export default function ProjecaoVendas() {
               <DollarSign className="h-5 w-5 text-primary print:hidden" />
               <Input
                 type="number"
-                value={arrobaPrice}
+                value={Number(arrobaPrice.toFixed(2))}
                 onChange={(e) => {
                   setArrobaPrice(Number(e.target.value))
                   setSelectedMarketId(null)
                 }}
-                className="text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0"
+                className="text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0 transition-all"
               />
             </div>
             <p className="text-xs text-primary/70 mt-2 font-medium print:hidden">
@@ -225,14 +236,14 @@ export default function ProjecaoVendas() {
           </CardContent>
         </Card>
 
-        <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent">
+        <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-500">
               Lucro Líquido Global Proj.
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-500">
+            <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-500 transition-all">
               R${' '}
               {totalProjNetProfit.toLocaleString('pt-BR', {
                 minimumFractionDigits: 2,
@@ -300,10 +311,10 @@ export default function ProjecaoVendas() {
                   <TableCell className="text-right text-destructive font-medium whitespace-nowrap">
                     - R$ {p.totalCostHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
                   </TableCell>
-                  <TableCell className="text-right font-bold text-primary whitespace-nowrap">
+                  <TableCell className="text-right font-bold text-primary whitespace-nowrap transition-all">
                     R$ {p.netProfitHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
                   </TableCell>
-                  <TableCell className="text-right font-bold text-primary whitespace-nowrap text-base">
+                  <TableCell className="text-right font-bold text-primary whitespace-nowrap text-base transition-all">
                     R$ {p.projRevenue.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
                   </TableCell>
                 </TableRow>

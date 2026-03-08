@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$69 = require_react(), Internals = {
+		var React$70 = require_react(), Internals = {
 			d: {
 				f: noop$3,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$69.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$70.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$69.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$70.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$69 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$70 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$69.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$70.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$69.version;
+			var isomorphicReactPackageVersion = React$70.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17609,15 +17609,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$69 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$69.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$70 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$70.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$69 = { react_stack_bottom_frame: function(callStackForError) {
+		React$70 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$69.react_stack_bottom_frame.bind(React$69, UnknownOwner)();
+		var unknownOwnerDebugStack = React$70.react_stack_bottom_frame.bind(React$70, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -19535,6 +19535,10 @@ var Map$1 = createLucideIcon("map", [
 		key: "1uimfh"
 	}]
 ]);
+var MessageCircle = createLucideIcon("message-circle", [["path", {
+	d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
+	key: "1sd12s"
+}]]);
 var Minus = createLucideIcon("minus", [["path", {
 	d: "M5 12h14",
 	key: "1ays0h"
@@ -19567,6 +19571,25 @@ var PanelLeft = createLucideIcon("panel-left", [["rect", {
 }], ["path", {
 	d: "M9 3v18",
 	key: "fh3hqa"
+}]]);
+var Pause = createLucideIcon("pause", [["rect", {
+	x: "14",
+	y: "3",
+	width: "5",
+	height: "18",
+	rx: "1",
+	key: "kaeet6"
+}], ["rect", {
+	x: "5",
+	y: "3",
+	width: "5",
+	height: "18",
+	rx: "1",
+	key: "1wsw3u"
+}]]);
+var Play = createLucideIcon("play", [["path", {
+	d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
+	key: "10ikf1"
 }]]);
 var Plus = createLucideIcon("plus", [["path", {
 	d: "M5 12h14",
@@ -26301,6 +26324,424 @@ function useTasks() {
 	if (!context) throw new Error("useTasks must be used within TaskProvider");
 	return context;
 }
+const marketIndicators = [
+	{
+		id: "sp",
+		label: "Boi Gordo - SP (À vista)",
+		source: "Datagro",
+		price: 245.5,
+		trend: "up",
+		change: "+1.2%"
+	},
+	{
+		id: "mt",
+		label: "Boi Gordo - MT (À vista)",
+		source: "Datagro",
+		price: 238,
+		trend: "down",
+		change: "-0.5%"
+	},
+	{
+		id: "novilha-mt",
+		label: "Novilha Gorda - MT",
+		source: "Datagro",
+		price: 228,
+		trend: "up",
+		change: "+1.0%"
+	},
+	{
+		id: "vaca-mt",
+		label: "Vaca Gorda - MT",
+		source: "Datagro",
+		price: 215,
+		trend: "stable",
+		change: "0.0%"
+	}
+];
+const replacementIndicators = [
+	{
+		id: "rep-boi-magro",
+		label: "Boi Magro (12@) - MT",
+		source: "Datagro",
+		price: 2900,
+		trend: "up",
+		change: "+2.0%"
+	},
+	{
+		id: "rep-garrote",
+		label: "Garrote (9,5@) - MT",
+		source: "Datagro",
+		price: 2350,
+		trend: "up",
+		change: "+1.5%"
+	},
+	{
+		id: "rep-bezerro",
+		label: "Bezerro (8 a 12m) - MT",
+		source: "Datagro",
+		price: 2050,
+		trend: "stable",
+		change: "0.0%"
+	},
+	{
+		id: "rep-novilha",
+		label: "Novilha (13 a 18m) - MT",
+		source: "Datagro",
+		price: 1950,
+		trend: "down",
+		change: "-1.0%"
+	},
+	{
+		id: "rep-bezerra",
+		label: "Bezerra (8 a 12m) - MT",
+		source: "Datagro",
+		price: 1650,
+		trend: "stable",
+		change: "0.0%"
+	}
+];
+const commodityIndicators = [
+	{
+		id: "milho-mt",
+		label: "Milho - MT (sc 60kg)",
+		source: "Físico",
+		price: 45.5,
+		trend: "down",
+		change: "-1.2%"
+	},
+	{
+		id: "milho-b3",
+		label: "Milho - B3 (sc 60kg)",
+		source: "B3",
+		price: 58.2,
+		trend: "up",
+		change: "+0.8%"
+	},
+	{
+		id: "soja-mt",
+		label: "Soja - MT (sc 60kg)",
+		source: "Físico",
+		price: 115,
+		trend: "stable",
+		change: "0.0%"
+	},
+	{
+		id: "soja-b3",
+		label: "Soja - B3 (sc 60kg)",
+		source: "B3",
+		price: 130.5,
+		trend: "up",
+		change: "+1.5%"
+	}
+];
+const b3FuturesData = {
+	"boi-gordo": [
+		{
+			ticker: "BGIK26",
+			month: "Mai/26",
+			price: 245.5,
+			trend: "up",
+			change: "+0.5%"
+		},
+		{
+			ticker: "BGIV26",
+			month: "Out/26",
+			price: 255,
+			trend: "up",
+			change: "+1.2%"
+		},
+		{
+			ticker: "BGIZ26",
+			month: "Dez/26",
+			price: 260,
+			trend: "up",
+			change: "+1.5%"
+		}
+	],
+	milho: [
+		{
+			ticker: "CCMK26",
+			month: "Mai/26",
+			price: 59.5,
+			trend: "down",
+			change: "-0.2%"
+		},
+		{
+			ticker: "CCMU26",
+			month: "Set/26",
+			price: 62,
+			trend: "up",
+			change: "+1.0%"
+		},
+		{
+			ticker: "CCMX26",
+			month: "Nov/26",
+			price: 65,
+			trend: "up",
+			change: "+1.8%"
+		}
+	],
+	soja: [{
+		ticker: "SJCJ26",
+		month: "Abr/26",
+		price: 132,
+		trend: "stable",
+		change: "0.0%"
+	}, {
+		ticker: "SJCN26",
+		month: "Jul/26",
+		price: 135.5,
+		trend: "up",
+		change: "+0.8%"
+	}]
+};
+const historicalMarketData = [
+	{
+		month: "Abr/25",
+		sp: 215,
+		mt: 205,
+		b3: 220
+	},
+	{
+		month: "Mai/25",
+		sp: 218,
+		mt: 208,
+		b3: 222
+	},
+	{
+		month: "Jun/25",
+		sp: 220,
+		mt: 210,
+		b3: 225
+	},
+	{
+		month: "Jul/25",
+		sp: 222,
+		mt: 215,
+		b3: 228
+	},
+	{
+		month: "Ago/25",
+		sp: 225,
+		mt: 218,
+		b3: 230
+	},
+	{
+		month: "Set/25",
+		sp: 228,
+		mt: 222,
+		b3: 232
+	},
+	{
+		month: "Out/25",
+		sp: 230,
+		mt: 225,
+		b3: 235
+	},
+	{
+		month: "Nov/25",
+		sp: 235,
+		mt: 228,
+		b3: 240
+	},
+	{
+		month: "Dez/25",
+		sp: 238,
+		mt: 230,
+		b3: 242
+	},
+	{
+		month: "Jan/26",
+		sp: 240,
+		mt: 235,
+		b3: 241
+	},
+	{
+		month: "Fev/26",
+		sp: 242,
+		mt: 237,
+		b3: 245
+	},
+	{
+		month: "Mar/26",
+		sp: 245.5,
+		mt: 238,
+		b3: 242
+	}
+];
+var MarketContext = (0, import_react.createContext)(void 0);
+var fluctuatePrice = (price, volatility = .005) => {
+	const change = price * volatility * (Math.random() * 2 - 1);
+	return Number((price + change).toFixed(2));
+};
+var calculateTrend = (oldPrice, newPrice) => {
+	if (newPrice > oldPrice) return "up";
+	if (newPrice < oldPrice) return "down";
+	return "stable";
+};
+var calculateChangeStr = (oldPrice, newPrice) => {
+	const diff = (newPrice - oldPrice) / oldPrice * 100;
+	return `${diff > 0 ? "+" : ""}${diff.toFixed(2)}%`;
+};
+function MarketProvider({ children }) {
+	const [marketData, setMarketData] = (0, import_react.useState)(marketIndicators);
+	const [b3Data, setB3Data] = (0, import_react.useState)(b3FuturesData);
+	const [replacementData, setReplacementData] = (0, import_react.useState)(replacementIndicators);
+	const [commodityData, setCommodityData] = (0, import_react.useState)(commodityIndicators);
+	const [lastUpdate, setLastUpdate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
+	const [b3LastUpdate, setB3LastUpdate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
+	const { toast: toast$2 } = useToast();
+	const [alerts, setAlerts] = (0, import_react.useState)([{
+		id: "mock-1",
+		indicatorId: "sp",
+		indicatorLabel: "Boi Gordo - SP (À vista)",
+		condition: "above",
+		targetPrice: 250,
+		notifyWhatsApp: true,
+		active: true
+	}]);
+	const getPrice = (0, import_react.useCallback)((id) => {
+		let found = marketData.find((i) => i.id === id);
+		if (found) return found.price;
+		found = replacementData.find((i) => i.id === id);
+		if (found) return found.price;
+		found = commodityData.find((i) => i.id === id);
+		if (found) return found.price;
+		for (const key in b3Data) {
+			const item = b3Data[key].find((i) => i.ticker === id);
+			if (item) return item.price;
+		}
+		return null;
+	}, [
+		marketData,
+		replacementData,
+		commodityData,
+		b3Data
+	]);
+	const checkAlerts = (0, import_react.useCallback)(() => {
+		alerts.forEach((alert) => {
+			if (!alert.active) return;
+			const currentPrice = getPrice(alert.indicatorId);
+			if (currentPrice === null) return;
+			if (alert.condition === "above" ? currentPrice >= alert.targetPrice : currentPrice <= alert.targetPrice) {
+				if (alert.notifyWhatsApp) toast$2({
+					title: "📱 Alerta WhatsApp Disparado!",
+					description: `O mercado ${alert.indicatorLabel} atingiu R$ ${currentPrice.toFixed(2)}. Condição: ${alert.condition === "above" ? "Acima" : "Abaixo"} de R$ ${alert.targetPrice.toFixed(2)}.`,
+					variant: "default",
+					className: "border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100"
+				});
+				else toast$2({
+					title: "🚨 Alerta de Mercado",
+					description: `${alert.indicatorLabel} atingiu sua meta de R$ ${currentPrice.toFixed(2)}.`
+				});
+				setAlerts((prev) => prev.map((a$1) => a$1.id === alert.id ? {
+					...a$1,
+					active: false
+				} : a$1));
+			}
+		});
+	}, [
+		alerts,
+		getPrice,
+		toast$2
+	]);
+	(0, import_react.useEffect)(() => {
+		const fastTick = setInterval(() => {
+			setB3Data((prev) => {
+				const next = { ...prev };
+				for (const key in next) next[key] = next[key].map((item) => {
+					const newPrice = fluctuatePrice(item.price, .002);
+					return {
+						...item,
+						price: newPrice,
+						trend: calculateTrend(item.price, newPrice),
+						change: calculateChangeStr(item.price, newPrice)
+					};
+				});
+				return next;
+			});
+			setB3LastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
+		}, 8e3);
+		return () => clearInterval(fastTick);
+	}, []);
+	(0, import_react.useEffect)(() => {
+		const slowTick = setInterval(() => {
+			const updateList = (list) => list.map((item) => {
+				const newPrice = fluctuatePrice(item.price, .005);
+				return {
+					...item,
+					price: newPrice,
+					trend: calculateTrend(item.price, newPrice),
+					change: calculateChangeStr(item.price, newPrice)
+				};
+			});
+			setMarketData(updateList);
+			setReplacementData(updateList);
+			setCommodityData(updateList);
+			setLastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
+		}, 25e3);
+		return () => clearInterval(slowTick);
+	}, []);
+	(0, import_react.useEffect)(() => {
+		checkAlerts();
+	}, [
+		b3Data,
+		marketData,
+		checkAlerts
+	]);
+	const addAlert = (alert) => {
+		setAlerts((prev) => [{
+			...alert,
+			id: crypto.randomUUID(),
+			active: true
+		}, ...prev]);
+		toast$2({
+			title: "Alerta Configurado",
+			description: `Monitorando ${alert.indicatorLabel} para disparar ${alert.notifyWhatsApp ? "via WhatsApp" : "no sistema"}.`
+		});
+	};
+	const toggleAlert = (id, active) => {
+		setAlerts((prev) => prev.map((a$1) => a$1.id === id ? {
+			...a$1,
+			active
+		} : a$1));
+	};
+	const deleteAlert = (id) => {
+		setAlerts((prev) => prev.filter((a$1) => a$1.id !== id));
+		toast$2({ description: "Alerta removido com sucesso." });
+	};
+	const value = (0, import_react.useMemo)(() => ({
+		marketData,
+		b3Data,
+		replacementData,
+		commodityData,
+		lastUpdate,
+		b3LastUpdate,
+		alerts,
+		addAlert,
+		toggleAlert,
+		deleteAlert,
+		getPrice
+	}), [
+		marketData,
+		b3Data,
+		replacementData,
+		commodityData,
+		lastUpdate,
+		b3LastUpdate,
+		alerts,
+		getPrice
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketContext.Provider, {
+		value,
+		children
+	});
+}
+function useMarket() {
+	const context = (0, import_react.useContext)(MarketContext);
+	if (!context) throw new Error("useMarket must be used within MarketProvider");
+	return context;
+}
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
 var use = import_react[" use ".trim().toString()];
 function isPromiseLike(value) {
@@ -28318,13 +28759,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$69.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$70.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$39({ inst: {
+			cachedValue = useState$40({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28338,7 +28779,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$10(function() {
+			useEffect$12(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28361,8 +28802,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$69 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$39 = React$69.useState, useEffect$10 = React$69.useEffect, useLayoutEffect$3 = React$69.useLayoutEffect, useDebugValue = React$69.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$69.useSyncExternalStore ? React$69.useSyncExternalStore : shim;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$40 = React$70.useState, useEffect$12 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -64471,272 +64912,28 @@ function Relatorios() {
 		})] })]
 	});
 }
-const marketIndicators = [
-	{
-		id: "sp",
-		label: "Boi Gordo - SP (À vista)",
-		source: "Datagro",
-		price: 245.5,
-		trend: "up",
-		change: "+1.2%"
-	},
-	{
-		id: "mt",
-		label: "Boi Gordo - MT (À vista)",
-		source: "Datagro",
-		price: 238,
-		trend: "down",
-		change: "-0.5%"
-	},
-	{
-		id: "novilha-mt",
-		label: "Novilha Gorda - MT",
-		source: "Datagro",
-		price: 228,
-		trend: "up",
-		change: "+1.0%"
-	},
-	{
-		id: "vaca-mt",
-		label: "Vaca Gorda - MT",
-		source: "Datagro",
-		price: 215,
-		trend: "stable",
-		change: "0.0%"
-	}
-];
-const replacementIndicators = [
-	{
-		id: "rep-boi-magro",
-		label: "Boi Magro (12@) - MT",
-		source: "Datagro",
-		price: 2900,
-		trend: "up",
-		change: "+2.0%"
-	},
-	{
-		id: "rep-garrote",
-		label: "Garrote (9,5@) - MT",
-		source: "Datagro",
-		price: 2350,
-		trend: "up",
-		change: "+1.5%"
-	},
-	{
-		id: "rep-bezerro",
-		label: "Bezerro (8 a 12m) - MT",
-		source: "Datagro",
-		price: 2050,
-		trend: "stable",
-		change: "0.0%"
-	},
-	{
-		id: "rep-novilha",
-		label: "Novilha (13 a 18m) - MT",
-		source: "Datagro",
-		price: 1950,
-		trend: "down",
-		change: "-1.0%"
-	},
-	{
-		id: "rep-bezerra",
-		label: "Bezerra (8 a 12m) - MT",
-		source: "Datagro",
-		price: 1650,
-		trend: "stable",
-		change: "0.0%"
-	}
-];
-const commodityIndicators = [
-	{
-		id: "milho-mt",
-		label: "Milho - MT (sc 60kg)",
-		source: "Físico",
-		price: 45.5,
-		trend: "down",
-		change: "-1.2%"
-	},
-	{
-		id: "milho-b3",
-		label: "Milho - B3 (sc 60kg)",
-		source: "B3",
-		price: 58.2,
-		trend: "up",
-		change: "+0.8%"
-	},
-	{
-		id: "soja-mt",
-		label: "Soja - MT (sc 60kg)",
-		source: "Físico",
-		price: 115,
-		trend: "stable",
-		change: "0.0%"
-	},
-	{
-		id: "soja-b3",
-		label: "Soja - B3 (sc 60kg)",
-		source: "B3",
-		price: 130.5,
-		trend: "up",
-		change: "+1.5%"
-	}
-];
-const b3FuturesData = {
-	"boi-gordo": [
-		{
-			ticker: "BGIK26",
-			month: "Mai/26",
-			price: 245.5,
-			trend: "up",
-			change: "+0.5%"
-		},
-		{
-			ticker: "BGIV26",
-			month: "Out/26",
-			price: 255,
-			trend: "up",
-			change: "+1.2%"
-		},
-		{
-			ticker: "BGIZ26",
-			month: "Dez/26",
-			price: 260,
-			trend: "up",
-			change: "+1.5%"
-		}
-	],
-	milho: [
-		{
-			ticker: "CCMK26",
-			month: "Mai/26",
-			price: 59.5,
-			trend: "down",
-			change: "-0.2%"
-		},
-		{
-			ticker: "CCMU26",
-			month: "Set/26",
-			price: 62,
-			trend: "up",
-			change: "+1.0%"
-		},
-		{
-			ticker: "CCMX26",
-			month: "Nov/26",
-			price: 65,
-			trend: "up",
-			change: "+1.8%"
-		}
-	],
-	soja: [{
-		ticker: "SJCJ26",
-		month: "Abr/26",
-		price: 132,
-		trend: "stable",
-		change: "0.0%"
-	}, {
-		ticker: "SJCN26",
-		month: "Jul/26",
-		price: 135.5,
-		trend: "up",
-		change: "+0.8%"
-	}]
-};
-const marketLastUpdate = "07/03/2026 14:30";
-const historicalMarketData = [
-	{
-		month: "Abr/25",
-		sp: 215,
-		mt: 205,
-		b3: 220
-	},
-	{
-		month: "Mai/25",
-		sp: 218,
-		mt: 208,
-		b3: 222
-	},
-	{
-		month: "Jun/25",
-		sp: 220,
-		mt: 210,
-		b3: 225
-	},
-	{
-		month: "Jul/25",
-		sp: 222,
-		mt: 215,
-		b3: 228
-	},
-	{
-		month: "Ago/25",
-		sp: 225,
-		mt: 218,
-		b3: 230
-	},
-	{
-		month: "Set/25",
-		sp: 228,
-		mt: 222,
-		b3: 232
-	},
-	{
-		month: "Out/25",
-		sp: 230,
-		mt: 225,
-		b3: 235
-	},
-	{
-		month: "Nov/25",
-		sp: 235,
-		mt: 228,
-		b3: 240
-	},
-	{
-		month: "Dez/25",
-		sp: 238,
-		mt: 230,
-		b3: 242
-	},
-	{
-		month: "Jan/26",
-		sp: 240,
-		mt: 235,
-		b3: 241
-	},
-	{
-		month: "Fev/26",
-		sp: 242,
-		mt: 237,
-		b3: 245
-	},
-	{
-		month: "Mar/26",
-		sp: 245.5,
-		mt: 238,
-		b3: 242
-	}
-];
 function MarketIndicators({ selectedId, onSelect }) {
+	const { marketData, lastUpdate } = useMarket();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-3 animate-fade-in-up",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
 				className: "text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wider",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "h-4 w-4" }), "Cotações de Mercado (Gado Gordo / Datagro)"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "h-4 w-4" }), "Cotações de Mercado (Mato Grosso / Datagro)"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "text-xs text-muted-foreground flex items-center gap-1 bg-muted px-2 py-1 rounded-md",
+				className: "text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-3 w-3" }),
-					" Atualizado: ",
-					marketLastUpdate
+					" Status: Sincronizado (",
+					lastUpdate,
+					")"
 				]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "grid grid-cols-2 md:grid-cols-4 gap-4",
-			children: marketIndicators.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-				className: cn("cursor-pointer transition-all duration-200 hover:border-primary/50 group", selectedId === ind.id ? "border-primary bg-primary/5 shadow-md ring-1 ring-primary" : ""),
+			children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+				className: cn("cursor-pointer transition-all duration-300 hover:border-primary/50 group relative overflow-hidden", selectedId === ind.id ? "border-primary bg-primary/5 shadow-md ring-1 ring-primary" : ""),
 				onClick: () => onSelect(ind.id, ind.price, ind.label),
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 					className: "p-4",
@@ -64763,7 +64960,7 @@ function MarketIndicators({ selectedId, onSelect }) {
 								className: "text-xl font-bold text-foreground",
 								children: ["R$ ", ind.price.toFixed(2)]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: cn("text-xs font-medium", ind.trend === "up" ? "text-emerald-500" : ind.trend === "down" ? "text-destructive" : "text-muted-foreground"),
+								className: cn("text-xs font-medium transition-colors", ind.trend === "up" ? "text-emerald-500" : ind.trend === "down" ? "text-destructive" : "text-muted-foreground"),
 								children: ind.change
 							})]
 						})
@@ -65140,25 +65337,57 @@ function MarketTrendsChart() {
 }
 function PriceAlertModal() {
 	const [open, setOpen] = (0, import_react.useState)(false);
-	const [indicator, setIndicator] = (0, import_react.useState)("sp");
-	const [targetPrice, setTargetPrice] = (0, import_react.useState)("250.00");
-	const { toast: toast$2 } = useToast();
-	const handleSaveAlert = () => {
-		const selectedMarket = marketIndicators.find((m) => m.id === indicator);
-		const currentPrice = selectedMarket?.price || 0;
-		const target = parseFloat(targetPrice);
-		toast$2({
-			title: "Alerta Configurado",
-			description: `Notificaremos quando ${selectedMarket?.label} atingir R$ ${target.toFixed(2)}.`
-		});
-		if (currentPrice >= target) setTimeout(() => {
-			toast$2({
-				title: "🚨 Alerta de Oportunidade!",
-				description: `O mercado atingiu seu alvo! ${selectedMarket?.label} está cotado a R$ ${currentPrice.toFixed(2)}.`,
-				variant: "destructive"
+	const { marketData, b3Data, replacementData, commodityData, getPrice, alerts, addAlert, toggleAlert, deleteAlert } = useMarket();
+	const [indicatorId, setIndicatorId] = (0, import_react.useState)("sp");
+	const [condition, setCondition] = (0, import_react.useState)("above");
+	const [targetPrice, setTargetPrice] = (0, import_react.useState)("");
+	const [notifyWhatsApp, setNotifyWhatsApp] = (0, import_react.useState)(true);
+	const allIndicators = (0, import_react.useMemo)(() => {
+		const list = [
+			...marketData.map((i) => ({
+				id: i.id,
+				label: i.label,
+				group: "Mercado Físico"
+			})),
+			...replacementData.map((i) => ({
+				id: i.id,
+				label: i.label,
+				group: "Reposição"
+			})),
+			...commodityData.map((i) => ({
+				id: i.id,
+				label: i.label,
+				group: "Insumos"
+			}))
+		];
+		Object.keys(b3Data).forEach((key) => {
+			b3Data[key].forEach((i) => {
+				list.push({
+					id: i.ticker,
+					label: `B3 Futuro - ${i.ticker} (${i.month})`,
+					group: "B3 Futuro"
+				});
 			});
-		}, 1500);
-		setOpen(false);
+		});
+		return list;
+	}, [
+		marketData,
+		b3Data,
+		replacementData,
+		commodityData
+	]);
+	const handleSaveAlert = () => {
+		if (!targetPrice) return;
+		const indicator = allIndicators.find((i) => i.id === indicatorId);
+		if (!indicator) return;
+		addAlert({
+			indicatorId,
+			indicatorLabel: indicator.label,
+			condition,
+			targetPrice: parseFloat(targetPrice),
+			notifyWhatsApp
+		});
+		setTargetPrice("");
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
 		open,
@@ -65167,53 +65396,183 @@ function PriceAlertModal() {
 			asChild: true,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 				variant: "outline",
-				className: "gap-2 border-primary/50 text-primary hover:bg-primary/10",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }), " Alertas de Preço"]
+				className: "gap-2 border-primary/50 text-primary hover:bg-primary/10 relative",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }),
+					" Alertas B3/MT",
+					alerts.filter((a$1) => a$1.active).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "absolute -top-1.5 -right-1.5 h-4 w-4 bg-emerald-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold",
+						children: alerts.filter((a$1) => a$1.active).length
+					})
+				]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
-			className: "sm:max-w-[425px]",
+			className: "sm:max-w-[500px]",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
 				className: "flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Novo Alerta de Oportunidade"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Configure um gatilho para receber notificação push quando o mercado atingir o alvo desejado." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-4 py-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Painel de Alertas de Mercado"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Configure gatilhos automatizados para B3 e praças regionais (MT)." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				defaultValue: "novo",
+				className: "w-full mt-4",
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Indicador de Referência" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-							value: indicator,
-							onValueChange: setIndicator,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o mercado" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: marketIndicators.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
-								value: m.id,
-								children: [
-									m.label,
-									" (Atual: R$ ",
-									m.price.toFixed(2),
-									")"
-								]
-							}, m.id)) })]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+						className: "grid w-full grid-cols-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "novo",
+							children: "Novo Alerta"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "gerenciar",
+							children: [
+								"Meus Alertas (",
+								alerts.length,
+								")"
+							]
 						})]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço Alvo (R$ por @)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "relative",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "absolute left-3 top-2.5 text-muted-foreground font-medium",
-								children: "R$"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "number",
-								step: "0.5",
-								value: targetPrice,
-								onChange: (e) => setTargetPrice(e.target.value),
-								className: "pl-10 text-lg font-bold"
-							})]
-						})]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+						value: "novo",
+						className: "space-y-4 py-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Ativo / Indicador" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: indicatorId,
+									onValueChange: setIndicatorId,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o ativo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: allIndicators.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+										value: ind.id,
+										children: [
+											ind.label,
+											" (Atual: R$ ",
+											getPrice(ind.id)?.toFixed(2) || "---",
+											")"
+										]
+									}, ind.id)) })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-2 gap-4",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Condição" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+										value: condition,
+										onValueChange: (v) => setCondition(v),
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "above",
+											children: "Atingir / Maior que"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "below",
+											children: "Cair / Menor que"
+										})] })]
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço Alvo (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "relative",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "absolute left-3 top-2.5 text-muted-foreground font-medium",
+											children: "R$"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											step: "0.1",
+											value: targetPrice,
+											onChange: (e) => setTargetPrice(e.target.value),
+											className: "pl-9",
+											placeholder: "Ex: 260.00"
+										})]
+									})]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between p-3 border rounded-lg bg-emerald-500/5 border-emerald-500/20",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-3",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "bg-emerald-500 p-2 rounded-full text-white",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-4 w-4" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium text-emerald-900 dark:text-emerald-100",
+										children: "Notificação via WhatsApp"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-emerald-700/80 dark:text-emerald-400/80",
+										children: "Receba mensagens instantâneas"
+									})] })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+									checked: notifyWhatsApp,
+									onCheckedChange: setNotifyWhatsApp
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: handleSaveAlert,
+								disabled: !targetPrice,
+								className: "w-full gap-2 mt-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }), " Salvar Alerta"]
+							})
+						]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						onClick: handleSaveAlert,
-						className: "w-full gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }), " Salvar Alerta"]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "gerenciar",
+						className: "py-4 space-y-3",
+						children: alerts.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-center py-8 text-muted-foreground flex flex-col items-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "h-10 w-10 mb-2 opacity-50" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Nenhum alerta configurado." })]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "space-y-2 max-h-[300px] overflow-y-auto pr-2",
+							children: alerts.map((alert) => {
+								const currentPrice = getPrice(alert.indicatorId);
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: cn("flex flex-col gap-2 p-3 border rounded-md transition-opacity", !alert.active && "opacity-60 bg-muted/50"),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-start justify-between",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "font-semibold text-sm leading-tight",
+											children: alert.indicatorLabel
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "text-xs text-muted-foreground mt-1 flex items-center gap-2",
+											children: [
+												"Alvo: R$ ",
+												alert.targetPrice.toFixed(2),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+													variant: "outline",
+													className: "text-[10px] h-4 px-1",
+													children: alert.condition === "above" ? "≥" : "≤"
+												})
+											]
+										})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center gap-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												variant: "ghost",
+												size: "icon",
+												className: "h-7 w-7",
+												onClick: () => toggleAlert(alert.id, !alert.active),
+												children: alert.active ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pause, { className: "h-4 w-4 text-amber-500" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "h-4 w-4 text-emerald-500" })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												variant: "ghost",
+												size: "icon",
+												className: "h-7 w-7 text-destructive hover:bg-destructive/10",
+												onClick: () => deleteAlert(alert.id),
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+											})]
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between text-xs border-t pt-2 mt-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-muted-foreground flex items-center gap-1",
+											children: [
+												"Atual:",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: "font-bold text-foreground",
+													children: ["R$ ", currentPrice?.toFixed(2) || "---"]
+												})
+											]
+										}), alert.notifyWhatsApp && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-3 w-3" }), " WhatsApp"]
+										})]
+									})]
+								}, alert.id);
+							})
+						})
 					})
 				]
 			})]
@@ -65221,8 +65580,10 @@ function PriceAlertModal() {
 	});
 }
 function ReplacementFilter() {
-	const [selected, setSelected] = (0, import_react.useState)(replacementIndicators[0].id);
-	const activeData = replacementIndicators.find((r$1) => r$1.id === selected) || replacementIndicators[0];
+	const { replacementData } = useMarket();
+	const [selected, setSelected] = (0, import_react.useState)(replacementData[0]?.id || "");
+	const activeData = replacementData.find((r$1) => r$1.id === selected) || replacementData[0];
+	if (!activeData) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "h-full",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
@@ -65239,12 +65600,12 @@ function ReplacementFilter() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
 					className: "w-full",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a categoria" })
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: replacementIndicators.map((r$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: replacementData.map((r$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 					value: r$1.id,
 					children: r$1.label
 				}, r$1.id)) })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "p-4 rounded-lg border bg-primary/5 border-primary/20 flex flex-col items-center justify-center",
+				className: "p-4 rounded-lg border bg-primary/5 border-primary/20 flex flex-col items-center justify-center transition-all",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "text-sm text-muted-foreground mb-1 font-medium",
@@ -65258,7 +65619,7 @@ function ReplacementFilter() {
 						})
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: cn("mt-2 text-xs font-medium flex items-center gap-1 px-2.5 py-1 rounded-full bg-background border", activeData.trend === "up" ? "text-emerald-500 border-emerald-500/20" : activeData.trend === "down" ? "text-destructive border-destructive/20" : "text-muted-foreground border-border"),
+						className: cn("mt-2 text-xs font-medium flex items-center gap-1 px-2.5 py-1 rounded-full bg-background border transition-colors", activeData.trend === "up" ? "text-emerald-500 border-emerald-500/20" : activeData.trend === "down" ? "text-destructive border-destructive/20" : "text-muted-foreground border-border"),
 						children: [
 							activeData.trend === "up" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3" }),
 							activeData.trend === "down" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-3 w-3" }),
@@ -65273,6 +65634,7 @@ function ReplacementFilter() {
 	});
 }
 function CommoditiesQuotes() {
+	const { commodityData } = useMarket();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "h-full",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
@@ -65283,8 +65645,8 @@ function CommoditiesQuotes() {
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "grid grid-cols-1 gap-2.5",
-			children: commodityIndicators.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center justify-between p-2.5 rounded-md border bg-muted/30",
+			children: commodityData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between p-2.5 rounded-md border bg-muted/30 transition-all duration-300",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "font-semibold text-sm leading-none",
 					children: ind.label
@@ -65297,7 +65659,7 @@ function CommoditiesQuotes() {
 						className: "font-bold text-sm",
 						children: ["R$ ", ind.price.toFixed(2)]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: cn("text-xs font-medium flex items-center justify-end gap-0.5 mt-0.5", ind.trend === "up" ? "text-emerald-500" : ind.trend === "down" ? "text-destructive" : "text-muted-foreground"),
+						className: cn("text-xs font-medium flex items-center justify-end gap-0.5 mt-0.5 transition-colors", ind.trend === "up" ? "text-emerald-500" : ind.trend === "down" ? "text-destructive" : "text-muted-foreground"),
 						children: [
 							ind.trend === "up" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3" }),
 							ind.trend === "down" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-3 w-3" }),
@@ -65311,25 +65673,44 @@ function CommoditiesQuotes() {
 	});
 }
 function B3FuturesSelector({ onSelectPrice }) {
+	const { b3Data, b3LastUpdate } = useMarket();
 	const [commodity, setCommodity] = (0, import_react.useState)("boi-gordo");
-	const [contract, setContract] = (0, import_react.useState)(b3FuturesData["boi-gordo"][0].ticker);
-	const selectedData = b3FuturesData[commodity].find((c$1) => c$1.ticker === contract) || b3FuturesData[commodity][0];
+	const [contract, setContract] = (0, import_react.useState)("");
 	(0, import_react.useEffect)(() => {
-		if (!b3FuturesData[commodity].map((c$1) => c$1.ticker).includes(contract)) setContract(b3FuturesData[commodity][0].ticker);
-	}, [commodity, contract]);
+		if (b3Data[commodity] && b3Data[commodity].length > 0 && !contract) setContract(b3Data[commodity][0].ticker);
+	}, [
+		b3Data,
+		commodity,
+		contract
+	]);
+	(0, import_react.useEffect)(() => {
+		if (b3Data[commodity]) {
+			const validContracts = b3Data[commodity].map((c$1) => c$1.ticker);
+			if (contract && !validContracts.includes(contract)) setContract(b3Data[commodity][0].ticker);
+		}
+	}, [
+		commodity,
+		contract,
+		b3Data
+	]);
+	const selectedData = b3Data[commodity]?.find((c$1) => c$1.ticker === contract) || b3Data[commodity]?.[0];
 	const handleContractSelect = (val) => {
 		setContract(val);
-		const data = b3FuturesData[commodity].find((c$1) => c$1.ticker === val);
+		const data = b3Data[commodity].find((c$1) => c$1.ticker === val);
 		if (data && onSelectPrice && commodity === "boi-gordo") onSelectPrice(data.ticker, data.price, `B3 ${data.ticker}`);
 	};
+	if (!selectedData) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "h-full",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-			className: "pb-3",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "pb-3 flex flex-row items-start justify-between",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 				className: "text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wider",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-4 w-4" }), "Mercado Futuro (B3)"]
-			})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-1 text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded animate-pulse",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-3 w-3" }), " AO VIVO"]
+			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -65354,13 +65735,13 @@ function B3FuturesSelector({ onSelectPrice }) {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 					value: contract,
 					onValueChange: handleContractSelect,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Contrato" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: b3FuturesData[commodity].map((c$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Contrato" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: b3Data[commodity]?.map((c$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 						value: c$1.ticker,
 						children: c$1.month
 					}, c$1.ticker)) })]
 				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col justify-center items-center bg-muted/30 rounded-lg p-4 border h-[106px]",
+				className: "flex flex-col justify-center items-center bg-muted/30 rounded-lg p-4 border h-[106px] transition-all duration-300",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
 						variant: "outline",
@@ -65370,10 +65751,10 @@ function B3FuturesSelector({ onSelectPrice }) {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-baseline gap-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "text-3xl font-bold",
+							className: "text-3xl font-bold transition-all",
 							children: ["R$ ", selectedData.price.toFixed(2)]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: cn("text-sm font-medium flex items-center gap-0.5", selectedData.trend === "up" ? "text-emerald-500" : selectedData.trend === "down" ? "text-destructive" : "text-muted-foreground"),
+							className: cn("text-sm font-medium flex items-center gap-0.5 transition-colors", selectedData.trend === "up" ? "text-emerald-500" : selectedData.trend === "down" ? "text-destructive" : "text-muted-foreground"),
 							children: [
 								selectedData.trend === "up" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3.5 w-3.5" }),
 								selectedData.trend === "down" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-3.5 w-3.5" }),
@@ -65382,9 +65763,15 @@ function B3FuturesSelector({ onSelectPrice }) {
 							]
 						})]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-[10px] text-muted-foreground mt-1 uppercase tracking-wider font-semibold",
-						children: commodity === "boi-gordo" ? "por Arroba (@)" : "por Saca (60kg)"
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between w-full mt-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-[10px] text-muted-foreground uppercase tracking-wider font-semibold",
+							children: commodity === "boi-gordo" ? "por Arroba (@)" : "por Saca (60kg)"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-[9px] text-muted-foreground opacity-70",
+							children: ["Upd: ", b3LastUpdate]
+						})]
 					})
 				]
 			})]
@@ -65480,22 +65867,37 @@ function triggerPDFPrint() {
 	window.print();
 }
 function ProjecaoVendas() {
+	const { getPrice, b3Data, marketData } = useMarket();
 	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("mt");
 	const [selectedMarketLabel, setSelectedMarketLabel] = (0, import_react.useState)("Boi Gordo - MT");
 	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(238);
 	const [targetWeight, setTargetWeight] = (0, import_react.useState)(540);
 	const { toast: toast$2 } = useToast();
+	(0, import_react.useEffect)(() => {
+		if (selectedMarketId) {
+			const livePrice = getPrice(selectedMarketId);
+			if (livePrice !== null && livePrice !== arrobaPrice) setArrobaPrice(livePrice);
+		}
+	}, [
+		selectedMarketId,
+		getPrice,
+		arrobaPrice
+	]);
 	const activeLabel = (0, import_react.useMemo)(() => selectedMarketId ? selectedMarketLabel : "Valor Manual Customizado", [selectedMarketId, selectedMarketLabel]);
 	const activeTrend = (0, import_react.useMemo)(() => {
 		if (!selectedMarketId) return "stable";
-		let ind = marketIndicators.find((i) => i.id === selectedMarketId);
+		let ind = marketData.find((i) => i.id === selectedMarketId);
 		if (ind) return ind.trend;
-		for (const commodity in b3FuturesData) {
-			const found = b3FuturesData[commodity].find((i) => i.ticker === selectedMarketId);
+		for (const commodity in b3Data) {
+			const found = b3Data[commodity].find((i) => i.ticker === selectedMarketId);
 			if (found) return found.trend;
 		}
 		return "stable";
-	}, [selectedMarketId]);
+	}, [
+		selectedMarketId,
+		marketData,
+		b3Data
+	]);
 	const lots = (0, import_react.useMemo)(() => [...confinementData.lotes.filter((l) => l.gmd > 0).map((l) => ({
 		...l,
 		origin: "Confinamento"
@@ -65566,7 +65968,7 @@ function ProjecaoVendas() {
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-8 w-8 text-primary" }), " Inteligência de Vendas"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Projeções integrando GMD, custos totais e tendências de mercado (Foco MT)."
+					children: "Projeções integrando GMD, custos operacionais e cotações ao vivo (B3/MT)."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-wrap items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GpbBalizadorButton, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PriceAlertModal, {})]
@@ -65603,7 +66005,7 @@ function ProjecaoVendas() {
 				className: "grid gap-4 sm:grid-cols-3 print:grid-cols-3",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent",
+						className: "bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 							className: "pb-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
@@ -65618,12 +66020,12 @@ function ProjecaoVendas() {
 							className: "flex items-center gap-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5 text-primary print:hidden" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 								type: "number",
-								value: arrobaPrice,
+								value: Number(arrobaPrice.toFixed(2)),
 								onChange: (e) => {
 									setArrobaPrice(Number(e.target.value));
 									setSelectedMarketId(null);
 								},
-								className: "text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0"
+								className: "text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0 transition-all"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-xs text-primary/70 mt-2 font-medium print:hidden",
@@ -65659,7 +66061,7 @@ function ProjecaoVendas() {
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent",
+						className: "bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
 							className: "pb-2",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
@@ -65667,7 +66069,7 @@ function ProjecaoVendas() {
 								children: "Lucro Líquido Global Proj."
 							})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-3xl font-bold text-emerald-700 dark:text-emerald-500",
+							className: "text-3xl font-bold text-emerald-700 dark:text-emerald-500 transition-all",
 							children: [
 								"R$",
 								" ",
@@ -65762,11 +66164,11 @@ function ProjecaoVendas() {
 							children: ["- R$ ", p.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-							className: "text-right font-bold text-primary whitespace-nowrap",
+							className: "text-right font-bold text-primary whitespace-nowrap transition-all",
 							children: ["R$ ", p.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-							className: "text-right font-bold text-primary whitespace-nowrap text-base",
+							className: "text-right font-bold text-primary whitespace-nowrap text-base transition-all",
 							children: ["R$ ", p.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 						})
 					] }, idx)) })] })
@@ -66873,7 +67275,7 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OfflineProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
+var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OfflineProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
 		v7_relativeSplatPath: false
@@ -66958,8 +67360,8 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
 		})] })
 	] })
-}) }) }) }) }) });
+}) }) }) }) }) }) });
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-bvt6e7S_.js.map
+//# sourceMappingURL=index-DEfR5y9X.js.map

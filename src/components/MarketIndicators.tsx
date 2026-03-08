@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { TrendingUp, TrendingDown, Minus, Clock, Database } from 'lucide-react'
-import { marketIndicators, marketLastUpdate } from '@/data/market'
+import { useMarket } from '@/contexts/MarketContext'
 import { cn } from '@/lib/utils'
 
 interface MarketIndicatorsProps {
@@ -9,29 +9,32 @@ interface MarketIndicatorsProps {
 }
 
 export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps) {
+  const { marketData, lastUpdate } = useMarket()
+
   return (
     <div className="space-y-3 animate-fade-in-up">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <h3 className="text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wider">
           <Database className="h-4 w-4" />
-          Cotações de Mercado (Gado Gordo / Datagro)
+          Cotações de Mercado (Mato Grosso / Datagro)
         </h3>
-        <div className="text-xs text-muted-foreground flex items-center gap-1 bg-muted px-2 py-1 rounded-md">
-          <Clock className="h-3 w-3" /> Atualizado: {marketLastUpdate}
+        <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">
+          <Clock className="h-3 w-3" /> Status: Sincronizado ({lastUpdate})
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {marketIndicators.map((ind) => (
+        {marketData.map((ind) => (
           <Card
             key={ind.id}
             className={cn(
-              'cursor-pointer transition-all duration-200 hover:border-primary/50 group',
+              'cursor-pointer transition-all duration-300 hover:border-primary/50 group relative overflow-hidden',
               selectedId === ind.id
                 ? 'border-primary bg-primary/5 shadow-md ring-1 ring-primary'
                 : '',
             )}
             onClick={() => onSelect(ind.id, ind.price, ind.label)}
           >
+            {/* Subtle flash effect on update could go here if we tracked individual update flashes */}
             <CardContent className="p-4">
               <div className="text-xs text-muted-foreground font-medium mb-2 flex justify-between items-center">
                 <span
@@ -55,7 +58,7 @@ export function MarketIndicators({ selectedId, onSelect }: MarketIndicatorsProps
                 <span className="text-xl font-bold text-foreground">R$ {ind.price.toFixed(2)}</span>
                 <span
                   className={cn(
-                    'text-xs font-medium',
+                    'text-xs font-medium transition-colors',
                     ind.trend === 'up'
                       ? 'text-emerald-500'
                       : ind.trend === 'down'
