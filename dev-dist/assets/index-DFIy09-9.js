@@ -28711,110 +28711,118 @@ var SidebarMenuSubButton = import_react.forwardRef(({ asChild = false, size: siz
 	});
 });
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
-var navItems = [
+var navigationGroups = [
 	{
-		title: "Painel Principal",
-		icon: LayoutDashboard,
-		url: "/"
+		sector: "Administrativo",
+		items: [
+			{
+				title: "Administrativo",
+				icon: Building2,
+				url: "/administrativo"
+			},
+			{
+				title: "Cadastro de Fazendas",
+				icon: MapPinned,
+				url: "/fazendas"
+			},
+			{
+				title: "Equipe & Desempenho",
+				icon: ShieldCheck,
+				url: "/equipe"
+			},
+			{
+				title: "Painel Principal",
+				icon: LayoutDashboard,
+				url: "/"
+			},
+			{
+				title: "Relatórios",
+				icon: FileText,
+				url: "/relatorios"
+			}
+		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
 	},
 	{
-		title: "Projeções & AI",
-		icon: BrainCircuit,
-		url: "/projecoes"
+		sector: "Financeiro",
+		items: [{
+			title: "Financeiro",
+			icon: DollarSign,
+			url: "/financeiro"
+		}, {
+			title: "Projeções & AI",
+			icon: BrainCircuit,
+			url: "/projecoes"
+		}].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
 	},
 	{
-		title: "Operações de Campo",
-		icon: Smartphone,
-		url: "/campo"
+		sector: "Operacional",
+		items: [
+			{
+				title: "Estoque & Insumos",
+				icon: Package,
+				url: "/estoque"
+			},
+			{
+				title: "Frota & Maquinário",
+				icon: Truck,
+				url: "/frota"
+			},
+			{
+				title: "Gestão de Tarefas",
+				icon: SquareCheckBig,
+				url: "/tarefas"
+			},
+			{
+				title: "Operações de Campo",
+				icon: Smartphone,
+				url: "/campo"
+			}
+		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
 	},
 	{
-		title: "Gestão de Tarefas",
-		icon: SquareCheckBig,
-		url: "/tarefas"
-	},
-	{
-		title: "Gestão de Pastos",
-		icon: Map$1,
-		url: "/pastos"
-	},
-	{
-		title: "Confinamento",
-		icon: Wheat,
-		url: "/confinamento"
-	},
-	{
-		title: "Sanidade",
-		icon: Syringe,
-		url: "/sanidade"
-	},
-	{
-		title: "Setor: Cria",
-		icon: Baby,
-		url: "/setor/cria"
-	},
-	{
-		title: "Setor: Recria",
-		icon: TrendingUp,
-		url: "/setor/recria"
-	},
-	{
-		title: "Setor: Engorda",
-		icon: Beef,
-		url: "/setor/engorda"
-	},
-	{
-		title: "Gestão de Rebanho",
-		icon: Tags,
-		url: "/animais"
-	},
-	{
-		title: "Estoque & Insumos",
-		icon: Package,
-		url: "/estoque"
-	},
-	{
-		title: "Frota & Maquinário",
-		icon: Truck,
-		url: "/frota"
-	},
-	{
-		title: "Financeiro",
-		icon: DollarSign,
-		url: "/financeiro"
-	},
-	{
-		title: "Relatórios",
-		icon: FileText,
-		url: "/relatorios"
-	},
-	{
-		title: "Equipe & Desempenho",
-		icon: ShieldCheck,
-		url: "/equipe"
-	},
-	{
-		title: "Administrativo",
-		icon: Building2,
-		url: "/administrativo"
-	},
-	{
-		title: "Cadastro de Fazendas",
-		icon: MapPinned,
-		url: "/fazendas"
+		sector: "Zootécnico",
+		items: [
+			{
+				title: "Confinamento",
+				icon: Wheat,
+				url: "/confinamento"
+			},
+			{
+				title: "Gestão de Pastos",
+				icon: Map$1,
+				url: "/pastos"
+			},
+			{
+				title: "Gestão de Rebanho",
+				icon: Tags,
+				url: "/animais"
+			},
+			{
+				title: "Sanidade",
+				icon: Syringe,
+				url: "/sanidade"
+			},
+			{
+				title: "Setor: Cria",
+				icon: Baby,
+				url: "/setor/cria"
+			},
+			{
+				title: "Setor: Engorda",
+				icon: Beef,
+				url: "/setor/engorda"
+			},
+			{
+				title: "Setor: Recria",
+				icon: TrendingUp,
+				url: "/setor/recria"
+			}
+		].sort((a$1, b$1) => a$1.title.localeCompare(b$1.title))
 	}
 ];
 function AppSidebar() {
 	const location = useLocation();
 	const { user } = useAuth();
-	const visibleNavItems = navItems.filter((item) => {
-		if (user.role === "operador") return [
-			"/",
-			"/campo",
-			"/tarefas",
-			"/sanidade"
-		].includes(item.url);
-		return true;
-	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sidebar, {
 		variant: "inset",
 		className: "border-r border-sidebar-border",
@@ -28827,9 +28835,18 @@ function AppSidebar() {
 					children: "Pecuária Inteligente F3"
 				})]
 			})
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroup, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, {
-			className: "pt-4",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: visibleNavItems.map((item) => {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, { children: navigationGroups.map((group) => {
+			const visibleItems = group.items.filter((item) => {
+				if (user.role === "operador") return [
+					"/",
+					"/campo",
+					"/tarefas",
+					"/sanidade"
+				].includes(item.url);
+				return true;
+			});
+			if (visibleItems.length === 0) return null;
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, { children: group.sector }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: visibleItems.map((item) => {
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuButton, {
 					asChild: true,
 					isActive: location.pathname === item.url || item.url !== "/" && location.pathname.startsWith(item.url),
@@ -28843,8 +28860,8 @@ function AppSidebar() {
 						})]
 					})
 				}) }, item.url);
-			}) })
-		}) }) })]
+			}) }) })] }, group.sector);
+		}) })]
 	});
 }
 function createContextScope$1(scopeName, createContextScopeDeps = []) {
@@ -28931,7 +28948,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$47({ inst: {
+			cachedValue = useState$49({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28945,7 +28962,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$17(function() {
+			useEffect$18(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28968,7 +28985,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$47 = React$70.useState, useEffect$17 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$49 = React$70.useState, useEffect$18 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -55781,6 +55798,156 @@ function OperatorDashboard() {
 		})]
 	});
 }
+var STORAGE_KEY$3 = "@f3_animais";
+function useAnimalStore() {
+	const [animais, setAnimais] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY$3);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return [];
+	});
+	(0, import_react.useEffect)(() => {
+		const handleUpdate = () => {
+			try {
+				const saved = localStorage.getItem(STORAGE_KEY$3);
+				if (saved) setAnimais(JSON.parse(saved));
+			} catch (e) {
+				console.error(e);
+			}
+		};
+		window.addEventListener("animais-updated", handleUpdate);
+		return () => window.removeEventListener("animais-updated", handleUpdate);
+	}, []);
+	return {
+		animais,
+		addRegistro: (0, import_react.useCallback)((registro) => {
+			setAnimais((prev) => {
+				const updated = [registro, ...prev];
+				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
+				window.dispatchEvent(new Event("animais-updated"));
+				return updated;
+			});
+		}, []),
+		deleteRegistro: (0, import_react.useCallback)((id) => {
+			setAnimais((prev) => {
+				const updated = prev.filter((a$1) => a$1.id !== id);
+				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
+				window.dispatchEvent(new Event("animais-updated"));
+				return updated;
+			});
+		}, [])
+	};
+}
+var STORAGE_KEY$2 = "@f3_fazendas";
+function useFazendaStore() {
+	const [fazendas, setFazendas] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY$2);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return [{
+			id: "1",
+			nome: "Fazenda Boa Esperança",
+			proprietario: "Grupo Agro F3",
+			localizacao: "Ribeirão Preto, SP",
+			area: 1500,
+			rebanho: 3450,
+			sistemas: ["ILP"],
+			arrendamento: false,
+			atividades: ["Ciclo Completo", "Produção de Genética"],
+			custoNutricao: 45e3,
+			custoManejo: 15e3
+		}];
+	});
+	(0, import_react.useEffect)(() => {
+		const handleUpdate = () => {
+			try {
+				const saved = localStorage.getItem(STORAGE_KEY$2);
+				if (saved) setFazendas(JSON.parse(saved));
+			} catch (e) {
+				console.error(e);
+			}
+		};
+		window.addEventListener("fazendas-updated", handleUpdate);
+		return () => window.removeEventListener("fazendas-updated", handleUpdate);
+	}, []);
+	return {
+		fazendas,
+		addFazenda: (0, import_react.useCallback)((fazenda) => {
+			setFazendas((prev) => {
+				const updated = [...prev, fazenda];
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
+				window.dispatchEvent(new Event("fazendas-updated"));
+				return updated;
+			});
+		}, []),
+		deleteFazenda: (0, import_react.useCallback)((id) => {
+			setFazendas((prev) => {
+				const updated = prev.filter((f) => f.id !== id);
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
+				window.dispatchEvent(new Event("fazendas-updated"));
+				return updated;
+			});
+		}, []),
+		updateFazenda: (0, import_react.useCallback)((id, data) => {
+			setFazendas((prev) => {
+				const updated = prev.map((f) => f.id === id ? {
+					...f,
+					...data
+				} : f);
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
+				window.dispatchEvent(new Event("fazendas-updated"));
+				return updated;
+			});
+		}, [])
+	};
+}
+var STORAGE_KEY$1 = "@f3_animal_targets";
+function useAnimalTargetsStore() {
+	const [targets, setTargets] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY$1);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return {
+			pesoAlvoCorte: 500,
+			idadeAlvoMesesCorte: 24
+		};
+	});
+	(0, import_react.useEffect)(() => {
+		const handleUpdate = () => {
+			try {
+				const saved = localStorage.getItem(STORAGE_KEY$1);
+				if (saved) setTargets(JSON.parse(saved));
+			} catch (e) {
+				console.error(e);
+			}
+		};
+		window.addEventListener("animal-targets-updated", handleUpdate);
+		return () => window.removeEventListener("animal-targets-updated", handleUpdate);
+	}, []);
+	return {
+		targets,
+		updateTargets: (0, import_react.useCallback)((newTargets) => {
+			setTargets((prev) => {
+				const updated = {
+					...prev,
+					...newTargets
+				};
+				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				window.dispatchEvent(new Event("animal-targets-updated"));
+				return updated;
+			});
+		}, [])
+	};
+}
 function GoalDialog() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
@@ -55849,7 +56016,17 @@ function GoalDialog() {
 }
 function Index() {
 	const { user } = useAuth();
+	const { animais } = useAnimalStore();
+	const { fazendas } = useFazendaStore();
+	const { targets } = useAnimalTargetsStore();
 	if (user.role === "operador") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OperatorDashboard, {});
+	const farmCounts = fazendas.map((f) => ({
+		nome: f.nome,
+		count: animais.filter((a$1) => a$1.fazendaDestinoId === f.id).reduce((sum, a$1) => sum + a$1.quantidade, 0)
+	}));
+	const weightCorte = animais.filter((a$1) => a$1.categoria === "Corte").reduce((sum, a$1) => sum + a$1.pesoMedio * a$1.quantidade, 0);
+	const weightRepro = animais.filter((a$1) => a$1.categoria === "Reprodução").reduce((sum, a$1) => sum + a$1.pesoMedio * a$1.quantidade, 0);
+	const readyAnimals = animais.filter((a$1) => a$1.categoria === "Corte" && (a$1.pesoMedio >= targets.pesoAlvoCorte || a$1.idadeMeses && a$1.idadeMeses >= targets.idadeAlvoMesesCorte));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 pb-20 sm:pb-6 animate-fade-in-up",
 		children: [
@@ -55940,6 +56117,97 @@ function Index() {
 							className: "text-2xl font-bold text-destructive",
 							children: dashboardData.kpis.despesasMes
 						}) })]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 sm:grid-cols-2 lg:grid-cols-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "bg-primary/5 border-primary/20",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+							className: "pb-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+								className: "text-sm font-medium text-muted-foreground flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPinned, { className: "h-4 w-4" }), " Distribuição por Fazenda"]
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "space-y-2",
+							children: farmCounts.length > 0 ? farmCounts.map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center text-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "truncate mr-2",
+									children: f.nome
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-bold",
+									children: [f.count, " cb"]
+								})]
+							}, i)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-sm text-muted-foreground",
+								children: "Sem dados"
+							})
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "bg-primary/5 border-primary/20",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+							className: "pb-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+								className: "text-sm font-medium text-muted-foreground flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-4 w-4" }), " Peso Total por Categoria"]
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center text-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Corte" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-bold",
+									children: [(weightCorte / 1e3).toFixed(1), " t"]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center text-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Reprodução" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-bold",
+									children: [(weightRepro / 1e3).toFixed(1), " t"]
+								})]
+							})]
+						})]
+					}),
+					readyAnimals.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "bg-amber-500/10 border-amber-500/30 sm:col-span-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+							className: "pb-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+								className: "text-sm font-medium text-amber-700 flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4" }), " Alerta: Prontos p/ Abate/Venda"]
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-sm mb-2 text-amber-700/80",
+							children: [
+								"Existem ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: readyAnimals.reduce((sum, a$1) => sum + a$1.quantidade, 0) }),
+								" ",
+								"animais atingindo o peso alvo (",
+								targets.pesoAlvoCorte,
+								"kg) ou idade (",
+								targets.idadeAlvoMesesCorte,
+								"m)."
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "max-h-20 overflow-y-auto space-y-1 pr-2",
+							children: readyAnimals.map((a$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center text-xs bg-amber-500/20 p-1.5 rounded text-amber-900",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Lote/Animal: ", a$1.id.split("-")[0]] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-semibold",
+									children: [
+										a$1.quantidade,
+										" cb - ",
+										a$1.pesoMedio,
+										"kg"
+									]
+								})]
+							}, a$1.id))
+						})] })]
 					})
 				]
 			}),
@@ -57770,72 +58038,6 @@ function Pastos() {
 			]
 		})]
 	});
-}
-var STORAGE_KEY$2 = "@f3_fazendas";
-function useFazendaStore() {
-	const [fazendas, setFazendas] = (0, import_react.useState)(() => {
-		try {
-			const saved = localStorage.getItem(STORAGE_KEY$2);
-			if (saved) return JSON.parse(saved);
-		} catch (e) {
-			console.error(e);
-		}
-		return [{
-			id: "1",
-			nome: "Fazenda Boa Esperança",
-			proprietario: "Grupo Agro F3",
-			localizacao: "Ribeirão Preto, SP",
-			area: 1500,
-			rebanho: 3450,
-			sistemas: ["ILP"],
-			arrendamento: false,
-			atividades: ["Ciclo Completo", "Produção de Genética"],
-			custoNutricao: 45e3,
-			custoManejo: 15e3
-		}];
-	});
-	(0, import_react.useEffect)(() => {
-		const handleUpdate = () => {
-			try {
-				const saved = localStorage.getItem(STORAGE_KEY$2);
-				if (saved) setFazendas(JSON.parse(saved));
-			} catch (e) {
-				console.error(e);
-			}
-		};
-		window.addEventListener("fazendas-updated", handleUpdate);
-		return () => window.removeEventListener("fazendas-updated", handleUpdate);
-	}, []);
-	return {
-		fazendas,
-		addFazenda: (0, import_react.useCallback)((fazenda) => {
-			setFazendas((prev) => {
-				const updated = [...prev, fazenda];
-				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
-				window.dispatchEvent(new Event("fazendas-updated"));
-				return updated;
-			});
-		}, []),
-		deleteFazenda: (0, import_react.useCallback)((id) => {
-			setFazendas((prev) => {
-				const updated = prev.filter((f) => f.id !== id);
-				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
-				window.dispatchEvent(new Event("fazendas-updated"));
-				return updated;
-			});
-		}, []),
-		updateFazenda: (0, import_react.useCallback)((id, data) => {
-			setFazendas((prev) => {
-				const updated = prev.map((f) => f.id === id ? {
-					...f,
-					...data
-				} : f);
-				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
-				window.dispatchEvent(new Event("fazendas-updated"));
-				return updated;
-			});
-		}, [])
-	};
 }
 function EditThresholdModal({ item, updateMinThreshold }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
@@ -66588,11 +66790,11 @@ function ExportMenu({ onExportCSV, onExportPDF, className, label = "Exportar" })
 		})]
 	})] });
 }
-var STORAGE_KEY$1 = "@fazenda-simulations";
+var STORAGE_KEY = "@fazenda-simulations";
 function useSimulationStore() {
 	const [simulations, setSimulations] = (0, import_react.useState)(() => {
 		try {
-			const saved = localStorage.getItem(STORAGE_KEY$1);
+			const saved = localStorage.getItem(STORAGE_KEY);
 			if (saved) return JSON.parse(saved);
 		} catch (e) {
 			console.error(e);
@@ -66602,7 +66804,7 @@ function useSimulationStore() {
 	(0, import_react.useEffect)(() => {
 		const handleUpdate = () => {
 			try {
-				const saved = localStorage.getItem(STORAGE_KEY$1);
+				const saved = localStorage.getItem(STORAGE_KEY);
 				if (saved) setSimulations(JSON.parse(saved));
 			} catch (e) {
 				console.error(e);
@@ -66620,7 +66822,7 @@ function useSimulationStore() {
 					id: crypto.randomUUID(),
 					date: (/* @__PURE__ */ new Date()).toISOString()
 				}, ...prev];
-				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 				window.dispatchEvent(new Event("simulations-updated"));
 				return updated;
 			});
@@ -66628,7 +66830,7 @@ function useSimulationStore() {
 		deleteSimulation: (0, import_react.useCallback)((id) => {
 			setSimulations((prev) => {
 				const updated = prev.filter((s$1) => s$1.id !== id);
-				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 				window.dispatchEvent(new Event("simulations-updated"));
 				return updated;
 			});
@@ -69465,49 +69667,6 @@ var RadioGroupItem = import_react.forwardRef(({ className, ...props }, ref) => {
 	});
 });
 RadioGroupItem.displayName = Item2.displayName;
-var STORAGE_KEY = "@f3_animais";
-function useAnimalStore() {
-	const [animais, setAnimais] = (0, import_react.useState)(() => {
-		try {
-			const saved = localStorage.getItem(STORAGE_KEY);
-			if (saved) return JSON.parse(saved);
-		} catch (e) {
-			console.error(e);
-		}
-		return [];
-	});
-	(0, import_react.useEffect)(() => {
-		const handleUpdate = () => {
-			try {
-				const saved = localStorage.getItem(STORAGE_KEY);
-				if (saved) setAnimais(JSON.parse(saved));
-			} catch (e) {
-				console.error(e);
-			}
-		};
-		window.addEventListener("animais-updated", handleUpdate);
-		return () => window.removeEventListener("animais-updated", handleUpdate);
-	}, []);
-	return {
-		animais,
-		addRegistro: (0, import_react.useCallback)((registro) => {
-			setAnimais((prev) => {
-				const updated = [registro, ...prev];
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-				window.dispatchEvent(new Event("animais-updated"));
-				return updated;
-			});
-		}, []),
-		deleteRegistro: (0, import_react.useCallback)((id) => {
-			setAnimais((prev) => {
-				const updated = prev.filter((a$1) => a$1.id !== id);
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-				window.dispatchEvent(new Event("animais-updated"));
-				return updated;
-			});
-		}, [])
-	};
-}
 function AnimalRegistrationModal() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { fazendas } = useFazendaStore();
@@ -69534,6 +69693,11 @@ function AnimalRegistrationModal() {
 			});
 			return;
 		}
+		const idadeMeses = Number(fd.get("idadeMeses"));
+		let faixaEtaria = "0-8 meses";
+		if (idadeMeses > 8 && idadeMeses <= 12) faixaEtaria = "8-12 meses";
+		else if (idadeMeses > 12 && idadeMeses <= 24) faixaEtaria = "1-2 anos";
+		else if (idadeMeses > 24) faixaEtaria = "> 2 anos";
 		addRegistro({
 			id: crypto.randomUUID(),
 			tipoRegistro,
@@ -69542,7 +69706,8 @@ function AnimalRegistrationModal() {
 			sexo: fd.get("sexo"),
 			raca: fd.get("raca"),
 			categoria: fd.get("categoria"),
-			faixaEtaria: fd.get("faixaEtaria"),
+			faixaEtaria,
+			idadeMeses,
 			origem,
 			fazendaDestinoId: fd.get("fazendaDestinoId"),
 			dataRegistro: (/* @__PURE__ */ new Date()).toISOString(),
@@ -69698,27 +69863,13 @@ function AnimalRegistrationModal() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "space-y-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Faixa Etária *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-									name: "faixaEtaria",
-									defaultValue: "8-12 meses",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "0-8 meses",
-											children: "0-8 meses"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "8-12 meses",
-											children: "8-12 meses"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "1-2 anos",
-											children: "1-2 anos"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-											value: "> 2 anos",
-											children: "> 2 anos"
-										})
-									] })]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Idade (Meses) *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									name: "idadeMeses",
+									type: "number",
+									min: "0",
+									required: true,
+									placeholder: "Ex: 12",
+									defaultValue: "12"
 								})]
 							})
 						]
@@ -69867,10 +70018,86 @@ function AnimalRegistrationModal() {
 		})]
 	});
 }
+function TargetsConfigDialog() {
+	const { targets, updateTargets } = useAnimalTargetsStore();
+	const { toast: toast$2 } = useToast();
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const fd = new FormData(e.currentTarget);
+		updateTargets({
+			pesoAlvoCorte: Number(fd.get("pesoAlvoCorte")),
+			idadeAlvoMesesCorte: Number(fd.get("idadeAlvoMesesCorte"))
+		});
+		toast$2({
+			title: "Sucesso",
+			description: "Metas e alertas atualizados com sucesso."
+		});
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "outline",
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, { className: "h-4 w-4" }), " Alertas de Abate"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Configurar Metas de Abate (Corte)" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: handleSubmit,
+			className: "space-y-4 py-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Peso Alvo (kg)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						name: "pesoAlvoCorte",
+						type: "number",
+						defaultValue: targets.pesoAlvoCorte,
+						required: true
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Idade Alvo (Meses)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						name: "idadeAlvoMesesCorte",
+						type: "number",
+						defaultValue: targets.idadeAlvoMesesCorte,
+						required: true
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					type: "submit",
+					className: "w-full mt-2",
+					children: "Salvar Configurações"
+				})
+			]
+		})] })]
+	});
+}
 function Animais() {
 	const { animais } = useAnimalStore();
 	const { fazendas } = useFazendaStore();
+	const { targets } = useAnimalTargetsStore();
 	const getFazendaNome = (id) => fazendas.find((f) => f.id === id)?.nome || "Desconhecida";
+	const handleExportCSV = () => {
+		downloadCSV(animais.map((a$1) => ({
+			ID: a$1.id,
+			DataRegistro: format(new Date(a$1.dataRegistro), "dd/MM/yyyy"),
+			Fazenda: getFazendaNome(a$1.fazendaDestinoId),
+			Tipo: a$1.tipoRegistro,
+			Categoria: a$1.categoria,
+			Origem: a$1.origem,
+			Raca: a$1.raca,
+			Sexo: a$1.sexo,
+			IdadeMeses: a$1.idadeMeses || "-",
+			PesoMedio: a$1.pesoMedio,
+			Quantidade: a$1.quantidade,
+			CustoCabeca: a$1.custoTotalPorCabeca,
+			CustoTotal: a$1.custoTotalLote
+		})), "rebanho_export");
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 max-w-6xl mx-auto pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -69881,7 +70108,18 @@ function Animais() {
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
 				children: "Gerencie as entradas de animais na propriedade."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalRegistrationModal, {})]
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-wrap items-center gap-2",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TargetsConfigDialog, {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+						onExportCSV: handleExportCSV,
+						onExportPDF: triggerPDFPrint,
+						label: "Exportar"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalRegistrationModal, {})
+				]
+			})]
 		}), animais.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
 			className: "border-dashed shadow-none bg-muted/10",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
@@ -69903,119 +70141,128 @@ function Animais() {
 			})
 		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "grid gap-4",
-			children: animais.map((animal) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-				className: "overflow-hidden hover:border-primary/50 transition-colors",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col sm:flex-row",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "bg-muted p-4 flex sm:w-48 flex-col justify-center items-center text-center border-b sm:border-b-0 sm:border-r",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-								variant: animal.tipoRegistro === "lote" ? "default" : "outline",
-								className: "mb-2",
-								children: animal.tipoRegistro === "lote" ? "Lote" : "Individual"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-3xl font-bold text-primary",
-								children: animal.quantidade
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-xs font-medium uppercase tracking-wider text-muted-foreground mt-1",
-								children: "Cabeça(s)"
-							})
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "p-5 flex-1 flex flex-col justify-between",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex justify-between items-start",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
-								className: "text-xl font-semibold flex items-center gap-2",
-								children: [
-									animal.raca,
-									" ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "text-muted-foreground text-sm font-normal",
-										children: ["• ", animal.categoria]
-									})
-								]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "text-sm text-muted-foreground mt-1 font-medium",
-								children: [
-									getFazendaNome(animal.fazendaDestinoId),
-									" • ",
-									animal.sexo,
-									" •",
-									" ",
-									animal.faixaEtaria
-								]
-							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-								variant: "secondary",
-								className: "px-3 py-1 bg-secondary/50",
-								children: animal.origem
-							})]
+			children: animais.map((animal) => {
+				const isReady = animal.categoria === "Corte" && (animal.pesoMedio >= targets.pesoAlvoCorte || animal.idadeMeses && animal.idadeMeses >= targets.idadeAlvoMesesCorte);
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+					className: cn("overflow-hidden hover:border-primary/50 transition-colors", isReady && "border-amber-500 shadow-amber-500/20"),
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col sm:flex-row",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "bg-muted p-4 flex sm:w-48 flex-col justify-center items-center text-center border-b sm:border-b-0 sm:border-r",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+									variant: animal.tipoRegistro === "lote" ? "default" : "outline",
+									className: "mb-2",
+									children: animal.tipoRegistro === "lote" ? "Lote" : "Individual"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-3xl font-bold text-primary",
+									children: animal.quantidade
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs font-medium uppercase tracking-wider text-muted-foreground mt-1",
+									children: "Cabeça(s)"
+								})
+							]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "bg-muted/30 p-3 rounded-lg border border-border/50",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "text-xs font-medium text-muted-foreground mb-1",
-									children: "Peso Médio"
+							className: "p-5 flex-1 flex flex-col justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-start",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+									className: "text-xl font-semibold flex items-center gap-2",
+									children: [
+										animal.raca,
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-muted-foreground text-sm font-normal",
+											children: ["• ", animal.categoria]
+										})
+									]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "font-semibold text-foreground",
-									children: [animal.pesoMedio, " kg"]
+									className: "text-sm text-muted-foreground mt-1 font-medium",
+									children: [
+										getFazendaNome(animal.fazendaDestinoId),
+										" • ",
+										animal.sexo,
+										" •",
+										" ",
+										animal.idadeMeses ? `${animal.idadeMeses} meses` : animal.faixaEtaria
+									]
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex flex-col items-end gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "secondary",
+										className: "px-3 py-1 bg-secondary/50",
+										children: animal.origem
+									}), isReady && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+										className: "bg-amber-500 hover:bg-amber-600 gap-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "w-3 h-3" }), " Apto p/ Abate"]
+									})]
 								})]
-							}), animal.origem === "Compra" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "bg-muted/30 p-3 rounded-lg border border-border/50",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-xs font-medium text-muted-foreground mb-1",
-										children: "Vendedor"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "font-semibold text-foreground line-clamp-1",
-										children: animal.nomeVendedor || "-"
+										children: "Peso Médio"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+										className: "font-semibold text-foreground",
+										children: [animal.pesoMedio, " kg"]
 									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "bg-destructive/5 p-3 rounded-lg border border-destructive/10",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs font-medium text-destructive/80 mb-1",
-										children: "Custo/Cab."
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "font-semibold text-destructive",
-										children: new Intl.NumberFormat("pt-BR", {
-											style: "currency",
-											currency: "BRL"
-										}).format(animal.custoTotalPorCabeca)
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "bg-destructive/5 p-3 rounded-lg border border-destructive/10",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs font-medium text-destructive/80 mb-1",
-										children: "Custo Total"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "font-semibold text-destructive",
-										children: new Intl.NumberFormat("pt-BR", {
-											style: "currency",
-											currency: "BRL"
-										}).format(animal.custoTotalLote)
-									})]
-								})
-							] })]
-						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "mt-5 pt-3 border-t text-xs font-medium text-muted-foreground/70 flex justify-between",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-								"Registro em:",
-								" ",
-								format(new Date(animal.dataRegistro), "dd MMM yyyy 'às' HH:mm", { locale: ptBR })
-							] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "uppercase tracking-wider",
-								children: ["ID: ", animal.id.split("-")[0]]
+								}), animal.origem === "Compra" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "bg-muted/30 p-3 rounded-lg border border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs font-medium text-muted-foreground mb-1",
+											children: "Vendedor"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-semibold text-foreground line-clamp-1",
+											children: animal.nomeVendedor || "-"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "bg-destructive/5 p-3 rounded-lg border border-destructive/10",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs font-medium text-destructive/80 mb-1",
+											children: "Custo/Cab."
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-semibold text-destructive",
+											children: new Intl.NumberFormat("pt-BR", {
+												style: "currency",
+												currency: "BRL"
+											}).format(animal.custoTotalPorCabeca)
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "bg-destructive/5 p-3 rounded-lg border border-destructive/10",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-xs font-medium text-destructive/80 mb-1",
+											children: "Custo Total"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-semibold text-destructive",
+											children: new Intl.NumberFormat("pt-BR", {
+												style: "currency",
+												currency: "BRL"
+											}).format(animal.custoTotalLote)
+										})]
+									})
+								] })]
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-5 pt-3 border-t text-xs font-medium text-muted-foreground/70 flex justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+									"Registro em:",
+									" ",
+									format(new Date(animal.dataRegistro), "dd MMM yyyy 'às' HH:mm", { locale: ptBR })
+								] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "uppercase tracking-wider",
+									children: ["ID: ", animal.id.split("-")[0]]
+								})]
 							})]
 						})]
-					})]
-				})
-			}, animal.id))
+					})
+				}, animal.id);
+			})
 		})]
 	});
 }
@@ -70407,4 +70654,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-cUVSo6PI.js.map
+//# sourceMappingURL=index-DFIy09-9.js.map

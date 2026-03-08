@@ -56,6 +56,12 @@ export function AnimalRegistrationModal() {
       return
     }
 
+    const idadeMeses = Number(fd.get('idadeMeses'))
+    let faixaEtaria = '0-8 meses'
+    if (idadeMeses > 8 && idadeMeses <= 12) faixaEtaria = '8-12 meses'
+    else if (idadeMeses > 12 && idadeMeses <= 24) faixaEtaria = '1-2 anos'
+    else if (idadeMeses > 24) faixaEtaria = '> 2 anos'
+
     const registro: AnimalRegistro = {
       id: crypto.randomUUID(),
       tipoRegistro,
@@ -64,7 +70,8 @@ export function AnimalRegistrationModal() {
       sexo: fd.get('sexo') as 'Macho' | 'Fêmea',
       raca: fd.get('raca') as string,
       categoria: fd.get('categoria') as 'Corte' | 'Reprodução',
-      faixaEtaria: fd.get('faixaEtaria') as string,
+      faixaEtaria,
+      idadeMeses,
       origem,
       fazendaDestinoId: fd.get('fazendaDestinoId') as string,
       dataRegistro: new Date().toISOString(),
@@ -209,18 +216,15 @@ export function AnimalRegistrationModal() {
               <Input name="raca" required placeholder="Ex: Nelore" defaultValue="Nelore" />
             </div>
             <div className="space-y-2">
-              <Label>Faixa Etária *</Label>
-              <Select name="faixaEtaria" defaultValue="8-12 meses">
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0-8 meses">0-8 meses</SelectItem>
-                  <SelectItem value="8-12 meses">8-12 meses</SelectItem>
-                  <SelectItem value="1-2 anos">1-2 anos</SelectItem>
-                  <SelectItem value="> 2 anos">&gt; 2 anos</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label>Idade (Meses) *</Label>
+              <Input
+                name="idadeMeses"
+                type="number"
+                min="0"
+                required
+                placeholder="Ex: 12"
+                defaultValue="12"
+              />
             </div>
           </div>
 

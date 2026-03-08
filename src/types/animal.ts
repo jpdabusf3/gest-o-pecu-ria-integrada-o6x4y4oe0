@@ -7,6 +7,7 @@ export interface AnimalRegistro {
   raca: string
   categoria: 'Corte' | 'Reprodução'
   faixaEtaria: string
+  idadeMeses?: number
   origem: 'Compra' | 'Nativo'
   precoCompraPorCabeca?: number
   fazendaOrigem?: string

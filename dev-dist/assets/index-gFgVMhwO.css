@@ -968,6 +968,9 @@ section[aria-label='Notifications alt+T'] {
 .h-svh{
   height: 100svh;
 }
+.max-h-20{
+  max-height: 5rem;
+}
 .max-h-\[--radix-context-menu-content-available-height\]{
   max-height: var(--radix-context-menu-content-available-height);
 }
@@ -1609,8 +1612,15 @@ section[aria-label='Notifications alt+T'] {
 .border-\[--color-border\]{
   border-color: var(--color-border);
 }
+.border-amber-500{
+  --tw-border-opacity: 1;
+  border-color: rgb(245 158 11 / var(--tw-border-opacity, 1));
+}
 .border-amber-500\/20{
   border-color: rgb(245 158 11 / 0.2);
+}
+.border-amber-500\/30{
+  border-color: rgb(245 158 11 / 0.3);
 }
 .border-blue-200{
   --tw-border-opacity: 1;
@@ -1717,8 +1727,15 @@ section[aria-label='Notifications alt+T'] {
 .bg-accent{
   background-color: hsl(var(--accent));
 }
+.bg-amber-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 158 11 / var(--tw-bg-opacity, 1));
+}
 .bg-amber-500\/10{
   background-color: rgb(245 158 11 / 0.1);
+}
+.bg-amber-500\/20{
+  background-color: rgb(245 158 11 / 0.2);
 }
 .bg-background{
   background-color: hsl(var(--background));
@@ -1885,6 +1902,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .p-1{
   padding: 0.25rem;
+}
+.p-1\.5{
+  padding: 0.375rem;
 }
 .p-2{
   padding: 0.5rem;
@@ -2164,6 +2184,13 @@ section[aria-label='Notifications alt+T'] {
   --tw-text-opacity: 1;
   color: rgb(180 83 9 / var(--tw-text-opacity, 1));
 }
+.text-amber-700\/80{
+  color: rgb(180 83 9 / 0.8);
+}
+.text-amber-900{
+  --tw-text-opacity: 1;
+  color: rgb(120 53 15 / var(--tw-text-opacity, 1));
+}
 .text-black{
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
@@ -2378,6 +2405,10 @@ section[aria-label='Notifications alt+T'] {
   --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-amber-500\/20{
+  --tw-shadow-color: rgb(245 158 11 / 0.2);
+  --tw-shadow: var(--tw-shadow-colored);
 }
 .outline-none{
   outline: 2px solid transparent;
@@ -2681,6 +2712,10 @@ section[aria-label='Notifications alt+T'] {
 .hover\:bg-amber-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(255 251 235 / var(--tw-bg-opacity, 1));
+}
+.hover\:bg-amber-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 119 6 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-blue-100:hover{
   --tw-bg-opacity: 1;
@@ -3512,6 +3547,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:top-auto{
     top: auto;
+  }
+  .sm\:col-span-2{
+    grid-column: span 2 / span 2;
   }
   .sm\:mr-2{
     margin-right: 0.5rem;

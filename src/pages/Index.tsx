@@ -27,6 +27,8 @@ import {
   TrendingDown,
   Map,
   LineChart,
+  MapPinned,
+  BellRing,
 } from 'lucide-react'
 import { dashboardData, herdSummary, productionGoals, farmRegistry } from '@/data/mock'
 import { CashflowChart } from '@/components/charts/CashflowChart'
@@ -36,6 +38,9 @@ import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
 import { Link } from 'react-router-dom'
+import useAnimalStore from '@/stores/useAnimalStore'
+import useFazendaStore from '@/stores/useFazendaStore'
+import useAnimalTargetsStore from '@/stores/useAnimalTargetsStore'
 
 function GoalDialog() {
   const [open, setOpen] = useState(false)
@@ -96,10 +101,35 @@ function GoalDialog() {
 
 export default function Index() {
   const { user } = useAuth()
+  const { animais } = useAnimalStore()
+  const { fazendas } = useFazendaStore()
+  const { targets } = useAnimalTargetsStore()
 
   if (user.role === 'operador') {
     return <OperatorDashboard />
   }
+
+  const farmCounts = fazendas.map((f) => ({
+    nome: f.nome,
+    count: animais
+      .filter((a) => a.fazendaDestinoId === f.id)
+      .reduce((sum, a) => sum + a.quantidade, 0),
+  }))
+
+  const weightCorte = animais
+    .filter((a) => a.categoria === 'Corte')
+    .reduce((sum, a) => sum + a.pesoMedio * a.quantidade, 0)
+
+  const weightRepro = animais
+    .filter((a) => a.categoria === 'Reprodução')
+    .reduce((sum, a) => sum + a.pesoMedio * a.quantidade, 0)
+
+  const readyAnimals = animais.filter(
+    (a) =>
+      a.categoria === 'Corte' &&
+      (a.pesoMedio >= targets.pesoAlvoCorte ||
+        (a.idadeMeses && a.idadeMeses >= targets.idadeAlvoMesesCorte)),
+  )
 
   return (
     <div className="space-y-6 pb-20 sm:pb-6 animate-fade-in-up">
@@ -179,6 +209,77 @@ export default function Index() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Livestock Intelligence Dashboard Summary */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="bg-primary/5 border-primary/20">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <MapPinned className="h-4 w-4" /> Distribuição por Fazenda
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {farmCounts.length > 0 ? (
+              farmCounts.map((f, i) => (
+                <div key={i} className="flex justify-between items-center text-sm">
+                  <span className="truncate mr-2">{f.nome}</span>
+                  <span className="font-bold">{f.count} cb</span>
+                </div>
+              ))
+            ) : (
+              <span className="text-sm text-muted-foreground">Sem dados</span>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-primary/5 border-primary/20">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <Beef className="h-4 w-4" /> Peso Total por Categoria
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span>Corte</span>
+              <span className="font-bold">{(weightCorte / 1000).toFixed(1)} t</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span>Reprodução</span>
+              <span className="font-bold">{(weightRepro / 1000).toFixed(1)} t</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {readyAnimals.length > 0 && (
+          <Card className="bg-amber-500/10 border-amber-500/30 sm:col-span-2">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-amber-700 flex items-center gap-2">
+                <BellRing className="h-4 w-4" /> Alerta: Prontos p/ Abate/Venda
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm mb-2 text-amber-700/80">
+                Existem <strong>{readyAnimals.reduce((sum, a) => sum + a.quantidade, 0)}</strong>{' '}
+                animais atingindo o peso alvo ({targets.pesoAlvoCorte}kg) ou idade (
+                {targets.idadeAlvoMesesCorte}m).
+              </p>
+              <div className="max-h-20 overflow-y-auto space-y-1 pr-2">
+                {readyAnimals.map((a) => (
+                  <div
+                    key={a.id}
+                    className="flex justify-between items-center text-xs bg-amber-500/20 p-1.5 rounded text-amber-900"
+                  >
+                    <span>Lote/Animal: {a.id.split('-')[0]}</span>
+                    <span className="font-semibold">
+                      {a.quantidade} cb - {a.pesoMedio}kg
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Resumo do Rebanho (Herd Statement) */}
