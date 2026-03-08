@@ -410,30 +410,6 @@ export const financialData = [
   },
 ]
 
-export const weightGainData: Record<string, any[]> = {
-  'LRE-01': [
-    { month: 'Jan', actual: 180, expected: 185 },
-    { month: 'Fev', actual: 195, expected: 198 },
-  ],
-  default: [
-    { month: 'Jan', actual: 200, expected: 200 },
-    { month: 'Fev', actual: 220, expected: 215 },
-  ],
-}
-
-export const dailyWeightData: Record<string, any[]> = {
-  'LRE-01': Array.from({ length: 30 }).map((_, i) => ({
-    day: `Dia ${i + 1}`,
-    expected: Number((180 + i * 0.8).toFixed(1)),
-    actual: Number((180 + i * 0.8 + (Math.random() * 4 - 2)).toFixed(1)),
-  })),
-  default: Array.from({ length: 30 }).map((_, i) => ({
-    day: `Dia ${i + 1}`,
-    expected: Number((200 + i * 0.8).toFixed(1)),
-    actual: Number((200 + i * 0.8 + (Math.random() * 4 - 2)).toFixed(1)),
-  })),
-}
-
 export const animalData: Record<string, any> = {
   'TAG-1234': {
     id: 'TAG-1234',
@@ -457,7 +433,7 @@ export const sanitaryEvents = [
     type: 'Manejo',
     status: 'Atrasado',
     lote: 'LCR-04',
-    target: 'Bezerras',
+    target: 'Bezerras Desmame',
   },
   {
     id: 'SAN-02',
@@ -468,16 +444,52 @@ export const sanitaryEvents = [
     lote: 'Todos',
     target: 'Rebanho Geral',
   },
+  {
+    id: 'SAN-03',
+    title: 'Cura de Umbigo',
+    date: 'Hoje',
+    type: 'Manejo',
+    status: 'Atrasado',
+    lote: 'LCR-02',
+    target: 'Recém Nascidos',
+  },
 ]
 
-export const reproductionForecast = [
+export const regionalProtocols = [
   {
-    id: 'P-01',
-    matriz: 'V-102',
-    lote: 'LCR-02',
-    dataPrevista: '2026-04-15',
-    touro: 'T-05',
-    status: 'Confirmada',
+    id: 'RP-1',
+    ageGroup: 'Recém Nascidos (0-3 meses)',
+    vaccine: 'Cura do Umbigo / Clostridiose',
+    mandatory: 'Sim',
+    frequency: 'Imediato / Dose Única',
+  },
+  {
+    id: 'RP-2',
+    ageGroup: 'Bezerros (3-8 meses)',
+    vaccine: 'Brucelose (Apenas Fêmeas)',
+    mandatory: 'Sim (Lei Federal)',
+    frequency: 'Dose Única',
+  },
+  {
+    id: 'RP-3',
+    ageGroup: 'Rebanho Geral',
+    vaccine: 'Febre Aftosa',
+    mandatory: 'Depende do Estado',
+    frequency: 'Semestral / Anual',
+  },
+  {
+    id: 'RP-4',
+    ageGroup: 'Rebanho Geral',
+    vaccine: 'Raiva',
+    mandatory: 'Recomendado',
+    frequency: 'Anual',
+  },
+  {
+    id: 'RP-5',
+    ageGroup: 'Desmama (8-10 meses)',
+    vaccine: 'Vermifugação Estratégica',
+    mandatory: 'Recomendado',
+    frequency: 'Na desmama',
   },
 ]
 
@@ -506,22 +518,6 @@ export const calendarEvents = [
     target: 'Lote LEN-02',
     sector: 'engorda',
   },
-  {
-    id: 'EV-8',
-    title: 'Entrada Confinamento',
-    date: '2026-05-01',
-    type: 'Confinamento',
-    target: 'Lote CONF-01',
-    sector: 'confinamento',
-  },
-  {
-    id: 'EV-9',
-    title: 'Adaptação de Dieta',
-    date: '2026-05-05',
-    type: 'Confinamento',
-    target: 'Lote CONF-02',
-    sector: 'confinamento',
-  },
 ]
 
 export const lotPerformanceData = [
@@ -543,30 +539,38 @@ export const lotPerformanceData = [
   },
 ]
 
-export const costPerArrobaData = [
+export const teamMembers = [
   {
-    loteId: 'LEN-01',
-    categoria: 'Bois Magros',
-    custoAcumulado: 12500,
-    ganhoPesoKg: 3500,
-    ganhoArroba: 116.6,
-    custoPorArroba: 107.2,
+    id: 'U1',
+    name: 'Administrador (Sede)',
+    role: 'Admin',
+    email: 'admin@fazenda.com',
+    status: 'Ativo',
+    lastActive: 'Agora',
   },
   {
-    loteId: 'LEN-02',
-    categoria: 'Bois Terminação',
-    custoAcumulado: 28400,
-    ganhoPesoKg: 7200,
-    ganhoArroba: 240.0,
-    custoPorArroba: 118.33,
+    id: 'U2',
+    name: 'João (Operador Campo)',
+    role: 'Operador',
+    email: 'joao@fazenda.com',
+    status: 'Ativo',
+    lastActive: 'Há 5 min',
   },
   {
-    loteId: 'LRE-01',
-    categoria: 'Garrotes',
-    custoAcumulado: 8500,
-    ganhoPesoKg: 4100,
-    ganhoArroba: 136.6,
-    custoPorArroba: 62.22,
+    id: 'U3',
+    name: 'Carlos (Tratorista)',
+    role: 'Operador',
+    email: 'carlos@fazenda.com',
+    status: 'Ativo',
+    lastActive: 'Há 2 horas',
+  },
+  {
+    id: 'U4',
+    name: 'Ana (Veterinária)',
+    role: 'Admin',
+    email: 'ana@fazenda.com',
+    status: 'Ausente',
+    lastActive: 'Ontem',
   },
 ]
 
@@ -577,7 +581,7 @@ export const managementHistory = [
     tipo: 'Nutrição',
     alvo: 'Lote LEN-01',
     descricao: 'Ajuste de dieta para Terminação Alto Grão',
-    responsavel: 'João S.',
+    responsavel: 'João (Operador Campo)',
   },
   {
     id: 'H-2',
@@ -585,7 +589,7 @@ export const managementHistory = [
     tipo: 'Manejo de Pasto',
     alvo: 'Pasto 02 - Fundo',
     descricao: 'Aplicação de Herbicida (Folha Larga)',
-    responsavel: 'Carlos A.',
+    responsavel: 'Carlos (Tratorista)',
   },
   {
     id: 'H-3',
@@ -593,7 +597,7 @@ export const managementHistory = [
     tipo: 'Sanidade',
     alvo: 'Lote LCR-04',
     descricao: 'Vacinação Febre Aftosa',
-    responsavel: 'Ana M.',
+    responsavel: 'Ana (Veterinária)',
   },
   {
     id: 'H-4',
@@ -601,7 +605,7 @@ export const managementHistory = [
     tipo: 'Movimentação',
     alvo: 'Lote LRE-01',
     descricao: 'Transferência do Pasto 05 para Pasto 06',
-    responsavel: 'João S.',
+    responsavel: 'João (Operador Campo)',
   },
   {
     id: 'H-5',
@@ -609,6 +613,6 @@ export const managementHistory = [
     tipo: 'Adubação',
     alvo: 'Pasto 01 - Sede',
     descricao: 'Aplicação de Ureia (50kg/ha)',
-    responsavel: 'Carlos A.',
+    responsavel: 'Administrador (Sede)',
   },
 ]

@@ -23,9 +23,11 @@ import { Badge } from '@/components/ui/badge'
 import { MapPin, Beef, Plus, Search } from 'lucide-react'
 import { sectorData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Campo() {
   const { toast } = useToast()
+  const { user } = useAuth()
   const [selectedLote, setSelectedLote] = useState<any>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [actionType, setActionType] = useState('movimentar')
@@ -46,7 +48,7 @@ export default function Campo() {
   const handleAction = () => {
     toast({
       title: 'Operação de Campo Registrada',
-      description: `Ação de "${actionType}" no lote ${selectedLote?.id} salva e sincronizada com sucesso.`,
+      description: `Ação de "${actionType}" no lote ${selectedLote?.id} salva por ${user.name}. O log foi atualizado.`,
     })
     setDrawerOpen(false)
   }
@@ -61,7 +63,7 @@ export default function Campo() {
       <div className="bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6">
         <h2 className="text-2xl font-bold tracking-tight">Operações de Campo</h2>
         <p className="text-primary-foreground/80 mt-1 text-sm">
-          Módulo mobile. Sincronização em tempo real ativada.
+          Operador atual: <span className="font-semibold">{user.name}</span>
         </p>
       </div>
 
@@ -211,7 +213,7 @@ export default function Campo() {
           </div>
           <DrawerFooter className="pt-4 pb-8">
             <Button onClick={handleAction} size="lg" className="w-full text-base h-12 shadow-md">
-              Confirmar Ação
+              Confirmar e Assinar (Auditoria)
             </Button>
             <DrawerClose asChild>
               <Button variant="ghost" size="lg" className="w-full h-12">

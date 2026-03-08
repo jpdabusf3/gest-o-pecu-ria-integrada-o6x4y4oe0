@@ -4,8 +4,29 @@ import { QuickAddModal } from './QuickAddModal'
 import { ScannerModal } from './ScannerModal'
 import { Bell } from 'lucide-react'
 import { Button } from './ui/button'
+import { useAuth, mockUsers } from '@/contexts/AuthContext'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useToast } from '@/hooks/use-toast'
 
 export function Header() {
+  const { user, setUser } = useAuth()
+  const { toast } = useToast()
+
+  const handleUserSwitch = (newUser: (typeof mockUsers)[0]) => {
+    setUser(newUser)
+    toast({
+      title: 'Perfil Alterado',
+      description: `Você agora está logado como ${newUser.name}.`,
+    })
+  }
+
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 lg:px-6 bg-card sticky top-0 z-10 shadow-sm">
       <div className="flex items-center gap-4">
@@ -25,15 +46,38 @@ export function Header() {
           <Bell className="h-5 w-5" />
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-destructive border-2 border-card"></span>
         </Button>
-        <QuickAddModal />
+        {user.role === 'admin' && <QuickAddModal />}
         <div className="h-8 w-px bg-border hidden sm:block"></div>
-        <Avatar className="h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105 hidden sm:flex">
-          <AvatarImage
-            src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42"
-            alt="Avatar do Usuário"
-          />
-          <AvatarFallback>AD</AvatarFallback>
-        </Avatar>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105 hidden sm:flex">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">{user.name}</p>
+                <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel className="text-xs text-muted-foreground">
+              Alternar Acesso (Demo RBAC)
+            </DropdownMenuLabel>
+            {mockUsers.map((u) => (
+              <DropdownMenuItem
+                key={u.id}
+                onClick={() => handleUserSwitch(u)}
+                className={`cursor-pointer ${user.id === u.id ? 'bg-muted' : ''}`}
+              >
+                {u.name} {u.role === 'admin' && '(Admin)'}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   )

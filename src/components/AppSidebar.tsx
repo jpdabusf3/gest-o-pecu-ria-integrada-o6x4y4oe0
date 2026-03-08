@@ -21,23 +21,39 @@ import {
   Wheat,
   Smartphone,
   FileText,
+  BrainCircuit,
+  Syringe,
+  ShieldCheck,
 } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 const navItems = [
   { title: 'Painel Principal', icon: LayoutDashboard, url: '/' },
+  { title: 'Projeções & AI', icon: BrainCircuit, url: '/projecoes' },
   { title: 'Operações de Campo', icon: Smartphone, url: '/campo' },
   { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
   { title: 'Confinamento', icon: Wheat, url: '/confinamento' },
+  { title: 'Sanidade', icon: Syringe, url: '/sanidade' },
   { title: 'Setor: Cria', icon: Baby, url: '/setor/cria' },
   { title: 'Setor: Recria', icon: TrendingUp, url: '/setor/recria' },
   { title: 'Setor: Engorda', icon: Beef, url: '/setor/engorda' },
   { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
   { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
   { title: 'Relatórios', icon: FileText, url: '/relatorios' },
+  { title: 'Equipe & Acessos', icon: ShieldCheck, url: '/equipe' },
 ]
 
 export function AppSidebar() {
   const location = useLocation()
+  const { user } = useAuth()
+
+  // RBAC: Restricted view for field operators
+  const visibleNavItems = navItems.filter((item) => {
+    if (user.role === 'operador') {
+      return ['/', '/campo', '/pastos', '/sanidade'].includes(item.url)
+    }
+    return true
+  })
 
   return (
     <Sidebar variant="inset" className="border-r border-sidebar-border">
@@ -51,7 +67,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent className="pt-4">
             <SidebarMenu>
-              {navItems.map((item) => {
+              {visibleNavItems.map((item) => {
                 const isActive =
                   location.pathname === item.url ||
                   (item.url !== '/' && location.pathname.startsWith(item.url))
