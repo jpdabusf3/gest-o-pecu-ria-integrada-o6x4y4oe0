@@ -21,6 +21,7 @@ import { B3FuturesSelector } from '@/components/B3FuturesSelector'
 import { GpbBalizadorButton } from '@/components/GpbBalizadorButton'
 import { ExportMenu } from '@/components/ExportMenu'
 import { SalesSimulator } from '@/components/SalesSimulator'
+import { SimulationHistory } from '@/components/SimulationHistory'
 import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
 import { useToast } from '@/hooks/use-toast'
 import { useMarket } from '@/contexts/MarketContext'
@@ -30,11 +31,10 @@ export default function ProjecaoVendas() {
   const { getPrice, b3Data, marketData } = useMarket()
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>('boi-gordo-mt')
   const [selectedMarketLabel, setSelectedMarketLabel] = useState<string>('Boi Gordo - MT')
-  const [arrobaPrice, setArrobaPrice] = useState<number>(215.5)
+  const [arrobaPrice, setArrobaPrice] = useState<number>(265.5)
   const [targetWeight, setTargetWeight] = useState<number>(540)
   const { toast } = useToast()
 
-  // Sync arrobaPrice with real-time context if a market is selected
   useEffect(() => {
     if (selectedMarketId) {
       const livePrice = getPrice(selectedMarketId)
@@ -83,12 +83,9 @@ export default function ProjecaoVendas() {
       lots
         .map((lot) => {
           const days = Math.max(0, Math.ceil((targetWeight - lot.pesoMedio) / lot.gmd)) || 0
-
-          // Financial Analytics Engine: Combine labor & nutritional costs
-          const totalCostHead = lot.pesoMedio * 4.2 + days * 10 // Baseline + R$10/dia
+          const totalCostHead = lot.pesoMedio * 4.2 + days * 10
           const grossRevHead = (targetWeight / 30) * arrobaPrice
 
-          // Recommendation Logic
           let rec = 'Em Desenv.'
           let color = 'text-muted-foreground'
           if (days === 0) {
@@ -182,8 +179,9 @@ export default function ProjecaoVendas() {
       </div>
 
       <SalesSimulator />
+      <SimulationHistory />
 
-      <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3 mt-6">
         <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-primary flex items-center justify-between">
@@ -260,7 +258,7 @@ export default function ProjecaoVendas() {
         </Card>
       </div>
 
-      <Card className="print:border-none print:shadow-none">
+      <Card className="print:border-none print:shadow-none mt-6">
         <CardHeader className="flex flex-row items-start justify-between">
           <div className="space-y-1">
             <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>

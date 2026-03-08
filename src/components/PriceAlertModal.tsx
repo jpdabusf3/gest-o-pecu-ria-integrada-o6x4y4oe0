@@ -149,7 +149,7 @@ export function PriceAlertModal() {
                     value={targetPrice}
                     onChange={(e) => setTargetPrice(e.target.value)}
                     className="pl-9"
-                    placeholder="Ex: 260.00"
+                    placeholder="Ex: 270.00"
                   />
                 </div>
               </div>

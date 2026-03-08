@@ -69,7 +69,7 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       indicatorId: 'boi-gordo-mt',
       indicatorLabel: 'Boi Gordo - MT (À vista)',
       condition: 'above',
-      targetPrice: 220.0,
+      targetPrice: 270.0,
       notifyWhatsApp: true,
       active: true,
     },
@@ -122,13 +122,11 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
           })
         }
 
-        // Auto pause to prevent spam
         setAlerts((prev) => prev.map((a) => (a.id === alert.id ? { ...a, active: false } : a)))
       }
     })
   }, [alerts, getPrice, toast])
 
-  // Real-time B3 simulation (Fast)
   useEffect(() => {
     const fastTick = setInterval(() => {
       setB3Data((prev) => {
@@ -152,7 +150,6 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(fastTick)
   }, [])
 
-  // Daily Physical Market simulation (Slower for demo purposes)
   useEffect(() => {
     const slowTick = setInterval(() => {
       const updateList = (list: MarketIndicator[]) =>

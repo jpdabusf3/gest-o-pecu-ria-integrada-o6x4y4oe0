@@ -17431,7 +17431,7 @@ function composeRefs$1(...refs) {
 		};
 	};
 }
-function useComposedRefs$1(...refs) {
+function useComposedRefs(...refs) {
 	return import_react.useCallback(composeRefs$1(...refs), refs);
 }
 /**
@@ -17829,7 +17829,7 @@ function createCollection(name) {
 	const CollectionSlot = import_react.forwardRef((props, forwardedRef) => {
 		const { scope, children } = props;
 		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CollectionSlotImpl, {
-			ref: useComposedRefs$1(forwardedRef, useCollectionContext(COLLECTION_SLOT_NAME, scope).collectionRef),
+			ref: useComposedRefs(forwardedRef, useCollectionContext(COLLECTION_SLOT_NAME, scope).collectionRef),
 			children
 		});
 	});
@@ -17840,7 +17840,7 @@ function createCollection(name) {
 	const CollectionItemSlot = import_react.forwardRef((props, forwardedRef) => {
 		const { scope, children, ...itemData } = props;
 		const ref = import_react.useRef(null);
-		const composedRefs = useComposedRefs$1(forwardedRef, ref);
+		const composedRefs = useComposedRefs(forwardedRef, ref);
 		const context = useCollectionContext(ITEM_SLOT_NAME, scope);
 		import_react.useEffect(() => {
 			context.itemMap.set(ref, {
@@ -17946,7 +17946,7 @@ var DismissableLayer = import_react.forwardRef((props, forwardedRef) => {
 	const [node, setNode] = import_react.useState(null);
 	const ownerDocument = node?.ownerDocument ?? globalThis?.document;
 	const [, force] = import_react.useState({});
-	const composedRefs = useComposedRefs$1(forwardedRef, (node2) => setNode(node2));
+	const composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2));
 	const layers = Array.from(context.layers);
 	const [highestLayerWithOutsidePointerEventsDisabled] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1);
 	const highestLayerWithOutsidePointerEventsDisabledIndex = layers.indexOf(highestLayerWithOutsidePointerEventsDisabled);
@@ -18026,7 +18026,7 @@ var BRANCH_NAME = "DismissableLayerBranch";
 var DismissableLayerBranch = import_react.forwardRef((props, forwardedRef) => {
 	const context = import_react.useContext(DismissableLayerContext);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	import_react.useEffect(() => {
 		const node = ref.current;
 		if (node) {
@@ -18127,7 +18127,7 @@ var Presence = (props) => {
 	const { present, children } = props;
 	const presence = usePresence(present);
 	const child = typeof children === "function" ? children({ present: presence.isPresent }) : import_react.Children.only(children);
-	const ref = useComposedRefs$1(presence.ref, getElementRef$1(child));
+	const ref = useComposedRefs(presence.ref, getElementRef$1(child));
 	return typeof children === "function" || presence.isPresent ? import_react.cloneElement(child, { ref }) : null;
 };
 Presence.displayName = "Presence";
@@ -18237,7 +18237,7 @@ function useControllableState({ prop, defaultProp, onChange = () => {}, caller }
 	}
 	return [value, import_react.useCallback((nextValue) => {
 		if (isControlled) {
-			const value2 = isFunction$26(nextValue) ? nextValue(prop) : nextValue;
+			const value2 = isFunction$27(nextValue) ? nextValue(prop) : nextValue;
 			if (value2 !== prop) onChangeRef.current?.(value2);
 		} else setUncontrolledProp(nextValue);
 	}, [
@@ -18266,7 +18266,7 @@ function useUncontrolledState$1({ defaultProp, onChange }) {
 		onChangeRef
 	];
 }
-function isFunction$26(value) {
+function isFunction$27(value) {
 	return typeof value === "function";
 }
 var VISUALLY_HIDDEN_STYLES = Object.freeze({
@@ -18338,7 +18338,7 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 	const headFocusProxyRef = import_react.useRef(null);
 	const tailFocusProxyRef = import_react.useRef(null);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref, context.onViewportChange);
+	const composedRefs = useComposedRefs(forwardedRef, ref, context.onViewportChange);
 	const hotkeyLabel = hotkey.join("+").replace(/Key/g, "").replace(/Digit/g, "");
 	const hasToasts = context.toastCount > 0;
 	import_react.useEffect(() => {
@@ -18521,7 +18521,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeToast, type = "foreground", duration: durationProp, open, onClose, onEscapeKeyDown, onPause, onResume, onSwipeStart, onSwipeMove, onSwipeCancel, onSwipeEnd, ...toastProps } = props;
 	const context = useToastProviderContext(TOAST_NAME, __scopeToast);
 	const [node, setNode] = import_react.useState(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node2) => setNode(node2));
+	const composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2));
 	const pointerStartRef = import_react.useRef(null);
 	const swipeDeltaRef = import_react.useRef(null);
 	const duration = durationProp || context.duration;
@@ -19487,6 +19487,28 @@ var Fuel = createLucideIcon("fuel", [
 	["path", {
 		d: "M3 9h11",
 		key: "1p7c0w"
+	}]
+]);
+var GitCompare = createLucideIcon("git-compare", [
+	["circle", {
+		cx: "18",
+		cy: "18",
+		r: "3",
+		key: "1xkwt0"
+	}],
+	["circle", {
+		cx: "6",
+		cy: "6",
+		r: "3",
+		key: "1lh9wr"
+	}],
+	["path", {
+		d: "M13 6h3a2 2 0 0 1 2 2v7",
+		key: "1yeb86"
+	}],
+	["path", {
+		d: "M11 18H8a2 2 0 0 1-2-2V9",
+		key: "19pyzm"
 	}]
 ]);
 var History = createLucideIcon("history", [
@@ -21984,10 +22006,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$29, data) => {
+		this.custom = (jsx$30, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$29(id),
+				jsx: jsx$30(id),
 				id,
 				...data
 			});
@@ -24181,7 +24203,7 @@ var PopperAnchor = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, virtualRef, ...anchorProps } = props;
 	const context = usePopperContext(ANCHOR_NAME$1, __scopePopper);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const anchorRef = import_react.useRef(null);
 	import_react.useEffect(() => {
 		const previousAnchor = anchorRef.current;
@@ -24200,7 +24222,7 @@ var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, side = "bottom", sideOffset = 0, align = "center", alignOffset = 0, arrowPadding = 0, avoidCollisions = true, collisionBoundary = [], collisionPadding: collisionPaddingProp = 0, sticky = "partial", hideWhenDetached = false, updatePositionStrategy = "optimized", onPlaced, ...contentProps } = props;
 	const context = usePopperContext(CONTENT_NAME$6, __scopePopper);
 	const [content, setContent] = import_react.useState(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContent(node));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const [arrow$3, setArrow] = import_react.useState(null);
 	const arrowSize = useSize(arrow$3);
 	const arrowWidth = arrowSize?.width ?? 0;
@@ -24525,13 +24547,13 @@ var Tooltip$2 = (props) => {
 	});
 };
 Tooltip$2.displayName = TOOLTIP_NAME;
-var TRIGGER_NAME$4 = "TooltipTrigger";
+var TRIGGER_NAME$5 = "TooltipTrigger";
 var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...triggerProps } = props;
-	const context = useTooltipContext(TRIGGER_NAME$4, __scopeTooltip);
-	const providerContext = useTooltipProviderContext(TRIGGER_NAME$4, __scopeTooltip);
+	const context = useTooltipContext(TRIGGER_NAME$5, __scopeTooltip);
+	const providerContext = useTooltipProviderContext(TRIGGER_NAME$5, __scopeTooltip);
 	const popperScope = usePopperScope$2(__scopeTooltip);
-	const composedRefs = useComposedRefs$1(forwardedRef, import_react.useRef(null), context.onTriggerChange);
+	const composedRefs = useComposedRefs(forwardedRef, import_react.useRef(null), context.onTriggerChange);
 	const isPointerDownRef = import_react.useRef(false);
 	const hasPointerMoveOpenedRef = import_react.useRef(false);
 	const handlePointerUp = import_react.useCallback(() => isPointerDownRef.current = false, []);
@@ -24570,7 +24592,7 @@ var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipTrigger$1.displayName = TRIGGER_NAME$4;
+TooltipTrigger$1.displayName = TRIGGER_NAME$5;
 var PORTAL_NAME$4 = "TooltipPortal";
 var [PortalProvider$2, usePortalContext$2] = createTooltipContext(PORTAL_NAME$4, { forceMount: void 0 });
 var TooltipPortal = (props) => {
@@ -24612,7 +24634,7 @@ var TooltipContentHoverable = import_react.forwardRef((props, forwardedRef) => {
 	const context = useTooltipContext(CONTENT_NAME$5, props.__scopeTooltip);
 	const providerContext = useTooltipProviderContext(CONTENT_NAME$5, props.__scopeTooltip);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [pointerGraceArea, setPointerGraceArea] = import_react.useState(null);
 	const { trigger, onClose } = context;
 	const content = ref.current;
@@ -26381,7 +26403,7 @@ const marketIndicators = [
 		id: "boi-gordo-mt",
 		label: "Boi Gordo - MT (À vista)",
 		source: "Datagro",
-		price: 215.5,
+		price: 265.5,
 		trend: "up",
 		change: "+1.2%"
 	},
@@ -26389,7 +26411,7 @@ const marketIndicators = [
 		id: "novilha-mt",
 		label: "Novilha Gorda - MT",
 		source: "Datagro",
-		price: 205,
+		price: 250,
 		trend: "stable",
 		change: "0.0%"
 	},
@@ -26397,7 +26419,7 @@ const marketIndicators = [
 		id: "vaca-mt",
 		label: "Vaca Gorda - MT",
 		source: "Datagro",
-		price: 190,
+		price: 235,
 		trend: "down",
 		change: "-0.5%"
 	}
@@ -26407,7 +26429,7 @@ const replacementIndicators = [
 		id: "rep-boi-magro",
 		label: "Boi Magro (12@) - MT",
 		source: "Datagro",
-		price: 2900,
+		price: 3450,
 		trend: "up",
 		change: "+2.0%"
 	},
@@ -26415,7 +26437,7 @@ const replacementIndicators = [
 		id: "rep-garrote",
 		label: "Garrote (9,5@) - MT",
 		source: "Datagro",
-		price: 2350,
+		price: 2850,
 		trend: "up",
 		change: "+1.5%"
 	},
@@ -26423,7 +26445,7 @@ const replacementIndicators = [
 		id: "rep-bezerro",
 		label: "Bezerro (8 a 12m) - MT",
 		source: "Datagro",
-		price: 2050,
+		price: 2650,
 		trend: "stable",
 		change: "0.0%"
 	},
@@ -26431,7 +26453,7 @@ const replacementIndicators = [
 		id: "rep-novilha",
 		label: "Novilha (13 a 18m) - MT",
 		source: "Datagro",
-		price: 1950,
+		price: 2450,
 		trend: "down",
 		change: "-1.0%"
 	},
@@ -26439,7 +26461,7 @@ const replacementIndicators = [
 		id: "rep-bezerra",
 		label: "Bezerra (8 a 12m) - MT",
 		source: "Datagro",
-		price: 1650,
+		price: 2150,
 		trend: "stable",
 		change: "0.0%"
 	}
@@ -26449,7 +26471,7 @@ const commodityIndicators = [
 		id: "milho-mt",
 		label: "Milho - MT (sc 60kg)",
 		source: "Físico",
-		price: 45.5,
+		price: 55.5,
 		trend: "down",
 		change: "-1.2%"
 	},
@@ -26457,7 +26479,7 @@ const commodityIndicators = [
 		id: "milho-b3",
 		label: "Milho - B3 (sc 60kg)",
 		source: "B3",
-		price: 58.2,
+		price: 68.2,
 		trend: "up",
 		change: "+0.8%"
 	},
@@ -26465,7 +26487,7 @@ const commodityIndicators = [
 		id: "soja-mt",
 		label: "Soja - MT (sc 60kg)",
 		source: "Físico",
-		price: 115,
+		price: 125,
 		trend: "stable",
 		change: "0.0%"
 	},
@@ -26473,7 +26495,7 @@ const commodityIndicators = [
 		id: "soja-b3",
 		label: "Soja - B3 (sc 60kg)",
 		source: "B3",
-		price: 130.5,
+		price: 140.5,
 		trend: "up",
 		change: "+1.5%"
 	}
@@ -26483,21 +26505,21 @@ const b3FuturesData = {
 		{
 			ticker: "BGIK26",
 			month: "Mai/26",
-			price: 220.5,
+			price: 270.5,
 			trend: "up",
 			change: "+0.5%"
 		},
 		{
 			ticker: "BGIV26",
 			month: "Out/26",
-			price: 225,
+			price: 275,
 			trend: "up",
 			change: "+1.2%"
 		},
 		{
 			ticker: "BGIZ26",
 			month: "Dez/26",
-			price: 230,
+			price: 280,
 			trend: "up",
 			change: "+1.5%"
 		}
@@ -26506,21 +26528,21 @@ const b3FuturesData = {
 		{
 			ticker: "CCMK26",
 			month: "Mai/26",
-			price: 59.5,
+			price: 69.5,
 			trend: "down",
 			change: "-0.2%"
 		},
 		{
 			ticker: "CCMU26",
 			month: "Set/26",
-			price: 62,
+			price: 72,
 			trend: "up",
 			change: "+1.0%"
 		},
 		{
 			ticker: "CCMX26",
 			month: "Nov/26",
-			price: 65,
+			price: 75,
 			trend: "up",
 			change: "+1.8%"
 		}
@@ -26528,13 +26550,13 @@ const b3FuturesData = {
 	soja: [{
 		ticker: "SJCJ26",
 		month: "Abr/26",
-		price: 132,
+		price: 142,
 		trend: "stable",
 		change: "0.0%"
 	}, {
 		ticker: "SJCN26",
 		month: "Jul/26",
-		price: 135.5,
+		price: 145.5,
 		trend: "up",
 		change: "+0.8%"
 	}]
@@ -26542,75 +26564,75 @@ const b3FuturesData = {
 const historicalMarketData = [
 	{
 		month: "Abr/25",
-		sp: 215,
-		mt: 205,
-		b3: 220
+		sp: 265,
+		mt: 255,
+		b3: 270
 	},
 	{
 		month: "Mai/25",
-		sp: 218,
-		mt: 208,
-		b3: 222
+		sp: 268,
+		mt: 258,
+		b3: 272
 	},
 	{
 		month: "Jun/25",
-		sp: 220,
-		mt: 210,
-		b3: 225
+		sp: 270,
+		mt: 260,
+		b3: 275
 	},
 	{
 		month: "Jul/25",
-		sp: 222,
-		mt: 215,
-		b3: 228
+		sp: 272,
+		mt: 265,
+		b3: 278
 	},
 	{
 		month: "Ago/25",
-		sp: 225,
-		mt: 218,
-		b3: 230
+		sp: 275,
+		mt: 268,
+		b3: 280
 	},
 	{
 		month: "Set/25",
-		sp: 228,
-		mt: 222,
-		b3: 232
+		sp: 278,
+		mt: 272,
+		b3: 282
 	},
 	{
 		month: "Out/25",
-		sp: 230,
-		mt: 225,
-		b3: 235
+		sp: 280,
+		mt: 275,
+		b3: 285
 	},
 	{
 		month: "Nov/25",
-		sp: 235,
-		mt: 228,
-		b3: 240
+		sp: 285,
+		mt: 278,
+		b3: 290
 	},
 	{
 		month: "Dez/25",
-		sp: 238,
-		mt: 230,
-		b3: 242
+		sp: 288,
+		mt: 280,
+		b3: 292
 	},
 	{
 		month: "Jan/26",
-		sp: 240,
-		mt: 235,
-		b3: 241
+		sp: 290,
+		mt: 285,
+		b3: 291
 	},
 	{
 		month: "Fev/26",
-		sp: 242,
-		mt: 237,
-		b3: 245
+		sp: 292,
+		mt: 287,
+		b3: 295
 	},
 	{
 		month: "Mar/26",
-		sp: 245.5,
-		mt: 215.5,
-		b3: 220.5
+		sp: 295.5,
+		mt: 265.5,
+		b3: 270.5
 	}
 ];
 var MarketContext = (0, import_react.createContext)(void 0);
@@ -26640,7 +26662,7 @@ function MarketProvider({ children }) {
 		indicatorId: "boi-gordo-mt",
 		indicatorLabel: "Boi Gordo - MT (À vista)",
 		condition: "above",
-		targetPrice: 220,
+		targetPrice: 270,
 		notifyWhatsApp: true,
 		active: true
 	}]);
@@ -27015,7 +27037,7 @@ var FocusScope = import_react.forwardRef((props, forwardedRef) => {
 	const onMountAutoFocus = useCallbackRef$1(onMountAutoFocusProp);
 	const onUnmountAutoFocus = useCallbackRef$1(onUnmountAutoFocusProp);
 	const lastFocusedElementRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContainer(node));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node));
 	const focusScope = import_react.useRef({
 		paused: false,
 		pause() {
@@ -27932,23 +27954,23 @@ var Dialog$1 = (props) => {
 	});
 };
 Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME$3 = "DialogTrigger";
+var TRIGGER_NAME$4 = "DialogTrigger";
 var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...triggerProps } = props;
-	const context = useDialogContext(TRIGGER_NAME$3, __scopeDialog);
-	const composedTriggerRef = useComposedRefs$1(forwardedRef, context.triggerRef);
+	const context = useDialogContext(TRIGGER_NAME$4, __scopeDialog);
+	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
 		type: "button",
 		"aria-haspopup": "dialog",
 		"aria-expanded": context.open,
 		"aria-controls": context.contentId,
-		"data-state": getState$1(context.open),
+		"data-state": getState$2(context.open),
 		...triggerProps,
 		ref: composedTriggerRef,
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
 	});
 });
-DialogTrigger$1.displayName = TRIGGER_NAME$3;
+DialogTrigger$1.displayName = TRIGGER_NAME$4;
 var PORTAL_NAME$3 = "DialogPortal";
 var [PortalProvider$1, usePortalContext$1] = createDialogContext(PORTAL_NAME$3, { forceMount: void 0 });
 var DialogPortal$1 = (props) => {
@@ -27991,7 +28013,7 @@ var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 		allowPinchZoom: true,
 		shards: [context.contentRef],
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
-			"data-state": getState$1(context.open),
+			"data-state": getState$2(context.open),
 			...overlayProps,
 			ref: forwardedRef,
 			style: {
@@ -28021,7 +28043,7 @@ DialogContent$1.displayName = CONTENT_NAME$4;
 var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
 	const context = useDialogContext(CONTENT_NAME$4, props.__scopeDialog);
 	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, context.contentRef, contentRef);
+	const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
 	import_react.useEffect(() => {
 		const content = contentRef.current;
 		if (content) return hideOthers(content);
@@ -28077,7 +28099,7 @@ var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
 	const context = useDialogContext(CONTENT_NAME$4, __scopeDialog);
 	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, contentRef);
+	const composedRefs = useComposedRefs(forwardedRef, contentRef);
 	useFocusGuards();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
 		asChild: true,
@@ -28090,7 +28112,7 @@ var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			id: context.contentId,
 			"aria-describedby": context.descriptionId,
 			"aria-labelledby": context.titleId,
-			"data-state": getState$1(context.open),
+			"data-state": getState$2(context.open),
 			...contentProps,
 			ref: composedRefs,
 			onDismiss: () => context.onOpenChange(false)
@@ -28134,7 +28156,7 @@ var DialogClose$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DialogClose$1.displayName = CLOSE_NAME;
-function getState$1(open) {
+function getState$2(open) {
 	return open ? "open" : "closed";
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
@@ -28809,7 +28831,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$41({ inst: {
+			cachedValue = useState$43({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28823,7 +28845,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$13(function() {
+			useEffect$14(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28846,7 +28868,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$41 = React$70.useState, useEffect$13 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$43 = React$70.useState, useEffect$14 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29148,13 +29170,13 @@ var Select$2 = (props) => {
 	});
 };
 Select$2.displayName = SELECT_NAME;
-var TRIGGER_NAME$2 = "SelectTrigger";
+var TRIGGER_NAME$3 = "SelectTrigger";
 var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, disabled = false, ...triggerProps } = props;
 	const popperScope = usePopperScope$1(__scopeSelect);
-	const context = useSelectContext(TRIGGER_NAME$2, __scopeSelect);
+	const context = useSelectContext(TRIGGER_NAME$3, __scopeSelect);
 	const isDisabled = context.disabled || disabled;
-	const composedRefs = useComposedRefs$1(forwardedRef, context.onTriggerChange);
+	const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange);
 	const getItems = useCollection$2(__scopeSelect);
 	const pointerTypeRef = import_react.useRef("touch");
 	const [searchRef, handleTypeaheadSearch, resetTypeahead] = useTypeaheadSearch((search) => {
@@ -29214,14 +29236,14 @@ var SelectTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectTrigger$1.displayName = TRIGGER_NAME$2;
+SelectTrigger$1.displayName = TRIGGER_NAME$3;
 var VALUE_NAME = "SelectValue";
 var SelectValue$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, children, placeholder = "", ...valueProps } = props;
 	const context = useSelectContext(VALUE_NAME, __scopeSelect);
 	const { onValueNodeHasChildrenChange } = context;
 	const hasChildren = children !== void 0;
-	const composedRefs = useComposedRefs$1(forwardedRef, context.onValueNodeChange);
+	const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange);
 	useLayoutEffect2(() => {
 		onValueNodeHasChildrenChange(hasChildren);
 	}, [onValueNodeHasChildrenChange, hasChildren]);
@@ -29284,7 +29306,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const context = useSelectContext(CONTENT_NAME$3, __scopeSelect);
 	const [content, setContent] = import_react.useState(null);
 	const [viewport, setViewport] = import_react.useState(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContent(node));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const [selectedItem, setSelectedItem] = import_react.useState(null);
 	const [selectedItemText, setSelectedItemText] = import_react.useState(null);
 	const getItems = useCollection$2(__scopeSelect);
@@ -29475,7 +29497,7 @@ var SelectItemAlignedPosition = import_react.forwardRef((props, forwardedRef) =>
 	const contentContext = useSelectContentContext(CONTENT_NAME$3, __scopeSelect);
 	const [contentWrapper, setContentWrapper] = import_react.useState(null);
 	const [content, setContent] = import_react.useState(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setContent(node));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const getItems = useCollection$2(__scopeSelect);
 	const shouldExpandOnScrollRef = import_react.useRef(false);
 	const shouldRepositionRef = import_react.useRef(true);
@@ -29622,7 +29644,7 @@ var SelectViewport = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, nonce, ...viewportProps } = props;
 	const contentContext = useSelectContentContext(VIEWPORT_NAME, __scopeSelect);
 	const viewportContext = useSelectViewportContext(VIEWPORT_NAME, __scopeSelect);
-	const composedRefs = useComposedRefs$1(forwardedRef, contentContext.onViewportChange);
+	const composedRefs = useComposedRefs(forwardedRef, contentContext.onViewportChange);
 	const prevScrollTopRef = import_react.useRef(0);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", {
 		dangerouslySetInnerHTML: { __html: `[data-radix-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-select-viewport]::-webkit-scrollbar{display:none}` },
@@ -29705,7 +29727,7 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const isSelected = context.value === value;
 	const [textValue, setTextValue] = import_react.useState(textValueProp ?? "");
 	const [isFocused, setIsFocused] = import_react.useState(false);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => contentContext.itemRefCallback?.(node, value, disabled));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => contentContext.itemRefCallback?.(node, value, disabled));
 	const textId = useId();
 	const pointerTypeRef = import_react.useRef("touch");
 	const handleSelect = () => {
@@ -29777,7 +29799,7 @@ var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect);
 	const nativeOptionsContext = useSelectNativeOptionsContext(ITEM_TEXT_NAME, __scopeSelect);
 	const [itemTextNode, setItemTextNode] = import_react.useState(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setItemTextNode(node), itemContext.onItemTextChange, (node) => contentContext.itemTextRefCallback?.(node, itemContext.value, itemContext.disabled));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setItemTextNode(node), itemContext.onItemTextChange, (node) => contentContext.itemTextRefCallback?.(node, itemContext.value, itemContext.disabled));
 	const textContent = itemTextNode?.textContent;
 	const nativeOption = import_react.useMemo(() => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 		value: itemContext.value,
@@ -29819,7 +29841,7 @@ var SelectScrollUpButton$1 = import_react.forwardRef((props, forwardedRef) => {
 	const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
 	const viewportContext = useSelectViewportContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect);
 	const [canScrollUp, setCanScrollUp] = import_react.useState(false);
-	const composedRefs = useComposedRefs$1(forwardedRef, viewportContext.onScrollButtonChange);
+	const composedRefs = useComposedRefs(forwardedRef, viewportContext.onScrollButtonChange);
 	useLayoutEffect2(() => {
 		if (contentContext.viewport && contentContext.isPositioned) {
 			let handleScroll2 = function() {
@@ -29846,7 +29868,7 @@ var SelectScrollDownButton$1 = import_react.forwardRef((props, forwardedRef) => 
 	const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect);
 	const viewportContext = useSelectViewportContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect);
 	const [canScrollDown, setCanScrollDown] = import_react.useState(false);
-	const composedRefs = useComposedRefs$1(forwardedRef, viewportContext.onScrollButtonChange);
+	const composedRefs = useComposedRefs(forwardedRef, viewportContext.onScrollButtonChange);
 	useLayoutEffect2(() => {
 		if (contentContext.viewport && contentContext.isPositioned) {
 			let handleScroll2 = function() {
@@ -29929,10 +29951,10 @@ var SelectArrow = import_react.forwardRef((props, forwardedRef) => {
 	}) : null;
 });
 SelectArrow.displayName = ARROW_NAME$2;
-var BUBBLE_INPUT_NAME$1 = "SelectBubbleInput";
+var BUBBLE_INPUT_NAME$2 = "SelectBubbleInput";
 var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const prevValue = usePrevious(value);
 	import_react.useEffect(() => {
 		const select = ref.current;
@@ -29955,7 +29977,7 @@ var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...prop
 		defaultValue: value
 	});
 });
-SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
+SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$2;
 function shouldShowPlaceholder(value) {
 	return value === "" || value === void 0;
 }
@@ -30284,7 +30306,7 @@ RovingFocusGroup.displayName = GROUP_NAME$2;
 var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, orientation, loop = false, dir, currentTabStopId: currentTabStopIdProp, defaultCurrentTabStopId, onCurrentTabStopIdChange, onEntryFocus, preventScrollOnEntryFocus = false, ...groupProps } = props;
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const direction = useDirection(dir);
 	const [currentTabStopId, setCurrentTabStopId] = useControllableState({
 		prop: currentTabStopIdProp,
@@ -30576,7 +30598,7 @@ var MenuContent = import_react.forwardRef((props, forwardedRef) => {
 var MenuRootContentModal = import_react.forwardRef((props, forwardedRef) => {
 	const context = useMenuContext(CONTENT_NAME$2, props.__scopeMenu);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	import_react.useEffect(() => {
 		const content = ref.current;
 		if (content) return hideOthers(content);
@@ -30612,7 +30634,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const getItems = useCollection(__scopeMenu);
 	const [currentItemId, setCurrentItemId] = import_react.useState(null);
 	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, contentRef, context.onContentChange);
+	const composedRefs = useComposedRefs(forwardedRef, contentRef, context.onContentChange);
 	const timerRef = import_react.useRef(0);
 	const searchRef = import_react.useRef("");
 	const pointerGraceTimerRef = import_react.useRef(0);
@@ -30770,7 +30792,7 @@ var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const rootContext = useMenuRootContext(ITEM_NAME$2, props.__scopeMenu);
 	const contentContext = useMenuContentContext(ITEM_NAME$2, props.__scopeMenu);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const isPointerDownRef = import_react.useRef(false);
 	const handleSelect = () => {
 		const menuItem = ref.current;
@@ -30813,7 +30835,7 @@ var MenuItemImpl = import_react.forwardRef((props, forwardedRef) => {
 	const contentContext = useMenuContentContext(ITEM_NAME$2, __scopeMenu);
 	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeMenu);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [isFocused, setIsFocused] = import_react.useState(false);
 	const [textContent, setTextContent] = import_react.useState("");
 	import_react.useEffect(() => {
@@ -30857,11 +30879,11 @@ var MenuCheckboxItem = import_react.forwardRef((props, forwardedRef) => {
 		checked,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuItem, {
 			role: "menuitemcheckbox",
-			"aria-checked": isIndeterminate(checked) ? "mixed" : checked,
+			"aria-checked": isIndeterminate$1(checked) ? "mixed" : checked,
 			...checkboxItemProps,
 			ref: forwardedRef,
 			"data-state": getCheckedState(checked),
-			onSelect: composeEventHandlers(checkboxItemProps.onSelect, () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked), { checkForDefaultPrevented: false })
+			onSelect: composeEventHandlers(checkboxItemProps.onSelect, () => onCheckedChange?.(isIndeterminate$1(checked) ? true : !checked), { checkForDefaultPrevented: false })
 		})
 	});
 });
@@ -30910,7 +30932,7 @@ var MenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeMenu, forceMount, ...itemIndicatorProps } = props;
 	const indicatorContext = useItemIndicatorContext(ITEM_INDICATOR_NAME, __scopeMenu);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-		present: forceMount || isIndeterminate(indicatorContext.checked) || indicatorContext.checked === true,
+		present: forceMount || isIndeterminate$1(indicatorContext.checked) || indicatorContext.checked === true,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
 			...itemIndicatorProps,
 			ref: forwardedRef,
@@ -31086,7 +31108,7 @@ var MenuSubContent = import_react.forwardRef((props, forwardedRef) => {
 	const rootContext = useMenuRootContext(CONTENT_NAME$2, props.__scopeMenu);
 	const subContext = useMenuSubContext(SUB_CONTENT_NAME$1, props.__scopeMenu);
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, ref);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection.Provider, {
 		scope: props.__scopeMenu,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
@@ -31133,11 +31155,11 @@ MenuSubContent.displayName = SUB_CONTENT_NAME$1;
 function getOpenState(open) {
 	return open ? "open" : "closed";
 }
-function isIndeterminate(checked) {
+function isIndeterminate$1(checked) {
 	return checked === "indeterminate";
 }
 function getCheckedState(checked) {
-	return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
+	return isIndeterminate$1(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
 }
 function focusFirst(candidates) {
 	const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
@@ -31231,10 +31253,10 @@ var DropdownMenu$1 = (props) => {
 	});
 };
 DropdownMenu$1.displayName = DROPDOWN_MENU_NAME;
-var TRIGGER_NAME$1 = "DropdownMenuTrigger";
+var TRIGGER_NAME$2 = "DropdownMenuTrigger";
 var DropdownMenuTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, disabled = false, ...triggerProps } = props;
-	const context = useDropdownMenuContext(TRIGGER_NAME$1, __scopeDropdownMenu);
+	const context = useDropdownMenuContext(TRIGGER_NAME$2, __scopeDropdownMenu);
 	const menuScope = useMenuScope(__scopeDropdownMenu);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor2, {
 		asChild: true,
@@ -31269,7 +31291,7 @@ var DropdownMenuTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-DropdownMenuTrigger$1.displayName = TRIGGER_NAME$1;
+DropdownMenuTrigger$1.displayName = TRIGGER_NAME$2;
 var PORTAL_NAME = "DropdownMenuPortal";
 var DropdownMenuPortal$1 = (props) => {
 	const { __scopeDropdownMenu, ...portalProps } = props;
@@ -31380,7 +31402,7 @@ var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuRadioItem$1.displayName = RADIO_ITEM_NAME;
-var INDICATOR_NAME$1 = "DropdownMenuItemIndicator";
+var INDICATOR_NAME$2 = "DropdownMenuItemIndicator";
 var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemIndicatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
@@ -31390,7 +31412,7 @@ var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) =>
 		ref: forwardedRef
 	});
 });
-DropdownMenuItemIndicator.displayName = INDICATOR_NAME$1;
+DropdownMenuItemIndicator.displayName = INDICATOR_NAME$2;
 var SEPARATOR_NAME = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
@@ -31806,10 +31828,10 @@ var Progress$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Progress$1.displayName = PROGRESS_NAME;
-var INDICATOR_NAME = "ProgressIndicator";
+var INDICATOR_NAME$1 = "ProgressIndicator";
 var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeProgress, ...indicatorProps } = props;
-	const context = useProgressContext(INDICATOR_NAME, __scopeProgress);
+	const context = useProgressContext(INDICATOR_NAME$1, __scopeProgress);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
 		"data-state": getProgressState(context.value, context.max),
 		"data-value": context.value ?? void 0,
@@ -31818,7 +31840,7 @@ var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-ProgressIndicator.displayName = INDICATOR_NAME;
+ProgressIndicator.displayName = INDICATOR_NAME$1;
 function defaultGetValueLabel(value, max$6) {
 	return `${Math.round(value / max$6 * 100)}%`;
 }
@@ -31942,12 +31964,12 @@ var require_isObject = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 var require_isFunction = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var baseGetTag$7 = require__baseGetTag(), isObject$10 = require_isObject();
 	var asyncTag = "[object AsyncFunction]", funcTag$1 = "[object Function]", genTag = "[object GeneratorFunction]", proxyTag = "[object Proxy]";
-	function isFunction$25(value) {
+	function isFunction$26(value) {
 		if (!isObject$10(value)) return false;
 		var tag = baseGetTag$7(value);
 		return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
 	}
-	module.exports = isFunction$25;
+	module.exports = isFunction$26;
 }));
 var require__coreJsData = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__root()["__core-js_shared__"];
@@ -31979,7 +32001,7 @@ var require__toSource = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = toSource$2;
 }));
 var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isFunction$24 = require_isFunction(), isMasked = require__isMasked(), isObject$9 = require_isObject(), toSource$1 = require__toSource();
+	var isFunction$25 = require_isFunction(), isMasked = require__isMasked(), isObject$9 = require_isObject(), toSource$1 = require__toSource();
 	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 	var funcProto$1 = Function.prototype, objectProto$3 = Object.prototype;
@@ -31988,7 +32010,7 @@ var require__baseIsNative = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	var reIsNative = RegExp("^" + funcToString$1.call(hasOwnProperty$10).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
 	function baseIsNative$1(value) {
 		if (!isObject$9(value) || isMasked(value)) return false;
-		return (isFunction$24(value) ? reIsNative : reIsHostCtor).test(toSource$1(value));
+		return (isFunction$25(value) ? reIsNative : reIsHostCtor).test(toSource$1(value));
 	}
 	module.exports = baseIsNative$1;
 }));
@@ -32429,7 +32451,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		var ContextProvider = REACT_PROVIDER_TYPE;
 		var Element$1 = REACT_ELEMENT_TYPE;
 		var ForwardRef = REACT_FORWARD_REF_TYPE;
-		var Fragment$3 = REACT_FRAGMENT_TYPE;
+		var Fragment$4 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
 		var Portal$5 = REACT_PORTAL_TYPE;
@@ -32493,7 +32515,7 @@ var require_react_is_development$1 = /* @__PURE__ */ __commonJSMin(((exports) =>
 		exports.ContextProvider = ContextProvider;
 		exports.Element = Element$1;
 		exports.ForwardRef = ForwardRef;
-		exports.Fragment = Fragment$3;
+		exports.Fragment = Fragment$4;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
 		exports.Portal = Portal$5;
@@ -35209,9 +35231,9 @@ var require__baseKeys = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = baseKeys$1;
 }));
 var require_isArrayLike = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var isFunction$21 = require_isFunction(), isLength$1 = require_isLength();
+	var isFunction$22 = require_isFunction(), isLength$1 = require_isLength();
 	function isArrayLike$5(value) {
-		return value != null && isLength$1(value.length) && !isFunction$21(value);
+		return value != null && isLength$1(value.length) && !isFunction$22(value);
 	}
 	module.exports = isArrayLike$5;
 }));
@@ -44113,7 +44135,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var ContextProvider = REACT_PROVIDER_TYPE;
 		var Element$1 = REACT_ELEMENT_TYPE;
 		var ForwardRef = REACT_FORWARD_REF_TYPE;
-		var Fragment$3 = REACT_FRAGMENT_TYPE;
+		var Fragment$4 = REACT_FRAGMENT_TYPE;
 		var Lazy = REACT_LAZY_TYPE$1;
 		var Memo = REACT_MEMO_TYPE;
 		var Portal$5 = REACT_PORTAL_TYPE;
@@ -44170,7 +44192,7 @@ var require_react_is_development = /* @__PURE__ */ __commonJSMin(((exports) => {
 		exports.ContextProvider = ContextProvider;
 		exports.Element = Element$1;
 		exports.ForwardRef = ForwardRef;
-		exports.Fragment = Fragment$3;
+		exports.Fragment = Fragment$4;
 		exports.Lazy = Lazy;
 		exports.Memo = Memo;
 		exports.Portal = Portal$5;
@@ -56027,10 +56049,10 @@ var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 TabsList$1.displayName = TAB_LIST_NAME;
-var TRIGGER_NAME = "TabsTrigger";
+var TRIGGER_NAME$1 = "TabsTrigger";
 var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
-	const context = useTabsContext(TRIGGER_NAME, __scopeTabs);
+	const context = useTabsContext(TRIGGER_NAME$1, __scopeTabs);
 	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
 	const triggerId = makeTriggerId(context.baseId, value);
 	const contentId = makeContentId(context.baseId, value);
@@ -56065,7 +56087,7 @@ var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TabsTrigger$1.displayName = TRIGGER_NAME;
+TabsTrigger$1.displayName = TRIGGER_NAME$1;
 var CONTENT_NAME = "TabsContent";
 var TabsContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
@@ -56816,7 +56838,7 @@ var [SwitchProvider, useSwitchContext] = createSwitchContext(SWITCH_NAME);
 var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSwitch, name, checked: checkedProp, defaultChecked, required, disabled, value = "on", onCheckedChange, form, ...switchProps } = props;
 	const [button, setButton] = import_react.useState(null);
-	const composedRefs = useComposedRefs$1(forwardedRef, (node) => setButton(node));
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
 	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
 	const isFormControl = button ? form || !!button.closest("form") : true;
 	const [checked, setChecked] = useControllableState({
@@ -56834,7 +56856,7 @@ var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
 			role: "switch",
 			"aria-checked": checked,
 			"aria-required": required,
-			"data-state": getState(checked),
+			"data-state": getState$1(checked),
 			"data-disabled": disabled ? "" : void 0,
 			disabled,
 			value,
@@ -56866,17 +56888,17 @@ var SwitchThumb = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSwitch, ...thumbProps } = props;
 	const context = useSwitchContext(THUMB_NAME, __scopeSwitch);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
-		"data-state": getState(context.checked),
+		"data-state": getState$1(context.checked),
 		"data-disabled": context.disabled ? "" : void 0,
 		...thumbProps,
 		ref: forwardedRef
 	});
 });
 SwitchThumb.displayName = THUMB_NAME;
-var BUBBLE_INPUT_NAME = "SwitchBubbleInput";
+var BUBBLE_INPUT_NAME$1 = "SwitchBubbleInput";
 var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, checked, bubbles = true, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
-	const composedRefs = useComposedRefs$1(ref, forwardedRef);
+	const composedRefs = useComposedRefs(ref, forwardedRef);
 	const prevChecked = usePrevious(checked);
 	const controlSize = useSize(control);
 	import_react.useEffect(() => {
@@ -56911,8 +56933,8 @@ var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, check
 		}
 	});
 });
-SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME;
-function getState(checked) {
+SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
+function getState$1(checked) {
 	return checked ? "checked" : "unchecked";
 }
 var Root$3 = Switch$1;
@@ -63476,7 +63498,7 @@ function setRef(ref, value) {
 function composeRefs(...refs) {
 	return (node) => refs.forEach((ref) => setRef(ref, node));
 }
-function useComposedRefs(...refs) {
+function useComposedRefs$1(...refs) {
 	return import_react.useCallback(composeRefs(...refs), refs);
 }
 var cache = /* @__PURE__ */ new WeakMap();
@@ -64263,7 +64285,7 @@ function Root$1({ open: openProp, onOpenChange, children, onDrag: onDragProp, on
 }
 var Overlay = /* @__PURE__ */ import_react.forwardRef(function({ ...rest }, ref) {
 	const { overlayRef, snapPoints, onRelease, shouldFade, isOpen, modal, shouldAnimate } = useDrawerContext();
-	const composedRef = useComposedRefs(ref, overlayRef);
+	const composedRef = useComposedRefs$1(ref, overlayRef);
 	const hasSnapPoints = snapPoints && snapPoints.length > 0;
 	if (!modal) return null;
 	const onMouseUp = import_react.useCallback((event) => onRelease(event), [onRelease]);
@@ -64281,7 +64303,7 @@ Overlay.displayName = "Drawer.Overlay";
 var Content = /* @__PURE__ */ import_react.forwardRef(function({ onPointerDownOutside, style, onOpenAutoFocus, ...rest }, ref) {
 	const { drawerRef, onPress, onRelease, onDrag, keyboardIsOpen, snapPointsOffset, activeSnapPointIndex, modal, isOpen, direction, snapPoints, container, handleOnly, shouldAnimate, autoFocus } = useDrawerContext();
 	const [delayedSnapPoints, setDelayedSnapPoints] = import_react.useState(false);
-	const composedRef = useComposedRefs(ref, drawerRef);
+	const composedRef = useComposedRefs$1(ref, drawerRef);
 	const pointerStartRef = import_react.useRef(null);
 	const lastKnownPointerEventRef = import_react.useRef(null);
 	const wasBeyondThePointRef = import_react.useRef(false);
@@ -65521,7 +65543,7 @@ function PriceAlertModal() {
 											value: targetPrice,
 											onChange: (e) => setTargetPrice(e.target.value),
 											className: "pl-9",
-											placeholder: "Ex: 260.00"
+											placeholder: "Ex: 270.00"
 										})]
 									})]
 								})]
@@ -65885,12 +65907,61 @@ function ExportMenu({ onExportCSV, onExportPDF, className, label = "Exportar" })
 		})]
 	})] });
 }
+var STORAGE_KEY = "@fazenda-simulations";
+function useSimulationStore() {
+	const [simulations, setSimulations] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return [];
+	});
+	(0, import_react.useEffect)(() => {
+		const handleUpdate = () => {
+			try {
+				const saved = localStorage.getItem(STORAGE_KEY);
+				if (saved) setSimulations(JSON.parse(saved));
+			} catch (e) {
+				console.error(e);
+			}
+		};
+		window.addEventListener("simulations-updated", handleUpdate);
+		return () => window.removeEventListener("simulations-updated", handleUpdate);
+	}, []);
+	return {
+		simulations,
+		addSimulation: (0, import_react.useCallback)((sim) => {
+			setSimulations((prev) => {
+				const updated = [{
+					...sim,
+					id: crypto.randomUUID(),
+					date: (/* @__PURE__ */ new Date()).toISOString()
+				}, ...prev];
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+				window.dispatchEvent(new Event("simulations-updated"));
+				return updated;
+			});
+		}, []),
+		deleteSimulation: (0, import_react.useCallback)((id) => {
+			setSimulations((prev) => {
+				const updated = prev.filter((s$1) => s$1.id !== id);
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+				window.dispatchEvent(new Event("simulations-updated"));
+				return updated;
+			});
+		}, [])
+	};
+}
 function SalesSimulator() {
 	const { marketData } = useMarket();
+	const { addSimulation } = useSimulationStore();
+	const { toast: toast$2 } = useToast();
 	const [category, setCategory] = (0, import_react.useState)(marketData[0]?.id || "");
 	const [weight, setWeight] = (0, import_react.useState)(540);
-	const [productionCost, setProductionCost] = (0, import_react.useState)(2500);
-	const [salesPrice, setSalesPrice] = (0, import_react.useState)(marketData[0]?.price || 215);
+	const [productionCost, setProductionCost] = (0, import_react.useState)(3200);
+	const [salesPrice, setSalesPrice] = (0, import_react.useState)(marketData[0]?.price || 265.5);
 	(0, import_react.useEffect)(() => {
 		if (!category && marketData.length > 0) setCategory(marketData[0].id);
 	}, [marketData, category]);
@@ -65919,6 +65990,22 @@ function SalesSimulator() {
 		salesPrice,
 		productionCost
 	]);
+	const handleSave = () => {
+		addSimulation({
+			category: marketData.find((m) => m.id === category)?.label || category,
+			weight,
+			salesPrice,
+			productionCost,
+			arrobas: results.arrobas,
+			revenue: results.revenue,
+			profit: results.profit,
+			margin: results.margin
+		});
+		toast$2({
+			title: "Simulação Salva",
+			description: "O cenário foi adicionado ao histórico para comparação."
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "border-primary/20 shadow-sm animate-fade-in-up mt-6 print:hidden",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
@@ -65982,88 +66069,621 @@ function SalesSimulator() {
 					]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "bg-muted/40 rounded-xl p-6 border flex flex-col justify-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-						className: "text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4",
-						children: "Resultado da Projeção"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-3",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between items-center pb-3 border-b border-border/50",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-sm text-muted-foreground",
-									children: "Rendimento Estimado (50%)"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-medium",
-									children: [results.arrobas.toFixed(1), " @"]
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between items-center pb-3 border-b border-border/50",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-sm text-muted-foreground",
-									children: "Receita Bruta Projetada"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-medium",
-									children: [
-										"R$",
-										" ",
-										results.revenue.toLocaleString("pt-BR", {
-											minimumFractionDigits: 2,
-											maximumFractionDigits: 2
-										})
-									]
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between items-center pb-3 border-b border-border/50",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-sm text-muted-foreground",
-									children: "Custo de Produção"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-medium text-destructive",
-									children: [
-										"- R$",
-										" ",
-										productionCost.toLocaleString("pt-BR", {
-											minimumFractionDigits: 2,
-											maximumFractionDigits: 2
-										})
-									]
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between items-end pt-3",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-bold text-base",
-									children: "Lucro Líquido Estimado"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "text-right",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: cn("font-bold text-2xl tracking-tight", results.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							className: "text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4",
+							children: "Resultado da Projeção"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-3",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between items-center pb-3 border-b border-border/50",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm text-muted-foreground",
+										children: "Rendimento Estimado (50%)"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-medium",
+										children: [results.arrobas.toFixed(1), " @"]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between items-center pb-3 border-b border-border/50",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm text-muted-foreground",
+										children: "Receita Bruta Projetada"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-medium",
 										children: [
 											"R$",
 											" ",
-											results.profit.toLocaleString("pt-BR", {
+											results.revenue.toLocaleString("pt-BR", {
 												minimumFractionDigits: 2,
 												maximumFractionDigits: 2
 											})
 										]
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: cn("text-xs font-semibold flex items-center justify-end gap-1 mt-1", results.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between items-center pb-3 border-b border-border/50",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm text-muted-foreground",
+										children: "Custo de Produção"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-medium text-destructive",
 										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3.5 w-3.5" }),
-											" Margem: ",
-											results.margin.toFixed(1),
-											"%"
+											"- R$",
+											" ",
+											productionCost.toLocaleString("pt-BR", {
+												minimumFractionDigits: 2,
+												maximumFractionDigits: 2
+											})
 										]
 									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between items-end pt-3",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold text-base",
+										children: "Lucro Líquido Estimado"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "text-right",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: cn("font-bold text-2xl tracking-tight", results.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+											children: [
+												"R$",
+												" ",
+												results.profit.toLocaleString("pt-BR", {
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2
+												})
+											]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: cn("text-xs font-semibold flex items-center justify-end gap-1 mt-1", results.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3.5 w-3.5" }),
+												" Margem: ",
+												results.margin.toFixed(1),
+												"%"
+											]
+										})]
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							className: "w-full mt-6 gap-2",
+							onClick: handleSave,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), "Salvar Simulação no Histórico"]
+						})
+					]
+				})]
+			})
+		})]
+	});
+}
+var CHECKBOX_NAME = "Checkbox";
+var [createCheckboxContext, createCheckboxScope] = createContextScope(CHECKBOX_NAME);
+var [CheckboxProviderImpl, useCheckboxContext] = createCheckboxContext(CHECKBOX_NAME);
+function CheckboxProvider(props) {
+	const { __scopeCheckbox, checked: checkedProp, children, defaultChecked, disabled, form, name, onCheckedChange, required, value = "on", internal_do_not_use_render } = props;
+	const [checked, setChecked] = useControllableState({
+		prop: checkedProp,
+		defaultProp: defaultChecked ?? false,
+		onChange: onCheckedChange,
+		caller: CHECKBOX_NAME
+	});
+	const [control, setControl] = import_react.useState(null);
+	const [bubbleInput, setBubbleInput] = import_react.useState(null);
+	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
+	const isFormControl = control ? !!form || !!control.closest("form") : true;
+	const context = {
+		checked,
+		disabled,
+		setChecked,
+		control,
+		setControl,
+		name,
+		form,
+		value,
+		hasConsumerStoppedPropagationRef,
+		required,
+		defaultChecked: isIndeterminate(defaultChecked) ? false : defaultChecked,
+		isFormControl,
+		bubbleInput,
+		setBubbleInput
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxProviderImpl, {
+		scope: __scopeCheckbox,
+		...context,
+		children: isFunction(internal_do_not_use_render) ? internal_do_not_use_render(context) : children
+	});
+}
+var TRIGGER_NAME = "CheckboxTrigger";
+var CheckboxTrigger = import_react.forwardRef(({ __scopeCheckbox, onKeyDown, onClick, ...checkboxProps }, forwardedRef) => {
+	const { control, value, disabled, checked, required, setControl, setChecked, hasConsumerStoppedPropagationRef, isFormControl, bubbleInput } = useCheckboxContext(TRIGGER_NAME, __scopeCheckbox);
+	const composedRefs = useComposedRefs(forwardedRef, setControl);
+	const initialCheckedStateRef = import_react.useRef(checked);
+	import_react.useEffect(() => {
+		const form = control?.form;
+		if (form) {
+			const reset$1 = () => setChecked(initialCheckedStateRef.current);
+			form.addEventListener("reset", reset$1);
+			return () => form.removeEventListener("reset", reset$1);
+		}
+	}, [control, setChecked]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+		type: "button",
+		role: "checkbox",
+		"aria-checked": isIndeterminate(checked) ? "mixed" : checked,
+		"aria-required": required,
+		"data-state": getState(checked),
+		"data-disabled": disabled ? "" : void 0,
+		disabled,
+		value,
+		...checkboxProps,
+		ref: composedRefs,
+		onKeyDown: composeEventHandlers(onKeyDown, (event) => {
+			if (event.key === "Enter") event.preventDefault();
+		}),
+		onClick: composeEventHandlers(onClick, (event) => {
+			setChecked((prevChecked) => isIndeterminate(prevChecked) ? true : !prevChecked);
+			if (bubbleInput && isFormControl) {
+				hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+				if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
+			}
+		})
+	});
+});
+CheckboxTrigger.displayName = TRIGGER_NAME;
+var Checkbox$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeCheckbox, name, checked, defaultChecked, required, disabled, value, onCheckedChange, form, ...checkboxProps } = props;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxProvider, {
+		__scopeCheckbox,
+		checked,
+		defaultChecked,
+		disabled,
+		required,
+		onCheckedChange,
+		name,
+		form,
+		value,
+		internal_do_not_use_render: ({ isFormControl }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxTrigger, {
+			...checkboxProps,
+			ref: forwardedRef,
+			__scopeCheckbox
+		}), isFormControl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxBubbleInput, { __scopeCheckbox })] })
+	});
+});
+Checkbox$1.displayName = CHECKBOX_NAME;
+var INDICATOR_NAME = "CheckboxIndicator";
+var CheckboxIndicator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeCheckbox, forceMount, ...indicatorProps } = props;
+	const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || isIndeterminate(context.checked) || context.checked === true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
+			"data-state": getState(context.checked),
+			"data-disabled": context.disabled ? "" : void 0,
+			...indicatorProps,
+			ref: forwardedRef,
+			style: {
+				pointerEvents: "none",
+				...props.style
+			}
+		})
+	});
+});
+CheckboxIndicator.displayName = INDICATOR_NAME;
+var BUBBLE_INPUT_NAME = "CheckboxBubbleInput";
+var CheckboxBubbleInput = import_react.forwardRef(({ __scopeCheckbox, ...props }, forwardedRef) => {
+	const { control, hasConsumerStoppedPropagationRef, checked, defaultChecked, required, disabled, name, value, form, bubbleInput, setBubbleInput } = useCheckboxContext(BUBBLE_INPUT_NAME, __scopeCheckbox);
+	const composedRefs = useComposedRefs(forwardedRef, setBubbleInput);
+	const prevChecked = usePrevious(checked);
+	const controlSize = useSize(control);
+	import_react.useEffect(() => {
+		const input = bubbleInput;
+		if (!input) return;
+		const inputProto = window.HTMLInputElement.prototype;
+		const setChecked = Object.getOwnPropertyDescriptor(inputProto, "checked").set;
+		const bubbles = !hasConsumerStoppedPropagationRef.current;
+		if (prevChecked !== checked && setChecked) {
+			const event = new Event("click", { bubbles });
+			input.indeterminate = isIndeterminate(checked);
+			setChecked.call(input, isIndeterminate(checked) ? false : checked);
+			input.dispatchEvent(event);
+		}
+	}, [
+		bubbleInput,
+		prevChecked,
+		checked,
+		hasConsumerStoppedPropagationRef
+	]);
+	const defaultCheckedRef = import_react.useRef(isIndeterminate(checked) ? false : checked);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.input, {
+		type: "checkbox",
+		"aria-hidden": true,
+		defaultChecked: defaultChecked ?? defaultCheckedRef.current,
+		required,
+		disabled,
+		name,
+		value,
+		form,
+		...props,
+		tabIndex: -1,
+		ref: composedRefs,
+		style: {
+			...props.style,
+			...controlSize,
+			position: "absolute",
+			pointerEvents: "none",
+			opacity: 0,
+			margin: 0,
+			transform: "translateX(-100%)"
+		}
+	});
+});
+CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME;
+function isFunction(value) {
+	return typeof value === "function";
+}
+function isIndeterminate(checked) {
+	return checked === "indeterminate";
+}
+function getState(checked) {
+	return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
+}
+var Checkbox = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox$1, {
+	ref,
+	className: cn("peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground", className),
+	...props,
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckboxIndicator, {
+		className: cn("flex items-center justify-center text-current"),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" })
+	})
+}));
+Checkbox.displayName = Checkbox$1.displayName;
+function SimulationComparison({ simA, simB }) {
+	const diffProfit = simB.profit - simA.profit;
+	const diffMargin = simB.margin - simA.margin;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "border-primary/20 shadow-md bg-primary/5 animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+			className: "pb-3 border-b border-primary/10",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "text-lg flex items-center gap-2 text-primary",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GitCompare, { className: "h-5 w-5" }), "Análise Comparativa de Cenários"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "pt-6",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-1 md:grid-cols-3 gap-6",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4 p-4 rounded-lg bg-background border shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h4", {
+							className: "font-semibold text-center border-b pb-2 text-muted-foreground flex justify-between items-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Cenário A" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs font-normal opacity-70",
+								children: new Date(simA.date).toLocaleDateString("pt-BR")
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2 text-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Categoria:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-medium",
+											children: simA.category
+										})
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Peso (kg):"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [simA.weight, "kg"] })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Preço/Arroba:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["R$ ", simA.salesPrice.toFixed(2)] })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Custo Prod:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["R$ ", simA.productionCost.toFixed(2)] })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between font-semibold pt-2 border-t",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Lucro L.:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: simA.profit >= 0 ? "text-emerald-600" : "text-destructive",
+											children: ["R$ ", simA.profit.toFixed(2)]
+										})
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between font-semibold",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Margem:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [simA.margin.toFixed(1), "%"] })
+									]
+								})
+							]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4 p-4 rounded-lg bg-background border shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h4", {
+							className: "font-semibold text-center border-b pb-2 text-muted-foreground flex justify-between items-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Cenário B" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs font-normal opacity-70",
+								children: new Date(simB.date).toLocaleDateString("pt-BR")
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2 text-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Categoria:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-medium",
+											children: simB.category
+										})
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Peso (kg):"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [simB.weight, "kg"] })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Preço/Arroba:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["R$ ", simB.salesPrice.toFixed(2)] })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Custo Prod:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["R$ ", simB.productionCost.toFixed(2)] })
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between font-semibold pt-2 border-t",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Lucro L.:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: simB.profit >= 0 ? "text-emerald-600" : "text-destructive",
+											children: ["R$ ", simB.profit.toFixed(2)]
+										})
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between font-semibold",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground",
+											children: "Margem:"
+										}),
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [simB.margin.toFixed(1), "%"] })
+									]
+								})
+							]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col justify-center items-center space-y-4 p-4 rounded-lg bg-primary/10 border border-primary/20 shadow-sm",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "font-bold text-center text-primary uppercase tracking-wider text-sm w-full border-b border-primary/10 pb-2",
+								children: "Impacto (B vs A)"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-center w-full",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-xs text-muted-foreground mb-1 font-medium",
+									children: "Variação de Lucro"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: cn("text-2xl font-bold flex items-center justify-center gap-2", diffProfit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+									children: [
+										diffProfit > 0 ? "+" : "",
+										"R$ ",
+										diffProfit.toFixed(2),
+										diffProfit > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5" }) : diffProfit < 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-5 w-5" }) : null
+									]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-center w-full pt-4 border-t border-primary/10",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-xs text-muted-foreground mb-1 font-medium",
+									children: "Variação de Margem"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: cn("text-xl font-bold flex items-center justify-center gap-2", diffMargin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+									children: [
+										diffMargin > 0 ? "+" : "",
+										diffMargin.toFixed(1),
+										"%",
+										diffMargin > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-4 w-4" }) : diffMargin < 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-4 w-4" }) : null
+									]
 								})]
 							})
 						]
-					})]
-				})]
+					})
+				]
 			})
+		})]
+	});
+}
+function SimulationHistory() {
+	const { simulations, deleteSimulation } = useSimulationStore();
+	const [selected, setSelected] = (0, import_react.useState)([]);
+	const toggleSelect = (id) => {
+		setSelected((prev) => {
+			if (prev.includes(id)) return prev.filter((p) => p !== id);
+			if (prev.length >= 2) return [prev[1], id];
+			return [...prev, id];
+		});
+	};
+	const selectedSims = (0, import_react.useMemo)(() => selected.map((id) => simulations.find((s$1) => s$1.id === id)).filter(Boolean), [selected, simulations]);
+	if (simulations.length === 0) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 mt-6 print:hidden animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+			className: "flex flex-row items-center justify-between pb-2",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "flex items-center gap-2 text-lg",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-5 w-5 text-primary" }), "Histórico de Simulações"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Selecione até 2 simulações para comparar os cenários de margem." })] })
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "overflow-x-auto border rounded-md",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, {
+				className: "bg-muted/50",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "w-[40px] text-center" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Peso (kg)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Preço Venda"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Custo Prod"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Lucro L."
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Margem"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "text-right w-[60px]" })
+				] })
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: simulations.map((sim) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+				className: selected.includes(sim.id) ? "bg-primary/5" : "",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox, {
+							checked: selected.includes(sim.id),
+							onCheckedChange: () => toggleSelect(sim.id),
+							disabled: !selected.includes(sim.id) && selected.length >= 2
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "whitespace-nowrap text-xs text-muted-foreground",
+						children: new Date(sim.date).toLocaleDateString("pt-BR", {
+							day: "2-digit",
+							month: "short",
+							hour: "2-digit",
+							minute: "2-digit"
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium text-xs",
+						children: sim.category
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right text-xs",
+						children: sim.weight
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right text-xs",
+						children: ["R$ ", sim.salesPrice.toFixed(2)]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right text-xs",
+						children: ["R$ ", sim.productionCost.toFixed(2)]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: `text-right font-semibold text-xs ${sim.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
+						children: ["R$ ", sim.profit.toFixed(2)]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: `text-right font-medium text-xs ${sim.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
+						children: [sim.margin.toFixed(1), "%"]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							onClick: () => deleteSimulation(sim.id),
+							className: "text-muted-foreground hover:text-destructive h-7 w-7",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+						})
+					})
+				]
+			}, sim.id)) })] })
+		}) })] }), selectedSims.length === 2 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SimulationComparison, {
+			simA: selectedSims[0],
+			simB: selectedSims[1]
 		})]
 	});
 }
@@ -66096,7 +66716,7 @@ function ProjecaoVendas() {
 	const { getPrice, b3Data, marketData } = useMarket();
 	const [selectedMarketId, setSelectedMarketId] = (0, import_react.useState)("boi-gordo-mt");
 	const [selectedMarketLabel, setSelectedMarketLabel] = (0, import_react.useState)("Boi Gordo - MT");
-	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(215.5);
+	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(265.5);
 	const [targetWeight, setTargetWeight] = (0, import_react.useState)(540);
 	const { toast: toast$2 } = useToast();
 	(0, import_react.useEffect)(() => {
@@ -66228,8 +66848,9 @@ function ProjecaoVendas() {
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketTrendsChart, {})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesSimulator, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SimulationHistory, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 sm:grid-cols-3 print:grid-cols-3",
+				className: "grid gap-4 sm:grid-cols-3 print:grid-cols-3 mt-6",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 						className: "bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all",
@@ -66313,7 +66934,7 @@ function ProjecaoVendas() {
 				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "print:border-none print:shadow-none",
+				className: "print:border-none print:shadow-none mt-6",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 					className: "flex flex-row items-start justify-between",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -67591,4 +68212,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DxSJQXqr.js.map
+//# sourceMappingURL=index-BUqgHpYk.js.map

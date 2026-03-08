@@ -9,17 +9,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { useMarket } from '@/contexts/MarketContext'
-import { Calculator, TrendingUp, DollarSign } from 'lucide-react'
+import useSimulationStore from '@/stores/useSimulationStore'
+import { Calculator, TrendingUp, DollarSign, Save } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 
 export function SalesSimulator() {
   const { marketData } = useMarket()
+  const { addSimulation } = useSimulationStore()
+  const { toast } = useToast()
 
   const [category, setCategory] = useState(marketData[0]?.id || '')
   const [weight, setWeight] = useState(540)
-  const [productionCost, setProductionCost] = useState(2500)
-  const [salesPrice, setSalesPrice] = useState(marketData[0]?.price || 215)
+  const [productionCost, setProductionCost] = useState(3200)
+  const [salesPrice, setSalesPrice] = useState(marketData[0]?.price || 265.5)
 
   useEffect(() => {
     if (!category && marketData.length > 0) {
@@ -46,6 +51,23 @@ export function SalesSimulator() {
 
     return { arrobas, revenue, profit, margin }
   }, [weight, salesPrice, productionCost])
+
+  const handleSave = () => {
+    addSimulation({
+      category: marketData.find((m) => m.id === category)?.label || category,
+      weight,
+      salesPrice,
+      productionCost,
+      arrobas: results.arrobas,
+      revenue: results.revenue,
+      profit: results.profit,
+      margin: results.margin,
+    })
+    toast({
+      title: 'Simulação Salva',
+      description: 'O cenário foi adicionado ao histórico para comparação.',
+    })
+  }
 
   return (
     <Card className="border-primary/20 shadow-sm animate-fade-in-up mt-6 print:hidden">
@@ -178,6 +200,11 @@ export function SalesSimulator() {
                 </div>
               </div>
             </div>
+
+            <Button className="w-full mt-6 gap-2" onClick={handleSave}>
+              <Save className="h-4 w-4" />
+              Salvar Simulação no Histórico
+            </Button>
           </div>
         </div>
       </CardContent>
