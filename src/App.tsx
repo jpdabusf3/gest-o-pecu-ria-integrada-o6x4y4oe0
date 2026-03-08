@@ -24,6 +24,7 @@ import ProjecaoVendas from './pages/ProjecaoVendas'
 import Equipe from './pages/Equipe'
 import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
+import BI from './pages/BI'
 import NotFound from './pages/NotFound'
 
 const App = () => (
@@ -49,6 +50,7 @@ const App = () => (
                     <Route path="/sanidade" element={<Sanidade />} />
                     <Route path="/calendario" element={<Calendario />} />
                     <Route path="/relatorios" element={<Relatorios />} />
+                    <Route path="/bi" element={<BI />} />
                     <Route path="/animal/:id" element={<AnimalProfile />} />
                     <Route path="/projecoes" element={<ProjecaoVendas />} />
                     <Route path="/equipe" element={<Equipe />} />

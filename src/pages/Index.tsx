@@ -18,7 +18,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Activity, Plus, Beef, Wallet, TrendingUp, TrendingDown, Map } from 'lucide-react'
+import {
+  Activity,
+  Plus,
+  Beef,
+  Wallet,
+  TrendingUp,
+  TrendingDown,
+  Map,
+  LineChart,
+} from 'lucide-react'
 import { dashboardData, herdSummary, productionGoals, farmRegistry } from '@/data/mock'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
@@ -26,6 +35,7 @@ import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
+import { Link } from 'react-router-dom'
 
 function GoalDialog() {
   const [open, setOpen] = useState(false)
@@ -98,6 +108,12 @@ export default function Index() {
           <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard Geral</h2>
           <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
         </div>
+        <Button asChild className="gap-2 w-full sm:w-auto shadow-sm">
+          <Link to="/bi">
+            <LineChart className="h-4 w-4" />
+            Acessar BI Dinâmico
+          </Link>
+        </Button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">

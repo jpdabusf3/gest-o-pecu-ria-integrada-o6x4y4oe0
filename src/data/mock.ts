@@ -909,3 +909,77 @@ export const performanceGoalsList = [
   { id: 'G3', title: 'GMD Confinamento > 1.4kg/dia no lote total', points: 150 },
   { id: 'G4', title: 'Taxa de Prenhez > 85% na estação', points: 120 },
 ]
+
+export const biMetricsList = [
+  { id: 'ganhoPeso', name: 'GMD Médio Rebanho', color: 'hsl(var(--chart-1))', unit: 'kg' },
+  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R$' },
+  {
+    id: 'custoManutencao',
+    name: 'Custo Manutenção Frota',
+    color: 'hsl(var(--chart-3))',
+    unit: 'R$',
+  },
+  { id: 'arrobasProduzidas', name: 'Arrobas Produzidas', color: 'hsl(var(--chart-4))', unit: '@' },
+  { id: 'custoNutricao', name: 'Custo Nutrição', color: 'hsl(var(--chart-5))', unit: 'R$' },
+]
+
+export const biData = [
+  {
+    period: 'Jan',
+    ganhoPeso: 1.1,
+    custoCombustivel: 12000,
+    custoManutencao: 4500,
+    arrobasProduzidas: 850,
+    custoNutricao: 35000,
+  },
+  {
+    period: 'Fev',
+    ganhoPeso: 1.2,
+    custoCombustivel: 13500,
+    custoManutencao: 2100,
+    arrobasProduzidas: 900,
+    custoNutricao: 38000,
+  },
+  {
+    period: 'Mar',
+    ganhoPeso: 1.35,
+    custoCombustivel: 11000,
+    custoManutencao: 5200,
+    arrobasProduzidas: 1100,
+    custoNutricao: 42000,
+  },
+  {
+    period: 'Abr',
+    ganhoPeso: 1.45,
+    custoCombustivel: 14000,
+    custoManutencao: 1800,
+    arrobasProduzidas: 1250,
+    custoNutricao: 45000,
+  },
+  {
+    period: 'Mai',
+    ganhoPeso: 1.4,
+    custoCombustivel: 15500,
+    custoManutencao: 3000,
+    arrobasProduzidas: 1300,
+    custoNutricao: 48000,
+  },
+  {
+    period: 'Jun',
+    ganhoPeso: 1.5,
+    custoCombustivel: 16000,
+    custoManutencao: 2500,
+    arrobasProduzidas: 1450,
+    custoNutricao: 50000,
+  },
+]
+
+export const defaultSavedReports = [
+  {
+    id: 'R1',
+    name: 'Combustível vs Produtividade',
+    m1: 'arrobasProduzidas',
+    m2: 'custoCombustivel',
+  },
+  { id: 'R2', name: 'GMD vs Custo Nutrição', m1: 'custoNutricao', m2: 'ganhoPeso' },
+]
