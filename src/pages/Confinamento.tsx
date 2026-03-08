@@ -15,12 +15,13 @@ import { Wheat, TrendingUp, Scale, Plus } from 'lucide-react'
 
 export default function Confinamento() {
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Gestão de Confinamento</h2>
           <p className="text-muted-foreground mt-1">
-            Módulo dedicado para controle intensivo de engorda, dietas e performance.
+            Módulo dedicado para controle intensivo de engorda, dietas e performance por
+            baia/curral.
           </p>
         </div>
         <Button className="gap-2">
@@ -70,16 +71,22 @@ export default function Confinamento() {
       </div>
 
       <Tabs defaultValue="lotes" className="space-y-6">
-        <TabsList className="overflow-x-auto justify-start w-full sm:w-auto">
-          <TabsTrigger value="lotes">Lotes em Confinamento</TabsTrigger>
-          <TabsTrigger value="dietas">Dietas e Protocolos</TabsTrigger>
-          <TabsTrigger value="estoque">Estoque de Insumos</TabsTrigger>
+        <TabsList className="overflow-x-auto justify-start w-full sm:w-auto h-auto py-1.5 p-1">
+          <TabsTrigger value="lotes" className="py-2">
+            Lotes em Confinamento
+          </TabsTrigger>
+          <TabsTrigger value="dietas" className="py-2">
+            Dietas e Protocolos
+          </TabsTrigger>
+          <TabsTrigger value="estoque" className="py-2">
+            Estoque de Insumos
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="lotes" className="space-y-6 mt-0">
           <Card>
             <CardHeader>
-              <CardTitle>Acompanhamento de Lotes</CardTitle>
+              <CardTitle>Acompanhamento de Baias e Lotes</CardTitle>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
               <div className="overflow-x-auto">
@@ -87,11 +94,12 @@ export default function Confinamento() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Lote ID</TableHead>
-                      <TableHead>Categoria</TableHead>
+                      <TableHead>Curral/Baia</TableHead>
                       <TableHead className="text-right">Cabeças</TableHead>
-                      <TableHead className="text-right">Dias Confinado</TableHead>
-                      <TableHead className="text-right">Peso Médio</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Peso Méd.</TableHead>
                       <TableHead className="text-right">GMD</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Cons. (% PV)</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Cons. (kg/dia)</TableHead>
                       <TableHead>Dieta Atual</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
@@ -99,17 +107,26 @@ export default function Confinamento() {
                   <TableBody>
                     {confinementData.lotes.map((lote) => (
                       <TableRow key={lote.id}>
-                        <TableCell className="font-medium text-primary">{lote.id}</TableCell>
-                        <TableCell>{lote.categoria}</TableCell>
+                        <TableCell className="font-medium text-primary whitespace-nowrap">
+                          {lote.id}
+                        </TableCell>
+                        <TableCell className="font-medium text-muted-foreground whitespace-nowrap">
+                          {lote.curral}
+                        </TableCell>
                         <TableCell className="text-right">{lote.cabecas}</TableCell>
-                        <TableCell className="text-right">{lote.diasConfinamento}</TableCell>
-                        <TableCell className="text-right font-medium">
+                        <TableCell className="text-right font-medium whitespace-nowrap">
                           {lote.pesoMedio} kg
                         </TableCell>
-                        <TableCell className="text-right font-bold text-primary">
+                        <TableCell className="text-right font-bold text-primary whitespace-nowrap">
                           {lote.gmd} kg
                         </TableCell>
-                        <TableCell>{lote.dieta}</TableCell>
+                        <TableCell className="text-right text-muted-foreground">
+                          {lote.consumoPercentual}%
+                        </TableCell>
+                        <TableCell className="text-right font-mono whitespace-nowrap">
+                          {lote.consumoKg} kg
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">{lote.dieta}</TableCell>
                         <TableCell>
                           <Badge
                             variant={
@@ -119,6 +136,7 @@ export default function Confinamento() {
                                   ? 'secondary'
                                   : 'destructive'
                             }
+                            className="whitespace-nowrap"
                           >
                             {lote.status}
                           </Badge>

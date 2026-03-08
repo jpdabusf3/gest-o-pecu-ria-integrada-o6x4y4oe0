@@ -19889,6 +19889,36 @@ var Wheat = createLucideIcon("wheat", [
 		key: "vex3ng"
 	}]
 ]);
+var WifiOff = createLucideIcon("wifi-off", [
+	["path", {
+		d: "M12 20h.01",
+		key: "zekei9"
+	}],
+	["path", {
+		d: "M8.5 16.429a5 5 0 0 1 7 0",
+		key: "1bycff"
+	}],
+	["path", {
+		d: "M5 12.859a10 10 0 0 1 5.17-2.69",
+		key: "1dl1wf"
+	}],
+	["path", {
+		d: "M19 12.859a10 10 0 0 0-2.007-1.523",
+		key: "4k23kn"
+	}],
+	["path", {
+		d: "M2 8.82a15 15 0 0 1 4.177-2.643",
+		key: "1grhjp"
+	}],
+	["path", {
+		d: "M22 8.82a15 15 0 0 0-11.288-3.764",
+		key: "z3jwby"
+	}],
+	["path", {
+		d: "m2 2 20 20",
+		key: "1ooewy"
+	}]
+]);
 var Wifi = createLucideIcon("wifi", [
 	["path", {
 		d: "M12 20h.01",
@@ -26652,7 +26682,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$26({ inst: {
+			cachedValue = useState$27({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26666,7 +26696,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$7(function() {
+			useEffect$8(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -26689,7 +26719,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$26 = React$66.useState, useEffect$7 = React$66.useEffect, useLayoutEffect$3 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$27 = React$66.useState, useEffect$8 = React$66.useEffect, useLayoutEffect$3 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$66.useSyncExternalStore ? React$66.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29697,32 +29727,41 @@ const confinementData = {
 	lotes: [
 		{
 			id: "CONF-01",
+			curral: "Baia 01",
 			categoria: "Bois Terminação",
 			cabecas: 200,
 			diasConfinamento: 45,
 			pesoMedio: 480,
 			dieta: "Terminação Alto Grão",
 			gmd: 1.45,
+			consumoPercentual: 2.2,
+			consumoKg: 10.56,
 			status: "Pronto p/ Abate"
 		},
 		{
 			id: "CONF-02",
+			curral: "Baia 02",
 			categoria: "Garrotes Adaptação",
 			cabecas: 300,
 			diasConfinamento: 15,
 			pesoMedio: 350,
 			dieta: "Adaptação 1",
 			gmd: .95,
+			consumoPercentual: 2,
+			consumoKg: 7,
 			status: "Normal"
 		},
 		{
 			id: "CONF-03",
+			curral: "Baia 03",
 			categoria: "Vacas Descarte",
 			cabecas: 150,
 			diasConfinamento: 60,
 			pesoMedio: 420,
 			dieta: "Manutenção",
 			gmd: 1.1,
+			consumoPercentual: 1.8,
+			consumoKg: 7.56,
 			status: "Normal"
 		}
 	],
@@ -30122,6 +30161,33 @@ const financialData = [{
 	tipo: "saida",
 	valor: "R$ 45.000,00"
 }];
+const productionCostDashboard = {
+	totalArrobasProduced: 1250,
+	totalCost: 25e4,
+	costPerArroba: 200,
+	costs: [
+		{
+			name: "Nutrição & Suplementos",
+			value: 155e3,
+			fill: "hsl(var(--chart-1))"
+		},
+		{
+			name: "Mão de Obra",
+			value: 45e3,
+			fill: "hsl(var(--chart-2))"
+		},
+		{
+			name: "Sanidade & Protocolos",
+			value: 32e3,
+			fill: "hsl(var(--chart-3))"
+		},
+		{
+			name: "Manutenção de Pastagem",
+			value: 18e3,
+			fill: "hsl(var(--chart-4))"
+		}
+	]
+};
 const animalData = { "TAG-1234": {
 	id: "TAG-1234",
 	categoria: "Garrote",
@@ -55690,6 +55756,88 @@ function Estoque() {
 		})]
 	});
 }
+function CostAnalysisTab() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 mt-0 animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid gap-4 sm:grid-cols-3",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "bg-primary/5 border-primary/20",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-primary",
+							children: "Custo Total Acumulado"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-2xl font-bold text-primary flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-5 w-5" }), productionCostDashboard.totalCost.toLocaleString("pt-BR", { minimumFractionDigits: 2 })]
+					}) })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+					className: "pb-2",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+						className: "text-sm font-medium text-muted-foreground",
+						children: "Arrobas Produzidas"
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "text-2xl font-bold flex items-center gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-5 w-5 text-muted-foreground" }),
+						productionCostDashboard.totalArrobasProduced.toLocaleString("pt-BR"),
+						" @"
+					]
+				}) })] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "bg-emerald-500/10 border-emerald-500/20 shadow-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium text-emerald-700 dark:text-emerald-500",
+							children: "Custo Médio por @"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-2xl font-bold text-emerald-700 dark:text-emerald-500 flex items-center gap-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-5 w-5" }),
+							"R$",
+							" ",
+							productionCostDashboard.costPerArroba.toLocaleString("pt-BR", { minimumFractionDigits: 2 })
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium",
+						children: "Baseado em nutrição, sanidade e mão de obra"
+					})] })]
+				})
+			]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Distribuição de Custos de Produção" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise consolidada das despesas por categoria operacional, permitindo identificar os maiores ofensores de margem." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "h-[350px]",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+				config: { value: { label: "Valor (R$)" } },
+				className: "h-full w-full",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
+						data: productionCostDashboard.costs,
+						dataKey: "value",
+						nameKey: "name",
+						cx: "50%",
+						cy: "50%",
+						innerRadius: 70,
+						outerRadius: 110,
+						paddingAngle: 2,
+						children: productionCostDashboard.costs.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { fill: entry.fill }, `cell-${index$1}`))
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { formatter: (val) => `R$ ${Number(val).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}` }) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
+						content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}),
+						className: "flex-wrap pt-6"
+					})
+				] })
+			})
+		})] })]
+	});
+}
 function Financeiro() {
 	const { toast: toast$2 } = useToast();
 	const handleExport = (format$2) => {
@@ -55699,7 +55847,7 @@ function Financeiro() {
 		});
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col md:flex-row justify-between items-start md:items-center gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
@@ -55743,25 +55891,38 @@ function Financeiro() {
 				]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
-			defaultValue: "fluxo",
+			defaultValue: "dashboard-custos",
 			className: "space-y-6",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "mb-2 w-full sm:w-auto flex overflow-x-auto justify-start",
+					className: "mb-2 w-full sm:w-auto flex overflow-x-auto justify-start h-auto p-1 py-1.5",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "dashboard-custos",
+							className: "py-2",
+							children: "Análise de Custos Globais"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "fluxo",
+							className: "py-2",
 							children: "Fluxo de Caixa"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "desempenho",
-							children: "Desempenho por Lote"
+							className: "py-2",
+							children: "Rentabilidade por Lote"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "custo-arroba",
-							children: "Custo por @ Produzida"
+							className: "py-2",
+							children: "Custo / Lote Detalhado"
 						})
 					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "dashboard-custos",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CostAnalysisTab, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
 					value: "fluxo",
@@ -55897,7 +56058,7 @@ function Financeiro() {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "custo-arroba",
 					className: "space-y-6 mt-0",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Análise Analítica: Custo por @ Produzida" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Comparativo entre os custos de suplementação acumulados e o ganho real de peso de cada lote." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Custo Específico por @ de Ganho (Lotes)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Comparativo entre os custos de suplementação acumulados e o ganho real de peso de cada lote isolado." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 						className: "px-0 sm:px-6",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "overflow-x-auto",
@@ -60450,7 +60611,7 @@ function Calendario() {
 }
 function Confinamento() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
@@ -60459,7 +60620,7 @@ function Confinamento() {
 					children: "Gestão de Confinamento"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Módulo dedicado para controle intensivo de engorda, dietas e performance."
+					children: "Módulo dedicado para controle intensivo de engorda, dietas e performance por baia/curral."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 					className: "gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Novo Lote Confinado"]
@@ -60511,18 +60672,21 @@ function Confinamento() {
 				className: "space-y-6",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-						className: "overflow-x-auto justify-start w-full sm:w-auto",
+						className: "overflow-x-auto justify-start w-full sm:w-auto h-auto py-1.5 p-1",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "lotes",
+								className: "py-2",
 								children: "Lotes em Confinamento"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "dietas",
+								className: "py-2",
 								children: "Dietas e Protocolos"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "estoque",
+								className: "py-2",
 								children: "Estoque de Insumos"
 							})
 						]
@@ -60530,56 +60694,71 @@ function Confinamento() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "lotes",
 						className: "space-y-6 mt-0",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Acompanhamento de Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Acompanhamento de Baias e Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-x-auto",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote ID" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Curral/Baia" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
 										children: "Cabeças"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Dias Confinado"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Peso Médio"
+										className: "text-right whitespace-nowrap",
+										children: "Peso Méd."
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
 										children: "GMD"
 									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right whitespace-nowrap",
+										children: "Cons. (% PV)"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right whitespace-nowrap",
+										children: "Cons. (kg/dia)"
+									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Dieta Atual" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
 								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: confinementData.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium text-primary",
+										className: "font-medium text-primary whitespace-nowrap",
 										children: lote.id
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "font-medium text-muted-foreground whitespace-nowrap",
+										children: lote.curral
+									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "text-right",
 										children: lote.cabecas
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "text-right",
-										children: lote.diasConfinamento
-									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right font-medium",
+										className: "text-right font-medium whitespace-nowrap",
 										children: [lote.pesoMedio, " kg"]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right font-bold text-primary",
+										className: "text-right font-bold text-primary whitespace-nowrap",
 										children: [lote.gmd, " kg"]
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.dieta }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+										className: "text-right text-muted-foreground",
+										children: [lote.consumoPercentual, "%"]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+										className: "text-right font-mono whitespace-nowrap",
+										children: [lote.consumoKg, " kg"]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "whitespace-nowrap",
+										children: lote.dieta
+									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 										variant: lote.status === "Normal" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
+										className: "whitespace-nowrap",
 										children: lote.status
 									}) })
 								] }, lote.id)) })] })
@@ -61924,9 +62103,58 @@ var DrawerDescription = import_react.forwardRef(({ className, ...props }, ref) =
 	...props
 }));
 DrawerDescription.displayName = Drawer$1.Description.displayName;
+function useOfflineSync() {
+	const [isOnline, setIsOnline] = (0, import_react.useState)(navigator.onLine);
+	const [simulatedOffline, setSimulatedOffline] = (0, import_react.useState)(false);
+	const [queue, setQueue] = (0, import_react.useState)(() => {
+		try {
+			const stored = localStorage.getItem("gpi_sync_queue");
+			return stored ? JSON.parse(stored) : [];
+		} catch {
+			return [];
+		}
+	});
+	const actualOnline = isOnline && !simulatedOffline;
+	(0, import_react.useEffect)(() => {
+		const handleOnline = () => setIsOnline(true);
+		const handleOffline = () => setIsOnline(false);
+		window.addEventListener("online", handleOnline);
+		window.addEventListener("offline", handleOffline);
+		return () => {
+			window.removeEventListener("online", handleOnline);
+			window.removeEventListener("offline", handleOffline);
+		};
+	}, []);
+	const addAction = (action) => {
+		const newAction = {
+			...action,
+			id: crypto.randomUUID(),
+			timestamp: Date.now()
+		};
+		const newQueue = [...queue, newAction];
+		setQueue(newQueue);
+		localStorage.setItem("gpi_sync_queue", JSON.stringify(newQueue));
+		return newAction;
+	};
+	const syncAll = () => {
+		if (!actualOnline) return false;
+		setQueue([]);
+		localStorage.removeItem("gpi_sync_queue");
+		return true;
+	};
+	const toggleSimulateOffline = () => setSimulatedOffline(!simulatedOffline);
+	return {
+		isOnline: actualOnline,
+		queue,
+		addAction,
+		syncAll,
+		toggleSimulateOffline
+	};
+}
 function Campo() {
 	const { toast: toast$2 } = useToast();
 	const { user } = useAuth();
+	const { isOnline, queue, addAction, syncAll, toggleSimulateOffline } = useOfflineSync();
 	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
 	const [drawerOpen, setDrawerOpen] = (0, import_react.useState)(false);
 	const [actionType, setActionType] = (0, import_react.useState)("movimentar");
@@ -61946,11 +62174,31 @@ function Campo() {
 		}))
 	].filter((l) => l.id.toLowerCase().includes(searchTerm.toLowerCase()) || l.pasto.toLowerCase().includes(searchTerm.toLowerCase()));
 	const handleAction = () => {
-		toast$2({
-			title: "Operação de Campo Registrada",
-			description: `Ação de "${actionType}" no lote ${selectedLote?.id} salva por ${user.name}. O log foi atualizado.`
+		if (isOnline) toast$2({
+			title: "Operação Sincronizada",
+			description: `Ação de "${actionType}" no lote ${selectedLote?.id} foi salva diretamente no servidor.`
 		});
+		else {
+			addAction({
+				type: actionType,
+				payload: {
+					lote: selectedLote?.id,
+					operator: user.name
+				}
+			});
+			toast$2({
+				title: "Salvo Offline (Local)",
+				description: `Ação adicionada à fila local. Sincronize assim que a conexão retornar.`,
+				variant: "secondary"
+			});
+		}
 		setDrawerOpen(false);
+	};
+	const handleSync = () => {
+		if (syncAll()) toast$2({
+			title: "Sincronização Concluída",
+			description: "Todos os apontamentos locais foram enviados com sucesso."
+		});
 	};
 	const openDrawer = (lote) => {
 		setSelectedLote(lote);
@@ -61960,15 +62208,35 @@ function Campo() {
 		className: "space-y-4 pb-20 sm:pb-6 max-w-md mx-auto",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6 flex justify-between items-start",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 					className: "text-2xl font-bold tracking-tight",
-					children: "Operações de Campo"
+					children: "Operações Mobile"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 					className: "text-primary-foreground/80 mt-1 text-sm",
-					children: ["Operador atual: ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					children: ["Operador: ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "font-semibold",
 						children: user.name
+					})]
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-end gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+						variant: isOnline ? "secondary" : "destructive",
+						className: "cursor-pointer bg-background/20 hover:bg-background/30 text-white border-0",
+						onClick: toggleSimulateOffline,
+						children: [isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-3 w-3 mr-1" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WifiOff, { className: "h-3 w-3 mr-1" }), isOnline ? "Online" : "Offline"]
+					}), queue.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						size: "sm",
+						variant: "secondary",
+						onClick: handleSync,
+						disabled: !isOnline,
+						className: "h-7 text-xs bg-white text-primary hover:bg-white/90",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-3 w-3 mr-1" }),
+							" Sync (",
+							queue.length,
+							")"
+						]
 					})]
 				})]
 			}),
@@ -61976,15 +62244,15 @@ function Campo() {
 				className: "relative",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-3 top-3 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 					placeholder: "Buscar lote ou pasto...",
-					className: "pl-9 bg-background shadow-sm h-10",
+					className: "pl-9 bg-background shadow-sm h-12 text-base rounded-xl",
 					value: searchTerm,
 					onChange: (e) => setSearchTerm(e.target.value)
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "grid gap-3 mt-4",
+				className: "grid gap-3 mt-6",
 				children: filteredLotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-					className: "cursor-pointer hover:border-primary transition-colors active:scale-[0.98]",
+					className: "cursor-pointer hover:border-primary transition-colors active:scale-[0.98] rounded-xl shadow-sm border-muted",
 					onClick: () => openDrawer(lote),
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 						className: "p-4 flex justify-between items-center",
@@ -62190,7 +62458,7 @@ function Campo() {
 								onClick: handleAction,
 								size: "lg",
 								className: "w-full text-base h-12 shadow-md",
-								children: "Confirmar e Assinar (Auditoria)"
+								children: isOnline ? "Confirmar Operação" : "Salvar na Fila Offline"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DrawerClose, {
 								asChild: true,
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
@@ -63645,4 +63913,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CGogMfpe.js.map
+//# sourceMappingURL=index-aYIF9-kq.js.map

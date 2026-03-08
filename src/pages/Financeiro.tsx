@@ -22,6 +22,7 @@ import { Download, Plus, FileText, FileSpreadsheet } from 'lucide-react'
 import { financialData, lotPerformanceData, costPerArrobaData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
+import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
 
 export default function Financeiro() {
   const { toast } = useToast()
@@ -34,7 +35,7 @@ export default function Financeiro() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Gestão Financeira</h2>
@@ -73,12 +74,25 @@ export default function Financeiro() {
         </div>
       </div>
 
-      <Tabs defaultValue="fluxo" className="space-y-6">
-        <TabsList className="mb-2 w-full sm:w-auto flex overflow-x-auto justify-start">
-          <TabsTrigger value="fluxo">Fluxo de Caixa</TabsTrigger>
-          <TabsTrigger value="desempenho">Desempenho por Lote</TabsTrigger>
-          <TabsTrigger value="custo-arroba">Custo por @ Produzida</TabsTrigger>
+      <Tabs defaultValue="dashboard-custos" className="space-y-6">
+        <TabsList className="mb-2 w-full sm:w-auto flex overflow-x-auto justify-start h-auto p-1 py-1.5">
+          <TabsTrigger value="dashboard-custos" className="py-2">
+            Análise de Custos Globais
+          </TabsTrigger>
+          <TabsTrigger value="fluxo" className="py-2">
+            Fluxo de Caixa
+          </TabsTrigger>
+          <TabsTrigger value="desempenho" className="py-2">
+            Rentabilidade por Lote
+          </TabsTrigger>
+          <TabsTrigger value="custo-arroba" className="py-2">
+            Custo / Lote Detalhado
+          </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="dashboard-custos" className="space-y-6 mt-0">
+          <CostAnalysisTab />
+        </TabsContent>
 
         <TabsContent value="fluxo" className="space-y-6 mt-0">
           <div className="grid gap-4 sm:grid-cols-3">
@@ -205,10 +219,10 @@ export default function Financeiro() {
         <TabsContent value="custo-arroba" className="space-y-6 mt-0">
           <Card>
             <CardHeader>
-              <CardTitle>Análise Analítica: Custo por @ Produzida</CardTitle>
+              <CardTitle>Custo Específico por @ de Ganho (Lotes)</CardTitle>
               <CardDescription>
                 Comparativo entre os custos de suplementação acumulados e o ganho real de peso de
-                cada lote.
+                cada lote isolado.
               </CardDescription>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">

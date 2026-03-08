@@ -90,32 +90,41 @@ export const confinementData = {
   lotes: [
     {
       id: 'CONF-01',
+      curral: 'Baia 01',
       categoria: 'Bois Terminação',
       cabecas: 200,
       diasConfinamento: 45,
       pesoMedio: 480,
       dieta: 'Terminação Alto Grão',
       gmd: 1.45,
+      consumoPercentual: 2.2,
+      consumoKg: 10.56,
       status: 'Pronto p/ Abate',
     },
     {
       id: 'CONF-02',
+      curral: 'Baia 02',
       categoria: 'Garrotes Adaptação',
       cabecas: 300,
       diasConfinamento: 15,
       pesoMedio: 350,
       dieta: 'Adaptação 1',
       gmd: 0.95,
+      consumoPercentual: 2.0,
+      consumoKg: 7.0,
       status: 'Normal',
     },
     {
       id: 'CONF-03',
+      curral: 'Baia 03',
       categoria: 'Vacas Descarte',
       cabecas: 150,
       diasConfinamento: 60,
       pesoMedio: 420,
       dieta: 'Manutenção',
       gmd: 1.1,
+      consumoPercentual: 1.8,
+      consumoKg: 7.56,
       status: 'Normal',
     },
   ],
@@ -481,6 +490,18 @@ export const financialData = [
     valor: 'R$ 45.000,00',
   },
 ]
+
+export const productionCostDashboard = {
+  totalArrobasProduced: 1250,
+  totalCost: 250000,
+  costPerArroba: 200.0,
+  costs: [
+    { name: 'Nutrição & Suplementos', value: 155000, fill: 'hsl(var(--chart-1))' },
+    { name: 'Mão de Obra', value: 45000, fill: 'hsl(var(--chart-2))' },
+    { name: 'Sanidade & Protocolos', value: 32000, fill: 'hsl(var(--chart-3))' },
+    { name: 'Manutenção de Pastagem', value: 18000, fill: 'hsl(var(--chart-4))' },
+  ],
+}
 
 export const animalData: Record<string, any> = {
   'TAG-1234': {

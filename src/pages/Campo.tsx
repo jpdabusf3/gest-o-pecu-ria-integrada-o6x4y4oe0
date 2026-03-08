@@ -20,14 +20,17 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Beef, Plus, Search } from 'lucide-react'
+import { MapPin, Beef, Plus, Search, Wifi, WifiOff, RefreshCw } from 'lucide-react'
 import { sectorData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
+import { useOfflineSync } from '@/hooks/useOfflineSync'
 
 export default function Campo() {
   const { toast } = useToast()
   const { user } = useAuth()
+  const { isOnline, queue, addAction, syncAll, toggleSimulateOffline } = useOfflineSync()
+
   const [selectedLote, setSelectedLote] = useState<any>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [actionType, setActionType] = useState('movimentar')
@@ -46,11 +49,32 @@ export default function Campo() {
   )
 
   const handleAction = () => {
-    toast({
-      title: 'Operação de Campo Registrada',
-      description: `Ação de "${actionType}" no lote ${selectedLote?.id} salva por ${user.name}. O log foi atualizado.`,
-    })
+    if (isOnline) {
+      toast({
+        title: 'Operação Sincronizada',
+        description: `Ação de "${actionType}" no lote ${selectedLote?.id} foi salva diretamente no servidor.`,
+      })
+    } else {
+      addAction({
+        type: actionType,
+        payload: { lote: selectedLote?.id, operator: user.name },
+      })
+      toast({
+        title: 'Salvo Offline (Local)',
+        description: `Ação adicionada à fila local. Sincronize assim que a conexão retornar.`,
+        variant: 'secondary',
+      })
+    }
     setDrawerOpen(false)
+  }
+
+  const handleSync = () => {
+    if (syncAll()) {
+      toast({
+        title: 'Sincronização Concluída',
+        description: 'Todos os apontamentos locais foram enviados com sucesso.',
+      })
+    }
   }
 
   const openDrawer = (lote: any) => {
@@ -60,28 +84,51 @@ export default function Campo() {
 
   return (
     <div className="space-y-4 pb-20 sm:pb-6 max-w-md mx-auto">
-      <div className="bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6">
-        <h2 className="text-2xl font-bold tracking-tight">Operações de Campo</h2>
-        <p className="text-primary-foreground/80 mt-1 text-sm">
-          Operador atual: <span className="font-semibold">{user.name}</span>
-        </p>
+      <div className="bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6 flex justify-between items-start">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Operações Mobile</h2>
+          <p className="text-primary-foreground/80 mt-1 text-sm">
+            Operador: <span className="font-semibold">{user.name}</span>
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          <Badge
+            variant={isOnline ? 'secondary' : 'destructive'}
+            className="cursor-pointer bg-background/20 hover:bg-background/30 text-white border-0"
+            onClick={toggleSimulateOffline}
+          >
+            {isOnline ? <Wifi className="h-3 w-3 mr-1" /> : <WifiOff className="h-3 w-3 mr-1" />}
+            {isOnline ? 'Online' : 'Offline'}
+          </Badge>
+          {queue.length > 0 && (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={handleSync}
+              disabled={!isOnline}
+              className="h-7 text-xs bg-white text-primary hover:bg-white/90"
+            >
+              <RefreshCw className="h-3 w-3 mr-1" /> Sync ({queue.length})
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="relative">
         <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Buscar lote ou pasto..."
-          className="pl-9 bg-background shadow-sm h-10"
+          className="pl-9 bg-background shadow-sm h-12 text-base rounded-xl"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
-      <div className="grid gap-3 mt-4">
+      <div className="grid gap-3 mt-6">
         {filteredLotes.map((lote) => (
           <Card
             key={lote.id}
-            className="cursor-pointer hover:border-primary transition-colors active:scale-[0.98]"
+            className="cursor-pointer hover:border-primary transition-colors active:scale-[0.98] rounded-xl shadow-sm border-muted"
             onClick={() => openDrawer(lote)}
           >
             <CardContent className="p-4 flex justify-between items-center">
@@ -213,7 +260,7 @@ export default function Campo() {
           </div>
           <DrawerFooter className="pt-4 pb-8">
             <Button onClick={handleAction} size="lg" className="w-full text-base h-12 shadow-md">
-              Confirmar e Assinar (Auditoria)
+              {isOnline ? 'Confirmar Operação' : 'Salvar na Fila Offline'}
             </Button>
             <DrawerClose asChild>
               <Button variant="ghost" size="lg" className="w-full h-12">
