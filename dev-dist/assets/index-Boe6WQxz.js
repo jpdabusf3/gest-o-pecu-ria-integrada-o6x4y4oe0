@@ -25027,6 +25027,7 @@ const mockUsers = [
 		whatsapp: "(11) 99999-9999",
 		preferences: {
 			whatsappEnabled: true,
+			pushEnabled: true,
 			notifyHealth: true,
 			notifyFinancial: true,
 			notifyManagement: true
@@ -25041,6 +25042,7 @@ const mockUsers = [
 		whatsapp: "(11) 97777-7777",
 		preferences: {
 			whatsappEnabled: true,
+			pushEnabled: true,
 			notifyHealth: true,
 			notifyFinancial: false,
 			notifyManagement: true
@@ -25055,6 +25057,7 @@ const mockUsers = [
 		whatsapp: "(16) 98888-8888",
 		preferences: {
 			whatsappEnabled: false,
+			pushEnabled: false,
 			notifyHealth: false,
 			notifyFinancial: false,
 			notifyManagement: false
@@ -26334,15 +26337,28 @@ function NotificationProvider({ children }) {
 			read: false
 		};
 		setNotifications((prev) => [newNotif, ...prev]);
-		if (auth.user.preferences.whatsappEnabled && auth.user.whatsapp) {
-			const prefs = auth.user.preferences;
-			let shouldSend = false;
-			const lowerTitle = notif.title.toLowerCase();
-			if (notif.type === "alert" && prefs.notifyHealth && (lowerTitle.includes("sanit") || lowerTitle.includes("vacina") || lowerTitle.includes("peso"))) shouldSend = true;
-			else if (notif.type === "alert" && prefs.notifyFinancial && (lowerTitle.includes("finan") || lowerTitle.includes("custo") || lowerTitle.includes("orçamento"))) shouldSend = true;
-			else if ((notif.type === "task" || notif.type === "goal") && prefs.notifyManagement) shouldSend = true;
-			else if (notif.type === "alert" && prefs.notifyManagement) shouldSend = true;
-			if (shouldSend) setTimeout(() => {
+		const prefs = auth.user.preferences;
+		const lowerTitle = notif.title.toLowerCase();
+		let shouldSend = false;
+		if (notif.type === "alert" && prefs.notifyHealth && (lowerTitle.includes("sanit") || lowerTitle.includes("vacina") || lowerTitle.includes("peso"))) shouldSend = true;
+		else if (notif.type === "alert" && prefs.notifyFinancial && (lowerTitle.includes("finan") || lowerTitle.includes("custo") || lowerTitle.includes("orçamento"))) shouldSend = true;
+		else if ((notif.type === "task" || notif.type === "goal") && prefs.notifyManagement) shouldSend = true;
+		else if (notif.type === "alert" && prefs.notifyManagement) shouldSend = true;
+		if (shouldSend) {
+			if (prefs.pushEnabled && "serviceWorker" in navigator && Notification.permission === "granted") navigator.serviceWorker.ready.then((reg) => {
+				reg.showNotification(notif.title, {
+					body: notif.message,
+					icon: "/icon-192x192.png",
+					badge: "/icon-192x192.png",
+					vibrate: [
+						200,
+						100,
+						200
+					],
+					tag: "gpi-alert"
+				});
+			});
+			if (prefs.whatsappEnabled && auth.user.whatsapp) setTimeout(() => {
 				toast$2({
 					title: "📱 WhatsApp Enviado",
 					description: `Alerta automatizado despachado para ${auth.user.whatsapp}: "${notif.title}"`,
@@ -26380,43 +26396,85 @@ const useAppNotifications = () => {
 	if (!context) throw new Error("useAppNotifications must be used within NotificationProvider");
 	return context;
 };
+var DB_NAME = "gpi-db";
+var STORE_NAME = "sync-queue";
+function openDB() {
+	return new Promise((resolve, reject) => {
+		const request = indexedDB.open(DB_NAME, 1);
+		request.onupgradeneeded = () => {
+			if (!request.result.objectStoreNames.contains(STORE_NAME)) request.result.createObjectStore(STORE_NAME, { keyPath: "id" });
+		};
+		request.onsuccess = () => resolve(request.result);
+		request.onerror = () => reject(request.error);
+	});
+}
+async function saveToDB(action) {
+	const db = await openDB();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(STORE_NAME, "readwrite");
+		tx.objectStore(STORE_NAME).put(action);
+		tx.oncomplete = () => resolve();
+		tx.onerror = () => reject(tx.error);
+	});
+}
+async function loadFromDB() {
+	const db = await openDB();
+	return new Promise((resolve, reject) => {
+		const req = db.transaction(STORE_NAME, "readonly").objectStore(STORE_NAME).getAll();
+		req.onsuccess = () => resolve(req.result);
+		req.onerror = () => reject(req.error);
+	});
+}
+async function clearDB() {
+	const db = await openDB();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(STORE_NAME, "readwrite");
+		tx.objectStore(STORE_NAME).clear();
+		tx.oncomplete = () => resolve();
+		tx.onerror = () => reject(tx.error);
+	});
+}
 var OfflineContext = (0, import_react.createContext)(void 0);
 function OfflineProvider({ children }) {
 	const [isOnline, setIsOnline] = (0, import_react.useState)(navigator.onLine);
 	const [simulatedOffline, setSimulatedOffline] = (0, import_react.useState)(false);
 	const [isSyncing, setIsSyncing] = (0, import_react.useState)(false);
-	const [queue, setQueue] = (0, import_react.useState)(() => {
-		try {
-			const stored = localStorage.getItem("gpi_sync_queue");
-			return stored ? JSON.parse(stored) : [];
-		} catch {
-			return [];
-		}
-	});
+	const [queue, setQueue] = (0, import_react.useState)([]);
 	const actualOnline = isOnline && !simulatedOffline;
+	(0, import_react.useEffect)(() => {
+		loadFromDB().then(setQueue).catch(() => setQueue([]));
+	}, []);
 	(0, import_react.useEffect)(() => {
 		const handleOnline = () => setIsOnline(true);
 		const handleOffline = () => setIsOnline(false);
 		window.addEventListener("online", handleOnline);
 		window.addEventListener("offline", handleOffline);
+		const handleMessage = async (event) => {
+			if (event.data && event.data.type === "SYNC_COMPLETED") setQueue(await loadFromDB());
+		};
+		if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", handleMessage);
 		return () => {
 			window.removeEventListener("online", handleOnline);
 			window.removeEventListener("offline", handleOffline);
+			if ("serviceWorker" in navigator) navigator.serviceWorker.removeEventListener("message", handleMessage);
 		};
 	}, []);
-	const addAction = (action) => {
-		const newAction = {
+	const addAction = async (action) => {
+		await saveToDB({
 			...action,
 			id: crypto.randomUUID(),
 			timestamp: Date.now()
-		};
-		const newQueue = [...queue, newAction];
-		setQueue(newQueue);
-		localStorage.setItem("gpi_sync_queue", JSON.stringify(newQueue));
+		});
+		setQueue(await loadFromDB());
+		if ("serviceWorker" in navigator && "SyncManager" in window && !actualOnline) try {
+			await (await navigator.serviceWorker.ready).sync.register("sync-farm-data");
+		} catch (e) {
+			console.log("Background Sync could not be registered!", e);
+		}
 	};
-	const clearQueue = () => {
+	const clearQueue = async () => {
+		await clearDB();
 		setQueue([]);
-		localStorage.removeItem("gpi_sync_queue");
 	};
 	const toggleSimulatedOffline = () => setSimulatedOffline((prev) => !prev);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OfflineContext.Provider, {
@@ -31952,6 +32010,43 @@ function SyncManager() {
 		queue,
 		isSyncing
 	]);
+	(0, import_react.useEffect)(() => {
+		const handleMessage = async (event) => {
+			if (event.data && event.data.type === "SYNC_COMPLETED") {
+				const items = event.data.items || [];
+				let tasksCompleted = 0;
+				let opsSynced = 0;
+				items.forEach((action) => {
+					if (action.type === "COMPLETE_TASK") {
+						completeTaskOnServer(action.payload.taskId);
+						tasksCompleted++;
+					} else if (action.type === "FIELD_OPERATION") {
+						addNotification({
+							title: "Operação de Campo Sincronizada",
+							message: `Ação de "${action.payload.operationType}" registrada por ${action.payload.operator} no alvo ${action.payload.lote}.`,
+							type: "task"
+						});
+						opsSynced++;
+					}
+				});
+				toast$2({
+					title: "Data Synced",
+					description: `Sincronização em background concluída (${tasksCompleted + opsSynced} registros).`,
+					variant: "default"
+				});
+				clearQueue();
+			}
+		};
+		if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", handleMessage);
+		return () => {
+			if ("serviceWorker" in navigator) navigator.serviceWorker.removeEventListener("message", handleMessage);
+		};
+	}, [
+		completeTaskOnServer,
+		addNotification,
+		toast$2,
+		clearQueue
+	]);
 	const performSync = async () => {
 		setIsSyncing(true);
 		await new Promise((resolve) => setTimeout(resolve, 2e3));
@@ -31970,10 +32065,10 @@ function SyncManager() {
 				opsSynced++;
 			}
 		});
-		clearQueue();
+		await clearQueue();
 		setIsSyncing(false);
 		toast$2({
-			title: "Sincronização Automática Concluída",
+			title: "Data Synced",
 			description: `${tasksCompleted + opsSynced} registros da fila offline foram enviados ao servidor.`,
 			variant: "default"
 		});
@@ -68820,11 +68915,46 @@ function Configuracoes() {
 		});
 		setPassword("");
 	};
-	const handleTestWhatsApp = () => {
+	const handleTestAlert = () => {
 		addNotification({
 			title: "Alerta Sanitário de Teste 🚨",
-			message: "Esta é uma mensagem de teste enviada via integração WhatsApp.",
+			message: "Esta é uma mensagem de teste enviada via sistema de notificações integrado.",
 			type: "alert"
+		});
+		toast$2({
+			title: "Alerta Disparado",
+			description: "O alerta de teste foi enviado aos canais habilitados."
+		});
+	};
+	const handleTogglePush = async (enabled) => {
+		if (enabled) {
+			if (!("Notification" in window)) {
+				toast$2({
+					title: "Erro",
+					description: "Seu navegador não suporta notificações push.",
+					variant: "destructive"
+				});
+				return;
+			}
+			if (await Notification.requestPermission() === "granted") {
+				setPrefs({
+					...prefs,
+					pushEnabled: true
+				});
+				if ("serviceWorker" in navigator && "PushManager" in window) navigator.serviceWorker.ready.then((reg) => {
+					reg.pushManager.subscribe({
+						userVisibleOnly: true,
+						applicationServerKey: "BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLcg"
+					}).catch((err) => console.log("Mock subscribe message", err));
+				});
+			} else toast$2({
+				title: "Permissão Negada",
+				description: "Você negou a permissão para notificações.",
+				variant: "destructive"
+			});
+		} else setPrefs({
+			...prefs,
+			pushEnabled: false
 		});
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -68882,30 +69012,54 @@ function Configuracoes() {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-5 w-5 text-emerald-500" }), "Notificações por WhatsApp"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure o envio automatizado de alertas críticos diretamente para o seu número registrado." })] }),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-5 w-5 text-primary" }), "Preferências de Notificação"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure como deseja receber os alertas críticos da fazenda (Push Nativo e WhatsApp)." })] }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 					className: "space-y-6",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center justify-between",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
-							htmlFor: "whatsappEnabled",
-							className: "flex flex-col gap-1 cursor-pointer",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Ativar Integração WhatsApp" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-normal text-xs text-muted-foreground",
-								children: "Habilita o envio de mensagens"
+						className: "space-y-4 pb-4 border-b border-border",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+								htmlFor: "pushEnabled",
+								className: "flex flex-col gap-1 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Notificações Push (Nativas)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-normal text-xs text-muted-foreground",
+									children: "Alertas direto no sistema operacional"
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+								id: "pushEnabled",
+								checked: prefs.pushEnabled,
+								onCheckedChange: handleTogglePush
 							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-							id: "whatsappEnabled",
-							checked: prefs.whatsappEnabled,
-							onCheckedChange: (c$1) => setPrefs({
-								...prefs,
-								whatsappEnabled: c$1
-							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+								htmlFor: "whatsappEnabled",
+								className: "flex flex-col gap-1 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "flex items-center gap-2",
+									children: ["WhatsApp ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-3 w-3 text-emerald-500" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-normal text-xs text-muted-foreground",
+									children: "Mensagens automatizadas no seu celular"
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+								id: "whatsappEnabled",
+								checked: prefs.whatsappEnabled,
+								onCheckedChange: (c$1) => setPrefs({
+									...prefs,
+									whatsappEnabled: c$1
+								})
+							})]
 						})]
-					}), prefs.whatsappEnabled && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "pl-4 border-l-2 border-border space-y-4 animate-in fade-in slide-in-from-left-2",
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4 animate-in fade-in slide-in-from-left-2",
 						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "text-sm font-semibold mb-2",
+								children: "Quais eventos devem disparar notificação?"
+							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "flex items-center justify-between",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
@@ -68926,7 +69080,7 @@ function Configuracoes() {
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 									htmlFor: "notifyManagement",
 									className: "cursor-pointer text-sm",
-									children: "Alertas de Manejo & Tarefas"
+									children: "Alertas de Manejo & Operacional"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
 									id: "notifyManagement",
 									checked: prefs.notifyManagement,
@@ -68955,9 +69109,9 @@ function Configuracoes() {
 								className: "pt-4 border-t border-border",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 									variant: "outline",
-									onClick: handleTestWhatsApp,
+									onClick: handleTestAlert,
 									className: "gap-2 w-full sm:w-auto",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-4 w-4 text-emerald-500" }), " Simular Alerta WhatsApp"]
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4 text-primary" }), " Simular Alerta de Teste"]
 								})
 							})
 						]
@@ -71464,4 +71618,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Dgn2uUo-.js.map
+//# sourceMappingURL=index-Boe6WQxz.js.map

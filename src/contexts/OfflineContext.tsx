@@ -7,6 +7,52 @@ export type SyncAction = {
   timestamp: number
 }
 
+const DB_NAME = 'gpi-db'
+const STORE_NAME = 'sync-queue'
+
+function openDB() {
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, 1)
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains(STORE_NAME)) {
+        request.result.createObjectStore(STORE_NAME, { keyPath: 'id' })
+      }
+    }
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error)
+  })
+}
+
+export async function saveToDB(action: SyncAction) {
+  const db = await openDB()
+  return new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite')
+    tx.objectStore(STORE_NAME).put(action)
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error)
+  })
+}
+
+export async function loadFromDB() {
+  const db = await openDB()
+  return new Promise<SyncAction[]>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly')
+    const req = tx.objectStore(STORE_NAME).getAll()
+    req.onsuccess = () => resolve(req.result)
+    req.onerror = () => reject(req.error)
+  })
+}
+
+export async function clearDB() {
+  const db = await openDB()
+  return new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite')
+    tx.objectStore(STORE_NAME).clear()
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error)
+  })
+}
+
 interface OfflineContextType {
   isOnline: boolean
   simulatedOffline: boolean
@@ -24,39 +70,62 @@ export function OfflineProvider({ children }: { children: ReactNode }) {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
   const [simulatedOffline, setSimulatedOffline] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
-
-  const [queue, setQueue] = useState<SyncAction[]>(() => {
-    try {
-      const stored = localStorage.getItem('gpi_sync_queue')
-      return stored ? JSON.parse(stored) : []
-    } catch {
-      return []
-    }
-  })
+  const [queue, setQueue] = useState<SyncAction[]>([])
 
   const actualOnline = isOnline && !simulatedOffline
+
+  useEffect(() => {
+    loadFromDB()
+      .then(setQueue)
+      .catch(() => setQueue([]))
+  }, [])
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true)
     const handleOffline = () => setIsOnline(false)
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data && event.data.type === 'SYNC_COMPLETED') {
+        const remaining = await loadFromDB()
+        setQueue(remaining)
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', handleMessage)
+    }
+
     return () => {
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.removeEventListener('message', handleMessage)
+      }
     }
   }, [])
 
-  const addAction = (action: Omit<SyncAction, 'id' | 'timestamp'>) => {
+  const addAction = async (action: Omit<SyncAction, 'id' | 'timestamp'>) => {
     const newAction = { ...action, id: crypto.randomUUID(), timestamp: Date.now() } as SyncAction
-    const newQueue = [...queue, newAction]
+    await saveToDB(newAction)
+    const newQueue = await loadFromDB()
     setQueue(newQueue)
-    localStorage.setItem('gpi_sync_queue', JSON.stringify(newQueue))
+
+    // Register Background Sync for offline recovery
+    if ('serviceWorker' in navigator && 'SyncManager' in window && !actualOnline) {
+      try {
+        const reg = await navigator.serviceWorker.ready
+        await (reg as any).sync.register('sync-farm-data')
+      } catch (e) {
+        console.log('Background Sync could not be registered!', e)
+      }
+    }
   }
 
-  const clearQueue = () => {
+  const clearQueue = async () => {
+    await clearDB()
     setQueue([])
-    localStorage.removeItem('gpi_sync_queue')
   }
 
   const toggleSimulatedOffline = () => setSimulatedOffline((prev) => !prev)

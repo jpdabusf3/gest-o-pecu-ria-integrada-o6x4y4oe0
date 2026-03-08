@@ -45,35 +45,50 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     }
     setNotifications((prev) => [newNotif, ...prev])
 
-    // WhatsApp Simulation Logic
-    if (auth.user.preferences.whatsappEnabled && auth.user.whatsapp) {
-      const prefs = auth.user.preferences
-      let shouldSend = false
-      const lowerTitle = notif.title.toLowerCase()
+    const prefs = auth.user.preferences
+    const lowerTitle = notif.title.toLowerCase()
+    let shouldSend = false
 
+    if (
+      notif.type === 'alert' &&
+      prefs.notifyHealth &&
+      (lowerTitle.includes('sanit') || lowerTitle.includes('vacina') || lowerTitle.includes('peso'))
+    ) {
+      shouldSend = true
+    } else if (
+      notif.type === 'alert' &&
+      prefs.notifyFinancial &&
+      (lowerTitle.includes('finan') ||
+        lowerTitle.includes('custo') ||
+        lowerTitle.includes('orçamento'))
+    ) {
+      shouldSend = true
+    } else if ((notif.type === 'task' || notif.type === 'goal') && prefs.notifyManagement) {
+      shouldSend = true
+    } else if (notif.type === 'alert' && prefs.notifyManagement) {
+      shouldSend = true // default fallback for general alerts if management is on
+    }
+
+    if (shouldSend) {
+      // Native Push Notification Simulation
       if (
-        notif.type === 'alert' &&
-        prefs.notifyHealth &&
-        (lowerTitle.includes('sanit') ||
-          lowerTitle.includes('vacina') ||
-          lowerTitle.includes('peso'))
+        prefs.pushEnabled &&
+        'serviceWorker' in navigator &&
+        Notification.permission === 'granted'
       ) {
-        shouldSend = true
-      } else if (
-        notif.type === 'alert' &&
-        prefs.notifyFinancial &&
-        (lowerTitle.includes('finan') ||
-          lowerTitle.includes('custo') ||
-          lowerTitle.includes('orçamento'))
-      ) {
-        shouldSend = true
-      } else if ((notif.type === 'task' || notif.type === 'goal') && prefs.notifyManagement) {
-        shouldSend = true
-      } else if (notif.type === 'alert' && prefs.notifyManagement) {
-        shouldSend = true // default fallback for general alerts if management is on
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.showNotification(notif.title, {
+            body: notif.message,
+            icon: '/icon-192x192.png',
+            badge: '/icon-192x192.png',
+            vibrate: [200, 100, 200],
+            tag: 'gpi-alert',
+          })
+        })
       }
 
-      if (shouldSend) {
+      // WhatsApp Simulation Logic
+      if (prefs.whatsappEnabled && auth.user.whatsapp) {
         setTimeout(() => {
           toast({
             title: '📱 WhatsApp Enviado',

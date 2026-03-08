@@ -4,6 +4,7 @@ export type Role = 'admin' | 'gerente' | 'operador'
 
 export interface UserPreferences {
   whatsappEnabled: boolean
+  pushEnabled: boolean
   notifyHealth: boolean
   notifyFinancial: boolean
   notifyManagement: boolean
@@ -29,6 +30,7 @@ export const mockUsers: User[] = [
     whatsapp: '(11) 99999-9999',
     preferences: {
       whatsappEnabled: true,
+      pushEnabled: true,
       notifyHealth: true,
       notifyFinancial: true,
       notifyManagement: true,
@@ -43,6 +45,7 @@ export const mockUsers: User[] = [
     whatsapp: '(11) 97777-7777',
     preferences: {
       whatsappEnabled: true,
+      pushEnabled: true,
       notifyHealth: true,
       notifyFinancial: false,
       notifyManagement: true,
@@ -57,6 +60,7 @@ export const mockUsers: User[] = [
     whatsapp: '(16) 98888-8888',
     preferences: {
       whatsappEnabled: false,
+      pushEnabled: false,
       notifyHealth: false,
       notifyFinancial: false,
       notifyManagement: false,

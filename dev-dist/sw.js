@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gpi-farm-cache-v2'
+const CACHE_NAME = 'gpi-farm-cache-v3'
 const ASSETS_TO_CACHE = ['/', '/index.html', '/manifest.json']
 
 // Install event: cache core assets
@@ -61,5 +61,101 @@ self.addEventListener('fetch', (event) => {
           })
         })
       }),
+  )
+})
+
+// Background Sync Event for offline data
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-farm-data') {
+    event.waitUntil(processBackgroundSync())
+  }
+})
+
+async function processBackgroundSync() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('gpi-db', 1)
+    request.onsuccess = (e) => {
+      const db = e.target.result
+      if (!db.objectStoreNames.contains('sync-queue')) {
+        resolve()
+        return
+      }
+      const tx = db.transaction('sync-queue', 'readwrite')
+      const store = tx.objectStore('sync-queue')
+      const getAll = store.getAll()
+
+      getAll.onsuccess = () => {
+        const items = getAll.result
+        if (items && items.length > 0) {
+          // Simulate network delay for API sync
+          setTimeout(() => {
+            const clearTx = db.transaction('sync-queue', 'readwrite')
+            clearTx.objectStore('sync-queue').clear()
+
+            // Show Native Push Notification upon successful sync
+            self.registration.showNotification('Data Synced', {
+              body: `${items.length} registros offline foram enviados ao servidor em background.`,
+              icon: '/icon-192x192.png',
+              badge: '/icon-192x192.png',
+              tag: 'gpi-sync',
+            })
+
+            // Notify active clients to update UI
+            self.clients.matchAll().then((clients) => {
+              clients.forEach((client) =>
+                client.postMessage({ type: 'SYNC_COMPLETED', count: items.length, items }),
+              )
+            })
+
+            resolve()
+          }, 1500)
+        } else {
+          resolve()
+        }
+      }
+      getAll.onerror = () => reject()
+    }
+    request.onerror = () => reject()
+  })
+}
+
+// Push Notification Event for alerts
+self.addEventListener('push', (event) => {
+  let data = { title: 'Alerta GPI', message: 'Nova notificação recebida no sistema.' }
+  if (event.data) {
+    try {
+      data = event.data.json()
+    } catch (e) {
+      data.message = event.data.text()
+    }
+  }
+
+  const options = {
+    body: data.message,
+    icon: '/icon-192x192.png',
+    badge: '/icon-192x192.png',
+    vibrate: [100, 50, 100],
+    data: {
+      url: '/',
+    },
+  }
+
+  event.waitUntil(self.registration.showNotification(data.title, options))
+})
+
+// Handle Notification Clicks
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window' }).then((windowClients) => {
+      for (let client of windowClients) {
+        if (client.url.includes(self.registration.scope) && 'focus' in client) {
+          return client.focus()
+        }
+      }
+      if (self.clients.openWindow) {
+        return self.clients.openWindow('/')
+      }
+    }),
   )
 })

@@ -14,7 +14,7 @@ import { Switch } from '@/components/ui/switch'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/hooks/use-toast'
 import { useAppNotifications } from '@/contexts/NotificationContext'
-import { Save, UserCog, MessageCircle } from 'lucide-react'
+import { Save, UserCog, MessageCircle, BellRing } from 'lucide-react'
 
 export default function Configuracoes() {
   const { user, setUser } = useAuth()
@@ -35,13 +35,55 @@ export default function Configuracoes() {
     setPassword('') // Clear password field after visual save
   }
 
-  const handleTestWhatsApp = () => {
-    // Triggers a test notification through the context, which will then dispatch the WhatsApp simulation
+  const handleTestAlert = () => {
+    // Triggers a test notification through the context
     addNotification({
       title: 'Alerta Sanitário de Teste 🚨',
-      message: 'Esta é uma mensagem de teste enviada via integração WhatsApp.',
+      message: 'Esta é uma mensagem de teste enviada via sistema de notificações integrado.',
       type: 'alert',
     })
+    toast({
+      title: 'Alerta Disparado',
+      description: 'O alerta de teste foi enviado aos canais habilitados.',
+    })
+  }
+
+  const handleTogglePush = async (enabled: boolean) => {
+    if (enabled) {
+      if (!('Notification' in window)) {
+        toast({
+          title: 'Erro',
+          description: 'Seu navegador não suporta notificações push.',
+          variant: 'destructive',
+        })
+        return
+      }
+      const permission = await Notification.requestPermission()
+      if (permission === 'granted') {
+        setPrefs({ ...prefs, pushEnabled: true })
+
+        // Mock Push API Subscription
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+          navigator.serviceWorker.ready.then((reg) => {
+            reg.pushManager
+              .subscribe({
+                userVisibleOnly: true,
+                applicationServerKey:
+                  'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLcg',
+              })
+              .catch((err) => console.log('Mock subscribe message', err))
+          })
+        }
+      } else {
+        toast({
+          title: 'Permissão Negada',
+          description: 'Você negou a permissão para notificações.',
+          variant: 'destructive',
+        })
+      }
+    } else {
+      setPrefs({ ...prefs, pushEnabled: false })
+    }
   }
 
   return (
@@ -98,73 +140,90 @@ export default function Configuracoes() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MessageCircle className="h-5 w-5 text-emerald-500" />
-            Notificações por WhatsApp
+            <BellRing className="h-5 w-5 text-primary" />
+            Preferências de Notificação
           </CardTitle>
           <CardDescription>
-            Configure o envio automatizado de alertas críticos diretamente para o seu número
-            registrado.
+            Configure como deseja receber os alertas críticos da fazenda (Push Nativo e WhatsApp).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="whatsappEnabled" className="flex flex-col gap-1 cursor-pointer">
-              <span>Ativar Integração WhatsApp</span>
-              <span className="font-normal text-xs text-muted-foreground">
-                Habilita o envio de mensagens
-              </span>
-            </Label>
-            <Switch
-              id="whatsappEnabled"
-              checked={prefs.whatsappEnabled}
-              onCheckedChange={(c) => setPrefs({ ...prefs, whatsappEnabled: c })}
-            />
+          <div className="space-y-4 pb-4 border-b border-border">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="pushEnabled" className="flex flex-col gap-1 cursor-pointer">
+                <span>Notificações Push (Nativas)</span>
+                <span className="font-normal text-xs text-muted-foreground">
+                  Alertas direto no sistema operacional
+                </span>
+              </Label>
+              <Switch
+                id="pushEnabled"
+                checked={prefs.pushEnabled}
+                onCheckedChange={handleTogglePush}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="whatsappEnabled" className="flex flex-col gap-1 cursor-pointer">
+                <span className="flex items-center gap-2">
+                  WhatsApp <MessageCircle className="h-3 w-3 text-emerald-500" />
+                </span>
+                <span className="font-normal text-xs text-muted-foreground">
+                  Mensagens automatizadas no seu celular
+                </span>
+              </Label>
+              <Switch
+                id="whatsappEnabled"
+                checked={prefs.whatsappEnabled}
+                onCheckedChange={(c) => setPrefs({ ...prefs, whatsappEnabled: c })}
+              />
+            </div>
           </div>
 
-          {prefs.whatsappEnabled && (
-            <div className="pl-4 border-l-2 border-border space-y-4 animate-in fade-in slide-in-from-left-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="notifyHealth" className="cursor-pointer text-sm">
-                  Alertas Sanitários (Vacinas, Pesagem)
-                </Label>
-                <Switch
-                  id="notifyHealth"
-                  checked={prefs.notifyHealth}
-                  onCheckedChange={(c) => setPrefs({ ...prefs, notifyHealth: c })}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="notifyManagement" className="cursor-pointer text-sm">
-                  Alertas de Manejo & Tarefas
-                </Label>
-                <Switch
-                  id="notifyManagement"
-                  checked={prefs.notifyManagement}
-                  onCheckedChange={(c) => setPrefs({ ...prefs, notifyManagement: c })}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="notifyFinancial" className="cursor-pointer text-sm">
-                  Alertas Financeiros & Orçamento
-                </Label>
-                <Switch
-                  id="notifyFinancial"
-                  checked={prefs.notifyFinancial}
-                  onCheckedChange={(c) => setPrefs({ ...prefs, notifyFinancial: c })}
-                />
-              </div>
-
-              <div className="pt-4 border-t border-border">
-                <Button
-                  variant="outline"
-                  onClick={handleTestWhatsApp}
-                  className="gap-2 w-full sm:w-auto"
-                >
-                  <MessageCircle className="h-4 w-4 text-emerald-500" /> Simular Alerta WhatsApp
-                </Button>
-              </div>
+          <div className="space-y-4 animate-in fade-in slide-in-from-left-2">
+            <h4 className="text-sm font-semibold mb-2">
+              Quais eventos devem disparar notificação?
+            </h4>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="notifyHealth" className="cursor-pointer text-sm">
+                Alertas Sanitários (Vacinas, Pesagem)
+              </Label>
+              <Switch
+                id="notifyHealth"
+                checked={prefs.notifyHealth}
+                onCheckedChange={(c) => setPrefs({ ...prefs, notifyHealth: c })}
+              />
             </div>
-          )}
+            <div className="flex items-center justify-between">
+              <Label htmlFor="notifyManagement" className="cursor-pointer text-sm">
+                Alertas de Manejo & Operacional
+              </Label>
+              <Switch
+                id="notifyManagement"
+                checked={prefs.notifyManagement}
+                onCheckedChange={(c) => setPrefs({ ...prefs, notifyManagement: c })}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="notifyFinancial" className="cursor-pointer text-sm">
+                Alertas Financeiros & Orçamento
+              </Label>
+              <Switch
+                id="notifyFinancial"
+                checked={prefs.notifyFinancial}
+                onCheckedChange={(c) => setPrefs({ ...prefs, notifyFinancial: c })}
+              />
+            </div>
+
+            <div className="pt-4 border-t border-border">
+              <Button
+                variant="outline"
+                onClick={handleTestAlert}
+                className="gap-2 w-full sm:w-auto"
+              >
+                <BellRing className="h-4 w-4 text-primary" /> Simular Alerta de Teste
+              </Button>
+            </div>
+          </div>
         </CardContent>
         <CardFooter className="flex justify-end border-t bg-muted/20 pt-4">
           <Button onClick={handleSave} className="gap-2">
