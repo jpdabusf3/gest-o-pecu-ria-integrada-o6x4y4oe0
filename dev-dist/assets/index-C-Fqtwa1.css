@@ -818,6 +818,12 @@ section[aria-label='Notifications alt+T'] {
 .mt-auto{
   margin-top: auto;
 }
+.line-clamp-1{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
 .line-clamp-2{
   overflow: hidden;
   display: -webkit-box;
@@ -909,6 +915,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .h-6{
   height: 1.5rem;
+}
+.h-64{
+  height: 16rem;
 }
 .h-7{
   height: 1.75rem;
@@ -1164,6 +1173,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-w-4xl{
   max-width: 56rem;
+}
+.max-w-6xl{
+  max-width: 72rem;
 }
 .max-w-7xl{
   max-width: 80rem;
@@ -1422,6 +1434,11 @@ section[aria-label='Notifications alt+T'] {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .space-x-4 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
@@ -1777,6 +1794,9 @@ section[aria-label='Notifications alt+T'] {
 .bg-muted-foreground{
   background-color: hsl(var(--muted-foreground));
 }
+.bg-muted\/10{
+  background-color: hsl(var(--muted) / 0.1);
+}
 .bg-muted\/20{
   background-color: hsl(var(--muted) / 0.2);
 }
@@ -1810,6 +1830,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .bg-secondary{
   background-color: hsl(var(--secondary));
+}
+.bg-secondary\/50{
+  background-color: hsl(var(--secondary) / 0.5);
 }
 .bg-sidebar{
   background-color: hsl(var(--sidebar-background));
@@ -2172,6 +2195,9 @@ section[aria-label='Notifications alt+T'] {
 .text-destructive-foreground\/90{
   color: hsl(var(--destructive-foreground) / 0.9);
 }
+.text-destructive\/80{
+  color: hsl(var(--destructive) / 0.8);
+}
 .text-emerald-500{
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity, 1));
@@ -2234,6 +2260,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .text-muted-foreground\/50{
   color: hsl(var(--muted-foreground) / 0.5);
+}
+.text-muted-foreground\/70{
+  color: hsl(var(--muted-foreground) / 0.7);
 }
 .text-orange-800{
   --tw-text-opacity: 1;
@@ -2485,6 +2514,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .slide-in-from-bottom-2{
   --tw-enter-translate-y: 0.5rem;
+}
+.slide-in-from-top-2{
+  --tw-enter-translate-y: -0.5rem;
 }
 .duration-1000{
   animation-duration: 1000ms;
@@ -3502,6 +3534,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:aspect-\[16\/9\]{
     aspect-ratio: 16/9;
   }
+  .sm\:w-48{
+    width: 12rem;
+  }
   .sm\:w-64{
     width: 16rem;
   }
@@ -3553,6 +3588,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .sm\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
   .sm\:flex-row{
     flex-direction: row;
   }
@@ -3597,6 +3635,12 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:border-0{
     border-width: 0px;
+  }
+  .sm\:border-b-0{
+    border-bottom-width: 0px;
+  }
+  .sm\:border-r{
+    border-right-width: 1px;
   }
   .sm\:p-6{
     padding: 1.5rem;

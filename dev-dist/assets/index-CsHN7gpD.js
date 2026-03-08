@@ -490,8 +490,8 @@ var require_react_development = /* @__PURE__ */ __commonJSMin(((exports, module)
 				"=": "=0",
 				":": "=2"
 			};
-			return "$" + key.replace(/[=:]/g, function(match$1) {
-				return escaperLookup[match$1];
+			return "$" + key.replace(/[=:]/g, function(match$2) {
+				return escaperLookup[match$2];
 			});
 		}
 		function getElementKey(element, index$1) {
@@ -1645,8 +1645,8 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			if (void 0 === prefix$2) try {
 				throw Error();
 			} catch (x$2) {
-				var match$1 = x$2.stack.trim().match(/\n( *(at )?)/);
-				prefix$2 = match$1 && match$1[1] || "";
+				var match$2 = x$2.stack.trim().match(/\n( *(at )?)/);
+				prefix$2 = match$2 && match$2[1] || "";
 				suffix = -1 < x$2.stack.indexOf("\n    at") ? " (<anonymous>)" : -1 < x$2.stack.indexOf("@") ? "@unknown:0:0" : "";
 			}
 			return "\n" + prefix$2 + name + suffix;
@@ -15628,8 +15628,8 @@ function matchRoutesImpl(routes, locationArg, basename, allowPartial) {
 	}
 	return matches;
 }
-function convertRouteMatchToUiMatch(match$1, loaderData) {
-	let { route, pathname, params } = match$1;
+function convertRouteMatchToUiMatch(match$2, loaderData) {
+	let { route, pathname, params } = match$2;
 	return {
 		id: route.id,
 		pathname,
@@ -15713,26 +15713,26 @@ function matchRouteBranch(branch, pathname, allowPartial = false) {
 		let meta = routesMeta[i];
 		let end = i === routesMeta.length - 1;
 		let remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/";
-		let match$1 = matchPath({
+		let match$2 = matchPath({
 			path: meta.relativePath,
 			caseSensitive: meta.caseSensitive,
 			end
 		}, remainingPathname);
 		let route = meta.route;
-		if (!match$1 && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) match$1 = matchPath({
+		if (!match$2 && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index) match$2 = matchPath({
 			path: meta.relativePath,
 			caseSensitive: meta.caseSensitive,
 			end: false
 		}, remainingPathname);
-		if (!match$1) return null;
-		Object.assign(matchedParams, match$1.params);
+		if (!match$2) return null;
+		Object.assign(matchedParams, match$2.params);
 		matches.push({
 			params: matchedParams,
-			pathname: joinPaths([matchedPathname, match$1.pathname]),
-			pathnameBase: normalizePathname(joinPaths([matchedPathname, match$1.pathnameBase])),
+			pathname: joinPaths([matchedPathname, match$2.pathname]),
+			pathnameBase: normalizePathname(joinPaths([matchedPathname, match$2.pathnameBase])),
 			route
 		});
-		if (match$1.pathnameBase !== "/") matchedPathname = joinPaths([matchedPathname, match$1.pathnameBase]);
+		if (match$2.pathnameBase !== "/") matchedPathname = joinPaths([matchedPathname, match$2.pathnameBase]);
 	}
 	return matches;
 }
@@ -15743,11 +15743,11 @@ function matchPath(pattern, pathname) {
 		end: true
 	};
 	let [matcher, compiledParams] = compilePath(pattern.path, pattern.caseSensitive, pattern.end);
-	let match$1 = pathname.match(matcher);
-	if (!match$1) return null;
-	let matchedPathname = match$1[0];
+	let match$2 = pathname.match(matcher);
+	if (!match$2) return null;
+	let matchedPathname = match$2[0];
 	let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
-	let captureGroups = match$1.slice(1);
+	let captureGroups = match$2.slice(1);
 	return {
 		params: compiledParams.reduce((memo2, { paramName, isOptional }, index$1) => {
 			if (paramName === "*") {
@@ -15767,13 +15767,13 @@ function matchPath(pattern, pathname) {
 function compilePath(path$1, caseSensitive = false, end = true) {
 	warning(path$1 === "*" || !path$1.endsWith("*") || path$1.endsWith("/*"), `Route path "${path$1}" will be treated as if it were "${path$1.replace(/\*$/, "/*")}" because the \`*\` character must always follow a \`/\` in the pattern. To get rid of this warning, please change the route path to "${path$1.replace(/\*$/, "/*")}".`);
 	let params = [];
-	let regexpSource = "^" + path$1.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(/\/:([\w-]+)(\?)?/g, (match$1, paramName, isOptional, index$1, str) => {
+	let regexpSource = "^" + path$1.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(/\/:([\w-]+)(\?)?/g, (match$2, paramName, isOptional, index$1, str) => {
 		params.push({
 			paramName,
 			isOptional: isOptional != null
 		});
 		if (isOptional) {
-			let nextChar = str.charAt(index$1 + match$1.length);
+			let nextChar = str.charAt(index$1 + match$2.length);
 			if (nextChar && nextChar !== "/") return "/([^\\/]*)";
 			return "(?:/([^\\/]*))?";
 		}
@@ -15830,11 +15830,11 @@ function getInvalidPathError(char, field, dest, path$1) {
 	return `Cannot include a '${char}' character in a manually specified \`to.${field}\` field [${JSON.stringify(path$1)}].  Please separate it out to the \`to.${dest}\` field. Alternatively you may provide the full path as a string in <Link to="..."> and the router will parse it for you.`;
 }
 function getPathContributingMatches(matches) {
-	return matches.filter((match$1, index$1) => index$1 === 0 || match$1.route.path && match$1.route.path.length > 0);
+	return matches.filter((match$2, index$1) => index$1 === 0 || match$2.route.path && match$2.route.path.length > 0);
 }
 function getResolveToMatches(matches) {
 	let pathMatches = getPathContributingMatches(matches);
-	return pathMatches.map((match$1, idx) => idx === pathMatches.length - 1 ? match$1.pathname : match$1.pathnameBase);
+	return pathMatches.map((match$2, idx) => idx === pathMatches.length - 1 ? match$2.pathname : match$2.pathnameBase);
 }
 function resolveTo(toArg, routePathnames, locationPathname, isPathRelative = false) {
 	let to;
@@ -16063,10 +16063,10 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
 	let matches = matchRoutes(routes, { pathname: remainingPathname });
 	warning(parentRoute || matches != null, `No routes matched location "${location.pathname}${location.search}${location.hash}" `);
 	warning(matches == null || matches[matches.length - 1].route.element !== void 0 || matches[matches.length - 1].route.Component !== void 0 || matches[matches.length - 1].route.lazy !== void 0, `Matched leaf route at location "${location.pathname}${location.search}${location.hash}" does not have an element or Component. This means it will render an <Outlet /> with a null value by default resulting in an "empty" page.`);
-	let renderedMatches = _renderMatches(matches && matches.map((match$1) => Object.assign({}, match$1, {
-		params: Object.assign({}, parentParams, match$1.params),
-		pathname: joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$1.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$1.pathname]),
-		pathnameBase: match$1.pathnameBase === "/" ? parentPathnameBase : joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$1.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$1.pathnameBase])
+	let renderedMatches = _renderMatches(matches && matches.map((match$2) => Object.assign({}, match$2, {
+		params: Object.assign({}, parentParams, match$2.params),
+		pathname: joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$2.pathname.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$2.pathname]),
+		pathnameBase: match$2.pathnameBase === "/" ? parentPathnameBase : joinPaths([parentPathnameBase, navigator$1.encodeLocation ? navigator$1.encodeLocation(match$2.pathnameBase.replace(/\?/g, "%3F").replace(/#/g, "%23")).pathname : match$2.pathnameBase])
 	})), parentMatches, dataRouterOpts);
 	if (locationArg && renderedMatches) return /* @__PURE__ */ import_react.createElement(LocationContext.Provider, { value: {
 		location: {
@@ -16167,9 +16167,9 @@ function RSCErrorHandler({ children, error }) {
 	}
 	return children;
 }
-function RenderedRoute({ routeContext, match: match$1, children }) {
+function RenderedRoute({ routeContext, match: match$2, children }) {
 	let dataRouterContext = import_react.useContext(DataRouterContext);
-	if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match$1.route.errorElement || match$1.route.ErrorBoundary)) dataRouterContext.staticContext._deepestRenderedBoundaryId = match$1.route.id;
+	if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match$2.route.errorElement || match$2.route.ErrorBoundary)) dataRouterContext.staticContext._deepestRenderedBoundaryId = match$2.route.id;
 	return /* @__PURE__ */ import_react.createElement(RouteContext.Provider, { value: routeContext }, children);
 }
 function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
@@ -16192,12 +16192,12 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 	if (dataRouterOpts && dataRouterState) {
 		renderFallback = dataRouterState.renderFallback;
 		for (let i = 0; i < renderedMatches.length; i++) {
-			let match$1 = renderedMatches[i];
-			if (match$1.route.HydrateFallback || match$1.route.hydrateFallbackElement) fallbackIndex = i;
-			if (match$1.route.id) {
+			let match$2 = renderedMatches[i];
+			if (match$2.route.HydrateFallback || match$2.route.hydrateFallbackElement) fallbackIndex = i;
+			if (match$2.route.id) {
 				let { loaderData, errors: errors2 } = dataRouterState;
-				let needsToRunLoader = match$1.route.loader && !loaderData.hasOwnProperty(match$1.route.id) && (!errors2 || errors2[match$1.route.id] === void 0);
-				if (match$1.route.lazy || needsToRunLoader) {
+				let needsToRunLoader = match$2.route.loader && !loaderData.hasOwnProperty(match$2.route.id) && (!errors2 || errors2[match$2.route.id] === void 0);
+				if (match$2.route.lazy || needsToRunLoader) {
 					if (dataRouterOpts.isStatic) renderFallback = true;
 					if (fallbackIndex >= 0) renderedMatches = renderedMatches.slice(0, fallbackIndex + 1);
 					else renderedMatches = [renderedMatches[0]];
@@ -16215,14 +16215,14 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 			errorInfo
 		});
 	} : void 0;
-	return renderedMatches.reduceRight((outlet, match$1, index$1) => {
+	return renderedMatches.reduceRight((outlet, match$2, index$1) => {
 		let error;
 		let shouldRenderHydrateFallback = false;
 		let errorElement = null;
 		let hydrateFallbackElement = null;
 		if (dataRouterState) {
-			error = errors && match$1.route.id ? errors[match$1.route.id] : void 0;
-			errorElement = match$1.route.errorElement || defaultErrorElement;
+			error = errors && match$2.route.id ? errors[match$2.route.id] : void 0;
+			errorElement = match$2.route.errorElement || defaultErrorElement;
 			if (renderFallback) {
 				if (fallbackIndex < 0 && index$1 === 0) {
 					warningOnce("route-fallback", false, "No `HydrateFallback` element provided to render during initial hydration");
@@ -16230,7 +16230,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 					hydrateFallbackElement = null;
 				} else if (fallbackIndex === index$1) {
 					shouldRenderHydrateFallback = true;
-					hydrateFallbackElement = match$1.route.hydrateFallbackElement || null;
+					hydrateFallbackElement = match$2.route.hydrateFallbackElement || null;
 				}
 			}
 		}
@@ -16239,11 +16239,11 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 			let children;
 			if (error) children = errorElement;
 			else if (shouldRenderHydrateFallback) children = hydrateFallbackElement;
-			else if (match$1.route.Component) children = /* @__PURE__ */ import_react.createElement(match$1.route.Component, null);
-			else if (match$1.route.element) children = match$1.route.element;
+			else if (match$2.route.Component) children = /* @__PURE__ */ import_react.createElement(match$2.route.Component, null);
+			else if (match$2.route.element) children = match$2.route.element;
 			else children = outlet;
 			return /* @__PURE__ */ import_react.createElement(RenderedRoute, {
-				match: match$1,
+				match: match$2,
 				routeContext: {
 					outlet,
 					matches: matches2,
@@ -16252,7 +16252,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterOpts) {
 				children
 			});
 		};
-		return dataRouterState && (match$1.route.ErrorBoundary || match$1.route.errorElement || index$1 === 0) ? /* @__PURE__ */ import_react.createElement(RenderErrorBoundary, {
+		return dataRouterState && (match$2.route.ErrorBoundary || match$2.route.errorElement || index$1 === 0) ? /* @__PURE__ */ import_react.createElement(RenderErrorBoundary, {
 			location: dataRouterState.location,
 			revalidation: dataRouterState.revalidation,
 			component: errorElement,
@@ -16557,7 +16557,7 @@ var ESCAPE_LOOKUP = {
 };
 var ESCAPE_REGEX = /[&><\u2028\u2029]/g;
 function escapeHtml(html) {
-	return html.replace(ESCAPE_REGEX, (match$1) => ESCAPE_LOOKUP[match$1]);
+	return html.replace(ESCAPE_REGEX, (match$2) => ESCAPE_LOOKUP[match$2]);
 }
 function invariant2(value, message$1) {
 	if (value === false || value === null || typeof value === "undefined") throw new Error(message$1);
@@ -16598,8 +16598,8 @@ function isHtmlLinkDescriptor(object) {
 	return typeof object.rel === "string" && typeof object.href === "string";
 }
 async function getKeyedPrefetchLinks(matches, manifest, routeModules) {
-	return dedupeLinkDescriptors((await Promise.all(matches.map(async (match$1) => {
-		let route = manifest.routes[match$1.route.id];
+	return dedupeLinkDescriptors((await Promise.all(matches.map(async (match$2) => {
+		let route = manifest.routes[match$2.route.id];
 		if (route) {
 			let mod = await loadRouteModule(route, routeModules);
 			return mod.links ? mod.links() : [];
@@ -16615,24 +16615,24 @@ async function getKeyedPrefetchLinks(matches, manifest, routeModules) {
 	}));
 }
 function getNewMatchesForLinks(page, nextMatches, currentMatches, manifest, location, mode) {
-	let isNew = (match$1, index$1) => {
+	let isNew = (match$2, index$1) => {
 		if (!currentMatches[index$1]) return true;
-		return match$1.route.id !== currentMatches[index$1].route.id;
+		return match$2.route.id !== currentMatches[index$1].route.id;
 	};
-	let matchPathChanged = (match$1, index$1) => {
-		return currentMatches[index$1].pathname !== match$1.pathname || currentMatches[index$1].route.path?.endsWith("*") && currentMatches[index$1].params["*"] !== match$1.params["*"];
+	let matchPathChanged = (match$2, index$1) => {
+		return currentMatches[index$1].pathname !== match$2.pathname || currentMatches[index$1].route.path?.endsWith("*") && currentMatches[index$1].params["*"] !== match$2.params["*"];
 	};
-	if (mode === "assets") return nextMatches.filter((match$1, index$1) => isNew(match$1, index$1) || matchPathChanged(match$1, index$1));
-	if (mode === "data") return nextMatches.filter((match$1, index$1) => {
-		let manifestRoute = manifest.routes[match$1.route.id];
+	if (mode === "assets") return nextMatches.filter((match$2, index$1) => isNew(match$2, index$1) || matchPathChanged(match$2, index$1));
+	if (mode === "data") return nextMatches.filter((match$2, index$1) => {
+		let manifestRoute = manifest.routes[match$2.route.id];
 		if (!manifestRoute || !manifestRoute.hasLoader) return false;
-		if (isNew(match$1, index$1) || matchPathChanged(match$1, index$1)) return true;
-		if (match$1.route.shouldRevalidate) {
-			let routeChoice = match$1.route.shouldRevalidate({
+		if (isNew(match$2, index$1) || matchPathChanged(match$2, index$1)) return true;
+		if (match$2.route.shouldRevalidate) {
+			let routeChoice = match$2.route.shouldRevalidate({
 				currentUrl: new URL(location.pathname + location.search + location.hash, window.origin),
 				currentParams: currentMatches[0]?.params || {},
 				nextUrl: new URL(page, window.origin),
-				nextParams: match$1.params,
+				nextParams: match$2.params,
 				defaultShouldRevalidate: true
 			});
 			if (typeof routeChoice === "boolean") return routeChoice;
@@ -16642,8 +16642,8 @@ function getNewMatchesForLinks(page, nextMatches, currentMatches, manifest, loca
 	return [];
 }
 function getModuleLinkHrefs(matches, manifest, { includeHydrateFallback } = {}) {
-	return dedupeHrefs(matches.map((match$1) => {
-		let route = manifest.routes[match$1.route.id];
+	return dedupeHrefs(matches.map((match$2) => {
+		let route = manifest.routes[match$2.route.id];
 		if (!route) return [];
 		let hrefs = [route.module];
 		if (route.clientActionModule) hrefs = hrefs.concat(route.clientActionModule);
@@ -17165,7 +17165,7 @@ function useFormAction(action, { relative } = {}) {
 	let { basename } = import_react.useContext(NavigationContext);
 	let routeContext = import_react.useContext(RouteContext);
 	invariant$1(routeContext, "useFormAction must be used inside a RouteContext");
-	let [match$1] = routeContext.matches.slice(-1);
+	let [match$2] = routeContext.matches.slice(-1);
 	let path$1 = { ...useResolvedPath(action ? action : ".", { relative }) };
 	let location = useLocation();
 	if (action == null) {
@@ -17179,7 +17179,7 @@ function useFormAction(action, { relative } = {}) {
 			path$1.search = qs ? `?${qs}` : "";
 		}
 	}
-	if ((!action || action === ".") && match$1.route.index) path$1.search = path$1.search ? path$1.search.replace(/^\?/, "?index&") : "?index";
+	if ((!action || action === ".") && match$2.route.index) path$1.search = path$1.search ? path$1.search.replace(/^\?/, "?index&") : "?index";
 	if (basename !== "/") path$1.pathname = path$1.pathname === "/" ? basename : joinPaths([basename, path$1.pathname]);
 	return createPath(path$1);
 }
@@ -18822,7 +18822,7 @@ function focusFirst$3(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport$1 = ToastViewport$1;
-var Root2$5 = Toast$2;
+var Root2$6 = Toast$2;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action = ToastAction$1;
@@ -18900,7 +18900,7 @@ var toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLo
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var toCamelCase = (string) => string.replace(/^([A-Z])|[\s-_]+(\w)/g, (match$1, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase());
+var toCamelCase = (string) => string.replace(/^([A-Z])|[\s-_]+(\w)/g, (match$2, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase());
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -21640,13 +21640,13 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 	defaultVariants: { variant: "default" }
 });
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$6, {
 		ref,
 		className: cn(toastVariants({ variant }), className),
 		...props
 	});
 });
-Toast$1.displayName = Root2$5.displayName;
+Toast$1.displayName = Root2$6.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action, {
 	ref,
 	className: cn("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
@@ -22026,10 +22026,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$30, data) => {
+		this.custom = (jsx$31, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$30(id),
+				jsx: jsx$31(id),
 				id,
 				...data
 			});
@@ -24441,7 +24441,7 @@ function getSideAndAlignFromPlacement(placement) {
 	const [side, align = "center"] = placement.split("-");
 	return [side, align];
 }
-var Root2$4 = Popper;
+var Root2$5 = Popper;
 var Anchor = PopperAnchor;
 var Content$3 = PopperContent;
 var Arrow = PopperArrow;
@@ -24535,7 +24535,7 @@ var Tooltip$2 = (props) => {
 			}
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContextProvider, {
 			scope: __scopeTooltip,
@@ -28037,7 +28037,7 @@ var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		"aria-haspopup": "dialog",
 		"aria-expanded": context.open,
 		"aria-controls": context.contentId,
-		"data-state": getState$2(context.open),
+		"data-state": getState$3(context.open),
 		...triggerProps,
 		ref: composedTriggerRef,
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
@@ -28086,7 +28086,7 @@ var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 		allowPinchZoom: true,
 		shards: [context.contentRef],
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
-			"data-state": getState$2(context.open),
+			"data-state": getState$3(context.open),
 			...overlayProps,
 			ref: forwardedRef,
 			style: {
@@ -28185,7 +28185,7 @@ var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			id: context.contentId,
 			"aria-describedby": context.descriptionId,
 			"aria-labelledby": context.titleId,
-			"data-state": getState$2(context.open),
+			"data-state": getState$3(context.open),
 			...contentProps,
 			ref: composedRefs,
 			onDismiss: () => context.onOpenChange(false)
@@ -28229,7 +28229,7 @@ var DialogClose$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DialogClose$1.displayName = CLOSE_NAME;
-function getState$2(open) {
+function getState$3(open) {
 	return open ? "open" : "closed";
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
@@ -28909,7 +28909,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$45({ inst: {
+			cachedValue = useState$47({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28923,7 +28923,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$16(function() {
+			useEffect$17(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28946,7 +28946,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$45 = React$70.useState, useEffect$16 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$47 = React$70.useState, useEffect$17 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29197,7 +29197,7 @@ var Select$2 = (props) => {
 	const isFormControl = trigger ? form || !!trigger.closest("form") : true;
 	const [nativeOptionsSet, setNativeOptionsSet] = import_react.useState(/* @__PURE__ */ new Set());
 	const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectProvider, {
 			required,
@@ -29796,12 +29796,12 @@ var SelectLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 SelectLabel$1.displayName = LABEL_NAME$2;
-var ITEM_NAME$4 = "SelectItem";
-var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$4);
+var ITEM_NAME$5 = "SelectItem";
+var [SelectItemContextProvider, useSelectItemContext] = createSelectContext(ITEM_NAME$5);
 var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, value, disabled = false, textValue: textValueProp, ...itemProps } = props;
-	const context = useSelectContext(ITEM_NAME$4, __scopeSelect);
-	const contentContext = useSelectContentContext(ITEM_NAME$4, __scopeSelect);
+	const context = useSelectContext(ITEM_NAME$5, __scopeSelect);
+	const contentContext = useSelectContentContext(ITEM_NAME$5, __scopeSelect);
 	const isSelected = context.value === value;
 	const [textValue, setTextValue] = import_react.useState(textValueProp ?? "");
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -29868,7 +29868,7 @@ var SelectItem$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-SelectItem$1.displayName = ITEM_NAME$4;
+SelectItem$1.displayName = ITEM_NAME$5;
 var ITEM_TEXT_NAME = "SelectItemText";
 var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, className, style, ...itemTextProps } = props;
@@ -30029,7 +30029,7 @@ var SelectArrow = import_react.forwardRef((props, forwardedRef) => {
 	}) : null;
 });
 SelectArrow.displayName = ARROW_NAME$2;
-var BUBBLE_INPUT_NAME$2 = "SelectBubbleInput";
+var BUBBLE_INPUT_NAME$3 = "SelectBubbleInput";
 var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
@@ -30055,7 +30055,7 @@ var SelectBubbleInput = import_react.forwardRef(({ __scopeSelect, value, ...prop
 		defaultValue: value
 	});
 });
-SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$2;
+SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$3;
 function shouldShowPlaceholder(value) {
 	return value === "" || value === void 0;
 }
@@ -30096,7 +30096,7 @@ function findNextItem(items, search, currentItem) {
 function wrapArray$2(array, startIndex) {
 	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
 }
-var Root2$3 = Select$2;
+var Root2$4 = Select$2;
 var Trigger$2 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
@@ -30110,7 +30110,7 @@ var ItemIndicator$1 = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
 var Separator$1 = SelectSeparator$1;
-var Select = Root2$3;
+var Select = Root2$4;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$2, {
 	ref,
@@ -30446,12 +30446,12 @@ var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var ITEM_NAME$3 = "RovingFocusGroupItem";
+var ITEM_NAME$4 = "RovingFocusGroupItem";
 var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRovingFocusGroup, focusable = true, active = false, tabStopId, children, ...itemProps } = props;
 	const autoId = useId();
 	const id = tabStopId || autoId;
-	const context = useRovingFocusContext(ITEM_NAME$3, __scopeRovingFocusGroup);
+	const context = useRovingFocusContext(ITEM_NAME$4, __scopeRovingFocusGroup);
 	const isCurrentTabStop = context.currentTabStopId === id;
 	const getItems = useCollection$1(__scopeRovingFocusGroup);
 	const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
@@ -30507,7 +30507,7 @@ var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-RovingFocusGroupItem.displayName = ITEM_NAME$3;
+RovingFocusGroupItem.displayName = ITEM_NAME$4;
 var MAP_KEY_TO_FOCUS_INTENT = {
 	ArrowLeft: "prev",
 	ArrowUp: "prev",
@@ -30569,7 +30569,7 @@ var [createMenuContext, createMenuScope] = createContextScope(MENU_NAME, [
 	createRovingFocusGroupScope
 ]);
 var usePopperScope = createPopperScope();
-var useRovingFocusGroupScope$2 = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$3 = createRovingFocusGroupScope();
 var [MenuProvider, useMenuContext] = createMenuContext(MENU_NAME);
 var [MenuRootProvider, useMenuRootContext] = createMenuContext(MENU_NAME);
 var Menu = (props) => {
@@ -30599,7 +30599,7 @@ var Menu = (props) => {
 			document.removeEventListener("pointermove", handlePointer, { capture: true });
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
 			scope: __scopeMenu,
@@ -30708,7 +30708,7 @@ var MenuContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const context = useMenuContext(CONTENT_NAME$2, __scopeMenu);
 	const rootContext = useMenuRootContext(CONTENT_NAME$2, __scopeMenu);
 	const popperScope = usePopperScope(__scopeMenu);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$3(__scopeMenu);
 	const getItems = useCollection(__scopeMenu);
 	const [currentItemId, setCurrentItemId] = import_react.useState(null);
 	const contentRef = import_react.useRef(null);
@@ -30863,13 +30863,13 @@ var MenuLabel = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 MenuLabel.displayName = LABEL_NAME$1;
-var ITEM_NAME$2 = "MenuItem";
+var ITEM_NAME$3 = "MenuItem";
 var ITEM_SELECT = "menu.itemSelect";
 var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 	const { disabled = false, onSelect, ...itemProps } = props;
 	const ref = import_react.useRef(null);
-	const rootContext = useMenuRootContext(ITEM_NAME$2, props.__scopeMenu);
-	const contentContext = useMenuContentContext(ITEM_NAME$2, props.__scopeMenu);
+	const rootContext = useMenuRootContext(ITEM_NAME$3, props.__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$3, props.__scopeMenu);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const isPointerDownRef = import_react.useRef(false);
 	const handleSelect = () => {
@@ -30907,11 +30907,11 @@ var MenuItem = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-MenuItem.displayName = ITEM_NAME$2;
+MenuItem.displayName = ITEM_NAME$3;
 var MenuItemImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeMenu, disabled = false, textValue, ...itemProps } = props;
-	const contentContext = useMenuContentContext(ITEM_NAME$2, __scopeMenu);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeMenu);
+	const contentContext = useMenuContentContext(ITEM_NAME$3, __scopeMenu);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$3(__scopeMenu);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [isFocused, setIsFocused] = import_react.useState(false);
@@ -30966,15 +30966,15 @@ var MenuCheckboxItem = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME$1;
-var RADIO_GROUP_NAME$1 = "MenuRadioGroup";
-var [RadioGroupProvider, useRadioGroupContext] = createMenuContext(RADIO_GROUP_NAME$1, {
+var RADIO_GROUP_NAME$2 = "MenuRadioGroup";
+var [RadioGroupProvider$1, useRadioGroupContext$1] = createMenuContext(RADIO_GROUP_NAME$2, {
 	value: void 0,
 	onValueChange: () => {}
 });
 var MenuRadioGroup = import_react.forwardRef((props, forwardedRef) => {
 	const { value, onValueChange, ...groupProps } = props;
 	const handleValueChange = useCallbackRef$1(onValueChange);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupProvider, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupProvider$1, {
 		scope: props.__scopeMenu,
 		value,
 		onValueChange: handleValueChange,
@@ -30984,11 +30984,11 @@ var MenuRadioGroup = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-MenuRadioGroup.displayName = RADIO_GROUP_NAME$1;
+MenuRadioGroup.displayName = RADIO_GROUP_NAME$2;
 var RADIO_ITEM_NAME$1 = "MenuRadioItem";
 var MenuRadioItem = import_react.forwardRef((props, forwardedRef) => {
 	const { value, ...radioItemProps } = props;
-	const context = useRadioGroupContext(RADIO_ITEM_NAME$1, props.__scopeMenu);
+	const context = useRadioGroupContext$1(RADIO_ITEM_NAME$1, props.__scopeMenu);
 	const checked = value === context.value;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicatorProvider, {
 		scope: props.__scopeMenu,
@@ -31054,7 +31054,7 @@ var MenuSub = (props) => {
 		if (parentMenuContext.open === false) handleOpenChange(false);
 		return () => handleOpenChange(false);
 	}, [parentMenuContext.open, handleOpenChange]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$5, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuProvider, {
 			scope: __scopeMenu,
@@ -31288,9 +31288,9 @@ var Portal$2 = MenuPortal;
 var Content2$1 = MenuContent;
 var Group = MenuGroup;
 var Label$2 = MenuLabel;
-var Item2$2 = MenuItem;
+var Item2$3 = MenuItem;
 var CheckboxItem = MenuCheckboxItem;
-var RadioGroup = MenuRadioGroup;
+var RadioGroup$2 = MenuRadioGroup;
 var RadioItem = MenuRadioItem;
 var ItemIndicator = MenuItemIndicator;
 var Separator = MenuSeparator;
@@ -31436,17 +31436,17 @@ var DropdownMenuLabel$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuLabel$1.displayName = LABEL_NAME;
-var ITEM_NAME$1 = "DropdownMenuItem";
+var ITEM_NAME$2 = "DropdownMenuItem";
 var DropdownMenuItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$3, {
 		...menuScope,
 		...itemProps,
 		ref: forwardedRef
 	});
 });
-DropdownMenuItem$1.displayName = ITEM_NAME$1;
+DropdownMenuItem$1.displayName = ITEM_NAME$2;
 var CHECKBOX_ITEM_NAME = "DropdownMenuCheckboxItem";
 var DropdownMenuCheckboxItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...checkboxItemProps } = props;
@@ -31458,17 +31458,17 @@ var DropdownMenuCheckboxItem$1 = import_react.forwardRef((props, forwardedRef) =
 	});
 });
 DropdownMenuCheckboxItem$1.displayName = CHECKBOX_ITEM_NAME;
-var RADIO_GROUP_NAME = "DropdownMenuRadioGroup";
+var RADIO_GROUP_NAME$1 = "DropdownMenuRadioGroup";
 var DropdownMenuRadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...radioGroupProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroup, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroup$2, {
 		...menuScope,
 		...radioGroupProps,
 		ref: forwardedRef
 	});
 });
-DropdownMenuRadioGroup$1.displayName = RADIO_GROUP_NAME;
+DropdownMenuRadioGroup$1.displayName = RADIO_GROUP_NAME$1;
 var RADIO_ITEM_NAME = "DropdownMenuRadioItem";
 var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...radioItemProps } = props;
@@ -31480,7 +31480,7 @@ var DropdownMenuRadioItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 DropdownMenuRadioItem$1.displayName = RADIO_ITEM_NAME;
-var INDICATOR_NAME$2 = "DropdownMenuItemIndicator";
+var INDICATOR_NAME$3 = "DropdownMenuItemIndicator";
 var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...itemIndicatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
@@ -31490,7 +31490,7 @@ var DropdownMenuItemIndicator = import_react.forwardRef((props, forwardedRef) =>
 		ref: forwardedRef
 	});
 });
-DropdownMenuItemIndicator.displayName = INDICATOR_NAME$2;
+DropdownMenuItemIndicator.displayName = INDICATOR_NAME$3;
 var SEPARATOR_NAME = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
@@ -31543,19 +31543,19 @@ var DropdownMenuSubContent$1 = import_react.forwardRef((props, forwardedRef) => 
 	});
 });
 DropdownMenuSubContent$1.displayName = SUB_CONTENT_NAME;
-var Root2$2 = DropdownMenu$1;
+var Root2$3 = DropdownMenu$1;
 var Trigger$1 = DropdownMenuTrigger$1;
 var Portal2 = DropdownMenuPortal$1;
 var Content2 = DropdownMenuContent$1;
 var Label2 = DropdownMenuLabel$1;
-var Item2$1 = DropdownMenuItem$1;
+var Item2$2 = DropdownMenuItem$1;
 var CheckboxItem2 = DropdownMenuCheckboxItem$1;
 var RadioItem2 = DropdownMenuRadioItem$1;
 var ItemIndicator2 = DropdownMenuItemIndicator;
 var Separator2 = DropdownMenuSeparator$1;
 var SubTrigger2 = DropdownMenuSubTrigger$1;
 var SubContent2 = DropdownMenuSubContent$1;
-var DropdownMenu = Root2$2;
+var DropdownMenu = Root2$3;
 var DropdownMenuTrigger = Trigger$1;
 var DropdownMenuSubTrigger = import_react.forwardRef(({ className, inset, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SubTrigger2, {
 	ref,
@@ -31577,12 +31577,12 @@ var DropdownMenuContent = import_react.forwardRef(({ className, sideOffset = 4, 
 	...props
 }) }));
 DropdownMenuContent.displayName = Content2.displayName;
-var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
+var DropdownMenuItem = import_react.forwardRef(({ className, inset, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$2, {
 	ref,
 	className: cn("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", inset && "pl-8", className),
 	...props
 }));
-DropdownMenuItem.displayName = Item2$1.displayName;
+DropdownMenuItem.displayName = Item2$2.displayName;
 var DropdownMenuCheckboxItem = import_react.forwardRef(({ className, children, checked, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CheckboxItem2, {
 	ref,
 	className: cn("relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className),
@@ -31906,10 +31906,10 @@ var Progress$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Progress$1.displayName = PROGRESS_NAME;
-var INDICATOR_NAME$1 = "ProgressIndicator";
+var INDICATOR_NAME$2 = "ProgressIndicator";
 var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeProgress, ...indicatorProps } = props;
-	const context = useProgressContext(INDICATOR_NAME$1, __scopeProgress);
+	const context = useProgressContext(INDICATOR_NAME$2, __scopeProgress);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
 		"data-state": getProgressState(context.value, context.max),
 		"data-value": context.value ?? void 0,
@@ -31918,7 +31918,7 @@ var ProgressIndicator = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-ProgressIndicator.displayName = INDICATOR_NAME$1;
+ProgressIndicator.displayName = INDICATOR_NAME$2;
 function defaultGetValueLabel(value, max$6) {
 	return `${Math.round(value / max$6 * 100)}%`;
 }
@@ -31946,12 +31946,12 @@ function getInvalidValueError(propValue, componentName) {
 Defaulting to \`null\`.`;
 }
 var Root$4 = Progress$1;
-var Indicator = ProgressIndicator;
+var Indicator$1 = ProgressIndicator;
 var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
 	ref,
 	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
 	...props,
-	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator, {
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator$1, {
 		className: "h-full w-full flex-1 bg-primary transition-all",
 		style: { transform: `translateX(-${100 - (value || 0)}%)` }
 	})
@@ -32373,8 +32373,8 @@ var require__stringToPath = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = memoizeCapped(function(string) {
 		var result = [];
 		if (string.charCodeAt(0) === 46) result.push("");
-		string.replace(rePropName, function(match$1, number$3, quote, subString) {
-			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match$1);
+		string.replace(rePropName, function(match$2, number$3, quote, subString) {
+			result.push(quote ? subString.replace(reEscapeChar, "$1") : number$3 || match$2);
 		});
 		return result;
 	});
@@ -38842,19 +38842,19 @@ function formatNumerals_default(numerals) {
 }
 var re$1 = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 function formatSpecifier(specifier) {
-	if (!(match$1 = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
-	var match$1;
+	if (!(match$2 = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
+	var match$2;
 	return new FormatSpecifier({
-		fill: match$1[1],
-		align: match$1[2],
-		sign: match$1[3],
-		symbol: match$1[4],
-		zero: match$1[5],
-		width: match$1[6],
-		comma: match$1[7],
-		precision: match$1[8] && match$1[8].slice(1),
-		trim: match$1[9],
-		type: match$1[10]
+		fill: match$2[1],
+		align: match$2[2],
+		sign: match$2[3],
+		symbol: match$2[4],
+		zero: match$2[5],
+		width: match$2[6],
+		comma: match$2[7],
+		precision: match$2[8] && match$2[8].slice(1),
+		trim: match$2[9],
+		type: match$2[10]
 	});
 }
 formatSpecifier.prototype = FormatSpecifier.prototype;
@@ -56079,7 +56079,7 @@ function Index() {
 }
 var TABS_NAME = "Tabs";
 var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [createRovingFocusGroupScope]);
-var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$2 = createRovingFocusGroupScope();
 var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
 var Tabs$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
@@ -56111,7 +56111,7 @@ var TAB_LIST_NAME = "TabsList";
 var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, loop = true, ...listProps } = props;
 	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeTabs);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 		asChild: true,
 		...rovingFocusGroupScope,
@@ -56131,7 +56131,7 @@ var TRIGGER_NAME$1 = "TabsTrigger";
 var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
 	const context = useTabsContext(TRIGGER_NAME$1, __scopeTabs);
-	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$2(__scopeTabs);
 	const triggerId = makeTriggerId(context.baseId, value);
 	const contentId = makeContentId(context.baseId, value);
 	const isSelected = value === context.value;
@@ -56205,11 +56205,11 @@ function makeTriggerId(baseId, value) {
 function makeContentId(baseId, value) {
 	return `${baseId}-content-${value}`;
 }
-var Root2$1 = Tabs$1;
+var Root2$2 = Tabs$1;
 var List = TabsList$1;
 var Trigger = TabsTrigger$1;
 var Content$1 = TabsContent$1;
-var Tabs = Root2$1;
+var Tabs = Root2$2;
 var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
 	ref,
 	className: cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
@@ -56934,7 +56934,7 @@ var Switch$1 = import_react.forwardRef((props, forwardedRef) => {
 			role: "switch",
 			"aria-checked": checked,
 			"aria-required": required,
-			"data-state": getState$1(checked),
+			"data-state": getState$2(checked),
 			"data-disabled": disabled ? "" : void 0,
 			disabled,
 			value,
@@ -56966,14 +56966,14 @@ var SwitchThumb = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSwitch, ...thumbProps } = props;
 	const context = useSwitchContext(THUMB_NAME, __scopeSwitch);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
-		"data-state": getState$1(context.checked),
+		"data-state": getState$2(context.checked),
 		"data-disabled": context.disabled ? "" : void 0,
 		...thumbProps,
 		ref: forwardedRef
 	});
 });
 SwitchThumb.displayName = THUMB_NAME;
-var BUBBLE_INPUT_NAME$1 = "SwitchBubbleInput";
+var BUBBLE_INPUT_NAME$2 = "SwitchBubbleInput";
 var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, checked, bubbles = true, ...props }, forwardedRef) => {
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(ref, forwardedRef);
@@ -57011,8 +57011,8 @@ var SwitchBubbleInput = import_react.forwardRef(({ __scopeSwitch, control, check
 		}
 	});
 });
-SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
-function getState$1(checked) {
+SwitchBubbleInput.displayName = BUBBLE_INPUT_NAME$2;
+function getState$2(checked) {
 	return checked ? "checked" : "unchecked";
 }
 var Root$3 = Switch$1;
@@ -57749,11 +57749,11 @@ function Pastos() {
 		})]
 	});
 }
-var STORAGE_KEY$1 = "@f3_fazendas";
+var STORAGE_KEY$2 = "@f3_fazendas";
 function useFazendaStore() {
 	const [fazendas, setFazendas] = (0, import_react.useState)(() => {
 		try {
-			const saved = localStorage.getItem(STORAGE_KEY$1);
+			const saved = localStorage.getItem(STORAGE_KEY$2);
 			if (saved) return JSON.parse(saved);
 		} catch (e) {
 			console.error(e);
@@ -57775,7 +57775,7 @@ function useFazendaStore() {
 	(0, import_react.useEffect)(() => {
 		const handleUpdate = () => {
 			try {
-				const saved = localStorage.getItem(STORAGE_KEY$1);
+				const saved = localStorage.getItem(STORAGE_KEY$2);
 				if (saved) setFazendas(JSON.parse(saved));
 			} catch (e) {
 				console.error(e);
@@ -57789,7 +57789,7 @@ function useFazendaStore() {
 		addFazenda: (0, import_react.useCallback)((fazenda) => {
 			setFazendas((prev) => {
 				const updated = [...prev, fazenda];
-				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
 				window.dispatchEvent(new Event("fazendas-updated"));
 				return updated;
 			});
@@ -57797,7 +57797,7 @@ function useFazendaStore() {
 		deleteFazenda: (0, import_react.useCallback)((id) => {
 			setFazendas((prev) => {
 				const updated = prev.filter((f) => f.id !== id);
-				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
 				window.dispatchEvent(new Event("fazendas-updated"));
 				return updated;
 			});
@@ -57808,7 +57808,7 @@ function useFazendaStore() {
 					...f,
 					...data
 				} : f);
-				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$2, JSON.stringify(updated));
 				window.dispatchEvent(new Event("fazendas-updated"));
 				return updated;
 			});
@@ -59572,7 +59572,7 @@ function endOfISOWeek(date$1, options$1) {
 		weekStartsOn: 1
 	});
 }
-var formatDistanceLocale = {
+var formatDistanceLocale$1 = {
 	lessThanXSeconds: {
 		one: "less than a second",
 		other: "less than {{count}} seconds"
@@ -59635,9 +59635,9 @@ var formatDistanceLocale = {
 		other: "almost {{count}} years"
 	}
 };
-const formatDistance = (token, count$3, options$1) => {
+const formatDistance$1 = (token, count$3, options$1) => {
 	let result;
-	const tokenValue = formatDistanceLocale[token];
+	const tokenValue = formatDistanceLocale$1[token];
 	if (typeof tokenValue === "string") result = tokenValue;
 	else if (count$3 === 1) result = tokenValue.one;
 	else result = tokenValue.other.replace("{{count}}", count$3.toString());
@@ -59651,7 +59651,7 @@ function buildFormatLongFn(args) {
 		return args.formats[width] || args.formats[args.defaultWidth];
 	};
 }
-const formatLong = {
+const formatLong$1 = {
 	date: buildFormatLongFn({
 		formats: {
 			full: "EEEE, MMMM do, y",
@@ -59680,7 +59680,7 @@ const formatLong = {
 		defaultWidth: "full"
 	})
 };
-var formatRelativeLocale = {
+var formatRelativeLocale$1 = {
 	lastWeek: "'last' eeee 'at' p",
 	yesterday: "'yesterday at' p",
 	today: "'today at' p",
@@ -59688,7 +59688,7 @@ var formatRelativeLocale = {
 	nextWeek: "eeee 'at' p",
 	other: "P"
 };
-const formatRelative = (token, _date, _baseDate, _options) => formatRelativeLocale[token];
+const formatRelative$1 = (token, _date, _baseDate, _options) => formatRelativeLocale$1[token];
 function buildLocalizeFn(args) {
 	return (value, options$1) => {
 		const context = options$1?.context ? String(options$1.context) : "standalone";
@@ -59706,12 +59706,12 @@ function buildLocalizeFn(args) {
 		return valuesArray[index$1];
 	};
 }
-var eraValues = {
+var eraValues$1 = {
 	narrow: ["B", "A"],
 	abbreviated: ["BC", "AD"],
 	wide: ["Before Christ", "Anno Domini"]
 };
-var quarterValues = {
+var quarterValues$1 = {
 	narrow: [
 		"1",
 		"2",
@@ -59731,7 +59731,7 @@ var quarterValues = {
 		"4th quarter"
 	]
 };
-var monthValues = {
+var monthValues$1 = {
 	narrow: [
 		"J",
 		"F",
@@ -59775,7 +59775,7 @@ var monthValues = {
 		"December"
 	]
 };
-var dayValues = {
+var dayValues$1 = {
 	narrow: [
 		"S",
 		"M",
@@ -59813,7 +59813,7 @@ var dayValues = {
 		"Saturday"
 	]
 };
-var dayPeriodValues = {
+var dayPeriodValues$1 = {
 	narrow: {
 		am: "a",
 		pm: "p",
@@ -59845,7 +59845,7 @@ var dayPeriodValues = {
 		night: "night"
 	}
 };
-var formattingDayPeriodValues = {
+var formattingDayPeriodValues$1 = {
 	narrow: {
 		am: "a",
 		pm: "p",
@@ -59877,7 +59877,7 @@ var formattingDayPeriodValues = {
 		night: "at night"
 	}
 };
-var ordinalNumber = (dirtyNumber, _options) => {
+var ordinalNumber$1 = (dirtyNumber, _options) => {
 	const number$3 = Number(dirtyNumber);
 	const rem100 = number$3 % 100;
 	if (rem100 > 20 || rem100 < 10) switch (rem100 % 10) {
@@ -59887,29 +59887,29 @@ var ordinalNumber = (dirtyNumber, _options) => {
 	}
 	return number$3 + "th";
 };
-const localize = {
-	ordinalNumber,
+const localize$1 = {
+	ordinalNumber: ordinalNumber$1,
 	era: buildLocalizeFn({
-		values: eraValues,
+		values: eraValues$1,
 		defaultWidth: "wide"
 	}),
 	quarter: buildLocalizeFn({
-		values: quarterValues,
+		values: quarterValues$1,
 		defaultWidth: "wide",
 		argumentCallback: (quarter) => quarter - 1
 	}),
 	month: buildLocalizeFn({
-		values: monthValues,
+		values: monthValues$1,
 		defaultWidth: "wide"
 	}),
 	day: buildLocalizeFn({
-		values: dayValues,
+		values: dayValues$1,
 		defaultWidth: "wide"
 	}),
 	dayPeriod: buildLocalizeFn({
-		values: dayPeriodValues,
+		values: dayPeriodValues$1,
 		defaultWidth: "wide",
-		formattingValues: formattingDayPeriodValues,
+		formattingValues: formattingDayPeriodValues$1,
 		defaultFormattingWidth: "wide"
 	})
 };
@@ -59956,10 +59956,10 @@ function buildMatchPatternFn(args) {
 }
 const enUS$1 = {
 	code: "en-US",
-	formatDistance,
-	formatLong,
-	formatRelative,
-	localize,
+	formatDistance: formatDistance$1,
+	formatLong: formatLong$1,
+	formatRelative: formatRelative$1,
+	localize: localize$1,
 	match: {
 		ordinalNumber: buildMatchPatternFn({
 			matchPattern: /^(\d+)(th|st|nd|rd)?/i,
@@ -60181,30 +60181,30 @@ var dayPeriodEnum = {
 	night: "night"
 };
 const formatters = {
-	G: function(date$1, token, localize$1) {
+	G: function(date$1, token, localize$2) {
 		const era = date$1.getFullYear() > 0 ? 1 : 0;
 		switch (token) {
 			case "G":
 			case "GG":
-			case "GGG": return localize$1.era(era, { width: "abbreviated" });
-			case "GGGGG": return localize$1.era(era, { width: "narrow" });
+			case "GGG": return localize$2.era(era, { width: "abbreviated" });
+			case "GGGGG": return localize$2.era(era, { width: "narrow" });
 			case "GGGG":
-			default: return localize$1.era(era, { width: "wide" });
+			default: return localize$2.era(era, { width: "wide" });
 		}
 	},
-	y: function(date$1, token, localize$1) {
+	y: function(date$1, token, localize$2) {
 		if (token === "yo") {
 			const signedYear = date$1.getFullYear();
 			const year = signedYear > 0 ? signedYear : 1 - signedYear;
-			return localize$1.ordinalNumber(year, { unit: "year" });
+			return localize$2.ordinalNumber(year, { unit: "year" });
 		}
 		return lightFormatters.y(date$1, token);
 	},
-	Y: function(date$1, token, localize$1, options$1) {
+	Y: function(date$1, token, localize$2, options$1) {
 		const signedWeekYear = getWeekYear(date$1, options$1);
 		const weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
 		if (token === "YY") return addLeadingZeros(weekYear % 100, 2);
-		if (token === "Yo") return localize$1.ordinalNumber(weekYear, { unit: "year" });
+		if (token === "Yo") return localize$2.ordinalNumber(weekYear, { unit: "year" });
 		return addLeadingZeros(weekYear, token.length);
 	},
 	R: function(date$1, token) {
@@ -60213,235 +60213,235 @@ const formatters = {
 	u: function(date$1, token) {
 		return addLeadingZeros(date$1.getFullYear(), token.length);
 	},
-	Q: function(date$1, token, localize$1) {
+	Q: function(date$1, token, localize$2) {
 		const quarter = Math.ceil((date$1.getMonth() + 1) / 3);
 		switch (token) {
 			case "Q": return String(quarter);
 			case "QQ": return addLeadingZeros(quarter, 2);
-			case "Qo": return localize$1.ordinalNumber(quarter, { unit: "quarter" });
-			case "QQQ": return localize$1.quarter(quarter, {
+			case "Qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
+			case "QQQ": return localize$2.quarter(quarter, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "QQQQQ": return localize$1.quarter(quarter, {
+			case "QQQQQ": return localize$2.quarter(quarter, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "QQQQ":
-			default: return localize$1.quarter(quarter, {
+			default: return localize$2.quarter(quarter, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	q: function(date$1, token, localize$1) {
+	q: function(date$1, token, localize$2) {
 		const quarter = Math.ceil((date$1.getMonth() + 1) / 3);
 		switch (token) {
 			case "q": return String(quarter);
 			case "qq": return addLeadingZeros(quarter, 2);
-			case "qo": return localize$1.ordinalNumber(quarter, { unit: "quarter" });
-			case "qqq": return localize$1.quarter(quarter, {
+			case "qo": return localize$2.ordinalNumber(quarter, { unit: "quarter" });
+			case "qqq": return localize$2.quarter(quarter, {
 				width: "abbreviated",
 				context: "standalone"
 			});
-			case "qqqqq": return localize$1.quarter(quarter, {
+			case "qqqqq": return localize$2.quarter(quarter, {
 				width: "narrow",
 				context: "standalone"
 			});
 			case "qqqq":
-			default: return localize$1.quarter(quarter, {
+			default: return localize$2.quarter(quarter, {
 				width: "wide",
 				context: "standalone"
 			});
 		}
 	},
-	M: function(date$1, token, localize$1) {
+	M: function(date$1, token, localize$2) {
 		const month = date$1.getMonth();
 		switch (token) {
 			case "M":
 			case "MM": return lightFormatters.M(date$1, token);
-			case "Mo": return localize$1.ordinalNumber(month + 1, { unit: "month" });
-			case "MMM": return localize$1.month(month, {
+			case "Mo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
+			case "MMM": return localize$2.month(month, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "MMMMM": return localize$1.month(month, {
+			case "MMMMM": return localize$2.month(month, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "MMMM":
-			default: return localize$1.month(month, {
+			default: return localize$2.month(month, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	L: function(date$1, token, localize$1) {
+	L: function(date$1, token, localize$2) {
 		const month = date$1.getMonth();
 		switch (token) {
 			case "L": return String(month + 1);
 			case "LL": return addLeadingZeros(month + 1, 2);
-			case "Lo": return localize$1.ordinalNumber(month + 1, { unit: "month" });
-			case "LLL": return localize$1.month(month, {
+			case "Lo": return localize$2.ordinalNumber(month + 1, { unit: "month" });
+			case "LLL": return localize$2.month(month, {
 				width: "abbreviated",
 				context: "standalone"
 			});
-			case "LLLLL": return localize$1.month(month, {
+			case "LLLLL": return localize$2.month(month, {
 				width: "narrow",
 				context: "standalone"
 			});
 			case "LLLL":
-			default: return localize$1.month(month, {
+			default: return localize$2.month(month, {
 				width: "wide",
 				context: "standalone"
 			});
 		}
 	},
-	w: function(date$1, token, localize$1, options$1) {
+	w: function(date$1, token, localize$2, options$1) {
 		const week = getWeek(date$1, options$1);
-		if (token === "wo") return localize$1.ordinalNumber(week, { unit: "week" });
+		if (token === "wo") return localize$2.ordinalNumber(week, { unit: "week" });
 		return addLeadingZeros(week, token.length);
 	},
-	I: function(date$1, token, localize$1) {
+	I: function(date$1, token, localize$2) {
 		const isoWeek = getISOWeek(date$1);
-		if (token === "Io") return localize$1.ordinalNumber(isoWeek, { unit: "week" });
+		if (token === "Io") return localize$2.ordinalNumber(isoWeek, { unit: "week" });
 		return addLeadingZeros(isoWeek, token.length);
 	},
-	d: function(date$1, token, localize$1) {
-		if (token === "do") return localize$1.ordinalNumber(date$1.getDate(), { unit: "date" });
+	d: function(date$1, token, localize$2) {
+		if (token === "do") return localize$2.ordinalNumber(date$1.getDate(), { unit: "date" });
 		return lightFormatters.d(date$1, token);
 	},
-	D: function(date$1, token, localize$1) {
+	D: function(date$1, token, localize$2) {
 		const dayOfYear = getDayOfYear(date$1);
-		if (token === "Do") return localize$1.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
+		if (token === "Do") return localize$2.ordinalNumber(dayOfYear, { unit: "dayOfYear" });
 		return addLeadingZeros(dayOfYear, token.length);
 	},
-	E: function(date$1, token, localize$1) {
+	E: function(date$1, token, localize$2) {
 		const dayOfWeek = date$1.getDay();
 		switch (token) {
 			case "E":
 			case "EE":
-			case "EEE": return localize$1.day(dayOfWeek, {
+			case "EEE": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "EEEEE": return localize$1.day(dayOfWeek, {
+			case "EEEEE": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "formatting"
 			});
-			case "EEEEEE": return localize$1.day(dayOfWeek, {
+			case "EEEEEE": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "formatting"
 			});
 			case "EEEE":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	e: function(date$1, token, localize$1, options$1) {
+	e: function(date$1, token, localize$2, options$1) {
 		const dayOfWeek = date$1.getDay();
 		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
 		switch (token) {
 			case "e": return String(localDayOfWeek);
 			case "ee": return addLeadingZeros(localDayOfWeek, 2);
-			case "eo": return localize$1.ordinalNumber(localDayOfWeek, { unit: "day" });
-			case "eee": return localize$1.day(dayOfWeek, {
+			case "eo": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "eee": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "eeeee": return localize$1.day(dayOfWeek, {
+			case "eeeee": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "formatting"
 			});
-			case "eeeeee": return localize$1.day(dayOfWeek, {
+			case "eeeeee": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "formatting"
 			});
 			case "eeee":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	c: function(date$1, token, localize$1, options$1) {
+	c: function(date$1, token, localize$2, options$1) {
 		const dayOfWeek = date$1.getDay();
 		const localDayOfWeek = (dayOfWeek - options$1.weekStartsOn + 8) % 7 || 7;
 		switch (token) {
 			case "c": return String(localDayOfWeek);
 			case "cc": return addLeadingZeros(localDayOfWeek, token.length);
-			case "co": return localize$1.ordinalNumber(localDayOfWeek, { unit: "day" });
-			case "ccc": return localize$1.day(dayOfWeek, {
+			case "co": return localize$2.ordinalNumber(localDayOfWeek, { unit: "day" });
+			case "ccc": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "standalone"
 			});
-			case "ccccc": return localize$1.day(dayOfWeek, {
+			case "ccccc": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "standalone"
 			});
-			case "cccccc": return localize$1.day(dayOfWeek, {
+			case "cccccc": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "standalone"
 			});
 			case "cccc":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "standalone"
 			});
 		}
 	},
-	i: function(date$1, token, localize$1) {
+	i: function(date$1, token, localize$2) {
 		const dayOfWeek = date$1.getDay();
 		const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
 		switch (token) {
 			case "i": return String(isoDayOfWeek);
 			case "ii": return addLeadingZeros(isoDayOfWeek, token.length);
-			case "io": return localize$1.ordinalNumber(isoDayOfWeek, { unit: "day" });
-			case "iii": return localize$1.day(dayOfWeek, {
+			case "io": return localize$2.ordinalNumber(isoDayOfWeek, { unit: "day" });
+			case "iii": return localize$2.day(dayOfWeek, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "iiiii": return localize$1.day(dayOfWeek, {
+			case "iiiii": return localize$2.day(dayOfWeek, {
 				width: "narrow",
 				context: "formatting"
 			});
-			case "iiiiii": return localize$1.day(dayOfWeek, {
+			case "iiiiii": return localize$2.day(dayOfWeek, {
 				width: "short",
 				context: "formatting"
 			});
 			case "iiii":
-			default: return localize$1.day(dayOfWeek, {
+			default: return localize$2.day(dayOfWeek, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	a: function(date$1, token, localize$1) {
+	a: function(date$1, token, localize$2) {
 		const dayPeriodEnumValue = date$1.getHours() / 12 >= 1 ? "pm" : "am";
 		switch (token) {
 			case "a":
-			case "aa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "aa": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "aaa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "aaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			}).toLowerCase();
-			case "aaaaa": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "aaaaa": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "aaaa":
-			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	b: function(date$1, token, localize$1) {
+	b: function(date$1, token, localize$2) {
 		const hours = date$1.getHours();
 		let dayPeriodEnumValue;
 		if (hours === 12) dayPeriodEnumValue = dayPeriodEnum.noon;
@@ -60449,26 +60449,26 @@ const formatters = {
 		else dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
 		switch (token) {
 			case "b":
-			case "bb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "bb": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "bbb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "bbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			}).toLowerCase();
-			case "bbbbb": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "bbbbb": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "bbbb":
-			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	B: function(date$1, token, localize$1) {
+	B: function(date$1, token, localize$2) {
 		const hours = date$1.getHours();
 		let dayPeriodEnumValue;
 		if (hours >= 17) dayPeriodEnumValue = dayPeriodEnum.evening;
@@ -60478,50 +60478,50 @@ const formatters = {
 		switch (token) {
 			case "B":
 			case "BB":
-			case "BBB": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "BBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "abbreviated",
 				context: "formatting"
 			});
-			case "BBBBB": return localize$1.dayPeriod(dayPeriodEnumValue, {
+			case "BBBBB": return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "narrow",
 				context: "formatting"
 			});
 			case "BBBB":
-			default: return localize$1.dayPeriod(dayPeriodEnumValue, {
+			default: return localize$2.dayPeriod(dayPeriodEnumValue, {
 				width: "wide",
 				context: "formatting"
 			});
 		}
 	},
-	h: function(date$1, token, localize$1) {
+	h: function(date$1, token, localize$2) {
 		if (token === "ho") {
 			let hours = date$1.getHours() % 12;
 			if (hours === 0) hours = 12;
-			return localize$1.ordinalNumber(hours, { unit: "hour" });
+			return localize$2.ordinalNumber(hours, { unit: "hour" });
 		}
 		return lightFormatters.h(date$1, token);
 	},
-	H: function(date$1, token, localize$1) {
-		if (token === "Ho") return localize$1.ordinalNumber(date$1.getHours(), { unit: "hour" });
+	H: function(date$1, token, localize$2) {
+		if (token === "Ho") return localize$2.ordinalNumber(date$1.getHours(), { unit: "hour" });
 		return lightFormatters.H(date$1, token);
 	},
-	K: function(date$1, token, localize$1) {
+	K: function(date$1, token, localize$2) {
 		const hours = date$1.getHours() % 12;
-		if (token === "Ko") return localize$1.ordinalNumber(hours, { unit: "hour" });
+		if (token === "Ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
 		return addLeadingZeros(hours, token.length);
 	},
-	k: function(date$1, token, localize$1) {
+	k: function(date$1, token, localize$2) {
 		let hours = date$1.getHours();
 		if (hours === 0) hours = 24;
-		if (token === "ko") return localize$1.ordinalNumber(hours, { unit: "hour" });
+		if (token === "ko") return localize$2.ordinalNumber(hours, { unit: "hour" });
 		return addLeadingZeros(hours, token.length);
 	},
-	m: function(date$1, token, localize$1) {
-		if (token === "mo") return localize$1.ordinalNumber(date$1.getMinutes(), { unit: "minute" });
+	m: function(date$1, token, localize$2) {
+		if (token === "mo") return localize$2.ordinalNumber(date$1.getMinutes(), { unit: "minute" });
 		return lightFormatters.m(date$1, token);
 	},
-	s: function(date$1, token, localize$1) {
-		if (token === "so") return localize$1.ordinalNumber(date$1.getSeconds(), { unit: "second" });
+	s: function(date$1, token, localize$2) {
+		if (token === "so") return localize$2.ordinalNumber(date$1.getSeconds(), { unit: "second" });
 		return lightFormatters.s(date$1, token);
 	},
 	S: function(date$1, token) {
@@ -60596,46 +60596,46 @@ function formatTimezone(offset$3, delimiter = "") {
 	const minutes = addLeadingZeros(absOffset % 60, 2);
 	return sign$1 + hours + delimiter + minutes;
 }
-var dateLongFormatter = (pattern, formatLong$1) => {
+var dateLongFormatter = (pattern, formatLong$2) => {
 	switch (pattern) {
-		case "P": return formatLong$1.date({ width: "short" });
-		case "PP": return formatLong$1.date({ width: "medium" });
-		case "PPP": return formatLong$1.date({ width: "long" });
+		case "P": return formatLong$2.date({ width: "short" });
+		case "PP": return formatLong$2.date({ width: "medium" });
+		case "PPP": return formatLong$2.date({ width: "long" });
 		case "PPPP":
-		default: return formatLong$1.date({ width: "full" });
+		default: return formatLong$2.date({ width: "full" });
 	}
 };
-var timeLongFormatter = (pattern, formatLong$1) => {
+var timeLongFormatter = (pattern, formatLong$2) => {
 	switch (pattern) {
-		case "p": return formatLong$1.time({ width: "short" });
-		case "pp": return formatLong$1.time({ width: "medium" });
-		case "ppp": return formatLong$1.time({ width: "long" });
+		case "p": return formatLong$2.time({ width: "short" });
+		case "pp": return formatLong$2.time({ width: "medium" });
+		case "ppp": return formatLong$2.time({ width: "long" });
 		case "pppp":
-		default: return formatLong$1.time({ width: "full" });
+		default: return formatLong$2.time({ width: "full" });
 	}
 };
-var dateTimeLongFormatter = (pattern, formatLong$1) => {
+var dateTimeLongFormatter = (pattern, formatLong$2) => {
 	const matchResult = pattern.match(/(P+)(p+)?/) || [];
 	const datePattern = matchResult[1];
 	const timePattern = matchResult[2];
-	if (!timePattern) return dateLongFormatter(pattern, formatLong$1);
+	if (!timePattern) return dateLongFormatter(pattern, formatLong$2);
 	let dateTimeFormat;
 	switch (datePattern) {
 		case "P":
-			dateTimeFormat = formatLong$1.dateTime({ width: "short" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "short" });
 			break;
 		case "PP":
-			dateTimeFormat = formatLong$1.dateTime({ width: "medium" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "medium" });
 			break;
 		case "PPP":
-			dateTimeFormat = formatLong$1.dateTime({ width: "long" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "long" });
 			break;
 		case "PPPP":
 		default:
-			dateTimeFormat = formatLong$1.dateTime({ width: "full" });
+			dateTimeFormat = formatLong$2.dateTime({ width: "full" });
 			break;
 	}
-	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$1)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$1));
+	return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong$2)).replace("{{time}}", timeLongFormatter(timePattern, formatLong$2));
 };
 const longFormatters = {
 	p: timeLongFormatter,
@@ -60789,6 +60789,468 @@ function endOfBroadcastWeek(date$1, dateLib) {
 	const numberOfWeeks = getBroadcastWeeksInMonth(date$1, dateLib);
 	return dateLib.addDays(startDate, numberOfWeeks * 7 - 1);
 }
+var formatDistanceLocale = {
+	lessThanXSeconds: {
+		one: "menos de um segundo",
+		other: "menos de {{count}} segundos"
+	},
+	xSeconds: {
+		one: "1 segundo",
+		other: "{{count}} segundos"
+	},
+	halfAMinute: "meio minuto",
+	lessThanXMinutes: {
+		one: "menos de um minuto",
+		other: "menos de {{count}} minutos"
+	},
+	xMinutes: {
+		one: "1 minuto",
+		other: "{{count}} minutos"
+	},
+	aboutXHours: {
+		one: "cerca de 1 hora",
+		other: "cerca de {{count}} horas"
+	},
+	xHours: {
+		one: "1 hora",
+		other: "{{count}} horas"
+	},
+	xDays: {
+		one: "1 dia",
+		other: "{{count}} dias"
+	},
+	aboutXWeeks: {
+		one: "cerca de 1 semana",
+		other: "cerca de {{count}} semanas"
+	},
+	xWeeks: {
+		one: "1 semana",
+		other: "{{count}} semanas"
+	},
+	aboutXMonths: {
+		one: "cerca de 1 mês",
+		other: "cerca de {{count}} meses"
+	},
+	xMonths: {
+		one: "1 mês",
+		other: "{{count}} meses"
+	},
+	aboutXYears: {
+		one: "cerca de 1 ano",
+		other: "cerca de {{count}} anos"
+	},
+	xYears: {
+		one: "1 ano",
+		other: "{{count}} anos"
+	},
+	overXYears: {
+		one: "mais de 1 ano",
+		other: "mais de {{count}} anos"
+	},
+	almostXYears: {
+		one: "quase 1 ano",
+		other: "quase {{count}} anos"
+	}
+};
+const formatDistance = (token, count$3, options$1) => {
+	let result;
+	const tokenValue = formatDistanceLocale[token];
+	if (typeof tokenValue === "string") result = tokenValue;
+	else if (count$3 === 1) result = tokenValue.one;
+	else result = tokenValue.other.replace("{{count}}", String(count$3));
+	if (options$1?.addSuffix) if (options$1.comparison && options$1.comparison > 0) return "em " + result;
+	else return "há " + result;
+	return result;
+};
+const formatLong = {
+	date: buildFormatLongFn({
+		formats: {
+			full: "EEEE, d 'de' MMMM 'de' y",
+			long: "d 'de' MMMM 'de' y",
+			medium: "d MMM y",
+			short: "dd/MM/yyyy"
+		},
+		defaultWidth: "full"
+	}),
+	time: buildFormatLongFn({
+		formats: {
+			full: "HH:mm:ss zzzz",
+			long: "HH:mm:ss z",
+			medium: "HH:mm:ss",
+			short: "HH:mm"
+		},
+		defaultWidth: "full"
+	}),
+	dateTime: buildFormatLongFn({
+		formats: {
+			full: "{{date}} 'às' {{time}}",
+			long: "{{date}} 'às' {{time}}",
+			medium: "{{date}}, {{time}}",
+			short: "{{date}}, {{time}}"
+		},
+		defaultWidth: "full"
+	})
+};
+var formatRelativeLocale = {
+	lastWeek: (date$1) => {
+		const weekday = date$1.getDay();
+		return "'" + (weekday === 0 || weekday === 6 ? "último" : "última") + "' eeee 'às' p";
+	},
+	yesterday: "'ontem às' p",
+	today: "'hoje às' p",
+	tomorrow: "'amanhã às' p",
+	nextWeek: "eeee 'às' p",
+	other: "P"
+};
+const formatRelative = (token, date$1, _baseDate, _options) => {
+	const format$2 = formatRelativeLocale[token];
+	if (typeof format$2 === "function") return format$2(date$1);
+	return format$2;
+};
+var eraValues = {
+	narrow: ["AC", "DC"],
+	abbreviated: ["AC", "DC"],
+	wide: ["antes de cristo", "depois de cristo"]
+};
+var quarterValues = {
+	narrow: [
+		"1",
+		"2",
+		"3",
+		"4"
+	],
+	abbreviated: [
+		"T1",
+		"T2",
+		"T3",
+		"T4"
+	],
+	wide: [
+		"1º trimestre",
+		"2º trimestre",
+		"3º trimestre",
+		"4º trimestre"
+	]
+};
+var monthValues = {
+	narrow: [
+		"j",
+		"f",
+		"m",
+		"a",
+		"m",
+		"j",
+		"j",
+		"a",
+		"s",
+		"o",
+		"n",
+		"d"
+	],
+	abbreviated: [
+		"jan",
+		"fev",
+		"mar",
+		"abr",
+		"mai",
+		"jun",
+		"jul",
+		"ago",
+		"set",
+		"out",
+		"nov",
+		"dez"
+	],
+	wide: [
+		"janeiro",
+		"fevereiro",
+		"março",
+		"abril",
+		"maio",
+		"junho",
+		"julho",
+		"agosto",
+		"setembro",
+		"outubro",
+		"novembro",
+		"dezembro"
+	]
+};
+var dayValues = {
+	narrow: [
+		"D",
+		"S",
+		"T",
+		"Q",
+		"Q",
+		"S",
+		"S"
+	],
+	short: [
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sab"
+	],
+	abbreviated: [
+		"domingo",
+		"segunda",
+		"terça",
+		"quarta",
+		"quinta",
+		"sexta",
+		"sábado"
+	],
+	wide: [
+		"domingo",
+		"segunda-feira",
+		"terça-feira",
+		"quarta-feira",
+		"quinta-feira",
+		"sexta-feira",
+		"sábado"
+	]
+};
+var dayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mn",
+		noon: "md",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "manhã",
+		afternoon: "tarde",
+		evening: "tarde",
+		night: "noite"
+	}
+};
+var formattingDayPeriodValues = {
+	narrow: {
+		am: "a",
+		pm: "p",
+		midnight: "mn",
+		noon: "md",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	},
+	abbreviated: {
+		am: "AM",
+		pm: "PM",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	},
+	wide: {
+		am: "a.m.",
+		pm: "p.m.",
+		midnight: "meia-noite",
+		noon: "meio-dia",
+		morning: "da manhã",
+		afternoon: "da tarde",
+		evening: "da tarde",
+		night: "da noite"
+	}
+};
+var ordinalNumber = (dirtyNumber, options$1) => {
+	const number$3 = Number(dirtyNumber);
+	if (options$1?.unit === "week") return number$3 + "ª";
+	return number$3 + "º";
+};
+const ptBR = {
+	code: "pt-BR",
+	formatDistance,
+	formatLong,
+	formatRelative,
+	localize: {
+		ordinalNumber,
+		era: buildLocalizeFn({
+			values: eraValues,
+			defaultWidth: "wide"
+		}),
+		quarter: buildLocalizeFn({
+			values: quarterValues,
+			defaultWidth: "wide",
+			argumentCallback: (quarter) => quarter - 1
+		}),
+		month: buildLocalizeFn({
+			values: monthValues,
+			defaultWidth: "wide"
+		}),
+		day: buildLocalizeFn({
+			values: dayValues,
+			defaultWidth: "wide"
+		}),
+		dayPeriod: buildLocalizeFn({
+			values: dayPeriodValues,
+			defaultWidth: "wide",
+			formattingValues: formattingDayPeriodValues,
+			defaultFormattingWidth: "wide"
+		})
+	},
+	match: {
+		ordinalNumber: buildMatchPatternFn({
+			matchPattern: /^(\d+)[ºªo]?/i,
+			parsePattern: /\d+/i,
+			valueCallback: (value) => parseInt(value, 10)
+		}),
+		era: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(ac|dc|a|d)/i,
+				abbreviated: /^(a\.?\s?c\.?|d\.?\s?c\.?)/i,
+				wide: /^(antes de cristo|depois de cristo)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				any: [/^ac/i, /^dc/i],
+				wide: [/^antes de cristo/i, /^depois de cristo/i]
+			},
+			defaultParseWidth: "any"
+		}),
+		quarter: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[1234]/i,
+				abbreviated: /^T[1234]/i,
+				wide: /^[1234](º)? trimestre/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: { any: [
+				/1/i,
+				/2/i,
+				/3/i,
+				/4/i
+			] },
+			defaultParseWidth: "any",
+			valueCallback: (index$1) => index$1 + 1
+		}),
+		month: buildMatchFn({
+			matchPatterns: {
+				narrow: /^[jfmajsond]/i,
+				abbreviated: /^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/i,
+				wide: /^(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				narrow: [
+					/^j/i,
+					/^f/i,
+					/^m/i,
+					/^a/i,
+					/^m/i,
+					/^j/i,
+					/^j/i,
+					/^a/i,
+					/^s/i,
+					/^o/i,
+					/^n/i,
+					/^d/i
+				],
+				any: [
+					/^ja/i,
+					/^fev/i,
+					/^mar/i,
+					/^abr/i,
+					/^mai/i,
+					/^jun/i,
+					/^jul/i,
+					/^ago/i,
+					/^set/i,
+					/^out/i,
+					/^nov/i,
+					/^dez/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		day: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(dom|[23456]ª?|s[aá]b)/i,
+				short: /^(dom|[23456]ª?|s[aá]b)/i,
+				abbreviated: /^(dom|seg|ter|qua|qui|sex|s[aá]b)/i,
+				wide: /^(domingo|(segunda|ter[cç]a|quarta|quinta|sexta)([- ]feira)?|s[aá]bado)/i
+			},
+			defaultMatchWidth: "wide",
+			parsePatterns: {
+				short: [
+					/^d/i,
+					/^2/i,
+					/^3/i,
+					/^4/i,
+					/^5/i,
+					/^6/i,
+					/^s[aá]/i
+				],
+				narrow: [
+					/^d/i,
+					/^2/i,
+					/^3/i,
+					/^4/i,
+					/^5/i,
+					/^6/i,
+					/^s[aá]/i
+				],
+				any: [
+					/^d/i,
+					/^seg/i,
+					/^t/i,
+					/^qua/i,
+					/^qui/i,
+					/^sex/i,
+					/^s[aá]b/i
+				]
+			},
+			defaultParseWidth: "any"
+		}),
+		dayPeriod: buildMatchFn({
+			matchPatterns: {
+				narrow: /^(a|p|mn|md|(da) (manhã|tarde|noite))/i,
+				any: /^([ap]\.?\s?m\.?|meia[-\s]noite|meio[-\s]dia|(da) (manhã|tarde|noite))/i
+			},
+			defaultMatchWidth: "any",
+			parsePatterns: { any: {
+				am: /^a/i,
+				pm: /^p/i,
+				midnight: /^mn|^meia[-\s]noite/i,
+				noon: /^md|^meio[-\s]dia/i,
+				morning: /manhã/i,
+				afternoon: /tarde/i,
+				evening: /tarde/i,
+				night: /noite/i
+			} },
+			defaultParseWidth: "any"
+		})
+	},
+	options: {
+		weekStartsOn: 0,
+		firstWeekContainsDate: 1
+	}
+};
 const enUS = {
 	...enUS$1,
 	labels: {
@@ -65258,7 +65720,7 @@ Toggle$1.displayName = NAME;
 var Root = Toggle$1;
 var TOGGLE_GROUP_NAME = "ToggleGroup";
 var [createToggleGroupContext, createToggleGroupScope] = createContextScope(TOGGLE_GROUP_NAME, [createRovingFocusGroupScope]);
-var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
 var ToggleGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { type, ...toggleGroupProps } = props;
 	if (type === "single") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleGroupImplSingle, {
@@ -65319,7 +65781,7 @@ ToggleGroup$1.displayName = TOGGLE_GROUP_NAME;
 var [ToggleGroupContext$1, useToggleGroupContext] = createToggleGroupContext(TOGGLE_GROUP_NAME);
 var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeToggleGroup, disabled = false, rovingFocus = true, orientation, dir, loop = true, ...toggleGroupProps } = props;
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeToggleGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeToggleGroup);
 	const direction = useDirection(dir);
 	const commonProps = {
 		role: "group",
@@ -65346,11 +65808,11 @@ var ToggleGroupImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var ITEM_NAME = "ToggleGroupItem";
+var ITEM_NAME$1 = "ToggleGroupItem";
 var ToggleGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
-	const valueContext = useToggleGroupValueContext(ITEM_NAME, props.__scopeToggleGroup);
-	const context = useToggleGroupContext(ITEM_NAME, props.__scopeToggleGroup);
-	const rovingFocusGroupScope = useRovingFocusGroupScope(props.__scopeToggleGroup);
+	const valueContext = useToggleGroupValueContext(ITEM_NAME$1, props.__scopeToggleGroup);
+	const context = useToggleGroupContext(ITEM_NAME$1, props.__scopeToggleGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(props.__scopeToggleGroup);
 	const pressed = valueContext.value.includes(props.value);
 	const disabled = context.disabled || props.disabled;
 	const commonProps = {
@@ -65374,10 +65836,10 @@ var ToggleGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-ToggleGroupItem$1.displayName = ITEM_NAME;
+ToggleGroupItem$1.displayName = ITEM_NAME$1;
 var ToggleGroupItemImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeToggleGroup, value, ...itemProps } = props;
-	const valueContext = useToggleGroupValueContext(ITEM_NAME, __scopeToggleGroup);
+	const valueContext = useToggleGroupValueContext(ITEM_NAME$1, __scopeToggleGroup);
 	const singleProps = {
 		role: "radio",
 		"aria-checked": props.pressed,
@@ -65393,8 +65855,8 @@ var ToggleGroupItemImpl = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-var Root2 = ToggleGroup$1;
-var Item2 = ToggleGroupItem$1;
+var Root2$1 = ToggleGroup$1;
+var Item2$1 = ToggleGroupItem$1;
 var toggleVariants = cva("inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2", {
 	variants: {
 		variant: {
@@ -65426,7 +65888,7 @@ var ToggleGroupContext = import_react.createContext({
 	size: "default",
 	variant: "default"
 });
-var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2, {
+var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$1, {
 	ref,
 	className: cn("flex items-center justify-center gap-1", className),
 	...props,
@@ -65438,10 +65900,10 @@ var ToggleGroup = import_react.forwardRef(({ className, variant, size: size$3, c
 		children
 	})
 }));
-ToggleGroup.displayName = Root2.displayName;
+ToggleGroup.displayName = Root2$1.displayName;
 var ToggleGroupItem = import_react.forwardRef(({ className, children, variant, size: size$3, ...props }, ref) => {
 	const context = import_react.useContext(ToggleGroupContext);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2$1, {
 		ref,
 		className: cn(toggleVariants({
 			variant: context.variant || variant,
@@ -65451,7 +65913,7 @@ var ToggleGroupItem = import_react.forwardRef(({ className, children, variant, s
 		children
 	});
 });
-ToggleGroupItem.displayName = Item2.displayName;
+ToggleGroupItem.displayName = Item2$1.displayName;
 function MarketTrendsChart() {
 	const [period, setPeriod] = (0, import_react.useState)("12");
 	const [visibleSeries, setVisibleSeries] = (0, import_react.useState)([
@@ -66104,11 +66566,11 @@ function ExportMenu({ onExportCSV, onExportPDF, className, label = "Exportar" })
 		})]
 	})] });
 }
-var STORAGE_KEY = "@fazenda-simulations";
+var STORAGE_KEY$1 = "@fazenda-simulations";
 function useSimulationStore() {
 	const [simulations, setSimulations] = (0, import_react.useState)(() => {
 		try {
-			const saved = localStorage.getItem(STORAGE_KEY);
+			const saved = localStorage.getItem(STORAGE_KEY$1);
 			if (saved) return JSON.parse(saved);
 		} catch (e) {
 			console.error(e);
@@ -66118,7 +66580,7 @@ function useSimulationStore() {
 	(0, import_react.useEffect)(() => {
 		const handleUpdate = () => {
 			try {
-				const saved = localStorage.getItem(STORAGE_KEY);
+				const saved = localStorage.getItem(STORAGE_KEY$1);
 				if (saved) setSimulations(JSON.parse(saved));
 			} catch (e) {
 				console.error(e);
@@ -66136,7 +66598,7 @@ function useSimulationStore() {
 					id: crypto.randomUUID(),
 					date: (/* @__PURE__ */ new Date()).toISOString()
 				}, ...prev];
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
 				window.dispatchEvent(new Event("simulations-updated"));
 				return updated;
 			});
@@ -66144,7 +66606,7 @@ function useSimulationStore() {
 		deleteSimulation: (0, import_react.useCallback)((id) => {
 			setSimulations((prev) => {
 				const updated = prev.filter((s$1) => s$1.id !== id);
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+				localStorage.setItem(STORAGE_KEY$1, JSON.stringify(updated));
 				window.dispatchEvent(new Event("simulations-updated"));
 				return updated;
 			});
@@ -66487,7 +66949,7 @@ var CheckboxTrigger = import_react.forwardRef(({ __scopeCheckbox, onKeyDown, onC
 		role: "checkbox",
 		"aria-checked": isIndeterminate(checked) ? "mixed" : checked,
 		"aria-required": required,
-		"data-state": getState(checked),
+		"data-state": getState$1(checked),
 		"data-disabled": disabled ? "" : void 0,
 		disabled,
 		value,
@@ -66526,14 +66988,14 @@ var Checkbox$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Checkbox$1.displayName = CHECKBOX_NAME;
-var INDICATOR_NAME = "CheckboxIndicator";
+var INDICATOR_NAME$1 = "CheckboxIndicator";
 var CheckboxIndicator = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeCheckbox, forceMount, ...indicatorProps } = props;
-	const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox);
+	const context = useCheckboxContext(INDICATOR_NAME$1, __scopeCheckbox);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || isIndeterminate(context.checked) || context.checked === true,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
-			"data-state": getState(context.checked),
+			"data-state": getState$1(context.checked),
 			"data-disabled": context.disabled ? "" : void 0,
 			...indicatorProps,
 			ref: forwardedRef,
@@ -66544,10 +67006,10 @@ var CheckboxIndicator = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-CheckboxIndicator.displayName = INDICATOR_NAME;
-var BUBBLE_INPUT_NAME = "CheckboxBubbleInput";
+CheckboxIndicator.displayName = INDICATOR_NAME$1;
+var BUBBLE_INPUT_NAME$1 = "CheckboxBubbleInput";
 var CheckboxBubbleInput = import_react.forwardRef(({ __scopeCheckbox, ...props }, forwardedRef) => {
-	const { control, hasConsumerStoppedPropagationRef, checked, defaultChecked, required, disabled, name, value, form, bubbleInput, setBubbleInput } = useCheckboxContext(BUBBLE_INPUT_NAME, __scopeCheckbox);
+	const { control, hasConsumerStoppedPropagationRef, checked, defaultChecked, required, disabled, name, value, form, bubbleInput, setBubbleInput } = useCheckboxContext(BUBBLE_INPUT_NAME$1, __scopeCheckbox);
 	const composedRefs = useComposedRefs(forwardedRef, setBubbleInput);
 	const prevChecked = usePrevious(checked);
 	const controlSize = useSize(control);
@@ -66593,14 +67055,14 @@ var CheckboxBubbleInput = import_react.forwardRef(({ __scopeCheckbox, ...props }
 		}
 	});
 });
-CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME;
+CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
 function isFunction(value) {
 	return typeof value === "function";
 }
 function isIndeterminate(checked) {
 	return checked === "indeterminate";
 }
-function getState(checked) {
+function getState$1(checked) {
 	return isIndeterminate(checked) ? "indeterminate" : checked ? "checked" : "unchecked";
 }
 var Checkbox = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox$1, {
@@ -68753,6 +69215,788 @@ function Fazendas() {
 		]
 	});
 }
+var RADIO_NAME = "Radio";
+var [createRadioContext, createRadioScope] = createContextScope(RADIO_NAME);
+var [RadioProvider, useRadioContext] = createRadioContext(RADIO_NAME);
+var Radio = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRadio, name, checked = false, required, disabled, value = "on", onCheck, form, ...radioProps } = props;
+	const [button, setButton] = import_react.useState(null);
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
+	const hasConsumerStoppedPropagationRef = import_react.useRef(false);
+	const isFormControl = button ? form || !!button.closest("form") : true;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadioProvider, {
+		scope: __scopeRadio,
+		checked,
+		disabled,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+			type: "button",
+			role: "radio",
+			"aria-checked": checked,
+			"data-state": getState(checked),
+			"data-disabled": disabled ? "" : void 0,
+			disabled,
+			value,
+			...radioProps,
+			ref: composedRefs,
+			onClick: composeEventHandlers(props.onClick, (event) => {
+				if (!checked) onCheck?.();
+				if (isFormControl) {
+					hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+					if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
+				}
+			})
+		}), isFormControl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioBubbleInput, {
+			control: button,
+			bubbles: !hasConsumerStoppedPropagationRef.current,
+			name,
+			value,
+			checked,
+			required,
+			disabled,
+			form,
+			style: { transform: "translateX(-100%)" }
+		})]
+	});
+});
+Radio.displayName = RADIO_NAME;
+var INDICATOR_NAME = "RadioIndicator";
+var RadioIndicator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRadio, forceMount, ...indicatorProps } = props;
+	const context = useRadioContext(INDICATOR_NAME, __scopeRadio);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || context.checked,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
+			"data-state": getState(context.checked),
+			"data-disabled": context.disabled ? "" : void 0,
+			...indicatorProps,
+			ref: forwardedRef
+		})
+	});
+});
+RadioIndicator.displayName = INDICATOR_NAME;
+var BUBBLE_INPUT_NAME = "RadioBubbleInput";
+var RadioBubbleInput = import_react.forwardRef(({ __scopeRadio, control, checked, bubbles = true, ...props }, forwardedRef) => {
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(ref, forwardedRef);
+	const prevChecked = usePrevious(checked);
+	const controlSize = useSize(control);
+	import_react.useEffect(() => {
+		const input = ref.current;
+		if (!input) return;
+		const inputProto = window.HTMLInputElement.prototype;
+		const setChecked = Object.getOwnPropertyDescriptor(inputProto, "checked").set;
+		if (prevChecked !== checked && setChecked) {
+			const event = new Event("click", { bubbles });
+			setChecked.call(input, checked);
+			input.dispatchEvent(event);
+		}
+	}, [
+		prevChecked,
+		checked,
+		bubbles
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.input, {
+		type: "radio",
+		"aria-hidden": true,
+		defaultChecked: checked,
+		...props,
+		tabIndex: -1,
+		ref: composedRefs,
+		style: {
+			...props.style,
+			...controlSize,
+			position: "absolute",
+			pointerEvents: "none",
+			opacity: 0,
+			margin: 0
+		}
+	});
+});
+RadioBubbleInput.displayName = BUBBLE_INPUT_NAME;
+function getState(checked) {
+	return checked ? "checked" : "unchecked";
+}
+var ARROW_KEYS = [
+	"ArrowUp",
+	"ArrowDown",
+	"ArrowLeft",
+	"ArrowRight"
+];
+var RADIO_GROUP_NAME = "RadioGroup";
+var [createRadioGroupContext, createRadioGroupScope] = createContextScope(RADIO_GROUP_NAME, [createRovingFocusGroupScope, createRadioScope]);
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRadioScope = createRadioScope();
+var [RadioGroupProvider, useRadioGroupContext] = createRadioGroupContext(RADIO_GROUP_NAME);
+var RadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRadioGroup, name, defaultValue, value: valueProp, required = false, disabled = false, orientation, dir, loop = true, onValueChange, ...groupProps } = props;
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeRadioGroup);
+	const direction = useDirection(dir);
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		defaultProp: defaultValue ?? null,
+		onChange: onValueChange,
+		caller: RADIO_GROUP_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupProvider, {
+		scope: __scopeRadioGroup,
+		name,
+		required,
+		disabled,
+		value,
+		onValueChange: setValue,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+			asChild: true,
+			...rovingFocusGroupScope,
+			orientation,
+			dir: direction,
+			loop,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+				role: "radiogroup",
+				"aria-required": required,
+				"aria-orientation": orientation,
+				"data-disabled": disabled ? "" : void 0,
+				dir: direction,
+				...groupProps,
+				ref: forwardedRef
+			})
+		})
+	});
+});
+RadioGroup$1.displayName = RADIO_GROUP_NAME;
+var ITEM_NAME = "RadioGroupItem";
+var RadioGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRadioGroup, disabled, ...itemProps } = props;
+	const context = useRadioGroupContext(ITEM_NAME, __scopeRadioGroup);
+	const isDisabled = context.disabled || disabled;
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeRadioGroup);
+	const radioScope = useRadioScope(__scopeRadioGroup);
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const checked = context.value === itemProps.value;
+	const isArrowKeyPressedRef = import_react.useRef(false);
+	import_react.useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (ARROW_KEYS.includes(event.key)) isArrowKeyPressedRef.current = true;
+		};
+		const handleKeyUp = () => isArrowKeyPressedRef.current = false;
+		document.addEventListener("keydown", handleKeyDown);
+		document.addEventListener("keyup", handleKeyUp);
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+			document.removeEventListener("keyup", handleKeyUp);
+		};
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		focusable: !isDisabled,
+		active: checked,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radio, {
+			disabled: isDisabled,
+			required: context.required,
+			checked,
+			...radioScope,
+			...itemProps,
+			name: context.name,
+			ref: composedRefs,
+			onCheck: () => context.onValueChange(itemProps.value),
+			onKeyDown: composeEventHandlers((event) => {
+				if (event.key === "Enter") event.preventDefault();
+			}),
+			onFocus: composeEventHandlers(itemProps.onFocus, () => {
+				if (isArrowKeyPressedRef.current) ref.current?.click();
+			})
+		})
+	});
+});
+RadioGroupItem$1.displayName = ITEM_NAME;
+var INDICATOR_NAME2 = "RadioGroupIndicator";
+var RadioGroupIndicator = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRadioGroup, ...indicatorProps } = props;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioIndicator, {
+		...useRadioScope(__scopeRadioGroup),
+		...indicatorProps,
+		ref: forwardedRef
+	});
+});
+RadioGroupIndicator.displayName = INDICATOR_NAME2;
+var Root2 = RadioGroup$1;
+var Item2 = RadioGroupItem$1;
+var Indicator = RadioGroupIndicator;
+var RadioGroup = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2, {
+		className: cn("grid gap-2", className),
+		...props,
+		ref
+	});
+});
+RadioGroup.displayName = Root2.displayName;
+var RadioGroupItem = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
+		ref,
+		className: cn("aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className),
+		...props,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator, {
+			className: "flex items-center justify-center",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Circle, { className: "h-2.5 w-2.5 fill-current text-current" })
+		})
+	});
+});
+RadioGroupItem.displayName = Item2.displayName;
+var STORAGE_KEY = "@f3_animais";
+function useAnimalStore() {
+	const [animais, setAnimais] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return [];
+	});
+	(0, import_react.useEffect)(() => {
+		const handleUpdate = () => {
+			try {
+				const saved = localStorage.getItem(STORAGE_KEY);
+				if (saved) setAnimais(JSON.parse(saved));
+			} catch (e) {
+				console.error(e);
+			}
+		};
+		window.addEventListener("animais-updated", handleUpdate);
+		return () => window.removeEventListener("animais-updated", handleUpdate);
+	}, []);
+	return {
+		animais,
+		addRegistro: (0, import_react.useCallback)((registro) => {
+			setAnimais((prev) => {
+				const updated = [registro, ...prev];
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+				window.dispatchEvent(new Event("animais-updated"));
+				return updated;
+			});
+		}, []),
+		deleteRegistro: (0, import_react.useCallback)((id) => {
+			setAnimais((prev) => {
+				const updated = prev.filter((a$1) => a$1.id !== id);
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+				window.dispatchEvent(new Event("animais-updated"));
+				return updated;
+			});
+		}, [])
+	};
+}
+function AnimalRegistrationModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { fazendas } = useFazendaStore();
+	const { addRegistro } = useAnimalStore();
+	const { toast: toast$2 } = useToast();
+	const [tipoRegistro, setTipoRegistro] = (0, import_react.useState)("lote");
+	const [origem, setOrigem] = (0, import_react.useState)("Compra");
+	const [quantidade, setQuantidade] = (0, import_react.useState)(10);
+	const [precoCompra, setPrecoCompra] = (0, import_react.useState)(0);
+	const [frete, setFrete] = (0, import_react.useState)(0);
+	const [comissao, setComissao] = (0, import_react.useState)(0);
+	const [impostos, setImpostos] = (0, import_react.useState)(0);
+	const qty = tipoRegistro === "individual" ? 1 : Math.max(1, quantidade);
+	const custoTotalLote = origem === "Compra" ? precoCompra * qty + frete + comissao + impostos : 0;
+	const custoPorCabeca = origem === "Compra" ? custoTotalLote / qty : 0;
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const fd = new FormData(e.currentTarget);
+		if (!fd.get("fazendaDestinoId")) {
+			toast$2({
+				title: "Erro",
+				description: "Selecione a fazenda de destino.",
+				variant: "destructive"
+			});
+			return;
+		}
+		addRegistro({
+			id: crypto.randomUUID(),
+			tipoRegistro,
+			quantidade: qty,
+			pesoMedio: Number(fd.get("pesoMedio")),
+			sexo: fd.get("sexo"),
+			raca: fd.get("raca"),
+			categoria: fd.get("categoria"),
+			faixaEtaria: fd.get("faixaEtaria"),
+			origem,
+			fazendaDestinoId: fd.get("fazendaDestinoId"),
+			dataRegistro: (/* @__PURE__ */ new Date()).toISOString(),
+			...origem === "Compra" && {
+				precoCompraPorCabeca: precoCompra,
+				fazendaOrigem: fd.get("fazendaOrigem"),
+				nomeVendedor: fd.get("nomeVendedor"),
+				leiloeiro: fd.get("leiloeiro"),
+				custoFrete: frete,
+				comissao,
+				impostos
+			},
+			custoTotalPorCabeca: custoPorCabeca,
+			custoTotalLote
+		});
+		toast$2({
+			title: "Sucesso",
+			description: "Registro salvo com sucesso."
+		});
+		setOpen(false);
+		resetForm();
+	};
+	const resetForm = () => {
+		setTipoRegistro("lote");
+		setOrigem("Compra");
+		setQuantidade(10);
+		setPrecoCompra(0);
+		setFrete(0);
+		setComissao(0);
+		setImpostos(0);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: (val) => {
+			setOpen(val);
+			if (!val) resetForm();
+		},
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Registrar Entrada"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "max-w-2xl max-h-[90vh] overflow-y-auto",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-5 w-5 text-primary" }), " Entrada de Animais"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Registre a entrada de animais individuais ou lotes no rebanho." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+				onSubmit: handleSubmit,
+				className: "space-y-6 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid sm:grid-cols-2 gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Fazenda de Destino *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								name: "fazendaDestinoId",
+								required: true,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: fazendas.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: f.id,
+									children: f.nome
+								}, f.id)) })]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Registro" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadioGroup, {
+								value: tipoRegistro,
+								onValueChange: (val) => setTipoRegistro(val),
+								className: "flex gap-4 pt-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center space-x-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupItem, {
+										value: "individual",
+										id: "r-ind"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										htmlFor: "r-ind",
+										children: "Individual"
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center space-x-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupItem, {
+										value: "lote",
+										id: "r-lote"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										htmlFor: "r-lote",
+										children: "Em Lote"
+									})]
+								})]
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid sm:grid-cols-3 gap-4 p-4 border rounded-lg bg-muted/20",
+						children: [
+							tipoRegistro === "lote" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Quantidade *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "number",
+									min: "1",
+									value: quantidade || "",
+									onChange: (e) => setQuantidade(Number(e.target.value)),
+									required: true
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Peso Médio (kg) *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									name: "pesoMedio",
+									type: "number",
+									step: "0.1",
+									min: "1",
+									required: true,
+									placeholder: "Ex: 210"
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Sexo *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									name: "sexo",
+									defaultValue: "Macho",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "Macho",
+										children: "Macho"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "Fêmea",
+										children: "Fêmea"
+									})] })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									name: "categoria",
+									defaultValue: "Corte",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "Corte",
+										children: "Corte"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "Reprodução",
+										children: "Reprodução"
+									})] })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Raça *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									name: "raca",
+									required: true,
+									placeholder: "Ex: Nelore",
+									defaultValue: "Nelore"
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Faixa Etária *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									name: "faixaEtaria",
+									defaultValue: "8-12 meses",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "0-8 meses",
+											children: "0-8 meses"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "8-12 meses",
+											children: "8-12 meses"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "1-2 anos",
+											children: "1-2 anos"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "> 2 anos",
+											children: "> 2 anos"
+										})
+									] })]
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+							className: "text-base font-semibold border-b pb-2 block",
+							children: "Origem do Animal"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadioGroup, {
+							value: origem,
+							onValueChange: (val) => setOrigem(val),
+							className: "flex gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center space-x-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupItem, {
+									value: "Nativo",
+									id: "o-nativo"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "o-nativo",
+									className: "font-medium cursor-pointer",
+									children: "Animal Nativo (Nascido na prop.)"
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center space-x-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupItem, {
+									value: "Compra",
+									id: "o-compra"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+									htmlFor: "o-compra",
+									className: "font-medium cursor-pointer",
+									children: "Compra de Terceiros"
+								})]
+							})]
+						})]
+					}),
+					origem === "Compra" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4 animate-in fade-in slide-in-from-top-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid sm:grid-cols-2 gap-4",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Fazenda de Origem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											name: "fazendaOrigem",
+											placeholder: "Nome da propriedade"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome do Vendedor" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											name: "nomeVendedor",
+											placeholder: "Nome do vendedor"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Leiloeiro / Leilão" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											name: "leiloeiro",
+											placeholder: "Opcional"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço por Cabeça (R$) *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											step: "0.01",
+											min: "0",
+											value: precoCompra || "",
+											onChange: (e) => setPrecoCompra(Number(e.target.value)),
+											required: true
+										})]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid sm:grid-cols-3 gap-4 pt-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Frete Total (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											step: "0.01",
+											min: "0",
+											value: frete || "",
+											onChange: (e) => setFrete(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Comissão Total (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											step: "0.01",
+											min: "0",
+											value: comissao || "",
+											onChange: (e) => setComissao(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Impostos Totais (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											step: "0.01",
+											min: "0",
+											value: impostos || "",
+											onChange: (e) => setImpostos(Number(e.target.value))
+										})]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-primary/5 p-4 rounded-lg flex items-center justify-between mt-4 border border-primary/20",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm font-medium text-muted-foreground",
+									children: "Custo Total"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-2xl font-bold text-primary",
+									children: new Intl.NumberFormat("pt-BR", {
+										style: "currency",
+										currency: "BRL"
+									}).format(custoTotalLote)
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-right",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm font-medium text-muted-foreground",
+										children: "Custo por Cabeça"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xl font-bold text-foreground",
+										children: new Intl.NumberFormat("pt-BR", {
+											style: "currency",
+											currency: "BRL"
+										}).format(custoPorCabeca)
+									})]
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "submit",
+						className: "w-full h-12 text-base mt-6",
+						children: "Confirmar Registro"
+					})
+				]
+			})]
+		})]
+	});
+}
+function Animais() {
+	const { animais } = useAnimalStore();
+	const { fazendas } = useFazendaStore();
+	const getFazendaNome = (id) => fazendas.find((f) => f.id === id)?.nome || "Desconhecida";
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 max-w-6xl mx-auto pb-8",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+				className: "text-3xl font-bold tracking-tight",
+				children: "Registro de Animais"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Gerencie as entradas de animais na propriedade."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalRegistrationModal, {})]
+		}), animais.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+			className: "border-dashed shadow-none bg-muted/10",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+				className: "flex flex-col items-center justify-center h-64 text-center",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "bg-primary/10 p-4 rounded-full mb-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-8 w-8 text-primary" })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-lg font-semibold",
+						children: "Nenhum registro encontrado"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-muted-foreground max-w-sm mt-1",
+						children: "Você ainda não registrou entradas de animais. Clique em \"Registrar Entrada\" para começar."
+					})
+				]
+			})
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "grid gap-4",
+			children: animais.map((animal) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+				className: "overflow-hidden hover:border-primary/50 transition-colors",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col sm:flex-row",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "bg-muted p-4 flex sm:w-48 flex-col justify-center items-center text-center border-b sm:border-b-0 sm:border-r",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: animal.tipoRegistro === "lote" ? "default" : "outline",
+								className: "mb-2",
+								children: animal.tipoRegistro === "lote" ? "Lote" : "Individual"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-3xl font-bold text-primary",
+								children: animal.quantidade
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs font-medium uppercase tracking-wider text-muted-foreground mt-1",
+								children: "Cabeça(s)"
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "p-5 flex-1 flex flex-col justify-between",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex justify-between items-start",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "text-xl font-semibold flex items-center gap-2",
+								children: [
+									animal.raca,
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-muted-foreground text-sm font-normal",
+										children: ["• ", animal.categoria]
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-sm text-muted-foreground mt-1 font-medium",
+								children: [
+									getFazendaNome(animal.fazendaDestinoId),
+									" • ",
+									animal.sexo,
+									" •",
+									" ",
+									animal.faixaEtaria
+								]
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: "secondary",
+								className: "px-3 py-1 bg-secondary/50",
+								children: animal.origem
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "bg-muted/30 p-3 rounded-lg border border-border/50",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs font-medium text-muted-foreground mb-1",
+									children: "Peso Médio"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "font-semibold text-foreground",
+									children: [animal.pesoMedio, " kg"]
+								})]
+							}), animal.origem === "Compra" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "bg-muted/30 p-3 rounded-lg border border-border/50",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-muted-foreground mb-1",
+										children: "Vendedor"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "font-semibold text-foreground line-clamp-1",
+										children: animal.nomeVendedor || "-"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "bg-destructive/5 p-3 rounded-lg border border-destructive/10",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-destructive/80 mb-1",
+										children: "Custo/Cab."
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "font-semibold text-destructive",
+										children: new Intl.NumberFormat("pt-BR", {
+											style: "currency",
+											currency: "BRL"
+										}).format(animal.custoTotalPorCabeca)
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "bg-destructive/5 p-3 rounded-lg border border-destructive/10",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-medium text-destructive/80 mb-1",
+										children: "Custo Total"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "font-semibold text-destructive",
+										children: new Intl.NumberFormat("pt-BR", {
+											style: "currency",
+											currency: "BRL"
+										}).format(animal.custoTotalLote)
+									})]
+								})
+							] })]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-5 pt-3 border-t text-xs font-medium text-muted-foreground/70 flex justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+								"Registro em:",
+								" ",
+								format(new Date(animal.dataRegistro), "dd MMM yyyy 'às' HH:mm", { locale: ptBR })
+							] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "uppercase tracking-wider",
+								children: ["ID: ", animal.id.split("-")[0]]
+							})]
+						})]
+					})]
+				})
+			}, animal.id))
+		})]
+	});
+}
 function DynamicBIChart({ m1, m2, data }) {
 	const metric1 = biMetricsList.find((m) => m.id === m1);
 	const metric2 = biMetricsList.find((m) => m.id === m2);
@@ -69108,6 +70352,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalProfile, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/animais",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Animais, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/projecoes",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProjecaoVendas, {})
 				}),
@@ -69137,4 +70385,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BlhmIQlD.js.map
+//# sourceMappingURL=index-CsHN7gpD.js.map
