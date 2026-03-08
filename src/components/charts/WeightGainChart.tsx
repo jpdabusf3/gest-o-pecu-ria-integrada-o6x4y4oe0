@@ -7,21 +7,24 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from '@/components/ui/chart'
-import { weightGainData } from '@/data/mock'
+import { useFarm } from '@/contexts/FarmContext'
 
 const chartConfig = {
-  actual: {
-    label: 'Ganho Real (kg)',
-    color: 'hsl(var(--primary))',
-  },
-  expected: {
-    label: 'Projetado (kg)',
-    color: 'hsl(var(--muted-foreground))',
-  },
+  actual: { label: 'Ganho Real (kg)', color: 'hsl(var(--primary))' },
+  expected: { label: 'Projetado IA (kg)', color: 'hsl(var(--muted-foreground))' },
 } satisfies ChartConfig
 
 export function WeightGainChart({ loteId }: { loteId: string }) {
-  const data = weightGainData[loteId] || weightGainData['default']
+  const { getPredictedGrowthCurve } = useFarm()
+  const data = getPredictedGrowthCurve(loteId)
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">
+        Sem dados suficientes.
+      </div>
+    )
+  }
 
   return (
     <div className="h-[300px] w-full">

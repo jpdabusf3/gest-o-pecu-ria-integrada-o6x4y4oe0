@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$66 = require_react(), Internals = {
+		var React$67 = require_react(), Internals = {
 			d: {
 				f: noop$3,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$66.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$67.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$66 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$67 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$66.version;
+			var isomorphicReactPackageVersion = React$67.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17609,15 +17609,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$66 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$66.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$67 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$67.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$66 = { react_stack_bottom_frame: function(callStackForError) {
+		React$67 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$66.react_stack_bottom_frame.bind(React$66, UnknownOwner)();
+		var unknownOwnerDebugStack = React$67.react_stack_bottom_frame.bind(React$67, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -19814,6 +19814,20 @@ var TrendingUp = createLucideIcon("trending-up", [["path", {
 	d: "m22 7-8.5 8.5-5-5L2 17",
 	key: "1t1m79"
 }]]);
+var TriangleAlert = createLucideIcon("triangle-alert", [
+	["path", {
+		d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
+		key: "wmoenq"
+	}],
+	["path", {
+		d: "M12 9v4",
+		key: "juzpu7"
+	}],
+	["path", {
+		d: "M12 17h.01",
+		key: "p32p05"
+	}]
+]);
 var Upload = createLucideIcon("upload", [
 	["path", {
 		d: "M12 3v12",
@@ -24669,6 +24683,1095 @@ function useAuth() {
 	if (!context) throw new Error("useAuth must be used within an AuthProvider");
 	return context;
 }
+const dashboardData = {
+	kpis: {
+		animais: 3450,
+		valorTotal: "R$ 12.450.000",
+		despesasMes: "R$ 145.200",
+		receitaMes: "R$ 320.000"
+	},
+	alerts: [{
+		id: "1",
+		title: "Atenção: Orçamento de Nutrição",
+		desc: "As despesas no setor de Engorda ultrapassaram o limite previsto em 12%.",
+		type: "warning"
+	}],
+	chartCashflow: [
+		{
+			month: "Jan",
+			receitas: 200,
+			despesas: 150
+		},
+		{
+			month: "Fev",
+			receitas: 180,
+			despesas: 130
+		},
+		{
+			month: "Mar",
+			receitas: 250,
+			despesas: 160
+		},
+		{
+			month: "Abr",
+			receitas: 320,
+			despesas: 145
+		},
+		{
+			month: "Mai",
+			receitas: 290,
+			despesas: 140
+		},
+		{
+			month: "Jun",
+			receitas: 350,
+			despesas: 155
+		}
+	],
+	chartDistribution: [
+		{
+			name: "Bezerras/Novilhas",
+			value: 850,
+			fill: "hsl(var(--chart-1))"
+		},
+		{
+			name: "Vacas",
+			value: 1200,
+			fill: "hsl(var(--chart-2))"
+		},
+		{
+			name: "Bezerros/Garrotes",
+			value: 700,
+			fill: "hsl(var(--chart-3))"
+		},
+		{
+			name: "Bois",
+			value: 650,
+			fill: "hsl(var(--chart-4))"
+		},
+		{
+			name: "Touros",
+			value: 50,
+			fill: "hsl(var(--chart-5))"
+		}
+	],
+	activities: [
+		{
+			id: 1,
+			action: "Venda de 50 Bois Gordos",
+			time: "Hoje, 14:30",
+			type: "receita",
+			amount: "+ R$ 250.000"
+		},
+		{
+			id: 2,
+			action: "Compra de Insumos",
+			time: "Hoje, 09:15",
+			type: "despesa",
+			amount: "- R$ 12.500"
+		},
+		{
+			id: 3,
+			action: "Transferência Lote 04",
+			time: "Ontem, 16:00",
+			type: "movimentacao",
+			amount: "120 cabeças"
+		}
+	]
+};
+const herdSummary = {
+	entradas: 150,
+	saidas: 85,
+	nascimentos: 45,
+	mortalidade: 2
+};
+const productionGoals = [
+	{
+		id: 1,
+		title: "Ganho Médio (Confinamento)",
+		target: 1.5,
+		current: 1.35,
+		unit: "kg/dia",
+		period: "Mensal"
+	},
+	{
+		id: 2,
+		title: "Taxa de Prenhez",
+		target: 85,
+		current: 72,
+		unit: "%",
+		period: "Anual"
+	},
+	{
+		id: 3,
+		title: "Nascimentos na Estação",
+		target: 200,
+		current: 145,
+		unit: "bezerros",
+		period: "Mensal"
+	}
+];
+const confinementData = {
+	kpis: {
+		totalAnimais: 850,
+		capacidade: 1e3,
+		consumoRacaoDiario: "12.5 ton",
+		custoDiarioCabeca: "R$ 8,50"
+	},
+	lotes: [
+		{
+			id: "CONF-01",
+			curral: "Baia 01",
+			categoria: "Bois Terminação",
+			cabecas: 200,
+			diasConfinamento: 45,
+			pesoMedio: 480,
+			dieta: "Terminação Alto Grão",
+			gmd: 1.45,
+			consumoPercentual: 2.2,
+			consumoKg: 10.56,
+			status: "Pronto p/ Abate"
+		},
+		{
+			id: "CONF-02",
+			curral: "Baia 02",
+			categoria: "Garrotes Adaptação",
+			cabecas: 300,
+			diasConfinamento: 15,
+			pesoMedio: 350,
+			dieta: "Adaptação 1",
+			gmd: .95,
+			consumoPercentual: 2,
+			consumoKg: 7,
+			status: "Normal"
+		},
+		{
+			id: "CONF-03",
+			curral: "Baia 03",
+			categoria: "Vacas Descarte",
+			cabecas: 150,
+			diasConfinamento: 60,
+			pesoMedio: 420,
+			dieta: "Manutenção",
+			gmd: 1.1,
+			consumoPercentual: 1.8,
+			consumoKg: 7.56,
+			status: "Normal"
+		}
+	],
+	dietas: [
+		{
+			id: "D-01",
+			nome: "Adaptação 1",
+			volumoso: "40%",
+			concentrado: "60%",
+			custoKg: 1.15,
+			status: "Ativa"
+		},
+		{
+			id: "D-02",
+			nome: "Terminação Alto Grão",
+			volumoso: "15%",
+			concentrado: "85%",
+			custoKg: 1.45,
+			status: "Ativa"
+		},
+		{
+			id: "D-03",
+			nome: "Manutenção",
+			volumoso: "60%",
+			concentrado: "40%",
+			custoKg: .85,
+			status: "Inativa"
+		}
+	],
+	inventory: [
+		{
+			id: "I-1",
+			item: "Milho Moído",
+			quantidade: 450,
+			unidade: "ton",
+			status: "Normal"
+		},
+		{
+			id: "I-2",
+			item: "Farelo de Soja",
+			quantidade: 120,
+			unidade: "ton",
+			status: "Normal"
+		},
+		{
+			id: "I-3",
+			item: "Núcleo Mineral",
+			quantidade: 15,
+			unidade: "ton",
+			status: "Atenção"
+		},
+		{
+			id: "I-4",
+			item: "Silagem de Milho",
+			quantidade: 1200,
+			unidade: "ton",
+			status: "Normal"
+		}
+	]
+};
+const sectorData = {
+	cria: {
+		title: "Setor: Cria",
+		description: "Gestão de matrizes, bezerros(as) ao pé e touros reprodutores.",
+		kpis: {
+			total: 1250,
+			indicadorPrincipal: "85%",
+			labelIndicador: "Taxa de Prenhez",
+			custoCabeca: "R$ 45,00/mês"
+		},
+		lotes: [
+			{
+				id: "LCR-01",
+				categoria: "Vacas Solteiras",
+				cabecas: 120,
+				pasto: "Pasto 01",
+				status: "Saudável",
+				supplement: {
+					name: "Sal Mineral 80",
+					costPerKg: 3.5,
+					consumptionPerAnimal: .1
+				}
+			},
+			{
+				id: "LCR-02",
+				categoria: "Vacas Paridas",
+				cabecas: 85,
+				pasto: "Pasto 03",
+				status: "Atenção",
+				supplement: {
+					name: "Sal Mineral Reprodução",
+					costPerKg: 4.2,
+					consumptionPerAnimal: .12
+				}
+			},
+			{
+				id: "LCR-03",
+				categoria: "Touros",
+				cabecas: 15,
+				pasto: "Pasto 04",
+				status: "Saudável",
+				supplement: {
+					name: "Ração Touros",
+					costPerKg: 2.8,
+					consumptionPerAnimal: 3
+				}
+			},
+			{
+				id: "LCR-04",
+				categoria: "Bezerras Desmame",
+				cabecas: 140,
+				pasto: "Pasto 02",
+				status: "Saudável",
+				supplement: {
+					name: "Ração Creep",
+					costPerKg: 3.1,
+					consumptionPerAnimal: .5
+				}
+			}
+		]
+	},
+	recria: {
+		title: "Setor: Recria",
+		description: "Fase de crescimento de garrotes e novilhas.",
+		kpis: {
+			total: 1550,
+			indicadorPrincipal: "0.6 kg",
+			labelIndicador: "GMD",
+			custoCabeca: "R$ 65,00/mês"
+		},
+		lotes: [{
+			id: "LRE-01",
+			categoria: "Garrotes",
+			cabecas: 220,
+			pasto: "Pasto 05",
+			status: "Saudável",
+			supplement: {
+				name: "Sal Proteico 0.1%",
+				costPerKg: 2.9,
+				consumptionPerAnimal: .25
+			}
+		}, {
+			id: "LRE-02",
+			categoria: "Novilhas 12m",
+			cabecas: 180,
+			pasto: "Pasto 06",
+			status: "Saudável",
+			supplement: {
+				name: "Sal Proteico 0.1%",
+				costPerKg: 2.9,
+				consumptionPerAnimal: .22
+			}
+		}]
+	},
+	engorda: {
+		title: "Setor: Engorda",
+		description: "Terminação de bois e vacas de descarte para abate.",
+		kpis: {
+			total: 650,
+			indicadorPrincipal: "1.2 kg",
+			labelIndicador: "GMD",
+			custoCabeca: "R$ 120,00/mês"
+		},
+		lotes: [{
+			id: "LEN-01",
+			categoria: "Bois Magros",
+			cabecas: 150,
+			pasto: "Confinamento A",
+			status: "Saudável",
+			supplement: {
+				name: "Ração Confinamento",
+				costPerKg: 1.8,
+				consumptionPerAnimal: 8.5
+			}
+		}, {
+			id: "LEN-02",
+			categoria: "Bois Terminação",
+			cabecas: 200,
+			pasto: "Confinamento B",
+			status: "Pronto p/ Abate",
+			supplement: {
+				name: "Ração Confinamento",
+				costPerKg: 1.95,
+				consumptionPerAnimal: 11
+			}
+		}]
+	}
+};
+const pasturesData = [
+	{
+		id: 1,
+		nome: "Pasto 01 - Sede",
+		sector: "cria",
+		area: 45.5,
+		cultivar: "Brachiaria brizantha",
+		estacao: "Águas",
+		lotacaoProjetada: 2.5,
+		lotacaoExecutada: 2.6,
+		alturaEntradaAlvo: 30,
+		alturaSaidaAlvo: 15,
+		alturaAtual: 22,
+		pesoMedioAtual: 215,
+		pesoMedioHistorico: 205,
+		status: "Bom",
+		ndvi: .75,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 30,
+		recommendedLotSize: 120,
+		interventions: [],
+		ocupanteAtual: "LCR-01"
+	},
+	{
+		id: 2,
+		nome: "Pasto 02 - Fundo",
+		sector: "cria",
+		area: 60,
+		cultivar: "Panicum maximum (Mombaça)",
+		estacao: "Águas",
+		lotacaoProjetada: 3.2,
+		lotacaoExecutada: 3.8,
+		alturaEntradaAlvo: 90,
+		alturaSaidaAlvo: 40,
+		alturaAtual: 35,
+		pesoMedioAtual: 285,
+		pesoMedioHistorico: 295,
+		status: "Alerta",
+		ndvi: .45,
+		score: 5,
+		daysOfRest: 0,
+		optimalRestDuration: 35,
+		recommendedLotSize: 180,
+		interventions: [],
+		ocupanteAtual: "LCR-04"
+	},
+	{
+		id: 3,
+		nome: "Pasto 03 - Represa",
+		sector: "cria",
+		area: 35,
+		cultivar: "Brachiaria decumbens",
+		estacao: "Seca",
+		lotacaoProjetada: 0,
+		lotacaoExecutada: 0,
+		alturaEntradaAlvo: 25,
+		alturaSaidaAlvo: 10,
+		alturaAtual: 28,
+		pesoMedioAtual: 0,
+		pesoMedioHistorico: 0,
+		status: "Vedado",
+		ndvi: .82,
+		score: 1,
+		daysOfRest: 28,
+		optimalRestDuration: 30,
+		recommendedLotSize: 90,
+		interventions: [],
+		ocupanteAtual: null
+	},
+	{
+		id: 4,
+		nome: "Pasto 04 - Baixada",
+		sector: "recria",
+		area: 50,
+		cultivar: "Brachiaria brizantha",
+		estacao: "Águas",
+		lotacaoProjetada: 2,
+		lotacaoExecutada: 0,
+		alturaEntradaAlvo: 30,
+		alturaSaidaAlvo: 15,
+		alturaAtual: 32,
+		pesoMedioAtual: 0,
+		pesoMedioHistorico: 0,
+		status: "Vedado",
+		ndvi: .88,
+		score: 5,
+		daysOfRest: 45,
+		optimalRestDuration: 30,
+		recommendedLotSize: 150,
+		interventions: [],
+		ocupanteAtual: null
+	},
+	{
+		id: 5,
+		nome: "Pasto 05 - Morro",
+		sector: "recria",
+		area: 80,
+		cultivar: "Andropogon",
+		estacao: "Águas",
+		lotacaoProjetada: 1.5,
+		lotacaoExecutada: 1.4,
+		alturaEntradaAlvo: 40,
+		alturaSaidaAlvo: 20,
+		alturaAtual: 25,
+		pesoMedioAtual: 310,
+		pesoMedioHistorico: 300,
+		status: "Bom",
+		ndvi: .7,
+		score: 3,
+		daysOfRest: 0,
+		optimalRestDuration: 40,
+		recommendedLotSize: 120,
+		interventions: [],
+		ocupanteAtual: "LRE-01"
+	}
+];
+const rotationalSchedule = [{
+	id: "R1",
+	pastoId: 3,
+	pastoNome: "Pasto 03 - Represa",
+	nextLot: "LCR-02",
+	entryDate: "15/03/2026",
+	requiredRest: 30,
+	currentRest: 28,
+	nutritionReq: "Sal Mineral Reprodução (0.12kg/dia)"
+}, {
+	id: "R2",
+	pastoId: 4,
+	pastoNome: "Pasto 04 - Baixada",
+	nextLot: "LRE-02",
+	entryDate: "10/03/2026",
+	requiredRest: 30,
+	currentRest: 45,
+	nutritionReq: "Sal Proteico 0.1% (0.22kg/dia)"
+}];
+const inventoryData = {
+	farmacia: [{
+		id: "F1",
+		item: "Vacina Febre Aftosa",
+		tipo: "Biológico",
+		qtd: 40,
+		minQtd: 100,
+		unidade: "Doses",
+		status: "Baixo"
+	}, {
+		id: "F2",
+		item: "Ivermectina 1%",
+		tipo: "Antiparasitário",
+		qtd: 15,
+		minQtd: 10,
+		unidade: "Frascos",
+		status: "Normal"
+	}],
+	almoxarifado: [{
+		id: "A1",
+		item: "Arame Liso 17x15",
+		tipo: "Material Cerca",
+		qtd: 12,
+		minQtd: 10,
+		unidade: "Rolos",
+		status: "Normal"
+	}],
+	nutricao: [
+		{
+			id: "N1",
+			item: "Sal Mineral Reprodução",
+			tipo: "Suplemento",
+			qtd: 1500,
+			consumoDiario: 50,
+			minQtd: 300,
+			unidade: "kg",
+			status: "Normal"
+		},
+		{
+			id: "N2",
+			item: "Ração Confinamento",
+			tipo: "Concentrado",
+			qtd: 2e3,
+			consumoDiario: 450,
+			minQtd: 1e3,
+			unidade: "kg",
+			status: "Crítico"
+		},
+		{
+			id: "N3",
+			item: "Sal Proteico 0.1%",
+			tipo: "Suplemento",
+			qtd: 800,
+			consumoDiario: 65,
+			minQtd: 500,
+			unidade: "kg",
+			status: "Baixo"
+		}
+	]
+};
+const financialData = [{
+	id: "TR-101",
+	data: "10/Mar/2026",
+	descricao: "Venda Lote Bois Gordos",
+	categoria: "Receita Gado",
+	tipo: "entrada",
+	valor: "R$ 250.000,00"
+}, {
+	id: "TR-102",
+	data: "08/Mar/2026",
+	descricao: "Folha de Pagamento",
+	categoria: "Mão de Obra",
+	tipo: "saida",
+	valor: "R$ 45.000,00"
+}];
+const productionCostDashboard = {
+	totalArrobasProduced: 1250,
+	totalCost: 25e4,
+	costPerArroba: 200,
+	costs: [
+		{
+			name: "Nutrição & Suplementos",
+			value: 155e3,
+			fill: "hsl(var(--chart-1))"
+		},
+		{
+			name: "Mão de Obra",
+			value: 45e3,
+			fill: "hsl(var(--chart-2))"
+		},
+		{
+			name: "Sanidade & Protocolos",
+			value: 32e3,
+			fill: "hsl(var(--chart-3))"
+		},
+		{
+			name: "Manutenção de Pastagem",
+			value: 18e3,
+			fill: "hsl(var(--chart-4))"
+		}
+	]
+};
+const animalData = { "TAG-1234": {
+	id: "TAG-1234",
+	categoria: "Garrote",
+	raca: "Nelore",
+	nascimento: "15/04/2025",
+	pesoAtual: "245 kg",
+	lote: "LRE-01",
+	historico: [{
+		data: "10/03/2026",
+		tipo: "Pesagem",
+		valor: "245 kg"
+	}, {
+		data: "01/12/2025",
+		tipo: "Vacinação",
+		valor: "Febre Aftosa"
+	}]
+} };
+const sanitaryEvents = [
+	{
+		id: "SAN-01",
+		title: "Vermifugação Semestral",
+		date: "Hoje",
+		type: "Manejo",
+		status: "Atrasado",
+		lote: "LCR-04",
+		target: "Bezerras Desmame"
+	},
+	{
+		id: "SAN-02",
+		title: "Vacinação Febre Aftosa",
+		date: "Próxima Semana",
+		type: "Vacina",
+		status: "Agendado",
+		lote: "Todos",
+		target: "Rebanho Geral"
+	},
+	{
+		id: "SAN-03",
+		title: "Cura de Umbigo",
+		date: "Hoje",
+		type: "Manejo",
+		status: "Atrasado",
+		lote: "LCR-02",
+		target: "Recém Nascidos"
+	}
+];
+const regionalProtocols = [
+	{
+		id: "RP-1",
+		ageGroup: "Recém Nascidos (0-3 meses)",
+		vaccine: "Cura do Umbigo / Clostridiose",
+		mandatory: "Sim",
+		frequency: "Imediato / Dose Única"
+	},
+	{
+		id: "RP-2",
+		ageGroup: "Bezerros (3-8 meses)",
+		vaccine: "Brucelose (Apenas Fêmeas)",
+		mandatory: "Sim (Lei Federal)",
+		frequency: "Dose Única"
+	},
+	{
+		id: "RP-3",
+		ageGroup: "Rebanho Geral",
+		vaccine: "Febre Aftosa",
+		mandatory: "Depende do Estado",
+		frequency: "Semestral / Anual"
+	},
+	{
+		id: "RP-4",
+		ageGroup: "Rebanho Geral",
+		vaccine: "Raiva",
+		mandatory: "Recomendado",
+		frequency: "Anual"
+	},
+	{
+		id: "RP-5",
+		ageGroup: "Desmama (8-10 meses)",
+		vaccine: "Vermifugação Estratégica",
+		mandatory: "Recomendado",
+		frequency: "Na desmama"
+	}
+];
+const calendarEvents = [
+	{
+		id: "EV-1",
+		title: "Vacinação Febre Aftosa",
+		date: "2026-03-15",
+		type: "Sanidade",
+		target: "Lote LCR-01",
+		sector: "cria"
+	},
+	{
+		id: "EV-3",
+		title: "Pesagem Trimestral",
+		date: "2026-03-25",
+		type: "Pesagem",
+		target: "Lote LRE-01",
+		sector: "recria"
+	},
+	{
+		id: "EV-5",
+		title: "Venda Frigorífico",
+		date: "2026-04-10",
+		type: "Abates",
+		target: "Lote LEN-02",
+		sector: "engorda"
+	}
+];
+const lotPerformanceData = [{
+	loteId: "LCR-01",
+	categoria: "Vacas Solteiras",
+	custos: 15400,
+	receita: 45e3,
+	lucro: 29600,
+	margem: "65.8%"
+}, {
+	loteId: "LEN-02",
+	categoria: "Bois Terminação",
+	custos: 85200,
+	receita: 142e3,
+	lucro: 56800,
+	margem: "40.0%"
+}];
+const teamMembers = [
+	{
+		id: "U1",
+		name: "Administrador (Sede)",
+		role: "Admin",
+		email: "admin@fazenda.com",
+		status: "Ativo",
+		lastActive: "Agora"
+	},
+	{
+		id: "U2",
+		name: "João (Operador Campo)",
+		role: "Operador",
+		email: "joao@fazenda.com",
+		status: "Ativo",
+		lastActive: "Há 5 min"
+	},
+	{
+		id: "U3",
+		name: "Carlos (Tratorista)",
+		role: "Operador",
+		email: "carlos@fazenda.com",
+		status: "Ativo",
+		lastActive: "Há 2 horas"
+	},
+	{
+		id: "U4",
+		name: "Ana (Veterinária)",
+		role: "Admin",
+		email: "ana@fazenda.com",
+		status: "Ausente",
+		lastActive: "Ontem"
+	}
+];
+const managementHistory = [
+	{
+		id: "H-1",
+		data: "10/Mar/2026",
+		tipo: "Nutrição",
+		alvo: "Lote LEN-01",
+		descricao: "Ajuste de dieta para Terminação Alto Grão",
+		responsavel: "João (Operador Campo)"
+	},
+	{
+		id: "H-2",
+		data: "09/Mar/2026",
+		tipo: "Manejo de Pasto",
+		alvo: "Pasto 02 - Fundo",
+		descricao: "Aplicação de Herbicida (Folha Larga)",
+		responsavel: "Carlos (Tratorista)"
+	},
+	{
+		id: "H-3",
+		data: "08/Mar/2026",
+		tipo: "Sanidade",
+		alvo: "Lote LCR-04",
+		descricao: "Vacinação Febre Aftosa",
+		responsavel: "Ana (Veterinária)"
+	},
+	{
+		id: "H-4",
+		data: "05/Mar/2026",
+		tipo: "Movimentação",
+		alvo: "Lote LRE-01",
+		descricao: "Transferência do Pasto 05 para Pasto 06",
+		responsavel: "João (Operador Campo)"
+	},
+	{
+		id: "H-5",
+		data: "02/Mar/2026",
+		tipo: "Adubação",
+		alvo: "Pasto 01 - Sede",
+		descricao: "Aplicação de Ureia (50kg/ha)",
+		responsavel: "Administrador (Sede)"
+	}
+];
+const costPerArrobaData = [{
+	loteId: "LEN-01",
+	categoria: "Bois Magros",
+	custoAcumulado: 4500,
+	ganhoPesoKg: 150,
+	ganhoArroba: 5,
+	custoPorArroba: 180
+}, {
+	loteId: "LEN-02",
+	categoria: "Bois Terminação",
+	custoAcumulado: 8200,
+	ganhoPesoKg: 210,
+	ganhoArroba: 7,
+	custoPorArroba: 195
+}];
+const reproductionForecast = [
+	{
+		id: "R1",
+		month: "Setembro",
+		partosPrevistos: 45,
+		lote: "LCR-01",
+		status: "Aguardando",
+		vacasPrenhas: 45,
+		nascimentosConfirmados: 0
+	},
+	{
+		id: "R2",
+		month: "Outubro",
+		partosPrevistos: 80,
+		lote: "LCR-02",
+		status: "Em andamento",
+		vacasPrenhas: 85,
+		nascimentosConfirmados: 5
+	},
+	{
+		id: "R3",
+		month: "Novembro",
+		partosPrevistos: 120,
+		lote: "LCR-03",
+		status: "Normal",
+		vacasPrenhas: 125,
+		nascimentosConfirmados: 0
+	}
+];
+const dailyWeightData = [
+	{
+		dia: "01",
+		gmd: 1.1,
+		peso: 450
+	},
+	{
+		dia: "05",
+		gmd: 1.2,
+		peso: 455
+	},
+	{
+		dia: "10",
+		gmd: 1.3,
+		peso: 462
+	},
+	{
+		dia: "15",
+		gmd: 1.4,
+		peso: 469
+	},
+	{
+		dia: "20",
+		gmd: 1.3,
+		peso: 476
+	}
+];
+const farmRegistry = {
+	nome: "Fazenda Vale do Sol",
+	proprietario: "Grupo Agro GPI",
+	cnpj: "12.345.678/0001-90",
+	inscricaoEstadual: "123.456.789.000",
+	car: "SP-1234567-ABCD.EFGH.IJKL",
+	endereco: "Rodovia BR-123, Km 45, Zona Rural",
+	cidade: "Ribeirão Preto",
+	estado: "SP",
+	areaTotal: 1500,
+	areaPastagem: 1200,
+	areaReserva: 300
+};
+const businessContacts = [
+	{
+		id: "C1",
+		nome: "Frigorífico Boi Forte",
+		categoria: "Comprador",
+		contato: "(11) 99999-1111",
+		email: "compras@boiforte.com",
+		empresa: "Boi Forte SA",
+		status: "Ativo"
+	},
+	{
+		id: "C2",
+		nome: "AgroInsumos Certo",
+		categoria: "Fornecedor",
+		contato: "(16) 88888-2222",
+		email: "vendas@agroinsumos.com",
+		empresa: "AgroInsumos Ltda",
+		status: "Ativo"
+	},
+	{
+		id: "C3",
+		nome: "Dr. Marcos Veterinário",
+		categoria: "Serviços",
+		contato: "(16) 77777-3333",
+		email: "marcos.vet@gmail.com",
+		empresa: "Autônomo",
+		status: "Ativo"
+	},
+	{
+		id: "C4",
+		nome: "Sementes Pasto Verde",
+		categoria: "Fornecedor",
+		contato: "(11) 55555-4444",
+		email: "contato@pastoverde.com",
+		empresa: "Pasto Verde SA",
+		status: "Inativo"
+	}
+];
+var initialWeights = {
+	"CONF-01": [
+		{
+			date: "2025-12-01",
+			weight: 350
+		},
+		{
+			date: "2026-01-01",
+			weight: 395
+		},
+		{
+			date: "2026-02-01",
+			weight: 440
+		},
+		{
+			date: "2026-03-01",
+			weight: 480
+		}
+	],
+	"CONF-02": [
+		{
+			date: "2026-01-15",
+			weight: 300
+		},
+		{
+			date: "2026-02-15",
+			weight: 325
+		},
+		{
+			date: "2026-03-01",
+			weight: 350
+		}
+	],
+	"CONF-03": [
+		{
+			date: "2025-11-01",
+			weight: 380
+		},
+		{
+			date: "2026-01-01",
+			weight: 400
+		},
+		{
+			date: "2026-03-01",
+			weight: 420
+		}
+	]
+};
+var FarmContext = (0, import_react.createContext)(void 0);
+function FarmProvider({ children }) {
+	const [inventory, setInventory] = (0, import_react.useState)(inventoryData.nutricao);
+	const [lots, setLots] = (0, import_react.useState)(confinementData.lotes);
+	const [historicalWeights, setHistoricalWeights] = (0, import_react.useState)(initialWeights);
+	const registerFeedConsumption = (loteId, inventoryId, amount) => {
+		setInventory((prev) => prev.map((item) => item.id === inventoryId ? {
+			...item,
+			qtd: Math.max(0, item.qtd - amount)
+		} : item));
+	};
+	const updateMinThreshold = (inventoryId, newMin) => {
+		setInventory((prev) => prev.map((item) => item.id === inventoryId ? {
+			...item,
+			minQtd: newMin
+		} : item));
+	};
+	const addWeightRecord = (loteId, weight, date$1) => {
+		setHistoricalWeights((prev) => {
+			const newHistory = [...prev[loteId] || [], {
+				date: date$1,
+				weight
+			}].sort((a$1, b$1) => new Date(a$1.date).getTime() - new Date(b$1.date).getTime());
+			return {
+				...prev,
+				[loteId]: newHistory
+			};
+		});
+		setLots((prev) => prev.map((lot) => {
+			if (lot.id === loteId) {
+				const history = [...historicalWeights[loteId] || [], {
+					date: date$1,
+					weight
+				}].sort((a$1, b$1) => new Date(a$1.date).getTime() - new Date(b$1.date).getTime());
+				let gmd = lot.gmd;
+				if (history.length >= 2) {
+					const first = history[0];
+					const last$2 = history[history.length - 1];
+					const days = (new Date(last$2.date).getTime() - new Date(first.date).getTime()) / (1e3 * 3600 * 24);
+					if (days > 0) gmd = Number(((last$2.weight - first.weight) / days).toFixed(2));
+				}
+				return {
+					...lot,
+					pesoMedio: weight,
+					gmd
+				};
+			}
+			return lot;
+		}));
+	};
+	const getPredictedSlaughterDate = (loteId) => {
+		const lot = lots.find((l) => l.id === loteId);
+		const history = historicalWeights[loteId];
+		if (!lot || !history || history.length === 0) return null;
+		const lastRecord = history[history.length - 1];
+		const gmd = lot.gmd > 0 ? lot.gmd : 1;
+		const targetWeight = 540;
+		if (lastRecord.weight >= targetWeight) return new Date(lastRecord.date);
+		const daysNeeded = (targetWeight - lastRecord.weight) / gmd;
+		const targetDate = new Date(lastRecord.date);
+		targetDate.setDate(targetDate.getDate() + daysNeeded);
+		return targetDate;
+	};
+	const getPredictedGrowthCurve = (loteId) => {
+		const history = historicalWeights[loteId] || [];
+		const lot = lots.find((l) => l.id === loteId);
+		if (!history.length || !lot) return [];
+		const curve = [];
+		history.forEach((record) => {
+			const [y$1, m, d] = record.date.split("-");
+			const localDate$1 = new Date(Number(y$1), Number(m) - 1, Number(d));
+			curve.push({
+				month: localDate$1.toLocaleDateString("pt-BR", {
+					month: "short",
+					year: "2-digit"
+				}),
+				actual: record.weight,
+				expected: record.weight,
+				timestamp: localDate$1.getTime()
+			});
+		});
+		const lastRecord = curve[curve.length - 1];
+		let currentWeight = lastRecord.actual;
+		let currentDate = new Date(lastRecord.timestamp);
+		const gmd = lot.gmd > 0 ? lot.gmd : 1;
+		const targetWeight = 540;
+		for (let i = 1; i <= 4; i++) {
+			currentDate.setMonth(currentDate.getMonth() + 1);
+			currentWeight += gmd * 30;
+			curve.push({
+				month: currentDate.toLocaleDateString("pt-BR", {
+					month: "short",
+					year: "2-digit"
+				}),
+				expected: Number(currentWeight.toFixed(1)),
+				timestamp: currentDate.getTime()
+			});
+			if (currentWeight >= targetWeight) break;
+		}
+		return curve;
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmContext.Provider, {
+		value: {
+			inventory,
+			lots,
+			historicalWeights,
+			registerFeedConsumption,
+			updateMinThreshold,
+			addWeightRecord,
+			getPredictedSlaughterDate,
+			getPredictedGrowthCurve
+		},
+		children
+	});
+}
+function useFarm() {
+	const context = (0, import_react.useContext)(FarmContext);
+	if (!context) throw new Error("useFarm must be used within FarmProvider");
+	return context;
+}
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
 var use = import_react[" use ".trim().toString()];
 function isPromiseLike(value) {
@@ -26676,13 +27779,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$66.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$67.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$27({ inst: {
+			cachedValue = useState$32({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26719,8 +27822,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$66 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$27 = React$66.useState, useEffect$8 = React$66.useEffect, useLayoutEffect$3 = React$66.useLayoutEffect, useDebugValue = React$66.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$66.useSyncExternalStore ? React$66.useSyncExternalStore : shim;
+		var React$67 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$32 = React$67.useState, useEffect$8 = React$67.useEffect, useLayoutEffect$3 = React$67.useLayoutEffect, useDebugValue = React$67.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$67.useSyncExternalStore ? React$67.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -29589,949 +30692,6 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 	})
 }));
 Progress.displayName = Root$4.displayName;
-const dashboardData = {
-	kpis: {
-		animais: 3450,
-		valorTotal: "R$ 12.450.000",
-		despesasMes: "R$ 145.200",
-		receitaMes: "R$ 320.000"
-	},
-	alerts: [{
-		id: "1",
-		title: "Atenção: Orçamento de Nutrição",
-		desc: "As despesas no setor de Engorda ultrapassaram o limite previsto em 12%.",
-		type: "warning"
-	}],
-	chartCashflow: [
-		{
-			month: "Jan",
-			receitas: 200,
-			despesas: 150
-		},
-		{
-			month: "Fev",
-			receitas: 180,
-			despesas: 130
-		},
-		{
-			month: "Mar",
-			receitas: 250,
-			despesas: 160
-		},
-		{
-			month: "Abr",
-			receitas: 320,
-			despesas: 145
-		},
-		{
-			month: "Mai",
-			receitas: 290,
-			despesas: 140
-		},
-		{
-			month: "Jun",
-			receitas: 350,
-			despesas: 155
-		}
-	],
-	chartDistribution: [
-		{
-			name: "Bezerras/Novilhas",
-			value: 850,
-			fill: "hsl(var(--chart-1))"
-		},
-		{
-			name: "Vacas",
-			value: 1200,
-			fill: "hsl(var(--chart-2))"
-		},
-		{
-			name: "Bezerros/Garrotes",
-			value: 700,
-			fill: "hsl(var(--chart-3))"
-		},
-		{
-			name: "Bois",
-			value: 650,
-			fill: "hsl(var(--chart-4))"
-		},
-		{
-			name: "Touros",
-			value: 50,
-			fill: "hsl(var(--chart-5))"
-		}
-	],
-	activities: [
-		{
-			id: 1,
-			action: "Venda de 50 Bois Gordos",
-			time: "Hoje, 14:30",
-			type: "receita",
-			amount: "+ R$ 250.000"
-		},
-		{
-			id: 2,
-			action: "Compra de Insumos",
-			time: "Hoje, 09:15",
-			type: "despesa",
-			amount: "- R$ 12.500"
-		},
-		{
-			id: 3,
-			action: "Transferência Lote 04",
-			time: "Ontem, 16:00",
-			type: "movimentacao",
-			amount: "120 cabeças"
-		}
-	]
-};
-const herdSummary = {
-	entradas: 150,
-	saidas: 85,
-	nascimentos: 45,
-	mortalidade: 2
-};
-const productionGoals = [
-	{
-		id: 1,
-		title: "Ganho Médio (Confinamento)",
-		target: 1.5,
-		current: 1.35,
-		unit: "kg/dia",
-		period: "Mensal"
-	},
-	{
-		id: 2,
-		title: "Taxa de Prenhez",
-		target: 85,
-		current: 72,
-		unit: "%",
-		period: "Anual"
-	},
-	{
-		id: 3,
-		title: "Nascimentos na Estação",
-		target: 200,
-		current: 145,
-		unit: "bezerros",
-		period: "Mensal"
-	}
-];
-const confinementData = {
-	kpis: {
-		totalAnimais: 850,
-		capacidade: 1e3,
-		consumoRacaoDiario: "12.5 ton",
-		custoDiarioCabeca: "R$ 8,50"
-	},
-	lotes: [
-		{
-			id: "CONF-01",
-			curral: "Baia 01",
-			categoria: "Bois Terminação",
-			cabecas: 200,
-			diasConfinamento: 45,
-			pesoMedio: 480,
-			dieta: "Terminação Alto Grão",
-			gmd: 1.45,
-			consumoPercentual: 2.2,
-			consumoKg: 10.56,
-			status: "Pronto p/ Abate"
-		},
-		{
-			id: "CONF-02",
-			curral: "Baia 02",
-			categoria: "Garrotes Adaptação",
-			cabecas: 300,
-			diasConfinamento: 15,
-			pesoMedio: 350,
-			dieta: "Adaptação 1",
-			gmd: .95,
-			consumoPercentual: 2,
-			consumoKg: 7,
-			status: "Normal"
-		},
-		{
-			id: "CONF-03",
-			curral: "Baia 03",
-			categoria: "Vacas Descarte",
-			cabecas: 150,
-			diasConfinamento: 60,
-			pesoMedio: 420,
-			dieta: "Manutenção",
-			gmd: 1.1,
-			consumoPercentual: 1.8,
-			consumoKg: 7.56,
-			status: "Normal"
-		}
-	],
-	dietas: [
-		{
-			id: "D-01",
-			nome: "Adaptação 1",
-			volumoso: "40%",
-			concentrado: "60%",
-			custoKg: 1.15,
-			status: "Ativa"
-		},
-		{
-			id: "D-02",
-			nome: "Terminação Alto Grão",
-			volumoso: "15%",
-			concentrado: "85%",
-			custoKg: 1.45,
-			status: "Ativa"
-		},
-		{
-			id: "D-03",
-			nome: "Manutenção",
-			volumoso: "60%",
-			concentrado: "40%",
-			custoKg: .85,
-			status: "Inativa"
-		}
-	],
-	inventory: [
-		{
-			id: "I-1",
-			item: "Milho Moído",
-			quantidade: 450,
-			unidade: "ton",
-			status: "Normal"
-		},
-		{
-			id: "I-2",
-			item: "Farelo de Soja",
-			quantidade: 120,
-			unidade: "ton",
-			status: "Normal"
-		},
-		{
-			id: "I-3",
-			item: "Núcleo Mineral",
-			quantidade: 15,
-			unidade: "ton",
-			status: "Atenção"
-		},
-		{
-			id: "I-4",
-			item: "Silagem de Milho",
-			quantidade: 1200,
-			unidade: "ton",
-			status: "Normal"
-		}
-	]
-};
-const sectorData = {
-	cria: {
-		title: "Setor: Cria",
-		description: "Gestão de matrizes, bezerros(as) ao pé e touros reprodutores.",
-		kpis: {
-			total: 1250,
-			indicadorPrincipal: "85%",
-			labelIndicador: "Taxa de Prenhez",
-			custoCabeca: "R$ 45,00/mês"
-		},
-		lotes: [
-			{
-				id: "LCR-01",
-				categoria: "Vacas Solteiras",
-				cabecas: 120,
-				pasto: "Pasto 01",
-				status: "Saudável",
-				supplement: {
-					name: "Sal Mineral 80",
-					costPerKg: 3.5,
-					consumptionPerAnimal: .1
-				}
-			},
-			{
-				id: "LCR-02",
-				categoria: "Vacas Paridas",
-				cabecas: 85,
-				pasto: "Pasto 03",
-				status: "Atenção",
-				supplement: {
-					name: "Sal Mineral Reprodução",
-					costPerKg: 4.2,
-					consumptionPerAnimal: .12
-				}
-			},
-			{
-				id: "LCR-03",
-				categoria: "Touros",
-				cabecas: 15,
-				pasto: "Pasto 04",
-				status: "Saudável",
-				supplement: {
-					name: "Ração Touros",
-					costPerKg: 2.8,
-					consumptionPerAnimal: 3
-				}
-			},
-			{
-				id: "LCR-04",
-				categoria: "Bezerras Desmame",
-				cabecas: 140,
-				pasto: "Pasto 02",
-				status: "Saudável",
-				supplement: {
-					name: "Ração Creep",
-					costPerKg: 3.1,
-					consumptionPerAnimal: .5
-				}
-			}
-		]
-	},
-	recria: {
-		title: "Setor: Recria",
-		description: "Fase de crescimento de garrotes e novilhas.",
-		kpis: {
-			total: 1550,
-			indicadorPrincipal: "0.6 kg",
-			labelIndicador: "GMD",
-			custoCabeca: "R$ 65,00/mês"
-		},
-		lotes: [{
-			id: "LRE-01",
-			categoria: "Garrotes",
-			cabecas: 220,
-			pasto: "Pasto 05",
-			status: "Saudável",
-			supplement: {
-				name: "Sal Proteico 0.1%",
-				costPerKg: 2.9,
-				consumptionPerAnimal: .25
-			}
-		}, {
-			id: "LRE-02",
-			categoria: "Novilhas 12m",
-			cabecas: 180,
-			pasto: "Pasto 06",
-			status: "Saudável",
-			supplement: {
-				name: "Sal Proteico 0.1%",
-				costPerKg: 2.9,
-				consumptionPerAnimal: .22
-			}
-		}]
-	},
-	engorda: {
-		title: "Setor: Engorda",
-		description: "Terminação de bois e vacas de descarte para abate.",
-		kpis: {
-			total: 650,
-			indicadorPrincipal: "1.2 kg",
-			labelIndicador: "GMD",
-			custoCabeca: "R$ 120,00/mês"
-		},
-		lotes: [{
-			id: "LEN-01",
-			categoria: "Bois Magros",
-			cabecas: 150,
-			pasto: "Confinamento A",
-			status: "Saudável",
-			supplement: {
-				name: "Ração Confinamento",
-				costPerKg: 1.8,
-				consumptionPerAnimal: 8.5
-			}
-		}, {
-			id: "LEN-02",
-			categoria: "Bois Terminação",
-			cabecas: 200,
-			pasto: "Confinamento B",
-			status: "Pronto p/ Abate",
-			supplement: {
-				name: "Ração Confinamento",
-				costPerKg: 1.95,
-				consumptionPerAnimal: 11
-			}
-		}]
-	}
-};
-const pasturesData = [
-	{
-		id: 1,
-		nome: "Pasto 01 - Sede",
-		sector: "cria",
-		area: 45.5,
-		cultivar: "Brachiaria brizantha",
-		estacao: "Águas",
-		lotacaoProjetada: 2.5,
-		lotacaoExecutada: 2.6,
-		alturaEntradaAlvo: 30,
-		alturaSaidaAlvo: 15,
-		alturaAtual: 22,
-		pesoMedioAtual: 215,
-		pesoMedioHistorico: 205,
-		status: "Bom",
-		ndvi: .75,
-		score: 3,
-		daysOfRest: 0,
-		optimalRestDuration: 30,
-		recommendedLotSize: 120,
-		interventions: [],
-		ocupanteAtual: "LCR-01"
-	},
-	{
-		id: 2,
-		nome: "Pasto 02 - Fundo",
-		sector: "cria",
-		area: 60,
-		cultivar: "Panicum maximum (Mombaça)",
-		estacao: "Águas",
-		lotacaoProjetada: 3.2,
-		lotacaoExecutada: 3.8,
-		alturaEntradaAlvo: 90,
-		alturaSaidaAlvo: 40,
-		alturaAtual: 35,
-		pesoMedioAtual: 285,
-		pesoMedioHistorico: 295,
-		status: "Alerta",
-		ndvi: .45,
-		score: 5,
-		daysOfRest: 0,
-		optimalRestDuration: 35,
-		recommendedLotSize: 180,
-		interventions: [],
-		ocupanteAtual: "LCR-04"
-	},
-	{
-		id: 3,
-		nome: "Pasto 03 - Represa",
-		sector: "cria",
-		area: 35,
-		cultivar: "Brachiaria decumbens",
-		estacao: "Seca",
-		lotacaoProjetada: 0,
-		lotacaoExecutada: 0,
-		alturaEntradaAlvo: 25,
-		alturaSaidaAlvo: 10,
-		alturaAtual: 28,
-		pesoMedioAtual: 0,
-		pesoMedioHistorico: 0,
-		status: "Vedado",
-		ndvi: .82,
-		score: 1,
-		daysOfRest: 28,
-		optimalRestDuration: 30,
-		recommendedLotSize: 90,
-		interventions: [],
-		ocupanteAtual: null
-	},
-	{
-		id: 4,
-		nome: "Pasto 04 - Baixada",
-		sector: "recria",
-		area: 50,
-		cultivar: "Brachiaria brizantha",
-		estacao: "Águas",
-		lotacaoProjetada: 2,
-		lotacaoExecutada: 0,
-		alturaEntradaAlvo: 30,
-		alturaSaidaAlvo: 15,
-		alturaAtual: 32,
-		pesoMedioAtual: 0,
-		pesoMedioHistorico: 0,
-		status: "Vedado",
-		ndvi: .88,
-		score: 5,
-		daysOfRest: 45,
-		optimalRestDuration: 30,
-		recommendedLotSize: 150,
-		interventions: [],
-		ocupanteAtual: null
-	},
-	{
-		id: 5,
-		nome: "Pasto 05 - Morro",
-		sector: "recria",
-		area: 80,
-		cultivar: "Andropogon",
-		estacao: "Águas",
-		lotacaoProjetada: 1.5,
-		lotacaoExecutada: 1.4,
-		alturaEntradaAlvo: 40,
-		alturaSaidaAlvo: 20,
-		alturaAtual: 25,
-		pesoMedioAtual: 310,
-		pesoMedioHistorico: 300,
-		status: "Bom",
-		ndvi: .7,
-		score: 3,
-		daysOfRest: 0,
-		optimalRestDuration: 40,
-		recommendedLotSize: 120,
-		interventions: [],
-		ocupanteAtual: "LRE-01"
-	}
-];
-const rotationalSchedule = [{
-	id: "R1",
-	pastoId: 3,
-	pastoNome: "Pasto 03 - Represa",
-	nextLot: "LCR-02",
-	entryDate: "15/03/2026",
-	requiredRest: 30,
-	currentRest: 28,
-	nutritionReq: "Sal Mineral Reprodução (0.12kg/dia)"
-}, {
-	id: "R2",
-	pastoId: 4,
-	pastoNome: "Pasto 04 - Baixada",
-	nextLot: "LRE-02",
-	entryDate: "10/03/2026",
-	requiredRest: 30,
-	currentRest: 45,
-	nutritionReq: "Sal Proteico 0.1% (0.22kg/dia)"
-}];
-const inventoryData = {
-	farmacia: [{
-		id: "F1",
-		item: "Vacina Febre Aftosa",
-		tipo: "Biológico",
-		qtd: 40,
-		minQtd: 100,
-		unidade: "Doses",
-		status: "Baixo"
-	}, {
-		id: "F2",
-		item: "Ivermectina 1%",
-		tipo: "Antiparasitário",
-		qtd: 15,
-		minQtd: 10,
-		unidade: "Frascos",
-		status: "Normal"
-	}],
-	almoxarifado: [{
-		id: "A1",
-		item: "Arame Liso 17x15",
-		tipo: "Material Cerca",
-		qtd: 12,
-		minQtd: 10,
-		unidade: "Rolos",
-		status: "Normal"
-	}],
-	nutricao: [
-		{
-			id: "N1",
-			item: "Sal Mineral Reprodução",
-			tipo: "Suplemento",
-			qtd: 1500,
-			consumoDiario: 50,
-			minQtd: 300,
-			unidade: "kg",
-			status: "Normal"
-		},
-		{
-			id: "N2",
-			item: "Ração Confinamento",
-			tipo: "Concentrado",
-			qtd: 2e3,
-			consumoDiario: 450,
-			minQtd: 1e3,
-			unidade: "kg",
-			status: "Crítico"
-		},
-		{
-			id: "N3",
-			item: "Sal Proteico 0.1%",
-			tipo: "Suplemento",
-			qtd: 800,
-			consumoDiario: 65,
-			minQtd: 500,
-			unidade: "kg",
-			status: "Baixo"
-		}
-	]
-};
-const financialData = [{
-	id: "TR-101",
-	data: "10/Mar/2026",
-	descricao: "Venda Lote Bois Gordos",
-	categoria: "Receita Gado",
-	tipo: "entrada",
-	valor: "R$ 250.000,00"
-}, {
-	id: "TR-102",
-	data: "08/Mar/2026",
-	descricao: "Folha de Pagamento",
-	categoria: "Mão de Obra",
-	tipo: "saida",
-	valor: "R$ 45.000,00"
-}];
-const productionCostDashboard = {
-	totalArrobasProduced: 1250,
-	totalCost: 25e4,
-	costPerArroba: 200,
-	costs: [
-		{
-			name: "Nutrição & Suplementos",
-			value: 155e3,
-			fill: "hsl(var(--chart-1))"
-		},
-		{
-			name: "Mão de Obra",
-			value: 45e3,
-			fill: "hsl(var(--chart-2))"
-		},
-		{
-			name: "Sanidade & Protocolos",
-			value: 32e3,
-			fill: "hsl(var(--chart-3))"
-		},
-		{
-			name: "Manutenção de Pastagem",
-			value: 18e3,
-			fill: "hsl(var(--chart-4))"
-		}
-	]
-};
-const animalData = { "TAG-1234": {
-	id: "TAG-1234",
-	categoria: "Garrote",
-	raca: "Nelore",
-	nascimento: "15/04/2025",
-	pesoAtual: "245 kg",
-	lote: "LRE-01",
-	historico: [{
-		data: "10/03/2026",
-		tipo: "Pesagem",
-		valor: "245 kg"
-	}, {
-		data: "01/12/2025",
-		tipo: "Vacinação",
-		valor: "Febre Aftosa"
-	}]
-} };
-const sanitaryEvents = [
-	{
-		id: "SAN-01",
-		title: "Vermifugação Semestral",
-		date: "Hoje",
-		type: "Manejo",
-		status: "Atrasado",
-		lote: "LCR-04",
-		target: "Bezerras Desmame"
-	},
-	{
-		id: "SAN-02",
-		title: "Vacinação Febre Aftosa",
-		date: "Próxima Semana",
-		type: "Vacina",
-		status: "Agendado",
-		lote: "Todos",
-		target: "Rebanho Geral"
-	},
-	{
-		id: "SAN-03",
-		title: "Cura de Umbigo",
-		date: "Hoje",
-		type: "Manejo",
-		status: "Atrasado",
-		lote: "LCR-02",
-		target: "Recém Nascidos"
-	}
-];
-const regionalProtocols = [
-	{
-		id: "RP-1",
-		ageGroup: "Recém Nascidos (0-3 meses)",
-		vaccine: "Cura do Umbigo / Clostridiose",
-		mandatory: "Sim",
-		frequency: "Imediato / Dose Única"
-	},
-	{
-		id: "RP-2",
-		ageGroup: "Bezerros (3-8 meses)",
-		vaccine: "Brucelose (Apenas Fêmeas)",
-		mandatory: "Sim (Lei Federal)",
-		frequency: "Dose Única"
-	},
-	{
-		id: "RP-3",
-		ageGroup: "Rebanho Geral",
-		vaccine: "Febre Aftosa",
-		mandatory: "Depende do Estado",
-		frequency: "Semestral / Anual"
-	},
-	{
-		id: "RP-4",
-		ageGroup: "Rebanho Geral",
-		vaccine: "Raiva",
-		mandatory: "Recomendado",
-		frequency: "Anual"
-	},
-	{
-		id: "RP-5",
-		ageGroup: "Desmama (8-10 meses)",
-		vaccine: "Vermifugação Estratégica",
-		mandatory: "Recomendado",
-		frequency: "Na desmama"
-	}
-];
-const calendarEvents = [
-	{
-		id: "EV-1",
-		title: "Vacinação Febre Aftosa",
-		date: "2026-03-15",
-		type: "Sanidade",
-		target: "Lote LCR-01",
-		sector: "cria"
-	},
-	{
-		id: "EV-3",
-		title: "Pesagem Trimestral",
-		date: "2026-03-25",
-		type: "Pesagem",
-		target: "Lote LRE-01",
-		sector: "recria"
-	},
-	{
-		id: "EV-5",
-		title: "Venda Frigorífico",
-		date: "2026-04-10",
-		type: "Abates",
-		target: "Lote LEN-02",
-		sector: "engorda"
-	}
-];
-const lotPerformanceData = [{
-	loteId: "LCR-01",
-	categoria: "Vacas Solteiras",
-	custos: 15400,
-	receita: 45e3,
-	lucro: 29600,
-	margem: "65.8%"
-}, {
-	loteId: "LEN-02",
-	categoria: "Bois Terminação",
-	custos: 85200,
-	receita: 142e3,
-	lucro: 56800,
-	margem: "40.0%"
-}];
-const teamMembers = [
-	{
-		id: "U1",
-		name: "Administrador (Sede)",
-		role: "Admin",
-		email: "admin@fazenda.com",
-		status: "Ativo",
-		lastActive: "Agora"
-	},
-	{
-		id: "U2",
-		name: "João (Operador Campo)",
-		role: "Operador",
-		email: "joao@fazenda.com",
-		status: "Ativo",
-		lastActive: "Há 5 min"
-	},
-	{
-		id: "U3",
-		name: "Carlos (Tratorista)",
-		role: "Operador",
-		email: "carlos@fazenda.com",
-		status: "Ativo",
-		lastActive: "Há 2 horas"
-	},
-	{
-		id: "U4",
-		name: "Ana (Veterinária)",
-		role: "Admin",
-		email: "ana@fazenda.com",
-		status: "Ausente",
-		lastActive: "Ontem"
-	}
-];
-const managementHistory = [
-	{
-		id: "H-1",
-		data: "10/Mar/2026",
-		tipo: "Nutrição",
-		alvo: "Lote LEN-01",
-		descricao: "Ajuste de dieta para Terminação Alto Grão",
-		responsavel: "João (Operador Campo)"
-	},
-	{
-		id: "H-2",
-		data: "09/Mar/2026",
-		tipo: "Manejo de Pasto",
-		alvo: "Pasto 02 - Fundo",
-		descricao: "Aplicação de Herbicida (Folha Larga)",
-		responsavel: "Carlos (Tratorista)"
-	},
-	{
-		id: "H-3",
-		data: "08/Mar/2026",
-		tipo: "Sanidade",
-		alvo: "Lote LCR-04",
-		descricao: "Vacinação Febre Aftosa",
-		responsavel: "Ana (Veterinária)"
-	},
-	{
-		id: "H-4",
-		data: "05/Mar/2026",
-		tipo: "Movimentação",
-		alvo: "Lote LRE-01",
-		descricao: "Transferência do Pasto 05 para Pasto 06",
-		responsavel: "João (Operador Campo)"
-	},
-	{
-		id: "H-5",
-		data: "02/Mar/2026",
-		tipo: "Adubação",
-		alvo: "Pasto 01 - Sede",
-		descricao: "Aplicação de Ureia (50kg/ha)",
-		responsavel: "Administrador (Sede)"
-	}
-];
-const costPerArrobaData = [{
-	loteId: "LEN-01",
-	categoria: "Bois Magros",
-	custoAcumulado: 4500,
-	ganhoPesoKg: 150,
-	ganhoArroba: 5,
-	custoPorArroba: 180
-}, {
-	loteId: "LEN-02",
-	categoria: "Bois Terminação",
-	custoAcumulado: 8200,
-	ganhoPesoKg: 210,
-	ganhoArroba: 7,
-	custoPorArroba: 195
-}];
-const reproductionForecast = [
-	{
-		id: "R1",
-		month: "Setembro",
-		partosPrevistos: 45,
-		lote: "LCR-01",
-		status: "Aguardando",
-		vacasPrenhas: 45,
-		nascimentosConfirmados: 0
-	},
-	{
-		id: "R2",
-		month: "Outubro",
-		partosPrevistos: 80,
-		lote: "LCR-02",
-		status: "Em andamento",
-		vacasPrenhas: 85,
-		nascimentosConfirmados: 5
-	},
-	{
-		id: "R3",
-		month: "Novembro",
-		partosPrevistos: 120,
-		lote: "LCR-03",
-		status: "Normal",
-		vacasPrenhas: 125,
-		nascimentosConfirmados: 0
-	}
-];
-const weightGainData = [
-	{
-		name: "Jan",
-		pesoAtual: 210,
-		meta: 220
-	},
-	{
-		name: "Fev",
-		pesoAtual: 235,
-		meta: 240
-	},
-	{
-		name: "Mar",
-		pesoAtual: 250,
-		meta: 260
-	},
-	{
-		name: "Abr",
-		pesoAtual: 280,
-		meta: 280
-	}
-];
-const dailyWeightData = [
-	{
-		dia: "01",
-		gmd: 1.1,
-		peso: 450
-	},
-	{
-		dia: "05",
-		gmd: 1.2,
-		peso: 455
-	},
-	{
-		dia: "10",
-		gmd: 1.3,
-		peso: 462
-	},
-	{
-		dia: "15",
-		gmd: 1.4,
-		peso: 469
-	},
-	{
-		dia: "20",
-		gmd: 1.3,
-		peso: 476
-	}
-];
-const farmRegistry = {
-	nome: "Fazenda Vale do Sol",
-	proprietario: "Grupo Agro GPI",
-	cnpj: "12.345.678/0001-90",
-	inscricaoEstadual: "123.456.789.000",
-	car: "SP-1234567-ABCD.EFGH.IJKL",
-	endereco: "Rodovia BR-123, Km 45, Zona Rural",
-	cidade: "Ribeirão Preto",
-	estado: "SP",
-	areaTotal: 1500,
-	areaPastagem: 1200,
-	areaReserva: 300
-};
-const businessContacts = [
-	{
-		id: "C1",
-		nome: "Frigorífico Boi Forte",
-		categoria: "Comprador",
-		contato: "(11) 99999-1111",
-		email: "compras@boiforte.com",
-		empresa: "Boi Forte SA",
-		status: "Ativo"
-	},
-	{
-		id: "C2",
-		nome: "AgroInsumos Certo",
-		categoria: "Fornecedor",
-		contato: "(16) 88888-2222",
-		email: "vendas@agroinsumos.com",
-		empresa: "AgroInsumos Ltda",
-		status: "Ativo"
-	},
-	{
-		id: "C3",
-		nome: "Dr. Marcos Veterinário",
-		categoria: "Serviços",
-		contato: "(16) 77777-3333",
-		email: "marcos.vet@gmail.com",
-		empresa: "Autônomo",
-		status: "Ativo"
-	},
-	{
-		id: "C4",
-		nome: "Sementes Pasto Verde",
-		categoria: "Fornecedor",
-		contato: "(11) 55555-4444",
-		email: "contato@pastoverde.com",
-		empresa: "Pasto Verde SA",
-		status: "Inativo"
-	}
-];
 var require_isArray = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = Array.isArray;
 }));
@@ -54091,17 +54251,23 @@ var chartConfig$1 = {
 		color: "hsl(var(--primary))"
 	},
 	expected: {
-		label: "Projetado (kg)",
+		label: "Projetado IA (kg)",
 		color: "hsl(var(--muted-foreground))"
 	}
 };
 function WeightGainChart({ loteId }) {
+	const { getPredictedGrowthCurve } = useFarm();
+	const data = getPredictedGrowthCurve(loteId);
+	if (!data || data.length === 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "h-[300px] flex items-center justify-center text-muted-foreground text-sm",
+		children: "Sem dados suficientes."
+	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "h-[300px] w-full",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
 			config: chartConfig$1,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
-				data: weightGainData[loteId] || weightGainData["default"],
+				data,
 				margin: {
 					top: 10,
 					right: 10,
@@ -54296,20 +54462,20 @@ function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
 					className: "text-2xl flex items-center gap-2",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-6 w-6 text-primary" }),
-						"Desempenho: ",
+						" Desempenho: ",
 						loteId
 					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Acompanhamento de ganho de peso real vs projetado com base no plano nutricional." })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Análise preditiva e acompanhamento de ganho de peso real vs projetado com base no GMD e plano nutricional." })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "py-6 space-y-6",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "bg-muted/30 rounded-lg p-4 flex items-start gap-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-5 w-5 text-muted-foreground mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-						className: "font-semibold text-sm",
-						children: "Monitoramento de Nutrição"
+					className: "bg-primary/5 border border-primary/20 rounded-lg p-4 flex items-start gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "h-5 w-5 text-primary mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "font-semibold text-sm text-primary",
+						children: "Previsão com IA (Modelo Preditivo)"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "text-sm text-muted-foreground mt-1",
-						children: "A linha pontilhada representa a meta estipulada para a dieta atual. Desvios significativos podem indicar problemas na pastagem ou deficiência na suplementação."
+						children: "A linha tracejada representa a curva de crescimento projetando a data ideal de abate (alvo: 540kg). Desvios indicam necessidade de ajuste na dieta."
 					})] })]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
 					defaultValue: "monthly",
@@ -54319,7 +54485,7 @@ function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
 							className: "grid w-full grid-cols-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "monthly",
-								children: "Evolução Mensal"
+								children: "Evolução Mensal (IA)"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "daily",
 								children: "Projeção Diária"
@@ -54330,16 +54496,16 @@ function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
 							className: "mt-4 rounded-xl border bg-card p-4 shadow-sm",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 								className: "font-medium mb-4 text-sm",
-								children: "Curva de Evolução (Últimos 5 meses)"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WeightGainChart, { loteId: loteId || "" })]
+								children: "Curva de Evolução Preditiva"
+							}), loteId && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WeightGainChart, { loteId })]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
 							value: "daily",
 							className: "mt-4 rounded-xl border bg-card p-4 shadow-sm",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 								className: "font-medium mb-4 text-sm",
-								children: "Acompanhamento Diário (Mês Atual)"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DailyWeightChart, { loteId: loteId || "" })]
+								children: "Acompanhamento Diário"
+							}), loteId && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DailyWeightChart, { loteId })]
 						})
 					]
 				})]
@@ -55600,8 +55766,63 @@ function Pastos() {
 		})]
 	});
 }
+function EditThresholdModal({ item, updateMinThreshold }) {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [minQtd, setMinQtd] = (0, import_react.useState)(item.minQtd?.toString() || "0");
+	const handleSave = () => {
+		updateMinThreshold(item.id, Number(minQtd));
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "ghost",
+				size: "sm",
+				className: "h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-primary",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-3 w-3" }), " Config. Limite"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[325px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Ajustar Alerta de Estoque" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							disabled: true,
+							value: item.item,
+							className: "bg-muted"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, { children: [
+							"Quantidade Mínima (",
+							item.unidade,
+							")"
+						] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "number",
+							value: minQtd,
+							onChange: (e) => setMinQtd(e.target.value)
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleSave,
+						className: "w-full",
+						children: "Salvar Limite"
+					})
+				]
+			})]
+		})]
+	});
+}
 function Estoque() {
-	const renderTable = (items) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	const { inventory, updateMinThreshold } = useFarm();
+	const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd);
+	const renderGenericTable = (items) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "overflow-x-auto",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Item" }),
@@ -55611,149 +55832,178 @@ function Estoque() {
 				children: "Qtd Atual"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-				className: "text-right hidden sm:table-cell",
+				className: "text-right",
 				children: "Mínimo"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Unidade" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
-		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => {
-			const isCritical = item.qtd < item.minQtd;
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-				className: isCritical ? "bg-destructive/5" : "",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "font-medium",
-						children: item.item
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.tipo }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: `text-right font-mono ${isCritical ? "text-destructive font-bold" : ""}`,
-						children: item.qtd
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "text-right font-mono text-muted-foreground hidden sm:table-cell",
-						children: item.minQtd
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.unidade }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: isCritical ? "destructive" : "secondary",
-						className: isCritical ? "animate-pulse-slow" : "",
-						children: isCritical ? "Crítico" : "Normal"
-					}) })
-				]
-			}, item.id);
-		}) })] })
+		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+			className: item.qtd < item.minQtd ? "bg-destructive/5" : "",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "font-medium",
+					children: item.item
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.tipo }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: `text-right font-mono ${item.qtd < item.minQtd ? "text-destructive font-bold" : ""}`,
+					children: item.qtd
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-right font-mono text-muted-foreground",
+					children: item.minQtd
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.unidade }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+					variant: item.qtd < item.minQtd ? "destructive" : "secondary",
+					children: item.qtd < item.minQtd ? "Crítico" : "Normal"
+				}) })
+			]
+		}, item.id)) })] })
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-			className: "text-3xl font-bold tracking-tight",
-			children: "Estoque & Insumos"
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-			className: "text-muted-foreground mt-1",
-			children: "Gestão de farmácia veterinária, almoxarifado geral e nutrição animal."
-		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
-			defaultValue: "farmacia",
-			className: "w-full",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "grid w-full grid-cols-3 max-w-md mb-6",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-							value: "farmacia",
-							children: "Farmácia"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-							value: "almoxarifado",
-							children: "Almoxarifado"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-							value: "nutricao",
-							children: "Nutrição"
-						})
-					]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-					value: "farmacia",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Itens de Farmácia Veterinária" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "px-0 sm:px-6",
-						children: renderTable(inventoryData.farmacia)
-					})] })
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-					value: "almoxarifado",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Almoxarifado e Ferramentas" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "px-0 sm:px-6",
-						children: renderTable(inventoryData.almoxarifado)
-					})] })
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-					value: "nutricao",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Suplementação e Rações (Previsão de Estoque)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhe o consumo diário e a estimativa de duração do estoque baseada no rebanho atual." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "px-0 sm:px-6",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "overflow-x-auto",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Insumo" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-right",
-									children: "Estoque Atual"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-right",
-									children: "Consumo Diário"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-									className: "text-right",
-									children: "Autonomia (Dias)"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Alerta" })
-							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: inventoryData.nutricao.map((item) => {
-								const consumo = item.consumoDiario || 1;
-								const diasRestantes = Math.floor(item.qtd / consumo);
-								const isCritical = diasRestantes <= 7;
-								const isWarning = diasRestantes > 7 && diasRestantes <= 15;
-								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-									className: isCritical ? "bg-destructive/5" : "",
+		className: "space-y-6 animate-fade-in-up pb-8",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-3xl font-bold tracking-tight",
+				children: "Estoque & Insumos"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Gestão de almoxarifado e controle automatizado de nutrição animal."
+			})] }),
+			criticalItems.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
+				variant: "destructive",
+				className: "border-destructive/50 bg-destructive/10 animate-in slide-in-from-top-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "h-5 w-5" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertTitle, {
+						className: "text-base font-bold",
+						children: "Alerta de Compras Necessárias"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AlertDescription, {
+						className: "mt-2 text-destructive-foreground/90",
+						children: [
+							"Atenção: ",
+							criticalItems.length,
+							" itens de nutrição operando abaixo do nível de segurança.",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+								className: "mt-2 space-y-1 ml-6 list-disc",
+								children: criticalItems.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+									className: "font-medium",
 									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-											className: "font-medium",
-											children: item.item
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-											className: "text-right font-mono",
-											children: [
-												item.qtd,
-												" ",
-												item.unidade
-											]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-											className: "text-right font-mono text-muted-foreground",
-											children: [
-												item.consumoDiario,
-												" ",
-												item.unidade,
-												"/dia"
-											]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-											className: `text-right font-mono font-bold ${isCritical ? "text-destructive" : isWarning ? "text-orange-500" : "text-primary"}`,
-											children: [diasRestantes, " dias"]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-											variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
-											className: isCritical ? "animate-pulse-slow" : "",
-											children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta (Baixo)" : "Confortável"
-										}) })
+										i.item,
+										" — Atual: ",
+										i.qtd,
+										" ",
+										i.unidade,
+										" (Mínimo estipulado: ",
+										i.minQtd,
+										")"
 									]
-								}, item.id);
-							}) })] })
-						})
-					})] })
-				})
-			]
-		})]
+								}, i.id))
+							})
+						]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				defaultValue: "nutricao",
+				className: "w-full",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+						className: "grid w-full grid-cols-3 max-w-md mb-6",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "nutricao",
+								children: "Nutrição"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "farmacia",
+								children: "Farmácia"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "almoxarifado",
+								children: "Almoxarifado"
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "nutricao",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Suplementação e Rações" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "O estoque deduz automaticamente quando registros de trato são efetuados nos lotes." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "px-0 sm:px-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "overflow-x-auto",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Insumo" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Estoque Atual"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Gatilho (Mínimo)"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: inventory.map((item) => {
+									const isCritical = item.qtd <= item.minQtd;
+									const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5;
+									return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+										className: isCritical ? "bg-destructive/5" : "",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "font-medium",
+												children: item.item
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+												className: "text-right font-mono font-medium",
+												children: [
+													item.qtd,
+													" ",
+													item.unidade
+												]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+												className: "text-right font-mono text-muted-foreground",
+												children: [
+													item.minQtd,
+													" ",
+													item.unidade
+												]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center gap-2",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+													variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
+													className: isCritical ? "animate-pulse-slow" : "",
+													children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta Baixo" : "Confortável"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(EditThresholdModal, {
+													item,
+													updateMinThreshold
+												})]
+											}) })
+										]
+									}, item.id);
+								}) })] })
+							})
+						})] })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "farmacia",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pt-6",
+							children: renderGenericTable(inventoryData.farmacia)
+						}) })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "almoxarifado",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pt-6",
+							children: renderGenericTable(inventoryData.almoxarifado)
+						}) })
+					})
+				]
+			})
+		]
 	});
 }
 function CostAnalysisTab() {
@@ -60609,21 +60859,190 @@ function Calendario() {
 		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectorCalendarTab, { sectorId: "all" })]
 	});
 }
+function RegisterFeedModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { lots, inventory, registerFeedConsumption } = useFarm();
+	const { toast: toast$2 } = useToast();
+	const [loteId, setLoteId] = (0, import_react.useState)("");
+	const [inventoryId, setInventoryId] = (0, import_react.useState)("");
+	const [amount, setAmount] = (0, import_react.useState)("");
+	const handleSave = () => {
+		if (!loteId || !inventoryId || !amount) return;
+		registerFeedConsumption(loteId, inventoryId, Number(amount));
+		toast$2({
+			title: "Trato Registrado",
+			description: "O estoque de nutrição foi deduzido automaticamente."
+		});
+		setOpen(false);
+		setLoteId("");
+		setInventoryId("");
+		setAmount("");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "secondary",
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wheat, { className: "h-4 w-4" }), " Registrar Trato"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wheat, { className: "h-5 w-5 text-primary" }), " Registrar Trato"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Informe o consumo de insumos para um lote. O sistema irá deduzir o estoque automaticamente." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Lote Confinado" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: loteId,
+							onValueChange: setLoteId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o lote" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: lots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: l.id,
+								children: [
+									l.id,
+									" - ",
+									l.curral
+								]
+							}, l.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo Utilizado" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: inventoryId,
+							onValueChange: setInventoryId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: inventory.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: i.id,
+								children: [
+									i.item,
+									" (",
+									i.qtd,
+									i.unidade,
+									")"
+								]
+							}, i.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Quantidade Consumida" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "number",
+							value: amount,
+							onChange: (e) => setAmount(e.target.value),
+							placeholder: "Ex: 150"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleSave,
+						className: "w-full",
+						children: "Confirmar Baixa de Estoque"
+					})
+				]
+			})]
+		})]
+	});
+}
+function RegisterWeightModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { lots, addWeightRecord } = useFarm();
+	const { toast: toast$2 } = useToast();
+	const [loteId, setLoteId] = (0, import_react.useState)("");
+	const [weight, setWeight] = (0, import_react.useState)("");
+	const [date$1, setDate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toISOString().split("T")[0]);
+	const handleSave = () => {
+		if (!loteId || !weight || !date$1) return;
+		addWeightRecord(loteId, Number(weight), date$1);
+		toast$2({
+			title: "Pesagem Registrada",
+			description: "O GMD e a projeção de abate foram recalibrados (IA)."
+		});
+		setOpen(false);
+		setLoteId("");
+		setWeight("");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "outline",
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-4 w-4" }), " Nova Pesagem"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-5 w-5 text-primary" }), " Adicionar Pesagem"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Atualize o peso médio para recalcular a previsão de crescimento e abate preditivo." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Lote" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: loteId,
+							onValueChange: setLoteId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o lote" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: lots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: l.id,
+								children: [
+									l.id,
+									" (Peso Atual: ",
+									l.pesoMedio,
+									"kg)"
+								]
+							}, l.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Novo Peso Médio (kg)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "number",
+							value: weight,
+							onChange: (e) => setWeight(e.target.value),
+							placeholder: "Ex: 480"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data da Pesagem" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "date",
+							value: date$1,
+							onChange: (e) => setDate(e.target.value)
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleSave,
+						className: "w-full",
+						children: "Salvar Pesagem"
+					})
+				]
+			})]
+		})]
+	});
+}
 function Confinamento() {
+	const { lots, getPredictedSlaughterDate, inventory } = useFarm();
+	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				className: "flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 					className: "text-3xl font-bold tracking-tight",
 					children: "Gestão de Confinamento"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Módulo dedicado para controle intensivo de engorda, dietas e performance por baia/curral."
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-					className: "gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Novo Lote Confinado"]
+					children: "Controle de engorda, dietas, e projeção preditiva de abate."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-wrap gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterWeightModal, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterFeedModal, {})]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -60671,30 +61090,17 @@ function Confinamento() {
 				defaultValue: "lotes",
 				className: "space-y-6",
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-						className: "overflow-x-auto justify-start w-full sm:w-auto h-auto py-1.5 p-1",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-								value: "lotes",
-								className: "py-2",
-								children: "Lotes em Confinamento"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-								value: "dietas",
-								className: "py-2",
-								children: "Dietas e Protocolos"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-								value: "estoque",
-								className: "py-2",
-								children: "Estoque de Insumos"
-							})
-						]
-					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "lotes",
+						children: "Lotes em Confinamento"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "estoque",
+						children: "Estoque (Insumos)"
+					})] }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "lotes",
 						className: "space-y-6 mt-0",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Acompanhamento de Baias e Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Acompanhamento de Lotes & Projeção IA" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-x-auto",
@@ -60706,7 +61112,7 @@ function Confinamento() {
 										children: "Cabeças"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right whitespace-nowrap",
+										className: "text-right",
 										children: "Peso Méd."
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
@@ -60714,96 +61120,56 @@ function Confinamento() {
 										children: "GMD"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right whitespace-nowrap",
-										children: "Cons. (% PV)"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right whitespace-nowrap",
-										children: "Cons. (kg/dia)"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Dieta Atual" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: confinementData.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium text-primary whitespace-nowrap",
-										children: lote.id
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium text-muted-foreground whitespace-nowrap",
-										children: lote.curral
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "text-right",
-										children: lote.cabecas
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right font-medium whitespace-nowrap",
-										children: [lote.pesoMedio, " kg"]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right font-bold text-primary whitespace-nowrap",
-										children: [lote.gmd, " kg"]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right text-muted-foreground",
-										children: [lote.consumoPercentual, "%"]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right font-mono whitespace-nowrap",
-										children: [lote.consumoKg, " kg"]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "whitespace-nowrap",
-										children: lote.dieta
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-										variant: lote.status === "Normal" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
-										className: "whitespace-nowrap",
-										children: lote.status
-									}) })
-								] }, lote.id)) })] })
-							})
-						})] })
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
-						value: "dietas",
-						className: "space-y-6 mt-0",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Fórmulas de Nutrição" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-							className: "px-0 sm:px-6",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "overflow-x-auto",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Nome da Dieta" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Volumoso" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Concentrado" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Custo Estimado (R$/kg)"
+										children: "Previsão Abate (IA)"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: confinementData.dietas.map((dieta) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium",
-										children: dieta.nome
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: dieta.volumoso }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: dieta.concentrado }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-right",
-										children: ["R$ ", dieta.custoKg.toFixed(2).replace(".", ",")]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-										variant: dieta.status === "Ativa" ? "default" : "outline",
-										children: dieta.status
-									}) })
-								] }, dieta.id)) })] })
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: lots.map((lote) => {
+									const predictedDate = getPredictedSlaughterDate(lote.id);
+									const formattedDate = predictedDate ? predictedDate.toLocaleDateString("pt-BR") : "N/A";
+									const isReady = predictedDate && predictedDate <= /* @__PURE__ */ new Date();
+									return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+										className: "cursor-pointer hover:bg-muted/50 transition-colors",
+										onClick: () => setSelectedLote(lote.id),
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "font-medium text-primary",
+												children: lote.id
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "text-muted-foreground",
+												children: lote.curral
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "text-right",
+												children: lote.cabecas
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+												className: "text-right font-medium",
+												children: [lote.pesoMedio, " kg"]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+												className: "text-right font-bold text-primary",
+												children: [lote.gmd, " kg"]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "text-right font-medium text-emerald-600 dark:text-emerald-500",
+												children: formattedDate
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+												variant: isReady ? "secondary" : lote.status === "Normal" ? "default" : "destructive",
+												children: isReady ? "Pronto p/ Abate" : lote.status
+											}) })
+										]
+									}, lote.id);
+								}) })] })
 							})
 						})] })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "estoque",
 						className: "space-y-6 mt-0",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Insumos Dedicados" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Insumos Dedicados (Nutrição)" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-x-auto",
@@ -60815,25 +61181,30 @@ function Confinamento() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Unidade" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Situação" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: confinementData.inventory.map((inv) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: inventory.map((inv) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "font-medium",
 										children: inv.item
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "text-right font-mono",
-										children: inv.quantidade
+										children: inv.qtd
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: inv.unidade }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-										variant: inv.status === "Normal" ? "default" : "destructive",
-										children: inv.status
+										variant: inv.qtd <= inv.minQtd ? "destructive" : "default",
+										children: inv.qtd <= inv.minQtd ? "Abaixo do Mínimo" : "Normal"
 									}) })
 								] }, inv.id)) })] })
 							})
 						})] })
 					})
 				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LotPerformanceDrawer, {
+				loteId: selectedLote,
+				open: !!selectedLote,
+				onOpenChange: (o) => !o && setSelectedLote(null)
 			})
 		]
 	});
@@ -63836,7 +64207,7 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
+var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
 		v7_relativeSplatPath: false
@@ -63909,8 +64280,8 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
 		})] })
 	] })
-}) });
+}) }) });
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-aYIF9-kq.js.map
+//# sourceMappingURL=index-CWqXnXWE.js.map

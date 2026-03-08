@@ -3,6 +3,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider } from './contexts/AuthContext'
+import { FarmProvider } from './contexts/FarmContext'
 import Layout from './components/Layout'
 import Index from './pages/Index'
 import Setor from './pages/Setor'
@@ -22,31 +23,33 @@ import NotFound from './pages/NotFound'
 
 const App = () => (
   <AuthProvider>
-    <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/campo" element={<Campo />} />
-            <Route path="/setor/:id" element={<Setor />} />
-            <Route path="/pastos" element={<Pastos />} />
-            <Route path="/confinamento" element={<Confinamento />} />
-            <Route path="/estoque" element={<Estoque />} />
-            <Route path="/financeiro" element={<Financeiro />} />
-            <Route path="/sanidade" element={<Sanidade />} />
-            <Route path="/calendario" element={<Calendario />} />
-            <Route path="/relatorios" element={<Relatorios />} />
-            <Route path="/animal/:id" element={<AnimalProfile />} />
-            <Route path="/projecoes" element={<ProjecaoVendas />} />
-            <Route path="/equipe" element={<Equipe />} />
-            <Route path="/administrativo" element={<Administrativo />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </TooltipProvider>
-    </BrowserRouter>
+    <FarmProvider>
+      <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/campo" element={<Campo />} />
+              <Route path="/setor/:id" element={<Setor />} />
+              <Route path="/pastos" element={<Pastos />} />
+              <Route path="/confinamento" element={<Confinamento />} />
+              <Route path="/estoque" element={<Estoque />} />
+              <Route path="/financeiro" element={<Financeiro />} />
+              <Route path="/sanidade" element={<Sanidade />} />
+              <Route path="/calendario" element={<Calendario />} />
+              <Route path="/relatorios" element={<Relatorios />} />
+              <Route path="/animal/:id" element={<AnimalProfile />} />
+              <Route path="/projecoes" element={<ProjecaoVendas />} />
+              <Route path="/equipe" element={<Equipe />} />
+              <Route path="/administrativo" element={<Administrativo />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
+      </BrowserRouter>
+    </FarmProvider>
   </AuthProvider>
 )
 
