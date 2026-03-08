@@ -493,11 +493,12 @@ export const financialData = [
 
 export const productionCostDashboard = {
   totalArrobasProduced: 1250,
-  totalCost: 250000,
-  costPerArroba: 200.0,
+  totalCost: 295000,
+  costPerArroba: 236.0,
   costs: [
     { name: 'Nutrição & Suplementos', value: 155000, fill: 'hsl(var(--chart-1))' },
-    { name: 'Mão de Obra', value: 45000, fill: 'hsl(var(--chart-2))' },
+    { name: 'Mão de Obra & Bônus', value: 55000, fill: 'hsl(var(--chart-2))' },
+    { name: 'Maquinário & Frota', value: 35000, fill: 'hsl(var(--chart-5))' },
     { name: 'Sanidade & Protocolos', value: 32000, fill: 'hsl(var(--chart-3))' },
     { name: 'Manutenção de Pastagem', value: 18000, fill: 'hsl(var(--chart-4))' },
   ],
@@ -825,4 +826,86 @@ export const businessContacts = [
     empresa: 'Pasto Verde SA',
     status: 'Inativo',
   },
+]
+
+export const fleetData = [
+  {
+    id: 'M1',
+    name: 'Trator John Deere 5090',
+    type: 'Trator',
+    acquisitionValue: 250000,
+    currentHours: 1200,
+    currentKm: null,
+    fuelConsumption: 450,
+    maintenanceCost: 4500,
+    depreciation: 12500,
+    status: 'Ativo',
+  },
+  {
+    id: 'M2',
+    name: 'Trator Massey Ferguson 4275',
+    type: 'Trator',
+    acquisitionValue: 180000,
+    currentHours: 3400,
+    currentKm: null,
+    fuelConsumption: 620,
+    maintenanceCost: 8200,
+    depreciation: 9000,
+    status: 'Manutenção',
+  },
+  {
+    id: 'M3',
+    name: 'Caminhonete Hilux',
+    type: 'Veículo',
+    acquisitionValue: 220000,
+    currentHours: null,
+    currentKm: 45000,
+    fuelConsumption: 1200,
+    maintenanceCost: 2100,
+    depreciation: 15000,
+    status: 'Ativo',
+  },
+  {
+    id: 'M4',
+    name: 'Pulverizador Jacto',
+    type: 'Implemento',
+    acquisitionValue: 85000,
+    currentHours: 450,
+    currentKm: null,
+    fuelConsumption: 0,
+    maintenanceCost: 1200,
+    depreciation: 4200,
+    status: 'Ativo',
+  },
+]
+
+export const employeePerformance = [
+  {
+    employeeId: 'U1',
+    name: 'Administrador (Sede)',
+    points: 450,
+    bonusEstimate: 4500,
+    goalsAchieved: 4,
+  },
+  {
+    employeeId: 'U2',
+    name: 'João (Operador Campo)',
+    points: 320,
+    bonusEstimate: 3200,
+    goalsAchieved: 3,
+  },
+  {
+    employeeId: 'U3',
+    name: 'Carlos (Tratorista)',
+    points: 280,
+    bonusEstimate: 2800,
+    goalsAchieved: 2,
+  },
+]
+
+export const performanceGoalsList = [
+  { id: 'G1', title: 'Mortalidade < 2% ao ano na recria', points: 100 },
+  { id: 'G2', title: 'Economia de Combustível > 5% no semestre', points: 80 },
+  { id: 'G3', title: 'GMD Confinamento > 1.4kg/dia no lote total', points: 150 },
+  { id: 'G4', title: 'Taxa de Prenhez > 85% na estação', points: 120 },
 ]

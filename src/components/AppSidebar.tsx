@@ -25,6 +25,7 @@ import {
   Syringe,
   ShieldCheck,
   Building2,
+  Truck,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -39,9 +40,10 @@ const navItems = [
   { title: 'Setor: Recria', icon: TrendingUp, url: '/setor/recria' },
   { title: 'Setor: Engorda', icon: Beef, url: '/setor/engorda' },
   { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
+  { title: 'Frota & Maquinário', icon: Truck, url: '/frota' },
   { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
   { title: 'Relatórios', icon: FileText, url: '/relatorios' },
-  { title: 'Equipe & Acessos', icon: ShieldCheck, url: '/equipe' },
+  { title: 'Equipe & Desempenho', icon: ShieldCheck, url: '/equipe' },
   { title: 'Administrativo', icon: Building2, url: '/administrativo' },
 ]
 

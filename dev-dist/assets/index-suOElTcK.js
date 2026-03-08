@@ -19365,6 +19365,24 @@ var Files = createLucideIcon("files", [
 		key: "l4dndm"
 	}]
 ]);
+var Fuel = createLucideIcon("fuel", [
+	["path", {
+		d: "M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5",
+		key: "1wtuz0"
+	}],
+	["path", {
+		d: "M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16",
+		key: "e09ifn"
+	}],
+	["path", {
+		d: "M2 21h13",
+		key: "1x0fut"
+	}],
+	["path", {
+		d: "M3 9h11",
+		key: "1p7c0w"
+	}]
+]);
 var History = createLucideIcon("history", [
 	["path", {
 		d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8",
@@ -19835,6 +19853,58 @@ var TriangleAlert = createLucideIcon("triangle-alert", [
 		key: "p32p05"
 	}]
 ]);
+var Truck = createLucideIcon("truck", [
+	["path", {
+		d: "M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2",
+		key: "wrbu53"
+	}],
+	["path", {
+		d: "M15 18H9",
+		key: "1lyqi6"
+	}],
+	["path", {
+		d: "M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14",
+		key: "lysw3i"
+	}],
+	["circle", {
+		cx: "17",
+		cy: "18",
+		r: "2",
+		key: "332jqn"
+	}],
+	["circle", {
+		cx: "7",
+		cy: "18",
+		r: "2",
+		key: "19iecd"
+	}]
+]);
+var Trophy = createLucideIcon("trophy", [
+	["path", {
+		d: "M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978",
+		key: "1n3hpd"
+	}],
+	["path", {
+		d: "M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978",
+		key: "rfe1zi"
+	}],
+	["path", {
+		d: "M18 9h1.5a1 1 0 0 0 0-5H18",
+		key: "7xy6bh"
+	}],
+	["path", {
+		d: "M4 22h16",
+		key: "57wxv0"
+	}],
+	["path", {
+		d: "M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z",
+		key: "1mhfuq"
+	}],
+	["path", {
+		d: "M6 9H4.5a1 1 0 0 1 0-5H6",
+		key: "tex48p"
+	}]
+]);
 var Upload = createLucideIcon("upload", [
 	["path", {
 		d: "M12 3v12",
@@ -19958,6 +20028,10 @@ var Wifi = createLucideIcon("wifi", [
 		key: "1bycff"
 	}]
 ]);
+var Wrench = createLucideIcon("wrench", [["path", {
+	d: "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z",
+	key: "1ngwbx"
+}]]);
 var X = createLucideIcon("x", [["path", {
 	d: "M18 6 6 18",
 	key: "1bl5f8"
@@ -25264,8 +25338,8 @@ const financialData = [{
 }];
 const productionCostDashboard = {
 	totalArrobasProduced: 1250,
-	totalCost: 25e4,
-	costPerArroba: 200,
+	totalCost: 295e3,
+	costPerArroba: 236,
 	costs: [
 		{
 			name: "Nutrição & Suplementos",
@@ -25273,9 +25347,14 @@ const productionCostDashboard = {
 			fill: "hsl(var(--chart-1))"
 		},
 		{
-			name: "Mão de Obra",
-			value: 45e3,
+			name: "Mão de Obra & Bônus",
+			value: 55e3,
 			fill: "hsl(var(--chart-2))"
+		},
+		{
+			name: "Maquinário & Frota",
+			value: 35e3,
+			fill: "hsl(var(--chart-5))"
 		},
 		{
 			name: "Sanidade & Protocolos",
@@ -25609,6 +25688,101 @@ const businessContacts = [
 		email: "contato@pastoverde.com",
 		empresa: "Pasto Verde SA",
 		status: "Inativo"
+	}
+];
+const fleetData = [
+	{
+		id: "M1",
+		name: "Trator John Deere 5090",
+		type: "Trator",
+		acquisitionValue: 25e4,
+		currentHours: 1200,
+		currentKm: null,
+		fuelConsumption: 450,
+		maintenanceCost: 4500,
+		depreciation: 12500,
+		status: "Ativo"
+	},
+	{
+		id: "M2",
+		name: "Trator Massey Ferguson 4275",
+		type: "Trator",
+		acquisitionValue: 18e4,
+		currentHours: 3400,
+		currentKm: null,
+		fuelConsumption: 620,
+		maintenanceCost: 8200,
+		depreciation: 9e3,
+		status: "Manutenção"
+	},
+	{
+		id: "M3",
+		name: "Caminhonete Hilux",
+		type: "Veículo",
+		acquisitionValue: 22e4,
+		currentHours: null,
+		currentKm: 45e3,
+		fuelConsumption: 1200,
+		maintenanceCost: 2100,
+		depreciation: 15e3,
+		status: "Ativo"
+	},
+	{
+		id: "M4",
+		name: "Pulverizador Jacto",
+		type: "Implemento",
+		acquisitionValue: 85e3,
+		currentHours: 450,
+		currentKm: null,
+		fuelConsumption: 0,
+		maintenanceCost: 1200,
+		depreciation: 4200,
+		status: "Ativo"
+	}
+];
+const employeePerformance = [
+	{
+		employeeId: "U1",
+		name: "Administrador (Sede)",
+		points: 450,
+		bonusEstimate: 4500,
+		goalsAchieved: 4
+	},
+	{
+		employeeId: "U2",
+		name: "João (Operador Campo)",
+		points: 320,
+		bonusEstimate: 3200,
+		goalsAchieved: 3
+	},
+	{
+		employeeId: "U3",
+		name: "Carlos (Tratorista)",
+		points: 280,
+		bonusEstimate: 2800,
+		goalsAchieved: 2
+	}
+];
+const performanceGoalsList = [
+	{
+		id: "G1",
+		title: "Mortalidade < 2% ao ano na recria",
+		points: 100
+	},
+	{
+		id: "G2",
+		title: "Economia de Combustível > 5% no semestre",
+		points: 80
+	},
+	{
+		id: "G3",
+		title: "GMD Confinamento > 1.4kg/dia no lote total",
+		points: 150
+	},
+	{
+		id: "G4",
+		title: "Taxa de Prenhez > 85% na estação",
+		points: 120
 	}
 ];
 var initialWeights = {
@@ -27644,6 +27818,11 @@ var navItems = [
 		url: "/estoque"
 	},
 	{
+		title: "Frota & Maquinário",
+		icon: Truck,
+		url: "/frota"
+	},
+	{
 		title: "Financeiro",
 		icon: DollarSign,
 		url: "/financeiro"
@@ -27654,7 +27833,7 @@ var navItems = [
 		url: "/relatorios"
 	},
 	{
-		title: "Equipe & Acessos",
+		title: "Equipe & Desempenho",
 		icon: ShieldCheck,
 		url: "/equipe"
 	},
@@ -53889,7 +54068,7 @@ function Index() {
 				})] })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 sm:grid-cols-2 lg:grid-cols-4",
+				className: "grid gap-4 sm:grid-cols-2 lg:grid-cols-5",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 						className: "hover-lift",
@@ -53916,6 +54095,22 @@ function Index() {
 							className: "text-2xl font-bold",
 							children: dashboardData.kpis.valorTotal
 						}) })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "hover-lift",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "flex flex-row items-center justify-between pb-2 space-y-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+								className: "text-sm font-medium text-muted-foreground",
+								children: "Lotação Média"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "h-4 w-4 text-primary" })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "text-2xl font-bold",
+							children: (dashboardData.kpis.animais / farmRegistry.areaPastagem).toFixed(2)
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-[10px] text-muted-foreground uppercase tracking-wider mt-1",
+							children: "Cab / Hectare"
+						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 						className: "hover-lift",
@@ -56011,6 +56206,177 @@ function Estoque() {
 				]
 			})
 		]
+	});
+}
+function Frota() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up pb-8",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tractor, { className: "h-8 w-8 text-primary" }), "Frota & Maquinário"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Controle de equipamentos, integração de depreciação e custos de manutenção."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-wrap gap-2 w-full sm:w-auto",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					variant: "outline",
+					className: "flex-1 sm:flex-none gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Fuel, { className: "h-4 w-4" }), " Abastecimento"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					className: "flex-1 sm:flex-none gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Nova Máquina"]
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			defaultValue: "veiculos",
+			className: "space-y-6",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+					value: "veiculos",
+					children: "Composição da Frota"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+					value: "lancamentos",
+					children: "Lançamentos (Horas / Km)"
+				})] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "veiculos",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Relação de Veículos e Custos Atribuídos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Todos os custos registrados aqui compõem automaticamente a métrica do Custo por Arroba Produzida." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "px-0 sm:px-6",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Máquina / Veículo" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Horas / Km" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Consumo Mensal"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Custo Manutenção"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Depreciação"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: fleetData.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "font-medium",
+									children: [f.name, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "text-xs text-muted-foreground",
+										children: f.type
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: f.currentHours ? `${f.currentHours} h` : `${f.currentKm} km` }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right font-mono",
+									children: f.fuelConsumption > 0 ? `${f.fuelConsumption} L` : "-"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right text-destructive",
+									children: ["R$ ", f.maintenanceCost.toLocaleString("pt-BR")]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right text-muted-foreground",
+									children: ["R$ ", f.depreciation.toLocaleString("pt-BR")]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+									variant: f.status === "Ativo" ? "default" : "secondary",
+									children: [f.status === "Manutenção" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wrench, { className: "w-3 h-3 mr-1 inline-block" }), f.status]
+								}) })
+							] }, f.id)) })] })
+						})
+					})] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "lancamentos",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid gap-6 md:grid-cols-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-5 w-5 text-primary" }), " Registrar Uso Diário"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Informe a quilometragem ou horímetro para cálculo preciso de depreciação por uso." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-4",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Selecione a Máquina" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", {
+										className: "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+											value: "",
+											children: "Selecione..."
+										}), fleetData.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+											value: f.id,
+											children: f.name
+										}, f.id))]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 gap-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Medidor (Horímetro / Km)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											placeholder: "Ex: 1205"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Combustível (Litros)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											placeholder: "Ex: 45"
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									className: "w-full mt-2",
+									children: "Gravar Lançamento"
+								})
+							]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+							className: "bg-primary/5 border-primary/20",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+								className: "text-lg",
+								children: "Impacto Operacional Estimado"
+							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+								className: "space-y-4",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground text-sm",
+											children: "Custo total maquinário (mês):"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-bold text-lg",
+											children: "R$ 35.000,00"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground text-sm",
+											children: "Representatividade no @:"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-bold text-destructive",
+											children: "11.8%"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-muted-foreground mt-4",
+										children: "Os valores agregam consumo, manutenções corretivas e depreciação calculada linearmente."
+									})
+								]
+							})]
+						})]
+					})
+				})
+			]
+		})]
 	});
 }
 function CostAnalysisTab() {
@@ -63802,95 +64168,193 @@ function ProjecaoVendas() {
 }
 function Equipe() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-8 w-8 text-primary" }), "Controle de Acessos & Equipe"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-8 w-8 text-primary" }), "Equipe & Desempenho"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
-				children: "Gestão de permissões baseada em papéis (RBAC) e log de auditoria de operações."
+				children: "Gestão de acessos, auditoria e sistema de pontuação de colaboradores para bônus."
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 				className: "gap-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleUser, { className: "h-4 w-4" }), " Convidar Colaborador"]
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid gap-6 md:grid-cols-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "h-fit",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel de Colaboradores" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, { children: [
-					"Acesso total para ",
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Administradores" }),
-					", acesso restrito ao módulo de apontamentos para ",
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Operadores de Campo" }),
-					"."
-				] })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					className: "px-0 sm:px-6",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Papel" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Acesso" })
-					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: teamMembers.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "font-medium text-sm",
-							children: m.name
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-xs text-muted-foreground",
-							children: m.email
-						})] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-							variant: m.role === "Admin" ? "default" : "secondary",
-							className: "gap-1",
-							children: [m.role === "Operador" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-3 w-3" }), m.role]
-						}) }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-							className: "text-muted-foreground text-xs whitespace-nowrap",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center gap-1",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-2 w-2 rounded-full ${m.status === "Ativo" ? "bg-emerald-500" : "bg-muted-foreground"}` }), m.lastActive]
-							})
-						})
-					] }, m.id)) })] })
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-				className: "flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-5 w-5 text-primary" }), "Auditoria de Campo Recente"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ações rastreadas e vinculadas ao perfil de cada operador e administrador." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "space-y-4",
-				children: managementHistory.slice(0, 6).map((h) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex justify-between items-start border-b pb-3 last:border-0 hover:bg-muted/30 p-2 rounded-md transition-colors",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "font-medium text-sm leading-tight text-foreground",
-						children: h.descricao
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-						className: "text-xs text-muted-foreground mt-1",
-						children: [
-							"Alvo: ",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-medium text-primary",
-								children: h.alvo
-							}),
-							" • ",
-							h.tipo
-						]
-					})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-right flex flex-col items-end",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-							variant: "outline",
-							className: "text-[10px] px-1.5 mb-1 bg-background",
-							children: h.responsavel
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-[10px] text-muted-foreground font-mono",
-							children: h.data
-						})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			defaultValue: "acessos",
+			className: "space-y-6",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					className: "w-full sm:w-auto grid grid-cols-2 max-w-[400px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "acessos",
+						children: "Controle de Acessos"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "desempenho",
+						children: "Desempenho & Metas"
 					})]
-				}, h.id))
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-				variant: "ghost",
-				className: "w-full mt-4 text-sm text-primary",
-				children: "Ver Relatório Completo"
-			})] })] })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "acessos",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid gap-6 md:grid-cols-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+							className: "h-fit",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel de Colaboradores" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, { children: [
+								"Acesso total para ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Administradores" }),
+								", restrito ao módulo de apontamentos para",
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "Operadores de Campo" }),
+								"."
+							] })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+								className: "px-0 sm:px-6",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Papel" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Acesso" })
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: teamMembers.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "font-medium text-sm",
+										children: m.name
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "text-xs text-muted-foreground",
+										children: m.email
+									})] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+										variant: m.role === "Admin" ? "default" : "secondary",
+										className: "gap-1",
+										children: [m.role === "Operador" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smartphone, { className: "h-3 w-3" }), m.role]
+									}) }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "text-muted-foreground text-xs whitespace-nowrap",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center gap-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `h-2 w-2 rounded-full ${m.status === "Ativo" ? "bg-emerald-500" : "bg-muted-foreground"}` }), m.lastActive]
+										})
+									})
+								] }, m.id)) })] })
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-5 w-5 text-primary" }), "Auditoria de Campo Recente"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ações rastreadas e vinculadas ao perfil de cada operador." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "space-y-4",
+							children: managementHistory.slice(0, 6).map((h) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-start border-b pb-3 last:border-0 hover:bg-muted/30 p-2 rounded-md transition-colors",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "font-medium text-sm leading-tight text-foreground",
+									children: h.descricao
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "text-xs text-muted-foreground mt-1",
+									children: [
+										"Alvo: ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-medium text-primary",
+											children: h.alvo
+										}),
+										" •",
+										" ",
+										h.tipo
+									]
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-right flex flex-col items-end",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "outline",
+										className: "text-[10px] px-1.5 mb-1 bg-background",
+										children: h.responsavel
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-[10px] text-muted-foreground font-mono",
+										children: h.data
+									})]
+								})]
+							}, h.id))
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							className: "w-full mt-4 text-sm text-primary",
+							children: "Ver Relatório Completo"
+						})] })] })]
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "desempenho",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid gap-6 md:grid-cols-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "h-5 w-5 text-primary" }), " Ranking e Pontuação"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acúmulo de pontos para cálculo do bônus anual (Safra Pecuária) integrado aos custos totais." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "px-0 sm:px-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Colaborador" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-center",
+									children: "Metas Atingidas"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Pontos"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Bônus Est. (R$)"
+								})
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: employeePerformance.map((e) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "font-medium",
+									children: e.name
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-center",
+									children: e.goalsAchieved
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right font-bold text-primary",
+									children: [e.points, " pts"]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									className: "text-right font-mono text-emerald-600 dark:text-emerald-400",
+									children: ["R$ ", e.bonusEstimate.toLocaleString("pt-BR")]
+								})
+							] }, e.employeeId)) })] })
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "flex flex-row items-start justify-between space-y-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+								className: "flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Metas Ativas"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+								className: "mt-1.5",
+								children: "Objetivos vinculados ao sistema de recompensa."
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								size: "sm",
+								variant: "outline",
+								className: "h-8",
+								children: "Nova Meta"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "space-y-4",
+							children: performanceGoalsList.map((g) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center p-3 border rounded-lg bg-card hover:bg-muted/50 transition-colors",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-medium text-sm text-foreground",
+									children: g.title
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+									variant: "secondary",
+									className: "whitespace-nowrap ml-4",
+									children: [
+										"+",
+										g.points,
+										" pts"
+									]
+								})]
+							}, g.id))
+						}) })] })]
+					})
+				})
+			]
 		})]
 	});
 }
@@ -64561,6 +65025,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Estoque, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/frota",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Frota, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/financeiro",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Financeiro, {})
 				}),
@@ -64606,4 +65074,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DmU2YAkB.js.map
+//# sourceMappingURL=index-suOElTcK.js.map

@@ -9,6 +9,7 @@ import Index from './pages/Index'
 import Setor from './pages/Setor'
 import Pastos from './pages/Pastos'
 import Estoque from './pages/Estoque'
+import Frota from './pages/Frota'
 import Financeiro from './pages/Financeiro'
 import AnimalProfile from './pages/AnimalProfile'
 import Sanidade from './pages/Sanidade'
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/pastos" element={<Pastos />} />
               <Route path="/confinamento" element={<Confinamento />} />
               <Route path="/estoque" element={<Estoque />} />
+              <Route path="/frota" element={<Frota />} />
               <Route path="/financeiro" element={<Financeiro />} />
               <Route path="/sanidade" element={<Sanidade />} />
               <Route path="/calendario" element={<Calendario />} />

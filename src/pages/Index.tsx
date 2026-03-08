@@ -18,8 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Activity, Plus, Beef, Wallet, TrendingUp, TrendingDown } from 'lucide-react'
-import { dashboardData, herdSummary, productionGoals } from '@/data/mock'
+import { Activity, Plus, Beef, Wallet, TrendingUp, TrendingDown, Map } from 'lucide-react'
+import { dashboardData, herdSummary, productionGoals, farmRegistry } from '@/data/mock'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
@@ -92,7 +92,7 @@ export default function Index() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -113,6 +113,22 @@ export default function Index() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{dashboardData.kpis.valorTotal}</div>
+          </CardContent>
+        </Card>
+        <Card className="hover-lift">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Lotação Média
+            </CardTitle>
+            <Map className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {(dashboardData.kpis.animais / farmRegistry.areaPastagem).toFixed(2)}
+            </div>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">
+              Cab / Hectare
+            </p>
           </CardContent>
         </Card>
         <Card className="hover-lift">
