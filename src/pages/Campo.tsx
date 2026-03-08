@@ -20,16 +20,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Beef, Plus, Search, Wifi, WifiOff, RefreshCw } from 'lucide-react'
+import { MapPin, Beef, Plus, Search, CloudOff, RefreshCw } from 'lucide-react'
 import { sectorData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
-import { useOfflineSync } from '@/hooks/useOfflineSync'
+import { useOffline } from '@/contexts/OfflineContext'
 
 export default function Campo() {
   const { toast } = useToast()
   const { user } = useAuth()
-  const { isOnline, queue, addAction, syncAll, toggleSimulateOffline } = useOfflineSync()
+  const { isOnline, queue, addAction, isSyncing } = useOffline()
 
   const [selectedLote, setSelectedLote] = useState<any>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -49,32 +49,25 @@ export default function Campo() {
   )
 
   const handleAction = () => {
+    // Offline Data Persistence: Always add to the central queue
+    addAction({
+      type: 'FIELD_OPERATION',
+      payload: { operationType: actionType, lote: selectedLote?.id, operator: user.name },
+    })
+
     if (isOnline) {
       toast({
-        title: 'Operação Sincronizada',
-        description: `Ação de "${actionType}" no lote ${selectedLote?.id} foi salva diretamente no servidor.`,
+        title: 'Registrando...',
+        description: `Sincronizando ação de "${actionType}" com o sistema central.`,
       })
     } else {
-      addAction({
-        type: actionType,
-        payload: { lote: selectedLote?.id, operator: user.name },
-      })
       toast({
-        title: 'Salvo Offline (Local)',
-        description: `Ação adicionada à fila local. Sincronize assim que a conexão retornar.`,
+        title: 'Salvo na Fila Offline',
+        description: `Ação no lote ${selectedLote?.id} salva localmente. Sincronização automática na restauração de rede.`,
         variant: 'secondary',
       })
     }
     setDrawerOpen(false)
-  }
-
-  const handleSync = () => {
-    if (syncAll()) {
-      toast({
-        title: 'Sincronização Concluída',
-        description: 'Todos os apontamentos locais foram enviados com sucesso.',
-      })
-    }
   }
 
   const openDrawer = (lote: any) => {
@@ -92,24 +85,23 @@ export default function Campo() {
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <Badge
-            variant={isOnline ? 'secondary' : 'destructive'}
-            className="cursor-pointer bg-background/20 hover:bg-background/30 text-white border-0"
-            onClick={toggleSimulateOffline}
-          >
-            {isOnline ? <Wifi className="h-3 w-3 mr-1" /> : <WifiOff className="h-3 w-3 mr-1" />}
-            {isOnline ? 'Online' : 'Offline'}
-          </Badge>
-          {queue.length > 0 && (
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={handleSync}
-              disabled={!isOnline}
-              className="h-7 text-xs bg-white text-primary hover:bg-white/90"
+          {!isOnline && (
+            <Badge
+              variant="destructive"
+              className="bg-destructive text-white border-0 opacity-90 gap-1.5 py-1"
             >
-              <RefreshCw className="h-3 w-3 mr-1" /> Sync ({queue.length})
-            </Button>
+              <CloudOff className="h-3 w-3" /> Offline
+            </Badge>
+          )}
+          {isSyncing && (
+            <Badge variant="secondary" className="bg-white/20 text-white border-0 gap-1.5">
+              <RefreshCw className="h-3 w-3 animate-spin" /> Sync
+            </Badge>
+          )}
+          {!isOnline && queue.length > 0 && (
+            <span className="text-xs text-white/80 font-medium">
+              {queue.length} ação(ões) pendente(s)
+            </span>
           )}
         </div>
       </div>
@@ -260,7 +252,7 @@ export default function Campo() {
           </div>
           <DrawerFooter className="pt-4 pb-8">
             <Button onClick={handleAction} size="lg" className="w-full text-base h-12 shadow-md">
-              {isOnline ? 'Confirmar Operação' : 'Salvar na Fila Offline'}
+              Confirmar Operação {isOnline ? '' : '(Offline)'}
             </Button>
             <DrawerClose asChild>
               <Button variant="ghost" size="lg" className="w-full h-12">

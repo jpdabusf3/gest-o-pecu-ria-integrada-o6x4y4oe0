@@ -1617,9 +1617,6 @@ section[aria-label='Notifications alt+T'] {
 .bg-background{
   background-color: hsl(var(--background));
 }
-.bg-background\/20{
-  background-color: hsl(var(--background) / 0.2);
-}
 .bg-black\/80{
   background-color: rgb(0 0 0 / 0.8);
 }
@@ -1717,9 +1714,8 @@ section[aria-label='Notifications alt+T'] {
 .bg-transparent{
   background-color: transparent;
 }
-.bg-white{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+.bg-white\/20{
+  background-color: rgb(255 255 255 / 0.2);
 }
 .bg-white\/40{
   background-color: rgb(255 255 255 / 0.4);
@@ -2128,6 +2124,9 @@ section[aria-label='Notifications alt+T'] {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
+.text-white\/80{
+  color: rgb(255 255 255 / 0.8);
+}
 .underline{
   text-decoration-line: underline;
 }
@@ -2481,15 +2480,15 @@ section[aria-label='Notifications alt+T'] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 251 235 / var(--tw-bg-opacity, 1));
 }
-.hover\:bg-background\/30:hover{
-  background-color: hsl(var(--background) / 0.3);
-}
 .hover\:bg-blue-100:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-destructive\/10:hover{
   background-color: hsl(var(--destructive) / 0.1);
+}
+.hover\:bg-destructive\/20:hover{
+  background-color: hsl(var(--destructive) / 0.2);
 }
 .hover\:bg-destructive\/80:hover{
   background-color: hsl(var(--destructive) / 0.8);
@@ -2527,9 +2526,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .hover\:bg-sidebar-accent:hover{
   background-color: hsl(var(--sidebar-accent));
-}
-.hover\:bg-white\/90:hover{
-  background-color: rgb(255 255 255 / 0.9);
 }
 .hover\:text-accent-foreground:hover{
   color: hsl(var(--accent-foreground));
@@ -3294,6 +3290,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:top-auto{
     top: auto;
   }
+  .sm\:mr-2{
+    margin-right: 0.5rem;
+  }
   .sm\:mr-4{
     margin-right: 1rem;
   }
@@ -3527,6 +3526,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .lg\:col-span-9{
     grid-column: span 9 / span 9;
+  }
+  .lg\:inline{
+    display: inline;
   }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));

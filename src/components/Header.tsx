@@ -2,10 +2,22 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { QuickAddModal } from './QuickAddModal'
 import { ScannerModal } from './ScannerModal'
-import { Bell, Trophy, CheckSquare, Settings } from 'lucide-react'
+import {
+  Bell,
+  Trophy,
+  CheckSquare,
+  Settings,
+  CloudOff,
+  Cloud,
+  RefreshCw,
+  Wifi,
+  WifiOff,
+} from 'lucide-react'
 import { Button } from './ui/button'
 import { useAuth, mockUsers } from '@/contexts/AuthContext'
 import { useAppNotifications } from '@/contexts/NotificationContext'
+import { useOffline } from '@/contexts/OfflineContext'
+import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +33,7 @@ export function Header() {
   const { user, setUser } = useAuth()
   const { toast } = useToast()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications()
+  const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline()
 
   const handleUserSwitch = (newUser: (typeof mockUsers)[0]) => {
     setUser(newUser)
@@ -40,6 +53,46 @@ export function Header() {
         </div>
       </div>
       <div className="flex items-center gap-2 sm:gap-4">
+        {/* Offline Sync Status Indicator */}
+        <div className="flex items-center gap-1 sm:mr-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleSimulatedOffline}
+            className={cn(
+              'h-8 px-2 gap-2 text-xs font-medium',
+              !isOnline
+                ? 'text-destructive hover:text-destructive bg-destructive/10 hover:bg-destructive/20'
+                : 'text-muted-foreground',
+            )}
+            title="Alternar Simulação de Rede"
+          >
+            {!isOnline ? <WifiOff className="h-4 w-4" /> : <Wifi className="h-4 w-4" />}
+            <span className="hidden lg:inline">{!isOnline ? 'Modo Offline' : 'Rede Ativa'}</span>
+          </Button>
+
+          {(!isOnline || queue.length > 0 || isSyncing) && (
+            <Badge
+              variant={!isOnline ? 'destructive' : 'secondary'}
+              className="gap-1.5 h-8 px-3 pointer-events-none hidden sm:flex"
+            >
+              {isSyncing ? (
+                <>
+                  <RefreshCw className="h-3 w-3 animate-spin" /> Sincronizando...
+                </>
+              ) : !isOnline ? (
+                <>
+                  <CloudOff className="h-3 w-3" /> {queue.length} pendentes
+                </>
+              ) : (
+                <>
+                  <Cloud className="h-3 w-3 text-emerald-500" /> Fila: {queue.length}
+                </>
+              )}
+            </Badge>
+          )}
+        </div>
+
         <ScannerModal />
 
         {user.role === 'admin' && (

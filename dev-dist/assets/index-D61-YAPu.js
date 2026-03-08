@@ -19242,6 +19242,24 @@ var Clock = createLucideIcon("clock", [["circle", {
 	d: "M12 6v6l4 2",
 	key: "mmk7yg"
 }]]);
+var CloudOff = createLucideIcon("cloud-off", [
+	["path", {
+		d: "M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057",
+		key: "1uxyv8"
+	}],
+	["path", {
+		d: "M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78",
+		key: "99tcn7"
+	}],
+	["path", {
+		d: "m2 2 20 20",
+		key: "1ooewy"
+	}]
+]);
+var Cloud = createLucideIcon("cloud", [["path", {
+	d: "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z",
+	key: "p7xjir"
+}]]);
 var Database = createLucideIcon("database", [
 	["ellipse", {
 		cx: "12",
@@ -26010,6 +26028,132 @@ const useAppNotifications = () => {
 	if (!context) throw new Error("useAppNotifications must be used within NotificationProvider");
 	return context;
 };
+var OfflineContext = (0, import_react.createContext)(void 0);
+function OfflineProvider({ children }) {
+	const [isOnline, setIsOnline] = (0, import_react.useState)(navigator.onLine);
+	const [simulatedOffline, setSimulatedOffline] = (0, import_react.useState)(false);
+	const [isSyncing, setIsSyncing] = (0, import_react.useState)(false);
+	const [queue, setQueue] = (0, import_react.useState)(() => {
+		try {
+			const stored = localStorage.getItem("gpi_sync_queue");
+			return stored ? JSON.parse(stored) : [];
+		} catch {
+			return [];
+		}
+	});
+	const actualOnline = isOnline && !simulatedOffline;
+	(0, import_react.useEffect)(() => {
+		const handleOnline = () => setIsOnline(true);
+		const handleOffline = () => setIsOnline(false);
+		window.addEventListener("online", handleOnline);
+		window.addEventListener("offline", handleOffline);
+		return () => {
+			window.removeEventListener("online", handleOnline);
+			window.removeEventListener("offline", handleOffline);
+		};
+	}, []);
+	const addAction = (action) => {
+		const newAction = {
+			...action,
+			id: crypto.randomUUID(),
+			timestamp: Date.now()
+		};
+		const newQueue = [...queue, newAction];
+		setQueue(newQueue);
+		localStorage.setItem("gpi_sync_queue", JSON.stringify(newQueue));
+	};
+	const clearQueue = () => {
+		setQueue([]);
+		localStorage.removeItem("gpi_sync_queue");
+	};
+	const toggleSimulatedOffline = () => setSimulatedOffline((prev) => !prev);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OfflineContext.Provider, {
+		value: {
+			isOnline: actualOnline,
+			simulatedOffline,
+			toggleSimulatedOffline,
+			queue,
+			addAction,
+			clearQueue,
+			isSyncing,
+			setIsSyncing
+		},
+		children
+	});
+}
+function useOffline() {
+	const context = (0, import_react.useContext)(OfflineContext);
+	if (!context) throw new Error("useOffline must be used within OfflineProvider");
+	return context;
+}
+var initialTasks = [
+	{
+		id: "T1",
+		title: "Vacinação Febre Aftosa",
+		frequency: "Semestral",
+		assignedTo: "João (Operador Campo)",
+		duration: 8,
+		costPerHour: 25,
+		status: "Pendente",
+		lotId: "LCR-04"
+	},
+	{
+		id: "T2",
+		title: "Limpeza de Cochos Baia 01",
+		frequency: "Semanal",
+		assignedTo: "Carlos (Tratorista)",
+		duration: 2,
+		costPerHour: 20,
+		status: "Concluído",
+		lotId: "LEN-02"
+	},
+	{
+		id: "T3",
+		title: "Manutenção de Cerca",
+		frequency: "Mensal",
+		assignedTo: "João (Operador Campo)",
+		duration: 6,
+		costPerHour: 25,
+		status: "Pendente",
+		lotId: "Pasto 02"
+	},
+	{
+		id: "T4",
+		title: "Pesagem Lote LEN-01",
+		frequency: "Mensal",
+		assignedTo: "Carlos (Tratorista)",
+		duration: 4,
+		costPerHour: 20,
+		status: "Pendente",
+		lotId: "LEN-01"
+	}
+];
+var TaskContext = (0, import_react.createContext)(void 0);
+function TaskProvider({ children }) {
+	const [serverTasks, setServerTasks] = (0, import_react.useState)(initialTasks);
+	const completeTaskOnServer = (id) => {
+		setServerTasks((prev) => prev.map((t) => t.id === id ? {
+			...t,
+			status: "Concluído"
+		} : t));
+	};
+	const addTaskOnServer = (task) => {
+		setServerTasks((prev) => [...prev, task]);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskContext.Provider, {
+		value: {
+			serverTasks,
+			completeTaskOnServer,
+			addTaskOnServer
+		},
+		children
+	});
+}
+function useTasks() {
+	const context = (0, import_react.useContext)(TaskContext);
+	if (!context) throw new Error("useTasks must be used within TaskProvider");
+	return context;
+}
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
 var use = import_react[" use ".trim().toString()];
 function isPromiseLike(value) {
@@ -28033,7 +28177,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$34({ inst: {
+			cachedValue = useState$35({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28047,7 +28191,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$8(function() {
+			useEffect$9(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28070,7 +28214,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$34 = React$68.useState, useEffect$8 = React$68.useEffect, useLayoutEffect$3 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$68 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$35 = React$68.useState, useEffect$9 = React$68.useEffect, useLayoutEffect$3 = React$68.useLayoutEffect, useDebugValue = React$68.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$68.useSyncExternalStore ? React$68.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -29468,6 +29612,21 @@ function ScannerModal() {
 		})]
 	});
 }
+var badgeVariants = cva("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2", {
+	variants: { variant: {
+		default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+		secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+		destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+		outline: "text-foreground"
+	} },
+	defaultVariants: { variant: "default" }
+});
+function Badge({ className, variant, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: cn(badgeVariants({ variant }), className),
+		...props
+	});
+}
 var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
 var EVENT_OPTIONS = {
 	bubbles: false,
@@ -30736,6 +30895,7 @@ function Header() {
 	const { user, setUser } = useAuth();
 	const { toast: toast$2 } = useToast();
 	const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications();
+	const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline();
 	const handleUserSwitch = (newUser) => {
 		setUser(newUser);
 		toast$2({
@@ -30760,6 +30920,33 @@ function Header() {
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex items-center gap-2 sm:gap-4",
 			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-1 sm:mr-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "ghost",
+						size: "sm",
+						onClick: toggleSimulatedOffline,
+						className: cn("h-8 px-2 gap-2 text-xs font-medium", !isOnline ? "text-destructive hover:text-destructive bg-destructive/10 hover:bg-destructive/20" : "text-muted-foreground"),
+						title: "Alternar Simulação de Rede",
+						children: [!isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WifiOff, { className: "h-4 w-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "hidden lg:inline",
+							children: !isOnline ? "Modo Offline" : "Rede Ativa"
+						})]
+					}), (!isOnline || queue.length > 0 || isSyncing) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: !isOnline ? "destructive" : "secondary",
+						className: "gap-1.5 h-8 px-3 pointer-events-none hidden sm:flex",
+						children: isSyncing ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-3 w-3 animate-spin" }), " Sincronizando..."] }) : !isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CloudOff, { className: "h-3 w-3" }),
+							" ",
+							queue.length,
+							" pendentes"
+						] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cloud, { className: "h-3 w-3 text-emerald-500" }),
+							" Fila: ",
+							queue.length
+						] })
+					})]
+				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ScannerModal, {}),
 				user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
 					asChild: true,
@@ -30865,17 +31052,61 @@ function Header() {
 		})]
 	});
 }
+function SyncManager() {
+	const { isOnline, queue, clearQueue, isSyncing, setIsSyncing } = useOffline();
+	const { completeTaskOnServer } = useTasks();
+	const { addNotification } = useAppNotifications();
+	const { toast: toast$2 } = useToast();
+	(0, import_react.useEffect)(() => {
+		if (isOnline && queue.length > 0 && !isSyncing) performSync();
+	}, [
+		isOnline,
+		queue,
+		isSyncing
+	]);
+	const performSync = async () => {
+		setIsSyncing(true);
+		await new Promise((resolve) => setTimeout(resolve, 2e3));
+		let tasksCompleted = 0;
+		let opsSynced = 0;
+		queue.forEach((action) => {
+			if (action.type === "COMPLETE_TASK") {
+				completeTaskOnServer(action.payload.taskId);
+				tasksCompleted++;
+			} else if (action.type === "FIELD_OPERATION") {
+				addNotification({
+					title: "Operação de Campo Sincronizada",
+					message: `Ação de "${action.payload.operationType}" registrada por ${action.payload.operator} no alvo ${action.payload.lote}.`,
+					type: "task"
+				});
+				opsSynced++;
+			}
+		});
+		clearQueue();
+		setIsSyncing(false);
+		toast$2({
+			title: "Sincronização Automática Concluída",
+			description: `${tasksCompleted + opsSynced} registros da fila offline foram enviados ao servidor.`,
+			variant: "default"
+		});
+	};
+	return null;
+}
 function Layout() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarProvider, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppSidebar, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarInset, {
-		className: "bg-muted/30",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Header, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-			className: "flex-1 p-4 md:p-6 lg:p-8 animate-fade-in-up",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "max-w-7xl mx-auto w-full",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
-			})
-		})]
-	})] });
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarProvider, { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SyncManager, {}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppSidebar, {}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarInset, {
+			className: "bg-muted/30",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Header, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+				className: "flex-1 p-4 md:p-6 lg:p-8 animate-fade-in-up",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "max-w-7xl mx-auto w-full",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
+				})
+			})]
+		})
+	] });
 }
 var Card = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
@@ -53993,21 +54224,6 @@ var TableCaption = import_react.forwardRef(({ className, ...props }, ref) => /* 
 	...props
 }));
 TableCaption.displayName = "TableCaption";
-var badgeVariants = cva("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2", {
-	variants: { variant: {
-		default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-		secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-		destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-		outline: "text-foreground"
-	} },
-	defaultVariants: { variant: "default" }
-});
-function Badge({ className, variant, ...props }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: cn(badgeVariants({ variant }), className),
-		...props
-	});
-}
 function SectorCalendarTab({ sectorId }) {
 	const [filterType, setFilterType] = (0, import_react.useState)("Todos");
 	const [dateStart, setDateStart] = (0, import_react.useState)("");
@@ -63047,58 +63263,10 @@ var DrawerDescription = import_react.forwardRef(({ className, ...props }, ref) =
 	...props
 }));
 DrawerDescription.displayName = Drawer$1.Description.displayName;
-function useOfflineSync() {
-	const [isOnline, setIsOnline] = (0, import_react.useState)(navigator.onLine);
-	const [simulatedOffline, setSimulatedOffline] = (0, import_react.useState)(false);
-	const [queue, setQueue] = (0, import_react.useState)(() => {
-		try {
-			const stored = localStorage.getItem("gpi_sync_queue");
-			return stored ? JSON.parse(stored) : [];
-		} catch {
-			return [];
-		}
-	});
-	const actualOnline = isOnline && !simulatedOffline;
-	(0, import_react.useEffect)(() => {
-		const handleOnline = () => setIsOnline(true);
-		const handleOffline = () => setIsOnline(false);
-		window.addEventListener("online", handleOnline);
-		window.addEventListener("offline", handleOffline);
-		return () => {
-			window.removeEventListener("online", handleOnline);
-			window.removeEventListener("offline", handleOffline);
-		};
-	}, []);
-	const addAction = (action) => {
-		const newAction = {
-			...action,
-			id: crypto.randomUUID(),
-			timestamp: Date.now()
-		};
-		const newQueue = [...queue, newAction];
-		setQueue(newQueue);
-		localStorage.setItem("gpi_sync_queue", JSON.stringify(newQueue));
-		return newAction;
-	};
-	const syncAll = () => {
-		if (!actualOnline) return false;
-		setQueue([]);
-		localStorage.removeItem("gpi_sync_queue");
-		return true;
-	};
-	const toggleSimulateOffline = () => setSimulatedOffline(!simulatedOffline);
-	return {
-		isOnline: actualOnline,
-		queue,
-		addAction,
-		syncAll,
-		toggleSimulateOffline
-	};
-}
 function Campo() {
 	const { toast: toast$2 } = useToast();
 	const { user } = useAuth();
-	const { isOnline, queue, addAction, syncAll, toggleSimulateOffline } = useOfflineSync();
+	const { isOnline, queue, addAction, isSyncing } = useOffline();
 	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
 	const [drawerOpen, setDrawerOpen] = (0, import_react.useState)(false);
 	const [actionType, setActionType] = (0, import_react.useState)("movimentar");
@@ -63118,31 +63286,24 @@ function Campo() {
 		}))
 	].filter((l) => l.id.toLowerCase().includes(searchTerm.toLowerCase()) || l.pasto.toLowerCase().includes(searchTerm.toLowerCase()));
 	const handleAction = () => {
+		addAction({
+			type: "FIELD_OPERATION",
+			payload: {
+				operationType: actionType,
+				lote: selectedLote?.id,
+				operator: user.name
+			}
+		});
 		if (isOnline) toast$2({
-			title: "Operação Sincronizada",
-			description: `Ação de "${actionType}" no lote ${selectedLote?.id} foi salva diretamente no servidor.`
+			title: "Registrando...",
+			description: `Sincronizando ação de "${actionType}" com o sistema central.`
 		});
-		else {
-			addAction({
-				type: actionType,
-				payload: {
-					lote: selectedLote?.id,
-					operator: user.name
-				}
-			});
-			toast$2({
-				title: "Salvo Offline (Local)",
-				description: `Ação adicionada à fila local. Sincronize assim que a conexão retornar.`,
-				variant: "secondary"
-			});
-		}
+		else toast$2({
+			title: "Salvo na Fila Offline",
+			description: `Ação no lote ${selectedLote?.id} salva localmente. Sincronização automática na restauração de rede.`,
+			variant: "secondary"
+		});
 		setDrawerOpen(false);
-	};
-	const handleSync = () => {
-		if (syncAll()) toast$2({
-			title: "Sincronização Concluída",
-			description: "Todos os apontamentos locais foram enviados com sucesso."
-		});
 	};
 	const openDrawer = (lote) => {
 		setSelectedLote(lote);
@@ -63164,24 +63325,22 @@ function Campo() {
 					})]
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-col items-end gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-						variant: isOnline ? "secondary" : "destructive",
-						className: "cursor-pointer bg-background/20 hover:bg-background/30 text-white border-0",
-						onClick: toggleSimulateOffline,
-						children: [isOnline ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wifi, { className: "h-3 w-3 mr-1" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WifiOff, { className: "h-3 w-3 mr-1" }), isOnline ? "Online" : "Offline"]
-					}), queue.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						size: "sm",
-						variant: "secondary",
-						onClick: handleSync,
-						disabled: !isOnline,
-						className: "h-7 text-xs bg-white text-primary hover:bg-white/90",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-3 w-3 mr-1" }),
-							" Sync (",
-							queue.length,
-							")"
-						]
-					})]
+					children: [
+						!isOnline && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+							variant: "destructive",
+							className: "bg-destructive text-white border-0 opacity-90 gap-1.5 py-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CloudOff, { className: "h-3 w-3" }), " Offline"]
+						}),
+						isSyncing && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+							variant: "secondary",
+							className: "bg-white/20 text-white border-0 gap-1.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "h-3 w-3 animate-spin" }), " Sync"]
+						}),
+						!isOnline && queue.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-xs text-white/80 font-medium",
+							children: [queue.length, " ação(ões) pendente(s)"]
+						})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -63398,11 +63557,11 @@ function Campo() {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DrawerFooter, {
 							className: "pt-4 pb-8",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								onClick: handleAction,
 								size: "lg",
 								className: "w-full text-base h-12 shadow-md",
-								children: isOnline ? "Confirmar Operação" : "Salvar na Fila Offline"
+								children: ["Confirmar Operação ", isOnline ? "" : "(Offline)"]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DrawerClose, {
 								asChild: true,
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
@@ -64878,54 +65037,13 @@ function Administrativo() {
 		})]
 	});
 }
-var initialTasks = [
-	{
-		id: "T1",
-		title: "Vacinação Febre Aftosa",
-		frequency: "Semestral",
-		assignedTo: "João (Operador Campo)",
-		duration: 8,
-		costPerHour: 25,
-		status: "Pendente",
-		lotId: "LCR-04"
-	},
-	{
-		id: "T2",
-		title: "Limpeza de Cochos Baia 01",
-		frequency: "Semanal",
-		assignedTo: "Carlos (Tratorista)",
-		duration: 2,
-		costPerHour: 20,
-		status: "Concluído",
-		lotId: "LEN-02"
-	},
-	{
-		id: "T3",
-		title: "Manutenção de Cerca",
-		frequency: "Mensal",
-		assignedTo: "João (Operador Campo)",
-		duration: 6,
-		costPerHour: 25,
-		status: "Pendente",
-		lotId: "Pasto 02"
-	},
-	{
-		id: "T4",
-		title: "Pesagem Lote LEN-01",
-		frequency: "Mensal",
-		assignedTo: "Carlos (Tratorista)",
-		duration: 4,
-		costPerHour: 20,
-		status: "Pendente",
-		lotId: "LEN-01"
-	}
-];
 function Tarefas() {
-	const [tasks, setTasks] = (0, import_react.useState)(initialTasks);
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
 	const { user } = useAuth();
 	const { addNotification } = useAppNotifications();
+	const { serverTasks, addTaskOnServer } = useTasks();
+	const { queue, addAction, isOnline } = useOffline();
 	const [newTask, setNewTask] = (0, import_react.useState)({
 		title: "",
 		frequency: "Semanal",
@@ -64934,13 +65052,21 @@ function Tarefas() {
 		costPerHour: 20,
 		lotId: ""
 	});
+	const optimisticTasks = serverTasks.map((t) => {
+		if (queue.some((q) => q.type === "COMPLETE_TASK" && q.payload.taskId === t.id) && t.status !== "Concluído") return {
+			...t,
+			status: "Concluído",
+			isPendingSync: true
+		};
+		return t;
+	});
 	const handleSave = () => {
 		if (!newTask.title || !newTask.assignedTo) return;
-		setTasks([...tasks, {
+		addTaskOnServer({
 			...newTask,
 			id: `T${Date.now()}`,
 			status: "Pendente"
-		}]);
+		});
 		addNotification({
 			title: "Nova Tarefa Atribuída",
 			message: `A atividade "${newTask.title}" foi atribuída para ${newTask.assignedTo}.`,
@@ -64953,16 +65079,21 @@ function Tarefas() {
 		});
 	};
 	const handleComplete = (t) => {
-		setTasks(tasks.map((x$2) => x$2.id === t.id ? {
-			...x$2,
-			status: "Concluído"
-		} : x$2));
-		toast$2({
+		addAction({
+			type: "COMPLETE_TASK",
+			payload: { taskId: t.id }
+		});
+		if (!isOnline) toast$2({
+			title: "Salvo Offline",
+			description: `A tarefa "${t.title}" foi marcada como concluída localmente. Sincronização ocorrerá quando houver conexão.`,
+			variant: "secondary"
+		});
+		else toast$2({
 			title: "Atividade Concluída",
-			description: user.role === "admin" ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.` : `Sua tarefa "${t.title}" foi marcada como concluída.`
+			description: user.role === "admin" ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.` : `Sua tarefa "${t.title}" foi enviada para o sistema.`
 		});
 	};
-	const visibleTasks = user.role === "operador" ? tasks.filter((t) => t.assignedTo.includes("João")) : tasks;
+	const visibleTasks = user.role === "operador" ? optimisticTasks.filter((t) => t.assignedTo.includes("João")) : optimisticTasks;
 	const pending = visibleTasks.filter((t) => t.status === "Pendente");
 	const completed = visibleTasks.filter((t) => t.status === "Concluído");
 	const pendingCost = pending.reduce((acc, t) => acc + t.duration * t.costPerHour, 0);
@@ -64976,7 +65107,7 @@ function Tarefas() {
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-8 w-8 text-primary" }), " Minhas Tarefas"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: user.role === "admin" ? "Controle de atividades de campo, horas trabalhadas e alocação de custos." : "Acompanhe e conclua suas atividades operacionais do dia a dia."
+					children: user.role === "admin" ? "Controle de atividades de campo, horas trabalhadas e alocação de custos." : "Acompanhe e conclua suas atividades. Modo offline suportado."
 				})] }), user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
 					open,
 					onOpenChange: setOpen,
@@ -65178,10 +65309,16 @@ function Tarefas() {
 								})] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
 								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-									variant: "outline",
-									className: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
-									children: "Concluído"
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex flex-col sm:flex-row items-start sm:items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "outline",
+										className: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+										children: "Concluído"
+									}), t.isPendingSync && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "flex items-center gap-1 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded whitespace-nowrap",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CloudOff, { className: "h-3 w-3" }), " Fila Offline"]
+									})]
 								}) })
 							] }, t.id)), completed.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 								colSpan: user.role === "admin" ? 4 : 3,
@@ -65223,7 +65360,7 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
+var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(OfflineProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TaskProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
 		v7_relativeSplatPath: false
@@ -65304,8 +65441,8 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
 		})] })
 	] })
-}) }) }) });
+}) }) }) }) }) });
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DO2r0mUR.js.map
+//# sourceMappingURL=index-D61-YAPu.js.map

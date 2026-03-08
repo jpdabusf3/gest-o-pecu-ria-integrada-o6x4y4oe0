@@ -21,71 +21,22 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CheckSquare, Clock, Plus, DollarSign, CheckCircle2 } from 'lucide-react'
+import { CheckSquare, Clock, Plus, DollarSign, CheckCircle2, CloudOff } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppNotifications } from '@/contexts/NotificationContext'
+import { useTasks, Task } from '@/contexts/TaskContext'
+import { useOffline } from '@/contexts/OfflineContext'
 
-export type Task = {
-  id: string
-  title: string
-  frequency: string
-  assignedTo: string
-  duration: number
-  costPerHour: number
-  status: 'Pendente' | 'Concluído'
-  lotId: string
-}
-
-const initialTasks: Task[] = [
-  {
-    id: 'T1',
-    title: 'Vacinação Febre Aftosa',
-    frequency: 'Semestral',
-    assignedTo: 'João (Operador Campo)',
-    duration: 8,
-    costPerHour: 25,
-    status: 'Pendente',
-    lotId: 'LCR-04',
-  },
-  {
-    id: 'T2',
-    title: 'Limpeza de Cochos Baia 01',
-    frequency: 'Semanal',
-    assignedTo: 'Carlos (Tratorista)',
-    duration: 2,
-    costPerHour: 20,
-    status: 'Concluído',
-    lotId: 'LEN-02',
-  },
-  {
-    id: 'T3',
-    title: 'Manutenção de Cerca',
-    frequency: 'Mensal',
-    assignedTo: 'João (Operador Campo)',
-    duration: 6,
-    costPerHour: 25,
-    status: 'Pendente',
-    lotId: 'Pasto 02',
-  },
-  {
-    id: 'T4',
-    title: 'Pesagem Lote LEN-01',
-    frequency: 'Mensal',
-    assignedTo: 'Carlos (Tratorista)',
-    duration: 4,
-    costPerHour: 20,
-    status: 'Pendente',
-    lotId: 'LEN-01',
-  },
-]
+type OptimisticTask = Task & { isPendingSync?: boolean }
 
 export default function Tarefas() {
-  const [tasks, setTasks] = useState(initialTasks)
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
   const { user } = useAuth()
   const { addNotification } = useAppNotifications()
+  const { serverTasks, addTaskOnServer } = useTasks()
+  const { queue, addAction, isOnline } = useOffline()
 
   const [newTask, setNewTask] = useState<Partial<Task>>({
     title: '',
@@ -96,11 +47,20 @@ export default function Tarefas() {
     lotId: '',
   })
 
+  // Optimistic UI updating: Merge server state with pending offline queue operations
+  const optimisticTasks: OptimisticTask[] = serverTasks.map((t) => {
+    const isPending = queue.some((q) => q.type === 'COMPLETE_TASK' && q.payload.taskId === t.id)
+    if (isPending && t.status !== 'Concluído') {
+      return { ...t, status: 'Concluído', isPendingSync: true }
+    }
+    return t
+  })
+
   const handleSave = () => {
     if (!newTask.title || !newTask.assignedTo) return
-    setTasks([...tasks, { ...newTask, id: `T${Date.now()}`, status: 'Pendente' } as Task])
+    const taskToSave = { ...newTask, id: `T${Date.now()}`, status: 'Pendente' } as Task
+    addTaskOnServer(taskToSave)
 
-    // Trigger push notification to Manager
     addNotification({
       title: 'Nova Tarefa Atribuída',
       message: `A atividade "${newTask.title}" foi atribuída para ${newTask.assignedTo}.`,
@@ -114,22 +74,32 @@ export default function Tarefas() {
     })
   }
 
-  const handleComplete = (t: Task) => {
-    setTasks(tasks.map((x) => (x.id === t.id ? { ...x, status: 'Concluído' } : x)))
-    toast({
-      title: 'Atividade Concluída',
-      description:
-        user.role === 'admin'
-          ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.`
-          : `Sua tarefa "${t.title}" foi marcada como concluída.`,
-    })
+  const handleComplete = (t: OptimisticTask) => {
+    // We add it to the offline queue always.
+    // If online, the SyncManager will process it automatically.
+    addAction({ type: 'COMPLETE_TASK', payload: { taskId: t.id } })
+
+    if (!isOnline) {
+      toast({
+        title: 'Salvo Offline',
+        description: `A tarefa "${t.title}" foi marcada como concluída localmente. Sincronização ocorrerá quando houver conexão.`,
+        variant: 'secondary',
+      })
+    } else {
+      toast({
+        title: 'Atividade Concluída',
+        description:
+          user.role === 'admin'
+            ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.`
+            : `Sua tarefa "${t.title}" foi enviada para o sistema.`,
+      })
+    }
   }
 
-  // Filter tasks based on Role-Based Access Control
   const visibleTasks =
     user.role === 'operador'
-      ? tasks.filter((t) => t.assignedTo.includes('João')) // Filter for current logged in operator
-      : tasks
+      ? optimisticTasks.filter((t) => t.assignedTo.includes('João'))
+      : optimisticTasks
 
   const pending = visibleTasks.filter((t) => t.status === 'Pendente')
   const completed = visibleTasks.filter((t) => t.status === 'Concluído')
@@ -145,7 +115,7 @@ export default function Tarefas() {
           <p className="text-muted-foreground mt-1">
             {user.role === 'admin'
               ? 'Controle de atividades de campo, horas trabalhadas e alocação de custos.'
-              : 'Acompanhe e conclua suas atividades operacionais do dia a dia.'}
+              : 'Acompanhe e conclua suas atividades. Modo offline suportado.'}
           </p>
         </div>
 
@@ -333,12 +303,19 @@ export default function Tarefas() {
                         <TableCell>R$ {t.duration * t.costPerHour}</TableCell>
                       )}
                       <TableCell>
-                        <Badge
-                          variant="outline"
-                          className="bg-emerald-500/10 text-emerald-600 border-emerald-200"
-                        >
-                          Concluído
-                        </Badge>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                          <Badge
+                            variant="outline"
+                            className="bg-emerald-500/10 text-emerald-600 border-emerald-200"
+                          >
+                            Concluído
+                          </Badge>
+                          {t.isPendingSync && (
+                            <span className="flex items-center gap-1 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded whitespace-nowrap">
+                              <CloudOff className="h-3 w-3" /> Fila Offline
+                            </span>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
