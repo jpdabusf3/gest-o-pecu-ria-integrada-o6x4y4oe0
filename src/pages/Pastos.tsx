@@ -14,6 +14,7 @@ import { pasturesData } from '@/data/mock'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { useToast } from '@/hooks/use-toast'
 import { RefreshCw } from 'lucide-react'
+import { ManagementTab } from '@/components/pastures/ManagementTab'
 
 export default function Pastos() {
   const { toast } = useToast()
@@ -47,8 +48,9 @@ export default function Pastos() {
       </div>
 
       <Tabs defaultValue="inventario" className="space-y-6">
-        <TabsList className="mb-2">
+        <TabsList className="mb-2 w-full sm:w-auto overflow-x-auto justify-start">
           <TabsTrigger value="inventario">Inventário e Métricas</TabsTrigger>
+          <TabsTrigger value="manejo">Manejo e Intervenções</TabsTrigger>
           <TabsTrigger value="satelite">Satélite (NDVI)</TabsTrigger>
         </TabsList>
 
@@ -152,6 +154,10 @@ export default function Pastos() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="manejo" className="space-y-6 mt-0">
+          <ManagementTab />
         </TabsContent>
 
         <TabsContent value="satelite" className="space-y-6 mt-0">

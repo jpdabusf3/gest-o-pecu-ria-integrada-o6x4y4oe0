@@ -19241,7 +19241,7 @@ var MapPin = createLucideIcon("map-pin", [["path", {
 	r: "3",
 	key: "ilqhr7"
 }]]);
-var Map$5 = createLucideIcon("map", [
+var Map$1 = createLucideIcon("map", [
 	["path", {
 		d: "M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z",
 		key: "169xi5"
@@ -19504,6 +19504,20 @@ var Tractor = createLucideIcon("tractor", [
 		cy: "15",
 		r: "5",
 		key: "ddtuc"
+	}]
+]);
+var Trash = createLucideIcon("trash", [
+	["path", {
+		d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6",
+		key: "miytrc"
+	}],
+	["path", {
+		d: "M3 6h18",
+		key: "d0wm0j"
+	}],
+	["path", {
+		d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+		key: "e791ji"
 	}]
 ]);
 var TrendingDown = createLucideIcon("trending-down", [["path", {
@@ -26080,7 +26094,7 @@ var navItems = [
 	},
 	{
 		title: "Gestão de Pastos",
-		icon: Map$5,
+		icon: Map$1,
 		url: "/pastos"
 	},
 	{
@@ -26212,7 +26226,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$13({ inst: {
+			cachedValue = useState$15({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -26249,7 +26263,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$13 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$64 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$15 = React$64.useState, useEffect$6 = React$64.useEffect, useLayoutEffect$2 = React$64.useLayoutEffect, useDebugValue = React$64.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$64.useSyncExternalStore ? React$64.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -27985,7 +27999,18 @@ const pasturesData = [
 		pesoMedioAtual: 215,
 		pesoMedioHistorico: 205,
 		status: "Bom",
-		ndvi: .75
+		ndvi: .75,
+		interventions: [{
+			id: "I-1",
+			data: "2025-10-15",
+			tipo: "Adubação",
+			descricao: "NPK 20-05-20, 200kg/ha"
+		}, {
+			id: "I-2",
+			data: "2025-11-20",
+			tipo: "Herbicida",
+			descricao: "Aplicação foliar contra plantas daninhas"
+		}]
 	},
 	{
 		id: 2,
@@ -28001,7 +28026,8 @@ const pasturesData = [
 		pesoMedioAtual: 285,
 		pesoMedioHistorico: 295,
 		status: "Alerta",
-		ndvi: .45
+		ndvi: .45,
+		interventions: []
 	},
 	{
 		id: 3,
@@ -28017,7 +28043,8 @@ const pasturesData = [
 		pesoMedioAtual: 0,
 		pesoMedioHistorico: 0,
 		status: "Vedado",
-		ndvi: .82
+		ndvi: .82,
+		interventions: []
 	},
 	{
 		id: 4,
@@ -28033,7 +28060,8 @@ const pasturesData = [
 		pesoMedioAtual: 180,
 		pesoMedioHistorico: 180,
 		status: "Bom",
-		ndvi: .68
+		ndvi: .68,
+		interventions: []
 	},
 	{
 		id: 5,
@@ -28049,7 +28077,8 @@ const pasturesData = [
 		pesoMedioAtual: 240,
 		pesoMedioHistorico: 235,
 		status: "Bom",
-		ndvi: .7
+		ndvi: .7,
+		interventions: []
 	}
 ];
 const inventoryData = {
@@ -28239,6 +28268,18 @@ const weightGainData = {
 		}
 	]
 };
+const dailyWeightData = {
+	"LRE-01": Array.from({ length: 30 }).map((_$1, i) => ({
+		day: `Dia ${i + 1}`,
+		expected: Number((180 + i * .8).toFixed(1)),
+		actual: Number((180 + i * .8 + (Math.random() * 4 - 2)).toFixed(1))
+	})),
+	default: Array.from({ length: 30 }).map((_$1, i) => ({
+		day: `Dia ${i + 1}`,
+		expected: Number((200 + i * .8).toFixed(1)),
+		actual: Number((200 + i * .8 + (Math.random() * 4 - 2)).toFixed(1))
+	}))
+};
 const animalData = { "TAG-1234": {
 	id: "TAG-1234",
 	categoria: "Garrote",
@@ -28300,6 +28341,106 @@ const sanitaryEvents = [
 		status: "Concluído",
 		lote: "LEN-02",
 		target: "Bois Terminação"
+	}
+];
+const reproductionForecast = [
+	{
+		id: "P-01",
+		matriz: "V-102",
+		lote: "LCR-02",
+		dataPrevista: "2026-04-15",
+		touro: "T-05",
+		status: "Confirmada"
+	},
+	{
+		id: "P-02",
+		matriz: "V-145",
+		lote: "LCR-02",
+		dataPrevista: "2026-04-18",
+		touro: "IA-Nelore",
+		status: "Confirmada"
+	},
+	{
+		id: "P-03",
+		matriz: "V-088",
+		lote: "LCR-01",
+		dataPrevista: "2026-05-02",
+		touro: "T-02",
+		status: "Atenção"
+	},
+	{
+		id: "P-04",
+		matriz: "V-201",
+		lote: "LCR-04",
+		dataPrevista: "2026-05-10",
+		touro: "IA-Angus",
+		status: "Confirmada"
+	}
+];
+const calendarEvents = [
+	{
+		id: "EV-1",
+		title: "Vacinação Febre Aftosa",
+		date: "2026-03-15",
+		type: "Sanidade",
+		target: "Lote LCR-01",
+		sector: "cria"
+	},
+	{
+		id: "EV-2",
+		title: "Toque de Prenhez",
+		date: "2026-03-20",
+		type: "Manejo",
+		target: "Lote LCR-02",
+		sector: "cria"
+	},
+	{
+		id: "EV-3",
+		title: "Pesagem Trimestral",
+		date: "2026-03-25",
+		type: "Pesagem",
+		target: "Lote LRE-01",
+		sector: "recria"
+	},
+	{
+		id: "EV-4",
+		title: "Adubação Pasto 05",
+		date: "2026-04-05",
+		type: "Manejo de Pasto",
+		target: "Pasto 05",
+		sector: "recria"
+	},
+	{
+		id: "EV-5",
+		title: "Venda Frigorífico",
+		date: "2026-04-10",
+		type: "Abates",
+		target: "Lote LEN-02",
+		sector: "engorda"
+	},
+	{
+		id: "EV-6",
+		title: "Nascimento Esperado (V-102)",
+		date: "2026-04-15",
+		type: "Nascimentos",
+		target: "Matriz V-102",
+		sector: "cria"
+	},
+	{
+		id: "EV-7",
+		title: "Inseminação Artificial (IATF)",
+		date: "2026-04-20",
+		type: "IATF",
+		target: "Lote LCR-01",
+		sector: "cria"
+	},
+	{
+		id: "EV-8",
+		title: "Entrada Confinamento",
+		date: "2026-05-01",
+		type: "Confinamento",
+		target: "Lote LEN-01",
+		sector: "engorda"
 	}
 ];
 const lotPerformanceData = [
@@ -28638,12 +28779,12 @@ var require__Map = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__getNative()(require__root(), "Map");
 }));
 var require__mapCacheClear = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var Hash = require__Hash(), ListCache$3 = require__ListCache(), Map$3 = require__Map();
+	var Hash = require__Hash(), ListCache$3 = require__ListCache(), Map$4 = require__Map();
 	function mapCacheClear$1() {
 		this.size = 0;
 		this.__data__ = {
 			"hash": new Hash(),
-			"map": new (Map$3 || ListCache$3)(),
+			"map": new (Map$4 || ListCache$3)(),
 			"string": new Hash()
 		};
 	}
@@ -31308,13 +31449,13 @@ var require__stackHas = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = stackHas$1;
 }));
 var require__stackSet = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var ListCache$1 = require__ListCache(), Map$2 = require__Map(), MapCache$1 = require__MapCache();
+	var ListCache$1 = require__ListCache(), Map$3 = require__Map(), MapCache$1 = require__MapCache();
 	var LARGE_ARRAY_SIZE$1 = 200;
 	function stackSet$1(key, value) {
 		var data = this.__data__;
 		if (data instanceof ListCache$1) {
 			var pairs = data.__data__;
-			if (!Map$2 || pairs.length < LARGE_ARRAY_SIZE$1 - 1) {
+			if (!Map$3 || pairs.length < LARGE_ARRAY_SIZE$1 - 1) {
 				pairs.push([key, value]);
 				this.size = ++data.size;
 				return this;
@@ -31731,12 +31872,12 @@ var require__WeakMap = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require__getNative()(require__root(), "WeakMap");
 }));
 var require__getTag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var DataView$1 = require__DataView(), Map$1 = require__Map(), Promise$1 = require__Promise(), Set$2 = require__Set(), WeakMap$1 = require__WeakMap(), baseGetTag$2 = require__baseGetTag(), toSource = require__toSource();
+	var DataView$1 = require__DataView(), Map$2 = require__Map(), Promise$1 = require__Promise(), Set$2 = require__Set(), WeakMap$1 = require__WeakMap(), baseGetTag$2 = require__baseGetTag(), toSource = require__toSource();
 	var mapTag = "[object Map]", objectTag$2 = "[object Object]", promiseTag = "[object Promise]", setTag = "[object Set]", weakMapTag = "[object WeakMap]";
 	var dataViewTag = "[object DataView]";
-	var dataViewCtorString = toSource(DataView$1), mapCtorString = toSource(Map$1), promiseCtorString = toSource(Promise$1), setCtorString = toSource(Set$2), weakMapCtorString = toSource(WeakMap$1);
+	var dataViewCtorString = toSource(DataView$1), mapCtorString = toSource(Map$2), promiseCtorString = toSource(Promise$1), setCtorString = toSource(Set$2), weakMapCtorString = toSource(WeakMap$1);
 	var getTag$1 = baseGetTag$2;
-	if (DataView$1 && getTag$1(new DataView$1(/* @__PURE__ */ new ArrayBuffer(1))) != dataViewTag || Map$1 && getTag$1(new Map$1()) != mapTag || Promise$1 && getTag$1(Promise$1.resolve()) != promiseTag || Set$2 && getTag$1(new Set$2()) != setTag || WeakMap$1 && getTag$1(new WeakMap$1()) != weakMapTag) getTag$1 = function(value) {
+	if (DataView$1 && getTag$1(new DataView$1(/* @__PURE__ */ new ArrayBuffer(1))) != dataViewTag || Map$2 && getTag$1(new Map$2()) != mapTag || Promise$1 && getTag$1(Promise$1.resolve()) != promiseTag || Set$2 && getTag$1(new Set$2()) != setTag || WeakMap$1 && getTag$1(new WeakMap$1()) != weakMapTag) getTag$1 = function(value) {
 		var result = baseGetTag$2(value), Ctor = result == objectTag$2 ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
 		if (ctorString) switch (ctorString) {
 			case dataViewCtorString: return dataViewTag;
@@ -51534,255 +51675,6 @@ function Badge({ className, variant, ...props }) {
 		...props
 	});
 }
-var chartConfig = {
-	actual: {
-		label: "Ganho Real (kg)",
-		color: "hsl(var(--primary))"
-	},
-	expected: {
-		label: "Projetado (kg)",
-		color: "hsl(var(--muted-foreground))"
-	}
-};
-function WeightGainChart({ loteId }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "h-[300px] w-full",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
-				data: weightGainData[loteId] || weightGainData["default"],
-				margin: {
-					top: 10,
-					right: 10,
-					left: -20,
-					bottom: 0
-				},
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-						id: "fillActual",
-						x1: "0",
-						y1: "0",
-						x2: "0",
-						y2: "1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-							offset: "5%",
-							stopColor: "var(--color-actual)",
-							stopOpacity: .3
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-							offset: "95%",
-							stopColor: "var(--color-actual)",
-							stopOpacity: 0
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-						id: "fillExpected",
-						x1: "0",
-						y1: "0",
-						x2: "0",
-						y2: "1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-							offset: "5%",
-							stopColor: "var(--color-expected)",
-							stopOpacity: .3
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-							offset: "95%",
-							stopColor: "var(--color-expected)",
-							stopOpacity: 0
-						})]
-					})] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-						strokeDasharray: "3 3",
-						vertical: false,
-						stroke: "hsl(var(--border))"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-						dataKey: "month",
-						tickLine: false,
-						axisLine: false,
-						tickMargin: 12,
-						tick: { fill: "hsl(var(--muted-foreground))" }
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-						tickLine: false,
-						axisLine: false,
-						tickMargin: 12,
-						domain: ["dataMin - 10", "dataMax + 10"],
-						tick: { fill: "hsl(var(--muted-foreground))" }
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-						cursor: false,
-						content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
-						type: "monotone",
-						dataKey: "expected",
-						stroke: "var(--color-expected)",
-						fill: "url(#fillExpected)",
-						strokeWidth: 2,
-						strokeDasharray: "4 4"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
-						type: "monotone",
-						dataKey: "actual",
-						stroke: "var(--color-actual)",
-						fill: "url(#fillActual)",
-						strokeWidth: 2
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) })
-				]
-			})
-		})
-	});
-}
-function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sheet, {
-		open,
-		onOpenChange,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
-			className: "sm:max-w-xl w-[95vw] overflow-y-auto",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, {
-				className: "pb-6 border-b",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetTitle, {
-					className: "text-2xl flex items-center gap-2",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-6 w-6 text-primary" }),
-						"Desempenho: ",
-						loteId
-					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Acompanhamento de ganho de peso real vs projetado com base no plano nutricional." })]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "py-6 space-y-6",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "bg-muted/30 rounded-lg p-4 flex items-start gap-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-5 w-5 text-muted-foreground mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-						className: "font-semibold text-sm",
-						children: "Monitoramento de Nutrição"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-sm text-muted-foreground mt-1",
-						children: "A linha pontilhada representa a meta estipulada para a dieta atual. Desvios significativos podem indicar problemas na pastagem ou deficiência na suplementação."
-					})] })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "rounded-xl border bg-card p-4 shadow-sm",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-						className: "font-medium mb-4 text-sm",
-						children: "Curva de Evolução (Últimos 5 meses)"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WeightGainChart, { loteId: loteId || "" })]
-				})]
-			})]
-		})
-	});
-}
-function Setor() {
-	const { id } = useParams();
-	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
-	const data = sectorData[id];
-	if (!data) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
-		to: "/",
-		replace: true
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-3xl font-bold tracking-tight",
-				children: data.title
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: data.description
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 sm:grid-cols-3",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "bg-primary/5 border-primary/20",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-							className: "flex flex-row items-center justify-between pb-2 space-y-0",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-								className: "text-sm font-medium text-primary",
-								children: "Total Cabeças"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-4 w-4 text-primary" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-2xl font-bold text-primary",
-							children: data.kpis.total
-						}) })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-						className: "flex flex-row items-center justify-between pb-2 space-y-0",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							className: "text-sm font-medium text-muted-foreground",
-							children: data.kpis.labelIndicador
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4 text-muted-foreground" })]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "text-2xl font-bold",
-						children: data.kpis.indicadorPrincipal
-					}) })] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-						className: "flex flex-row items-center justify-between pb-2 space-y-0",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							className: "text-sm font-medium text-muted-foreground",
-							children: "Custo Mensal (Cab)"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-4 w-4 text-muted-foreground" })]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "text-2xl font-bold",
-						children: data.kpis.custoCabeca
-					}) })] })
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Composição de Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-				className: "px-0 sm:px-6",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "overflow-x-auto",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote ID" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-							className: "text-right",
-							children: "Cabeças"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Localização" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status Sanitário" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-							className: "text-right",
-							children: "Desempenho"
-						})
-					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-						className: "cursor-pointer hover:bg-muted/50 transition-colors",
-						onClick: () => setSelectedLote(lote.id),
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-								className: "font-medium text-primary",
-								children: lote.id
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-								className: "text-right",
-								children: lote.cabecas
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.pasto }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-								variant: lote.status === "Saudável" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
-								children: lote.status
-							}) }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-								className: "text-right",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									variant: "ghost",
-									size: "sm",
-									className: "h-8 w-8 p-0 text-muted-foreground hover:text-primary",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-4 w-4" })
-								})
-							})
-						]
-					}, lote.id)) })] })
-				})
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LotPerformanceDrawer, {
-				loteId: selectedLote,
-				open: !!selectedLote,
-				onOpenChange: (open) => !open && setSelectedLote(null)
-			})
-		]
-	});
-}
 var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
 var EVENT_OPTIONS = {
 	bubbles: false,
@@ -52116,6 +52008,524 @@ var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @
 	...props
 }));
 TabsContent.displayName = Content.displayName;
+var chartConfig$1 = {
+	actual: {
+		label: "Ganho Real (kg)",
+		color: "hsl(var(--primary))"
+	},
+	expected: {
+		label: "Projetado (kg)",
+		color: "hsl(var(--muted-foreground))"
+	}
+};
+function WeightGainChart({ loteId }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "h-[300px] w-full",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$1,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+				data: weightGainData[loteId] || weightGainData["default"],
+				margin: {
+					top: 10,
+					right: 10,
+					left: -20,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillActual",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-actual)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-actual)",
+							stopOpacity: 0
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillExpected",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-expected)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-expected)",
+							stopOpacity: 0
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						strokeDasharray: "3 3",
+						vertical: false,
+						stroke: "hsl(var(--border))"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "month",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 12,
+						tick: { fill: "hsl(var(--muted-foreground))" }
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 12,
+						domain: ["dataMin - 10", "dataMax + 10"],
+						tick: { fill: "hsl(var(--muted-foreground))" }
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+						cursor: false,
+						content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "expected",
+						stroke: "var(--color-expected)",
+						fill: "url(#fillExpected)",
+						strokeWidth: 2,
+						strokeDasharray: "4 4"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "actual",
+						stroke: "var(--color-actual)",
+						fill: "url(#fillActual)",
+						strokeWidth: 2
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) })
+				]
+			})
+		})
+	});
+}
+var chartConfig = {
+	actual: {
+		label: "Real Diário (kg)",
+		color: "hsl(var(--primary))"
+	},
+	expected: {
+		label: "Projeção (kg)",
+		color: "hsl(var(--muted-foreground))"
+	}
+};
+function DailyWeightChart({ loteId }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "h-[300px] w-full",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+				data: dailyWeightData[loteId] || dailyWeightData["default"],
+				margin: {
+					top: 10,
+					right: 10,
+					left: -20,
+					bottom: 0
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillActualDaily",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-actual)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-actual)",
+							stopOpacity: 0
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+						id: "fillExpectedDaily",
+						x1: "0",
+						y1: "0",
+						x2: "0",
+						y2: "1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "5%",
+							stopColor: "var(--color-expected)",
+							stopOpacity: .3
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+							offset: "95%",
+							stopColor: "var(--color-expected)",
+							stopOpacity: 0
+						})]
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						strokeDasharray: "3 3",
+						vertical: false,
+						stroke: "hsl(var(--border))"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "day",
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 12,
+						tick: { fill: "hsl(var(--muted-foreground))" },
+						minTickGap: 30
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						tickLine: false,
+						axisLine: false,
+						tickMargin: 12,
+						domain: ["dataMin - 5", "dataMax + 5"],
+						tick: { fill: "hsl(var(--muted-foreground))" }
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+						cursor: false,
+						content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "expected",
+						stroke: "var(--color-expected)",
+						fill: "url(#fillExpectedDaily)",
+						strokeWidth: 2,
+						strokeDasharray: "4 4"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+						type: "monotone",
+						dataKey: "actual",
+						stroke: "var(--color-actual)",
+						fill: "url(#fillActualDaily)",
+						strokeWidth: 2
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) })
+				]
+			})
+		})
+	});
+}
+function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sheet, {
+		open,
+		onOpenChange,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
+			className: "sm:max-w-xl w-[95vw] overflow-y-auto",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, {
+				className: "pb-6 border-b",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetTitle, {
+					className: "text-2xl flex items-center gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-6 w-6 text-primary" }),
+						"Desempenho: ",
+						loteId
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Acompanhamento de ganho de peso real vs projetado com base no plano nutricional." })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "py-6 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "bg-muted/30 rounded-lg p-4 flex items-start gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-5 w-5 text-muted-foreground mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "font-semibold text-sm",
+						children: "Monitoramento de Nutrição"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mt-1",
+						children: "A linha pontilhada representa a meta estipulada para a dieta atual. Desvios significativos podem indicar problemas na pastagem ou deficiência na suplementação."
+					})] })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+					defaultValue: "monthly",
+					className: "w-full",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+							className: "grid w-full grid-cols-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "monthly",
+								children: "Evolução Mensal"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "daily",
+								children: "Projeção Diária"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+							value: "monthly",
+							className: "mt-4 rounded-xl border bg-card p-4 shadow-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+								className: "font-medium mb-4 text-sm",
+								children: "Curva de Evolução (Últimos 5 meses)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WeightGainChart, { loteId: loteId || "" })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+							value: "daily",
+							className: "mt-4 rounded-xl border bg-card p-4 shadow-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+								className: "font-medium mb-4 text-sm",
+								children: "Acompanhamento Diário (Mês Atual)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DailyWeightChart, { loteId: loteId || "" })]
+						})
+					]
+				})]
+			})]
+		})
+	});
+}
+function ReproductionTab() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Previsão de Partos" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "ID Matriz" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data Prevista" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Touro / Sêmen" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+	] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: reproductionForecast.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+			className: "font-medium",
+			children: item.matriz
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.lote }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.dataPrevista }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.touro }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+			variant: item.status === "Confirmada" ? "default" : "secondary",
+			children: item.status
+		}) })
+	] }, item.id)) })] }) })] });
+}
+function SectorCalendarTab({ sectorId }) {
+	const [filterType, setFilterType] = (0, import_react.useState)("Todos");
+	const [dateStart, setDateStart] = (0, import_react.useState)("");
+	const [dateEnd, setDateEnd] = (0, import_react.useState)("");
+	const types = [
+		"Todos",
+		"Nascimentos",
+		"Sanidade",
+		"IATF",
+		"Pesagem",
+		"Confinamento",
+		"Manejo de Pasto",
+		"Balanço",
+		"Vendas",
+		"Abates"
+	];
+	const filtered = calendarEvents.filter((e) => {
+		if (e.sector !== sectorId && sectorId !== "all") return false;
+		if (filterType !== "Todos" && e.type !== filterType) return false;
+		if (dateStart && new Date(e.date) < new Date(dateStart)) return false;
+		if (dateEnd && new Date(e.date) > new Date(dateEnd)) return false;
+		return true;
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+		className: "flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-4",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Eventos e Atividades" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-wrap gap-2 w-full md:w-auto",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+				value: filterType,
+				onValueChange: setFilterType,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+					className: "w-full sm:w-[160px]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Tipo" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: types.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+					value: t,
+					children: t
+				}, t)) })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex gap-2 items-center w-full sm:w-auto",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						type: "date",
+						value: dateStart,
+						onChange: (e) => setDateStart(e.target.value),
+						className: "w-full sm:w-[130px]"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-muted-foreground text-sm",
+						children: "até"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						type: "date",
+						value: dateEnd,
+						onChange: (e) => setDateEnd(e.target.value),
+						className: "w-full sm:w-[130px]"
+					})
+				]
+			})]
+		})]
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Evento" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alvo (Lote/Animal)" })
+	] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: filtered.length > 0 ? filtered.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+			className: "font-medium whitespace-nowrap",
+			children: item.date
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.title }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+			variant: "outline",
+			children: item.type
+		}) }),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+			className: "text-muted-foreground",
+			children: item.target
+		})
+	] }, item.id)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+		colSpan: 4,
+		className: "text-center py-6 text-muted-foreground",
+		children: "Nenhum evento encontrado para os filtros selecionados."
+	}) }) })] }) })] });
+}
+function Setor() {
+	const { id } = useParams();
+	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
+	const data = sectorData[id];
+	if (!data) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
+		to: "/",
+		replace: true
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-3xl font-bold tracking-tight",
+				children: data.title
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: data.description
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+				defaultValue: "overview",
+				className: "space-y-6",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+						className: "flex w-full justify-start overflow-x-auto bg-transparent border-b rounded-none p-0 h-auto gap-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "overview",
+								className: "data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3",
+								children: "Visão Geral & Lotes"
+							}),
+							id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "reproduction",
+								className: "data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3",
+								children: "Previsão de Partos"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "calendar",
+								className: "data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3",
+								children: "Calendário Operacional"
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+						value: "overview",
+						className: "space-y-6 mt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid gap-4 sm:grid-cols-3",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+									className: "bg-primary/5 border-primary/20",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+										className: "flex flex-row items-center justify-between pb-2 space-y-0",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+											className: "text-sm font-medium text-primary",
+											children: "Total Cabeças"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Beef, { className: "h-4 w-4 text-primary" })]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "text-2xl font-bold text-primary",
+										children: data.kpis.total
+									}) })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+									className: "flex flex-row items-center justify-between pb-2 space-y-0",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+										className: "text-sm font-medium text-muted-foreground",
+										children: data.kpis.labelIndicador
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4 text-muted-foreground" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-2xl font-bold",
+									children: data.kpis.indicadorPrincipal
+								}) })] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+									className: "flex flex-row items-center justify-between pb-2 space-y-0",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+										className: "text-sm font-medium text-muted-foreground",
+										children: "Custo Mensal (Cab)"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-4 w-4 text-muted-foreground" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "text-2xl font-bold",
+									children: data.kpis.custoCabeca
+								}) })] })
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Composição de Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "px-0 sm:px-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "overflow-x-auto",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote ID" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Cabeças"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Localização" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status Sanitário" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Desempenho"
+									})
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+									className: "cursor-pointer hover:bg-muted/50 transition-colors",
+									onClick: () => setSelectedLote(lote.id),
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "font-medium text-primary",
+											children: lote.id
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "text-right",
+											children: lote.cabecas
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.pasto }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											variant: lote.status === "Saudável" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
+											children: lote.status
+										}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "text-right",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												variant: "ghost",
+												size: "sm",
+												className: "h-8 w-8 p-0 text-muted-foreground hover:text-primary",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-4 w-4" })
+											})
+										})
+									]
+								}, lote.id)) })] })
+							})
+						})] })]
+					}),
+					id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "reproduction",
+						className: "mt-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReproductionTab, {})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "calendar",
+						className: "mt-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectorCalendarTab, { sectorId: id || "" })
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LotPerformanceDrawer, {
+				loteId: selectedLote,
+				open: !!selectedLote,
+				onOpenChange: (open) => !open && setSelectedLote(null)
+			})
+		]
+	});
+}
 var SWITCH_NAME = "Switch";
 var [createSwitchContext, createSwitchScope] = createContextScope(SWITCH_NAME);
 var [SwitchProvider, useSwitchContext] = createSwitchContext(SWITCH_NAME);
@@ -52351,6 +52761,250 @@ function NotificationPreferences() {
 		})]
 	})] });
 }
+function ManagementTab() {
+	const [pastures, setPastures] = (0, import_react.useState)(pasturesData);
+	const [selectedPasto, setSelectedPasto] = (0, import_react.useState)(pasturesData[0]?.id || null);
+	const [newPastoName, setNewPastoName] = (0, import_react.useState)("");
+	const [newPastoArea, setNewPastoArea] = (0, import_react.useState)("");
+	const [newPastoCultivar, setNewPastoCultivar] = (0, import_react.useState)("");
+	const [isPastoOpen, setIsPastoOpen] = (0, import_react.useState)(false);
+	const [newInvType, setNewInvType] = (0, import_react.useState)("");
+	const [newInvDate, setNewInvDate] = (0, import_react.useState)("");
+	const [newInvDesc, setNewInvDesc] = (0, import_react.useState)("");
+	const [isInvOpen, setIsInvOpen] = (0, import_react.useState)(false);
+	const pasto = pastures.find((p) => p.id === selectedPasto);
+	const handleAddPasto = () => {
+		if (!newPastoName) return;
+		const newPasto = {
+			id: Math.max(...pastures.map((p) => p.id), 0) + 1,
+			nome: newPastoName,
+			area: Number(newPastoArea) || 0,
+			cultivar: newPastoCultivar,
+			estacao: "Águas",
+			lotacaoProjetada: 0,
+			lotacaoExecutada: 0,
+			alturaEntradaAlvo: 0,
+			alturaSaidaAlvo: 0,
+			alturaAtual: 0,
+			pesoMedioAtual: 0,
+			pesoMedioHistorico: 0,
+			status: "Bom",
+			ndvi: 0,
+			interventions: []
+		};
+		setPastures([...pastures, newPasto]);
+		setIsPastoOpen(false);
+		setNewPastoName("");
+		setNewPastoArea("");
+		setNewPastoCultivar("");
+	};
+	const handleAddInv = () => {
+		if (!pasto || !newInvType) return;
+		const newInv = {
+			id: `I-${Date.now()}`,
+			data: newInvDate || (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+			tipo: newInvType,
+			descricao: newInvDesc
+		};
+		setPastures(pastures.map((p) => p.id === pasto.id ? {
+			...p,
+			interventions: [newInv, ...p.interventions || []]
+		} : p));
+		setIsInvOpen(false);
+		setNewInvType("");
+		setNewInvDate("");
+		setNewInvDesc("");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "grid grid-cols-1 md:grid-cols-3 gap-6",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+			className: "md:col-span-1 flex flex-col min-h-[500px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between py-4 border-b",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "text-lg flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "w-5 h-5" }), " Áreas"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+					open: isPastoOpen,
+					onOpenChange: setIsPastoOpen,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							size: "sm",
+							variant: "outline",
+							className: "h-8 w-8 p-0",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" })
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Novo Pasto" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4 py-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									value: newPastoName,
+									onChange: (e) => setNewPastoName(e.target.value)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Cultivar (Capim)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									value: newPastoCultivar,
+									onChange: (e) => setNewPastoCultivar(e.target.value)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Área (ha)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "number",
+									value: newPastoArea,
+									onChange: (e) => setNewPastoArea(e.target.value)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleAddPasto,
+								className: "w-full",
+								children: "Salvar Pasto"
+							})
+						]
+					})] })]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+				className: "flex-1 overflow-y-auto p-0",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex flex-col",
+					children: pastures.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						onClick: () => setSelectedPasto(p.id),
+						className: cn("px-4 py-3 text-left hover:bg-muted/50 transition-colors border-b cursor-pointer flex justify-between group", selectedPasto === p.id && "bg-muted"),
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "font-medium text-sm",
+							children: p.nome
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-xs text-muted-foreground",
+							children: [
+								p.cultivar,
+								" • ",
+								p.area,
+								" ha"
+							]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							className: "h-6 w-6 opacity-0 group-hover:opacity-100",
+							onClick: (e) => {
+								e.stopPropagation();
+								setPastures(pastures.filter((x$2) => x$2.id !== p.id));
+								if (selectedPasto === p.id) setSelectedPasto(null);
+							},
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-3 w-3 text-destructive" })
+						})]
+					}, p.id))
+				})
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+			className: "md:col-span-2 flex flex-col min-h-[500px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-row items-center justify-between py-4 border-b",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "text-lg",
+					children: ["Intervenções: ", pasto?.nome || "Selecione um pasto"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+					open: isInvOpen,
+					onOpenChange: setIsInvOpen,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							size: "sm",
+							className: "gap-2",
+							disabled: !pasto,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Nova Intervenção"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Registrar Manejo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4 py-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select$1, {
+									value: newInvType,
+									onValueChange: setNewInvType,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Herbicida",
+											children: "Herbicida"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Inseticida",
+											children: "Inseticida"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Correção de Solo",
+											children: "Correção de Solo"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Adubação",
+											children: "Adubação"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Reforma Geral",
+											children: "Reforma Geral"
+										})
+									] })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "date",
+									value: newInvDate,
+									onChange: (e) => setNewInvDate(e.target.value)
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Descrição" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									value: newInvDesc,
+									onChange: (e) => setNewInvDesc(e.target.value),
+									placeholder: "Detalhes do insumo e dosagem"
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleAddInv,
+								className: "w-full",
+								children: "Salvar Intervenção"
+							})
+						]
+					})] })]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+				className: "flex-1 overflow-auto p-0",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "pl-6",
+						children: "Data"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição" })
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [pasto?.interventions?.map((inv) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "pl-6 whitespace-nowrap",
+						children: inv.data
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						variant: "outline",
+						children: inv.tipo
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-muted-foreground w-full",
+						children: inv.descricao
+					})
+				] }, inv.id)), (!pasto?.interventions || pasto.interventions.length === 0) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 3,
+					className: "text-center text-muted-foreground py-12",
+					children: "Nenhuma intervenção registrada neste pasto."
+				}) })] })] })
+			})]
+		})]
+	});
+}
 function Pastos() {
 	const { toast: toast$2 } = useToast();
 	const handleSync = () => {
@@ -52386,14 +53040,21 @@ function Pastos() {
 			className: "space-y-6",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "mb-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "inventario",
-						children: "Inventário e Métricas"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "satelite",
-						children: "Satélite (NDVI)"
-					})]
+					className: "mb-2 w-full sm:w-auto overflow-x-auto justify-start",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "inventario",
+							children: "Inventário e Métricas"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "manejo",
+							children: "Manejo e Intervenções"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "satelite",
+							children: "Satélite (NDVI)"
+						})
+					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "inventario",
@@ -52508,6 +53169,11 @@ function Pastos() {
 							}) })] })
 						})
 					})] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "manejo",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManagementTab, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "satelite",
@@ -58095,6 +58761,18 @@ function Sanidade() {
 		})]
 	});
 }
+function Calendario() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+			className: "text-3xl font-bold tracking-tight",
+			children: "Calendário Operacional Mestre"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-1",
+			children: "Gestão centralizada de todas as atividades e eventos da fazenda."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectorCalendarTab, { sectorId: "all" })]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -58159,6 +58837,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sanidade, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/calendario",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendario, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/animal/:id",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalProfile, {})
 				})
@@ -58172,4 +58854,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-D34CfzPa.js.map
+//# sourceMappingURL=index-jSMSOcF4.js.map

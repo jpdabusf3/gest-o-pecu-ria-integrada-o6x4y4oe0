@@ -173,6 +173,15 @@ export const pasturesData = [
     pesoMedioHistorico: 205,
     status: 'Bom',
     ndvi: 0.75,
+    interventions: [
+      { id: 'I-1', data: '2025-10-15', tipo: 'Adubação', descricao: 'NPK 20-05-20, 200kg/ha' },
+      {
+        id: 'I-2',
+        data: '2025-11-20',
+        tipo: 'Herbicida',
+        descricao: 'Aplicação foliar contra plantas daninhas',
+      },
+    ],
   },
   {
     id: 2,
@@ -189,6 +198,7 @@ export const pasturesData = [
     pesoMedioHistorico: 295,
     status: 'Alerta',
     ndvi: 0.45,
+    interventions: [],
   },
   {
     id: 3,
@@ -205,6 +215,7 @@ export const pasturesData = [
     pesoMedioHistorico: 0,
     status: 'Vedado',
     ndvi: 0.82,
+    interventions: [],
   },
   {
     id: 4,
@@ -221,6 +232,7 @@ export const pasturesData = [
     pesoMedioHistorico: 180,
     status: 'Bom',
     ndvi: 0.68,
+    interventions: [],
   },
   {
     id: 5,
@@ -237,6 +249,7 @@ export const pasturesData = [
     pesoMedioHistorico: 235,
     status: 'Bom',
     ndvi: 0.7,
+    interventions: [],
   },
 ]
 
@@ -390,6 +403,19 @@ export const weightGainData: Record<string, any[]> = {
   ],
 }
 
+export const dailyWeightData: Record<string, any[]> = {
+  'LRE-01': Array.from({ length: 30 }).map((_, i) => ({
+    day: `Dia ${i + 1}`,
+    expected: Number((180 + i * 0.8).toFixed(1)),
+    actual: Number((180 + i * 0.8 + (Math.random() * 4 - 2)).toFixed(1)),
+  })),
+  default: Array.from({ length: 30 }).map((_, i) => ({
+    day: `Dia ${i + 1}`,
+    expected: Number((200 + i * 0.8).toFixed(1)),
+    actual: Number((200 + i * 0.8 + (Math.random() * 4 - 2)).toFixed(1)),
+  })),
+}
+
 export const animalData: Record<string, any> = {
   'TAG-1234': {
     id: 'TAG-1234',
@@ -442,6 +468,108 @@ export const sanitaryEvents = [
     status: 'Concluído',
     lote: 'LEN-02',
     target: 'Bois Terminação',
+  },
+]
+
+export const reproductionForecast = [
+  {
+    id: 'P-01',
+    matriz: 'V-102',
+    lote: 'LCR-02',
+    dataPrevista: '2026-04-15',
+    touro: 'T-05',
+    status: 'Confirmada',
+  },
+  {
+    id: 'P-02',
+    matriz: 'V-145',
+    lote: 'LCR-02',
+    dataPrevista: '2026-04-18',
+    touro: 'IA-Nelore',
+    status: 'Confirmada',
+  },
+  {
+    id: 'P-03',
+    matriz: 'V-088',
+    lote: 'LCR-01',
+    dataPrevista: '2026-05-02',
+    touro: 'T-02',
+    status: 'Atenção',
+  },
+  {
+    id: 'P-04',
+    matriz: 'V-201',
+    lote: 'LCR-04',
+    dataPrevista: '2026-05-10',
+    touro: 'IA-Angus',
+    status: 'Confirmada',
+  },
+]
+
+export const calendarEvents = [
+  {
+    id: 'EV-1',
+    title: 'Vacinação Febre Aftosa',
+    date: '2026-03-15',
+    type: 'Sanidade',
+    target: 'Lote LCR-01',
+    sector: 'cria',
+  },
+  {
+    id: 'EV-2',
+    title: 'Toque de Prenhez',
+    date: '2026-03-20',
+    type: 'Manejo',
+    target: 'Lote LCR-02',
+    sector: 'cria',
+  },
+  {
+    id: 'EV-3',
+    title: 'Pesagem Trimestral',
+    date: '2026-03-25',
+    type: 'Pesagem',
+    target: 'Lote LRE-01',
+    sector: 'recria',
+  },
+  {
+    id: 'EV-4',
+    title: 'Adubação Pasto 05',
+    date: '2026-04-05',
+    type: 'Manejo de Pasto',
+    target: 'Pasto 05',
+    sector: 'recria',
+  },
+  {
+    id: 'EV-5',
+    title: 'Venda Frigorífico',
+    date: '2026-04-10',
+    type: 'Abates',
+    target: 'Lote LEN-02',
+    sector: 'engorda',
+  },
+  {
+    id: 'EV-6',
+    title: 'Nascimento Esperado (V-102)',
+    date: '2026-04-15',
+    type: 'Nascimentos',
+    target: 'Matriz V-102',
+    sector: 'cria',
+  },
+  {
+    id: 'EV-7',
+    title: 'Inseminação Artificial (IATF)',
+    date: '2026-04-20',
+    type: 'IATF',
+    target: 'Lote LCR-01',
+    sector: 'cria',
+  },
+  {
+    id: 'EV-8',
+    title: 'Entrada Confinamento',
+    date: '2026-05-01',
+    type: 'Confinamento',
+    target: 'Lote LEN-01',
+    sector: 'engorda',
   },
 ]
 

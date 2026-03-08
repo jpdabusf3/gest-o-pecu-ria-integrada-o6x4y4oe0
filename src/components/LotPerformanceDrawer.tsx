@@ -5,7 +5,9 @@ import {
   SheetTitle,
   SheetDescription,
 } from '@/components/ui/sheet'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { WeightGainChart } from './charts/WeightGainChart'
+import { DailyWeightChart } from './charts/DailyWeightChart'
 import { MapPin, TrendingUp } from 'lucide-react'
 
 export function LotPerformanceDrawer({
@@ -41,10 +43,20 @@ export function LotPerformanceDrawer({
             </div>
           </div>
 
-          <div className="rounded-xl border bg-card p-4 shadow-sm">
-            <h3 className="font-medium mb-4 text-sm">Curva de Evolução (Últimos 5 meses)</h3>
-            <WeightGainChart loteId={loteId || ''} />
-          </div>
+          <Tabs defaultValue="monthly" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="monthly">Evolução Mensal</TabsTrigger>
+              <TabsTrigger value="daily">Projeção Diária</TabsTrigger>
+            </TabsList>
+            <TabsContent value="monthly" className="mt-4 rounded-xl border bg-card p-4 shadow-sm">
+              <h3 className="font-medium mb-4 text-sm">Curva de Evolução (Últimos 5 meses)</h3>
+              <WeightGainChart loteId={loteId || ''} />
+            </TabsContent>
+            <TabsContent value="daily" className="mt-4 rounded-xl border bg-card p-4 shadow-sm">
+              <h3 className="font-medium mb-4 text-sm">Acompanhamento Diário (Mês Atual)</h3>
+              <DailyWeightChart loteId={loteId || ''} />
+            </TabsContent>
+          </Tabs>
         </div>
       </SheetContent>
     </Sheet>
