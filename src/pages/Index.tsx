@@ -105,7 +105,9 @@ export default function Index() {
     <div className="space-y-6 pb-20 sm:pb-6 animate-fade-in-up">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard Geral</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">
+            Pecuária Inteligente F3
+          </h2>
           <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
         </div>
         <Button asChild className="gap-2 w-full sm:w-auto shadow-sm">

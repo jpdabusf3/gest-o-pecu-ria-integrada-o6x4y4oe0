@@ -25,6 +25,7 @@ import ProjecaoVendas from './pages/ProjecaoVendas'
 import Equipe from './pages/Equipe'
 import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
+import Fazendas from './pages/Fazendas'
 import BI from './pages/BI'
 import NotFound from './pages/NotFound'
 
@@ -58,6 +59,7 @@ const App = () => (
                       <Route path="/equipe" element={<Equipe />} />
                       <Route path="/tarefas" element={<Tarefas />} />
                       <Route path="/administrativo" element={<Administrativo />} />
+                      <Route path="/fazendas" element={<Fazendas />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>

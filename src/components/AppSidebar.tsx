@@ -27,6 +27,7 @@ import {
   Building2,
   Truck,
   CheckSquare,
+  MapPinned,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -47,6 +48,7 @@ const navItems = [
   { title: 'Relatórios', icon: FileText, url: '/relatorios' },
   { title: 'Equipe & Desempenho', icon: ShieldCheck, url: '/equipe' },
   { title: 'Administrativo', icon: Building2, url: '/administrativo' },
+  { title: 'Cadastro de Fazendas', icon: MapPinned, url: '/fazendas' },
 ]
 
 export function AppSidebar() {
@@ -65,8 +67,8 @@ export function AppSidebar() {
     <Sidebar variant="inset" className="border-r border-sidebar-border">
       <SidebarHeader className="h-16 flex items-center justify-center border-b border-sidebar-border/50">
         <div className="flex items-center gap-2 px-2 w-full text-sidebar-primary">
-          <Tractor className="h-6 w-6" />
-          <span className="font-bold text-lg tracking-tight truncate">GPI Agro</span>
+          <Tractor className="h-6 w-6 shrink-0" />
+          <span className="font-bold text-lg tracking-tight truncate">Pecuária Inteligente F3</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

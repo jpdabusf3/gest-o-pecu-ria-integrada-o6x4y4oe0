@@ -19595,6 +19595,22 @@ var MapPin = createLucideIcon("map-pin", [["path", {
 	r: "3",
 	key: "ilqhr7"
 }]]);
+var MapPinned = createLucideIcon("map-pinned", [
+	["path", {
+		d: "M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0",
+		key: "11u0oz"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "8",
+		r: "2",
+		key: "1822b1"
+	}],
+	["path", {
+		d: "M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712",
+		key: "q8zwxj"
+	}]
+]);
 var Map$1 = createLucideIcon("map", [
 	["path", {
 		d: "M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z",
@@ -28754,6 +28770,11 @@ var navItems = [
 		title: "Administrativo",
 		icon: Building2,
 		url: "/administrativo"
+	},
+	{
+		title: "Cadastro de Fazendas",
+		icon: MapPinned,
+		url: "/fazendas"
 	}
 ];
 function AppSidebar() {
@@ -28775,9 +28796,9 @@ function AppSidebar() {
 			className: "h-16 flex items-center justify-center border-b border-sidebar-border/50",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex items-center gap-2 px-2 w-full text-sidebar-primary",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tractor, { className: "h-6 w-6" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tractor, { className: "h-6 w-6 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 					className: "font-bold text-lg tracking-tight truncate",
-					children: "GPI Agro"
+					children: "Pecuária Inteligente F3"
 				})]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroup, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, {
@@ -28884,7 +28905,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$43({ inst: {
+			cachedValue = useState$45({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -28898,7 +28919,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$14(function() {
+			useEffect$15(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -28921,7 +28942,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$43 = React$70.useState, useEffect$14 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$45 = React$70.useState, useEffect$15 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -31618,10 +31639,10 @@ function Header() {
 				className: "hidden md:flex flex-col",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 					className: "font-semibold text-lg leading-tight text-primary",
-					children: "AgroGestão"
+					children: "Pecuária Inteligente F3"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 					className: "text-xs text-muted-foreground",
-					children: "Fazenda Boa Esperança"
+					children: "Gestão Central"
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -55810,7 +55831,7 @@ function Index() {
 				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 					className: "text-3xl font-bold tracking-tight text-foreground",
-					children: "Dashboard Geral"
+					children: "Pecuária Inteligente F3"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
 					children: "Visão consolidada da operação agropecuária."
@@ -68127,6 +68148,280 @@ function Tarefas() {
 		]
 	});
 }
+function FarmFormModal({ onSave }) {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const [sistemas, setSistemas] = (0, import_react.useState)([]);
+	const [atividades, setAtividades] = (0, import_react.useState)([]);
+	const [arrendamento, setArrendamento] = (0, import_react.useState)(false);
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const fd = new FormData(e.currentTarget);
+		onSave({
+			id: crypto.randomUUID(),
+			nome: fd.get("nome"),
+			proprietario: fd.get("proprietario"),
+			localizacao: fd.get("localizacao"),
+			area: Number(fd.get("area")),
+			rebanho: Number(fd.get("rebanho")),
+			sistemas,
+			atividades,
+			arrendamento
+		});
+		toast$2({
+			title: "Fazenda registrada",
+			description: "Os dados da propriedade foram salvos."
+		});
+		setOpen(false);
+		setSistemas([]);
+		setAtividades([]);
+		setArrendamento(false);
+	};
+	const toggleArray = (arr, setArr, val) => {
+		setArr(arr.includes(val) ? arr.filter((x$2) => x$2 !== val) : [...arr, val]);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				className: "gap-2 shadow-sm w-full sm:w-auto",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Registrar Fazenda"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[550px] max-h-[90vh] overflow-y-auto",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Nova Propriedade" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Preencha os dados operacionais e de propriedade da fazenda." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+				onSubmit: handleSubmit,
+				className: "grid gap-5 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid sm:grid-cols-2 gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome da Propriedade *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								name: "nome",
+								required: true,
+								placeholder: "Ex: Fazenda São João"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Proprietário / Grupo *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								name: "proprietario",
+								required: true,
+								placeholder: "Nome do titular"
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Localização *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							name: "localizacao",
+							required: true,
+							placeholder: "Cidade - UF ou Endereço"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-2 gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Área Total (ha) *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								name: "area",
+								type: "number",
+								required: true,
+								placeholder: "1500",
+								min: "1",
+								step: "0.1"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Rebanho Total (Cab) *" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								name: "rebanho",
+								type: "number",
+								required: true,
+								placeholder: "3500",
+								min: "0"
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3 pt-2 border-t",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+							className: "text-base",
+							children: "Sistemas de Produção Integrados"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex gap-6",
+							children: ["ILP", "ILPF"].map((s$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+								className: "flex items-center gap-2 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox, {
+									checked: sistemas.includes(s$1),
+									onCheckedChange: () => toggleArray(sistemas, setSistemas, s$1)
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm font-medium",
+									children: s$1
+								})]
+							}, s$1))
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3 pt-2 border-t",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+							className: "text-base",
+							children: "Atividades Principais"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "grid grid-cols-2 gap-3",
+							children: [
+								"Cria",
+								"Recria",
+								"Engorda",
+								"Ciclo Completo",
+								"Produção de Genética"
+							].map((act) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+								className: "flex items-center gap-2 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox, {
+									checked: atividades.includes(act),
+									onCheckedChange: () => toggleArray(atividades, setAtividades, act)
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm font-medium",
+									children: act
+								})]
+							}, act))
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between border p-4 rounded-lg bg-muted/30 mt-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								className: "text-base",
+								children: "Propriedade Arrendada?"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-muted-foreground",
+								children: "Marque se a fazenda for alugada/arrendada."
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+							checked: arrendamento,
+							onCheckedChange: setArrendamento
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						type: "submit",
+						className: "w-full mt-2",
+						children: "Salvar Registro"
+					})
+				]
+			})]
+		})]
+	});
+}
+function Fazendas() {
+	const [fazendas, setFazendas] = (0, import_react.useState)(() => {
+		const saved = localStorage.getItem("f3_fazendas");
+		return saved ? JSON.parse(saved) : [{
+			id: "1",
+			nome: "Fazenda Boa Esperança",
+			proprietario: "Grupo Agro F3",
+			localizacao: "Ribeirão Preto, SP",
+			area: 1500,
+			rebanho: 3450,
+			sistemas: ["ILP"],
+			arrendamento: false,
+			atividades: ["Ciclo Completo", "Produção de Genética"]
+		}];
+	});
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("f3_fazendas", JSON.stringify(fazendas));
+	}, [fazendas]);
+	const handleAdd = (novaFazenda) => {
+		setFazendas((prev) => [...prev, novaFazenda]);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 pb-20 sm:pb-6 animate-fade-in-up",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-3xl font-bold tracking-tight text-foreground",
+				children: "Cadastro de Fazendas"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Gerencie as propriedades e perfis operacionais do grupo."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FarmFormModal, { onSave: handleAdd })]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "grid gap-4 md:grid-cols-2 lg:grid-cols-3",
+			children: fazendas.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "hover:border-primary/50 transition-colors shadow-sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "pb-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between items-start",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-xl text-primary",
+							children: f.nome
+						}), f.arrendamento && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "secondary",
+							children: "Arrendamento"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, {
+						className: "flex items-center gap-1 mt-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "h-3 w-3" }),
+							" ",
+							f.localizacao
+						]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-2 gap-2 text-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col bg-muted/50 p-2 rounded-md",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-muted-foreground text-xs uppercase",
+								children: "Área Total"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "font-semibold",
+								children: [f.area, " ha"]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col bg-muted/50 p-2 rounded-md",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-muted-foreground text-xs uppercase",
+								children: "Rebanho"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "font-semibold",
+								children: [f.rebanho, " cab"]
+							})]
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2 text-sm text-muted-foreground",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "h-4 w-4" }),
+								" Proprietário:",
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-foreground font-medium",
+									children: f.proprietario
+								})
+							]
+						}), (f.sistemas.length > 0 || f.atividades.length > 0) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "pt-2 flex flex-wrap gap-1",
+							children: [f.sistemas.map((s$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: "outline",
+								className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+								children: s$1
+							}, s$1)), f.atividades.map((a$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: "outline",
+								children: a$1
+							}, a$1))]
+						})]
+					})]
+				})]
+			}, f.id))
+		})]
+	});
+}
 function DynamicBIChart({ m1, m2, data }) {
 	const metric1 = biMetricsList.find((m) => m.id === m1);
 	const metric2 = biMetricsList.find((m) => m.id === m2);
@@ -68496,6 +68791,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/administrativo",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Administrativo, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/fazendas",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Fazendas, {})
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
@@ -68507,4 +68806,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Do-S0WV8.js.map
+//# sourceMappingURL=index-BsgV2K9Z.js.map

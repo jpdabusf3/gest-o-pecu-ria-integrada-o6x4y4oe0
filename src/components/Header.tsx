@@ -48,8 +48,10 @@ export function Header() {
       <div className="flex items-center gap-4">
         <SidebarTrigger className="-ml-2" />
         <div className="hidden md:flex flex-col">
-          <span className="font-semibold text-lg leading-tight text-primary">AgroGestão</span>
-          <span className="text-xs text-muted-foreground">Fazenda Boa Esperança</span>
+          <span className="font-semibold text-lg leading-tight text-primary">
+            Pecuária Inteligente F3
+          </span>
+          <span className="text-xs text-muted-foreground">Gestão Central</span>
         </div>
       </div>
       <div className="flex items-center gap-2 sm:gap-4">
