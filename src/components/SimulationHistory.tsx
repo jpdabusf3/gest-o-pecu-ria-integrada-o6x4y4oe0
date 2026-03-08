@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -13,15 +14,18 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, History } from 'lucide-react'
 import useSimulationStore from '@/stores/useSimulationStore'
 import { SimulationComparison } from './SimulationComparison'
+import { SimulationPrintReport } from './SimulationPrintReport'
+import { ExportMenu } from '@/components/ExportMenu'
+import { downloadCSV } from '@/lib/exportUtils'
 
 export function SimulationHistory() {
   const { simulations, deleteSimulation } = useSimulationStore()
   const [selected, setSelected] = useState<string[]>([])
+  const [isPrinting, setIsPrinting] = useState(false)
 
   const toggleSelect = (id: string) => {
     setSelected((prev) => {
       if (prev.includes(id)) return prev.filter((p) => p !== id)
-      if (prev.length >= 2) return [prev[1], id]
       return [...prev, id]
     })
   }
@@ -31,20 +35,73 @@ export function SimulationHistory() {
     [selected, simulations],
   )
 
+  const handleExportCSV = () => {
+    const dataToExport = selectedSims.length > 0 ? selectedSims : simulations
+    const csvData = dataToExport.map((sim) => ({
+      Data: new Date(sim.date).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      Categoria: sim.category,
+      'Peso Vivo (kg)': sim.weight,
+      'Preço Venda (R$/@)': sim.salesPrice.toFixed(2),
+      'Custo Prod. (R$)': sim.productionCost.toFixed(2),
+      'Lucro Líquido (R$)': sim.profit.toFixed(2),
+      'Margem (%)': sim.margin.toFixed(1),
+    }))
+    downloadCSV(csvData, 'historico_simulacoes')
+  }
+
+  const handleExportPDF = () => {
+    setIsPrinting(true)
+    setTimeout(() => {
+      window.print()
+      setIsPrinting(false)
+    }, 150)
+  }
+
   if (simulations.length === 0) return null
+
+  const dataToPrint = selectedSims.length > 0 ? selectedSims : simulations
 
   return (
     <div className="space-y-6 mt-6 print:hidden animate-fade-in-up">
+      {isPrinting && (
+        <style>
+          {`
+            @media print {
+              #root { display: none !important; }
+              .print-report-container { display: block !important; position: static; width: 100%; }
+              @page { margin: 10mm; }
+              body { background: white; }
+            }
+          `}
+        </style>
+      )}
+
+      {isPrinting &&
+        createPortal(<SimulationPrintReport simulations={dataToPrint} />, document.body)}
+
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
           <div>
             <CardTitle className="flex items-center gap-2 text-lg">
               <History className="h-5 w-5 text-primary" />
               Histórico de Simulações
             </CardTitle>
             <CardDescription>
-              Selecione até 2 simulações para comparar os cenários de margem.
+              Selecione simulações para comparar os cenários de margem ou exportar para PDF.
             </CardDescription>
+          </div>
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <ExportMenu
+              onExportCSV={handleExportCSV}
+              onExportPDF={handleExportPDF}
+              label={selected.length > 0 ? `Exportar (${selected.length})` : 'Exportar Tudo'}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -73,7 +130,6 @@ export function SimulationHistory() {
                       <Checkbox
                         checked={selected.includes(sim.id)}
                         onCheckedChange={() => toggleSelect(sim.id)}
-                        disabled={!selected.includes(sim.id) && selected.length >= 2}
                       />
                     </TableCell>
                     <TableCell className="whitespace-nowrap text-xs text-muted-foreground">

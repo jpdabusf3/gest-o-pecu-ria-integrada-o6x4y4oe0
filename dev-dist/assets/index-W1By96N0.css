@@ -558,6 +558,9 @@ section[aria-label='Notifications alt+T'] {
 .invisible{
   visibility: hidden;
 }
+.static{
+  position: static;
+}
 .fixed{
   position: fixed;
 }
@@ -794,6 +797,9 @@ section[aria-label='Notifications alt+T'] {
 .mt-1\.5{
   margin-top: 0.375rem;
 }
+.mt-12{
+  margin-top: 3rem;
+}
 .mt-2{
   margin-top: 0.5rem;
 }
@@ -802,6 +808,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .mt-4{
   margin-top: 1rem;
+}
+.mt-5{
+  margin-top: 1.25rem;
 }
 .mt-6{
   margin-top: 1.5rem;
@@ -1156,6 +1165,9 @@ section[aria-label='Notifications alt+T'] {
 .max-w-\[120px\]{
   max-width: 120px;
 }
+.max-w-\[210mm\]{
+  max-width: 210mm;
+}
 .max-w-\[400px\]{
   max-width: 400px;
 }
@@ -1308,6 +1320,10 @@ section[aria-label='Notifications alt+T'] {
 .list-none{
   list-style-type: none;
 }
+.break-inside-avoid{
+  -moz-column-break-inside: avoid;
+       break-inside: avoid;
+}
 .grid-cols-1{
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -1440,6 +1456,14 @@ section[aria-label='Notifications alt+T'] {
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
+.space-y-8 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+.self-end{
+  align-self: flex-end;
+}
 .overflow-auto{
   overflow: auto;
 }
@@ -1540,6 +1564,9 @@ section[aria-label='Notifications alt+T'] {
 .border-b{
   border-bottom-width: 1px;
 }
+.border-b-2{
+  border-bottom-width: 2px;
+}
 .border-l{
   border-left-width: 1px;
 }
@@ -1596,6 +1623,14 @@ section[aria-label='Notifications alt+T'] {
 }
 .border-emerald-500\/20{
   border-color: rgb(16 185 129 / 0.2);
+}
+.border-gray-100{
+  --tw-border-opacity: 1;
+  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
+}
+.border-gray-200{
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
 }
 .border-green-200{
   --tw-border-opacity: 1;
@@ -1707,6 +1742,10 @@ section[aria-label='Notifications alt+T'] {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
 }
+.bg-gray-50{
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+}
 .bg-green-100{
   --tw-bg-opacity: 1;
   background-color: rgb(220 252 231 / var(--tw-bg-opacity, 1));
@@ -1771,6 +1810,10 @@ section[aria-label='Notifications alt+T'] {
 .bg-transparent{
   background-color: transparent;
 }
+.bg-white{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
 .bg-white\/20{
   background-color: rgb(255 255 255 / 0.2);
 }
@@ -1818,8 +1861,14 @@ section[aria-label='Notifications alt+T'] {
 .p-4{
   padding: 1rem;
 }
+.p-5{
+  padding: 1.25rem;
+}
 .p-6{
   padding: 1.5rem;
+}
+.p-8{
+  padding: 2rem;
 }
 .p-\[1px\]{
   padding: 1px;
@@ -1982,6 +2031,9 @@ section[aria-label='Notifications alt+T'] {
 .font-mono{
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+.font-sans{
+  font-family: Inter var, SF Pro Display, system-ui, sans-serif;
+}
 .text-2xl{
   font-size: 1.5rem;
   line-height: 2rem;
@@ -2075,6 +2127,10 @@ section[aria-label='Notifications alt+T'] {
   --tw-text-opacity: 1;
   color: rgb(180 83 9 / var(--tw-text-opacity, 1));
 }
+.text-black{
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+}
 .text-blue-500{
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity, 1));
@@ -2127,9 +2183,25 @@ section[aria-label='Notifications alt+T'] {
 .text-foreground\/50{
   color: hsl(var(--foreground) / 0.5);
 }
+.text-gray-400{
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+.text-gray-500{
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
 .text-gray-600{
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+.text-gray-800{
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
+}
+.text-gray-900{
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
 }
 .text-green-600{
   --tw-text-opacity: 1;
@@ -2175,6 +2247,10 @@ section[aria-label='Notifications alt+T'] {
 .text-rose-500{
   --tw-text-opacity: 1;
   color: rgb(244 63 94 / var(--tw-text-opacity, 1));
+}
+.text-rose-600{
+  --tw-text-opacity: 1;
+  color: rgb(225 29 72 / var(--tw-text-opacity, 1));
 }
 .text-secondary-foreground{
   color: hsl(var(--secondary-foreground));
@@ -3495,6 +3571,9 @@ section[aria-label='Notifications alt+T'] {
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
   }
+  .sm\:self-auto{
+    align-self: auto;
+  }
   .sm\:rounded-lg{
     border-radius: var(--radius);
   }
@@ -3676,6 +3755,9 @@ section[aria-label='Notifications alt+T'] {
   }
 }
 @media print{
+  .print\:block{
+    display: block;
+  }
   .print\:hidden{
     display: none;
   }

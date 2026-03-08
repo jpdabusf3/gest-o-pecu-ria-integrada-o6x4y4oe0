@@ -17402,7 +17402,7 @@ function useToast() {
 		})
 	};
 }
-var import_react_dom$6 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var import_react_dom$7 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 typeof window !== "undefined" && window.document && window.document.createElement;
 function composeEventHandlers(originalEventHandler, ourEventHandler, { checkForDefaultPrevented = true } = {}) {
 	return function handleEvent(event) {
@@ -17911,7 +17911,7 @@ var Primitive = [
 	};
 }, {});
 function dispatchDiscreteCustomEvent(target, event) {
-	if (target) import_react_dom$6.flushSync(() => target.dispatchEvent(event));
+	if (target) import_react_dom$7.flushSync(() => target.dispatchEvent(event));
 }
 function useCallbackRef$1(callback) {
 	const callbackRef = import_react.useRef(callback);
@@ -18105,14 +18105,14 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 var Root$12 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
-var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var import_react_dom$6 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PORTAL_NAME$5 = "Portal";
 var Portal$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { container: containerProp, ...portalProps } = props;
 	const [mounted, setMounted] = import_react.useState(false);
 	useLayoutEffect2(() => setMounted(true), []);
 	const container = containerProp || mounted && globalThis?.document?.body;
-	return container ? import_react_dom$5.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
+	return container ? import_react_dom$6.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.div, {
 		...portalProps,
 		ref: forwardedRef
 	}), container) : null;
@@ -18294,7 +18294,7 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 });
 VisuallyHidden.displayName = NAME$4;
 var Root$11 = VisuallyHidden;
-var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$3, useCollection$3, createCollectionScope$3] = createCollection("Toast");
 var [createToastContext, createToastScope] = createContextScope("Toast", [createCollectionScope$3]);
@@ -18590,7 +18590,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToastInteractiveProvider, {
 		scope: __scopeToast,
 		onClose: handleClose,
-		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
+		children: import_react_dom$5.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$3.ItemSlot, {
 			scope: __scopeToast,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$12, {
 				asChild: true,
@@ -21713,7 +21713,7 @@ import_react.memo(({ forcedTheme: e, storageKey: i, attribute: s$1, enableSystem
 		dangerouslySetInnerHTML: { __html: `(${M.toString()})(${p})` }
 	});
 });
-var import_react_dom$3 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 function __insertCSS$1(code) {
 	if (!code || typeof document == "undefined") return;
 	let head = document.head || document.getElementsByTagName("head")[0];
@@ -22458,7 +22458,7 @@ var Toaster$2 = /* @__PURE__ */ import_react.forwardRef(function Toaster$3(props
 				return;
 			}
 			setTimeout(() => {
-				import_react_dom$3.flushSync(() => {
+				import_react_dom$4.flushSync(() => {
 					setToasts((toasts$1) => {
 						const indexOfExistingToast = toasts$1.findIndex((t) => t.id === toast$2.id);
 						if (indexOfExistingToast !== -1) return [
@@ -23896,7 +23896,7 @@ var computePosition = (reference, floating, options$1) => {
 		platform: platformWithCache
 	});
 };
-var import_react_dom$2 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var import_react_dom$3 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var index = typeof document !== "undefined" ? import_react.useLayoutEffect : function noop$3() {};
 function deepEqual$1(a$1, b$1) {
 	if (a$1 === b$1) return true;
@@ -23991,7 +23991,7 @@ function useFloating(options$1) {
 			};
 			if (isMountedRef.current && !deepEqual$1(dataRef.current, fullData)) {
 				dataRef.current = fullData;
-				import_react_dom$2.flushSync(() => {
+				import_react_dom$3.flushSync(() => {
 					setData(fullData);
 				});
 			}
@@ -29082,7 +29082,7 @@ function usePrevious(value) {
 		return ref.current.previous;
 	}, [value]);
 }
-var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var import_react_dom$1 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var OPEN_KEYS = [
 	" ",
 	"Enter",
@@ -29283,7 +29283,7 @@ var SelectContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	}, []);
 	if (!context.open) {
 		const frag = fragment;
-		return frag ? import_react_dom.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContentProvider, {
+		return frag ? import_react_dom$1.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContentProvider, {
 			scope: props.__scopeSelect,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Slot, {
 				scope: props.__scopeSelect,
@@ -29823,7 +29823,7 @@ var SelectItemText = import_react.forwardRef((props, forwardedRef) => {
 		id: itemContext.textId,
 		...itemTextProps,
 		ref: composedRefs
-	}), itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren ? import_react_dom.createPortal(itemTextProps.children, context.valueNode) : null] });
+	}), itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren ? import_react_dom$1.createPortal(itemTextProps.children, context.valueNode) : null] });
 });
 SelectItemText.displayName = ITEM_TEXT_NAME;
 var ITEM_INDICATOR_NAME$1 = "SelectItemIndicator";
@@ -66575,116 +66575,165 @@ function SimulationComparison({ simA, simB }) {
 		})]
 	});
 }
-function SimulationHistory() {
-	const { simulations, deleteSimulation } = useSimulationStore();
-	const [selected, setSelected] = (0, import_react.useState)([]);
-	const toggleSelect = (id) => {
-		setSelected((prev) => {
-			if (prev.includes(id)) return prev.filter((p) => p !== id);
-			if (prev.length >= 2) return [prev[1], id];
-			return [...prev, id];
-		});
-	};
-	const selectedSims = (0, import_react.useMemo)(() => selected.map((id) => simulations.find((s$1) => s$1.id === id)).filter(Boolean), [selected, simulations]);
-	if (simulations.length === 0) return null;
+function SimulationPrintReport({ simulations }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 mt-6 print:hidden animate-fade-in-up",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-			className: "flex flex-row items-center justify-between pb-2",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-				className: "flex items-center gap-2 text-lg",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-5 w-5 text-primary" }), "Histórico de Simulações"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Selecione até 2 simulações para comparar os cenários de margem." })] })
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "overflow-x-auto border rounded-md",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, {
-				className: "bg-muted/50",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "w-[40px] text-center" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Peso (kg)"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Preço Venda"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Custo Prod"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Lucro L."
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-						className: "text-right",
-						children: "Margem"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "text-right w-[60px]" })
-				] })
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: simulations.map((sim) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-				className: selected.includes(sim.id) ? "bg-primary/5" : "",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "text-center",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox, {
-							checked: selected.includes(sim.id),
-							onCheckedChange: () => toggleSelect(sim.id),
-							disabled: !selected.includes(sim.id) && selected.length >= 2
+		className: "print-report-container hidden print:block bg-white text-black p-8 font-sans w-full max-w-[210mm] mx-auto",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "border-b-2 border-primary pb-4 mb-6 flex justify-between items-end",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-3xl font-bold text-gray-900",
+					children: "Relatório de Simulações de Venda"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-gray-500 mt-1",
+					children: "Gestão Pecuária Integrada"
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "text-right",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm font-medium text-gray-600",
+						children: "Data de Emissão"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "text-base font-bold",
+						children: [
+							(/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR"),
+							" ",
+							(/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR")
+						]
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mb-6",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-sm text-gray-600 mb-4",
+					children: "Este relatório apresenta o detalhamento das simulações de vendas gravadas no sistema, incluindo os parâmetros de entrada, cotações de mercado da época e a projeção de margens e lucro líquido."
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-8",
+				children: simulations.map((sim, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "border border-gray-200 rounded-lg p-5 break-inside-avoid shadow-sm",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex justify-between items-center border-b border-gray-100 pb-3 mb-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "text-lg font-bold text-gray-800",
+								children: [
+									"Cenário #",
+									idx + 1,
+									" - ",
+									sim.category
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-sm text-gray-500 font-medium bg-gray-100 px-3 py-1 rounded-full",
+								children: new Date(sim.date).toLocaleDateString("pt-BR", {
+									day: "2-digit",
+									month: "short",
+									year: "numeric",
+									hour: "2-digit",
+									minute: "2-digit"
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-2 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "text-xs font-bold uppercase text-gray-500 mb-2",
+								children: "Parâmetros e Custos"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+								className: "space-y-2 text-sm",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+										className: "flex justify-between",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-gray-600",
+											children: "Peso Vivo Alvo:"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-semibold",
+											children: [sim.weight, " kg"]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+										className: "flex justify-between",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-gray-600",
+											children: "Rendimento Carcaça:"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-semibold",
+											children: [sim.arrobas.toFixed(1), " @"]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+										className: "flex justify-between",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-gray-600",
+											children: "Custo Produção/Cab:"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-semibold text-rose-600",
+											children: ["R$ ", sim.productionCost.toLocaleString("pt-BR", { minimumFractionDigits: 2 })]
+										})]
+									})
+								]
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "text-xs font-bold uppercase text-gray-500 mb-2",
+								children: "Indicadores de Mercado"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+								className: "space-y-2 text-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+									className: "flex justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-gray-600",
+										children: "Preço Venda Utilizado:"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-semibold text-blue-600",
+										children: [
+											"R$ ",
+											sim.salesPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 }),
+											" / @"
+										]
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+									className: "flex justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-gray-600",
+										children: "Receita Bruta Proj:"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "font-semibold",
+										children: ["R$ ", sim.revenue.toLocaleString("pt-BR", { minimumFractionDigits: 2 })]
+									})]
+								})]
+							})] })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-5 pt-4 border-t border-gray-100 flex justify-end gap-6 bg-gray-50 p-4 rounded-md",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-right",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs font-bold uppercase text-gray-500",
+									children: "Margem (%)"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: cn("text-xl font-bold", sim.margin >= 0 ? "text-emerald-600" : "text-rose-600"),
+									children: [sim.margin.toFixed(1), "%"]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-right border-l border-gray-200 pl-6",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs font-bold uppercase text-gray-500",
+									children: "Lucro Líq. / Cab"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: cn("text-2xl font-bold tracking-tight", sim.profit >= 0 ? "text-emerald-600" : "text-rose-600"),
+									children: ["R$ ", sim.profit.toLocaleString("pt-BR", { minimumFractionDigits: 2 })]
+								})]
+							})]
 						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "whitespace-nowrap text-xs text-muted-foreground",
-						children: new Date(sim.date).toLocaleDateString("pt-BR", {
-							day: "2-digit",
-							month: "short",
-							hour: "2-digit",
-							minute: "2-digit"
-						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "font-medium text-xs",
-						children: sim.category
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "text-right text-xs",
-						children: sim.weight
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right text-xs",
-						children: ["R$ ", sim.salesPrice.toFixed(2)]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right text-xs",
-						children: ["R$ ", sim.productionCost.toFixed(2)]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: `text-right font-semibold text-xs ${sim.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
-						children: ["R$ ", sim.profit.toFixed(2)]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: `text-right font-medium text-xs ${sim.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
-						children: [sim.margin.toFixed(1), "%"]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "text-right",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							variant: "ghost",
-							size: "icon",
-							onClick: () => deleteSimulation(sim.id),
-							className: "text-muted-foreground hover:text-destructive h-7 w-7",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
-						})
-					})
-				]
-			}, sim.id)) })] })
-		}) })] }), selectedSims.length === 2 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SimulationComparison, {
-			simA: selectedSims[0],
-			simB: selectedSims[1]
-		})]
+					]
+				}, sim.id))
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-12 text-center text-xs text-gray-400 border-t border-gray-200 pt-4",
+				children: "Este documento é gerado automaticamente pelo sistema Gestão Pecuária Integrada e não possui valor fiscal."
+			})
+		]
 	});
 }
 function downloadCSV(data, filename) {
@@ -66711,6 +66760,162 @@ function downloadCSV(data, filename) {
 }
 function triggerPDFPrint() {
 	window.print();
+}
+var import_react_dom = require_react_dom();
+function SimulationHistory() {
+	const { simulations, deleteSimulation } = useSimulationStore();
+	const [selected, setSelected] = (0, import_react.useState)([]);
+	const [isPrinting, setIsPrinting] = (0, import_react.useState)(false);
+	const toggleSelect = (id) => {
+		setSelected((prev) => {
+			if (prev.includes(id)) return prev.filter((p) => p !== id);
+			return [...prev, id];
+		});
+	};
+	const selectedSims = (0, import_react.useMemo)(() => selected.map((id) => simulations.find((s$1) => s$1.id === id)).filter(Boolean), [selected, simulations]);
+	const handleExportCSV = () => {
+		downloadCSV((selectedSims.length > 0 ? selectedSims : simulations).map((sim) => ({
+			Data: new Date(sim.date).toLocaleDateString("pt-BR", {
+				day: "2-digit",
+				month: "short",
+				year: "numeric",
+				hour: "2-digit",
+				minute: "2-digit"
+			}),
+			Categoria: sim.category,
+			"Peso Vivo (kg)": sim.weight,
+			"Preço Venda (R$/@)": sim.salesPrice.toFixed(2),
+			"Custo Prod. (R$)": sim.productionCost.toFixed(2),
+			"Lucro Líquido (R$)": sim.profit.toFixed(2),
+			"Margem (%)": sim.margin.toFixed(1)
+		})), "historico_simulacoes");
+	};
+	const handleExportPDF = () => {
+		setIsPrinting(true);
+		setTimeout(() => {
+			window.print();
+			setIsPrinting(false);
+		}, 150);
+	};
+	if (simulations.length === 0) return null;
+	const dataToPrint = selectedSims.length > 0 ? selectedSims : simulations;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 mt-6 print:hidden animate-fade-in-up",
+		children: [
+			isPrinting && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
+            @media print {
+              #root { display: none !important; }
+              .print-report-container { display: block !important; position: static; width: 100%; }
+              @page { margin: 10mm; }
+              body { background: white; }
+            }
+          ` }),
+			isPrinting && (0, import_react_dom.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SimulationPrintReport, { simulations: dataToPrint }), document.body),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "flex items-center gap-2 text-lg",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(History, { className: "h-5 w-5 text-primary" }), "Histórico de Simulações"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Selecione simulações para comparar os cenários de margem ou exportar para PDF." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex items-center gap-2 self-end sm:self-auto",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+						onExportCSV: handleExportCSV,
+						onExportPDF: handleExportPDF,
+						label: selected.length > 0 ? `Exportar (${selected.length})` : "Exportar Tudo"
+					})
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto border rounded-md",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, {
+					className: "bg-muted/50",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "w-[40px] text-center" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Peso (kg)"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Preço Venda"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Custo Prod"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Lucro L."
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "text-right",
+							children: "Margem"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "text-right w-[60px]" })
+					] })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: simulations.map((sim) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+					className: selected.includes(sim.id) ? "bg-primary/5" : "",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "text-center",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Checkbox, {
+								checked: selected.includes(sim.id),
+								onCheckedChange: () => toggleSelect(sim.id)
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "whitespace-nowrap text-xs text-muted-foreground",
+							children: new Date(sim.date).toLocaleDateString("pt-BR", {
+								day: "2-digit",
+								month: "short",
+								hour: "2-digit",
+								minute: "2-digit"
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "font-medium text-xs",
+							children: sim.category
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "text-right text-xs",
+							children: sim.weight
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: "text-right text-xs",
+							children: ["R$ ", sim.salesPrice.toFixed(2)]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: "text-right text-xs",
+							children: ["R$ ", sim.productionCost.toFixed(2)]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: `text-right font-semibold text-xs ${sim.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
+							children: ["R$ ", sim.profit.toFixed(2)]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+							className: `text-right font-medium text-xs ${sim.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
+							children: [sim.margin.toFixed(1), "%"]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							className: "text-right",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								variant: "ghost",
+								size: "icon",
+								onClick: () => deleteSimulation(sim.id),
+								className: "text-muted-foreground hover:text-destructive h-7 w-7",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+							})
+						})
+					]
+				}, sim.id)) })] })
+			}) })] }),
+			selectedSims.length === 2 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SimulationComparison, {
+				simA: selectedSims[0],
+				simB: selectedSims[1]
+			})
+		]
+	});
 }
 function ProjecaoVendas() {
 	const { getPrice, b3Data, marketData } = useMarket();
@@ -68212,4 +68417,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BUqgHpYk.js.map
+//# sourceMappingURL=index-DsgSuDmw.js.map
