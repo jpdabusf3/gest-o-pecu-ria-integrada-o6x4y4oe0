@@ -707,6 +707,9 @@ section[aria-label='Notifications alt+T'] {
 .z-\[1\]{
   z-index: 1;
 }
+.col-span-1{
+  grid-column: span 1 / span 1;
+}
 .col-span-2{
   grid-column: span 2 / span 2;
 }
@@ -775,6 +778,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .mb-6{
   margin-bottom: 1.5rem;
+}
+.mb-8{
+  margin-bottom: 2rem;
 }
 .ml-1{
   margin-left: 0.25rem;
@@ -1193,6 +1199,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-w-2xl{
   max-width: 42rem;
+}
+.max-w-3xl{
+  max-width: 48rem;
 }
 .max-w-4xl{
   max-width: 56rem;
@@ -1724,6 +1733,10 @@ section[aria-label='Notifications alt+T'] {
   --tw-border-opacity: 1;
   border-color: rgb(253 186 116 / var(--tw-border-opacity, 1));
 }
+.border-orange-600{
+  --tw-border-opacity: 1;
+  border-color: rgb(234 88 12 / var(--tw-border-opacity, 1));
+}
 .border-primary{
   border-color: hsl(var(--primary));
 }
@@ -1827,6 +1840,9 @@ section[aria-label='Notifications alt+T'] {
   --tw-bg-opacity: 1;
   background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
 }
+.bg-emerald-50\/10{
+  background-color: rgb(236 253 245 / 0.1);
+}
 .bg-emerald-50\/50{
   background-color: rgb(236 253 245 / 0.5);
 }
@@ -1889,6 +1905,13 @@ section[aria-label='Notifications alt+T'] {
 .bg-orange-100{
   --tw-bg-opacity: 1;
   background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-50{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-orange-500\/5{
+  background-color: rgb(249 115 22 / 0.05);
 }
 .bg-popover{
   background-color: hsl(var(--popover));
@@ -2383,6 +2406,10 @@ section[aria-label='Notifications alt+T'] {
 .text-muted-foreground\/70{
   color: hsl(var(--muted-foreground) / 0.7);
 }
+.text-orange-600{
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
 .text-orange-800{
   --tw-text-opacity: 1;
   color: rgb(154 52 18 / var(--tw-text-opacity, 1));
@@ -2447,6 +2474,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .underline{
   text-decoration-line: underline;
+}
+.line-through{
+  text-decoration-line: line-through;
 }
 .underline-offset-4{
   text-underline-offset: 4px;
@@ -2871,6 +2901,10 @@ section[aria-label='Notifications alt+T'] {
 .hover\:bg-destructive\/90:hover{
   background-color: hsl(var(--destructive) / 0.9);
 }
+.hover\:bg-emerald-100:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 250 229 / var(--tw-bg-opacity, 1));
+}
 .hover\:bg-emerald-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
@@ -3226,6 +3260,10 @@ section[aria-label='Notifications alt+T'] {
 }
 .data-\[state\=active\]\:bg-transparent[data-state="active"]{
   background-color: transparent;
+}
+.data-\[state\=checked\]\:bg-emerald-500[data-state="checked"]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
 }
 .data-\[state\=checked\]\:bg-primary[data-state="checked"]{
   background-color: hsl(var(--primary));
@@ -3923,6 +3961,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .md\:grid-cols-4{
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .md\:grid-cols-5{
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .md\:flex-row{
     flex-direction: row;

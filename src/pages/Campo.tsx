@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -20,21 +20,63 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Beef, Plus, Search, CloudOff, RefreshCw } from 'lucide-react'
+import { Switch } from '@/components/ui/switch'
+import {
+  MapPin,
+  Beef,
+  Plus,
+  Search,
+  CloudOff,
+  RefreshCw,
+  CheckCircle2,
+  ListTodo,
+} from 'lucide-react'
 import { sectorData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOffline } from '@/contexts/OfflineContext'
+import { useFarm } from '@/contexts/FarmContext'
 
 export default function Campo() {
   const { toast } = useToast()
   const { user } = useAuth()
   const { isOnline, queue, addAction, isSyncing } = useOffline()
+  const { registerConsumption } = useFarm()
 
   const [selectedLote, setSelectedLote] = useState<any>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [actionType, setActionType] = useState('movimentar')
   const [searchTerm, setSearchTerm] = useState('')
+
+  const [tasks, setTasks] = useState([
+    {
+      id: 'T1',
+      title: 'Fornecer Sal Mineral',
+      lote: 'LCR-01',
+      item: 'N1',
+      amount: 50,
+      done: false,
+      desc: 'Pasto 01',
+    },
+    {
+      id: 'T2',
+      title: 'Vacinação Aftosa',
+      lote: 'LCR-02',
+      item: 'F1',
+      amount: 85,
+      done: false,
+      desc: 'Pasto 03',
+    },
+    {
+      id: 'T3',
+      title: 'Ração Creep Feeding',
+      lote: 'LCR-04',
+      item: 'N2',
+      amount: 120,
+      done: false,
+      desc: 'Pasto 02',
+    },
+  ])
 
   const allLotes = [
     ...sectorData.cria.lotes.map((l) => ({ ...l, setor: 'Cria' })),
@@ -49,7 +91,6 @@ export default function Campo() {
   )
 
   const handleAction = () => {
-    // Offline Data Persistence: Always add to the central queue
     addAction({
       type: 'FIELD_OPERATION',
       payload: { operationType: actionType, lote: selectedLote?.id, operator: user.name },
@@ -57,13 +98,13 @@ export default function Campo() {
 
     if (isOnline) {
       toast({
-        title: 'Registrando...',
-        description: `Sincronizando ação de "${actionType}" com o sistema central.`,
+        title: 'Operação Registrada',
+        description: `Sincronizando ação de "${actionType}" no lote ${selectedLote?.id}.`,
       })
     } else {
       toast({
-        title: 'Salvo na Fila Offline',
-        description: `Ação no lote ${selectedLote?.id} salva localmente. Sincronização automática na restauração de rede.`,
+        title: 'Salvo Offline',
+        description: `Ação salva localmente. Sincronização pendente.`,
         variant: 'secondary',
       })
     }
@@ -73,6 +114,26 @@ export default function Campo() {
   const openDrawer = (lote: any) => {
     setSelectedLote(lote)
     setDrawerOpen(true)
+  }
+
+  const handleTaskToggle = (taskId: string, currentDone: boolean) => {
+    const task = tasks.find((t) => t.id === taskId)
+    if (!task) return
+
+    if (!currentDone) {
+      // Mark as complete and deduct inventory
+      registerConsumption(task.lote, task.item, task.amount)
+      addAction({
+        type: 'COMPLETE_TASK',
+        payload: { taskId: task.id, operator: user.name },
+      })
+      toast({
+        title: 'Tarefa Concluída',
+        description: `Estoque deduzido (${task.amount} unid. de ${task.item}).`,
+      })
+    }
+
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, done: !t.done } : t)))
   }
 
   return (
@@ -99,12 +160,58 @@ export default function Campo() {
             </Badge>
           )}
           {!isOnline && queue.length > 0 && (
-            <span className="text-xs text-white/80 font-medium">
-              {queue.length} ação(ões) pendente(s)
-            </span>
+            <span className="text-xs text-white/80 font-medium">{queue.length} pendente(s)</span>
           )}
         </div>
       </div>
+
+      {/* Tasks Section */}
+      <div className="mb-8">
+        <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2 px-1">
+          <ListTodo className="h-4 w-4" /> Tarefas do Dia
+        </h3>
+        <div className="grid gap-3">
+          {tasks.map((task) => (
+            <Card
+              key={task.id}
+              className={`transition-colors ${task.done ? 'bg-muted/50 border-muted' : 'border-border'}`}
+            >
+              <CardContent className="p-4 flex items-center justify-between">
+                <div className="flex-1 pr-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`font-semibold ${task.done ? 'text-muted-foreground line-through' : ''}`}
+                    >
+                      {task.title}
+                    </span>
+                    {task.done && <CheckCircle2 className="h-4 w-4 text-emerald-500" />}
+                  </div>
+                  <div className="text-xs text-muted-foreground flex gap-2">
+                    <Badge variant="secondary" className="text-[10px]">
+                      {task.lote}
+                    </Badge>
+                    <span>• {task.desc}</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <Switch
+                    checked={task.done}
+                    onCheckedChange={() => handleTaskToggle(task.id, task.done)}
+                    className="data-[state=checked]:bg-emerald-500"
+                  />
+                  <span className="text-[10px] text-muted-foreground font-medium uppercase">
+                    {task.done ? 'Concluído' : 'Pendente'}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-1">
+        Lotes & Manejo Livre
+      </h3>
 
       <div className="relative">
         <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -116,7 +223,7 @@ export default function Campo() {
         />
       </div>
 
-      <div className="grid gap-3 mt-6">
+      <div className="grid gap-3 mt-4">
         {filteredLotes.map((lote) => (
           <Card
             key={lote.id}
@@ -164,19 +271,37 @@ export default function Campo() {
           </DrawerHeader>
           <div className="px-4 py-2 space-y-5 overflow-y-auto">
             <div className="space-y-2">
-              <Label className="text-sm font-semibold">Tipo de Operação Rápida</Label>
+              <Label className="text-sm font-semibold">Tipo de Operação</Label>
               <Select value={actionType} onValueChange={setActionType}>
                 <SelectTrigger className="h-12 bg-muted/50 border-0 focus:ring-1">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="movimentar">Troca de Pasto / Retiro</SelectItem>
+                  <SelectItem value="pesagem">Registro Rápido de Pesagem</SelectItem>
                   <SelectItem value="contagem">Atualizar Contagem (Mortalidade)</SelectItem>
                   <SelectItem value="abate">Saída para Abate / Venda</SelectItem>
                   <SelectItem value="servico">Lançar Manejo Sanitário</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
+            {actionType === 'pesagem' && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 bg-muted/30 p-4 rounded-xl border border-border/50">
+                <div className="space-y-2">
+                  <Label className="text-base">Peso Médio Aferido (kg)</Label>
+                  <Input
+                    type="number"
+                    placeholder="Ex: 245"
+                    className="h-16 text-3xl font-bold text-center"
+                    autoFocus
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground text-center">
+                  O valor inserido atualizará o histórico do lote e recalibrará a IA de projeção.
+                </p>
+              </div>
+            )}
 
             {actionType === 'movimentar' && (
               <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
@@ -242,10 +367,7 @@ export default function Campo() {
               <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
                 <div className="space-y-2">
                   <Label>Descrição do Serviço / Manejo</Label>
-                  <Input
-                    placeholder="Ex: Aplicação de vermífugo, carrapaticida..."
-                    className="h-12"
-                  />
+                  <Input placeholder="Ex: Aplicação de vermífugo..." className="h-12" />
                 </div>
               </div>
             )}

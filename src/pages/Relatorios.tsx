@@ -16,7 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Search, Leaf } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { managementHistory } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { Badge } from '@/components/ui/badge'
@@ -57,18 +59,29 @@ export default function Relatorios() {
     <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Histórico de Manejo</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Relatórios & Histórico</h2>
           <p className="text-muted-foreground mt-1">
-            Registro detalhado de intervenções em pastagens, suplementação e sanidade.
+            Registro detalhado de intervenções operacionais e ferramentas analíticas.
           </p>
         </div>
-        <ExportMenu
-          className="w-full sm:w-auto"
-          label="Exportar Histórico"
-          onExportCSV={handleExportCSV}
-          onExportExcel={handleExportExcel}
-          onExportPDF={triggerPDFPrint}
-        />
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <Link to="/sustentabilidade">
+            <Button
+              variant="secondary"
+              className="gap-2 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200"
+            >
+              <Leaf className="h-4 w-4" />
+              Relatório de Sustentabilidade
+            </Button>
+          </Link>
+          <ExportMenu
+            className="w-full sm:w-auto"
+            label="Exportar Histórico"
+            onExportCSV={handleExportCSV}
+            onExportExcel={handleExportExcel}
+            onExportPDF={triggerPDFPrint}
+          />
+        </div>
       </div>
 
       <Card>

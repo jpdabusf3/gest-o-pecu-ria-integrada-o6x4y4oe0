@@ -31,6 +31,7 @@ import Fazendas from './pages/Fazendas'
 import Animais from './pages/Animais'
 import MapaPropriedade from './pages/MapaPropriedade'
 import BI from './pages/BI'
+import Sustentabilidade from './pages/Sustentabilidade'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -61,6 +62,7 @@ const App = () => (
                       <Route path="/relatorios" element={<Relatorios />} />
                       <Route path="/desempenho" element={<RelatoriosDesempenho />} />
                       <Route path="/bi" element={<BI />} />
+                      <Route path="/sustentabilidade" element={<Sustentabilidade />} />
                       <Route path="/animal/:id" element={<AnimalProfile />} />
                       <Route path="/animais" element={<Animais />} />
                       <Route path="/projecoes" element={<ProjecaoVendas />} />

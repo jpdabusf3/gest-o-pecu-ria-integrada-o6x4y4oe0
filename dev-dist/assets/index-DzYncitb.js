@@ -19203,6 +19203,34 @@ var Calculator = createLucideIcon("calculator", [
 		key: "lrp35t"
 	}]
 ]);
+var CalendarClock = createLucideIcon("calendar-clock", [
+	["path", {
+		d: "M16 14v2.2l1.6 1",
+		key: "fo4ql5"
+	}],
+	["path", {
+		d: "M16 2v4",
+		key: "4m81vk"
+	}],
+	["path", {
+		d: "M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5",
+		key: "1osxxc"
+	}],
+	["path", {
+		d: "M3 10h5",
+		key: "r794hk"
+	}],
+	["path", {
+		d: "M8 2v4",
+		key: "1cmpym"
+	}],
+	["circle", {
+		cx: "16",
+		cy: "16",
+		r: "6",
+		key: "qoo3c4"
+	}]
+]);
 var Calendar = createLucideIcon("calendar", [
 	["path", {
 		d: "M8 2v4",
@@ -19480,6 +19508,10 @@ var Fuel = createLucideIcon("fuel", [
 		key: "1p7c0w"
 	}]
 ]);
+var Funnel = createLucideIcon("funnel", [["path", {
+	d: "M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z",
+	key: "sc7q7i"
+}]]);
 var GitCompare = createLucideIcon("git-compare", [
 	["circle", {
 		cx: "18",
@@ -19573,6 +19605,32 @@ var Leaf = createLucideIcon("leaf", [["path", {
 	d: "M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12",
 	key: "mt58a7"
 }]]);
+var ListTodo = createLucideIcon("list-todo", [
+	["path", {
+		d: "M13 5h8",
+		key: "a7qcls"
+	}],
+	["path", {
+		d: "M13 12h8",
+		key: "h98zly"
+	}],
+	["path", {
+		d: "M13 19h8",
+		key: "c3s6r1"
+	}],
+	["path", {
+		d: "m3 17 2 2 4-4",
+		key: "1jhpwq"
+	}],
+	["rect", {
+		x: "3",
+		y: "4",
+		width: "6",
+		height: "6",
+		rx: "1",
+		key: "cif1o7"
+	}]
+]);
 var LoaderCircle = createLucideIcon("loader-circle", [["path", {
 	d: "M21 12a9 9 0 1 1-6.219-8.56",
 	key: "13zald"
@@ -20081,6 +20139,24 @@ var Trash = createLucideIcon("trash", [
 		key: "e791ji"
 	}]
 ]);
+var Trees = createLucideIcon("trees", [
+	["path", {
+		d: "M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z",
+		key: "1l6gj6"
+	}],
+	["path", {
+		d: "M7 16v6",
+		key: "1a82de"
+	}],
+	["path", {
+		d: "M13 19v3",
+		key: "13sx9i"
+	}],
+	["path", {
+		d: "M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .8-1.7L13 3l-1.4 1.5",
+		key: "1sj9kv"
+	}]
+]);
 var TrendingDown = createLucideIcon("trending-down", [["path", {
 	d: "M16 17h6v-6",
 	key: "t6n2it"
@@ -20358,6 +20434,20 @@ var Wifi = createLucideIcon("wifi", [
 	["path", {
 		d: "M8.5 16.429a5 5 0 0 1 7 0",
 		key: "1bycff"
+	}]
+]);
+var Wind = createLucideIcon("wind", [
+	["path", {
+		d: "M12.8 19.6A2 2 0 1 0 14 16H2",
+		key: "148xed"
+	}],
+	["path", {
+		d: "M17.5 8a2.5 2.5 0 1 1 2 4H2",
+		key: "1u4tom"
+	}],
+	["path", {
+		d: "M9.8 4.4A2 2 0 1 1 11 8H2",
+		key: "75valh"
 	}]
 ]);
 var Wrench = createLucideIcon("wrench", [["path", {
@@ -29425,7 +29515,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$62({ inst: {
+			cachedValue = useState$63({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -29462,7 +29552,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$62 = React$70.useState, useEffect$22 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$63 = React$70.useState, useEffect$22 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -57782,7 +57872,7 @@ function DistributionChart() {
 			fill: colors[index$1 % colors.length]
 		}));
 	}, [animais, periodo]);
-	const chartConfig$2 = {
+	const chartConfig$3 = {
 		value: { label: "Cabeças" },
 		...chartData.reduce((acc, curr) => {
 			acc[curr.name] = {
@@ -57822,7 +57912,7 @@ function DistributionChart() {
 				] })]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig$2,
+			config: chartConfig$3,
 			className: "h-full w-full min-h-[260px] flex-1",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, {
 				margin: {
@@ -58769,7 +58859,7 @@ var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @
 	...props
 }));
 TabsContent.displayName = Content$1.displayName;
-var chartConfig$1 = {
+var chartConfig$2 = {
 	actual: {
 		label: "Ganho Real (kg)",
 		color: "hsl(var(--primary))"
@@ -58789,7 +58879,7 @@ function WeightGainChart({ loteId }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "h-[300px] w-full",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig$1,
+			config: chartConfig$2,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
 				data,
 				margin: {
@@ -58874,7 +58964,7 @@ function WeightGainChart({ loteId }) {
 		})
 	});
 }
-var chartConfig = {
+var chartConfig$1 = {
 	actual: {
 		label: "Real Diário (kg)",
 		color: "hsl(var(--primary))"
@@ -58888,7 +58978,7 @@ function DailyWeightChart({ loteId }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "h-[300px] w-full",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig,
+			config: chartConfig$1,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
 				data: dailyWeightData[loteId] || dailyWeightData["default"],
 				margin: {
@@ -60787,6 +60877,22 @@ function Estoque() {
 	const nutricaoItems = inventory.filter((i) => ["Suplemento", "Concentrado"].includes(i.tipo) || i.id.startsWith("N"));
 	const farmaciaItems = inventory.filter((i) => ["Biológico", "Antiparasitário"].includes(i.tipo) || i.id.startsWith("F"));
 	const almoxarifadoItems = inventory.filter((i) => i.tipo === "Material Cerca" || i.id.startsWith("A"));
+	const forecastedItems = (0, import_react.useMemo)(() => {
+		return inventory.map((item) => {
+			const dailyRate = item.consumoDiario || (item.qtd > 0 ? item.qtd * .02 : 5);
+			const daysRemaining = dailyRate > 0 ? Math.floor(item.qtd / dailyRate) : 999;
+			const depletionDate = /* @__PURE__ */ new Date();
+			depletionDate.setDate(depletionDate.getDate() + daysRemaining);
+			const needsRestock = daysRemaining <= 30;
+			return {
+				...item,
+				dailyRate: Number(dailyRate.toFixed(1)),
+				daysRemaining,
+				depletionDate,
+				needsRestock
+			};
+		}).sort((a$1, b$1) => a$1.daysRemaining - b$1.daysRemaining);
+	}, [inventory]);
 	const renderGenericTable = (items) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "overflow-x-auto",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
@@ -60866,7 +60972,7 @@ function Estoque() {
 				className: "w-full",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-						className: "grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mb-6 h-auto md:h-10",
+						className: "grid w-full grid-cols-2 md:grid-cols-5 max-w-3xl mb-6 h-auto md:h-10",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "nutricao",
@@ -60882,6 +60988,11 @@ function Estoque() {
 								value: "almoxarifado",
 								className: "py-2 md:py-1.5",
 								children: "Almoxarifado"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+								value: "previsao",
+								className: "py-2 md:py-1.5 gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-3 w-3" }), " Previsão"]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "custos",
@@ -60962,6 +61073,77 @@ function Estoque() {
 							className: "pt-6",
 							children: renderGenericTable(almoxarifadoItems)
 						}) })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "previsao",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-5 w-5 text-primary" }), " Módulo de Previsão de Demanda"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise preditiva baseada no histórico de consumo médio dos últimos 6 meses." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "px-0 sm:px-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "overflow-x-auto",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Insumo" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Estoque"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right",
+										children: "Consumo Médio Diário"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-center",
+										children: "Duração Estimada"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data de Reposição Sugerida" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alerta" })
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: forecastedItems.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+									className: item.needsRestock ? "bg-orange-500/5" : "",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "font-medium",
+											children: item.item
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+											className: "text-right font-mono",
+											children: [
+												item.qtd,
+												" ",
+												item.unidade
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+											className: "text-right font-mono text-muted-foreground",
+											children: [
+												item.dailyRate,
+												" ",
+												item.unidade,
+												"/dia"
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "text-center font-medium",
+											children: item.daysRemaining > 365 ? "+1 ano" : `${item.daysRemaining} dias`
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center gap-2 text-sm",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarClock, { className: "h-4 w-4 text-muted-foreground" }), item.depletionDate.toLocaleDateString("pt-BR")]
+										}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.needsRestock ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											variant: "outline",
+											className: "text-orange-600 border-orange-600 bg-orange-50",
+											children: "Alerta de Reposição"
+										}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											variant: "secondary",
+											className: "bg-emerald-50 text-emerald-700 hover:bg-emerald-50",
+											children: "Estoque Seguro"
+										}) })
+									]
+								}, `forecast-${item.id}`)) })] })
+							})
+						})] })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "custos",
@@ -67684,10 +67866,40 @@ function Campo() {
 	const { toast: toast$2 } = useToast();
 	const { user } = useAuth();
 	const { isOnline, queue, addAction, isSyncing } = useOffline();
+	const { registerConsumption } = useFarm();
 	const [selectedLote, setSelectedLote] = (0, import_react.useState)(null);
 	const [drawerOpen, setDrawerOpen] = (0, import_react.useState)(false);
 	const [actionType, setActionType] = (0, import_react.useState)("movimentar");
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
+	const [tasks, setTasks] = (0, import_react.useState)([
+		{
+			id: "T1",
+			title: "Fornecer Sal Mineral",
+			lote: "LCR-01",
+			item: "N1",
+			amount: 50,
+			done: false,
+			desc: "Pasto 01"
+		},
+		{
+			id: "T2",
+			title: "Vacinação Aftosa",
+			lote: "LCR-02",
+			item: "F1",
+			amount: 85,
+			done: false,
+			desc: "Pasto 03"
+		},
+		{
+			id: "T3",
+			title: "Ração Creep Feeding",
+			lote: "LCR-04",
+			item: "N2",
+			amount: 120,
+			done: false,
+			desc: "Pasto 02"
+		}
+	]);
 	const filteredLotes = [
 		...sectorData.cria.lotes.map((l) => ({
 			...l,
@@ -67712,12 +67924,12 @@ function Campo() {
 			}
 		});
 		if (isOnline) toast$2({
-			title: "Registrando...",
-			description: `Sincronizando ação de "${actionType}" com o sistema central.`
+			title: "Operação Registrada",
+			description: `Sincronizando ação de "${actionType}" no lote ${selectedLote?.id}.`
 		});
 		else toast$2({
-			title: "Salvo na Fila Offline",
-			description: `Ação no lote ${selectedLote?.id} salva localmente. Sincronização automática na restauração de rede.`,
+			title: "Salvo Offline",
+			description: `Ação salva localmente. Sincronização pendente.`,
 			variant: "secondary"
 		});
 		setDrawerOpen(false);
@@ -67725,6 +67937,28 @@ function Campo() {
 	const openDrawer = (lote) => {
 		setSelectedLote(lote);
 		setDrawerOpen(true);
+	};
+	const handleTaskToggle = (taskId, currentDone) => {
+		const task = tasks.find((t) => t.id === taskId);
+		if (!task) return;
+		if (!currentDone) {
+			registerConsumption(task.lote, task.item, task.amount);
+			addAction({
+				type: "COMPLETE_TASK",
+				payload: {
+					taskId: task.id,
+					operator: user.name
+				}
+			});
+			toast$2({
+				title: "Tarefa Concluída",
+				description: `Estoque deduzido (${task.amount} unid. de ${task.item}).`
+			});
+		}
+		setTasks((prev) => prev.map((t) => t.id === taskId ? {
+			...t,
+			done: !t.done
+		} : t));
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-4 pb-20 sm:pb-6 max-w-md mx-auto",
@@ -67755,10 +67989,56 @@ function Campo() {
 						}),
 						!isOnline && queue.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 							className: "text-xs text-white/80 font-medium",
-							children: [queue.length, " ação(ões) pendente(s)"]
+							children: [queue.length, " pendente(s)"]
 						})
 					]
 				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mb-8",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+					className: "text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2 px-1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ListTodo, { className: "h-4 w-4" }), " Tarefas do Dia"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "grid gap-3",
+					children: tasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+						className: `transition-colors ${task.done ? "bg-muted/50 border-muted" : "border-border"}`,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "p-4 flex items-center justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex-1 pr-4",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2 mb-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: `font-semibold ${task.done ? "text-muted-foreground line-through" : ""}`,
+										children: task.title
+									}), task.done && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4 text-emerald-500" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-xs text-muted-foreground flex gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										variant: "secondary",
+										className: "text-[10px]",
+										children: task.lote
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["• ", task.desc] })]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col items-center gap-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+									checked: task.done,
+									onCheckedChange: () => handleTaskToggle(task.id, task.done),
+									className: "data-[state=checked]:bg-emerald-500"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] text-muted-foreground font-medium uppercase",
+									children: task.done ? "Concluído" : "Pendente"
+								})]
+							})]
+						})
+					}, task.id))
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				className: "text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-1",
+				children: "Lotes & Manejo Livre"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "relative",
@@ -67770,7 +68050,7 @@ function Campo() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "grid gap-3 mt-6",
+				className: "grid gap-3 mt-4",
 				children: filteredLotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
 					className: "cursor-pointer hover:border-primary transition-colors active:scale-[0.98] rounded-xl shadow-sm border-muted",
 					onClick: () => openDrawer(lote),
@@ -67850,7 +68130,7 @@ function Campo() {
 									className: "space-y-2",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 										className: "text-sm font-semibold",
-										children: "Tipo de Operação Rápida"
+										children: "Tipo de Operação"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 										value: actionType,
 										onValueChange: setActionType,
@@ -67861,6 +68141,10 @@ function Campo() {
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 												value: "movimentar",
 												children: "Troca de Pasto / Retiro"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "pesagem",
+												children: "Registro Rápido de Pesagem"
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 												value: "contagem",
@@ -67875,6 +68159,24 @@ function Campo() {
 												children: "Lançar Manejo Sanitário"
 											})
 										] })]
+									})]
+								}),
+								actionType === "pesagem" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-4 animate-in fade-in slide-in-from-bottom-2 bg-muted/30 p-4 rounded-xl border border-border/50",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+											className: "text-base",
+											children: "Peso Médio Aferido (kg)"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											placeholder: "Ex: 245",
+											className: "h-16 text-3xl font-bold text-center",
+											autoFocus: true
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-muted-foreground text-center",
+										children: "O valor inserido atualizará o histórico do lote e recalibrará a IA de projeção."
 									})]
 								}),
 								actionType === "movimentar" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -67965,7 +68267,7 @@ function Campo() {
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "space-y-2",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Descrição do Serviço / Manejo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-											placeholder: "Ex: Aplicação de vermífugo, carrapaticida...",
+											placeholder: "Ex: Aplicação de vermífugo...",
 											className: "h-12"
 										})]
 									})
@@ -68024,16 +68326,26 @@ function Relatorios() {
 			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 				className: "text-3xl font-bold tracking-tight",
-				children: "Histórico de Manejo"
+				children: "Relatórios & Histórico"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
-				children: "Registro detalhado de intervenções em pastagens, suplementação e sanidade."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
-				className: "w-full sm:w-auto",
-				label: "Exportar Histórico",
-				onExportCSV: handleExportCSV,
-				onExportExcel: handleExportExcel,
-				onExportPDF: triggerPDFPrint
+				children: "Registro detalhado de intervenções operacionais e ferramentas analíticas."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-wrap gap-2 w-full sm:w-auto",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+					to: "/sustentabilidade",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						variant: "secondary",
+						className: "gap-2 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaf, { className: "h-4 w-4" }), "Relatório de Sustentabilidade"]
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+					className: "w-full sm:w-auto",
+					label: "Exportar Histórico",
+					onExportCSV: handleExportCSV,
+					onExportExcel: handleExportExcel,
+					onExportPDF: triggerPDFPrint
+				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 			className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
@@ -68668,7 +68980,7 @@ function MarketTrendsChart() {
 		const months = parseInt(period);
 		return historicalMarketData.slice(-months);
 	}, [period]);
-	const chartConfig$2 = {
+	const chartConfig$3 = {
 		sp: {
 			label: "SP (Datagro)",
 			color: "hsl(var(--chart-1))"
@@ -68738,7 +69050,7 @@ function MarketTrendsChart() {
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "h-[350px] w-full",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-			config: chartConfig$2,
+			config: chartConfig$3,
 			className: "h-full w-full",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
 				data: chartData,
@@ -73663,7 +73975,7 @@ function MapaPropriedade() {
 function DynamicBIChart({ m1, m2, data }) {
 	const metric1 = biMetricsList.find((m) => m.id === m1);
 	const metric2 = biMetricsList.find((m) => m.id === m2);
-	const chartConfig$2 = (0, import_react.useMemo)(() => {
+	const chartConfig$3 = (0, import_react.useMemo)(() => {
 		if (!metric1 || !metric2) return {};
 		return {
 			[m1]: {
@@ -73683,7 +73995,7 @@ function DynamicBIChart({ m1, m2, data }) {
 	]);
 	if (!metric1 || !metric2 || !data || data.length === 0) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-		config: chartConfig$2,
+		config: chartConfig$3,
 		className: "h-full w-full min-h-[400px]",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ComposedChart, {
 			data,
@@ -74015,6 +74327,303 @@ function BI() {
 		]
 	});
 }
+var historicalEmissions = [
+	{
+		month: "Out/25",
+		emissions: 14200,
+		benchmark: 15e3
+	},
+	{
+		month: "Nov/25",
+		emissions: 13800,
+		benchmark: 15e3
+	},
+	{
+		month: "Dez/25",
+		emissions: 14500,
+		benchmark: 15e3
+	},
+	{
+		month: "Jan/26",
+		emissions: 13200,
+		benchmark: 14800
+	},
+	{
+		month: "Fev/26",
+		emissions: 12900,
+		benchmark: 14800
+	},
+	{
+		month: "Mar/26",
+		emissions: 12500,
+		benchmark: 14800
+	}
+];
+var lotEmissionsData = [
+	{
+		id: "LCR-01",
+		pasto: "Pasto 01",
+		cultivar: "Brachiaria",
+		dias: 45,
+		fator: 1.2,
+		animais: 120
+	},
+	{
+		id: "LCR-02",
+		pasto: "Pasto 03",
+		cultivar: "Brachiaria",
+		dias: 60,
+		fator: 1.2,
+		animais: 85
+	},
+	{
+		id: "LRE-01",
+		pasto: "Pasto 05",
+		cultivar: "Andropogon",
+		dias: 30,
+		fator: 1.5,
+		animais: 220
+	},
+	{
+		id: "LEN-02",
+		pasto: "Confinamento",
+		cultivar: "N/A",
+		dias: 90,
+		fator: 2.1,
+		animais: 200
+	}
+];
+var chartConfig = {
+	emissions: {
+		label: "Emissões Calculadas",
+		color: "hsl(var(--chart-2))"
+	},
+	benchmark: {
+		label: "Limite Benchmark",
+		color: "hsl(var(--chart-5))"
+	}
+};
+function Sustentabilidade() {
+	const [filterArea, setFilterArea] = (0, import_react.useState)("todos");
+	const processedData = lotEmissionsData.map((lote) => ({
+		...lote,
+		totalEmissions: Math.round(lote.dias * lote.fator * lote.animais)
+	})).filter((l) => filterArea === "todos" || l.pasto.includes(filterArea));
+	const totalCurrentEmissions = processedData.reduce((acc, curr) => acc + curr.totalEmissions, 0);
+	const totalAnimals = processedData.reduce((acc, curr) => acc + curr.animais, 0);
+	const avgPerAnimal = totalAnimals > 0 ? (totalCurrentEmissions / totalAnimals).toFixed(1) : 0;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-fade-in-up pb-8",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaf, { className: "h-8 w-8 text-emerald-500" }), "Relatório de Sustentabilidade"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-1",
+				children: "Monitoramento de pegada de carbono, emissões de GEE e adequação a certificações ambientais."
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-4 md:grid-cols-3",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "border-emerald-500/20 bg-emerald-50/10",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "flex flex-row items-center justify-between space-y-0 pb-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+								className: "text-sm font-medium",
+								children: "Emissões Totais (Período)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wind, { className: "h-4 w-4 text-emerald-600" })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-2xl font-bold",
+							children: [totalCurrentEmissions.toLocaleString("pt-BR"), " kg CO₂e"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground mt-1",
+							children: "Baseado nos lotes selecionados"
+						})] })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+						className: "flex flex-row items-center justify-between space-y-0 pb-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium",
+							children: "Média por Animal"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sprout, { className: "h-4 w-4 text-muted-foreground" })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-2xl font-bold",
+						children: [avgPerAnimal, " kg CO₂e/cab"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-muted-foreground mt-1",
+						children: "-5% em relação ao semestre anterior"
+					})] })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+						className: "flex flex-row items-center justify-between space-y-0 pb-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-sm font-medium",
+							children: "Status de Certificação"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trees, { className: "h-4 w-4 text-muted-foreground" })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-2xl font-bold text-emerald-600",
+						children: "Adequado"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-muted-foreground mt-1",
+						children: "Dentro dos limites Carne Carbono Neutro"
+					})] })] })
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-6 md:grid-cols-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "col-span-1 md:col-span-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Histórico de Emissões vs Benchmark" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Comparativo mensal de emissões da fazenda em relação aos limites de certificação." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+						config: chartConfig,
+						className: "h-[300px] w-full",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
+							accessibilityLayer: true,
+							data: historicalEmissions,
+							margin: {
+								top: 10,
+								right: 10,
+								left: 0,
+								bottom: 0
+							},
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+									vertical: false,
+									strokeDasharray: "3 3",
+									className: "stroke-muted"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+									dataKey: "month",
+									tickLine: false,
+									tickMargin: 10,
+									axisLine: false
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+									tickFormatter: (value) => `${value / 1e3}k`,
+									tickLine: false,
+									axisLine: false
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+									cursor: false,
+									content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+									dataKey: "emissions",
+									fill: "var(--color-emissions)",
+									radius: [
+										4,
+										4,
+										0,
+										0
+									],
+									maxBarSize: 50
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+									dataKey: "benchmark",
+									fill: "var(--color-benchmark)",
+									radius: [
+										4,
+										4,
+										0,
+										0
+									],
+									maxBarSize: 50,
+									opacity: .5
+								})
+							]
+						})
+					}) })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "col-span-1 md:col-span-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+						className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Cálculo de Pegada por Lote / Pasto" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Fórmula: (Dias de Pastoreio) × (Fator de Emissão do Cultivar) × (Nº Cabeças)" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2 w-full sm:w-auto",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Funnel, { className: "h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+								value: filterArea,
+								onValueChange: setFilterArea,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+									className: "w-[180px]",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Filtrar Área" })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "todos",
+										children: "Todas as Áreas"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "Pasto",
+										children: "Pastagens Abertas"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "Confinamento",
+										children: "Confinamentos"
+									})
+								] })]
+							})]
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "px-0 sm:px-6",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "overflow-x-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Área / Cultivar" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Dias de Ocupação"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Fator de Emissão"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Qtd Animais"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right font-bold text-primary",
+									children: "Total Estimado (kg CO₂e)"
+								})
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [processedData.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "font-medium",
+									children: row.id
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [
+									row.pasto,
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-muted-foreground block text-xs",
+										children: row.cultivar
+									})
+								] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right",
+									children: row.dias
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right",
+									children: row.fator
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right",
+									children: row.animais
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+									className: "text-right font-bold text-emerald-600",
+									children: row.totalEmissions.toLocaleString("pt-BR")
+								})
+							] }, row.id)), processedData.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								colSpan: 6,
+								className: "text-center h-24 text-muted-foreground",
+								children: "Nenhum registro para o filtro selecionado."
+							}) })] })] })
+						})
+					})]
+				})]
+			})
+		]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -74177,6 +74786,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BI, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/sustentabilidade",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sustentabilidade, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/animal/:id",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnimalProfile, {})
 				}),
@@ -74222,4 +74835,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BHm0d2dg.js.map
+//# sourceMappingURL=index-DzYncitb.js.map
