@@ -26696,7 +26696,7 @@ function NotificationProvider({ children }) {
 		else if ((notif.type === "task" || notif.type === "goal") && prefs.notifyManagement) shouldSend = true;
 		else if (notif.type === "alert" && prefs.notifyManagement) shouldSend = true;
 		if (shouldSend) {
-			if (prefs.pushEnabled && "serviceWorker" in navigator && Notification.permission === "granted") navigator.serviceWorker.ready.then((reg) => {
+			if (prefs.pushEnabled && "serviceWorker" in navigator && "Notification" in window && Notification.permission === "granted") navigator.serviceWorker.ready.then((reg) => {
 				reg.showNotification(notif.title, {
 					body: notif.message,
 					icon: "/icon-192x192.png",
@@ -73899,4 +73899,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-IVNHwYwt.js.map
+//# sourceMappingURL=index-BZVyy6pC.js.map

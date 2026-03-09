@@ -74,6 +74,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       if (
         prefs.pushEnabled &&
         'serviceWorker' in navigator &&
+        'Notification' in window &&
         Notification.permission === 'granted'
       ) {
         navigator.serviceWorker.ready.then((reg) => {
