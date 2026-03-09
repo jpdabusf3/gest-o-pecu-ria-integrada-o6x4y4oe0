@@ -11,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   BrainCircuit,
   DollarSign,
@@ -30,6 +31,7 @@ import { GpbBalizadorButton } from '@/components/GpbBalizadorButton'
 import { ExportMenu } from '@/components/ExportMenu'
 import { SalesSimulator } from '@/components/SalesSimulator'
 import { SimulationHistory } from '@/components/SimulationHistory'
+import { PastureProfitabilityDashboard } from '@/components/PastureProfitabilityDashboard'
 import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
 import { useToast } from '@/hooks/use-toast'
 import { useMarket } from '@/contexts/MarketContext'
@@ -154,13 +156,13 @@ export default function ProjecaoVendas() {
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8 print:pb-0">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden">
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 print:hidden">
         <div>
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência de Vendas
+            <BrainCircuit className="h-8 w-8 text-primary" /> Inteligência e Projeções
           </h2>
           <p className="text-muted-foreground mt-1 flex items-center gap-2">
-            Projeções integrando GMD, custos operacionais e cotações ao vivo (Indicador do Boi/B3).
+            Análises preditivas, cenários de venda e rentabilidade de manejo.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -184,179 +186,192 @@ export default function ProjecaoVendas() {
         </div>
       </div>
 
-      <div className="print:hidden">
-        <MarketIndicators
-          selectedId={selectedMarketId}
-          onSelect={(id, price, label) => {
-            setSelectedMarketId(id)
-            setArrobaPrice(price)
-            setSelectedMarketLabel(label)
-          }}
-        />
-      </div>
+      <Tabs defaultValue="vendas" className="space-y-6">
+        <TabsList className="print:hidden">
+          <TabsTrigger value="vendas">Inteligência de Vendas</TabsTrigger>
+          <TabsTrigger value="pasto">Rentabilidade por Pasto</TabsTrigger>
+        </TabsList>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 print:hidden">
-        <ReplacementFilter />
-        <CommoditiesQuotes />
-        <B3FuturesSelector
-          onSelectPrice={(id, price, label) => {
-            setSelectedMarketId(id)
-            setArrobaPrice(price)
-            setSelectedMarketLabel(label)
-          }}
-        />
-      </div>
-
-      <div className="print:hidden">
-        <MarketTrendsChart />
-      </div>
-
-      <SalesSimulator />
-      <SimulationHistory />
-
-      <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3 mt-6">
-        <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-primary flex items-center justify-between">
-              Preço Base da Arroba (R$)
-              <Badge
-                variant="outline"
-                className="text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate print:border print:bg-transparent"
-              >
-                {activeLabel}
-              </Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-primary print:hidden" />
-              <Input
-                type="number"
-                value={Number(arrobaPrice.toFixed(2))}
-                onChange={(e) => {
-                  setArrobaPrice(Number(e.target.value))
-                  setSelectedMarketId(null)
-                }}
-                className="text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0 transition-all"
-              />
-            </div>
-            <p className="text-xs text-primary/70 mt-2 font-medium print:hidden">
-              Usado para cálculo da receita projetada na tabela
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="print:border print:shadow-none print:bg-transparent">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Peso Alvo p/ Abate (kg)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                value={targetWeight}
-                onChange={(e) => setTargetWeight(Number(e.target.value))}
-                className="text-2xl font-bold h-12 w-32 shadow-sm print:border-none print:shadow-none print:p-0"
-              />
-              <span className="text-muted-foreground font-medium flex-1">
-                ≈ {(targetWeight / 30).toFixed(1)} @
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2 print:hidden">
-              Meta desejada por animal
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-500">
-              Lucro Líquido Global Proj.
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-500 transition-all">
-              R${' '}
-              {totalProjNetProfit.toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </div>
-            <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden">
-              Receita deduzida de custos da tabela
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="print:border-none print:shadow-none mt-6">
-        <CardHeader className="flex flex-row items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>
-            <CardDescription className="print:hidden">
-              Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e
-              cotações.
-            </CardDescription>
-          </div>
+        <TabsContent value="vendas" className="space-y-6 m-0 border-none p-0 focus-visible:ring-0">
           <div className="print:hidden">
-            <ExportMenu onExportCSV={handleExportCSV} onExportPDF={triggerPDFPrint} />
+            <MarketIndicators
+              selectedId={selectedMarketId}
+              onSelect={(id, price, label) => {
+                setSelectedMarketId(id)
+                setArrobaPrice(price)
+                setSelectedMarketLabel(label)
+              }}
+            />
           </div>
-        </CardHeader>
-        <CardContent className="px-0 sm:px-6 overflow-x-auto print:px-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Lote / Origem</TableHead>
-                <TableHead className="text-center">Janela Ideal / Ação</TableHead>
-                <TableHead className="text-right">Custos Proj. / Cab.</TableHead>
-                <TableHead className="text-right text-primary">Lucro Líq. / Cab.</TableHead>
-                <TableHead className="text-right font-bold text-primary">
-                  Receita Bruta Total
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {projections.map((p, idx) => (
-                <TableRow key={idx}>
-                  <TableCell>
-                    <div className="font-medium text-primary">
-                      {p.id}{' '}
-                      <span className="text-xs font-normal text-muted-foreground">
-                        ({p.cabecas} cab.)
-                      </span>
-                    </div>
-                    <div className="text-xs text-muted-foreground flex items-center mt-1 gap-1">
-                      {p.pesoMedio}kg •{' '}
-                      <TrendingUp className="h-3 w-3 text-emerald-500 print:hidden" /> {p.gmd}
-                      kg/dia
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <div className={cn('text-xs font-semibold whitespace-nowrap', p.color)}>
-                      {p.rec}
-                    </div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1">
-                      <CalendarIcon className="h-3 w-3 print:hidden" />
-                      {p.daysNeeded === 0 ? 'Disponível' : `Em ${p.daysNeeded} d`}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right text-destructive font-medium whitespace-nowrap">
-                    - R$ {p.totalCostHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
-                  </TableCell>
-                  <TableCell className="text-right font-bold text-primary whitespace-nowrap transition-all">
-                    R$ {p.netProfitHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
-                  </TableCell>
-                  <TableCell className="text-right font-bold text-primary whitespace-nowrap text-base transition-all">
-                    R$ {p.projRevenue.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 print:hidden">
+            <ReplacementFilter />
+            <CommoditiesQuotes />
+            <B3FuturesSelector
+              onSelectPrice={(id, price, label) => {
+                setSelectedMarketId(id)
+                setArrobaPrice(price)
+                setSelectedMarketLabel(label)
+              }}
+            />
+          </div>
+
+          <div className="print:hidden">
+            <MarketTrendsChart />
+          </div>
+
+          <SalesSimulator />
+          <SimulationHistory />
+
+          <div className="grid gap-4 sm:grid-cols-3 print:grid-cols-3 mt-6">
+            <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-primary flex items-center justify-between">
+                  Preço Base da Arroba (R$)
+                  <Badge
+                    variant="outline"
+                    className="text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate print:border print:bg-transparent"
+                  >
+                    {activeLabel}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-primary print:hidden" />
+                  <Input
+                    type="number"
+                    value={Number(arrobaPrice.toFixed(2))}
+                    onChange={(e) => {
+                      setArrobaPrice(Number(e.target.value))
+                      setSelectedMarketId(null)
+                    }}
+                    className="text-2xl font-bold h-12 w-full bg-background border-primary/30 shadow-inner print:border-none print:shadow-none print:p-0 transition-all"
+                  />
+                </div>
+                <p className="text-xs text-primary/70 mt-2 font-medium print:hidden">
+                  Usado para cálculo da receita projetada na tabela
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="print:border print:shadow-none print:bg-transparent">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Peso Alvo p/ Abate (kg)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    value={targetWeight}
+                    onChange={(e) => setTargetWeight(Number(e.target.value))}
+                    className="text-2xl font-bold h-12 w-32 shadow-sm print:border-none print:shadow-none print:p-0"
+                  />
+                  <span className="text-muted-foreground font-medium flex-1">
+                    ≈ {(targetWeight / 30).toFixed(1)} @
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 print:hidden">
+                  Meta desejada por animal
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-emerald-500/10 border-emerald-500/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-500">
+                  Lucro Líquido Global Proj.
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-500 transition-all">
+                  R${' '}
+                  {totalProjNetProfit.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </div>
+                <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden">
+                  Receita deduzida de custos da tabela
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="print:border-none print:shadow-none mt-6">
+            <CardHeader className="flex flex-row items-start justify-between">
+              <div className="space-y-1">
+                <CardTitle>Painel Analítico de Oportunidades de Venda</CardTitle>
+                <CardDescription className="print:hidden">
+                  Motor de inteligência cruzando previsão de ganho de peso, custos operacionais e
+                  cotações.
+                </CardDescription>
+              </div>
+              <div className="print:hidden">
+                <ExportMenu onExportCSV={handleExportCSV} onExportPDF={triggerPDFPrint} />
+              </div>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6 overflow-x-auto print:px-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Lote / Origem</TableHead>
+                    <TableHead className="text-center">Janela Ideal / Ação</TableHead>
+                    <TableHead className="text-right">Custos Proj. / Cab.</TableHead>
+                    <TableHead className="text-right text-primary">Lucro Líq. / Cab.</TableHead>
+                    <TableHead className="text-right font-bold text-primary">
+                      Receita Bruta Total
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {projections.map((p, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell>
+                        <div className="font-medium text-primary">
+                          {p.id}{' '}
+                          <span className="text-xs font-normal text-muted-foreground">
+                            ({p.cabecas} cab.)
+                          </span>
+                        </div>
+                        <div className="text-xs text-muted-foreground flex items-center mt-1 gap-1">
+                          {p.pesoMedio}kg •{' '}
+                          <TrendingUp className="h-3 w-3 text-emerald-500 print:hidden" /> {p.gmd}
+                          kg/dia
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className={cn('text-xs font-semibold whitespace-nowrap', p.color)}>
+                          {p.rec}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1">
+                          <CalendarIcon className="h-3 w-3 print:hidden" />
+                          {p.daysNeeded === 0 ? 'Disponível' : `Em ${p.daysNeeded} d`}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right text-destructive font-medium whitespace-nowrap">
+                        - R$ {p.totalCostHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                      </TableCell>
+                      <TableCell className="text-right font-bold text-primary whitespace-nowrap transition-all">
+                        R$ {p.netProfitHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                      </TableCell>
+                      <TableCell className="text-right font-bold text-primary whitespace-nowrap text-base transition-all">
+                        R$ {p.projRevenue.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="pasto" className="m-0 border-none p-0 focus-visible:ring-0">
+          <PastureProfitabilityDashboard currentArrobaPrice={arrobaPrice} />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
