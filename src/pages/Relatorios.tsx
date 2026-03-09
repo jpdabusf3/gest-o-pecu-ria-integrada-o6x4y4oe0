@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -17,22 +16,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { FileText, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { managementHistory } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { Badge } from '@/components/ui/badge'
+import { ExportMenu } from '@/components/ExportMenu'
+import { downloadCSV, downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 
 export default function Relatorios() {
   const { toast } = useToast()
   const [searchTerm, setSearchTerm] = useState('')
   const [typeFilter, setTypeFilter] = useState('todos')
-
-  const handleExport = () => {
-    toast({
-      title: 'Relatório Gerado PDF',
-      description: 'O histórico detalhado de manejo foi exportado com sucesso.',
-    })
-  }
 
   const filteredHistory = managementHistory.filter((item) => {
     const matchesSearch =
@@ -43,8 +37,24 @@ export default function Relatorios() {
     return matchesSearch && matchesType
   })
 
+  const handleExportCSV = () => {
+    downloadCSV(filteredHistory, 'historico_manejo')
+    toast({
+      title: 'Relatório Gerado',
+      description: 'O histórico foi baixado em formato CSV com sucesso.',
+    })
+  }
+
+  const handleExportExcel = () => {
+    downloadExcel(filteredHistory, 'historico_manejo')
+    toast({
+      title: 'Relatório Gerado',
+      description: 'O histórico foi baixado em formato Excel com sucesso.',
+    })
+  }
+
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up pb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Histórico de Manejo</h2>
@@ -52,9 +62,13 @@ export default function Relatorios() {
             Registro detalhado de intervenções em pastagens, suplementação e sanidade.
           </p>
         </div>
-        <Button onClick={handleExport} className="gap-2 w-full sm:w-auto">
-          <FileText className="h-4 w-4" /> Exportar Histórico (PDF)
-        </Button>
+        <ExportMenu
+          className="w-full sm:w-auto"
+          label="Exportar Histórico"
+          onExportCSV={handleExportCSV}
+          onExportExcel={handleExportExcel}
+          onExportPDF={triggerPDFPrint}
+        />
       </div>
 
       <Card>

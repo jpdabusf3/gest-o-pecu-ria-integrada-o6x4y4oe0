@@ -8,11 +8,19 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from '@/components/ui/chart'
 import { useToast } from '@/hooks/use-toast'
-import { biMetricsList, defaultSavedReports, biData } from '@/data/mock'
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
+import { biMetricsList, defaultSavedReports, biData, twelveMonthsTrendData } from '@/data/mock'
 import { DynamicBIChart } from '@/components/charts/DynamicBIChart'
 import { ExportMenu } from '@/components/ExportMenu'
-import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
+import { downloadCSV, downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 import { Save, Bookmark } from 'lucide-react'
 
 export default function BI() {
@@ -49,20 +57,27 @@ export default function BI() {
     return biData
   }, [dateRange])
 
-  const handleExportCSV = () => {
+  const prepareExportData = () => {
     const metric1Name = biMetricsList.find((m) => m.id === m1)?.name || m1
     const metric2Name = biMetricsList.find((m) => m.id === m2)?.name || m2
 
-    const csvData = filteredData.map((d) => ({
+    return filteredData.map((d) => ({
       Período: d.period,
       [metric1Name]: d[m1 as keyof typeof d],
       [metric2Name]: d[m2 as keyof typeof d],
     }))
-    downloadCSV(csvData, `bi_report_${m1}_${m2}`)
+  }
 
+  const handleExportCSV = () => {
+    downloadCSV(prepareExportData(), `bi_report_${m1}_${m2}`)
+    toast({ title: 'Exportação Concluída', description: 'O arquivo CSV foi baixado com sucesso.' })
+  }
+
+  const handleExportExcel = () => {
+    downloadExcel(prepareExportData(), `bi_report_${m1}_${m2}`)
     toast({
       title: 'Exportação Concluída',
-      description: 'O arquivo Excel (CSV) foi baixado com sucesso.',
+      description: 'O arquivo Excel foi baixado com sucesso.',
     })
   }
 
@@ -81,6 +96,69 @@ export default function BI() {
           <Save className="h-4 w-4" /> Salvar Visão
         </Button>
       </div>
+
+      <Card className="mb-6 md:col-span-4 print:hidden">
+        <CardHeader>
+          <CardTitle>Tendência de 12 Meses: Fluxo de Caixa vs Ganho de Peso</CardTitle>
+          <CardDescription>
+            Análise de longo prazo correlacionando o faturamento acumulado com a produtividade do
+            rebanho.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer
+            config={{
+              cashflow: { label: 'Fluxo de Caixa (R$)', color: 'hsl(var(--primary))' },
+              weightGain: { label: 'Ganho de Peso (kg)', color: 'hsl(var(--chart-2))' },
+            }}
+            className="h-[300px] w-full"
+          >
+            <ComposedChart
+              data={twelveMonthsTrendData}
+              margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+              <YAxis
+                yAxisId="left"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(v) => `R$ ${(v / 1000).toFixed(0)}k`}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(v) => `${v} kg`}
+              />
+              <ChartTooltip
+                cursor={{ fill: 'var(--color-muted)' }}
+                content={<ChartTooltipContent />}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Bar
+                yAxisId="left"
+                dataKey="cashflow"
+                fill="var(--color-cashflow)"
+                radius={[4, 4, 0, 0]}
+                maxBarSize={50}
+              />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="weightGain"
+                stroke="var(--color-weightGain)"
+                strokeWidth={3}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </ComposedChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 md:grid-cols-4 print:grid-cols-1 print:gap-2">
         <div className="md:col-span-1 space-y-6 print:hidden">
@@ -165,7 +243,11 @@ export default function BI() {
                 </CardDescription>
               </div>
               <div className="print:hidden">
-                <ExportMenu onExportCSV={handleExportCSV} onExportPDF={triggerPDFPrint} />
+                <ExportMenu
+                  onExportCSV={handleExportCSV}
+                  onExportExcel={handleExportExcel}
+                  onExportPDF={triggerPDFPrint}
+                />
               </div>
             </CardHeader>
             <CardContent className="flex-1 pb-4">

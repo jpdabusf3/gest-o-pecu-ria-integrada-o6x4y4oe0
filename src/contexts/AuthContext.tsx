@@ -10,6 +10,8 @@ export interface UserPreferences {
   notifyManagement: boolean
   notifyVacasCorte: boolean
   notifyNovilhasMatrizes: boolean
+  notifyCriticalInventory: boolean
+  notifyTaskCompletion: boolean
 }
 
 export interface User {
@@ -38,6 +40,8 @@ export const mockUsers: User[] = [
       notifyManagement: true,
       notifyVacasCorte: true,
       notifyNovilhasMatrizes: true,
+      notifyCriticalInventory: true,
+      notifyTaskCompletion: true,
     },
   },
   {
@@ -55,6 +59,8 @@ export const mockUsers: User[] = [
       notifyManagement: true,
       notifyVacasCorte: true,
       notifyNovilhasMatrizes: false,
+      notifyCriticalInventory: true,
+      notifyTaskCompletion: true,
     },
   },
   {
@@ -72,6 +78,8 @@ export const mockUsers: User[] = [
       notifyManagement: false,
       notifyVacasCorte: false,
       notifyNovilhasMatrizes: false,
+      notifyCriticalInventory: false,
+      notifyTaskCompletion: false,
     },
   },
 ]

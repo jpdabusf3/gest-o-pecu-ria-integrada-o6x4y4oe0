@@ -19846,6 +19846,20 @@ var Settings = createLucideIcon("settings", [["path", {
 	r: "3",
 	key: "1v7zrd"
 }]]);
+var ShieldAlert = createLucideIcon("shield-alert", [
+	["path", {
+		d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+		key: "oel41y"
+	}],
+	["path", {
+		d: "M12 8v4",
+		key: "1got3b"
+	}],
+	["path", {
+		d: "M12 16h.01",
+		key: "1drbdi"
+	}]
+]);
 var ShieldCheck = createLucideIcon("shield-check", [["path", {
 	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
 	key: "oel41y"
@@ -19928,6 +19942,28 @@ var Syringe = createLucideIcon("syringe", [
 	["path", {
 		d: "m14 4 6 6",
 		key: "yqp9t2"
+	}]
+]);
+var TableProperties = createLucideIcon("table-properties", [
+	["path", {
+		d: "M15 3v18",
+		key: "14nvp0"
+	}],
+	["rect", {
+		width: "18",
+		height: "18",
+		x: "3",
+		y: "3",
+		rx: "2",
+		key: "afitv7"
+	}],
+	["path", {
+		d: "M21 9H3",
+		key: "1338ky"
+	}],
+	["path", {
+		d: "M21 15H3",
+		key: "9uk58r"
 	}]
 ]);
 var Tags = createLucideIcon("tags", [
@@ -25046,7 +25082,9 @@ const mockUsers = [
 			notifyFinancial: true,
 			notifyManagement: true,
 			notifyVacasCorte: true,
-			notifyNovilhasMatrizes: true
+			notifyNovilhasMatrizes: true,
+			notifyCriticalInventory: true,
+			notifyTaskCompletion: true
 		}
 	},
 	{
@@ -25063,7 +25101,9 @@ const mockUsers = [
 			notifyFinancial: false,
 			notifyManagement: true,
 			notifyVacasCorte: true,
-			notifyNovilhasMatrizes: false
+			notifyNovilhasMatrizes: false,
+			notifyCriticalInventory: true,
+			notifyTaskCompletion: true
 		}
 	},
 	{
@@ -25080,7 +25120,9 @@ const mockUsers = [
 			notifyFinancial: false,
 			notifyManagement: false,
 			notifyVacasCorte: false,
-			notifyNovilhasMatrizes: false
+			notifyNovilhasMatrizes: false,
+			notifyCriticalInventory: false,
+			notifyTaskCompletion: false
 		}
 	}
 ];
@@ -26220,6 +26262,68 @@ const biData = [
 		custoManutencao: 2500,
 		arrobasProduzidas: 1450,
 		custoNutricao: 5e4
+	}
+];
+const twelveMonthsTrendData = [
+	{
+		month: "Mar/25",
+		cashflow: 12e4,
+		weightGain: 4500
+	},
+	{
+		month: "Abr/25",
+		cashflow: 135e3,
+		weightGain: 4800
+	},
+	{
+		month: "Mai/25",
+		cashflow: 11e4,
+		weightGain: 5100
+	},
+	{
+		month: "Jun/25",
+		cashflow: 145e3,
+		weightGain: 5200
+	},
+	{
+		month: "Jul/25",
+		cashflow: 16e4,
+		weightGain: 4900
+	},
+	{
+		month: "Ago/25",
+		cashflow: 155e3,
+		weightGain: 5300
+	},
+	{
+		month: "Set/25",
+		cashflow: 17e4,
+		weightGain: 5500
+	},
+	{
+		month: "Out/25",
+		cashflow: 185e3,
+		weightGain: 5800
+	},
+	{
+		month: "Nov/25",
+		cashflow: 19e4,
+		weightGain: 6e3
+	},
+	{
+		month: "Dez/25",
+		cashflow: 21e4,
+		weightGain: 6200
+	},
+	{
+		month: "Jan/26",
+		cashflow: 2e5,
+		weightGain: 6100
+	},
+	{
+		month: "Fev/26",
+		cashflow: 22e4,
+		weightGain: 6500
 	}
 ];
 const defaultSavedReports = [{
@@ -61611,6 +61715,91 @@ function LotBudgetsTab() {
 		})]
 	});
 }
+function ExportMenu({ onExportCSV, onExportExcel, onExportPDF, className, label = "Exportar" }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+		asChild: true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+			variant: "outline",
+			size: "sm",
+			className,
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "mr-2 h-4 w-4" }), label]
+		})
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
+		align: "end",
+		className: "w-56",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Formato do Arquivo" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
+			onExportExcel && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+				onClick: onExportExcel,
+				className: "cursor-pointer gap-2 py-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "h-4 w-4 text-emerald-600" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Exportar para Excel (.xls)" })]
+			}),
+			onExportCSV && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+				onClick: onExportCSV,
+				className: "cursor-pointer gap-2 py-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableProperties, { className: "h-4 w-4 text-blue-500" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Exportar para CSV (.csv)" })]
+			}),
+			onExportPDF && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [(onExportExcel || onExportCSV) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
+				onClick: onExportPDF,
+				className: "cursor-pointer gap-2 py-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4 text-rose-500" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Exportar para PDF" })]
+			})] })
+		]
+	})] });
+}
+function downloadCSV(data, filename) {
+	if (!data || data.length === 0) return;
+	const headers = Object.keys(data[0]);
+	const csvContent = [headers.join(","), ...data.map((row) => headers.map((header) => {
+		const val = row[header];
+		if (typeof val === "string") return `"${val.replace(/"/g, "\"\"")}"`;
+		return val !== null && val !== void 0 ? val : "";
+	}).join(","))].join("\n");
+	const blob = new Blob([new Uint8Array([
+		239,
+		187,
+		191
+	]), csvContent], { type: "text/csv;charset=utf-8;" });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = `${filename}.csv`;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+	URL.revokeObjectURL(url);
+}
+function downloadExcel(data, filename) {
+	if (!data || data.length === 0) return;
+	const headers = Object.keys(data[0]);
+	let table = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\"><head><meta charset=\"UTF-8\"></head><body><table><thead><tr>";
+	headers.forEach((h) => {
+		table += `<th style="background-color: #f3f4f6; font-weight: bold; border: 1px solid #ccc; padding: 4px;">${h}</th>`;
+	});
+	table += "</tr></thead><tbody>";
+	data.forEach((row) => {
+		table += "<tr>";
+		headers.forEach((h) => {
+			const val = row[h] !== null && row[h] !== void 0 ? row[h] : "";
+			table += `<td style="border: 1px solid #ccc; padding: 4px;">${val}</td>`;
+		});
+		table += "</tr>";
+	});
+	table += "</tbody></table></body></html>";
+	const blob = new Blob([table], { type: "application/vnd.ms-excel" });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = `${filename}.xls`;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+	URL.revokeObjectURL(url);
+}
+function triggerPDFPrint() {
+	window.print();
+}
 function Financeiro() {
 	const { toast: toast$2 } = useToast();
 	const { ledger, lotThresholds } = useFinanceStore();
@@ -61632,10 +61821,18 @@ function Financeiro() {
 		notifications,
 		addNotification
 	]);
-	const handleExport = (format$2) => {
+	const handleExportCSV = () => {
+		downloadCSV(financialData, "balanco_financeiro");
 		toast$2({
 			title: "Relatório Gerado",
-			description: `O balanço financeiro está sendo baixado em formato ${format$2.toUpperCase()}.`
+			description: "O balanço financeiro foi baixado em formato CSV."
+		});
+	};
+	const handleExportExcel = () => {
+		downloadExcel(financialData, "balanco_financeiro");
+		toast$2({
+			title: "Relatório Gerado",
+			description: "O balanço financeiro foi baixado em formato Excel."
 		});
 	};
 	const animalProfitList = (0, import_react.useMemo)(() => {
@@ -61686,30 +61883,13 @@ function Financeiro() {
 				className: "flex gap-2 w-full md:w-auto flex-wrap sm:flex-nowrap justify-start md:justify-end",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationPreferences, {}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
-						asChild: true,
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							variant: "outline",
-							className: "flex-1 sm:flex-none gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" }), " Exportar Balanço"]
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
-						align: "end",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuLabel, { children: "Formato do Relatório" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuSeparator, {}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
-								onClick: () => handleExport("pdf"),
-								className: "gap-2 cursor-pointer",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" }), " Exportar em PDF"]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
-								onClick: () => handleExport("excel"),
-								className: "gap-2 cursor-pointer",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "h-4 w-4" }), " Exportar em Excel"]
-							})
-						]
-					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+						className: "flex-1 sm:flex-none",
+						label: "Exportar Balanço",
+						onExportCSV: handleExportCSV,
+						onExportExcel: handleExportExcel,
+						onExportPDF: triggerPDFPrint
+					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 						className: "flex-1 sm:flex-none gap-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Lançamento"]
@@ -67819,19 +67999,27 @@ function Relatorios() {
 	const { toast: toast$2 } = useToast();
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
 	const [typeFilter, setTypeFilter] = (0, import_react.useState)("todos");
-	const handleExport = () => {
-		toast$2({
-			title: "Relatório Gerado PDF",
-			description: "O histórico detalhado de manejo foi exportado com sucesso."
-		});
-	};
 	const filteredHistory = managementHistory.filter((item) => {
 		const matchesSearch = item.alvo.toLowerCase().includes(searchTerm.toLowerCase()) || item.descricao.toLowerCase().includes(searchTerm.toLowerCase());
 		const matchesType = typeFilter === "todos" || item.tipo.toLowerCase().includes(typeFilter.toLowerCase());
 		return matchesSearch && matchesType;
 	});
+	const handleExportCSV = () => {
+		downloadCSV(filteredHistory, "historico_manejo");
+		toast$2({
+			title: "Relatório Gerado",
+			description: "O histórico foi baixado em formato CSV com sucesso."
+		});
+	};
+	const handleExportExcel = () => {
+		downloadExcel(filteredHistory, "historico_manejo");
+		toast$2({
+			title: "Relatório Gerado",
+			description: "O histórico foi baixado em formato Excel com sucesso."
+		});
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
@@ -67840,10 +68028,12 @@ function Relatorios() {
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
 				children: "Registro detalhado de intervenções em pastagens, suplementação e sanidade."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				onClick: handleExport,
-				className: "gap-2 w-full sm:w-auto",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" }), " Exportar Histórico (PDF)"]
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+				className: "w-full sm:w-auto",
+				label: "Exportar Histórico",
+				onExportCSV: handleExportCSV,
+				onExportExcel: handleExportExcel,
+				onExportPDF: triggerPDFPrint
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 			className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
@@ -69097,28 +69287,6 @@ function GpbBalizadorButton() {
 		})]
 	});
 }
-function ExportMenu({ onExportCSV, onExportPDF, className, label = "Exportar" }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
-		asChild: true,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-			variant: "outline",
-			size: "sm",
-			className,
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "mr-2 h-4 w-4" }), label]
-		})
-	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
-		align: "end",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
-			onClick: onExportPDF,
-			className: "cursor-pointer",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "mr-2 h-4 w-4 text-rose-500" }), "Exportar para PDF"]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
-			onClick: onExportCSV,
-			className: "cursor-pointer",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileSpreadsheet, { className: "mr-2 h-4 w-4 text-emerald-500" }), "Exportar para Excel (CSV)"]
-		})]
-	})] });
-}
 var STORAGE_KEY = "@fazenda-simulations";
 function useSimulationStore() {
 	const [simulations, setSimulations] = (0, import_react.useState)(() => {
@@ -70056,31 +70224,6 @@ function SimulationPrintReport({ simulations }) {
 		]
 	});
 }
-function downloadCSV(data, filename) {
-	if (!data || data.length === 0) return;
-	const headers = Object.keys(data[0]);
-	const csvContent = [headers.join(","), ...data.map((row) => headers.map((header) => {
-		const val = row[header];
-		if (typeof val === "string") return `"${val.replace(/"/g, "\"\"")}"`;
-		return val !== null && val !== void 0 ? val : "";
-	}).join(","))].join("\n");
-	const blob = new Blob([new Uint8Array([
-		239,
-		187,
-		191
-	]), csvContent], { type: "text/csv;charset=utf-8;" });
-	const url = URL.createObjectURL(blob);
-	const link = document.createElement("a");
-	link.href = url;
-	link.download = `${filename}.csv`;
-	document.body.appendChild(link);
-	link.click();
-	document.body.removeChild(link);
-	URL.revokeObjectURL(url);
-}
-function triggerPDFPrint() {
-	window.print();
-}
 var import_react_dom = require_react_dom();
 function SimulationHistory() {
 	const { simulations, deleteSimulation } = useSimulationStore();
@@ -70952,251 +71095,339 @@ function Configuracoes() {
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "max-w-2xl mx-auto space-y-6 animate-fade-in-up pb-8",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-				className: "text-3xl font-bold tracking-tight flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserCog, { className: "h-8 w-8 text-primary" }), "Configurações"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Gerencie suas credenciais, contatos e preferências do sistema."
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Meu Perfil" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Atualize seu e-mail, telefone de contato e credenciais de segurança." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-				className: "space-y-5",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-							htmlFor: "email",
-							children: "E-mail de Acesso"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							id: "email",
-							type: "email",
-							value: email,
-							onChange: (e) => setEmail(e.target.value)
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-							htmlFor: "whatsapp",
-							children: "Número de WhatsApp"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							id: "whatsapp",
-							placeholder: "(00) 00000-0000",
-							value: whatsapp,
-							onChange: (e) => setWhatsapp(e.target.value)
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2 pt-2 border-t border-border",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-							htmlFor: "password",
-							children: "Nova Senha (deixe em branco para não alterar)"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							id: "password",
-							type: "password",
-							placeholder: "••••••••",
-							value: password,
-							onChange: (e) => setPassword(e.target.value)
-						})]
-					})
-				]
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-				className: "flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5 text-primary" }), "Integração de Mercado"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Sincronização de preços da arroba e indicadores de mercado via API externa." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-				className: "space-y-6",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center justify-between",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
-						htmlFor: "autoUpdate",
-						className: "flex flex-col gap-1 cursor-pointer",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Atualização Automática (API)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-normal text-xs text-muted-foreground",
-							children: "Obter cotações em tempo real de fontes seguras."
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-						id: "autoUpdate",
-						checked: isAutoUpdateEnabled,
-						onCheckedChange: toggleAutoUpdate
-					})]
-				}), !isAutoUpdateEnabled && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "pt-4 border-t border-border space-y-4 animate-in fade-in",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-						className: "text-sm font-semibold mb-2",
-						children: "Preços Manuais (R$)"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
-						children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: ind.label }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-								type: "number",
-								step: "0.01",
-								value: ind.price,
-								onChange: (e) => setManualPrice(ind.id, Number(e.target.value))
-							})]
-						}, ind.id))
-					})]
-				})]
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-5 w-5 text-primary" }), "Preferências de Notificação"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure como deseja receber os alertas críticos da fazenda (Push Nativo e WhatsApp)." })] }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-					className: "space-y-6",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-4 pb-4 border-b border-border",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center justify-between",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
-								htmlFor: "pushEnabled",
-								className: "flex flex-col gap-1 cursor-pointer",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Notificações Push (Nativas)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-normal text-xs text-muted-foreground",
-									children: "Alertas direto no sistema operacional"
-								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-								id: "pushEnabled",
-								checked: prefs.pushEnabled,
-								onCheckedChange: handleTogglePush
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center justify-between",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
-								htmlFor: "whatsappEnabled",
-								className: "flex flex-col gap-1 cursor-pointer",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "flex items-center gap-2",
-									children: ["WhatsApp ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-3 w-3 text-emerald-500" })]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-normal text-xs text-muted-foreground",
-									children: "Mensagens automatizadas no seu celular"
-								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-								id: "whatsappEnabled",
-								checked: prefs.whatsappEnabled,
-								onCheckedChange: (c$1) => setPrefs({
-									...prefs,
-									whatsappEnabled: c$1
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+			className: "text-3xl font-bold tracking-tight flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserCog, { className: "h-8 w-8 text-primary" }), "Configurações"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-1",
+			children: "Gerencie suas credenciais, contatos e preferências do sistema."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			defaultValue: "perfil",
+			className: "space-y-6",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					className: "w-full sm:w-auto flex flex-wrap sm:flex-nowrap justify-start h-auto p-1",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "perfil",
+							className: "py-2",
+							children: "Perfil"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "notificacoes",
+							className: "py-2",
+							children: "Notificações"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "mercado",
+							className: "py-2",
+							children: "Mercado"
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "perfil",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Meu Perfil" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Atualize seu e-mail, telefone de contato e credenciais de segurança." })] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-5",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										htmlFor: "email",
+										children: "E-mail de Acesso"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										id: "email",
+										type: "email",
+										value: email,
+										onChange: (e) => setEmail(e.target.value)
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										htmlFor: "whatsapp",
+										children: "Número de WhatsApp"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										id: "whatsapp",
+										placeholder: "(00) 00000-0000",
+										value: whatsapp,
+										onChange: (e) => setWhatsapp(e.target.value)
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2 pt-2 border-t border-border",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										htmlFor: "password",
+										children: "Nova Senha (deixe em branco para não alterar)"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										id: "password",
+										type: "password",
+										placeholder: "••••••••",
+										value: password,
+										onChange: (e) => setPassword(e.target.value)
+									})]
 								})
-							})]
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-4 animate-in fade-in slide-in-from-left-2",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-								className: "text-sm font-semibold mb-2",
-								children: "Quais eventos gerais devem disparar notificação?"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center justify-between",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-									htmlFor: "notifyHealth",
-									className: "cursor-pointer text-sm",
-									children: "Alertas Sanitários (Vacinas, Pesagem)"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-									id: "notifyHealth",
-									checked: prefs.notifyHealth,
-									onCheckedChange: (c$1) => setPrefs({
-										...prefs,
-										notifyHealth: c$1
-									})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
+							className: "flex justify-end border-t bg-muted/20 pt-4 mt-4",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: handleSave,
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Perfil"]
+							})
+						})
+					] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "notificacoes",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-5 w-5 text-primary" }), "Preferências de Notificação"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure como deseja receber os alertas críticos da fazenda (Push Nativo e WhatsApp)." })] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-4 pb-4 border-b border-border",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+										htmlFor: "pushEnabled",
+										className: "flex flex-col gap-1 cursor-pointer",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Notificações Push (Nativas)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-normal text-xs text-muted-foreground",
+											children: "Alertas direto no sistema operacional"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+										id: "pushEnabled",
+										checked: prefs.pushEnabled,
+										onCheckedChange: handleTogglePush
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+										htmlFor: "whatsappEnabled",
+										className: "flex flex-col gap-1 cursor-pointer",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "flex items-center gap-2",
+											children: ["WhatsApp ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MessageCircle, { className: "h-3 w-3 text-emerald-500" })]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-normal text-xs text-muted-foreground",
+											children: "Mensagens automatizadas no seu celular"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+										id: "whatsappEnabled",
+										checked: prefs.whatsappEnabled,
+										onCheckedChange: (c$1) => setPrefs({
+											...prefs,
+											whatsappEnabled: c$1
+										})
+									})]
 								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center justify-between",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-									htmlFor: "notifyManagement",
-									className: "cursor-pointer text-sm",
-									children: "Alertas de Manejo & Operacional"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-									id: "notifyManagement",
-									checked: prefs.notifyManagement,
-									onCheckedChange: (c$1) => setPrefs({
-										...prefs,
-										notifyManagement: c$1
-									})
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex items-center justify-between",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-									htmlFor: "notifyFinancial",
-									className: "cursor-pointer text-sm",
-									children: "Alertas Financeiros & Orçamento"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-									id: "notifyFinancial",
-									checked: prefs.notifyFinancial,
-									onCheckedChange: (c$1) => setPrefs({
-										...prefs,
-										notifyFinancial: c$1
-									})
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "pt-4 border-t border-border space-y-4 mt-4",
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-4 animate-in fade-in slide-in-from-left-2",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
 										className: "text-sm font-semibold mb-2",
-										children: "Alertas Específicos por Categoria"
+										children: "Quais eventos gerais devem disparar notificação?"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "flex items-center justify-between",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-											htmlFor: "notifyVacasCorte",
-											className: "cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors",
-											children: "Protocolos para Vacas de corte"
+										className: "flex items-center justify-between bg-muted/30 p-3 rounded-lg border border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+											htmlFor: "notifyCriticalInventory",
+											className: "flex flex-col gap-1 cursor-pointer",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "flex items-center gap-2 text-sm font-medium",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldAlert, { className: "h-4 w-4 text-amber-500" }), " Níveis Críticos de Estoque"]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-normal text-xs text-muted-foreground",
+												children: "Avisos de insumos e rações abaixo do limite mínimo."
+											})]
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-											id: "notifyVacasCorte",
-											checked: prefs.notifyVacasCorte,
+											id: "notifyCriticalInventory",
+											checked: prefs.notifyCriticalInventory,
 											onCheckedChange: (c$1) => setPrefs({
 												...prefs,
-												notifyVacasCorte: c$1
+												notifyCriticalInventory: c$1
 											})
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "flex items-center justify-between",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-											htmlFor: "notifyNovilhasMatrizes",
-											className: "cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors",
-											children: "Manejo de Novilhas matrizes"
+										className: "flex items-center justify-between bg-muted/30 p-3 rounded-lg border border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+											htmlFor: "notifyTaskCompletion",
+											className: "flex flex-col gap-1 cursor-pointer",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "flex items-center gap-2 text-sm font-medium",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-4 w-4 text-emerald-500" }), " Conclusão de Tarefas de Manejo"]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-normal text-xs text-muted-foreground",
+												children: "Avisos quando os operadores finalizam atividades designadas."
+											})]
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
-											id: "notifyNovilhasMatrizes",
-											checked: prefs.notifyNovilhasMatrizes,
+											id: "notifyTaskCompletion",
+											checked: prefs.notifyTaskCompletion,
 											onCheckedChange: (c$1) => setPrefs({
 												...prefs,
-												notifyNovilhasMatrizes: c$1
+												notifyTaskCompletion: c$1
 											})
 										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between px-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+											htmlFor: "notifyHealth",
+											className: "cursor-pointer text-sm",
+											children: "Alertas Sanitários (Vacinas, Pesagem)"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+											id: "notifyHealth",
+											checked: prefs.notifyHealth,
+											onCheckedChange: (c$1) => setPrefs({
+												...prefs,
+												notifyHealth: c$1
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between px-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+											htmlFor: "notifyManagement",
+											className: "cursor-pointer text-sm",
+											children: "Alertas de Manejo & Operacional"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+											id: "notifyManagement",
+											checked: prefs.notifyManagement,
+											onCheckedChange: (c$1) => setPrefs({
+												...prefs,
+												notifyManagement: c$1
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between px-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+											htmlFor: "notifyFinancial",
+											className: "cursor-pointer text-sm",
+											children: "Alertas Financeiros & Orçamento"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+											id: "notifyFinancial",
+											checked: prefs.notifyFinancial,
+											onCheckedChange: (c$1) => setPrefs({
+												...prefs,
+												notifyFinancial: c$1
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "pt-4 border-t border-border space-y-4 mt-4",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+												className: "text-sm font-semibold mb-2",
+												children: "Alertas Específicos por Categoria"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center justify-between px-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+													htmlFor: "notifyVacasCorte",
+													className: "cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors",
+													children: "Protocolos para Vacas de corte"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+													id: "notifyVacasCorte",
+													checked: prefs.notifyVacasCorte,
+													onCheckedChange: (c$1) => setPrefs({
+														...prefs,
+														notifyVacasCorte: c$1
+													})
+												})]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center justify-between px-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+													htmlFor: "notifyNovilhasMatrizes",
+													className: "cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors",
+													children: "Manejo de Novilhas matrizes"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+													id: "notifyNovilhasMatrizes",
+													checked: prefs.notifyNovilhasMatrizes,
+													onCheckedChange: (c$1) => setPrefs({
+														...prefs,
+														notifyNovilhasMatrizes: c$1
+													})
+												})]
+											})
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "pt-4 border-t border-border mt-4",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											variant: "outline",
+											onClick: handleTestAlert,
+											className: "gap-2 w-full sm:w-auto",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4 text-primary" }), " Simular Alerta de Teste"]
+										})
 									})
 								]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "pt-4 border-t border-border mt-4",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-									variant: "outline",
-									onClick: handleTestAlert,
-									className: "gap-2 w-full sm:w-auto",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-4 w-4 text-primary" }), " Simular Alerta de Teste"]
-								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
+							className: "flex justify-end border-t bg-muted/20 pt-4",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: handleSave,
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Preferências"]
 							})
-						]
-					})]
+						})
+					] })
 				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
-					className: "flex justify-end border-t bg-muted/20 pt-4",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						onClick: handleSave,
-						className: "gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Alterações"]
-					})
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "mercado",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5 text-primary" }), "Integração de Mercado"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Sincronização de preços da arroba e indicadores de mercado via API externa." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "space-y-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+								htmlFor: "autoUpdate",
+								className: "flex flex-col gap-1 cursor-pointer",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Atualização Automática (API)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-normal text-xs text-muted-foreground",
+									children: "Obter cotações em tempo real de fontes seguras."
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+								id: "autoUpdate",
+								checked: isAutoUpdateEnabled,
+								onCheckedChange: toggleAutoUpdate
+							})]
+						}), !isAutoUpdateEnabled && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "pt-4 border-t border-border space-y-4 animate-in fade-in",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "text-sm font-semibold mb-2",
+								children: "Preços Manuais (R$)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+								children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: ind.label }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										type: "number",
+										step: "0.01",
+										value: ind.price,
+										onChange: (e) => setManualPrice(ind.id, Number(e.target.value))
+									})]
+								}, ind.id))
+							})]
+						})]
+					})] })
 				})
-			] })
-		]
+			]
+		})]
 	});
 }
 function ContactDialog({ onSave }) {
@@ -73553,143 +73784,235 @@ function BI() {
 		if (dateRange === "este_ano") return biData.slice(-3);
 		return biData;
 	}, [dateRange]);
-	const handleExportCSV = () => {
+	const prepareExportData = () => {
 		const metric1Name = biMetricsList.find((m) => m.id === m1)?.name || m1;
 		const metric2Name = biMetricsList.find((m) => m.id === m2)?.name || m2;
-		downloadCSV(filteredData.map((d) => ({
+		return filteredData.map((d) => ({
 			Período: d.period,
 			[metric1Name]: d[m1],
 			[metric2Name]: d[m2]
-		})), `bi_report_${m1}_${m2}`);
+		}));
+	};
+	const handleExportCSV = () => {
+		downloadCSV(prepareExportData(), `bi_report_${m1}_${m2}`);
 		toast$2({
 			title: "Exportação Concluída",
-			description: "O arquivo Excel (CSV) foi baixado com sucesso."
+			description: "O arquivo CSV foi baixado com sucesso."
+		});
+	};
+	const handleExportExcel = () => {
+		downloadExcel(prepareExportData(), `bi_report_${m1}_${m2}`);
+		toast$2({
+			title: "Exportação Concluída",
+			description: "O arquivo Excel foi baixado com sucesso."
 		});
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-20 sm:pb-6 print:pb-0 print:space-y-2",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-3xl font-bold tracking-tight text-foreground",
-				children: "BI & Relatórios Dinâmicos"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Cruze dados de diferentes módulos para descobrir insights de performance."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				onClick: handleSave,
-				className: "gap-2 w-full sm:w-auto",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Visão"]
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid gap-6 md:grid-cols-4 print:grid-cols-1 print:gap-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "md:col-span-1 space-y-6 print:hidden",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					className: "pb-4",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						className: "text-lg",
-						children: "Configurar Eixos"
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					className: "text-3xl font-bold tracking-tight text-foreground",
+					children: "BI & Relatórios Dinâmicos"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Cruze dados de diferentes módulos para descobrir insights de performance."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					onClick: handleSave,
+					className: "gap-2 w-full sm:w-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), " Salvar Visão"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "mb-6 md:col-span-4 print:hidden",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Tendência de 12 Meses: Fluxo de Caixa vs Ganho de Peso" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise de longo prazo correlacionando o faturamento acumulado com a produtividade do rebanho." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+					config: {
+						cashflow: {
+							label: "Fluxo de Caixa (R$)",
+							color: "hsl(var(--primary))"
+						},
+						weightGain: {
+							label: "Ganho de Peso (kg)",
+							color: "hsl(var(--chart-2))"
+						}
+					},
+					className: "h-[300px] w-full",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ComposedChart, {
+						data: twelveMonthsTrendData,
+						margin: {
+							top: 20,
+							right: 20,
+							left: 20,
+							bottom: 20
+						},
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+								vertical: false,
+								strokeDasharray: "3 3"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+								dataKey: "month",
+								tickLine: false,
+								axisLine: false,
+								tickMargin: 8
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+								yAxisId: "left",
+								tickLine: false,
+								axisLine: false,
+								tickMargin: 8,
+								tickFormatter: (v) => `R$ ${(v / 1e3).toFixed(0)}k`
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+								yAxisId: "right",
+								orientation: "right",
+								tickLine: false,
+								axisLine: false,
+								tickMargin: 8,
+								tickFormatter: (v) => `${v} kg`
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+								cursor: { fill: "var(--color-muted)" },
+								content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+								yAxisId: "left",
+								dataKey: "cashflow",
+								fill: "var(--color-cashflow)",
+								radius: [
+									4,
+									4,
+									0,
+									0
+								],
+								maxBarSize: 50
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+								yAxisId: "right",
+								type: "monotone",
+								dataKey: "weightGain",
+								stroke: "var(--color-weightGain)",
+								strokeWidth: 3,
+								dot: { r: 4 },
+								activeDot: { r: 6 }
+							})
+						]
 					})
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-					className: "space-y-4",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
-								className: "text-sm font-medium",
-								children: "Série 1 (Barras)"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								value: m1,
-								onValueChange: setM1,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a métrica" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: biMetricsList.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: m.id,
-									children: m.name
-								}, m.id)) })]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
-								className: "text-sm font-medium",
-								children: "Série 2 (Linha)"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								value: m2,
-								onValueChange: setM2,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a métrica" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: biMetricsList.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: m.id,
-									disabled: m.id === m1,
-									children: m.name
-								}, m.id)) })]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
-								className: "text-sm font-medium",
-								children: "Período"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								value: dateRange,
-								onValueChange: setDateRange,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-										value: "ultimos_6",
-										children: "Últimos 6 Meses"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-										value: "este_ano",
-										children: "Este Ano"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-										value: "todo_periodo",
-										children: "Todo Período"
-									})
-								] })]
-							})]
+				}) })]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-6 md:grid-cols-4 print:grid-cols-1 print:gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "md:col-span-1 space-y-6 print:hidden",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-lg",
+							children: "Configurar Eixos"
 						})
-					]
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					className: "pb-4",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						className: "text-lg",
-						children: "Visões Salvas"
-					})
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					className: "space-y-2",
-					children: saved.map((s$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						variant: "outline",
-						className: "w-full justify-start text-left h-auto py-3 px-3",
-						onClick: () => loadSaved(s$1),
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bookmark, { className: "h-4 w-4 mr-2 flex-shrink-0 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "truncate text-sm whitespace-normal break-words",
-							children: s$1.name
-						})]
-					}, s$1.id))
-				})] })]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "md:col-span-3",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-					className: "h-full flex flex-col min-h-[500px] print:min-h-[auto] print:border-none print:shadow-none",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-						className: "flex flex-row items-start justify-between",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Gráfico Comparativo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise temporal cruzada interagindo indicadores de custo e produção." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "print:hidden",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
-								onExportCSV: handleExportCSV,
-								onExportPDF: triggerPDFPrint
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "space-y-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
+									className: "text-sm font-medium",
+									children: "Série 1 (Barras)"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: m1,
+									onValueChange: setM1,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a métrica" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: biMetricsList.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: m.id,
+										children: m.name
+									}, m.id)) })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
+									className: "text-sm font-medium",
+									children: "Série 2 (Linha)"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: m2,
+									onValueChange: setM2,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a métrica" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: biMetricsList.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: m.id,
+										disabled: m.id === m1,
+										children: m.name
+									}, m.id)) })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
+									className: "text-sm font-medium",
+									children: "Período"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: dateRange,
+									onValueChange: setDateRange,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "ultimos_6",
+											children: "Últimos 6 Meses"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "este_ano",
+											children: "Este Ano"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "todo_periodo",
+											children: "Todo Período"
+										})
+									] })]
+								})]
+							})
+						]
+					})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
+							className: "text-lg",
+							children: "Visões Salvas"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						className: "space-y-2",
+						children: saved.map((s$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "outline",
+							className: "w-full justify-start text-left h-auto py-3 px-3",
+							onClick: () => loadSaved(s$1),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bookmark, { className: "h-4 w-4 mr-2 flex-shrink-0 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "truncate text-sm whitespace-normal break-words",
+								children: s$1.name
+							})]
+						}, s$1.id))
+					})] })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "md:col-span-3",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "h-full flex flex-col min-h-[500px] print:min-h-[auto] print:border-none print:shadow-none",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "flex flex-row items-start justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Gráfico Comparativo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise temporal cruzada interagindo indicadores de custo e produção." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "print:hidden",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+									onExportCSV: handleExportCSV,
+									onExportExcel: handleExportExcel,
+									onExportPDF: triggerPDFPrint
+								})
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "flex-1 pb-4",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DynamicBIChart, {
+								m1,
+								m2,
+								data: filteredData
 							})
 						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-						className: "flex-1 pb-4",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DynamicBIChart, {
-							m1,
-							m2,
-							data: filteredData
-						})
-					})]
-				})
-			})]
-		})]
+					})
+				})]
+			})
+		]
 	});
 }
 var NotFound = () => {
@@ -73899,4 +74222,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BZVyy6pC.js.map
+//# sourceMappingURL=index-BHm0d2dg.js.map

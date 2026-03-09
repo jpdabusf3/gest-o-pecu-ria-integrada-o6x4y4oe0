@@ -993,6 +993,21 @@ export const biData = [
   },
 ]
 
+export const twelveMonthsTrendData = [
+  { month: 'Mar/25', cashflow: 120000, weightGain: 4500 },
+  { month: 'Abr/25', cashflow: 135000, weightGain: 4800 },
+  { month: 'Mai/25', cashflow: 110000, weightGain: 5100 },
+  { month: 'Jun/25', cashflow: 145000, weightGain: 5200 },
+  { month: 'Jul/25', cashflow: 160000, weightGain: 4900 },
+  { month: 'Ago/25', cashflow: 155000, weightGain: 5300 },
+  { month: 'Set/25', cashflow: 170000, weightGain: 5500 },
+  { month: 'Out/25', cashflow: 185000, weightGain: 5800 },
+  { month: 'Nov/25', cashflow: 190000, weightGain: 6000 },
+  { month: 'Dez/25', cashflow: 210000, weightGain: 6200 },
+  { month: 'Jan/26', cashflow: 200000, weightGain: 6100 },
+  { month: 'Fev/26', cashflow: 220000, weightGain: 6500 },
+]
+
 export const defaultSavedReports = [
   {
     id: 'R1',

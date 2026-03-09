@@ -11,15 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from '@/components/ui/dropdown-menu'
-import { Download, Plus, FileText, FileSpreadsheet } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { financialData, lotPerformanceData, costPerArrobaData, animalData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
@@ -27,6 +19,8 @@ import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { BreakEvenTab } from '@/components/finance/BreakEvenTab'
 import { LotBudgetsTab } from '@/components/finance/LotBudgetsTab'
+import { ExportMenu } from '@/components/ExportMenu'
+import { downloadCSV, downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 import useFinanceStore from '@/stores/useFinanceStore'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 
@@ -54,10 +48,19 @@ export default function Financeiro() {
     })
   }, [ledger, lotThresholds, notifications, addNotification])
 
-  const handleExport = (format: string) => {
+  const handleExportCSV = () => {
+    downloadCSV(financialData, 'balanco_financeiro')
     toast({
       title: 'Relatório Gerado',
-      description: `O balanço financeiro está sendo baixado em formato ${format.toUpperCase()}.`,
+      description: 'O balanço financeiro foi baixado em formato CSV.',
+    })
+  }
+
+  const handleExportExcel = () => {
+    downloadExcel(financialData, 'balanco_financeiro')
+    toast({
+      title: 'Relatório Gerado',
+      description: 'O balanço financeiro foi baixado em formato Excel.',
     })
   }
 
@@ -98,29 +101,13 @@ export default function Financeiro() {
         </div>
         <div className="flex gap-2 w-full md:w-auto flex-wrap sm:flex-nowrap justify-start md:justify-end">
           <NotificationPreferences />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex-1 sm:flex-none gap-2">
-                <Download className="h-4 w-4" /> Exportar Balanço
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Formato do Relatório</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleExport('pdf')}
-                className="gap-2 cursor-pointer"
-              >
-                <FileText className="h-4 w-4" /> Exportar em PDF
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleExport('excel')}
-                className="gap-2 cursor-pointer"
-              >
-                <FileSpreadsheet className="h-4 w-4" /> Exportar em Excel
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ExportMenu
+            className="flex-1 sm:flex-none"
+            label="Exportar Balanço"
+            onExportCSV={handleExportCSV}
+            onExportExcel={handleExportExcel}
+            onExportPDF={triggerPDFPrint}
+          />
           <Button className="flex-1 sm:flex-none gap-2">
             <Plus className="h-4 w-4" /> Lançamento
           </Button>
