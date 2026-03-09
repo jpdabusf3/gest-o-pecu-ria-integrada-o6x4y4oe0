@@ -22,9 +22,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { TriangleAlert, BellRing } from 'lucide-react'
-import { inventoryData } from '@/data/mock'
 import { useFarm } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
+import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
+import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
 
 function EditThresholdModal({ item, updateMinThreshold }: { item: any; updateMinThreshold: any }) {
   const [open, setOpen] = useState(false)
@@ -71,7 +72,18 @@ function EditThresholdModal({ item, updateMinThreshold }: { item: any; updateMin
 export default function Estoque() {
   const { inventory, updateMinThreshold } = useFarm()
   const { fazendas, updateFazenda } = useFazendaStore()
+
   const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd)
+
+  const nutricaoItems = inventory.filter(
+    (i) => ['Suplemento', 'Concentrado'].includes(i.tipo) || i.id.startsWith('N'),
+  )
+  const farmaciaItems = inventory.filter(
+    (i) => ['Biológico', 'Antiparasitário'].includes(i.tipo) || i.id.startsWith('F'),
+  )
+  const almoxarifadoItems = inventory.filter(
+    (i) => i.tipo === 'Material Cerca' || i.id.startsWith('A'),
+  )
 
   const renderGenericTable = (items: any[]) => (
     <div className="overflow-x-auto">
@@ -114,11 +126,17 @@ export default function Estoque() {
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Estoque & Insumos</h2>
-        <p className="text-muted-foreground mt-1">
-          Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda.
-        </p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Estoque & Insumos</h2>
+          <p className="text-muted-foreground mt-1">
+            Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda.
+          </p>
+        </div>
+        <div className="flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap">
+          <RegisterConsumptionModal />
+          <RegisterPurchaseModal />
+        </div>
       </div>
 
       {criticalItems.length > 0 && (
@@ -126,7 +144,8 @@ export default function Estoque() {
           <TriangleAlert className="h-5 w-5" />
           <AlertTitle className="text-base font-bold">Alerta de Compras Necessárias</AlertTitle>
           <AlertDescription className="mt-2 text-destructive-foreground/90">
-            Atenção: {criticalItems.length} itens de nutrição operando abaixo do nível de segurança.
+            Atenção: {criticalItems.length} itens operando abaixo do nível de segurança. Reabasteça
+            para evitar falta de manejo.
           </AlertDescription>
         </Alert>
       )}
@@ -167,7 +186,7 @@ export default function Estoque() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {inventory.map((item) => {
+                    {nutricaoItems.map((item) => {
                       const isCritical = item.qtd <= item.minQtd
                       const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5
                       return (
@@ -210,14 +229,12 @@ export default function Estoque() {
 
         <TabsContent value="farmacia">
           <Card>
-            <CardContent className="pt-6">{renderGenericTable(inventoryData.farmacia)}</CardContent>
+            <CardContent className="pt-6">{renderGenericTable(farmaciaItems)}</CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="almoxarifado">
           <Card>
-            <CardContent className="pt-6">
-              {renderGenericTable(inventoryData.almoxarifado)}
-            </CardContent>
+            <CardContent className="pt-6">{renderGenericTable(almoxarifadoItems)}</CardContent>
           </Card>
         </TabsContent>
 

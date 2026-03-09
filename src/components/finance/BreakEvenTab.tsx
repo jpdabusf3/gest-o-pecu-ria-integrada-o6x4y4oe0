@@ -24,6 +24,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { confinementData, sectorData } from '@/data/mock'
 import { Target, TrendingUp } from 'lucide-react'
 
@@ -50,7 +52,7 @@ export function BreakEvenTab() {
   )
 
   const [selectedLotId, setSelectedLotId] = useState<string>(allLots[0].id)
-  const arrobaPrice = 265.5
+  const [arrobaPrice, setArrobaPrice] = useState<number>(265.5)
 
   const lotDetails = useMemo(() => {
     return allLots.map((lot) => {
@@ -85,7 +87,7 @@ export function BreakEvenTab() {
       }
       return { ...lot, maxProfit, optimalDay, chartData, currentCost: chartData[0].cost }
     })
-  }, [allLots])
+  }, [allLots, arrobaPrice])
 
   const selectedLotData = lotDetails.find((l) => l.id === selectedLotId) || lotDetails[0]
 
@@ -102,24 +104,37 @@ export function BreakEvenTab() {
           <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-primary" /> Curva de Ponto de Equilíbrio
+                <Target className="h-5 w-5 text-primary" /> Simulador de Ponto de Equilíbrio
               </CardTitle>
               <CardDescription>
-                Cruzamento de histórico de ganho de peso vs acúmulo de custos diários.
+                Ajuste o valor da arroba para simular projeções de lucratividade do lote.
               </CardDescription>
             </div>
-            <Select value={selectedLotId} onValueChange={setSelectedLotId}>
-              <SelectTrigger className="w-full sm:w-[200px]">
-                <SelectValue placeholder="Selecione o Lote" />
-              </SelectTrigger>
-              <SelectContent>
-                {allLots.map((l) => (
-                  <SelectItem key={l.id} value={l.id}>
-                    {l.id} ({l.origin})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <div className="flex items-center gap-2">
+                <Label className="whitespace-nowrap text-muted-foreground font-semibold">
+                  Preço @ (R$)
+                </Label>
+                <Input
+                  type="number"
+                  value={arrobaPrice}
+                  onChange={(e) => setArrobaPrice(Number(e.target.value))}
+                  className="w-24 bg-background font-mono font-medium"
+                />
+              </div>
+              <Select value={selectedLotId} onValueChange={setSelectedLotId}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Selecione o Lote" />
+                </SelectTrigger>
+                <SelectContent>
+                  {allLots.map((l) => (
+                    <SelectItem key={l.id} value={l.id}>
+                      {l.id} ({l.origin})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="h-[350px] w-full">
@@ -213,7 +228,7 @@ export function BreakEvenTab() {
                 R$ {selectedLotData.custoDiario.toFixed(2)}
               </span>
             </div>
-            <div className="bg-primary/5 p-4 rounded-lg mt-4 border border-primary/20">
+            <div className="bg-primary/5 p-4 rounded-lg mt-4 border border-primary/20 transition-all duration-300">
               <span className="text-sm font-medium text-primary block mb-1">
                 Venda Ideal (Break-even)
               </span>

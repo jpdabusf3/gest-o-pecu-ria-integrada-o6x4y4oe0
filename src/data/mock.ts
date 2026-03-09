@@ -420,6 +420,7 @@ export const inventoryData = {
       minQtd: 100,
       unidade: 'Doses',
       status: 'Baixo',
+      custoUnitario: 1.5,
     },
     {
       id: 'F2',
@@ -429,6 +430,7 @@ export const inventoryData = {
       minQtd: 10,
       unidade: 'Frascos',
       status: 'Normal',
+      custoUnitario: 45.0,
     },
   ],
   almoxarifado: [
@@ -440,6 +442,7 @@ export const inventoryData = {
       minQtd: 10,
       unidade: 'Rolos',
       status: 'Normal',
+      custoUnitario: 450.0,
     },
   ],
   nutricao: [
@@ -452,6 +455,7 @@ export const inventoryData = {
       minQtd: 300,
       unidade: 'kg',
       status: 'Normal',
+      custoUnitario: 3.5,
     },
     {
       id: 'N2',
@@ -462,6 +466,7 @@ export const inventoryData = {
       minQtd: 1000,
       unidade: 'kg',
       status: 'Crítico',
+      custoUnitario: 1.8,
     },
     {
       id: 'N3',
@@ -472,9 +477,19 @@ export const inventoryData = {
       minQtd: 500,
       unidade: 'kg',
       status: 'Baixo',
+      custoUnitario: 2.9,
     },
   ],
 }
+
+export const supplierPerformanceData = [
+  { brand: 'AgroMix (Ração)', type: 'Ração Confinamento', gmd: 1.55, costPerKg: 1.85 },
+  { brand: 'NutriMax (Ração)', type: 'Ração Confinamento', gmd: 1.48, costPerKg: 1.7 },
+  { brand: 'BoiForte (Ração)', type: 'Ração Confinamento', gmd: 1.42, costPerKg: 1.65 },
+  { brand: 'SalMine (Mineral)', type: 'Suplemento Mineral', gmd: 0.65, costPerKg: 3.5 },
+  { brand: 'ForteSal (Mineral)', type: 'Suplemento Mineral', gmd: 0.6, costPerKg: 3.2 },
+  { brand: 'OuroFino (Mineral)', type: 'Suplemento Mineral', gmd: 0.68, costPerKg: 3.8 },
+]
 
 export const financialData = [
   {

@@ -12,13 +12,16 @@ export type InventoryItem = {
   minQtd: number
   unidade: string
   status: string
+  custoUnitario?: number
 }
 
 export type FarmContextType = {
   inventory: InventoryItem[]
   lots: typeof confinementData.lotes
   historicalWeights: Record<string, LotWeightRecord[]>
+  registerConsumption: (loteId: string, inventoryId: string, amount: number) => void
   registerFeedConsumption: (loteId: string, inventoryId: string, amount: number) => void
+  registerPurchase: (inventoryId: string, amount: number, totalCost: number) => void
   updateMinThreshold: (inventoryId: string, newMin: number) => void
   addWeightRecord: (loteId: string, weight: number, date: string) => void
   getPredictedSlaughterDate: (loteId: string) => Date | null
@@ -44,21 +47,40 @@ const initialWeights: Record<string, LotWeightRecord[]> = {
   ],
 }
 
+const initialInventory: InventoryItem[] = [
+  ...inventoryData.farmacia.map((i: any) => ({ ...i, custoUnitario: i.custoUnitario || 1.5 })),
+  ...inventoryData.almoxarifado.map((i: any) => ({ ...i, custoUnitario: i.custoUnitario || 50.0 })),
+  ...inventoryData.nutricao.map((i: any) => ({ ...i, custoUnitario: i.custoUnitario || 2.5 })),
+]
+
 const FarmContext = createContext<FarmContextType | undefined>(undefined)
 
 export function FarmProvider({ children }: { children: React.ReactNode }) {
-  const [inventory, setInventory] = useState<InventoryItem[]>(
-    inventoryData.nutricao as InventoryItem[],
-  )
+  const [inventory, setInventory] = useState<InventoryItem[]>(initialInventory)
   const [lots, setLots] = useState(confinementData.lotes)
   const [historicalWeights, setHistoricalWeights] =
     useState<Record<string, LotWeightRecord[]>>(initialWeights)
 
-  const registerFeedConsumption = (loteId: string, inventoryId: string, amount: number) => {
+  const registerConsumption = (loteId: string, inventoryId: string, amount: number) => {
     setInventory((prev) =>
       prev.map((item) =>
         item.id === inventoryId ? { ...item, qtd: Math.max(0, item.qtd - amount) } : item,
       ),
+    )
+  }
+
+  const registerPurchase = (inventoryId: string, amount: number, totalCost: number) => {
+    setInventory((prev) =>
+      prev.map((item) => {
+        if (item.id === inventoryId) {
+          const currentTotalValue = item.qtd * (item.custoUnitario || 0)
+          const newTotalValue = currentTotalValue + totalCost
+          const newQtd = item.qtd + amount
+          const newCustoUnitario = newQtd > 0 ? newTotalValue / newQtd : item.custoUnitario
+          return { ...item, qtd: newQtd, custoUnitario: newCustoUnitario }
+        }
+        return item
+      }),
     )
   }
 
@@ -164,7 +186,9 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
         inventory,
         lots,
         historicalWeights,
-        registerFeedConsumption,
+        registerConsumption,
+        registerFeedConsumption: registerConsumption, // alias backwards compat
+        registerPurchase,
         updateMinThreshold,
         addWeightRecord,
         getPredictedSlaughterDate,

@@ -25625,7 +25625,8 @@ const inventoryData = {
 		qtd: 40,
 		minQtd: 100,
 		unidade: "Doses",
-		status: "Baixo"
+		status: "Baixo",
+		custoUnitario: 1.5
 	}, {
 		id: "F2",
 		item: "Ivermectina 1%",
@@ -25633,7 +25634,8 @@ const inventoryData = {
 		qtd: 15,
 		minQtd: 10,
 		unidade: "Frascos",
-		status: "Normal"
+		status: "Normal",
+		custoUnitario: 45
 	}],
 	almoxarifado: [{
 		id: "A1",
@@ -25642,7 +25644,8 @@ const inventoryData = {
 		qtd: 12,
 		minQtd: 10,
 		unidade: "Rolos",
-		status: "Normal"
+		status: "Normal",
+		custoUnitario: 450
 	}],
 	nutricao: [
 		{
@@ -25653,7 +25656,8 @@ const inventoryData = {
 			consumoDiario: 50,
 			minQtd: 300,
 			unidade: "kg",
-			status: "Normal"
+			status: "Normal",
+			custoUnitario: 3.5
 		},
 		{
 			id: "N2",
@@ -25663,7 +25667,8 @@ const inventoryData = {
 			consumoDiario: 450,
 			minQtd: 1e3,
 			unidade: "kg",
-			status: "Crítico"
+			status: "Crítico",
+			custoUnitario: 1.8
 		},
 		{
 			id: "N3",
@@ -25673,10 +25678,49 @@ const inventoryData = {
 			consumoDiario: 65,
 			minQtd: 500,
 			unidade: "kg",
-			status: "Baixo"
+			status: "Baixo",
+			custoUnitario: 2.9
 		}
 	]
 };
+const supplierPerformanceData = [
+	{
+		brand: "AgroMix (Ração)",
+		type: "Ração Confinamento",
+		gmd: 1.55,
+		costPerKg: 1.85
+	},
+	{
+		brand: "NutriMax (Ração)",
+		type: "Ração Confinamento",
+		gmd: 1.48,
+		costPerKg: 1.7
+	},
+	{
+		brand: "BoiForte (Ração)",
+		type: "Ração Confinamento",
+		gmd: 1.42,
+		costPerKg: 1.65
+	},
+	{
+		brand: "SalMine (Mineral)",
+		type: "Suplemento Mineral",
+		gmd: .65,
+		costPerKg: 3.5
+	},
+	{
+		brand: "ForteSal (Mineral)",
+		type: "Suplemento Mineral",
+		gmd: .6,
+		costPerKg: 3.2
+	},
+	{
+		brand: "OuroFino (Mineral)",
+		type: "Suplemento Mineral",
+		gmd: .68,
+		costPerKg: 3.8
+	}
+];
 const financialData = [{
 	id: "TR-101",
 	data: "10/Mar/2026",
@@ -26473,16 +26517,45 @@ var initialWeights = {
 		}
 	]
 };
+var initialInventory = [
+	...inventoryData.farmacia.map((i) => ({
+		...i,
+		custoUnitario: i.custoUnitario || 1.5
+	})),
+	...inventoryData.almoxarifado.map((i) => ({
+		...i,
+		custoUnitario: i.custoUnitario || 50
+	})),
+	...inventoryData.nutricao.map((i) => ({
+		...i,
+		custoUnitario: i.custoUnitario || 2.5
+	}))
+];
 var FarmContext = (0, import_react.createContext)(void 0);
 function FarmProvider({ children }) {
-	const [inventory, setInventory] = (0, import_react.useState)(inventoryData.nutricao);
+	const [inventory, setInventory] = (0, import_react.useState)(initialInventory);
 	const [lots, setLots] = (0, import_react.useState)(confinementData.lotes);
 	const [historicalWeights, setHistoricalWeights] = (0, import_react.useState)(initialWeights);
-	const registerFeedConsumption = (loteId, inventoryId, amount) => {
+	const registerConsumption = (loteId, inventoryId, amount) => {
 		setInventory((prev) => prev.map((item) => item.id === inventoryId ? {
 			...item,
 			qtd: Math.max(0, item.qtd - amount)
 		} : item));
+	};
+	const registerPurchase = (inventoryId, amount, totalCost) => {
+		setInventory((prev) => prev.map((item) => {
+			if (item.id === inventoryId) {
+				const newTotalValue = item.qtd * (item.custoUnitario || 0) + totalCost;
+				const newQtd = item.qtd + amount;
+				const newCustoUnitario = newQtd > 0 ? newTotalValue / newQtd : item.custoUnitario;
+				return {
+					...item,
+					qtd: newQtd,
+					custoUnitario: newCustoUnitario
+				};
+			}
+			return item;
+		}));
 	};
 	const updateMinThreshold = (inventoryId, newMin) => {
 		setInventory((prev) => prev.map((item) => item.id === inventoryId ? {
@@ -26579,7 +26652,9 @@ function FarmProvider({ children }) {
 			inventory,
 			lots,
 			historicalWeights,
-			registerFeedConsumption,
+			registerConsumption,
+			registerFeedConsumption: registerConsumption,
+			registerPurchase,
 			updateMinThreshold,
 			addWeightRecord,
 			getPredictedSlaughterDate,
@@ -29200,7 +29275,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$59({ inst: {
+			cachedValue = useState$62({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -29237,7 +29312,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$59 = React$70.useState, useEffect$22 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$62 = React$70.useState, useEffect$22 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -55769,6 +55844,20 @@ var LineChart = generateCategoricalChart({
 	}],
 	formatAxisMap
 });
+var BarChart = generateCategoricalChart({
+	chartName: "BarChart",
+	GraphicalChild: Bar,
+	defaultTooltipEventType: "axis",
+	validateTooltipEventTypes: ["axis", "item"],
+	axisComponents: [{
+		axisType: "xAxis",
+		AxisComp: XAxis
+	}, {
+		axisType: "yAxis",
+		AxisComp: YAxis
+	}],
+	formatAxisMap
+});
 var PieChart = generateCategoricalChart({
 	chartName: "PieChart",
 	GraphicalChild: Pie,
@@ -60194,6 +60283,300 @@ function Pastos() {
 		})]
 	});
 }
+var STORAGE_KEY$2 = "@f3_finance_ledger";
+var THRESHOLD_KEY = "@f3_finance_thresholds";
+var defaultLedger = [
+	{
+		id: "L1",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Vacina Febre Aftosa",
+		category: "Sanidade",
+		amount: 15.5,
+		animalId: "TAG-1234",
+		type: "expense"
+	},
+	{
+		id: "L2",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Suplemento Proteico (Rateio)",
+		category: "Nutrição",
+		amount: 45,
+		animalId: "TAG-1234",
+		type: "expense"
+	},
+	{
+		id: "L3",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Manejo e Pesagem",
+		category: "Mão de Obra",
+		amount: 10,
+		animalId: "TAG-1234",
+		type: "expense"
+	},
+	{
+		id: "L4",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Ração Alto Grão",
+		category: "Nutrição",
+		amount: 11500,
+		loteId: "LEN-02",
+		type: "expense"
+	},
+	{
+		id: "L5",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Suplemento Mineral Rep.",
+		category: "Nutrição",
+		amount: 4200,
+		loteId: "LCR-01",
+		type: "expense"
+	}
+];
+var defaultThresholds = [{
+	loteId: "LEN-02",
+	threshold: 1e4
+}, {
+	loteId: "LCR-01",
+	threshold: 5e3
+}];
+function useFinanceStore() {
+	const [ledger, setLedger] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY$2);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return defaultLedger;
+	});
+	const [lotThresholds, setLotThresholds] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(THRESHOLD_KEY);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return defaultThresholds;
+	});
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem(STORAGE_KEY$2, JSON.stringify(ledger));
+	}, [ledger]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem(THRESHOLD_KEY, JSON.stringify(lotThresholds));
+	}, [lotThresholds]);
+	return {
+		ledger,
+		addEntry: (0, import_react.useCallback)((entry) => {
+			setLedger((prev) => [{
+				...entry,
+				id: crypto.randomUUID()
+			}, ...prev]);
+		}, []),
+		lotThresholds,
+		setLotThreshold: (0, import_react.useCallback)((loteId, threshold$1) => {
+			setLotThresholds((prev) => {
+				return [...prev.filter((p) => p.loteId !== loteId), {
+					loteId,
+					threshold: threshold$1
+				}];
+			});
+		}, [])
+	};
+}
+function RegisterPurchaseModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { inventory, registerPurchase } = useFarm();
+	const { addEntry } = useFinanceStore();
+	const { toast: toast$2 } = useToast();
+	const [inventoryId, setInventoryId] = (0, import_react.useState)("");
+	const [amount, setAmount] = (0, import_react.useState)("");
+	const [totalCost, setTotalCost] = (0, import_react.useState)("");
+	const handleSave = () => {
+		if (!inventoryId || !amount || !totalCost) return;
+		registerPurchase(inventoryId, Number(amount), Number(totalCost));
+		const item = inventory.find((i) => i.id === inventoryId);
+		addEntry({
+			description: `Compra: ${item?.item || "Insumo Diversos"}`,
+			category: item?.tipo === "Biológico" || item?.tipo === "Antiparasitário" ? "Sanidade" : "Insumos",
+			amount: Number(totalCost),
+			type: "expense"
+		});
+		toast$2({
+			title: "Compra Registrada",
+			description: "Níveis de estoque atualizados e despesa lançada com sucesso no livro razão."
+		});
+		setOpen(false);
+		setInventoryId("");
+		setAmount("");
+		setTotalCost("");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShoppingCart, { className: "h-4 w-4" }), " Registrar Compra"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShoppingCart, { className: "h-5 w-5 text-primary" }), " Compra de Insumos"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Adicione itens ao estoque físico. O custo total alimentará automaticamente o financeiro global da fazenda." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo Adquirido" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: inventoryId,
+							onValueChange: setInventoryId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: inventory.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: i.id,
+								children: [
+									i.item,
+									" (Atual: ",
+									i.qtd,
+									i.unidade,
+									")"
+								]
+							}, i.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-2 gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Quantidade Adquirida" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: amount,
+								onChange: (e) => setAmount(e.target.value),
+								placeholder: "Ex: 500"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Total (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: totalCost,
+								onChange: (e) => setTotalCost(e.target.value),
+								placeholder: "Ex: 1250.00"
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleSave,
+						className: "w-full",
+						children: "Confirmar Compra e Atualizar Financeiro"
+					})
+				]
+			})]
+		})]
+	});
+}
+function RegisterConsumptionModal() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { lots, inventory, registerConsumption } = useFarm();
+	const { addEntry } = useFinanceStore();
+	const { toast: toast$2 } = useToast();
+	const [loteId, setLoteId] = (0, import_react.useState)("");
+	const [inventoryId, setInventoryId] = (0, import_react.useState)("");
+	const [amount, setAmount] = (0, import_react.useState)("");
+	const handleSave = () => {
+		if (!loteId || !inventoryId || !amount) return;
+		registerConsumption(loteId, inventoryId, Number(amount));
+		const item = inventory.find((i) => i.id === inventoryId);
+		if (item) {
+			const unitCost = item.custoUnitario || 2;
+			const totalCost = Number(amount) * unitCost;
+			addEntry({
+				description: `Uso de Insumo: ${item.item}`,
+				category: item.tipo === "Biológico" || item.tipo === "Antiparasitário" ? "Sanidade" : "Custos Operacionais",
+				amount: totalCost,
+				type: "expense",
+				loteId
+			});
+		}
+		toast$2({
+			title: "Uso Registrado",
+			description: "Estoque deduzido e custo associado ao lote no financeiro."
+		});
+		setOpen(false);
+		setLoteId("");
+		setInventoryId("");
+		setAmount("");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "outline",
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-4 w-4" }), " Registrar Manejo/Uso"]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+			className: "sm:max-w-[425px]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), " Registrar Uso de Insumo"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Registre a utilização de itens de farmácia ou almoxarifado em lotes específicos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Lote Alvo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: loteId,
+							onValueChange: setLoteId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o lote" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: lots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: l.id,
+								children: [
+									l.id,
+									" - ",
+									l.categoria
+								]
+							}, l.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo Geral" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: inventoryId,
+							onValueChange: setInventoryId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: inventory.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: i.id,
+								children: [
+									i.item,
+									" (",
+									i.tipo,
+									" - Atual: ",
+									i.qtd,
+									i.unidade,
+									")"
+								]
+							}, i.id)) })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Quantidade Consumida" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "number",
+							value: amount,
+							onChange: (e) => setAmount(e.target.value),
+							placeholder: "Ex: 50"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						onClick: handleSave,
+						className: "w-full",
+						children: "Confirmar Consumo"
+					})
+				]
+			})]
+		})]
+	});
+}
 function EditThresholdModal({ item, updateMinThreshold }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const [minQtd, setMinQtd] = (0, import_react.useState)(item.minQtd?.toString() || "0");
@@ -60251,6 +60634,9 @@ function Estoque() {
 	const { inventory, updateMinThreshold } = useFarm();
 	const { fazendas, updateFazenda } = useFazendaStore();
 	const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd);
+	const nutricaoItems = inventory.filter((i) => ["Suplemento", "Concentrado"].includes(i.tipo) || i.id.startsWith("N"));
+	const farmaciaItems = inventory.filter((i) => ["Biológico", "Antiparasitário"].includes(i.tipo) || i.id.startsWith("F"));
+	const almoxarifadoItems = inventory.filter((i) => i.tipo === "Material Cerca" || i.id.startsWith("A"));
 	const renderGenericTable = (items) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "overflow-x-auto",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
@@ -60293,13 +60679,19 @@ function Estoque() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-3xl font-bold tracking-tight",
-				children: "Estoque & Insumos"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda."
-			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					className: "text-3xl font-bold tracking-tight",
+					children: "Estoque & Insumos"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterConsumptionModal, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterPurchaseModal, {})]
+				})]
+			}),
 			criticalItems.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
 				variant: "destructive",
 				className: "border-destructive/50 bg-destructive/10",
@@ -60314,7 +60706,7 @@ function Estoque() {
 						children: [
 							"Atenção: ",
 							criticalItems.length,
-							" itens de nutrição operando abaixo do nível de segurança."
+							" itens operando abaixo do nível de segurança. Reabasteça para evitar falta de manejo."
 						]
 					})
 				]
@@ -60365,7 +60757,7 @@ function Estoque() {
 										children: "Gatilho (Mínimo)"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: inventory.map((item) => {
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: nutricaoItems.map((item) => {
 									const isCritical = item.qtd <= item.minQtd;
 									const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5;
 									return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
@@ -60411,14 +60803,14 @@ function Estoque() {
 						value: "farmacia",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "pt-6",
-							children: renderGenericTable(inventoryData.farmacia)
+							children: renderGenericTable(farmaciaItems)
 						}) })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "almoxarifado",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "pt-6",
-							children: renderGenericTable(inventoryData.almoxarifado)
+							children: renderGenericTable(almoxarifadoItems)
 						}) })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
@@ -60763,7 +61155,7 @@ function BreakEvenTab() {
 		}))
 	], []);
 	const [selectedLotId, setSelectedLotId] = (0, import_react.useState)(allLots[0].id);
-	const arrobaPrice = 265.5;
+	const [arrobaPrice, setArrobaPrice] = (0, import_react.useState)(265.5);
 	const lotDetails = (0, import_react.useMemo)(() => {
 		return allLots.map((lot) => {
 			let currentWeight = lot.pesoMedio;
@@ -60798,7 +61190,7 @@ function BreakEvenTab() {
 				currentCost: chartData[0].cost
 			};
 		});
-	}, [allLots]);
+	}, [allLots, arrobaPrice]);
 	const selectedLotData = lotDetails.find((l) => l.id === selectedLotId) || lotDetails[0];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 mt-0 animate-fade-in",
@@ -60810,22 +61202,36 @@ function BreakEvenTab() {
 					className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 						className: "flex items-center gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Curva de Ponto de Equilíbrio"]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cruzamento de histórico de ganho de peso vs acúmulo de custos diários." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-						value: selectedLotId,
-						onValueChange: setSelectedLotId,
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
-							className: "w-full sm:w-[200px]",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o Lote" })
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: allLots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
-							value: l.id,
-							children: [
-								l.id,
-								" (",
-								l.origin,
-								")"
-							]
-						}, l.id)) })]
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Simulador de Ponto de Equilíbrio"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ajuste o valor da arroba para simular projeções de lucratividade do lote." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col sm:flex-row gap-3 w-full sm:w-auto",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								className: "whitespace-nowrap text-muted-foreground font-semibold",
+								children: "Preço @ (R$)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: arrobaPrice,
+								onChange: (e) => setArrobaPrice(Number(e.target.value)),
+								className: "w-24 bg-background font-mono font-medium"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: selectedLotId,
+							onValueChange: setSelectedLotId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+								className: "w-full sm:w-[200px]",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o Lote" })
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: allLots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: l.id,
+								children: [
+									l.id,
+									" (",
+									l.origin,
+									")"
+								]
+							}, l.id)) })]
+						})]
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "h-[350px] w-full",
@@ -60960,7 +61366,7 @@ function BreakEvenTab() {
 						})]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "bg-primary/5 p-4 rounded-lg mt-4 border border-primary/20",
+						className: "bg-primary/5 p-4 rounded-lg mt-4 border border-primary/20 transition-all duration-300",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: "text-sm font-medium text-primary block mb-1",
@@ -61030,106 +61436,6 @@ function BreakEvenTab() {
 			}, lot.id)) })] })
 		})] })]
 	});
-}
-var STORAGE_KEY$2 = "@f3_finance_ledger";
-var THRESHOLD_KEY = "@f3_finance_thresholds";
-var defaultLedger = [
-	{
-		id: "L1",
-		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
-		description: "Vacina Febre Aftosa",
-		category: "Sanidade",
-		amount: 15.5,
-		animalId: "TAG-1234",
-		type: "expense"
-	},
-	{
-		id: "L2",
-		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
-		description: "Suplemento Proteico (Rateio)",
-		category: "Nutrição",
-		amount: 45,
-		animalId: "TAG-1234",
-		type: "expense"
-	},
-	{
-		id: "L3",
-		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
-		description: "Manejo e Pesagem",
-		category: "Mão de Obra",
-		amount: 10,
-		animalId: "TAG-1234",
-		type: "expense"
-	},
-	{
-		id: "L4",
-		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
-		description: "Ração Alto Grão",
-		category: "Nutrição",
-		amount: 11500,
-		loteId: "LEN-02",
-		type: "expense"
-	},
-	{
-		id: "L5",
-		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
-		description: "Suplemento Mineral Rep.",
-		category: "Nutrição",
-		amount: 4200,
-		loteId: "LCR-01",
-		type: "expense"
-	}
-];
-var defaultThresholds = [{
-	loteId: "LEN-02",
-	threshold: 1e4
-}, {
-	loteId: "LCR-01",
-	threshold: 5e3
-}];
-function useFinanceStore() {
-	const [ledger, setLedger] = (0, import_react.useState)(() => {
-		try {
-			const saved = localStorage.getItem(STORAGE_KEY$2);
-			if (saved) return JSON.parse(saved);
-		} catch (e) {
-			console.error(e);
-		}
-		return defaultLedger;
-	});
-	const [lotThresholds, setLotThresholds] = (0, import_react.useState)(() => {
-		try {
-			const saved = localStorage.getItem(THRESHOLD_KEY);
-			if (saved) return JSON.parse(saved);
-		} catch (e) {
-			console.error(e);
-		}
-		return defaultThresholds;
-	});
-	(0, import_react.useEffect)(() => {
-		localStorage.setItem(STORAGE_KEY$2, JSON.stringify(ledger));
-	}, [ledger]);
-	(0, import_react.useEffect)(() => {
-		localStorage.setItem(THRESHOLD_KEY, JSON.stringify(lotThresholds));
-	}, [lotThresholds]);
-	return {
-		ledger,
-		addEntry: (0, import_react.useCallback)((entry) => {
-			setLedger((prev) => [{
-				...entry,
-				id: crypto.randomUUID()
-			}, ...prev]);
-		}, []),
-		lotThresholds,
-		setLotThreshold: (0, import_react.useCallback)((loteId, threshold$1) => {
-			setLotThresholds((prev) => {
-				return [...prev.filter((p) => p.loteId !== loteId), {
-					loteId,
-					threshold: threshold$1
-				}];
-			});
-		}, [])
-	};
 }
 function LotBudgetsTab() {
 	const { ledger, lotThresholds, setLotThreshold } = useFinanceStore();
@@ -65521,23 +65827,37 @@ function Calendario() {
 }
 function RegisterFeedModal() {
 	const [open, setOpen] = (0, import_react.useState)(false);
-	const { lots, inventory, registerFeedConsumption } = useFarm();
+	const { lots, inventory, registerConsumption } = useFarm();
+	const { addEntry } = useFinanceStore();
 	const { toast: toast$2 } = useToast();
 	const [loteId, setLoteId] = (0, import_react.useState)("");
 	const [inventoryId, setInventoryId] = (0, import_react.useState)("");
 	const [amount, setAmount] = (0, import_react.useState)("");
 	const handleSave = () => {
 		if (!loteId || !inventoryId || !amount) return;
-		registerFeedConsumption(loteId, inventoryId, Number(amount));
+		registerConsumption(loteId, inventoryId, Number(amount));
+		const item = inventory.find((i) => i.id === inventoryId);
+		if (item) {
+			const unitCost = item.custoUnitario || 2.5;
+			const totalCost = Number(amount) * unitCost;
+			addEntry({
+				description: `Consumo Insumo: ${item.item}`,
+				category: item.tipo === "Biológico" || item.tipo === "Antiparasitário" ? "Sanidade" : "Nutrição",
+				amount: totalCost,
+				type: "expense",
+				loteId
+			});
+		}
 		toast$2({
 			title: "Trato Registrado",
-			description: "O estoque de nutrição foi deduzido automaticamente."
+			description: "Estoque deduzido e despesa vinculada ao lote no financeiro."
 		});
 		setOpen(false);
 		setLoteId("");
 		setInventoryId("");
 		setAmount("");
 	};
+	const feedItems = inventory.filter((i) => ["Suplemento", "Concentrado"].includes(i.tipo) || i.id.startsWith("N"));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
 		open,
 		onOpenChange: setOpen,
@@ -65553,7 +65873,7 @@ function RegisterFeedModal() {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
 				className: "flex items-center gap-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wheat, { className: "h-5 w-5 text-primary" }), " Registrar Trato"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Informe o consumo de insumos para um lote. O sistema irá deduzir o estoque automaticamente." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Informe o consumo de insumos para um lote. O sistema irá deduzir o estoque automaticamente e alocar o custo no financeiro." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "space-y-4 py-4",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -65573,14 +65893,14 @@ function RegisterFeedModal() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo Utilizado" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo Utilizado (Nutrição)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 							value: inventoryId,
 							onValueChange: setInventoryId,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: inventory.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: feedItems.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
 								value: i.id,
 								children: [
 									i.item,
-									" (",
+									" (Atual: ",
 									i.qtd,
 									i.unidade,
 									")"
@@ -67562,6 +67882,102 @@ function Relatorios() {
 		})] })]
 	});
 }
+function SupplierPerformanceTab() {
+	const [selectedType, setSelectedType] = (0, import_react.useState)("Todos");
+	const filteredData = selectedType === "Todos" ? supplierPerformanceData : supplierPerformanceData.filter((d) => d.type === selectedType);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "border shadow-sm animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "flex flex-col sm:flex-row justify-between sm:items-start gap-4 pb-4 border-b bg-muted/5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Performance Analítica de Fornecedores / Marcas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+				className: "mt-1",
+				children: "Correlação direta entre a marca do insumo nutricional fornecido e o Ganho Médio Diário (GMD) resultante dos animais em lote."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+				value: selectedType,
+				onValueChange: setSelectedType,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+					className: "w-[220px]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Tipo de Insumo" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "Todos",
+						children: "Todos os Tipos"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "Ração Confinamento",
+						children: "Ração Confinamento"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "Suplemento Mineral",
+						children: "Suplemento Mineral"
+					})
+				] })]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "pt-6",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "h-[400px] w-full",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+					config: { gmd: {
+						label: "GMD Médio (kg/dia)",
+						color: "hsl(var(--primary))"
+					} },
+					className: "h-full w-full",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
+						data: filteredData.sort((a$1, b$1) => b$1.gmd - a$1.gmd),
+						layout: "vertical",
+						margin: {
+							top: 0,
+							right: 30,
+							left: 30,
+							bottom: 0
+						},
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+								strokeDasharray: "3 3",
+								horizontal: true,
+								vertical: false,
+								stroke: "hsl(var(--border))"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+								type: "number",
+								tickLine: false,
+								axisLine: false,
+								tickFormatter: (val) => val.toFixed(2),
+								domain: [0, "dataMax + 0.2"],
+								className: "text-muted-foreground text-xs"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+								dataKey: "brand",
+								type: "category",
+								tickLine: false,
+								axisLine: false,
+								width: 150,
+								className: "font-medium text-sm"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+								cursor: { fill: "hsl(var(--muted)/0.5)" },
+								content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { formatter: (val) => `${Number(val).toFixed(2)} kg/dia` })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+								dataKey: "gmd",
+								radius: [
+									0,
+									4,
+									4,
+									0
+								],
+								barSize: 36,
+								animationDuration: 1e3,
+								children: filteredData.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { fill: `hsl(var(--primary) / ${.6 + index$1 % 3 * .2})` }, `cell-${index$1}`))
+							})
+						]
+					})
+				})
+			})
+		})]
+	});
+}
 function RelatoriosDesempenho() {
 	const [categoria, setCategoria] = (0, import_react.useState)("Vacas de corte");
 	const chartData = (0, import_react.useMemo)(() => performanceByCategory[categoria] || performanceByCategory["Bois"], [categoria]);
@@ -67574,132 +67990,157 @@ function RelatoriosDesempenho() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-8 w-8 text-primary" }), "Relatórios de Desempenho"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
-				children: "Acompanhe o Ganho Médio Diário (GMD) e a evolução histórica por categoria animal."
+				children: "Acompanhe o Ganho Médio Diário (GMD) histórico e a eficiência atrelada às marcas de insumos."
 			})] })
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-			className: "border shadow-sm",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-				className: "flex flex-col sm:flex-row justify-between sm:items-start gap-4 pb-2 border-b bg-muted/10",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-					className: "flex items-center gap-2 text-xl",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), "Desempenho por Categoria"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
-					className: "mt-1.5",
-					children: "Selecione uma categoria para visualizar a tendência de ganho de peso nos últimos meses."
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "w-full sm:w-auto mt-2 sm:mt-0",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-						value: categoria,
-						onValueChange: setCategoria,
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
-							className: "w-full sm:w-[240px] bg-background",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a categoria" })
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Vacas de corte",
-								children: "Vacas de corte"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Novilhas matrizes",
-								children: "Novilhas matrizes"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Bois",
-								children: "Bois"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Garrotes",
-								children: "Garrotes"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Bezerros",
-								children: "Bezerros"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Bezerras",
-								children: "Bezerras"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Novilhas",
-								children: "Novilhas"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Vacas (Matrizes)",
-								children: "Vacas (Matrizes)"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "Touros",
-								children: "Touros"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			defaultValue: "categoria",
+			className: "space-y-6",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					className: "grid w-full sm:w-[450px] grid-cols-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "categoria",
+						children: "Evolução por Categoria"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						value: "fornecedores",
+						children: "Performance de Fornecedores"
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "categoria",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "border shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "flex flex-col sm:flex-row justify-between sm:items-start gap-4 pb-4 border-b bg-muted/5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+								className: "flex items-center gap-2 text-xl",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), "Desempenho por Categoria Animal"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+								className: "mt-1",
+								children: "Selecione uma categoria para visualizar a tendência de ganho de peso nos últimos meses."
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "w-full sm:w-auto mt-2 sm:mt-0",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: categoria,
+									onValueChange: setCategoria,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+										className: "w-full sm:w-[240px] bg-background",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a categoria" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Vacas de corte",
+											children: "Vacas de corte"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Novilhas matrizes",
+											children: "Novilhas matrizes"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Bois",
+											children: "Bois"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Garrotes",
+											children: "Garrotes"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Bezerros",
+											children: "Bezerros"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Bezerras",
+											children: "Bezerras"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Novilhas",
+											children: "Novilhas"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Vacas (Matrizes)",
+											children: "Vacas (Matrizes)"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "Touros",
+											children: "Touros"
+										})
+									] })]
+								})
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pt-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+								config: { gmd: {
+									label: "GMD (kg/dia)",
+									color: "hsl(var(--primary))"
+								} },
+								className: "h-[400px] w-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
+									data: chartData,
+									margin: {
+										top: 20,
+										right: 20,
+										left: -20,
+										bottom: 20
+									},
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+											strokeDasharray: "3 3",
+											vertical: false,
+											className: "stroke-muted"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+											dataKey: "period",
+											tickLine: false,
+											axisLine: false,
+											tickMargin: 10,
+											className: "text-muted-foreground text-xs"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+											tickLine: false,
+											axisLine: false,
+											tickMargin: 10,
+											className: "text-muted-foreground text-xs",
+											tickFormatter: (value) => `${value.toFixed(2)}`
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+											cursor: {
+												stroke: "hsl(var(--muted))",
+												strokeWidth: 2
+											},
+											content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+											type: "monotone",
+											dataKey: "gmd",
+											name: "GMD",
+											stroke: "var(--color-gmd)",
+											strokeWidth: 3,
+											dot: {
+												r: 4,
+												fill: "var(--color-gmd)",
+												strokeWidth: 2,
+												stroke: "hsl(var(--background))"
+											},
+											activeDot: {
+												r: 6,
+												strokeWidth: 0
+											},
+											animationDuration: 1500,
+											animationEasing: "ease-out"
+										})
+									]
+								})
 							})
-						] })]
+						})]
 					})
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-				className: "pt-6",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-					config: { gmd: {
-						label: "GMD (kg/dia)",
-						color: "hsl(var(--primary))"
-					} },
-					className: "h-[400px] w-full",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
-						data: chartData,
-						margin: {
-							top: 20,
-							right: 20,
-							left: -20,
-							bottom: 20
-						},
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-								strokeDasharray: "3 3",
-								vertical: false,
-								className: "stroke-muted"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-								dataKey: "period",
-								tickLine: false,
-								axisLine: false,
-								tickMargin: 10,
-								className: "text-muted-foreground text-xs"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-								tickLine: false,
-								axisLine: false,
-								tickMargin: 10,
-								className: "text-muted-foreground text-xs",
-								tickFormatter: (value) => `${value.toFixed(2)}`
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-								cursor: {
-									stroke: "hsl(var(--muted))",
-									strokeWidth: 2
-								},
-								content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {})
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
-								type: "monotone",
-								dataKey: "gmd",
-								name: "GMD",
-								stroke: "var(--color-gmd)",
-								strokeWidth: 3,
-								dot: {
-									r: 4,
-									fill: "var(--color-gmd)",
-									strokeWidth: 2,
-									stroke: "hsl(var(--background))"
-								},
-								activeDot: {
-									r: 6,
-									strokeWidth: 0
-								},
-								animationDuration: 1500,
-								animationEasing: "ease-out"
-							})
-						]
-					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "fornecedores",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SupplierPerformanceTab, {})
 				})
-			})]
+			]
 		})]
 	});
 }
@@ -73263,4 +73704,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-qjAD7Qwl.js.map
+//# sourceMappingURL=index-BT4gmCm7.js.map

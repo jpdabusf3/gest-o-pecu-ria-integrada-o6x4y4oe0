@@ -20,9 +20,9 @@ import {
 import { useFarm } from '@/contexts/FarmContext'
 import useFinanceStore from '@/stores/useFinanceStore'
 import { useToast } from '@/hooks/use-toast'
-import { Wheat } from 'lucide-react'
+import { Activity } from 'lucide-react'
 
-export function RegisterFeedModal() {
+export function RegisterConsumptionModal() {
   const [open, setOpen] = useState(false)
   const { lots, inventory, registerConsumption } = useFarm()
   const { addEntry } = useFinanceStore()
@@ -39,13 +39,15 @@ export function RegisterFeedModal() {
 
     const item = inventory.find((i) => i.id === inventoryId)
     if (item) {
-      const unitCost = item.custoUnitario || 2.5
+      const unitCost = item.custoUnitario || 2.0
       const totalCost = Number(amount) * unitCost
 
       addEntry({
-        description: `Consumo Insumo: ${item.item}`,
+        description: `Uso de Insumo: ${item.item}`,
         category:
-          item.tipo === 'Biológico' || item.tipo === 'Antiparasitário' ? 'Sanidade' : 'Nutrição',
+          item.tipo === 'Biológico' || item.tipo === 'Antiparasitário'
+            ? 'Sanidade'
+            : 'Custos Operacionais',
         amount: totalCost,
         type: 'expense',
         loteId: loteId,
@@ -53,8 +55,8 @@ export function RegisterFeedModal() {
     }
 
     toast({
-      title: 'Trato Registrado',
-      description: 'Estoque deduzido e despesa vinculada ao lote no financeiro.',
+      title: 'Uso Registrado',
+      description: 'Estoque deduzido e custo associado ao lote no financeiro.',
     })
     setOpen(false)
     setLoteId('')
@@ -62,30 +64,25 @@ export function RegisterFeedModal() {
     setAmount('')
   }
 
-  const feedItems = inventory.filter(
-    (i) => ['Suplemento', 'Concentrado'].includes(i.tipo) || i.id.startsWith('N'),
-  )
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="gap-2">
-          <Wheat className="h-4 w-4" /> Registrar Trato
+        <Button variant="outline" className="gap-2">
+          <Activity className="h-4 w-4" /> Registrar Manejo/Uso
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Wheat className="h-5 w-5 text-primary" /> Registrar Trato
+            <Activity className="h-5 w-5 text-primary" /> Registrar Uso de Insumo
           </DialogTitle>
           <DialogDescription>
-            Informe o consumo de insumos para um lote. O sistema irá deduzir o estoque
-            automaticamente e alocar o custo no financeiro.
+            Registre a utilização de itens de farmácia ou almoxarifado em lotes específicos.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label>Lote Confinado</Label>
+            <Label>Lote Alvo</Label>
             <Select value={loteId} onValueChange={setLoteId}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione o lote" />
@@ -93,22 +90,22 @@ export function RegisterFeedModal() {
               <SelectContent>
                 {lots.map((l) => (
                   <SelectItem key={l.id} value={l.id}>
-                    {l.id} - {l.curral}
+                    {l.id} - {l.categoria}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Insumo Utilizado (Nutrição)</Label>
+            <Label>Insumo Geral</Label>
             <Select value={inventoryId} onValueChange={setInventoryId}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione o insumo" />
               </SelectTrigger>
               <SelectContent>
-                {feedItems.map((i) => (
+                {inventory.map((i) => (
                   <SelectItem key={i.id} value={i.id}>
-                    {i.item} (Atual: {i.qtd}
+                    {i.item} ({i.tipo} - Atual: {i.qtd}
                     {i.unidade})
                   </SelectItem>
                 ))}
@@ -121,11 +118,11 @@ export function RegisterFeedModal() {
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="Ex: 150"
+              placeholder="Ex: 50"
             />
           </div>
           <Button onClick={handleSave} className="w-full">
-            Confirmar Baixa de Estoque
+            Confirmar Consumo
           </Button>
         </div>
       </DialogContent>
