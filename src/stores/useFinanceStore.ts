@@ -11,7 +11,13 @@ export interface LedgerEntry {
   type: 'expense' | 'revenue'
 }
 
+export interface LotThreshold {
+  loteId: string
+  threshold: number
+}
+
 const STORAGE_KEY = '@f3_finance_ledger'
+const THRESHOLD_KEY = '@f3_finance_thresholds'
 
 const defaultLedger: LedgerEntry[] = [
   {
@@ -41,6 +47,29 @@ const defaultLedger: LedgerEntry[] = [
     animalId: 'TAG-1234',
     type: 'expense',
   },
+  {
+    id: 'L4',
+    date: new Date().toISOString().split('T')[0],
+    description: 'Ração Alto Grão',
+    category: 'Nutrição',
+    amount: 11500.0,
+    loteId: 'LEN-02',
+    type: 'expense',
+  },
+  {
+    id: 'L5',
+    date: new Date().toISOString().split('T')[0],
+    description: 'Suplemento Mineral Rep.',
+    category: 'Nutrição',
+    amount: 4200.0,
+    loteId: 'LCR-01',
+    type: 'expense',
+  },
+]
+
+const defaultThresholds: LotThreshold[] = [
+  { loteId: 'LEN-02', threshold: 10000 },
+  { loteId: 'LCR-01', threshold: 5000 },
 ]
 
 export default function useFinanceStore() {
@@ -54,13 +83,34 @@ export default function useFinanceStore() {
     return defaultLedger
   })
 
+  const [lotThresholds, setLotThresholds] = useState<LotThreshold[]>(() => {
+    try {
+      const saved = localStorage.getItem(THRESHOLD_KEY)
+      if (saved) return JSON.parse(saved)
+    } catch (e) {
+      console.error(e)
+    }
+    return defaultThresholds
+  })
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ledger))
   }, [ledger])
+
+  useEffect(() => {
+    localStorage.setItem(THRESHOLD_KEY, JSON.stringify(lotThresholds))
+  }, [lotThresholds])
 
   const addEntry = useCallback((entry: Omit<LedgerEntry, 'id'>) => {
     setLedger((prev) => [{ ...entry, id: crypto.randomUUID() }, ...prev])
   }, [])
 
-  return { ledger, addEntry }
+  const setLotThreshold = useCallback((loteId: string, threshold: number) => {
+    setLotThresholds((prev) => {
+      const existing = prev.filter((p) => p.loteId !== loteId)
+      return [...existing, { loteId, threshold }]
+    })
+  }, [])
+
+  return { ledger, addEntry, lotThresholds, setLotThreshold }
 }

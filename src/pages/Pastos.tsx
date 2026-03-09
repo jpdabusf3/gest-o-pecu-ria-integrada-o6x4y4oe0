@@ -16,6 +16,7 @@ import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { useToast } from '@/hooks/use-toast'
 import { RefreshCw, Map as MapIcon, RotateCw, Beef } from 'lucide-react'
 import { ManagementTab } from '@/components/pastures/ManagementTab'
+import { EfficiencyTab } from '@/components/pastures/EfficiencyTab'
 import { cn } from '@/lib/utils'
 
 export default function Pastos() {
@@ -55,12 +56,19 @@ export default function Pastos() {
       </div>
 
       <Tabs defaultValue="mapa" className="space-y-6">
-        <TabsList className="mb-2 w-full sm:w-auto overflow-x-auto justify-start">
-          <TabsTrigger value="mapa" className="gap-2">
+        <TabsList className="mb-2 w-full sm:w-auto overflow-x-auto justify-start h-auto py-1.5 px-1 flex flex-wrap sm:flex-nowrap">
+          <TabsTrigger value="mapa" className="gap-2 py-2">
             <MapIcon className="h-4 w-4" /> Mapa Interativo
           </TabsTrigger>
-          <TabsTrigger value="inventario">Inventário e Métricas</TabsTrigger>
-          <TabsTrigger value="manejo">Manejo e Intervenções</TabsTrigger>
+          <TabsTrigger value="inventario" className="py-2">
+            Inventário e Métricas
+          </TabsTrigger>
+          <TabsTrigger value="manejo" className="py-2">
+            Manejo e Intervenções
+          </TabsTrigger>
+          <TabsTrigger value="eficiencia" className="py-2 text-primary font-medium">
+            Eficiência de Pasto
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="mapa" className="space-y-6 mt-0">
@@ -341,6 +349,10 @@ export default function Pastos() {
 
         <TabsContent value="manejo" className="space-y-6 mt-0">
           <ManagementTab />
+        </TabsContent>
+
+        <TabsContent value="eficiencia" className="space-y-6 mt-0">
+          <EfficiencyTab />
         </TabsContent>
       </Tabs>
     </div>

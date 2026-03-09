@@ -1117,6 +1117,9 @@ section[aria-label='Notifications alt+T'] {
 .w-\[1px\]{
   width: 1px;
 }
+.w-\[200px\]{
+  width: 200px;
+}
 .w-\[300px\]{
   width: 300px;
 }
@@ -2866,6 +2869,10 @@ section[aria-label='Notifications alt+T'] {
 .hover\:bg-emerald-500\/10:hover{
   background-color: rgb(16 185 129 / 0.1);
 }
+.hover\:bg-emerald-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
+}
 .hover\:bg-muted:hover{
   background-color: hsl(var(--muted));
 }
@@ -3721,6 +3728,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:w-\[160px\]{
     width: 160px;
+  }
+  .sm\:w-\[200px\]{
+    width: 200px;
   }
   .sm\:w-\[240px\]{
     width: 240px;

@@ -19883,6 +19883,20 @@ var Smartphone = createLucideIcon("smartphone", [["rect", {
 	d: "M12 18h.01",
 	key: "mhygvu"
 }]]);
+var Sprout = createLucideIcon("sprout", [
+	["path", {
+		d: "M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3",
+		key: "139s4v"
+	}],
+	["path", {
+		d: "M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4",
+		key: "1dlkgp"
+	}],
+	["path", {
+		d: "M5 21h14",
+		key: "11awu3"
+	}]
+]);
 var SquareCheckBig = createLucideIcon("square-check-big", [["path", {
 	d: "M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344",
 	key: "2acyp4"
@@ -29186,7 +29200,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$57({ inst: {
+			cachedValue = useState$59({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -29200,7 +29214,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$21(function() {
+			useEffect$22(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -29223,7 +29237,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$57 = React$70.useState, useEffect$21 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$59 = React$70.useState, useEffect$22 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -59682,6 +59696,137 @@ function ManagementTab() {
 		})]
 	});
 }
+function EfficiencyTab() {
+	const allLots = (0, import_react.useMemo)(() => [
+		...sectorData.cria.lotes,
+		...sectorData.recria.lotes,
+		...sectorData.engorda.lotes
+	], []);
+	const efficiencyData = (0, import_react.useMemo)(() => {
+		return pasturesData.map((pasto) => {
+			const occupant = allLots.find((l) => l.id === pasto.ocupanteAtual);
+			const daysOccupied = occupant ? Math.floor(Math.random() * 40) + 15 : 0;
+			const totalMaintenanceCost = pasto.area * 85;
+			let heads = occupant?.cabecas || 0;
+			let costPerHeadDay = heads > 0 && daysOccupied > 0 ? totalMaintenanceCost / (heads * daysOccupied) : 0;
+			let weightGain = 0;
+			let valueGenerated = 0;
+			if (occupant) {
+				weightGain = heads * (pasto.sector === "recria" ? .6 : pasto.sector === "engorda" ? 1.1 : .3) * daysOccupied;
+				valueGenerated = weightGain / 30 * 265.5;
+			}
+			const roi = totalMaintenanceCost > 0 && valueGenerated > 0 ? (valueGenerated - totalMaintenanceCost) / totalMaintenanceCost * 100 : 0;
+			return {
+				...pasto,
+				occupantId: occupant?.id || "Vazio",
+				heads,
+				daysOccupied,
+				totalMaintenanceCost,
+				costPerHeadDay,
+				weightGain,
+				valueGenerated,
+				roi
+			};
+		}).sort((a$1, b$1) => b$1.roi - a$1.roi);
+	}, [allLots]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "animate-fade-in mt-0",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sprout, { className: "h-5 w-5 text-emerald-600" }), " Relatório de Eficiência de Pasto (Custo-Benefício)"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Integração entre tempo de ocupação da área (`MapaPropriedade`) e custos aplicados (`Financeiro`), determinando o Retorno sobre Investimento (ROI) estimado pelo ganho de peso." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "px-0 sm:px-6 overflow-x-auto",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Pasto / Piquete" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Ocupação" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Custo Manutenção"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Custo Cab/Dia"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Ganho Estimado (@)"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Valor Gerado"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-center",
+					children: "ROI (%)"
+				})
+			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: efficiencyData.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "font-medium text-sm",
+					children: p.nome
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "text-xs text-muted-foreground",
+					children: [
+						p.area,
+						" ha • ",
+						p.cultivar
+					]
+				})] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.occupantId !== "Vazio" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "font-semibold text-xs",
+					children: [
+						p.occupantId,
+						" (",
+						p.heads,
+						" cab)"
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "text-[10px] text-muted-foreground",
+					children: [p.daysOccupied, " dias"]
+				})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+					variant: "outline",
+					className: "text-muted-foreground",
+					children: "Em Descanso"
+				}) }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+					className: "text-right text-destructive font-medium",
+					children: ["R$ ", p.totalMaintenanceCost.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-right text-xs",
+					children: p.costPerHeadDay > 0 ? `R$ ${p.costPerHeadDay.toFixed(2)}` : "-"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-right",
+					children: p.weightGain > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-end gap-1 text-emerald-600 font-medium",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3" }),
+							" ",
+							(p.weightGain / 30).toFixed(1),
+							" @"
+						]
+					}) : "-"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-right font-medium",
+					children: p.valueGenerated > 0 ? `R$ ${p.valueGenerated.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}` : "-"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "text-center",
+					children: p.roi !== 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+						variant: p.roi > 0 ? "default" : "destructive",
+						className: cn(p.roi > 0 && "bg-emerald-500 hover:bg-emerald-600"),
+						children: [
+							p.roi > 0 ? "+" : "",
+							p.roi.toFixed(1),
+							"%"
+						]
+					}) : "-"
+				})
+			] }, p.id)) })] })
+		})]
+	});
+}
 function Pastos() {
 	const { toast: toast$2 } = useToast();
 	const [selectedPaddock, setSelectedPaddock] = (0, import_react.useState)(null);
@@ -59719,20 +59864,27 @@ function Pastos() {
 			className: "space-y-6",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "mb-2 w-full sm:w-auto overflow-x-auto justify-start",
+					className: "mb-2 w-full sm:w-auto overflow-x-auto justify-start h-auto py-1.5 px-1 flex flex-wrap sm:flex-nowrap",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
 							value: "mapa",
-							className: "gap-2",
+							className: "gap-2 py-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "h-4 w-4" }), " Mapa Interativo"]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "inventario",
+							className: "py-2",
 							children: "Inventário e Métricas"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "manejo",
+							className: "py-2",
 							children: "Manejo e Intervenções"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "eficiencia",
+							className: "py-2 text-primary font-medium",
+							children: "Eficiência de Pasto"
 						})
 					]
 				}),
@@ -60032,6 +60184,11 @@ function Pastos() {
 					value: "manejo",
 					className: "space-y-6 mt-0",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManagementTab, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "eficiencia",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(EfficiencyTab, {})
 				})
 			]
 		})]
@@ -60583,7 +60740,299 @@ function CostAnalysisTab() {
 		})] })]
 	});
 }
+function BreakEvenTab() {
+	const allLots = (0, import_react.useMemo)(() => [
+		...confinementData.lotes.map((l) => ({
+			...l,
+			origin: "Confinamento",
+			custoDiario: 12.5
+		})),
+		...sectorData.engorda.lotes.map((l) => ({
+			...l,
+			gmd: l.id === "LEN-02" ? 1.4 : 1.1,
+			pesoMedio: l.id === "LEN-02" ? 490 : 380,
+			origin: "Engorda",
+			custoDiario: 5.5
+		})),
+		...sectorData.recria.lotes.map((l) => ({
+			...l,
+			gmd: .6,
+			pesoMedio: 250,
+			origin: "Recria",
+			custoDiario: 2.8
+		}))
+	], []);
+	const [selectedLotId, setSelectedLotId] = (0, import_react.useState)(allLots[0].id);
+	const arrobaPrice = 265.5;
+	const lotDetails = (0, import_react.useMemo)(() => {
+		return allLots.map((lot) => {
+			let currentWeight = lot.pesoMedio;
+			let currentCost = 0;
+			let maxProfit = -999999;
+			let optimalDay = 0;
+			const chartData = [];
+			for (let day = 0; day <= 120; day += 5) {
+				const gmdDecay = Math.max(.3, 1 - day / 150);
+				const gmd = lot.gmd * gmdDecay;
+				const weightGain = day === 0 ? 0 : gmd * 5;
+				currentWeight += weightGain;
+				currentCost += day === 0 ? 0 : lot.custoDiario * 5;
+				const grossValue = currentWeight / 30 * arrobaPrice;
+				const profit = grossValue - currentCost;
+				if (profit > maxProfit) {
+					maxProfit = profit;
+					optimalDay = day;
+				}
+				chartData.push({
+					day,
+					market: Number(grossValue.toFixed(2)),
+					cost: Number(currentCost.toFixed(2)),
+					profit: Number(profit.toFixed(2))
+				});
+			}
+			return {
+				...lot,
+				maxProfit,
+				optimalDay,
+				chartData,
+				currentCost: chartData[0].cost
+			};
+		});
+	}, [allLots]);
+	const selectedLotData = lotDetails.find((l) => l.id === selectedLotId) || lotDetails[0];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 mt-0 animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "lg:col-span-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: "h-5 w-5 text-primary" }), " Curva de Ponto de Equilíbrio"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cruzamento de histórico de ganho de peso vs acúmulo de custos diários." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+						value: selectedLotId,
+						onValueChange: setSelectedLotId,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+							className: "w-full sm:w-[200px]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o Lote" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: allLots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+							value: l.id,
+							children: [
+								l.id,
+								" (",
+								l.origin,
+								")"
+							]
+						}, l.id)) })]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "h-[350px] w-full",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+						config: {
+							market: {
+								label: "Valor Mercado (R$)",
+								color: "hsl(var(--primary))"
+							},
+							cost: {
+								label: "Custo Acumulado (R$)",
+								color: "hsl(var(--destructive))"
+							},
+							profit: {
+								label: "Lucro Projetado (R$)",
+								color: "hsl(var(--chart-2))"
+							}
+						},
+						className: "h-full w-full",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
+							data: selectedLotData.chartData,
+							margin: {
+								top: 10,
+								right: 10,
+								left: 0,
+								bottom: 0
+							},
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+									strokeDasharray: "3 3",
+									vertical: false,
+									stroke: "hsl(var(--border))"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+									dataKey: "day",
+									tickLine: false,
+									axisLine: false,
+									tickMargin: 8,
+									tickFormatter: (val) => `Dia ${val}`
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+									tickLine: false,
+									axisLine: false,
+									tickFormatter: (val) => `R$${val}`,
+									width: 60
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+									type: "monotone",
+									dataKey: "market",
+									stroke: "var(--color-market)",
+									strokeWidth: 3,
+									dot: false
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+									type: "monotone",
+									dataKey: "cost",
+									stroke: "var(--color-cost)",
+									strokeWidth: 2,
+									strokeDasharray: "4 4",
+									dot: false
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+									type: "monotone",
+									dataKey: "profit",
+									stroke: "var(--color-profit)",
+									strokeWidth: 2,
+									dot: false
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReferenceLine, {
+									x: selectedLotData.optimalDay,
+									stroke: "hsl(var(--primary))",
+									strokeDasharray: "3 3",
+									label: {
+										position: "top",
+										value: "Venda Ideal",
+										fill: "hsl(var(--primary))",
+										fontSize: 12
+									}
+								})
+							]
+						})
+					})
+				}) })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, { children: ["Métricas do Lote: ", selectedLotData.id] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Base de cálculo (por cabeça)" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+				className: "space-y-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between border-b pb-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground",
+							children: "Categoria"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium",
+							children: selectedLotData.categoria
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between border-b pb-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground",
+							children: "Peso Inicial"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "font-medium",
+							children: [selectedLotData.pesoMedio, " kg"]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between border-b pb-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground",
+							children: "GMD Base"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "font-medium text-emerald-600 flex items-center gap-1",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3" }),
+								" ",
+								selectedLotData.gmd,
+								" kg/dia"
+							]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between border-b pb-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-muted-foreground",
+							children: "Custo Diário"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "font-medium text-destructive",
+							children: ["R$ ", selectedLotData.custoDiario.toFixed(2)]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "bg-primary/5 p-4 rounded-lg mt-4 border border-primary/20",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-sm font-medium text-primary block mb-1",
+								children: "Venda Ideal (Break-even)"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-2xl font-bold",
+								children: [
+									"Daqui a ",
+									selectedLotData.optimalDay,
+									" dias"
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-xs text-muted-foreground mt-1",
+								children: [
+									"Lucro Max: R$ ",
+									selectedLotData.maxProfit.toFixed(2),
+									" / cab"
+								]
+							})
+						]
+					})
+				]
+			})] })]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Painel Sintético de Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "px-0 sm:px-6 overflow-x-auto",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Setor" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Peso Médio"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Lucro Máx (Proj.)"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-center",
+					children: "Janela Ideal"
+				})
+			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: lotDetails.map((lot) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+				className: lot.id === selectedLotId ? "bg-primary/5" : "",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium",
+						children: lot.id
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lot.origin }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right",
+						children: [lot.pesoMedio, " kg"]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: "text-right font-semibold text-emerald-600",
+						children: ["R$ ", lot.maxProfit.toFixed(2)]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: lot.optimalDay <= 15 ? "destructive" : lot.optimalDay <= 45 ? "default" : "secondary",
+							children: lot.optimalDay === 0 ? "Imediato" : `Em ${lot.optimalDay} dias`
+						})
+					})
+				]
+			}, lot.id)) })] })
+		})] })]
+	});
+}
 var STORAGE_KEY$2 = "@f3_finance_ledger";
+var THRESHOLD_KEY = "@f3_finance_thresholds";
 var defaultLedger = [
 	{
 		id: "L1",
@@ -60611,8 +61060,33 @@ var defaultLedger = [
 		amount: 10,
 		animalId: "TAG-1234",
 		type: "expense"
+	},
+	{
+		id: "L4",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Ração Alto Grão",
+		category: "Nutrição",
+		amount: 11500,
+		loteId: "LEN-02",
+		type: "expense"
+	},
+	{
+		id: "L5",
+		date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0],
+		description: "Suplemento Mineral Rep.",
+		category: "Nutrição",
+		amount: 4200,
+		loteId: "LCR-01",
+		type: "expense"
 	}
 ];
+var defaultThresholds = [{
+	loteId: "LEN-02",
+	threshold: 1e4
+}, {
+	loteId: "LCR-01",
+	threshold: 5e3
+}];
 function useFinanceStore() {
 	const [ledger, setLedger] = (0, import_react.useState)(() => {
 		try {
@@ -60623,9 +61097,21 @@ function useFinanceStore() {
 		}
 		return defaultLedger;
 	});
+	const [lotThresholds, setLotThresholds] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(THRESHOLD_KEY);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return defaultThresholds;
+	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem(STORAGE_KEY$2, JSON.stringify(ledger));
 	}, [ledger]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem(THRESHOLD_KEY, JSON.stringify(lotThresholds));
+	}, [lotThresholds]);
 	return {
 		ledger,
 		addEntry: (0, import_react.useCallback)((entry) => {
@@ -60633,12 +61119,167 @@ function useFinanceStore() {
 				...entry,
 				id: crypto.randomUUID()
 			}, ...prev]);
+		}, []),
+		lotThresholds,
+		setLotThreshold: (0, import_react.useCallback)((loteId, threshold$1) => {
+			setLotThresholds((prev) => {
+				return [...prev.filter((p) => p.loteId !== loteId), {
+					loteId,
+					threshold: threshold$1
+				}];
+			});
 		}, [])
 	};
 }
+function LotBudgetsTab() {
+	const { ledger, lotThresholds, setLotThreshold } = useFinanceStore();
+	const { toast: toast$2 } = useToast();
+	const allLots = [
+		...confinementData.lotes,
+		...sectorData.engorda.lotes,
+		...sectorData.recria.lotes,
+		...sectorData.cria.lotes
+	];
+	const [localThresholds, setLocalThresholds] = (0, import_react.useState)(() => {
+		const init = {};
+		lotThresholds.forEach((lt) => {
+			init[lt.loteId] = String(lt.threshold);
+		});
+		return init;
+	});
+	const handleSave = (loteId) => {
+		const val = Number(localThresholds[loteId]);
+		if (val >= 0) {
+			setLotThreshold(loteId, val);
+			toast$2({
+				title: "Orçamento Salvo",
+				description: `Limite de R$ ${val.toLocaleString("pt-BR")} definido para o lote ${loteId}.`
+			});
+		}
+	};
+	const budgetData = allLots.map((lot) => {
+		const cost = ledger.filter((l) => l.loteId === lot.id && l.type === "expense").reduce((acc, curr) => acc + curr.amount, 0);
+		const threshold$1 = lotThresholds.find((lt) => lt.loteId === lot.id)?.threshold || 0;
+		const isExceeded = threshold$1 > 0 && cost >= threshold$1;
+		const percent = threshold$1 > 0 ? cost / threshold$1 * 100 : 0;
+		return {
+			...lot,
+			cost,
+			threshold: threshold$1,
+			isExceeded,
+			percent
+		};
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-5 w-5 text-primary" }), " Alertas de Custo por Lote"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure tetos de gastos operacionais para cada grupo animal. O sistema emitirá notificações automáticas se o valor acumulado no livro-razão ultrapassar o limite." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "px-0 sm:px-6 overflow-x-auto",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right",
+					children: "Custo Acumulado"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-center w-[200px]",
+					children: "Teto de Gastos (R$)"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-center",
+					children: "Status"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+					className: "text-right w-[100px]",
+					children: "Ação"
+				})
+			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: budgetData.map((lot) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+				className: lot.isExceeded ? "bg-destructive/5" : "",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium",
+						children: lot.id
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lot.categoria }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+						className: `text-right font-mono ${lot.isExceeded ? "text-destructive font-bold" : ""}`,
+						children: ["R$ ", lot.cost.toLocaleString("pt-BR", { minimumFractionDigits: 2 })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex items-center gap-2 max-w-[150px] mx-auto",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: localThresholds[lot.id] || "",
+								onChange: (e) => setLocalThresholds({
+									...localThresholds,
+									[lot.id]: e.target.value
+								}),
+								placeholder: "Sem limite",
+								className: "h-8 text-right font-mono"
+							})
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-center",
+						children: lot.threshold === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: "outline",
+							className: "text-muted-foreground",
+							children: "Não Monitorado"
+						}) : lot.isExceeded ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+							variant: "destructive",
+							className: "gap-1 animate-pulse",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "h-3 w-3" }), " Excedido"]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+							variant: "default",
+							className: "bg-emerald-500 hover:bg-emerald-600",
+							children: [
+								"Monitorado (",
+								lot.percent.toFixed(0),
+								"%)"
+							]
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "sm",
+							onClick: () => handleSave(lot.id),
+							className: "h-8",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4 text-primary" })
+						})
+					})
+				]
+			}, lot.id)) })] })
+		})]
+	});
+}
 function Financeiro() {
 	const { toast: toast$2 } = useToast();
-	const { ledger } = useFinanceStore();
+	const { ledger, lotThresholds } = useFinanceStore();
+	const { addNotification, notifications } = useAppNotifications();
+	(0, import_react.useEffect)(() => {
+		lotThresholds.forEach((lt) => {
+			const cost = ledger.filter((l) => l.loteId === lt.loteId && l.type === "expense").reduce((acc, curr) => acc + curr.amount, 0);
+			if (lt.threshold > 0 && cost >= lt.threshold) {
+				if (!notifications.some((n) => n.title.includes(lt.loteId) && !n.read)) addNotification({
+					title: `🚨 Alerta de Custo: Lote ${lt.loteId}`,
+					message: `O lote ${lt.loteId} excedeu o limite de gastos (R$ ${lt.threshold.toLocaleString("pt-BR")}). Custo acumulado atual: R$ ${cost.toLocaleString("pt-BR")}.`,
+					type: "alert"
+				});
+			}
+		});
+	}, [
+		ledger,
+		lotThresholds,
+		notifications,
+		addNotification
+	]);
 	const handleExport = (format$2) => {
 		toast$2({
 			title: "Relatório Gerado",
@@ -60741,9 +61382,19 @@ function Financeiro() {
 							children: "Fluxo de Caixa"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "previsao-venda",
+							className: "py-2",
+							children: "Previsão e Break-even"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "orcamento-lotes",
+							className: "py-2",
+							children: "Alertas por Lote"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "lucro-cabeca",
 							className: "py-2 text-primary font-medium",
-							children: "Lucro por Cabeça (Real)"
+							children: "Lucro Indiv."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "desempenho",
@@ -60761,6 +61412,16 @@ function Financeiro() {
 					value: "dashboard-custos",
 					className: "space-y-6 mt-0",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CostAnalysisTab, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "previsao-venda",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BreakEvenTab, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "orcamento-lotes",
+					className: "space-y-6 mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LotBudgetsTab, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
 					value: "fluxo",
@@ -72602,4 +73263,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-B_4_dHma.js.map
+//# sourceMappingURL=index-qjAD7Qwl.js.map

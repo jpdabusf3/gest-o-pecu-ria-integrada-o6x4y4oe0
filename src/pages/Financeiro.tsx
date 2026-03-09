@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -25,11 +25,34 @@ import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
 import { CashflowChart } from '@/components/charts/CashflowChart'
+import { BreakEvenTab } from '@/components/finance/BreakEvenTab'
+import { LotBudgetsTab } from '@/components/finance/LotBudgetsTab'
 import useFinanceStore from '@/stores/useFinanceStore'
+import { useAppNotifications } from '@/contexts/NotificationContext'
 
 export default function Financeiro() {
   const { toast } = useToast()
-  const { ledger } = useFinanceStore()
+  const { ledger, lotThresholds } = useFinanceStore()
+  const { addNotification, notifications } = useAppNotifications()
+
+  useEffect(() => {
+    lotThresholds.forEach((lt) => {
+      const cost = ledger
+        .filter((l) => l.loteId === lt.loteId && l.type === 'expense')
+        .reduce((acc, curr) => acc + curr.amount, 0)
+
+      if (lt.threshold > 0 && cost >= lt.threshold) {
+        const alreadyNotified = notifications.some((n) => n.title.includes(lt.loteId) && !n.read)
+        if (!alreadyNotified) {
+          addNotification({
+            title: `🚨 Alerta de Custo: Lote ${lt.loteId}`,
+            message: `O lote ${lt.loteId} excedeu o limite de gastos (R$ ${lt.threshold.toLocaleString('pt-BR')}). Custo acumulado atual: R$ ${cost.toLocaleString('pt-BR')}.`,
+            type: 'alert',
+          })
+        }
+      }
+    })
+  }, [ledger, lotThresholds, notifications, addNotification])
 
   const handleExport = (format: string) => {
     toast({
@@ -38,10 +61,8 @@ export default function Financeiro() {
     })
   }
 
-  // Calculate Net Profit per Head for the detailed financial module
   const animalProfitList = useMemo(() => {
     const baseAnimals = Object.values(animalData)
-    // Mock additional animals for a better report display without touching mock.ts
     const extraAnimals = [
       { id: 'TAG-8899', categoria: 'Boi Terminação', pesoAtual: '480 kg', lote: 'LEN-02' },
       { id: 'TAG-4455', categoria: 'Vaca Solteira', pesoAtual: '380 kg', lote: 'LCR-01' },
@@ -54,7 +75,7 @@ export default function Financeiro() {
         .reduce((a, b) => a + b.amount, 0)
 
       const weightNum = parseFloat(animal.pesoAtual.replace('kg', '').trim()) || 0
-      const estimatedValue = weightNum * 12.5 // Using simulated market price of R$ 12.50 / kg
+      const estimatedValue = weightNum * 12.5
       const netProfit = estimatedValue - expenses
 
       return {
@@ -114,8 +135,14 @@ export default function Financeiro() {
           <TabsTrigger value="fluxo" className="py-2">
             Fluxo de Caixa
           </TabsTrigger>
+          <TabsTrigger value="previsao-venda" className="py-2">
+            Previsão e Break-even
+          </TabsTrigger>
+          <TabsTrigger value="orcamento-lotes" className="py-2">
+            Alertas por Lote
+          </TabsTrigger>
           <TabsTrigger value="lucro-cabeca" className="py-2 text-primary font-medium">
-            Lucro por Cabeça (Real)
+            Lucro Indiv.
           </TabsTrigger>
           <TabsTrigger value="desempenho" className="py-2">
             Rentabilidade Lotes
@@ -127,6 +154,14 @@ export default function Financeiro() {
 
         <TabsContent value="dashboard-custos" className="space-y-6 mt-0">
           <CostAnalysisTab />
+        </TabsContent>
+
+        <TabsContent value="previsao-venda" className="space-y-6 mt-0">
+          <BreakEvenTab />
+        </TabsContent>
+
+        <TabsContent value="orcamento-lotes" className="space-y-6 mt-0">
+          <LotBudgetsTab />
         </TabsContent>
 
         <TabsContent value="fluxo" className="space-y-6 mt-0">
