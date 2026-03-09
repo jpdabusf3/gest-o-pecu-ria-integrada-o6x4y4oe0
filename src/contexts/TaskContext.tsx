@@ -1,5 +1,10 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
 
+export type TaskResource = {
+  inventoryId: string
+  amount: number
+}
+
 export type Task = {
   id: string
   title: string
@@ -9,6 +14,7 @@ export type Task = {
   costPerHour: number
   status: 'Pendente' | 'Concluído'
   lotId: string
+  resources?: TaskResource[]
 }
 
 const initialTasks: Task[] = [
@@ -21,6 +27,7 @@ const initialTasks: Task[] = [
     costPerHour: 25,
     status: 'Pendente',
     lotId: 'LCR-04',
+    resources: [],
   },
   {
     id: 'T2',
@@ -31,6 +38,7 @@ const initialTasks: Task[] = [
     costPerHour: 20,
     status: 'Concluído',
     lotId: 'LEN-02',
+    resources: [],
   },
   {
     id: 'T3',
@@ -41,6 +49,7 @@ const initialTasks: Task[] = [
     costPerHour: 25,
     status: 'Pendente',
     lotId: 'Pasto 02',
+    resources: [],
   },
   {
     id: 'T4',
@@ -51,6 +60,7 @@ const initialTasks: Task[] = [
     costPerHour: 20,
     status: 'Pendente',
     lotId: 'LEN-01',
+    resources: [],
   },
 ]
 

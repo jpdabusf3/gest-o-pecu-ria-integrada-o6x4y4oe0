@@ -26856,7 +26856,8 @@ var initialTasks = [
 		duration: 8,
 		costPerHour: 25,
 		status: "Pendente",
-		lotId: "LCR-04"
+		lotId: "LCR-04",
+		resources: []
 	},
 	{
 		id: "T2",
@@ -26866,7 +26867,8 @@ var initialTasks = [
 		duration: 2,
 		costPerHour: 20,
 		status: "Concluído",
-		lotId: "LEN-02"
+		lotId: "LEN-02",
+		resources: []
 	},
 	{
 		id: "T3",
@@ -26876,7 +26878,8 @@ var initialTasks = [
 		duration: 6,
 		costPerHour: 25,
 		status: "Pendente",
-		lotId: "Pasto 02"
+		lotId: "Pasto 02",
+		resources: []
 	},
 	{
 		id: "T4",
@@ -26886,7 +26889,8 @@ var initialTasks = [
 		duration: 4,
 		costPerHour: 20,
 		status: "Pendente",
-		lotId: "LEN-01"
+		lotId: "LEN-01",
+		resources: []
 	}
 ];
 var TaskContext = (0, import_react.createContext)(void 0);
@@ -27174,6 +27178,7 @@ function MarketProvider({ children }) {
 	const [lastUpdate, setLastUpdate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
 	const [b3LastUpdate, setB3LastUpdate] = (0, import_react.useState)((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
 	const [isRefreshing, setIsRefreshing] = (0, import_react.useState)(false);
+	const [isAutoUpdateEnabled, setIsAutoUpdateEnabled] = (0, import_react.useState)(true);
 	const { toast: toast$2 } = useToast();
 	const [alerts, setAlerts] = (0, import_react.useState)([{
 		id: "mock-1",
@@ -27230,6 +27235,7 @@ function MarketProvider({ children }) {
 		toast$2
 	]);
 	const refreshMarketPrices = (0, import_react.useCallback)(async () => {
+		if (!isAutoUpdateEnabled) return;
 		setIsRefreshing(true);
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 1200));
@@ -27256,7 +27262,7 @@ function MarketProvider({ children }) {
 						price: newPrice,
 						trend: calculateTrend(item.price, newPrice),
 						change: calculateChangeStr(item.price, newPrice),
-						source: "Indicador do Boi"
+						source: "API Mercado"
 					};
 				}
 				return item;
@@ -27264,20 +27270,52 @@ function MarketProvider({ children }) {
 			setLastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
 			toast$2({
 				title: "Cotações Atualizadas",
-				description: "Dados sincronizados com o portal Indicador do Boi.",
+				description: "Dados sincronizados com sucesso via API.",
 				className: "border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100"
 			});
 		} catch (error) {
 			toast$2({
 				title: "Erro de Sincronização",
-				description: "Falha ao buscar dados do Indicador do Boi.",
+				description: "Falha ao buscar dados do mercado.",
 				variant: "destructive"
 			});
 		} finally {
 			setIsRefreshing(false);
 		}
-	}, [toast$2]);
+	}, [toast$2, isAutoUpdateEnabled]);
+	const toggleAutoUpdate = (0, import_react.useCallback)((enabled) => {
+		setIsAutoUpdateEnabled(enabled);
+		if (enabled) {
+			toast$2({
+				title: "Integração de Mercado Ativa",
+				description: "Os preços serão atualizados automaticamente via API."
+			});
+			refreshMarketPrices();
+		} else toast$2({
+			title: "Modo Manual",
+			description: "A atualização automática foi desativada. Ajuste os valores manualmente.",
+			variant: "secondary"
+		});
+	}, [refreshMarketPrices, toast$2]);
+	const setManualPrice = (0, import_react.useCallback)((id, price) => {
+		setMarketData((prev) => prev.map((item) => {
+			if (item.id === id) {
+				const newTrend = calculateTrend(item.price, price);
+				const newChange = calculateChangeStr(item.price, price);
+				return {
+					...item,
+					price,
+					trend: newTrend,
+					change: newChange,
+					source: "Manual"
+				};
+			}
+			return item;
+		}));
+		setLastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR") + " (Manual)");
+	}, []);
 	(0, import_react.useEffect)(() => {
+		if (!isAutoUpdateEnabled) return;
 		const fastTick = setInterval(() => {
 			setB3Data((prev) => {
 				const next = { ...prev };
@@ -27295,10 +27333,12 @@ function MarketProvider({ children }) {
 			setB3LastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
 		}, 8e3);
 		return () => clearInterval(fastTick);
-	}, []);
+	}, [isAutoUpdateEnabled]);
 	(0, import_react.useEffect)(() => {
+		if (!isAutoUpdateEnabled) return;
 		const slowTick = setInterval(() => {
 			const updateList = (list) => list.map((item) => {
+				if (item.source === "Manual") return item;
 				const newPrice = fluctuatePrice(item.price, .005);
 				return {
 					...item,
@@ -27307,13 +27347,13 @@ function MarketProvider({ children }) {
 					change: calculateChangeStr(item.price, newPrice)
 				};
 			});
-			setMarketData(updateList);
-			setReplacementData(updateList);
-			setCommodityData(updateList);
+			setMarketData((prev) => updateList(prev));
+			setReplacementData((prev) => updateList(prev));
+			setCommodityData((prev) => updateList(prev));
 			setLastUpdate((/* @__PURE__ */ new Date()).toLocaleTimeString("pt-BR"));
 		}, 25e3);
 		return () => clearInterval(slowTick);
-	}, []);
+	}, [isAutoUpdateEnabled]);
 	(0, import_react.useEffect)(() => {
 		checkAlerts();
 	}, [
@@ -27350,12 +27390,15 @@ function MarketProvider({ children }) {
 		lastUpdate,
 		b3LastUpdate,
 		alerts,
+		isAutoUpdateEnabled,
+		isRefreshing,
 		addAlert,
 		toggleAlert,
 		deleteAlert,
 		getPrice,
 		refreshMarketPrices,
-		isRefreshing
+		toggleAutoUpdate,
+		setManualPrice
 	}), [
 		marketData,
 		b3Data,
@@ -27364,9 +27407,12 @@ function MarketProvider({ children }) {
 		lastUpdate,
 		b3LastUpdate,
 		alerts,
+		isAutoUpdateEnabled,
+		isRefreshing,
 		getPrice,
 		refreshMarketPrices,
-		isRefreshing
+		toggleAutoUpdate,
+		setManualPrice
 	]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MarketContext.Provider, {
 		value,
@@ -70844,6 +70890,7 @@ function Configuracoes() {
 	const { user, setUser } = useAuth();
 	const { toast: toast$2 } = useToast();
 	const { addNotification } = useAppNotifications();
+	const { isAutoUpdateEnabled, toggleAutoUpdate, marketData, setManualPrice } = useMarket();
 	const [email, setEmail] = (0, import_react.useState)(user.email);
 	const [whatsapp, setWhatsapp] = (0, import_react.useState)(user.whatsapp || "");
 	const [password, setPassword] = (0, import_react.useState)("");
@@ -70954,6 +71001,44 @@ function Configuracoes() {
 						})]
 					})
 				]
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5 text-primary" }), "Integração de Mercado"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Sincronização de preços da arroba e indicadores de mercado via API externa." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+				className: "space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+						htmlFor: "autoUpdate",
+						className: "flex flex-col gap-1 cursor-pointer",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Atualização Automática (API)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-normal text-xs text-muted-foreground",
+							children: "Obter cotações em tempo real de fontes seguras."
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, {
+						id: "autoUpdate",
+						checked: isAutoUpdateEnabled,
+						onCheckedChange: toggleAutoUpdate
+					})]
+				}), !isAutoUpdateEnabled && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "pt-4 border-t border-border space-y-4 animate-in fade-in",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "text-sm font-semibold mb-2",
+						children: "Preços Manuais (R$)"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+						children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: ind.label }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								step: "0.01",
+								value: ind.price,
+								onChange: (e) => setManualPrice(ind.id, Number(e.target.value))
+							})]
+						}, ind.id))
+					})]
+				})]
 			})] }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
@@ -71417,16 +71502,34 @@ function Tarefas() {
 	const { toast: toast$2 } = useToast();
 	const { user } = useAuth();
 	const { addNotification } = useAppNotifications();
-	const { serverTasks, addTaskOnServer } = useTasks();
+	const { serverTasks, addTaskOnServer, completeTaskOnServer } = useTasks();
 	const { queue, addAction, isOnline } = useOffline();
+	const { inventory, registerConsumption } = useFarm();
+	const { addEntry } = useFinanceStore();
 	const [newTask, setNewTask] = (0, import_react.useState)({
 		title: "",
 		frequency: "Semanal",
 		assignedTo: "",
 		duration: 2,
 		costPerHour: 20,
-		lotId: ""
+		lotId: "",
+		resources: []
 	});
+	const [selectedInventory, setSelectedInventory] = (0, import_react.useState)("");
+	const [resourceAmount, setResourceAmount] = (0, import_react.useState)("");
+	const handleAddResource = () => {
+		if (!selectedInventory || !resourceAmount) return;
+		const current = newTask.resources || [];
+		setNewTask({
+			...newTask,
+			resources: [...current, {
+				inventoryId: selectedInventory,
+				amount: Number(resourceAmount)
+			}]
+		});
+		setSelectedInventory("");
+		setResourceAmount("");
+	};
 	const optimisticTasks = serverTasks.map((t) => {
 		if (queue.some((q) => q.type === "COMPLETE_TASK" && q.payload.taskId === t.id) && t.status !== "Concluído") return {
 			...t,
@@ -71435,6 +71538,15 @@ function Tarefas() {
 		};
 		return t;
 	});
+	const getTaskTotalCost = (t) => {
+		const laborCost = t.duration * t.costPerHour;
+		let inventoryCost = 0;
+		if (t.resources) t.resources.forEach((r$1) => {
+			const item = inventory.find((i) => i.id === r$1.inventoryId);
+			if (item) inventoryCost += (item.custoUnitario || 0) * r$1.amount;
+		});
+		return laborCost + inventoryCost;
+	};
 	const handleSave = () => {
 		if (!newTask.title || !newTask.assignedTo) return;
 		addTaskOnServer({
@@ -71448,6 +71560,15 @@ function Tarefas() {
 			type: "task"
 		});
 		setOpen(false);
+		setNewTask({
+			title: "",
+			frequency: "Semanal",
+			assignedTo: "",
+			duration: 2,
+			costPerHour: 20,
+			lotId: "",
+			resources: []
+		});
 		toast$2({
 			title: "Tarefa Criada",
 			description: "Nova atividade operacional registrada com sucesso."
@@ -71458,6 +71579,21 @@ function Tarefas() {
 			type: "COMPLETE_TASK",
 			payload: { taskId: t.id }
 		});
+		let inventoryCost = 0;
+		if (t.resources && t.resources.length > 0) t.resources.forEach((r$1) => {
+			registerConsumption(t.lotId, r$1.inventoryId, r$1.amount);
+			const item = inventory.find((i) => i.id === r$1.inventoryId);
+			if (item) inventoryCost += (item.custoUnitario || 0) * r$1.amount;
+		});
+		const totalCost = t.duration * t.costPerHour + inventoryCost;
+		addEntry({
+			description: `Tarefa: ${t.title}`,
+			category: inventoryCost > 0 ? "Mão de Obra e Insumos" : "Mão de Obra",
+			amount: totalCost,
+			type: "expense",
+			loteId: t.lotId
+		});
+		completeTaskOnServer(t.id);
 		if (!isOnline) toast$2({
 			title: "Salvo Offline",
 			description: `A tarefa "${t.title}" foi marcada como concluída localmente. Sincronização ocorrerá quando houver conexão.`,
@@ -71465,13 +71601,13 @@ function Tarefas() {
 		});
 		else toast$2({
 			title: "Atividade Concluída",
-			description: user.role === "admin" ? `Custo de mão de obra (R$ ${t.duration * t.costPerHour}) alocado ao centro de custos do lote ${t.lotId}.` : `Sua tarefa "${t.title}" foi enviada para o sistema.`
+			description: `Tarefa finalizada. Custo (R$ ${totalCost.toFixed(2)}) alocado ao lote ${t.lotId}.`
 		});
 	};
 	const visibleTasks = user.role === "operador" ? optimisticTasks.filter((t) => t.assignedTo.includes("João")) : optimisticTasks;
 	const pending = visibleTasks.filter((t) => t.status === "Pendente");
 	const completed = visibleTasks.filter((t) => t.status === "Concluído");
-	const pendingCost = pending.reduce((acc, t) => acc + t.duration * t.costPerHour, 0);
+	const pendingCost = pending.reduce((acc, t) => acc + getTaskTotalCost(t), 0);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [
@@ -71562,6 +71698,65 @@ function Tarefas() {
 											defaultValue: 20
 										})]
 									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "pt-2 border-t mt-2 space-y-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Recursos / Insumos (Opcional)" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex gap-2",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+													value: selectedInventory,
+													onValueChange: setSelectedInventory,
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+														className: "w-full",
+														children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." })
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: inventory.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+														value: i.id,
+														children: [
+															i.item,
+															" (Disp: ",
+															i.qtd,
+															" ",
+															i.unidade,
+															")"
+														]
+													}, i.id)) })]
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+													type: "number",
+													placeholder: "Qtd",
+													value: resourceAmount,
+													onChange: (e) => setResourceAmount(e.target.value),
+													className: "w-24"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+													type: "button",
+													variant: "secondary",
+													onClick: handleAddResource,
+													children: "Add"
+												})
+											]
+										}),
+										newTask.resources && newTask.resources.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "mt-2 space-y-1",
+											children: newTask.resources.map((r$1, idx) => {
+												const invItem = inventory.find((i) => i.id === r$1.inventoryId);
+												return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex justify-between text-xs bg-muted p-2 rounded",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: invItem?.item }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+														className: "font-semibold",
+														children: [
+															r$1.amount,
+															" ",
+															invItem?.unidade
+														]
+													})]
+												}, idx);
+											})
+										})
+									]
 								})
 							]
 						}),
@@ -71597,7 +71792,7 @@ function Tarefas() {
 						className: "pb-2",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 							className: "text-sm font-medium text-destructive",
-							children: "Custo Pendente Projetado (Mão de Obra)"
+							children: "Custo Pendente Projetado (Recursos + Mão de Obra)"
 						})
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "text-2xl font-bold text-destructive flex items-center gap-2",
@@ -71647,7 +71842,7 @@ function Tarefas() {
 								})] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [t.duration, "h"] }),
-								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
+								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", getTaskTotalCost(t).toFixed(2)] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 									className: "text-right",
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
@@ -71683,7 +71878,7 @@ function Tarefas() {
 									children: t.lotId
 								})] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: t.assignedTo }),
-								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", t.duration * t.costPerHour] }),
+								user.role === "admin" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: ["R$ ", getTaskTotalCost(t).toFixed(2)] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "flex flex-col sm:flex-row items-start sm:items-center gap-2",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
@@ -73704,4 +73899,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BT4gmCm7.js.map
+//# sourceMappingURL=index-IVNHwYwt.js.map

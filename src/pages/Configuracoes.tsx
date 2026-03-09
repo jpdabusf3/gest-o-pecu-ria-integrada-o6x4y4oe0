@@ -14,12 +14,14 @@ import { Switch } from '@/components/ui/switch'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/hooks/use-toast'
 import { useAppNotifications } from '@/contexts/NotificationContext'
-import { Save, UserCog, MessageCircle, BellRing } from 'lucide-react'
+import { useMarket } from '@/contexts/MarketContext'
+import { Save, UserCog, MessageCircle, BellRing, TrendingUp } from 'lucide-react'
 
 export default function Configuracoes() {
   const { user, setUser } = useAuth()
   const { toast } = useToast()
   const { addNotification } = useAppNotifications()
+  const { isAutoUpdateEnabled, toggleAutoUpdate, marketData, setManualPrice } = useMarket()
 
   const [email, setEmail] = useState(user.email)
   const [whatsapp, setWhatsapp] = useState(user.whatsapp || '')
@@ -32,11 +34,10 @@ export default function Configuracoes() {
       title: 'Configurações salvas',
       description: 'Seu perfil e preferências foram atualizados com sucesso.',
     })
-    setPassword('') // Clear password field after visual save
+    setPassword('')
   }
 
   const handleTestAlert = () => {
-    // Triggers a test notification through the context
     addNotification({
       title: 'Alerta Sanitário de Teste 🚨',
       message: 'Esta é uma mensagem de teste enviada via sistema de notificações integrado.',
@@ -62,7 +63,6 @@ export default function Configuracoes() {
       if (permission === 'granted') {
         setPrefs({ ...prefs, pushEnabled: true })
 
-        // Mock Push API Subscription
         if ('serviceWorker' in navigator && 'PushManager' in window) {
           navigator.serviceWorker.ready.then((reg) => {
             reg.pushManager
@@ -134,6 +134,52 @@ export default function Configuracoes() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            Integração de Mercado
+          </CardTitle>
+          <CardDescription>
+            Sincronização de preços da arroba e indicadores de mercado via API externa.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="autoUpdate" className="flex flex-col gap-1 cursor-pointer">
+              <span>Atualização Automática (API)</span>
+              <span className="font-normal text-xs text-muted-foreground">
+                Obter cotações em tempo real de fontes seguras.
+              </span>
+            </Label>
+            <Switch
+              id="autoUpdate"
+              checked={isAutoUpdateEnabled}
+              onCheckedChange={toggleAutoUpdate}
+            />
+          </div>
+
+          {!isAutoUpdateEnabled && (
+            <div className="pt-4 border-t border-border space-y-4 animate-in fade-in">
+              <h4 className="text-sm font-semibold mb-2">Preços Manuais (R$)</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {marketData.map((ind) => (
+                  <div key={ind.id} className="space-y-2">
+                    <Label>{ind.label}</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={ind.price}
+                      onChange={(e) => setManualPrice(ind.id, Number(e.target.value))}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 

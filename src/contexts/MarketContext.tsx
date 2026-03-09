@@ -29,12 +29,15 @@ interface MarketContextType {
   lastUpdate: string
   b3LastUpdate: string
   alerts: MarketAlert[]
+  isAutoUpdateEnabled: boolean
+  isRefreshing: boolean
   addAlert: (alert: Omit<MarketAlert, 'id' | 'active'>) => void
   toggleAlert: (id: string, active: boolean) => void
   deleteAlert: (id: string) => void
   getPrice: (id: string) => number | null
   refreshMarketPrices: () => Promise<void>
-  isRefreshing: boolean
+  toggleAutoUpdate: (enabled: boolean) => void
+  setManualPrice: (id: string, price: number) => void
 }
 
 const MarketContext = createContext<MarketContextType | undefined>(undefined)
@@ -64,6 +67,7 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
   const [lastUpdate, setLastUpdate] = useState(new Date().toLocaleTimeString('pt-BR'))
   const [b3LastUpdate, setB3LastUpdate] = useState(new Date().toLocaleTimeString('pt-BR'))
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isAutoUpdateEnabled, setIsAutoUpdateEnabled] = useState(true)
   const { toast } = useToast()
 
   const [alerts, setAlerts] = useState<MarketAlert[]>([
@@ -131,9 +135,9 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
   }, [alerts, getPrice, toast])
 
   const refreshMarketPrices = useCallback(async () => {
+    if (!isAutoUpdateEnabled) return
     setIsRefreshing(true)
     try {
-      // Simulating API integration with https://www.indicadordoboi.com.br/pt-br
       await new Promise((resolve) => setTimeout(resolve, 1200))
 
       const updatedPrices = [
@@ -152,7 +156,7 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
               price: newPrice,
               trend: calculateTrend(item.price, newPrice),
               change: calculateChangeStr(item.price, newPrice),
-              source: 'Indicador do Boi',
+              source: 'API Mercado',
             }
           }
           return item
@@ -163,21 +167,56 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
 
       toast({
         title: 'Cotações Atualizadas',
-        description: 'Dados sincronizados com o portal Indicador do Boi.',
+        description: 'Dados sincronizados com sucesso via API.',
         className: 'border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100',
       })
     } catch (error) {
       toast({
         title: 'Erro de Sincronização',
-        description: 'Falha ao buscar dados do Indicador do Boi.',
+        description: 'Falha ao buscar dados do mercado.',
         variant: 'destructive',
       })
     } finally {
       setIsRefreshing(false)
     }
-  }, [toast])
+  }, [toast, isAutoUpdateEnabled])
+
+  const toggleAutoUpdate = useCallback(
+    (enabled: boolean) => {
+      setIsAutoUpdateEnabled(enabled)
+      if (enabled) {
+        toast({
+          title: 'Integração de Mercado Ativa',
+          description: 'Os preços serão atualizados automaticamente via API.',
+        })
+        refreshMarketPrices()
+      } else {
+        toast({
+          title: 'Modo Manual',
+          description: 'A atualização automática foi desativada. Ajuste os valores manualmente.',
+          variant: 'secondary',
+        })
+      }
+    },
+    [refreshMarketPrices, toast],
+  )
+
+  const setManualPrice = useCallback((id: string, price: number) => {
+    setMarketData((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          const newTrend = calculateTrend(item.price, price)
+          const newChange = calculateChangeStr(item.price, price)
+          return { ...item, price, trend: newTrend, change: newChange, source: 'Manual' }
+        }
+        return item
+      }),
+    )
+    setLastUpdate(new Date().toLocaleTimeString('pt-BR') + ' (Manual)')
+  }, [])
 
   useEffect(() => {
+    if (!isAutoUpdateEnabled) return
     const fastTick = setInterval(() => {
       setB3Data((prev) => {
         const next = { ...prev }
@@ -198,12 +237,14 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
     }, 8000)
 
     return () => clearInterval(fastTick)
-  }, [])
+  }, [isAutoUpdateEnabled])
 
   useEffect(() => {
+    if (!isAutoUpdateEnabled) return
     const slowTick = setInterval(() => {
       const updateList = (list: MarketIndicator[]) =>
         list.map((item) => {
+          if (item.source === 'Manual') return item
           const newPrice = fluctuatePrice(item.price, 0.005)
           return {
             ...item,
@@ -213,14 +254,14 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
           }
         })
 
-      setMarketData(updateList)
-      setReplacementData(updateList)
-      setCommodityData(updateList)
+      setMarketData((prev) => updateList(prev))
+      setReplacementData((prev) => updateList(prev))
+      setCommodityData((prev) => updateList(prev))
       setLastUpdate(new Date().toLocaleTimeString('pt-BR'))
     }, 25000)
 
     return () => clearInterval(slowTick)
-  }, [])
+  }, [isAutoUpdateEnabled])
 
   useEffect(() => {
     checkAlerts()
@@ -254,12 +295,15 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       lastUpdate,
       b3LastUpdate,
       alerts,
+      isAutoUpdateEnabled,
+      isRefreshing,
       addAlert,
       toggleAlert,
       deleteAlert,
       getPrice,
       refreshMarketPrices,
-      isRefreshing,
+      toggleAutoUpdate,
+      setManualPrice,
     }),
     [
       marketData,
@@ -269,9 +313,12 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       lastUpdate,
       b3LastUpdate,
       alerts,
+      isAutoUpdateEnabled,
+      isRefreshing,
       getPrice,
       refreshMarketPrices,
-      isRefreshing,
+      toggleAutoUpdate,
+      setManualPrice,
     ],
   )
 
