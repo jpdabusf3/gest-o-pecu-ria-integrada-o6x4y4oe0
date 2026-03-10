@@ -46,12 +46,22 @@ export function SimulationHistory() {
         minute: '2-digit',
       }),
       Categoria: sim.category,
-      'Peso Vivo (kg)': sim.weight,
+      'Qtd (cab.)': sim.quantity || 1,
+      'Peso Inicial (kg)': sim.initialWeight || '-',
+      'Rend. Entrada (%)': sim.entryYield || '-',
+      'Custo Compra (R$/cab)': sim.purchaseCostPerHead?.toFixed(2) || '-',
+      'Outros Custos (R$/cab)': sim.otherCostsPerHead?.toFixed(2) || '-',
+      'Custo Fazenda (R$/cab)': (sim.farmCost || 0).toFixed(2),
+      'Custo Total (R$/cab)': (sim.productionCost + (sim.farmCost || 0)).toFixed(2),
+      'Peso Final (kg)': sim.finalWeight || sim.weight,
+      'Rend. Saída (%)': sim.saleYield || '-',
       'Preço Venda (R$/@)': sim.salesPrice.toFixed(2),
-      'Custo Base (R$)': sim.productionCost.toFixed(2),
-      'Custo Fazenda (R$)': (sim.farmCost || 0).toFixed(2),
-      'Lucro Líquido (R$)': sim.profit.toFixed(2),
+      'Arrobas/Cab': sim.arrobas.toFixed(2),
+      'Lucro L. / Cab (R$)': sim.profit.toFixed(2),
+      'Lucro L. Total (R$)':
+        sim.totalProfit?.toFixed(2) || (sim.profit * (sim.quantity || 1)).toFixed(2),
       'Margem (%)': sim.margin.toFixed(1),
+      'ROI (%)': sim.roi?.toFixed(1) || '-',
     }))
     downloadCSV(csvData, 'historico_simulacoes')
   }
@@ -112,11 +122,11 @@ export function SimulationHistory() {
                 <TableRow>
                   <TableHead className="w-[40px] text-center"></TableHead>
                   <TableHead>Data</TableHead>
-                  <TableHead>Categoria</TableHead>
-                  <TableHead className="text-right">Peso (kg)</TableHead>
+                  <TableHead>Categoria / Lote</TableHead>
+                  <TableHead className="text-right">Peso Saída</TableHead>
                   <TableHead className="text-right">Preço Venda</TableHead>
-                  <TableHead className="text-right">Custo Prod</TableHead>
-                  <TableHead className="text-right">Lucro L.</TableHead>
+                  <TableHead className="text-right">Custo Cab.</TableHead>
+                  <TableHead className="text-right">Lucro Cab.</TableHead>
                   <TableHead className="text-right">Margem</TableHead>
                   <TableHead className="text-right w-[60px]"></TableHead>
                 </TableRow>
@@ -145,13 +155,14 @@ export function SimulationHistory() {
                       </TableCell>
                       <TableCell className="font-medium text-xs">
                         {sim.category}
-                        {sim.farmIds && sim.farmIds.length > 0 && (
-                          <div className="text-[10px] text-muted-foreground mt-0.5 whitespace-nowrap">
-                            Vinculado: {sim.farmIds.length} Fazenda(s)
-                          </div>
-                        )}
+                        <div className="text-[10px] text-muted-foreground mt-0.5 whitespace-nowrap">
+                          {sim.quantity ? `${sim.quantity} cab.` : '1 cab.'}
+                          {sim.farmIds &&
+                            sim.farmIds.length > 0 &&
+                            ` • Vinc: ${sim.farmIds.length} Faz`}
+                        </div>
                       </TableCell>
-                      <TableCell className="text-right text-xs">{sim.weight}</TableCell>
+                      <TableCell className="text-right text-xs">{sim.weight} kg</TableCell>
                       <TableCell className="text-right text-xs">
                         R$ {sim.salesPrice.toFixed(2)}
                       </TableCell>
@@ -162,11 +173,21 @@ export function SimulationHistory() {
                         className={`text-right font-semibold text-xs ${sim.profit >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
                       >
                         R$ {sim.profit.toFixed(2)}
+                        {sim.totalProfit && (
+                          <div className="text-[10px] text-muted-foreground font-normal">
+                            Total: R$ {(sim.totalProfit / 1000).toFixed(1)}k
+                          </div>
+                        )}
                       </TableCell>
                       <TableCell
                         className={`text-right font-medium text-xs ${sim.margin >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
                       >
                         {sim.margin.toFixed(1)}%
+                        {sim.roi !== undefined && (
+                          <div className="text-[10px] text-muted-foreground font-normal">
+                            ROI: {sim.roi.toFixed(1)}%
+                          </div>
+                        )}
                       </TableCell>
                       <TableCell className="text-right">
                         <Button

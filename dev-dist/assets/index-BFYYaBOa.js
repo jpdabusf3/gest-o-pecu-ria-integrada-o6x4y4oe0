@@ -18975,6 +18975,20 @@ var Activity = createLucideIcon("activity", [["path", {
 	d: "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2",
 	key: "169zse"
 }]]);
+var ArrowDownToLine = createLucideIcon("arrow-down-to-line", [
+	["path", {
+		d: "M12 17V3",
+		key: "1cwfxf"
+	}],
+	["path", {
+		d: "m6 11 6 6 6-6",
+		key: "12ii2o"
+	}],
+	["path", {
+		d: "M19 21H5",
+		key: "150jfl"
+	}]
+]);
 var ArrowLeft = createLucideIcon("arrow-left", [["path", {
 	d: "m12 19-7-7 7-7",
 	key: "1l729n"
@@ -18998,6 +19012,20 @@ var ArrowRightLeft = createLucideIcon("arrow-right-left", [
 	["path", {
 		d: "M4 17h16",
 		key: "g4d7ey"
+	}]
+]);
+var ArrowUpFromLine = createLucideIcon("arrow-up-from-line", [
+	["path", {
+		d: "m18 9-6-6-6 6",
+		key: "kcunyi"
+	}],
+	["path", {
+		d: "M12 3v14",
+		key: "7cf3v8"
+	}],
+	["path", {
+		d: "M5 21h14",
+		key: "11awu3"
 	}]
 ]);
 var Baby = createLucideIcon("baby", [
@@ -19320,6 +19348,22 @@ var CircleCheck = createLucideIcon("circle-check", [["circle", {
 	d: "m9 12 2 2 4-4",
 	key: "dzmm74"
 }]]);
+var CirclePlus = createLucideIcon("circle-plus", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["path", {
+		d: "M8 12h8",
+		key: "1wcyev"
+	}],
+	["path", {
+		d: "M12 8v8",
+		key: "napkw2"
+	}]
+]);
 var Circle = createLucideIcon("circle", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -69701,69 +69745,122 @@ function SalesSimulator() {
 	const { marketData } = useMarket();
 	const { addSimulation } = useSimulationStore();
 	const { fazendas } = useFazendaStore();
+	const { lots } = useFarm();
 	const { toast: toast$2 } = useToast();
-	const [category, setCategory] = (0, import_react.useState)(marketData[0]?.id || "");
-	const [weight, setWeight] = (0, import_react.useState)(540);
-	const [productionCost, setProductionCost] = (0, import_react.useState)(3200);
-	const [salesPrice, setSalesPrice] = (0, import_react.useState)(marketData[0]?.price || 265.5);
+	const [selectedLote, setSelectedLote] = (0, import_react.useState)("manual");
+	const [quantity, setQuantity] = (0, import_react.useState)(100);
+	const [animalCategory, setAnimalCategory] = (0, import_react.useState)("Boi Gordo");
+	const [initialWeight, setInitialWeight] = (0, import_react.useState)(250);
+	const [entryYield, setEntryYield] = (0, import_react.useState)(50);
+	const [purchaseCostPerHead, setPurchaseCostPerHead] = (0, import_react.useState)(1800);
+	const [otherCosts, setOtherCosts] = (0, import_react.useState)(350);
 	const [selectedFarms, setSelectedFarms] = (0, import_react.useState)([]);
+	const [finalWeight, setFinalWeight] = (0, import_react.useState)(540);
+	const [saleYield, setSaleYield] = (0, import_react.useState)(52);
+	const [saleIndicator, setSaleIndicator] = (0, import_react.useState)(marketData[0]?.id || "");
+	const [salePrice, setSalePrice] = (0, import_react.useState)(marketData[0]?.price || 265.5);
 	const lastMarketPrice = (0, import_react.useRef)(marketData[0]?.price || 265.5);
 	(0, import_react.useEffect)(() => {
-		if (!category && marketData.length > 0) setCategory(marketData[0].id);
-	}, [marketData, category]);
-	(0, import_react.useEffect)(() => {
-		const indicator = marketData.find((m) => m.id === category);
-		if (indicator && indicator.price !== lastMarketPrice.current) {
-			setSalesPrice(indicator.price);
-			lastMarketPrice.current = indicator.price;
+		if (saleIndicator !== "manual") {
+			const ind = marketData.find((m) => m.id === saleIndicator);
+			if (ind && ind.price !== lastMarketPrice.current) {
+				setSalePrice(ind.price);
+				lastMarketPrice.current = ind.price;
+			}
 		}
-	}, [marketData, category]);
-	const handleCategoryChange = (val) => {
-		setCategory(val);
-		const indicator = marketData.find((m) => m.id === val);
-		if (indicator) {
-			setSalesPrice(indicator.price);
-			lastMarketPrice.current = indicator.price;
-			if (val.includes("vaca")) setWeight(420);
-			else if (val.includes("novilha")) setWeight(380);
-			else setWeight(540);
+	}, [marketData, saleIndicator]);
+	const handleLoteChange = (val) => {
+		setSelectedLote(val);
+		if (val !== "manual") {
+			const lote = lots.find((l) => l.id === val);
+			if (lote) {
+				setQuantity(lote.cabecas);
+				setAnimalCategory(lote.categoria);
+				setInitialWeight(lote.pesoMedio);
+				const guess = marketData.find((m) => m.id.toLowerCase().includes(lote.categoria.split(" ")[0].toLowerCase().replace(/s$/, "")));
+				if (guess) {
+					setSaleIndicator(guess.id);
+					setSalePrice(guess.price);
+				}
+			}
 		}
 	};
-	const farmCost = (0, import_react.useMemo)(() => {
+	const handleSaleIndicatorChange = (val) => {
+		setSaleIndicator(val);
+		if (val !== "manual") {
+			const ind = marketData.find((m) => m.id === val);
+			if (ind) {
+				setSalePrice(ind.price);
+				lastMarketPrice.current = ind.price;
+			}
+		}
+	};
+	const entryArrobas = (0, import_react.useMemo)(() => {
+		return initialWeight * (entryYield / 100) / 15;
+	}, [initialWeight, entryYield]);
+	const purchaseCostPerArroba = (0, import_react.useMemo)(() => {
+		return entryArrobas > 0 ? purchaseCostPerHead / entryArrobas : 0;
+	}, [purchaseCostPerHead, entryArrobas]);
+	const handlePurchaseCostPerArrobaChange = (val) => {
+		setPurchaseCostPerHead(val * (initialWeight * (entryYield / 100) / 15));
+	};
+	const farmCostPerHead = (0, import_react.useMemo)(() => {
 		if (selectedFarms.length === 0) return 0;
-		const farms = fazendas.filter((f) => selectedFarms.includes(f.id));
-		return farms.reduce((acc, f) => acc + ((f.custoNutricao || 0) + (f.custoManejo || 0)), 0) / (farms.reduce((acc, f) => acc + (f.rebanho || 1), 0) || 1);
+		const fms = fazendas.filter((f) => selectedFarms.includes(f.id));
+		return fms.reduce((acc, f) => acc + ((f.custoNutricao || 0) + (f.custoManejo || 0)), 0) / (fms.reduce((acc, f) => acc + (f.rebanho || 1), 0) || 1);
 	}, [selectedFarms, fazendas]);
 	const results = (0, import_react.useMemo)(() => {
-		const arrobas = weight / 30;
-		const revenue = arrobas * salesPrice;
-		const totalProductionCost = productionCost + farmCost;
-		const profit = revenue - totalProductionCost;
+		const saleArrobasPerHead = finalWeight * (saleYield / 100) / 15;
+		const revenuePerHead = saleArrobasPerHead * salePrice;
+		const totalCostPerHead = purchaseCostPerHead + otherCosts + farmCostPerHead;
+		const profitPerHead = revenuePerHead - totalCostPerHead;
 		return {
-			arrobas,
-			revenue,
-			profit,
-			margin: revenue > 0 ? profit / revenue * 100 : 0,
-			totalProductionCost
+			saleArrobasPerHead,
+			revenuePerHead,
+			totalCostPerHead,
+			profitPerHead,
+			margin: revenuePerHead > 0 ? profitPerHead / revenuePerHead * 100 : 0,
+			roi: totalCostPerHead > 0 ? profitPerHead / totalCostPerHead * 100 : 0,
+			totalRevenue: revenuePerHead * quantity,
+			totalCost: totalCostPerHead * quantity,
+			totalProfit: profitPerHead * quantity
 		};
 	}, [
-		weight,
-		salesPrice,
-		productionCost,
-		farmCost
+		finalWeight,
+		saleYield,
+		salePrice,
+		purchaseCostPerHead,
+		otherCosts,
+		farmCostPerHead,
+		quantity
 	]);
 	const handleSave = () => {
 		addSimulation({
-			category: marketData.find((m) => m.id === category)?.label || category,
-			weight,
-			salesPrice,
-			productionCost,
-			farmCost,
-			arrobas: results.arrobas,
-			revenue: results.revenue,
-			profit: results.profit,
+			category: animalCategory,
+			weight: finalWeight,
+			salesPrice: salePrice,
+			productionCost: purchaseCostPerHead + otherCosts,
+			farmCost: farmCostPerHead,
+			arrobas: results.saleArrobasPerHead,
+			revenue: results.revenuePerHead,
+			profit: results.profitPerHead,
 			margin: results.margin,
-			farmIds: selectedFarms
+			farmIds: selectedFarms,
+			quantity,
+			initialWeight,
+			entryYield,
+			purchaseCostPerHead,
+			otherCostsPerHead: otherCosts,
+			finalWeight,
+			saleYield,
+			saleArrobasPerHead: results.saleArrobasPerHead,
+			revenuePerHead: results.revenuePerHead,
+			profitPerHead: results.profitPerHead,
+			roi: results.roi,
+			totalRevenue: results.totalRevenue,
+			totalCost: results.totalCost,
+			totalProfit: results.totalProfit,
+			loteId: selectedLote !== "manual" ? selectedLote : void 0
 		});
 		toast$2({
 			title: "Simulação Salva",
@@ -69776,203 +69873,411 @@ function SalesSimulator() {
 			className: "bg-primary/5 pb-4 rounded-t-lg",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 				className: "flex items-center gap-2 text-lg",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calculator, { className: "h-5 w-5 text-primary" }), "Simulador de Cenários de Venda (Indicador do Boi)"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Simule a margem de lucro projetada inserindo o custo de produção e vinculando fazendas cadastradas." })]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calculator, { className: "h-5 w-5 text-primary" }), "Simulador Avançado de Cenários (Padrão Zootécnico)"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Simule a rentabilidade por animal e por lote, ajustando peso de entrada, rendimento de carcaça e custos globais operacionais." })]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 			className: "pt-6",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid grid-cols-1 lg:grid-cols-2 gap-8",
+				className: "grid grid-cols-1 xl:grid-cols-12 gap-8",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-5",
+					className: "xl:col-span-8 space-y-6",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria Animal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-								value: category,
-								onValueChange: handleCategoryChange,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione a categoria" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: marketData.map((ind) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-									value: ind.id,
-									children: ind.label
-								}, ind.id)) })]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-2 gap-4",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Peso Vivo Atual (kg)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									type: "number",
-									value: weight,
-									onChange: (e) => setWeight(Number(e.target.value))
-								})]
+							className: "space-y-4 bg-muted/20 p-5 rounded-xl border border-border/50",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "text-sm font-semibold flex items-center gap-2 border-b border-border/60 pb-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRightLeft, { className: "h-4 w-4 text-muted-foreground" }), " 1. Origem e Rebanho"]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço Venda Esperado (R$/@)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "relative",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-										type: "number",
-										className: "pl-9",
-										value: salesPrice,
-										onChange: (e) => setSalesPrice(Number(e.target.value))
-									})]
-								})]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Base de Produção (R$/Cab)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "relative",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									type: "number",
-									className: "pl-9",
-									value: productionCost,
-									onChange: (e) => setProductionCost(Number(e.target.value))
-								})]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-2 pt-2 border-t",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Vincular Fazenda (Opcional)" }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
-									asChild: true,
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-										variant: "outline",
-										className: "w-full justify-start text-left font-normal bg-background",
-										children: selectedFarms.length > 0 ? `${selectedFarms.length} Fazenda(s) Vinculada(s)` : "Selecione para puxar custos..."
+								className: "grid grid-cols-1 sm:grid-cols-3 gap-5 pt-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Lote / Referência" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+											value: selectedLote,
+											onValueChange: handleLoteChange,
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+												className: "bg-background",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione..." })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "manual",
+												children: "Simulação Manual"
+											}), lots.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+												value: l.id,
+												children: [
+													l.id,
+													" (",
+													l.cabecas,
+													" cab.)"
+												]
+											}, l.id))] })]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Quantidade (cab.)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											className: "bg-background",
+											value: quantity,
+											onChange: (e) => setQuantity(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria Animal" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											className: "bg-background",
+											value: animalCategory,
+											onChange: (e) => setAnimalCategory(e.target.value)
+										})]
 									})
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuContent, {
-									className: "w-[300px]",
-									children: fazendas.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuCheckboxItem, {
-										checked: selectedFarms.includes(f.id),
-										onCheckedChange: (c$1) => {
-											if (c$1) setSelectedFarms([...selectedFarms, f.id]);
-											else setSelectedFarms(selectedFarms.filter((id) => id !== f.id));
-										},
-										children: f.nome
-									}, f.id))
-								})] }),
-								farmCost > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "text-xs text-muted-foreground mt-1 flex justify-between",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Custo calculado de nutrição/manejo:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "font-semibold text-rose-500",
-										children: [
-											"+ R$ ",
-											farmCost.toFixed(2),
-											"/cab"
-										]
-									})]
-								})
-							]
+								]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-4 bg-muted/20 p-5 rounded-xl border border-border/50",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "text-sm font-semibold flex items-center gap-2 border-b border-border/60 pb-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowDownToLine, { className: "h-4 w-4 text-blue-500" }), " 2. Entrada / Aquisição"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Peso Inicial (kg)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											className: "bg-background",
+											value: initialWeight,
+											onChange: (e) => setInitialWeight(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Rend. Carcaça Entrada (%)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											className: "bg-background",
+											value: entryYield,
+											onChange: (e) => setEntryYield(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Aquisição (R$/cab)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "relative",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												type: "number",
+												className: "pl-9 bg-background",
+												value: purchaseCostPerHead,
+												onChange: (e) => setPurchaseCostPerHead(Number(e.target.value))
+											})]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Aquisição (R$/@)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "relative",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												type: "number",
+												className: "pl-9 bg-background",
+												value: Number(purchaseCostPerArroba.toFixed(2)),
+												onChange: (e) => handlePurchaseCostPerArrobaChange(Number(e.target.value))
+											})]
+										})]
+									})
+								]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-4 bg-muted/20 p-5 rounded-xl border border-border/50",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "text-sm font-semibold flex items-center gap-2 border-b border-border/60 pb-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CirclePlus, { className: "h-4 w-4 text-amber-500" }), " 3. Custos Operacionais"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Outros Custos / Cab. (R$)" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "relative",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												type: "number",
+												className: "pl-9 bg-background",
+												value: otherCosts,
+												onChange: (e) => setOtherCosts(Number(e.target.value))
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-[10px] text-muted-foreground mt-1",
+											children: "Ex: Sanidade, nutrição extra, frete, comissões."
+										})
+									]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Vincular Custo Fazenda Base" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenu, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuTrigger, {
+											asChild: true,
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												variant: "outline",
+												className: "w-full justify-start text-left font-normal bg-background",
+												children: selectedFarms.length > 0 ? `${selectedFarms.length} Fazenda(s) Vinculada(s)` : "Opcional: Puxar custos..."
+											})
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuContent, {
+											className: "w-[300px]",
+											children: fazendas.map((f) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuCheckboxItem, {
+												checked: selectedFarms.includes(f.id),
+												onCheckedChange: (c$1) => {
+													if (c$1) setSelectedFarms([...selectedFarms, f.id]);
+													else setSelectedFarms(selectedFarms.filter((id) => id !== f.id));
+												},
+												children: f.nome
+											}, f.id))
+										})] }),
+										farmCostPerHead > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+											className: "text-xs text-muted-foreground flex justify-between mt-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Rateio Estrutural (Nutrição/Manejo):" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "font-semibold text-rose-500",
+												children: [
+													"+ R$ ",
+													farmCostPerHead.toFixed(2),
+													"/cab"
+												]
+											})]
+										})
+									]
+								})]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-4 bg-muted/20 p-5 rounded-xl border border-border/50",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+								className: "text-sm font-semibold flex items-center gap-2 border-b border-border/60 pb-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpFromLine, { className: "h-4 w-4 text-emerald-500" }), " 4. Saída / Venda"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Peso Final Abate (kg)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											className: "bg-background",
+											value: finalWeight,
+											onChange: (e) => setFinalWeight(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Rend. Carcaça Saída (%)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "number",
+											className: "bg-background",
+											value: saleYield,
+											onChange: (e) => setSaleYield(Number(e.target.value))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Indicador Base (Venda)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+											value: saleIndicator,
+											onValueChange: handleSaleIndicatorChange,
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+												className: "bg-background",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Manual" })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: "manual",
+												children: "Manual"
+											}), marketData.map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+												value: m.id,
+												children: m.label
+											}, m.id))] })]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Preço Venda (R$/@)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "relative",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+												type: "number",
+												className: "pl-9 bg-background",
+												value: salePrice,
+												onChange: (e) => {
+													setSalePrice(Number(e.target.value));
+													setSaleIndicator("manual");
+												}
+											})]
+										})]
+									})
+								]
+							})]
 						})
 					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "bg-muted/40 rounded-xl p-6 border flex flex-col justify-center",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-							className: "text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4",
-							children: "Resultado da Projeção"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex justify-between items-center pb-3 border-b border-border/50",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-sm text-muted-foreground",
-										children: "Rendimento Estimado (50%)"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "font-medium",
-										children: [results.arrobas.toFixed(1), " @"]
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex justify-between items-center pb-3 border-b border-border/50",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-sm text-muted-foreground",
-										children: "Receita Bruta Projetada"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "font-medium",
-										children: [
-											"R$",
-											" ",
-											results.revenue.toLocaleString("pt-BR", {
-												minimumFractionDigits: 2,
-												maximumFractionDigits: 2
-											})
-										]
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex justify-between items-center pb-2 border-b border-border/50",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-sm text-muted-foreground",
-										children: "Custo Base de Produção"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "font-medium text-destructive",
-										children: [
-											"- R$",
-											" ",
-											productionCost.toLocaleString("pt-BR", {
-												minimumFractionDigits: 2,
-												maximumFractionDigits: 2
-											})
-										]
-									})]
-								}),
-								farmCost > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex justify-between items-center pb-2 border-b border-border/50",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-sm text-muted-foreground",
-										children: "Custos Operacionais (Fazendas)"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "font-medium text-destructive",
-										children: [
-											"- R$",
-											" ",
-											farmCost.toLocaleString("pt-BR", {
-												minimumFractionDigits: 2,
-												maximumFractionDigits: 2
-											})
-										]
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex justify-between items-end pt-3",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-bold text-base",
-										children: "Lucro Líquido Estimado"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "text-right",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: cn("font-bold text-2xl tracking-tight", results.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "xl:col-span-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "bg-muted/40 rounded-xl p-6 border flex flex-col justify-start h-full",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4",
+								children: "Resultado por Cabeça"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-sm text-muted-foreground",
+											children: "Arrobas Produzidas (@)"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-medium",
+											children: [results.saleArrobasPerHead.toFixed(1), " @"]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-sm text-muted-foreground",
+											children: "Receita Venda / Cab."
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-medium",
 											children: [
 												"R$",
 												" ",
-												results.profit.toLocaleString("pt-BR", {
+												results.revenuePerHead.toLocaleString("pt-BR", {
 													minimumFractionDigits: 2,
 													maximumFractionDigits: 2
 												})
 											]
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: cn("text-xs font-semibold flex items-center justify-end gap-1 mt-1", results.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-sm text-muted-foreground",
+											children: "Custo Total (Aquisição + Operacional)"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-medium text-destructive",
 											children: [
-												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3.5 w-3.5" }),
-												" Margem: ",
-												results.margin.toFixed(1),
-												"%"
+												"- R$",
+												" ",
+												results.totalCostPerHead.toLocaleString("pt-BR", {
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2
+												})
 											]
 										})]
-									})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-end pt-2 pb-4",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-bold text-sm",
+											children: "Lucro Líq. / Cab."
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "text-right",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: cn("font-bold text-xl tracking-tight", results.profitPerHead >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+												children: [
+													"R$",
+													" ",
+													results.profitPerHead.toLocaleString("pt-BR", {
+														minimumFractionDigits: 2,
+														maximumFractionDigits: 2
+													})
+												]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center justify-end gap-2 mt-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: cn("text-[11px] font-semibold flex items-center gap-1", results.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+													children: [
+														"Mg: ",
+														results.margin.toFixed(1),
+														"%"
+													]
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+													className: cn("text-[11px] font-semibold flex items-center gap-1", results.roi >= 0 ? "text-blue-600 dark:text-blue-400" : "text-destructive"),
+													children: [
+														"ROI: ",
+														results.roi.toFixed(1),
+														"%"
+													]
+												})]
+											})]
+										})]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h4", {
+								className: "text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 mt-6",
+								children: [
+									"Projeção Total do Lote (",
+									quantity,
+									" cab.)"
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-sm text-muted-foreground",
+											children: "Receita Bruta Total"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-medium",
+											children: [
+												"R$",
+												" ",
+												results.totalRevenue.toLocaleString("pt-BR", {
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2
+												})
+											]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-center pb-2 border-b border-border/50",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-sm text-muted-foreground",
+											children: "Custo Total Projetado"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-medium text-destructive",
+											children: [
+												"- R$",
+												" ",
+												results.totalCost.toLocaleString("pt-BR", {
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2
+												})
+											]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex justify-between items-end pt-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-bold text-base",
+											children: "Lucro Líquido Global"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: cn("font-bold text-2xl tracking-tight", results.totalProfit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
+											children: [
+												"R$",
+												" ",
+												results.totalProfit.toLocaleString("pt-BR", {
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2
+												})
+											]
+										})]
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "mt-auto pt-6",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									className: "w-full gap-2",
+									onClick: handleSave,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), "Salvar Simulação no Histórico"]
 								})
-							]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							className: "w-full mt-6 gap-2",
-							onClick: handleSave,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "h-4 w-4" }), "Salvar Simulação no Histórico"]
-						})
-					]
+							})
+						]
+					})
 				})]
 			})
 		})]
@@ -70609,12 +70914,21 @@ function SimulationHistory() {
 				minute: "2-digit"
 			}),
 			Categoria: sim.category,
-			"Peso Vivo (kg)": sim.weight,
+			"Qtd (cab.)": sim.quantity || 1,
+			"Peso Inicial (kg)": sim.initialWeight || "-",
+			"Rend. Entrada (%)": sim.entryYield || "-",
+			"Custo Compra (R$/cab)": sim.purchaseCostPerHead?.toFixed(2) || "-",
+			"Outros Custos (R$/cab)": sim.otherCostsPerHead?.toFixed(2) || "-",
+			"Custo Fazenda (R$/cab)": (sim.farmCost || 0).toFixed(2),
+			"Custo Total (R$/cab)": (sim.productionCost + (sim.farmCost || 0)).toFixed(2),
+			"Peso Final (kg)": sim.finalWeight || sim.weight,
+			"Rend. Saída (%)": sim.saleYield || "-",
 			"Preço Venda (R$/@)": sim.salesPrice.toFixed(2),
-			"Custo Base (R$)": sim.productionCost.toFixed(2),
-			"Custo Fazenda (R$)": (sim.farmCost || 0).toFixed(2),
-			"Lucro Líquido (R$)": sim.profit.toFixed(2),
-			"Margem (%)": sim.margin.toFixed(1)
+			"Arrobas/Cab": sim.arrobas.toFixed(2),
+			"Lucro L. / Cab (R$)": sim.profit.toFixed(2),
+			"Lucro L. Total (R$)": sim.totalProfit?.toFixed(2) || (sim.profit * (sim.quantity || 1)).toFixed(2),
+			"Margem (%)": sim.margin.toFixed(1),
+			"ROI (%)": sim.roi?.toFixed(1) || "-"
 		})), "historico_simulacoes");
 	};
 	const handleExportPDF = () => {
@@ -70658,10 +70972,10 @@ function SimulationHistory() {
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "w-[40px] text-center" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria / Lote" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 							className: "text-right",
-							children: "Peso (kg)"
+							children: "Peso Saída"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 							className: "text-right",
@@ -70669,11 +70983,11 @@ function SimulationHistory() {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 							className: "text-right",
-							children: "Custo Prod"
+							children: "Custo Cab."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 							className: "text-right",
-							children: "Lucro L."
+							children: "Lucro Cab."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 							className: "text-right",
@@ -70704,18 +71018,14 @@ function SimulationHistory() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 								className: "font-medium text-xs",
-								children: [sim.category, sim.farmIds && sim.farmIds.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								children: [sim.category, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "text-[10px] text-muted-foreground mt-0.5 whitespace-nowrap",
-									children: [
-										"Vinculado: ",
-										sim.farmIds.length,
-										" Fazenda(s)"
-									]
+									children: [sim.quantity ? `${sim.quantity} cab.` : "1 cab.", sim.farmIds && sim.farmIds.length > 0 && ` • Vinc: ${sim.farmIds.length} Faz`]
 								})]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 								className: "text-right text-xs",
-								children: sim.weight
+								children: [sim.weight, " kg"]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 								className: "text-right text-xs",
@@ -70727,11 +71037,33 @@ function SimulationHistory() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 								className: `text-right font-semibold text-xs ${sim.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
-								children: ["R$ ", sim.profit.toFixed(2)]
+								children: [
+									"R$ ",
+									sim.profit.toFixed(2),
+									sim.totalProfit && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "text-[10px] text-muted-foreground font-normal",
+										children: [
+											"Total: R$ ",
+											(sim.totalProfit / 1e3).toFixed(1),
+											"k"
+										]
+									})
+								]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 								className: `text-right font-medium text-xs ${sim.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
-								children: [sim.margin.toFixed(1), "%"]
+								children: [
+									sim.margin.toFixed(1),
+									"%",
+									sim.roi !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "text-[10px] text-muted-foreground font-normal",
+										children: [
+											"ROI: ",
+											sim.roi.toFixed(1),
+											"%"
+										]
+									})
+								]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 								className: "text-right",
@@ -75208,4 +75540,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BUIhQe-U.js.map
+//# sourceMappingURL=index-BFYYaBOa.js.map

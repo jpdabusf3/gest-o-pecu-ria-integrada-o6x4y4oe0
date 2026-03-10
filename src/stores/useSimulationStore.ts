@@ -13,6 +13,22 @@ export interface SimulationResult {
   profit: number
   margin: number
   farmIds?: string[]
+
+  quantity?: number
+  initialWeight?: number
+  entryYield?: number
+  purchaseCostPerHead?: number
+  otherCostsPerHead?: number
+  finalWeight?: number
+  saleYield?: number
+  saleArrobasPerHead?: number
+  revenuePerHead?: number
+  profitPerHead?: number
+  roi?: number
+  totalRevenue?: number
+  totalCost?: number
+  totalProfit?: number
+  loteId?: string
 }
 
 const STORAGE_KEY = '@fazenda-simulations'

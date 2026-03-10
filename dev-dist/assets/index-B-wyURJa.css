@@ -1682,6 +1682,9 @@ section[aria-label='Notifications alt+T'] {
 .border-border\/50{
   border-color: hsl(var(--border) / 0.5);
 }
+.border-border\/60{
+  border-color: hsl(var(--border) / 0.6);
+}
 .border-card{
   border-color: hsl(var(--card));
 }
@@ -2227,6 +2230,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .text-\[10px\]{
   font-size: 10px;
+}
+.text-\[11px\]{
+  font-size: 11px;
 }
 .text-\[9px\]{
   font-size: 9px;
@@ -4057,9 +4063,6 @@ section[aria-label='Notifications alt+T'] {
   .lg\:inline{
     display: inline;
   }
-  .lg\:grid-cols-2{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -4090,6 +4093,15 @@ section[aria-label='Notifications alt+T'] {
   }
 }
 @media (min-width: 1280px){
+  .xl\:col-span-4{
+    grid-column: span 4 / span 4;
+  }
+  .xl\:col-span-8{
+    grid-column: span 8 / span 8;
+  }
+  .xl\:grid-cols-12{
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
   .xl\:flex-row{
     flex-direction: row;
   }
