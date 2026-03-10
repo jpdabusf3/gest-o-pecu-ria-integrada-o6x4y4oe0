@@ -9,31 +9,30 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { pasturesData, sectorData } from '@/data/mock'
-import { TrendingUp, Coins, Sprout } from 'lucide-react'
+import { TrendingUp, Sprout } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import usePastoStore from '@/stores/usePastoStore'
+import useAnimalStore from '@/stores/useAnimalStore'
 
 export function EfficiencyTab() {
-  const allLots = useMemo(
-    () => [...sectorData.cria.lotes, ...sectorData.recria.lotes, ...sectorData.engorda.lotes],
-    [],
-  )
+  const { pastos } = usePastoStore()
+  const { animais } = useAnimalStore()
 
   const efficiencyData = useMemo(() => {
-    return pasturesData
+    return pastos
       .map((pasto) => {
-        const occupant = allLots.find((l) => l.id === pasto.ocupanteAtual)
-        const daysOccupied = occupant ? Math.floor(Math.random() * 40) + 15 : 0
+        const pastoAnimais = animais.filter((a) => a.pastoId === pasto.id.toString())
+        const heads = pastoAnimais.reduce((sum, a) => sum + a.quantidade, 0)
+        const daysOccupied = heads > 0 ? 30 : 0 // Assumed 30 days for current snapshot efficiency
         const totalMaintenanceCost = pasto.area * 85
 
-        let heads = occupant?.cabecas || 0
         let costPerHeadDay =
           heads > 0 && daysOccupied > 0 ? totalMaintenanceCost / (heads * daysOccupied) : 0
 
         let weightGain = 0
         let valueGenerated = 0
 
-        if (occupant) {
+        if (heads > 0) {
           const gmd = pasto.sector === 'recria' ? 0.6 : pasto.sector === 'engorda' ? 1.1 : 0.3
           weightGain = heads * gmd * daysOccupied
           valueGenerated = (weightGain / 30) * 265.5
@@ -46,7 +45,7 @@ export function EfficiencyTab() {
 
         return {
           ...pasto,
-          occupantId: occupant?.id || 'Vazio',
+          occupantLabel: heads > 0 ? `${heads} cabeças` : 'Vazio',
           heads,
           daysOccupied,
           totalMaintenanceCost,
@@ -57,7 +56,7 @@ export function EfficiencyTab() {
         }
       })
       .sort((a, b) => b.roi - a.roi)
-  }, [allLots])
+  }, [pastos, animais])
 
   return (
     <Card className="animate-fade-in mt-0">
@@ -67,9 +66,8 @@ export function EfficiencyTab() {
           (Custo-Benefício)
         </CardTitle>
         <CardDescription>
-          Integração entre tempo de ocupação da área (`MapaPropriedade`) e custos aplicados
-          (`Financeiro`), determinando o Retorno sobre Investimento (ROI) estimado pelo ganho de
-          peso.
+          Integração entre tempo de ocupação da área e custos aplicados, determinando o Retorno
+          sobre Investimento (ROI) estimado pelo ganho de peso.
         </CardDescription>
       </CardHeader>
       <CardContent className="px-0 sm:px-6 overflow-x-auto">
@@ -95,11 +93,9 @@ export function EfficiencyTab() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {p.occupantId !== 'Vazio' ? (
+                  {p.heads > 0 ? (
                     <div>
-                      <div className="font-semibold text-xs">
-                        {p.occupantId} ({p.heads} cab)
-                      </div>
+                      <div className="font-semibold text-xs text-primary">{p.occupantLabel}</div>
                       <div className="text-[10px] text-muted-foreground">{p.daysOccupied} dias</div>
                     </div>
                   ) : (

@@ -21,6 +21,7 @@ import {
 import { Plus, Beef } from 'lucide-react'
 import useFazendaStore from '@/stores/useFazendaStore'
 import useAnimalStore from '@/stores/useAnimalStore'
+import usePastoStore from '@/stores/usePastoStore'
 import { useToast } from '@/hooks/use-toast'
 import { AnimalRegistro, CategoriaAnimal } from '@/types/animal'
 
@@ -28,6 +29,7 @@ export function AnimalRegistrationModal() {
   const [open, setOpen] = useState(false)
   const { fazendas } = useFazendaStore()
   const { addRegistro } = useAnimalStore()
+  const { pastos } = usePastoStore()
   const { toast } = useToast()
 
   const [tipoRegistro, setTipoRegistro] = useState<'individual' | 'lote'>('lote')
@@ -63,6 +65,9 @@ export function AnimalRegistrationModal() {
     else if (idadeMeses > 12 && idadeMeses <= 24) faixaEtaria = '1-2 anos'
     else if (idadeMeses > 24) faixaEtaria = '> 2 anos'
 
+    const pastoIdVal = fd.get('pastoId') as string
+    const pastoId = pastoIdVal && pastoIdVal !== 'none' ? pastoIdVal : undefined
+
     const registro: AnimalRegistro = {
       id: crypto.randomUUID(),
       tipoRegistro,
@@ -75,6 +80,7 @@ export function AnimalRegistrationModal() {
       idadeMeses,
       origem,
       fazendaDestinoId: fd.get('fazendaDestinoId') as string,
+      ...(pastoId && { pastoId }),
       dataRegistro: new Date().toISOString(),
       ...(origem === 'Compra' && {
         precoCompraPorCabeca: precoCompra,
@@ -130,7 +136,7 @@ export function AnimalRegistrationModal() {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6 py-4">
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label>Fazenda de Destino *</Label>
               <Select name="fazendaDestinoId" required>
@@ -147,6 +153,22 @@ export function AnimalRegistrationModal() {
               </Select>
             </div>
             <div className="space-y-2">
+              <Label>Pasto Destino</Label>
+              <Select name="pastoId" defaultValue="none">
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o pasto..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Nenhum / Selecionar depois</SelectItem>
+                  {pastos.map((p) => (
+                    <SelectItem key={p.id} value={p.id.toString()}>
+                      {p.nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
               <Label>Tipo de Registro</Label>
               <RadioGroup
                 value={tipoRegistro}
@@ -155,7 +177,7 @@ export function AnimalRegistrationModal() {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="individual" id="r-ind" />
-                  <Label htmlFor="r-ind">Individual</Label>
+                  <Label htmlFor="r-ind">Indiv.</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="lote" id="r-lote" />

@@ -23,11 +23,12 @@ import {
   ChartLegendContent,
 } from '@/components/ui/chart'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
-import { pasturesData } from '@/data/mock'
 import { ExportMenu } from '@/components/ExportMenu'
 import { downloadCSV, downloadExcel } from '@/lib/exportUtils'
 import { cn } from '@/lib/utils'
 import { TrendingUp, Map as MapIcon, DollarSign, Sprout } from 'lucide-react'
+import usePastoStore from '@/stores/usePastoStore'
+import useAnimalStore from '@/stores/useAnimalStore'
 
 interface Props {
   currentArrobaPrice: number
@@ -35,14 +36,18 @@ interface Props {
 
 export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
   const [period, setPeriod] = useState('30')
+  const { pastos } = usePastoStore()
+  const { animais } = useAnimalStore()
+
   const pricePerKgLive = currentArrobaPrice / 30
 
   const stats = useMemo(() => {
     const days = parseInt(period, 10)
-    return pasturesData
+    return pastos
       .map((pasto) => {
-        // Data correlation engine: weight gain vs cost allocation
-        const headCount = pasto.area * (pasto.lotacaoExecutada || 1.5)
+        const pastoAnimais = animais.filter((a) => a.pastoId === pasto.id.toString())
+        const headCount = pastoAnimais.reduce((sum, a) => sum + a.quantidade, 0)
+
         const dailyGain = 0.4 + pasto.score * 0.1
         const totalWeightGain = headCount * dailyGain * days
         const revenue = totalWeightGain * pricePerKgLive
@@ -57,7 +62,7 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
           id: pasto.id,
           name: pasto.nome,
           area: pasto.area,
-          headCount: Math.round(headCount),
+          headCount,
           totalWeightGain: Math.round(totalWeightGain),
           maintenanceCost,
           revenue,
@@ -66,7 +71,7 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
         }
       })
       .sort((a, b) => b.netProfit - a.netProfit)
-  }, [period, pricePerKgLive])
+  }, [period, pricePerKgLive, pastos, animais])
 
   const chartData = useMemo(
     () =>

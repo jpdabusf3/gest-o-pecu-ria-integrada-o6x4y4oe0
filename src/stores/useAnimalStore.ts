@@ -55,6 +55,15 @@ export default function useAnimalStore() {
     })
   }, [])
 
+  const updateRegistro = useCallback((id: string, data: Partial<AnimalRegistro>) => {
+    setAnimais((prev) => {
+      const updated = prev.map((a) => (a.id === id ? { ...a, ...data } : a))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+      window.dispatchEvent(new Event('animais-updated'))
+      return updated
+    })
+  }, [])
+
   const deleteRegistro = useCallback((id: string) => {
     setAnimais((prev) => {
       const updated = prev.filter((a) => a.id !== id)
@@ -64,5 +73,5 @@ export default function useAnimalStore() {
     })
   }, [])
 
-  return { animais, addRegistro, deleteRegistro }
+  return { animais, addRegistro, updateRegistro, deleteRegistro }
 }

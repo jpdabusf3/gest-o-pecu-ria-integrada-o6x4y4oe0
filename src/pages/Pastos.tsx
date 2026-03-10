@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -11,20 +11,41 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { pasturesData, rotationalSchedule } from '@/data/mock'
+import { rotationalSchedule } from '@/data/mock'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { useToast } from '@/hooks/use-toast'
 import { RefreshCw, Map as MapIcon, RotateCw, Beef } from 'lucide-react'
 import { ManagementTab } from '@/components/pastures/ManagementTab'
 import { EfficiencyTab } from '@/components/pastures/EfficiencyTab'
+import usePastoStore from '@/stores/usePastoStore'
+import useAnimalStore from '@/stores/useAnimalStore'
 import { cn } from '@/lib/utils'
 
 export default function Pastos() {
   const { toast } = useToast()
-  const [selectedPaddock, setSelectedPaddock] = useState<number | null>(null)
+  const { pastos } = usePastoStore()
+  const { animais } = useAnimalStore()
+  const [selectedPaddock, setSelectedPaddock] = useState<number | string | null>(null)
+
+  // Dynamically attach animal allocations to pastures
+  const dynamicPastures = useMemo(() => {
+    return pastos.map((pasto) => {
+      const pastoAnimais = animais.filter((a) => a.pastoId === pasto.id.toString())
+      const headCount = pastoAnimais.reduce((sum, a) => sum + a.quantidade, 0)
+      const computedLotacao = pasto.area > 0 ? headCount / pasto.area : 0
+      const isStockingAlert = computedLotacao > pasto.lotacaoProjetada * 1.1
+
+      return {
+        ...pasto,
+        headCount,
+        computedLotacao,
+        isStockingAlert,
+      }
+    })
+  }, [pastos, animais])
 
   const handleSync = () => {
-    const alerts = pasturesData.filter(
+    const alerts = dynamicPastures.filter(
       (p) => p.alturaAtual < p.alturaSaidaAlvo || p.alturaAtual > p.alturaEntradaAlvo,
     )
     toast({
@@ -35,7 +56,7 @@ export default function Pastos() {
   }
 
   const activePaddockData = selectedPaddock
-    ? pasturesData.find((p) => p.id === selectedPaddock)
+    ? dynamicPastures.find((p) => p.id === selectedPaddock)
     : null
 
   return (
@@ -82,12 +103,10 @@ export default function Pastos() {
               </CardHeader>
               <CardContent>
                 <div className="bg-muted/30 p-4 sm:p-6 rounded-xl border aspect-[4/3] sm:aspect-[16/9] relative overflow-hidden flex flex-col justify-between">
-                  {/* Decorative background grid */}
                   <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
                   <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 h-full">
-                    {pasturesData.map((pasto) => {
-                      const isStockingAlert = pasto.lotacaoExecutada > pasto.lotacaoProjetada * 1.1
+                    {dynamicPastures.map((pasto) => {
                       const statusColor =
                         pasto.status === 'Vedado'
                           ? 'bg-slate-200 border-slate-300 text-slate-500'
@@ -115,9 +134,10 @@ export default function Pastos() {
                           </div>
 
                           <div className="mt-4 space-y-1">
-                            {pasto.ocupanteAtual ? (
+                            {pasto.headCount > 0 ? (
                               <div className="flex items-center gap-1.5 text-xs font-semibold bg-white/40 px-2 py-1 rounded-md w-fit">
-                                <Beef className="h-3.5 w-3.5" /> {pasto.ocupanteAtual}
+                                <Beef className="h-3.5 w-3.5" /> {pasto.headCount} Cabeça
+                                {pasto.headCount !== 1 ? 's' : ''}
                               </div>
                             ) : (
                               <div className="text-xs font-medium bg-white/40 px-2 py-1 rounded-md w-fit text-muted-foreground">
@@ -132,10 +152,10 @@ export default function Pastos() {
                               <span
                                 className={cn(
                                   'text-sm font-mono font-bold',
-                                  isStockingAlert ? 'text-destructive' : '',
+                                  pasto.isStockingAlert ? 'text-destructive' : '',
                                 )}
                               >
-                                {pasto.lotacaoExecutada.toFixed(1)} UA/ha
+                                {pasto.computedLotacao.toFixed(1)} UA/ha
                               </span>
                             </div>
                           </div>
@@ -168,13 +188,13 @@ export default function Pastos() {
                       <div>
                         <span className="text-muted-foreground block text-xs">Lotação Atual</span>
                         <span className="font-mono font-bold">
-                          {activePaddockData.lotacaoExecutada} UA/ha
+                          {activePaddockData.computedLotacao.toFixed(1)} UA/ha
                         </span>
                       </div>
                       <div>
                         <span className="text-muted-foreground block text-xs">Lotação Alvo</span>
                         <span className="font-mono">
-                          {activePaddockData.lotacaoProjetada} UA/ha
+                          {activePaddockData.lotacaoProjetada.toFixed(1)} UA/ha
                         </span>
                       </div>
                       <div>
@@ -257,18 +277,17 @@ export default function Pastos() {
                     <TableRow>
                       <TableHead>Nome / Cultivar</TableHead>
                       <TableHead className="text-right">Área (ha)</TableHead>
-                      <TableHead className="text-center">Altura (Alvo vs Atual)</TableHead>
+                      <TableHead className="text-center">Qtd. Animais</TableHead>
                       <TableHead className="text-center">Lotação (Proj vs Exec)</TableHead>
-                      <TableHead className="text-center">Peso Médio (Hist vs Atual)</TableHead>
+                      <TableHead className="text-center">Altura (Alvo vs Atual)</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pasturesData.map((pasto) => {
+                    {dynamicPastures.map((pasto) => {
                       const isHeightAlert =
                         pasto.alturaAtual < pasto.alturaSaidaAlvo ||
-                        pasto.alturaAtual > pasto.alturaEntradaAlvo
-                      const isStockingAlert = pasto.lotacaoExecutada > pasto.lotacaoProjetada * 1.1
+                        pasto.alturaAtual > p.alturaEntradaAlvo
 
                       return (
                         <TableRow key={pasto.id}>
@@ -277,6 +296,24 @@ export default function Pastos() {
                             <div className="text-xs text-muted-foreground">{pasto.cultivar}</div>
                           </TableCell>
                           <TableCell className="text-right">{pasto.area.toFixed(1)}</TableCell>
+
+                          <TableCell className="text-center font-bold text-primary">
+                            {pasto.headCount}
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            <div className="flex flex-col items-center gap-1">
+                              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                Proj: {pasto.lotacaoProjetada.toFixed(1)} UA/ha
+                              </span>
+                              <Badge
+                                variant={pasto.isStockingAlert ? 'destructive' : 'secondary'}
+                                className="font-mono"
+                              >
+                                Exec: {pasto.computedLotacao.toFixed(1)} UA/ha
+                              </Badge>
+                            </div>
+                          </TableCell>
 
                           <TableCell className="text-center">
                             <div className="flex flex-col items-center gap-1">
@@ -290,37 +327,6 @@ export default function Pastos() {
                                 {pasto.alturaAtual} cm
                               </Badge>
                             </div>
-                          </TableCell>
-
-                          <TableCell className="text-center">
-                            <div className="flex flex-col items-center gap-1">
-                              <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                Proj: {pasto.lotacaoProjetada.toFixed(1)} UA/ha
-                              </span>
-                              <Badge
-                                variant={isStockingAlert ? 'destructive' : 'secondary'}
-                                className="font-mono"
-                              >
-                                Exec: {pasto.lotacaoExecutada.toFixed(1)} UA/ha
-                              </Badge>
-                            </div>
-                          </TableCell>
-
-                          <TableCell className="text-center">
-                            {pasto.pesoMedioAtual > 0 ? (
-                              <div className="flex flex-col items-center gap-1">
-                                <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                  Histórico: {pasto.pesoMedioHistorico} kg
-                                </span>
-                                <span
-                                  className={`text-sm font-medium ${pasto.pesoMedioAtual < pasto.pesoMedioHistorico ? 'text-destructive' : 'text-primary'}`}
-                                >
-                                  Atual: {pasto.pesoMedioAtual} kg
-                                </span>
-                              </div>
-                            ) : (
-                              '-'
-                            )}
                           </TableCell>
 
                           <TableCell>

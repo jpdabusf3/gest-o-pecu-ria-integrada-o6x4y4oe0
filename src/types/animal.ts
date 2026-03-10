@@ -29,6 +29,7 @@ export interface AnimalRegistro {
   comissao?: number
   impostos?: number
   fazendaDestinoId: string
+  pastoId?: string
   custoTotalPorCabeca: number
   custoTotalLote: number
   dataRegistro: string

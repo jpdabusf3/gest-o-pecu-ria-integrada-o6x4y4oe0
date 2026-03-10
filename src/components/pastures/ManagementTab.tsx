@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { pasturesData as initialPastures } from '@/data/mock'
 import { Plus, Trash, Map } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -29,10 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import usePastoStore from '@/stores/usePastoStore'
+import { Pasto } from '@/types/pasto'
 
 export function ManagementTab() {
-  const [pastures, setPastures] = useState(initialPastures)
-  const [selectedPasto, setSelectedPasto] = useState<number | null>(initialPastures[0]?.id || null)
+  const { pastos, addPasto, deletePasto, updatePasto } = usePastoStore()
+  const [selectedPasto, setSelectedPasto] = useState<number | string | null>(pastos[0]?.id || null)
 
   const [newPastoName, setNewPastoName] = useState('')
   const [newPastoArea, setNewPastoArea] = useState('')
@@ -44,12 +45,12 @@ export function ManagementTab() {
   const [newInvDesc, setNewInvDesc] = useState('')
   const [isInvOpen, setIsInvOpen] = useState(false)
 
-  const pasto = pastures.find((p) => p.id === selectedPasto)
+  const pasto = pastos.find((p) => p.id === selectedPasto)
 
   const handleAddPasto = () => {
     if (!newPastoName) return
-    const newId = Math.max(...pastures.map((p) => p.id), 0) + 1
-    const newPasto = {
+    const newId = crypto.randomUUID()
+    const newPasto: Pasto = {
       id: newId,
       nome: newPastoName,
       area: Number(newPastoArea) || 0,
@@ -70,8 +71,9 @@ export function ManagementTab() {
       daysOfRest: 0,
       optimalRestDuration: 30,
       recommendedLotSize: 100,
+      ocupanteAtual: null,
     }
-    setPastures([...pastures, newPasto])
+    addPasto(newPasto)
     setIsPastoOpen(false)
     setNewPastoName('')
     setNewPastoArea('')
@@ -86,11 +88,9 @@ export function ManagementTab() {
       tipo: newInvType,
       descricao: newInvDesc,
     }
-    setPastures(
-      pastures.map((p) =>
-        p.id === pasto.id ? { ...p, interventions: [newInv, ...(p.interventions || [])] } : p,
-      ),
-    )
+    updatePasto(pasto.id, {
+      interventions: [newInv, ...(pasto.interventions || [])],
+    })
     setIsInvOpen(false)
     setNewInvType('')
     setNewInvDate('')
@@ -143,7 +143,7 @@ export function ManagementTab() {
         </CardHeader>
         <CardContent className="flex-1 overflow-y-auto p-0">
           <div className="flex flex-col">
-            {pastures.map((p) => (
+            {pastos.map((p) => (
               <div
                 key={p.id}
                 onClick={() => setSelectedPasto(p.id)}
@@ -164,7 +164,7 @@ export function ManagementTab() {
                   className="h-6 w-6 opacity-0 group-hover:opacity-100"
                   onClick={(e) => {
                     e.stopPropagation()
-                    setPastures(pastures.filter((x) => x.id !== p.id))
+                    deletePasto(p.id)
                     if (selectedPasto === p.id) setSelectedPasto(null)
                   }}
                 >
