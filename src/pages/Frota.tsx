@@ -8,46 +8,57 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tractor, Plus, Fuel, Wrench, Clock } from 'lucide-react'
-import { fleetData } from '@/data/mock'
+import { Tractor, Wrench } from 'lucide-react'
+import useFrotaStore from '@/stores/useFrotaStore'
+import { RefuelModal } from '@/components/frota/RefuelModal'
+import { NewMachineModal } from '@/components/frota/NewMachineModal'
+import { MaintenanceModal } from '@/components/frota/MaintenanceModal'
+import { IncidentModal } from '@/components/frota/IncidentModal'
 
 export default function Frota() {
+  const { machines, refuels, maintenances, incidents } = useFrotaStore()
+
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
             <Tractor className="h-8 w-8 text-primary" />
             Frota & Maquinário
           </h2>
           <p className="text-muted-foreground mt-1">
-            Controle de equipamentos, integração de depreciação e custos de manutenção.
+            Controle de equipamentos, integração de abastecimentos e manutenções com estoque.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          <Button variant="outline" className="flex-1 sm:flex-none gap-2">
-            <Fuel className="h-4 w-4" /> Abastecimento
-          </Button>
-          <Button className="flex-1 sm:flex-none gap-2">
-            <Plus className="h-4 w-4" /> Nova Máquina
-          </Button>
+        <div className="flex flex-wrap items-center gap-2 w-full xl:w-auto">
+          <IncidentModal />
+          <MaintenanceModal />
+          <RefuelModal />
+          <NewMachineModal />
         </div>
       </div>
 
       <Tabs defaultValue="veiculos" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="veiculos">Composição da Frota</TabsTrigger>
-          <TabsTrigger value="lancamentos">Lançamentos (Horas / Km)</TabsTrigger>
+        <TabsList className="mb-2 w-full sm:w-auto overflow-x-auto justify-start h-auto py-1.5 px-1 flex flex-wrap sm:flex-nowrap">
+          <TabsTrigger value="veiculos" className="py-2">
+            Composição da Frota
+          </TabsTrigger>
+          <TabsTrigger value="abastecimentos" className="py-2">
+            Abastecimentos
+          </TabsTrigger>
+          <TabsTrigger value="manutencoes" className="py-2">
+            Manutenções
+          </TabsTrigger>
+          <TabsTrigger value="intercorrencias" className="py-2">
+            Intercorrências
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="veiculos" className="mt-0">
           <Card>
             <CardHeader>
-              <CardTitle>Relação de Veículos e Custos Atribuídos</CardTitle>
+              <CardTitle>Relação de Veículos e Indicadores</CardTitle>
               <CardDescription>
                 Todos os custos registrados aqui compõem automaticamente a métrica do Custo por
                 Arroba Produzida.
@@ -60,41 +71,49 @@ export default function Frota() {
                     <TableRow>
                       <TableHead>Máquina / Veículo</TableHead>
                       <TableHead>Horas / Km</TableHead>
-                      <TableHead className="text-right">Consumo Mensal</TableHead>
-                      <TableHead className="text-right">Custo Manutenção</TableHead>
+                      <TableHead className="text-right">Custo Manutenção (Acum)</TableHead>
                       <TableHead className="text-right">Depreciação</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {fleetData.map((f) => (
-                      <TableRow key={f.id}>
-                        <TableCell className="font-medium">
-                          {f.name}
-                          <div className="text-xs text-muted-foreground">{f.type}</div>
-                        </TableCell>
-                        <TableCell>
-                          {f.currentHours ? `${f.currentHours} h` : `${f.currentKm} km`}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {f.fuelConsumption > 0 ? `${f.fuelConsumption} L` : '-'}
-                        </TableCell>
-                        <TableCell className="text-right text-destructive">
-                          R$ {f.maintenanceCost.toLocaleString('pt-BR')}
-                        </TableCell>
-                        <TableCell className="text-right text-muted-foreground">
-                          R$ {f.depreciation.toLocaleString('pt-BR')}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={f.status === 'Ativo' ? 'default' : 'secondary'}>
-                            {f.status === 'Manutenção' && (
-                              <Wrench className="w-3 h-3 mr-1 inline-block" />
-                            )}
-                            {f.status}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {machines.map((f) => {
+                      const mCosts = maintenances
+                        .filter((m) => m.machineId === f.id)
+                        .reduce((a, b) => a + b.cost, 0)
+                      return (
+                        <TableRow key={f.id}>
+                          <TableCell className="font-medium">
+                            {f.name}
+                            <div className="text-xs text-muted-foreground">{f.type}</div>
+                          </TableCell>
+                          <TableCell>
+                            {f.currentHours
+                              ? `${f.currentHours} h`
+                              : f.currentKm
+                                ? `${f.currentKm} km`
+                                : '-'}
+                          </TableCell>
+                          <TableCell className="text-right text-destructive">
+                            R${' '}
+                            {(f.maintenanceCost + mCosts).toLocaleString('pt-BR', {
+                              minimumFractionDigits: 2,
+                            })}
+                          </TableCell>
+                          <TableCell className="text-right text-muted-foreground">
+                            R$ {f.depreciation.toLocaleString('pt-BR')}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={f.status === 'Ativo' ? 'default' : 'secondary'}>
+                              {f.status === 'Manutenção' && (
+                                <Wrench className="w-3 h-3 mr-1 inline-block" />
+                              )}
+                              {f.status}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
               </div>
@@ -102,65 +121,137 @@ export default function Frota() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="lancamentos" className="mt-0">
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-primary" /> Registrar Uso Diário
-                </CardTitle>
-                <CardDescription>
-                  Informe a quilometragem ou horímetro para cálculo preciso de depreciação por uso.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Selecione a Máquina</Label>
-                  <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                    <option value="">Selecione...</option>
-                    {fleetData.map((f) => (
-                      <option key={f.id} value={f.id}>
-                        {f.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Medidor (Horímetro / Km)</Label>
-                    <Input type="number" placeholder="Ex: 1205" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Combustível (Litros)</Label>
-                    <Input type="number" placeholder="Ex: 45" />
-                  </div>
-                </div>
-                <Button className="w-full mt-2">Gravar Lançamento</Button>
-              </CardContent>
-            </Card>
+        <TabsContent value="abastecimentos" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Histórico de Abastecimento</CardTitle>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Máquina</TableHead>
+                    <TableHead>Combustível</TableHead>
+                    <TableHead className="text-right">Volume (L)</TableHead>
+                    <TableHead>Operador</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {refuels.map((r) => (
+                    <TableRow key={r.id}>
+                      <TableCell className="whitespace-nowrap">
+                        {new Date(r.date).toLocaleDateString('pt-BR')}
+                      </TableCell>
+                      <TableCell className="font-medium">{r.machineName}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{r.fuelType}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-mono font-bold text-primary">
+                        {r.quantity} L
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{r.operator}</TableCell>
+                    </TableRow>
+                  ))}
+                  {refuels.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                        Nenhum abastecimento registrado.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-            <Card className="bg-primary/5 border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-lg">Impacto Operacional Estimado</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-muted-foreground text-sm">
-                    Custo total maquinário (mês):
-                  </span>
-                  <span className="font-bold text-lg">R$ 35.000,00</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-muted-foreground text-sm">Representatividade no @:</span>
-                  <span className="font-bold text-destructive">11.8%</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-4">
-                  Os valores agregam consumo, manutenções corretivas e depreciação calculada
-                  linearmente.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+        <TabsContent value="manutencoes" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Logs de Manutenção Preventiva e Corretiva</CardTitle>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Máquina</TableHead>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead>Descrição</TableHead>
+                    <TableHead className="text-right">Custo</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {maintenances.map((m) => (
+                    <TableRow key={m.id}>
+                      <TableCell className="whitespace-nowrap">
+                        {new Date(m.date).toLocaleDateString('pt-BR')}
+                      </TableCell>
+                      <TableCell className="font-medium">{m.machineName}</TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">{m.category}</Badge>
+                      </TableCell>
+                      <TableCell>{m.description}</TableCell>
+                      <TableCell className="text-right font-mono text-destructive">
+                        R$ {m.cost.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {maintenances.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                        Nenhuma manutenção registrada.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="intercorrencias" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Intercorrências Operacionais</CardTitle>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Máquina</TableHead>
+                    <TableHead>Tipo</TableHead>
+                    <TableHead>Descrição</TableHead>
+                    <TableHead>Operador</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {incidents.map((i) => (
+                    <TableRow key={i.id}>
+                      <TableCell className="whitespace-nowrap">
+                        {new Date(i.date).toLocaleDateString('pt-BR')}
+                      </TableCell>
+                      <TableCell className="font-medium">{i.machineName}</TableCell>
+                      <TableCell>
+                        <Badge variant="destructive">{i.type}</Badge>
+                      </TableCell>
+                      <TableCell>{i.description}</TableCell>
+                      <TableCell className="text-muted-foreground">{i.operator}</TableCell>
+                    </TableRow>
+                  ))}
+                  {incidents.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                        Nenhuma intercorrência registrada.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

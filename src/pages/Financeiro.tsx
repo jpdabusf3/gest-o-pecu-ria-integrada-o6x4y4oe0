@@ -11,8 +11,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Plus } from 'lucide-react'
-import { financialData, lotPerformanceData, costPerArrobaData, animalData } from '@/data/mock'
+import { Plus, FileText } from 'lucide-react'
+import { financialData, lotPerformanceData, animalData } from '@/data/mock'
 import { useToast } from '@/hooks/use-toast'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
@@ -24,6 +24,8 @@ import { ExportMenu } from '@/components/ExportMenu'
 import { downloadCSV, downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 import useFinanceStore from '@/stores/useFinanceStore'
 import { useAppNotifications } from '@/contexts/NotificationContext'
+import { CustoArrobaTab } from '@/components/finance/CustoArrobaTab'
+import { Link } from 'react-router-dom'
 
 export default function Financeiro() {
   const { toast } = useToast()
@@ -35,7 +37,6 @@ export default function Financeiro() {
       const cost = ledger
         .filter((l) => l.loteId === lt.loteId && l.type === 'expense')
         .reduce((acc, curr) => acc + curr.amount, 0)
-
       if (lt.threshold > 0 && cost >= lt.threshold) {
         const alreadyNotified = notifications.some((n) => n.title.includes(lt.loteId) && !n.read)
         if (!alreadyNotified) {
@@ -72,22 +73,14 @@ export default function Financeiro() {
       { id: 'TAG-4455', categoria: 'Vaca Solteira', pesoAtual: '380 kg', lote: 'LCR-01' },
       { id: 'TAG-3322', categoria: 'Bezerro', pesoAtual: '180 kg', lote: 'LCR-04' },
     ]
-
     return [...baseAnimals, ...extraAnimals].map((animal) => {
       const expenses = ledger
         .filter((l) => l.animalId === animal.id && l.type === 'expense')
         .reduce((a, b) => a + b.amount, 0)
-
       const weightNum = parseFloat(animal.pesoAtual.replace('kg', '').trim()) || 0
       const estimatedValue = weightNum * 12.5
       const netProfit = estimatedValue - expenses
-
-      return {
-        ...animal,
-        expenses,
-        estimatedValue,
-        netProfit,
-      }
+      return { ...animal, expenses, estimatedValue, netProfit }
     })
   }, [ledger])
 
@@ -101,6 +94,14 @@ export default function Financeiro() {
           </p>
         </div>
         <div className="flex gap-2 w-full md:w-auto flex-wrap sm:flex-nowrap justify-start md:justify-end">
+          <Link to="/pdf-studio" className="flex-1 sm:flex-none">
+            <Button
+              variant="outline"
+              className="w-full gap-2 text-primary border-primary/20 bg-primary/5 hover:bg-primary/10"
+            >
+              <FileText className="h-4 w-4" /> PDF Studio
+            </Button>
+          </Link>
           <NotificationPreferences />
           <ExportMenu
             className="flex-1 sm:flex-none"
@@ -109,9 +110,6 @@ export default function Financeiro() {
             onExportExcel={handleExportExcel}
             onExportPDF={triggerPDFPrint}
           />
-          <Button className="flex-1 sm:flex-none gap-2">
-            <Plus className="h-4 w-4" /> Lançamento
-          </Button>
         </div>
       </div>
 
@@ -139,22 +137,19 @@ export default function Financeiro() {
             Rentabilidade Lotes
           </TabsTrigger>
           <TabsTrigger value="custo-arroba" className="py-2">
-            Custo / @
+            Custo / @ Produzida
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="dre" className="space-y-6 mt-0">
           <DRETab />
         </TabsContent>
-
         <TabsContent value="dashboard-custos" className="space-y-6 mt-0">
           <CostAnalysisTab />
         </TabsContent>
-
         <TabsContent value="previsao-venda" className="space-y-6 mt-0">
           <BreakEvenTab />
         </TabsContent>
-
         <TabsContent value="orcamento-lotes" className="space-y-6 mt-0">
           <LotBudgetsTab />
         </TabsContent>
@@ -190,20 +185,14 @@ export default function Financeiro() {
               </CardContent>
             </Card>
           </div>
-
           <Card>
             <CardHeader>
               <CardTitle>Tendência de Fluxo de Caixa</CardTitle>
-              <CardDescription>
-                Análise agregada de receitas contra custos operacionais (nutrição, sanidade, e
-                manejo).
-              </CardDescription>
             </CardHeader>
             <CardContent className="h-[350px]">
               <CashflowChart />
             </CardContent>
           </Card>
-
           <Card>
             <CardHeader>
               <CardTitle>Histórico de Transações</CardTitle>
@@ -250,51 +239,44 @@ export default function Financeiro() {
           <Card className="border-primary/20">
             <CardHeader>
               <CardTitle className="text-primary">Relatório de Lucro Líquido por Cabeça</CardTitle>
-              <CardDescription>
-                Cálculo de rentabilidade individual subtraindo os custos reais acumulados do livro
-                razão do animal (nutrição, vacinas) pelo valor estimado de mercado.
-              </CardDescription>
             </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Animal / TAG</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead>Lote</TableHead>
-                      <TableHead className="text-right">Valor Mercado</TableHead>
-                      <TableHead className="text-right">Custos</TableHead>
-                      <TableHead className="text-right font-bold text-primary">
-                        Lucro Líquido
-                      </TableHead>
+            <CardContent className="px-0 sm:px-6 overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Animal / TAG</TableHead>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead>Lote</TableHead>
+                    <TableHead className="text-right">Valor Mercado</TableHead>
+                    <TableHead className="text-right">Custos</TableHead>
+                    <TableHead className="text-right font-bold text-primary">
+                      Lucro Líquido
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {animalProfitList.map((a) => (
+                    <TableRow key={a.id}>
+                      <TableCell className="font-medium">{a.id}</TableCell>
+                      <TableCell>{a.categoria}</TableCell>
+                      <TableCell>
+                        <Badge variant="secondary" className="font-normal">
+                          {a.lote}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right whitespace-nowrap">
+                        R$ {a.estimatedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
+                      <TableCell className="text-right text-destructive whitespace-nowrap">
+                        - R$ {a.expenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
+                      <TableCell className="text-right font-bold text-primary text-base whitespace-nowrap">
+                        R$ {a.netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {animalProfitList.map((a) => (
-                      <TableRow key={a.id}>
-                        <TableCell className="font-medium">{a.id}</TableCell>
-                        <TableCell>{a.categoria}</TableCell>
-                        <TableCell>
-                          <Badge variant="secondary" className="font-normal">
-                            {a.lote}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right whitespace-nowrap">
-                          R${' '}
-                          {a.estimatedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell className="text-right text-destructive whitespace-nowrap">
-                          - R$ {a.expenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell className="text-right font-bold text-primary text-base whitespace-nowrap">
-                          R$ {a.netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>
@@ -303,105 +285,48 @@ export default function Financeiro() {
           <Card>
             <CardHeader>
               <CardTitle>Análise de Rentabilidade por Lote</CardTitle>
-              <CardDescription>
-                Cálculo de custos totais projetados contra as receitas para determinação do lucro
-                líquido.
-              </CardDescription>
             </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Lote</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead className="text-right">Custos Totais</TableHead>
-                      <TableHead className="text-right">Receitas</TableHead>
-                      <TableHead className="text-right">Lucro Líquido</TableHead>
-                      <TableHead className="text-right">Margem Líquida</TableHead>
+            <CardContent className="px-0 sm:px-6 overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Lote</TableHead>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead className="text-right">Custos Totais</TableHead>
+                    <TableHead className="text-right">Receitas</TableHead>
+                    <TableHead className="text-right">Lucro Líquido</TableHead>
+                    <TableHead className="text-right">Margem Líquida</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {lotPerformanceData.map((lote) => (
+                    <TableRow key={lote.loteId}>
+                      <TableCell className="font-medium">{lote.loteId}</TableCell>
+                      <TableCell>{lote.categoria}</TableCell>
+                      <TableCell className="text-right text-destructive whitespace-nowrap">
+                        - R$ {lote.custos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
+                      <TableCell className="text-right text-primary whitespace-nowrap">
+                        + R$ {lote.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
+                      <TableCell
+                        className={`text-right font-bold whitespace-nowrap ${lote.lucro >= 0 ? 'text-primary' : 'text-destructive'}`}
+                      >
+                        R$ {lote.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </TableCell>
+                      <TableCell className="text-right font-medium whitespace-nowrap">
+                        {lote.margem}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {lotPerformanceData.map((lote) => (
-                      <TableRow key={lote.loteId}>
-                        <TableCell className="font-medium">{lote.loteId}</TableCell>
-                        <TableCell>{lote.categoria}</TableCell>
-                        <TableCell className="text-right text-destructive whitespace-nowrap">
-                          - R$ {lote.custos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell className="text-right text-primary whitespace-nowrap">
-                          + R$ {lote.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell
-                          className={`text-right font-bold whitespace-nowrap ${lote.lucro >= 0 ? 'text-primary' : 'text-destructive'}`}
-                        >
-                          R$ {lote.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell className="text-right font-medium whitespace-nowrap">
-                          {lote.margem}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="custo-arroba" className="space-y-6 mt-0">
-          <Card>
-            <CardHeader>
-              <CardTitle>Custo Específico por @ de Ganho (Lotes)</CardTitle>
-              <CardDescription>
-                Comparativo entre os custos de suplementação acumulados e o ganho real de peso de
-                cada lote isolado.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Lote</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead className="text-right">Custo Nutrição</TableHead>
-                      <TableHead className="text-right">Ganho Real (kg)</TableHead>
-                      <TableHead className="text-right">Ganho em @</TableHead>
-                      <TableHead className="text-right font-bold text-primary">Custo / @</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {costPerArrobaData.map((lote) => (
-                      <TableRow key={lote.loteId}>
-                        <TableCell className="font-medium">{lote.loteId}</TableCell>
-                        <TableCell>{lote.categoria}</TableCell>
-                        <TableCell className="text-right text-destructive whitespace-nowrap">
-                          R${' '}
-                          {lote.custoAcumulado.toLocaleString('pt-BR', {
-                            minimumFractionDigits: 2,
-                          })}
-                        </TableCell>
-                        <TableCell className="text-right font-mono whitespace-nowrap">
-                          {lote.ganhoPesoKg.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}{' '}
-                          kg
-                        </TableCell>
-                        <TableCell className="text-right font-mono whitespace-nowrap">
-                          {lote.ganhoArroba.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} @
-                        </TableCell>
-                        <TableCell className="text-right font-bold text-primary text-lg whitespace-nowrap">
-                          R${' '}
-                          {lote.custoPorArroba.toLocaleString('pt-BR', {
-                            minimumFractionDigits: 2,
-                          })}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
+          <CustoArrobaTab />
         </TabsContent>
       </Tabs>
     </div>

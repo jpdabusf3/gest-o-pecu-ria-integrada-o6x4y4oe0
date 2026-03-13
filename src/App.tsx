@@ -34,6 +34,7 @@ import BI from './pages/BI'
 import Sustentabilidade from './pages/Sustentabilidade'
 import Abates from './pages/Abates'
 import Hedge from './pages/Hedge'
+import PdfStudio from './pages/PdfStudio'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -76,6 +77,7 @@ const App = () => (
                       <Route path="/mapa" element={<MapaPropriedade />} />
                       <Route path="/abates" element={<Abates />} />
                       <Route path="/hedge" element={<Hedge />} />
+                      <Route path="/pdf-studio" element={<PdfStudio />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>

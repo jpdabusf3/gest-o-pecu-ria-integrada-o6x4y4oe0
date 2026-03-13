@@ -1,5 +1,28 @@
-import { useLocation, Link } from 'react-router-dom'
-import { useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import {
+  LayoutDashboard,
+  Map as MapIcon,
+  Tractor,
+  Package,
+  Activity,
+  CalendarDays,
+  LineChart,
+  Users,
+  Settings,
+  Syringe,
+  BarChart3,
+  Wheat,
+  Beef,
+  Sprout,
+  DollarSign,
+  Building2,
+  CheckSquare,
+  MapPin,
+  Leaf,
+  Factory,
+  Shield,
+  FileText,
+} from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -7,161 +30,178 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   SidebarHeader,
+  SidebarFooter,
+  SidebarRail,
 } from '@/components/ui/sidebar'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import {
-  LayoutDashboard,
-  Baby,
-  TrendingUp,
-  Beef,
-  Map,
-  Package,
-  DollarSign,
-  Wheat,
-  Smartphone,
-  FileText,
-  BrainCircuit,
-  Syringe,
-  Building2,
-  Truck,
-  CheckSquare,
-  MapPinned,
-  Tags,
-  Users,
-  Camera,
-  Factory,
-  Shield,
-} from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { Badge } from '@/components/ui/badge'
 
-const navigationGroups = [
-  {
-    sector: 'Administrativo',
-    items: [
-      { title: 'Administrativo', icon: Building2, url: '/administrativo' },
-      { title: 'Cadastro de Fazendas', icon: MapPinned, url: '/fazendas' },
-      { title: 'Colaboradores', icon: Users, url: '/colaboradores' },
-      { title: 'Painel Principal', icon: LayoutDashboard, url: '/' },
-      { title: 'Relatórios', icon: FileText, url: '/relatorios' },
-    ].sort((a, b) => a.title.localeCompare(b.title)),
-  },
-  {
-    sector: 'Financeiro',
-    items: [
-      { title: 'Financeiro & DRE', icon: DollarSign, url: '/financeiro' },
-      { title: 'Hedge & Risco B3', icon: Shield, url: '/hedge' },
-      { title: 'Projeções & AI', icon: BrainCircuit, url: '/projecoes' },
-    ].sort((a, b) => a.title.localeCompare(b.title)),
-  },
-  {
-    sector: 'Operacional',
-    items: [
-      { title: 'Estoque & Insumos', icon: Package, url: '/estoque' },
-      { title: 'Frota & Maquinário', icon: Truck, url: '/frota' },
-      { title: 'Gestão de Tarefas', icon: CheckSquare, url: '/tarefas' },
-      { title: 'Mapa da Propriedade', icon: MapPinned, url: '/mapa' },
-      { title: 'Operações de Campo', icon: Smartphone, url: '/campo' },
-    ].sort((a, b) => a.title.localeCompare(b.title)),
-  },
-  {
-    sector: 'Zootécnico',
-    items: [
-      { title: 'Abates & Romaneios', icon: Factory, url: '/abates' },
-      { title: 'Confinamento', icon: Wheat, url: '/confinamento' },
-      { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
-      { title: 'Gestão de Rebanho', icon: Tags, url: '/animais' },
-      { title: 'Sanidade', icon: Syringe, url: '/sanidade' },
-      { title: 'Setor: Cria', icon: Baby, url: '/setor/cria' },
-      { title: 'Setor: Engorda', icon: Beef, url: '/setor/engorda' },
-      { title: 'Setor: Recria', icon: TrendingUp, url: '/setor/recria' },
-    ].sort((a, b) => a.title.localeCompare(b.title)),
-  },
-]
+const navItems = {
+  admin: [
+    { title: 'Dashboard Geral', icon: LayoutDashboard, url: '/' },
+    {
+      title: 'Gestão de Animais',
+      items: [
+        { title: 'Rebanho e Entradas', icon: Beef, url: '/animais' },
+        { title: 'Setor: Cria', icon: Activity, url: '/setor/cria' },
+        { title: 'Setor: Recria', icon: Activity, url: '/setor/recria' },
+        { title: 'Setor: Engorda', icon: Activity, url: '/setor/engorda' },
+        { title: 'Confinamento & Dietas', icon: Wheat, url: '/confinamento' },
+        { title: 'Sanidade & Protocolos', icon: Syringe, url: '/sanidade' },
+      ],
+    },
+    {
+      title: 'Operações e Logística',
+      items: [
+        { title: 'Manejo de Pastagens', icon: Sprout, url: '/pastos' },
+        { title: 'Mapa da Propriedade', icon: MapPin, url: '/mapa' },
+        { title: 'Tarefas e Pessoal', icon: CheckSquare, url: '/tarefas' },
+        { title: 'Frota e Maquinário', icon: Tractor, url: '/frota' },
+        { title: 'Estoque de Insumos', icon: Package, url: '/estoque' },
+        { title: 'Calendário Integrado', icon: CalendarDays, url: '/calendario' },
+      ],
+    },
+    {
+      title: 'Financeiro e Comercial',
+      items: [
+        { title: 'Controle Financeiro', icon: DollarSign, url: '/financeiro' },
+        { title: 'Inteligência de Vendas', icon: LineChart, url: '/projecoes' },
+        { title: 'Hedge & Mercado B3', icon: Shield, url: '/hedge' },
+        { title: 'Abates & Romaneios', icon: Factory, url: '/abates' },
+      ],
+    },
+    {
+      title: 'Inteligência e Relatórios',
+      items: [
+        { title: 'Relatórios Operacionais', icon: BarChart3, url: '/relatorios' },
+        { title: 'Relatórios de Desempenho', icon: Activity, url: '/desempenho' },
+        { title: 'BI e Cruzamento Dados', icon: MapIcon, url: '/bi' },
+        { title: 'Sustentabilidade (ESG)', icon: Leaf, url: '/sustentabilidade' },
+        { title: 'PDF Studio', icon: FileText, url: '/pdf-studio' },
+      ],
+    },
+    {
+      title: 'Configurações',
+      items: [
+        { title: 'Cadastro de Fazendas', icon: Building2, url: '/fazendas' },
+        { title: 'Dados Administrativos', icon: Building2, url: '/administrativo' },
+        { title: 'Colaboradores', icon: Users, url: '/colaboradores' },
+        { title: 'Minhas Configurações', icon: Settings, url: '/configuracoes' },
+      ],
+    },
+  ],
+  gerente: [
+    { title: 'Visão Geral', icon: LayoutDashboard, url: '/' },
+    {
+      title: 'Gestão de Produção',
+      items: [
+        { title: 'Manejo de Pastagens', icon: Sprout, url: '/pastos' },
+        { title: 'Confinamento & Dietas', icon: Wheat, url: '/confinamento' },
+        { title: 'Sanidade & Protocolos', icon: Syringe, url: '/sanidade' },
+        { title: 'Tarefas Diárias', icon: CheckSquare, url: '/tarefas' },
+      ],
+    },
+    {
+      title: 'Relatórios',
+      items: [
+        { title: 'Relatórios Operacionais', icon: BarChart3, url: '/relatorios' },
+        { title: 'BI e Dados', icon: MapIcon, url: '/bi' },
+        { title: 'PDF Studio', icon: FileText, url: '/pdf-studio' },
+      ],
+    },
+  ],
+  operador: [
+    { title: 'Minhas Tarefas', icon: CheckSquare, url: '/tarefas' },
+    { title: 'Lançamentos de Campo', icon: Sprout, url: '/campo' },
+    { title: 'Minhas Configurações', icon: Settings, url: '/configuracoes' },
+  ],
+}
 
 export function AppSidebar() {
   const location = useLocation()
-  const { user, setUser } = useAuth()
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { user } = useAuth()
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const url = URL.createObjectURL(file)
-      setUser({ ...user, avatar: url })
-    }
-  }
+  const itemsToRender = navItems[user.role as keyof typeof navItems] || navItems.operador
 
   return (
-    <Sidebar variant="inset" className="border-r border-sidebar-border">
-      <SidebarHeader className="h-16 flex items-center justify-center border-b border-sidebar-border/50">
-        <div className="flex items-center gap-3 px-3 w-full text-sidebar-primary">
-          <div
-            className="relative group cursor-pointer shrink-0"
-            onClick={() => fileInputRef.current?.click()}
-            title="Alterar foto de perfil"
-          >
-            <Avatar className="h-8 w-8 transition-opacity group-hover:opacity-80">
-              <AvatarImage src={user.avatar} />
-              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div className="absolute inset-0 hidden group-hover:flex items-center justify-center rounded-full bg-black/40">
-              <Camera className="h-3 w-3 text-white" />
-            </div>
-          </div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/*"
-            onChange={handleImageUpload}
-          />
-          <span className="font-bold text-lg tracking-tight truncate">GPI F3</span>
-        </div>
+    <Sidebar className="print:hidden">
+      <SidebarHeader className="flex h-16 items-center justify-start px-4 border-b bg-primary">
+        <h1 className="text-xl font-bold tracking-tight flex items-center gap-2 text-primary-foreground">
+          <Beef className="h-6 w-6" /> F3 | GPI
+        </h1>
       </SidebarHeader>
-      <SidebarContent>
-        {navigationGroups.map((group) => {
-          // RBAC: Restricted view for operators and managers
-          const visibleItems = group.items.filter((item) => {
-            if (user.role === 'operador') {
-              return ['/', '/campo', '/tarefas', '/sanidade', '/mapa'].includes(item.url)
-            }
-            if (user.role === 'gerente') {
-              return !['/administrativo', '/fazendas'].includes(item.url)
-            }
-            return true
-          })
 
-          if (visibleItems.length === 0) return null
-
-          return (
-            <SidebarGroup key={group.sector}>
-              <SidebarGroupLabel>{group.sector}</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {visibleItems.map((item) => {
-                    const isActive =
-                      location.pathname === item.url ||
-                      (item.url !== '/' && location.pathname.startsWith(item.url))
-                    return (
+      <SidebarContent className="bg-background pt-2 custom-scrollbar">
+        {itemsToRender.map((group, index) => {
+          if (group.items) {
+            return (
+              <SidebarGroup key={index}>
+                <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 mb-1">
+                  {group.title}
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {group.items.map((item) => (
                       <SidebarMenuItem key={item.url}>
-                        <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={location.pathname === item.url}
+                          tooltip={item.title}
+                          className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-medium transition-colors"
+                        >
                           <Link to={item.url} className="flex items-center gap-3">
-                            <item.icon className="h-5 w-5" />
-                            <span className="font-medium">{item.title}</span>
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.title}</span>
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
-                    )
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )
+          }
+
+          return (
+            <SidebarGroup key={index}>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location.pathname === group.url}
+                    tooltip={group.title}
+                    className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-medium transition-colors"
+                  >
+                    <Link to={group.url} className="flex items-center gap-3">
+                      {group.icon && <group.icon className="h-4 w-4" />}
+                      <span>{group.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
             </SidebarGroup>
           )
         })}
       </SidebarContent>
+
+      <SidebarFooter className="border-t p-4 bg-muted/30">
+        <div className="flex items-center gap-3">
+          <img src={user.avatar} alt="Avatar" className="h-10 w-10 rounded-full border shadow-sm" />
+          <div className="flex flex-col overflow-hidden">
+            <span className="text-sm font-semibold truncate">{user.name}</span>
+            <span className="text-xs text-muted-foreground capitalize flex items-center gap-1">
+              {user.role}
+              <Badge variant="outline" className="text-[9px] px-1 h-4 uppercase bg-background">
+                v0.0.59
+              </Badge>
+            </span>
+          </div>
+        </div>
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   )
 }
