@@ -1153,3 +1153,12 @@ export const performanceByCategory: Record<string, any[]> = {
     { period: 'Jun', gmd: 0.75 },
   ],
 }
+
+export const performanceCorrelationData = [
+  { lote: 'Lote LEN-01', custoIntervencao: 12.5, ganhoPeso: 1.45 },
+  { lote: 'Lote LEN-02 (Parcial)', custoIntervencao: 14.8, ganhoPeso: 1.55 },
+  { lote: 'Lote LRE-01', custoIntervencao: 8.5, ganhoPeso: 0.95 },
+  { lote: 'Lote LCR-04', custoIntervencao: 4.5, ganhoPeso: 0.65 },
+  { lote: 'Pasto 01 - Sede', custoIntervencao: 15.2, ganhoPeso: 1.1 },
+  { lote: 'Pasto 02 - Fundo', custoIntervencao: 18.0, ganhoPeso: 1.2 },
+]

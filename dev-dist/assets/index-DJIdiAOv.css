@@ -830,6 +830,9 @@ section[aria-label='Notifications alt+T'] {
 .mt-6{
   margin-top: 1.5rem;
 }
+.mt-8{
+  margin-top: 2rem;
+}
 .mt-auto{
   margin-top: auto;
 }
@@ -1786,6 +1789,10 @@ section[aria-label='Notifications alt+T'] {
 .border-red-600{
   --tw-border-opacity: 1;
   border-color: rgb(220 38 38 / var(--tw-border-opacity, 1));
+}
+.border-rose-200{
+  --tw-border-opacity: 1;
+  border-color: rgb(254 205 211 / var(--tw-border-opacity, 1));
 }
 .border-sidebar-border{
   border-color: hsl(var(--sidebar-border));
@@ -2994,6 +3001,10 @@ section[aria-label='Notifications alt+T'] {
 .hover\:bg-primary\/90:hover{
   background-color: hsl(var(--primary) / 0.9);
 }
+.hover\:bg-rose-50:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 241 242 / var(--tw-bg-opacity, 1));
+}
 .hover\:bg-secondary:hover{
   background-color: hsl(var(--secondary));
 }
@@ -3017,6 +3028,10 @@ section[aria-label='Notifications alt+T'] {
 .hover\:text-destructive:hover{
   color: hsl(var(--destructive));
 }
+.hover\:text-emerald-700:hover{
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
 .hover\:text-foreground:hover{
   color: hsl(var(--foreground));
 }
@@ -3025,6 +3040,10 @@ section[aria-label='Notifications alt+T'] {
 }
 .hover\:text-primary:hover{
   color: hsl(var(--primary));
+}
+.hover\:text-rose-700:hover{
+  --tw-text-opacity: 1;
+  color: rgb(190 18 60 / var(--tw-text-opacity, 1));
 }
 .hover\:text-sidebar-accent-foreground:hover{
   color: hsl(var(--sidebar-accent-foreground));
