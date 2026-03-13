@@ -183,6 +183,8 @@ export const sectorData = {
         cabecas: 120,
         pasto: 'Pasto 01',
         status: 'Saudável',
+        taxaPrenhez: '88%',
+        previsaoParto: '-',
         supplement: { name: 'Sal Mineral 80', costPerKg: 3.5, consumptionPerAnimal: 0.1 },
       },
       {
@@ -191,6 +193,8 @@ export const sectorData = {
         cabecas: 85,
         pasto: 'Pasto 03',
         status: 'Atenção',
+        taxaPrenhez: '-',
+        previsaoParto: 'Set/2026',
         supplement: { name: 'Sal Mineral Reprodução', costPerKg: 4.2, consumptionPerAnimal: 0.12 },
       },
       {
@@ -199,6 +203,8 @@ export const sectorData = {
         cabecas: 15,
         pasto: 'Pasto 04',
         status: 'Saudável',
+        taxaPrenhez: '-',
+        previsaoParto: '-',
         supplement: { name: 'Ração Touros', costPerKg: 2.8, consumptionPerAnimal: 3.0 },
       },
       {
@@ -207,6 +213,8 @@ export const sectorData = {
         cabecas: 140,
         pasto: 'Pasto 02',
         status: 'Saudável',
+        taxaPrenhez: '-',
+        previsaoParto: '-',
         supplement: { name: 'Ração Creep', costPerKg: 3.1, consumptionPerAnimal: 0.5 },
       },
     ],
@@ -227,6 +235,10 @@ export const sectorData = {
         cabecas: 220,
         pasto: 'Pasto 05',
         status: 'Saudável',
+        pesoEntrada: 180,
+        pesoAtual: 245,
+        gmdAtual: 0.65,
+        diasPasto: 100,
         supplement: { name: 'Sal Proteico 0.1%', costPerKg: 2.9, consumptionPerAnimal: 0.25 },
       },
       {
@@ -235,6 +247,10 @@ export const sectorData = {
         cabecas: 180,
         pasto: 'Pasto 06',
         status: 'Saudável',
+        pesoEntrada: 175,
+        pesoAtual: 220,
+        gmdAtual: 0.6,
+        diasPasto: 75,
         supplement: { name: 'Sal Proteico 0.1%', costPerKg: 2.9, consumptionPerAnimal: 0.22 },
       },
     ],
@@ -255,6 +271,10 @@ export const sectorData = {
         cabecas: 150,
         pasto: 'Confinamento A',
         status: 'Saudável',
+        pesoEntrada: 360,
+        pesoAtual: 420,
+        gmdPrevisto: 1.45,
+        dieta: 'Adaptação',
         supplement: { name: 'Ração Confinamento', costPerKg: 1.8, consumptionPerAnimal: 8.5 },
       },
       {
@@ -263,6 +283,10 @@ export const sectorData = {
         cabecas: 200,
         pasto: 'Confinamento B',
         status: 'Pronto p/ Abate',
+        pesoEntrada: 430,
+        pesoAtual: 535,
+        gmdPrevisto: 1.55,
+        dieta: 'Alto Grão',
         supplement: { name: 'Ração Confinamento', costPerKg: 1.95, consumptionPerAnimal: 11.0 },
       },
     ],
@@ -705,7 +729,7 @@ export const teamMembers = [
     role: 'Operador',
     email: 'carlos@fazenda.com',
     status: 'Ativo',
-    lastActive: 'Há 2 horas',
+    lastActive: 'Há 2 hours',
   },
   {
     id: 'U4',
@@ -758,66 +782,6 @@ export const managementHistory = [
     custoCabeca: 4.5,
     insumosUtilizados: ['Vacina Aftosa (140 doses)', 'Ivermectina 1% (140 doses)'],
     animaisEnvolvidos: '140 cabeças (Bezerras Desmame)',
-  },
-  {
-    id: 'H-4',
-    data: '05/Mar/2026',
-    hora: '16:45',
-    tipo: 'Movimentação',
-    alvo: 'Lote LRE-01',
-    descricao: 'Transferência do Pasto 05 para Pasto 06',
-    responsavel: 'João (Operador Campo)',
-    observacoes: 'Movimentação tranquila. Pasto 05 entra em período de descanso.',
-    custoCabeca: 0,
-    insumosUtilizados: [],
-    animaisEnvolvidos: '220 cabeças (Garrotes)',
-  },
-  {
-    id: 'H-5',
-    data: '02/Mar/2026',
-    hora: '07:30',
-    tipo: 'Adubação',
-    alvo: 'Pasto 01 - Sede',
-    descricao: 'Aplicação de Ureia (50kg/ha)',
-    responsavel: 'Administrador (Sede)',
-    observacoes: 'Adubação de cobertura visando o pico das águas.',
-    custoCabeca: null,
-    insumosUtilizados: ['Ureia Agrícola (2.275 kg total)'],
-    animaisEnvolvidos: '120 cabeças (Vacas Solteiras) mantidas no pasto',
-  },
-  {
-    id: 'H-6',
-    data: '01/Mar/2026',
-    hora: '10:00',
-    tipo: 'Venda',
-    alvo: 'Lote LEN-02 (Parcial)',
-    descricao: 'Venda de bois gordos para Frigorífico Boi Forte',
-    responsavel: 'Administrador (Sede)',
-    observacoes:
-      'Lote uniforme, excelente acabamento de carcaça. Desconto de 1% de quebra no transporte acordado.',
-    custoCabeca: 45.0,
-    pesoEntrada: 520,
-    valorCabeca: 4250.0,
-    valorArroba: 250.0,
-    rendimentoCarcaca: 54.5,
-    animaisEnvolvidos: '50 cabeças (Bois Terminação)',
-  },
-  {
-    id: 'H-7',
-    data: '28/Fev/2026',
-    hora: '08:15',
-    tipo: 'Entrada',
-    alvo: 'Lote LRE-03 (Novo)',
-    descricao: 'Compra de bezerros desmamados de terceiros',
-    responsavel: 'Administrador (Sede)',
-    observacoes:
-      'Animais recém chegados. Colocados no pasto de quarentena. Agendar protocolo de entrada.',
-    custoCabeca: 120.0,
-    pesoEntrada: 210,
-    valorCabeca: 1850.0,
-    valorArroba: 264.0,
-    rendimentoCarcaca: null,
-    animaisEnvolvidos: '100 cabeças (Bezerros)',
   },
 ]
 
@@ -920,21 +884,12 @@ export const businessContacts = [
   },
   {
     id: 'C3',
-    nome: 'Dr. Marcos Veterinário',
-    categoria: 'Serviços',
+    nome: 'Laboratórios VidaVet',
+    categoria: 'Laboratório',
     contato: '(16) 77777-3333',
-    email: 'marcos.vet@gmail.com',
-    empresa: 'Autônomo',
+    email: 'contato@vidavet.com.br',
+    empresa: 'VidaVet S.A',
     status: 'Ativo',
-  },
-  {
-    id: 'C4',
-    nome: 'Sementes Pasto Verde',
-    categoria: 'Fornecedor',
-    contato: '(11) 55555-4444',
-    email: 'contato@pastoverde.com',
-    empresa: 'Pasto Verde SA',
-    status: 'Inativo',
   },
 ]
 
@@ -951,42 +906,6 @@ export const fleetData = [
     depreciation: 12500,
     status: 'Ativo',
   },
-  {
-    id: 'M2',
-    name: 'Trator Massey Ferguson 4275',
-    type: 'Trator',
-    acquisitionValue: 180000,
-    currentHours: 3400,
-    currentKm: null,
-    fuelConsumption: 620,
-    maintenanceCost: 8200,
-    depreciation: 9000,
-    status: 'Manutenção',
-  },
-  {
-    id: 'M3',
-    name: 'Caminhonete Hilux',
-    type: 'Veículo',
-    acquisitionValue: 220000,
-    currentHours: null,
-    currentKm: 45000,
-    fuelConsumption: 1200,
-    maintenanceCost: 2100,
-    depreciation: 15000,
-    status: 'Ativo',
-  },
-  {
-    id: 'M4',
-    name: 'Pulverizador Jacto',
-    type: 'Implemento',
-    acquisitionValue: 85000,
-    currentHours: 450,
-    currentKm: null,
-    fuelConsumption: 0,
-    maintenanceCost: 1200,
-    depreciation: 4200,
-    status: 'Ativo',
-  },
 ]
 
 export const employeePerformance = [
@@ -997,58 +916,26 @@ export const employeePerformance = [
     bonusEstimate: 4500,
     goalsAchieved: 4,
   },
-  {
-    employeeId: 'U2',
-    name: 'João (Operador Campo)',
-    points: 320,
-    bonusEstimate: 3200,
-    goalsAchieved: 3,
-  },
-  {
-    employeeId: 'U3',
-    name: 'Carlos (Tratorista)',
-    points: 280,
-    bonusEstimate: 2800,
-    goalsAchieved: 2,
-  },
 ]
 
 export const performanceGoalsList = [
   { id: 'G1', title: 'Mortalidade < 2% ao ano na recria', points: 100 },
-  { id: 'G2', title: 'Economia de Combustível > 5% no semestre', points: 80 },
   { id: 'G3', title: 'GMD Confinamento > 1.4kg/dia no lote total', points: 150 },
-  { id: 'G4', title: 'Taxa de Prenhez > 85% na estação', points: 120 },
 ]
 
 export const biMetricsList = [
   { id: 'ganhoPeso', name: 'GMD Médio Rebanho', color: 'hsl(var(--chart-1))', unit: 'kg' },
   { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R$' },
-  { id: 'taxaPrenhez', name: 'Taxa de Prenhez', color: 'hsl(var(--chart-3))', unit: '%' },
-  { id: 'arrobaPrice', name: 'Preço da Arroba', color: 'hsl(var(--chart-4))', unit: 'R$' },
 ]
 
 export const biData = [
   { period: 'Out/25', ganhoPeso: 1.1, custoCombustivel: 4500, arrobaPrice: 250, taxaPrenhez: 70 },
   { period: 'Nov/25', ganhoPeso: 1.15, custoCombustivel: 4800, arrobaPrice: 255, taxaPrenhez: 75 },
-  { period: 'Dez/25', ganhoPeso: 1.2, custoCombustivel: 4200, arrobaPrice: 260, taxaPrenhez: 80 },
-  { period: 'Jan/26', ganhoPeso: 1.25, custoCombustivel: 4600, arrobaPrice: 265, taxaPrenhez: 85 },
-  { period: 'Fev/26', ganhoPeso: 1.3, custoCombustivel: 4900, arrobaPrice: 270, taxaPrenhez: 86 },
-  { period: 'Mar/26', ganhoPeso: 1.35, custoCombustivel: 5100, arrobaPrice: 275, taxaPrenhez: 88 },
 ]
 
 export const twelveMonthsTrendData = [
   { month: 'Abr', cashflow: 120000, weightGain: 200 },
   { month: 'Mai', cashflow: 135000, weightGain: 220 },
-  { month: 'Jun', cashflow: 140000, weightGain: 240 },
-  { month: 'Jul', cashflow: 110000, weightGain: 230 },
-  { month: 'Ago', cashflow: 105000, weightGain: 220 },
-  { month: 'Set', cashflow: 150000, weightGain: 250 },
-  { month: 'Out', cashflow: 165000, weightGain: 270 },
-  { month: 'Nov', cashflow: 180000, weightGain: 290 },
-  { month: 'Dez', cashflow: 200000, weightGain: 310 },
-  { month: 'Jan', cashflow: 220000, weightGain: 330 },
-  { month: 'Fev', cashflow: 210000, weightGain: 320 },
-  { month: 'Mar', cashflow: 247300, weightGain: 350 },
 ]
 
 export const defaultSavedReports = [
@@ -1086,8 +973,56 @@ export const savedCustomSimulations = [
 
 export const performanceCorrelationData = [
   { loteId: 'LCR-01', ganhoPeso: 0.8, custoCabeca: 45.0, ndvi: 0.75, conversaoAlimentar: 6.5 },
-  { loteId: 'LCR-02', ganhoPeso: 0.85, custoCabeca: 48.0, ndvi: 0.8, conversaoAlimentar: 6.2 },
   { loteId: 'LRE-01', ganhoPeso: 1.1, custoCabeca: 65.0, ndvi: 0.7, conversaoAlimentar: 5.8 },
-  { loteId: 'LEN-01', ganhoPeso: 1.45, custoCabeca: 120.0, ndvi: null, conversaoAlimentar: 5.2 },
   { loteId: 'LEN-02', ganhoPeso: 1.6, custoCabeca: 125.0, ndvi: null, conversaoAlimentar: 5.0 },
 ]
+
+export const iatfProtocols = [
+  {
+    id: 'IATF-1',
+    lote: 'LCR-01',
+    tipo: 'Convencional 3 Manejos',
+    inicio: '01/03/2026',
+    inseminacao: '11/03/2026',
+    dg: '10/04/2026',
+    dgFinal: '-',
+    proximoManejo: '10/04/2026 - Toque DG',
+    status: 'Aguardando DG',
+  },
+  {
+    id: 'IATF-2',
+    lote: 'LCR-02',
+    tipo: 'J-Synch',
+    inicio: '15/01/2026',
+    inseminacao: '25/01/2026',
+    dg: '25/02/2026',
+    dgFinal: '15/04/2026',
+    proximoManejo: '-',
+    status: 'Finalizado (Prenhez 85%)',
+  },
+]
+
+export const bullsData = [
+  { id: 'B-1', nome: 'Fajardo', raca: 'Nelore', central: 'Alta Genetics', doses: 150 },
+  { id: 'B-2', nome: 'Backup', raca: 'Nelore', central: 'CRV Lagoa', doses: 80 },
+  { id: 'B-3', nome: 'Bitelo', raca: 'Nelore', central: 'ABS', doses: 45 },
+]
+
+export const bullUsageDistribution = [
+  { name: 'Fajardo', value: 350, fill: 'hsl(var(--chart-1))' },
+  { name: 'Backup', value: 200, fill: 'hsl(var(--chart-2))' },
+  { name: 'Bitelo', value: 150, fill: 'hsl(var(--chart-3))' },
+]
+
+export const benchmarkingData = {
+  'LRE-01': [
+    { periodo: 'Seca 2025 (Jul-Set)', dieta: 'Sal Proteico 0.1%', gmd: 0.45, ganhoTotal: 40 },
+    { periodo: 'Águas 2025 (Out-Dez)', dieta: 'Sal Mineral', gmd: 0.75, ganhoTotal: 65 },
+    { periodo: 'Transição 2026 (Jan-Mar)', dieta: 'Ração 0.3%', gmd: 0.85, ganhoTotal: 75 },
+  ],
+  'LEN-01': [
+    { periodo: 'Pasto (Jan-Fev)', dieta: 'Sal Mineral', gmd: 0.6, ganhoTotal: 36 },
+    { periodo: 'Adaptação (Março)', dieta: 'Adaptação 1', gmd: 1.1, ganhoTotal: 33 },
+    { periodo: 'Terminação (Abr-Mai)', dieta: 'Alto Grão', gmd: 1.55, ganhoTotal: 93 },
+  ],
+}

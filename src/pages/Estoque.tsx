@@ -14,14 +14,14 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { TriangleAlert, TrendingDown, CalendarClock, Trash2 } from 'lucide-react'
+import { TriangleAlert, TrendingDown, CalendarClock, Trash2, ShieldPlus } from 'lucide-react'
 import { useFarm } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
 import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
 import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
 import { ManageInventoryItemModal } from '@/components/forms/ManageInventoryItemModal'
 import { FeedMillTab } from '@/components/estoque/FeedMillTab'
-import { formatCurrency, formatNumber } from '@/lib/utils'
+import { formatCurrency, formatNumber, formatWeight } from '@/lib/utils'
 
 export default function Estoque() {
   const { inventory, removeInventoryItem } = useFarm()
@@ -41,6 +41,9 @@ export default function Estoque() {
   const materiaPrimaItems = inventory.filter(
     (i) => i.tipo === 'Materia Prima' || i.id.startsWith('M'),
   )
+  const reproducaoItems = inventory.filter(
+    (i) => ['Sêmen', 'Hormônio'].includes(i.tipo) || i.id.startsWith('R-'),
+  )
 
   const forecastedItems = useMemo(() => {
     return inventory
@@ -52,6 +55,7 @@ export default function Estoque() {
         depletionDate.setDate(depletionDate.getDate() + daysRemaining)
 
         const needsRestock = daysRemaining <= 30
+        const idealPurchase = dailyRate * 30 // Suggest 30 days buffer
 
         return {
           ...item,
@@ -59,6 +63,7 @@ export default function Estoque() {
           daysRemaining,
           depletionDate,
           needsRestock,
+          idealPurchase: Number(idealPurchase.toFixed(0)),
         }
       })
       .sort((a, b) => a.daysRemaining - b.daysRemaining)
@@ -113,6 +118,13 @@ export default function Estoque() {
               </TableCell>
             </TableRow>
           ))}
+          {items.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center py-6 text-muted-foreground">
+                Nenhum item cadastrado nesta categoria.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>
@@ -124,7 +136,7 @@ export default function Estoque() {
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Estoque & Insumos</h2>
           <p className="text-muted-foreground mt-1">
-            Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda.
+            Gestão de almoxarifado, controle automatizado de nutrição animal e previsão de consumo.
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap">
@@ -145,33 +157,32 @@ export default function Estoque() {
           </AlertTitle>
           <AlertDescription className="mt-2 text-destructive-foreground/90 font-medium">
             Existem <span className="font-bold">{criticalItems.length} itens</span> abaixo do limite
-            mínimo de segurança configurado. A produção ou fornecimento de ração pode ser
-            comprometida.
+            mínimo de segurança configurado. Verifique a previsão para o volume ideal de compra.
           </AlertDescription>
         </Alert>
       )}
 
       <Tabs defaultValue="nutricao" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 max-w-4xl mb-6 h-auto md:h-10">
-          <TabsTrigger value="nutricao" className="py-2 md:py-1.5">
+        <TabsList className="grid w-full grid-cols-2 md:flex max-w-full flex-wrap mb-6 h-auto">
+          <TabsTrigger value="nutricao" className="py-2">
             Nutrição
           </TabsTrigger>
-          <TabsTrigger value="fabrica" className="py-2 md:py-1.5 whitespace-nowrap">
+          <TabsTrigger value="fabrica" className="py-2">
             Fábrica de Ração
           </TabsTrigger>
-          <TabsTrigger value="farmacia" className="py-2 md:py-1.5">
+          <TabsTrigger value="farmacia" className="py-2">
             Farmácia
           </TabsTrigger>
-          <TabsTrigger value="almoxarifado" className="py-2 md:py-1.5">
+          <TabsTrigger value="reproducao" className="py-2">
+            Reprodução
+          </TabsTrigger>
+          <TabsTrigger value="almoxarifado" className="py-2">
             Almoxarifado
           </TabsTrigger>
-          <TabsTrigger value="previsao" className="py-2 md:py-1.5 gap-2">
-            <TrendingDown className="h-3 w-3" /> Previsão
+          <TabsTrigger value="previsao" className="py-2 gap-2 text-primary">
+            <TrendingDown className="h-4 w-4" /> Previsão
           </TabsTrigger>
-          <TabsTrigger
-            value="custos"
-            className="py-2 md:py-1.5 whitespace-normal sm:whitespace-nowrap"
-          >
+          <TabsTrigger value="custos" className="py-2">
             Custos por Fazenda
           </TabsTrigger>
         </TabsList>
@@ -181,83 +192,7 @@ export default function Estoque() {
             <CardHeader>
               <CardTitle>Suplementação e Rações Produzidas</CardTitle>
             </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Insumo</TableHead>
-                      <TableHead className="text-right">Estoque Atual</TableHead>
-                      <TableHead className="text-right">Custo / Un</TableHead>
-                      <TableHead className="text-right">
-                        <TooltipProvider delayDuration={300}>
-                          <Tooltip>
-                            <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
-                              Gatilho (Mínimo)
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              Quantidade mínima configurada para disparar alertas e evitar
-                              paralisação do trato.
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </TableHead>
-                      <TableHead>Status / Ação</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {nutricaoItems.map((item) => {
-                      const isCritical = item.qtd <= item.minQtd
-                      const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5
-                      return (
-                        <TableRow key={item.id} className={isCritical ? 'bg-destructive/5' : ''}>
-                          <TableCell className="font-medium whitespace-nowrap">
-                            {item.item}
-                          </TableCell>
-                          <TableCell
-                            className={`text-right font-mono font-medium whitespace-nowrap ${isCritical ? 'text-destructive font-bold' : ''}`}
-                          >
-                            {formatNumber(item.qtd, 0)} {item.unidade}
-                          </TableCell>
-                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
-                            {formatCurrency(item.custoUnitario)}
-                          </TableCell>
-                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
-                            {formatNumber(item.minQtd, 0)} {item.unidade}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Badge
-                                variant={
-                                  isCritical ? 'destructive' : isWarning ? 'secondary' : 'default'
-                                }
-                                className={isCritical ? 'animate-pulse' : ''}
-                              >
-                                {isCritical
-                                  ? 'Estoque Crítico'
-                                  : isWarning
-                                    ? 'Alerta Baixo'
-                                    : 'Confortável'}
-                              </Badge>
-                              <ManageInventoryItemModal item={item} />
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 text-destructive hover:bg-destructive/10"
-                                onClick={() => removeInventoryItem(item.id)}
-                                title="Remover Item"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
+            <CardContent className="px-0 sm:px-6">{renderGenericTable(nutricaoItems)}</CardContent>
           </Card>
 
           <Card>
@@ -269,62 +204,7 @@ export default function Estoque() {
               </CardDescription>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Ingrediente</TableHead>
-                      <TableHead className="text-right">Estoque Atual</TableHead>
-                      <TableHead className="text-right">Custo / Un</TableHead>
-                      <TableHead className="text-right">Mínimo de Alerta</TableHead>
-                      <TableHead>Status / Ação</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {materiaPrimaItems.map((item) => {
-                      const isCritical = item.qtd <= item.minQtd
-                      return (
-                        <TableRow key={item.id} className={isCritical ? 'bg-destructive/5' : ''}>
-                          <TableCell className="font-medium whitespace-nowrap">
-                            {item.item}
-                          </TableCell>
-                          <TableCell
-                            className={`text-right font-mono font-medium whitespace-nowrap ${isCritical ? 'text-destructive font-bold' : ''}`}
-                          >
-                            {formatNumber(item.qtd, 0)} {item.unidade}
-                          </TableCell>
-                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
-                            {formatCurrency(item.custoUnitario)}
-                          </TableCell>
-                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
-                            {formatNumber(item.minQtd, 0)} {item.unidade}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Badge
-                                variant={isCritical ? 'destructive' : 'secondary'}
-                                className={isCritical ? 'animate-pulse' : ''}
-                              >
-                                {isCritical ? 'Estoque Crítico' : 'Normal'}
-                              </Badge>
-                              <ManageInventoryItemModal item={item} />
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 text-destructive hover:bg-destructive/10"
-                                onClick={() => removeInventoryItem(item.id)}
-                                title="Remover Item"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
+              {renderGenericTable(materiaPrimaItems)}
             </CardContent>
           </Card>
         </TabsContent>
@@ -335,13 +215,33 @@ export default function Estoque() {
 
         <TabsContent value="farmacia">
           <Card>
-            <CardContent className="pt-6">{renderGenericTable(farmaciaItems)}</CardContent>
+            <CardHeader>
+              <CardTitle>Farmácia & Saúde Animal</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">{renderGenericTable(farmaciaItems)}</CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="reproducao">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShieldPlus className="h-5 w-5 text-primary" /> Estoque Reprodutivo
+              </CardTitle>
+              <CardDescription>
+                Controle de Doses de Sêmen, Fármacos e Hormônios para Protocolos IATF.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0">{renderGenericTable(reproducaoItems)}</CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="almoxarifado">
           <Card>
-            <CardContent className="pt-6">{renderGenericTable(almoxarifadoItems)}</CardContent>
+            <CardHeader>
+              <CardTitle>Almoxarifado Geral</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">{renderGenericTable(almoxarifadoItems)}</CardContent>
           </Card>
         </TabsContent>
 
@@ -349,10 +249,12 @@ export default function Estoque() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingDown className="h-5 w-5 text-primary" /> Módulo de Previsão de Demanda
+                <TrendingDown className="h-5 w-5 text-primary" /> Módulo de Previsão de Demanda &
+                Compras
               </CardTitle>
               <CardDescription>
-                Análise preditiva baseada no histórico de consumo médio dos últimos 6 meses.
+                Análise preditiva baseada no histórico de consumo. O sistema projeta a data de falta
+                de estoque e sugere o volume de compra para 30 dias.
               </CardDescription>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
@@ -362,21 +264,12 @@ export default function Estoque() {
                     <TableRow>
                       <TableHead>Insumo</TableHead>
                       <TableHead className="text-right">Estoque</TableHead>
-                      <TableHead className="text-right">
-                        <TooltipProvider delayDuration={300}>
-                          <Tooltip>
-                            <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
-                              Consumo Médio Diário
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              Média de uso do item calculado com base nas movimentações do mês
-                              passado.
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                      <TableHead className="text-right">CMD (Consumo/dia)</TableHead>
+                      <TableHead className="text-center">Dias p/ Zerar</TableHead>
+                      <TableHead>Data de Reposição</TableHead>
+                      <TableHead className="text-right font-bold text-primary">
+                        Vol. Ideal Compra
                       </TableHead>
-                      <TableHead className="text-center">Duração Estimada</TableHead>
-                      <TableHead>Data de Reposição Sugerida</TableHead>
                       <TableHead>Alerta</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -401,6 +294,11 @@ export default function Estoque() {
                             <CalendarClock className="h-4 w-4 text-muted-foreground" />
                             {item.depletionDate.toLocaleDateString('pt-BR')}
                           </div>
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-bold text-primary whitespace-nowrap">
+                          {item.idealPurchase > 0
+                            ? `${formatNumber(item.idealPurchase, 0)} ${item.unidade}`
+                            : '-'}
                         </TableCell>
                         <TableCell>
                           {item.needsRestock ? (

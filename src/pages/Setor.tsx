@@ -15,7 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { sectorData } from '@/data/mock'
 import { Beef, Activity, DollarSign, LineChart } from 'lucide-react'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
-import { ReproductionTab } from '@/components/sector/ReproductionTab'
+import { IatfTab } from '@/components/sector/IatfTab'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
 import { SectorPastureTab } from '@/components/sector/SectorPastureTab'
 
@@ -27,7 +27,7 @@ export default function Setor() {
   if (!data) return <Navigate to="/" replace />
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up pb-10">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">{data.title}</h2>
         <p className="text-muted-foreground mt-1">{data.description}</p>
@@ -52,7 +52,7 @@ export default function Setor() {
               value="reproduction"
               className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3"
             >
-              Previsão de Partos
+              Gestão Reprodutiva (IATF)
             </TabsTrigger>
           )}
           <TabsTrigger
@@ -100,7 +100,7 @@ export default function Setor() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Composição de Lotes</CardTitle>
+              <CardTitle>Composição de Lotes - Fichas Zootécnicas</CardTitle>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
               <div className="overflow-x-auto">
@@ -108,23 +108,77 @@ export default function Setor() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Lote ID</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead className="text-right">Cabeças</TableHead>
+                      {id === 'cria' && (
+                        <>
+                          <TableHead>Categoria</TableHead>
+                          <TableHead className="text-right">Cabeças</TableHead>
+                          <TableHead>Taxa Prenhez</TableHead>
+                          <TableHead>Prev. Parto</TableHead>
+                        </>
+                      )}
+                      {id === 'recria' && (
+                        <>
+                          <TableHead>Peso Entrada</TableHead>
+                          <TableHead>Peso Atual Est.</TableHead>
+                          <TableHead>GMD Atual</TableHead>
+                          <TableHead>Suplemento</TableHead>
+                          <TableHead>Dias Pasto</TableHead>
+                        </>
+                      )}
+                      {id === 'engorda' && (
+                        <>
+                          <TableHead>Peso Entrada</TableHead>
+                          <TableHead>Peso Atual Est.</TableHead>
+                          <TableHead>GMD Previsto</TableHead>
+                          <TableHead>Dieta</TableHead>
+                        </>
+                      )}
                       <TableHead>Localização</TableHead>
                       <TableHead>Status Sanitário</TableHead>
-                      <TableHead className="text-right">Desempenho</TableHead>
+                      <TableHead className="text-right">Ação</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {data.lotes.map((lote) => (
+                    {data.lotes.map((lote: any) => (
                       <TableRow
                         key={lote.id}
                         className="cursor-pointer hover:bg-muted/50 transition-colors"
                         onClick={() => setSelectedLote(lote.id)}
                       >
                         <TableCell className="font-medium text-primary">{lote.id}</TableCell>
-                        <TableCell>{lote.categoria}</TableCell>
-                        <TableCell className="text-right">{lote.cabecas}</TableCell>
+
+                        {id === 'cria' && (
+                          <>
+                            <TableCell>{lote.categoria}</TableCell>
+                            <TableCell className="text-right font-mono">{lote.cabecas}</TableCell>
+                            <TableCell className="font-semibold text-emerald-600">
+                              {lote.taxaPrenhez}
+                            </TableCell>
+                            <TableCell>{lote.previsaoParto}</TableCell>
+                          </>
+                        )}
+                        {id === 'recria' && (
+                          <>
+                            <TableCell>{lote.pesoEntrada} kg</TableCell>
+                            <TableCell className="font-medium">{lote.pesoAtual} kg</TableCell>
+                            <TableCell>{lote.gmdAtual} kg/d</TableCell>
+                            <TableCell className="truncate max-w-[120px]">
+                              {lote.supplement?.name || '-'}
+                            </TableCell>
+                            <TableCell>{lote.diasPasto}</TableCell>
+                          </>
+                        )}
+                        {id === 'engorda' && (
+                          <>
+                            <TableCell>{lote.pesoEntrada} kg</TableCell>
+                            <TableCell className="font-medium text-emerald-600">
+                              {lote.pesoAtual} kg
+                            </TableCell>
+                            <TableCell>{lote.gmdPrevisto} kg/d</TableCell>
+                            <TableCell>{lote.dieta}</TableCell>
+                          </>
+                        )}
+
                         <TableCell>{lote.pasto}</TableCell>
                         <TableCell>
                           <Badge
@@ -163,7 +217,7 @@ export default function Setor() {
 
         {id === 'cria' && (
           <TabsContent value="reproduction" className="mt-4">
-            <ReproductionTab />
+            <IatfTab />
           </TabsContent>
         )}
 

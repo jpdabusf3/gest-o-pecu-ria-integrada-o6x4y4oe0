@@ -28,7 +28,8 @@ export function LotPerformanceDrawer({
           </SheetTitle>
           <SheetDescription>
             Análise preditiva e acompanhamento de ganho de peso real vs projetado com base no GMD e
-            plano nutricional.
+            plano nutricional. Utilize a aba Benchmarking Interno em Relatórios para comparar
+            dietas.
           </SheetDescription>
         </SheetHeader>
         <div className="py-6 space-y-6">

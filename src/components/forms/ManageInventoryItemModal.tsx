@@ -120,6 +120,9 @@ export function ManageInventoryItemModal({ item }: { item?: InventoryItem }) {
                   <SelectItem value="Biológico">Biológico</SelectItem>
                   <SelectItem value="Antiparasitário">Antiparasitário</SelectItem>
                   <SelectItem value="Material Cerca">Material Cerca</SelectItem>
+                  <SelectItem value="Sêmen">Sêmen</SelectItem>
+                  <SelectItem value="Hormônio">Hormônio</SelectItem>
+                  <SelectItem value="Fármaco Reprodutivo">Fármaco Reprodutivo</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -20146,6 +20146,20 @@ var ShieldCheck = createLucideIcon("shield-check", [["path", {
 	d: "m9 12 2 2 4-4",
 	key: "dzmm74"
 }]]);
+var ShieldPlus = createLucideIcon("shield-plus", [
+	["path", {
+		d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+		key: "oel41y"
+	}],
+	["path", {
+		d: "M9 12h6",
+		key: "1c52cq"
+	}],
+	["path", {
+		d: "M12 9v6",
+		key: "199k2o"
+	}]
+]);
 var Shield = createLucideIcon("shield", [["path", {
 	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
 	key: "oel41y"
@@ -25736,6 +25750,8 @@ const sectorData = {
 				cabecas: 120,
 				pasto: "Pasto 01",
 				status: "Saudável",
+				taxaPrenhez: "88%",
+				previsaoParto: "-",
 				supplement: {
 					name: "Sal Mineral 80",
 					costPerKg: 3.5,
@@ -25748,6 +25764,8 @@ const sectorData = {
 				cabecas: 85,
 				pasto: "Pasto 03",
 				status: "Atenção",
+				taxaPrenhez: "-",
+				previsaoParto: "Set/2026",
 				supplement: {
 					name: "Sal Mineral Reprodução",
 					costPerKg: 4.2,
@@ -25760,6 +25778,8 @@ const sectorData = {
 				cabecas: 15,
 				pasto: "Pasto 04",
 				status: "Saudável",
+				taxaPrenhez: "-",
+				previsaoParto: "-",
 				supplement: {
 					name: "Ração Touros",
 					costPerKg: 2.8,
@@ -25772,6 +25792,8 @@ const sectorData = {
 				cabecas: 140,
 				pasto: "Pasto 02",
 				status: "Saudável",
+				taxaPrenhez: "-",
+				previsaoParto: "-",
 				supplement: {
 					name: "Ração Creep",
 					costPerKg: 3.1,
@@ -25795,6 +25817,10 @@ const sectorData = {
 			cabecas: 220,
 			pasto: "Pasto 05",
 			status: "Saudável",
+			pesoEntrada: 180,
+			pesoAtual: 245,
+			gmdAtual: .65,
+			diasPasto: 100,
 			supplement: {
 				name: "Sal Proteico 0.1%",
 				costPerKg: 2.9,
@@ -25806,6 +25832,10 @@ const sectorData = {
 			cabecas: 180,
 			pasto: "Pasto 06",
 			status: "Saudável",
+			pesoEntrada: 175,
+			pesoAtual: 220,
+			gmdAtual: .6,
+			diasPasto: 75,
 			supplement: {
 				name: "Sal Proteico 0.1%",
 				costPerKg: 2.9,
@@ -25828,6 +25858,10 @@ const sectorData = {
 			cabecas: 150,
 			pasto: "Confinamento A",
 			status: "Saudável",
+			pesoEntrada: 360,
+			pesoAtual: 420,
+			gmdPrevisto: 1.45,
+			dieta: "Adaptação",
 			supplement: {
 				name: "Ração Confinamento",
 				costPerKg: 1.8,
@@ -25839,6 +25873,10 @@ const sectorData = {
 			cabecas: 200,
 			pasto: "Confinamento B",
 			status: "Pronto p/ Abate",
+			pesoEntrada: 430,
+			pesoAtual: 535,
+			gmdPrevisto: 1.55,
+			dieta: "Alto Grão",
 			supplement: {
 				name: "Ração Confinamento",
 				costPerKg: 1.95,
@@ -26311,7 +26349,7 @@ const teamMembers = [
 		role: "Operador",
 		email: "carlos@fazenda.com",
 		status: "Ativo",
-		lastActive: "Há 2 horas"
+		lastActive: "Há 2 hours"
 	},
 	{
 		id: "U4",
@@ -26365,93 +26403,6 @@ const managementHistory = [
 		custoCabeca: 4.5,
 		insumosUtilizados: ["Vacina Aftosa (140 doses)", "Ivermectina 1% (140 doses)"],
 		animaisEnvolvidos: "140 cabeças (Bezerras Desmame)"
-	},
-	{
-		id: "H-4",
-		data: "05/Mar/2026",
-		hora: "16:45",
-		tipo: "Movimentação",
-		alvo: "Lote LRE-01",
-		descricao: "Transferência do Pasto 05 para Pasto 06",
-		responsavel: "João (Operador Campo)",
-		observacoes: "Movimentação tranquila. Pasto 05 entra em período de descanso.",
-		custoCabeca: 0,
-		insumosUtilizados: [],
-		animaisEnvolvidos: "220 cabeças (Garrotes)"
-	},
-	{
-		id: "H-5",
-		data: "02/Mar/2026",
-		hora: "07:30",
-		tipo: "Adubação",
-		alvo: "Pasto 01 - Sede",
-		descricao: "Aplicação de Ureia (50kg/ha)",
-		responsavel: "Administrador (Sede)",
-		observacoes: "Adubação de cobertura visando o pico das águas.",
-		custoCabeca: null,
-		insumosUtilizados: ["Ureia Agrícola (2.275 kg total)"],
-		animaisEnvolvidos: "120 cabeças (Vacas Solteiras) mantidas no pasto"
-	},
-	{
-		id: "H-6",
-		data: "01/Mar/2026",
-		hora: "10:00",
-		tipo: "Venda",
-		alvo: "Lote LEN-02 (Parcial)",
-		descricao: "Venda de bois gordos para Frigorífico Boi Forte",
-		responsavel: "Administrador (Sede)",
-		observacoes: "Lote uniforme, excelente acabamento de carcaça. Desconto de 1% de quebra no transporte acordado.",
-		custoCabeca: 45,
-		pesoEntrada: 520,
-		valorCabeca: 4250,
-		valorArroba: 250,
-		rendimentoCarcaca: 54.5,
-		animaisEnvolvidos: "50 cabeças (Bois Terminação)"
-	},
-	{
-		id: "H-7",
-		data: "28/Fev/2026",
-		hora: "08:15",
-		tipo: "Entrada",
-		alvo: "Lote LRE-03 (Novo)",
-		descricao: "Compra de bezerros desmamados de terceiros",
-		responsavel: "Administrador (Sede)",
-		observacoes: "Animais recém chegados. Colocados no pasto de quarentena. Agendar protocolo de entrada.",
-		custoCabeca: 120,
-		pesoEntrada: 210,
-		valorCabeca: 1850,
-		valorArroba: 264,
-		rendimentoCarcaca: null,
-		animaisEnvolvidos: "100 cabeças (Bezerros)"
-	}
-];
-const reproductionForecast = [
-	{
-		id: "R1",
-		month: "Setembro",
-		partosPrevistos: 45,
-		lote: "LCR-01",
-		status: "Aguardando",
-		vacasPrenhas: 45,
-		nascimentosConfirmados: 0
-	},
-	{
-		id: "R2",
-		month: "Outubro",
-		partosPrevistos: 80,
-		lote: "LCR-02",
-		status: "Em andamento",
-		vacasPrenhas: 85,
-		nascimentosConfirmados: 5
-	},
-	{
-		id: "R3",
-		month: "Novembro",
-		partosPrevistos: 120,
-		lote: "LCR-03",
-		status: "Normal",
-		vacasPrenhas: 125,
-		nascimentosConfirmados: 0
 	}
 ];
 const dailyWeightData = [
@@ -26515,205 +26466,59 @@ const businessContacts = [
 	},
 	{
 		id: "C3",
-		nome: "Dr. Marcos Veterinário",
-		categoria: "Serviços",
+		nome: "Laboratórios VidaVet",
+		categoria: "Laboratório",
 		contato: "(16) 77777-3333",
-		email: "marcos.vet@gmail.com",
-		empresa: "Autônomo",
-		status: "Ativo"
-	},
-	{
-		id: "C4",
-		nome: "Sementes Pasto Verde",
-		categoria: "Fornecedor",
-		contato: "(11) 55555-4444",
-		email: "contato@pastoverde.com",
-		empresa: "Pasto Verde SA",
-		status: "Inativo"
-	}
-];
-const fleetData = [
-	{
-		id: "M1",
-		name: "Trator John Deere 5090",
-		type: "Trator",
-		acquisitionValue: 25e4,
-		currentHours: 1200,
-		currentKm: null,
-		fuelConsumption: 450,
-		maintenanceCost: 4500,
-		depreciation: 12500,
-		status: "Ativo"
-	},
-	{
-		id: "M2",
-		name: "Trator Massey Ferguson 4275",
-		type: "Trator",
-		acquisitionValue: 18e4,
-		currentHours: 3400,
-		currentKm: null,
-		fuelConsumption: 620,
-		maintenanceCost: 8200,
-		depreciation: 9e3,
-		status: "Manutenção"
-	},
-	{
-		id: "M3",
-		name: "Caminhonete Hilux",
-		type: "Veículo",
-		acquisitionValue: 22e4,
-		currentHours: null,
-		currentKm: 45e3,
-		fuelConsumption: 1200,
-		maintenanceCost: 2100,
-		depreciation: 15e3,
-		status: "Ativo"
-	},
-	{
-		id: "M4",
-		name: "Pulverizador Jacto",
-		type: "Implemento",
-		acquisitionValue: 85e3,
-		currentHours: 450,
-		currentKm: null,
-		fuelConsumption: 0,
-		maintenanceCost: 1200,
-		depreciation: 4200,
+		email: "contato@vidavet.com.br",
+		empresa: "VidaVet S.A",
 		status: "Ativo"
 	}
 ];
-const biMetricsList = [
-	{
-		id: "ganhoPeso",
-		name: "GMD Médio Rebanho",
-		color: "hsl(var(--chart-1))",
-		unit: "kg"
-	},
-	{
-		id: "custoCombustivel",
-		name: "Custo Combustível",
-		color: "hsl(var(--chart-2))",
-		unit: "R$"
-	},
-	{
-		id: "taxaPrenhez",
-		name: "Taxa de Prenhez",
-		color: "hsl(var(--chart-3))",
-		unit: "%"
-	},
-	{
-		id: "arrobaPrice",
-		name: "Preço da Arroba",
-		color: "hsl(var(--chart-4))",
-		unit: "R$"
-	}
-];
-const biData = [
-	{
-		period: "Out/25",
-		ganhoPeso: 1.1,
-		custoCombustivel: 4500,
-		arrobaPrice: 250,
-		taxaPrenhez: 70
-	},
-	{
-		period: "Nov/25",
-		ganhoPeso: 1.15,
-		custoCombustivel: 4800,
-		arrobaPrice: 255,
-		taxaPrenhez: 75
-	},
-	{
-		period: "Dez/25",
-		ganhoPeso: 1.2,
-		custoCombustivel: 4200,
-		arrobaPrice: 260,
-		taxaPrenhez: 80
-	},
-	{
-		period: "Jan/26",
-		ganhoPeso: 1.25,
-		custoCombustivel: 4600,
-		arrobaPrice: 265,
-		taxaPrenhez: 85
-	},
-	{
-		period: "Fev/26",
-		ganhoPeso: 1.3,
-		custoCombustivel: 4900,
-		arrobaPrice: 270,
-		taxaPrenhez: 86
-	},
-	{
-		period: "Mar/26",
-		ganhoPeso: 1.35,
-		custoCombustivel: 5100,
-		arrobaPrice: 275,
-		taxaPrenhez: 88
-	}
-];
-const twelveMonthsTrendData = [
-	{
-		month: "Abr",
-		cashflow: 12e4,
-		weightGain: 200
-	},
-	{
-		month: "Mai",
-		cashflow: 135e3,
-		weightGain: 220
-	},
-	{
-		month: "Jun",
-		cashflow: 14e4,
-		weightGain: 240
-	},
-	{
-		month: "Jul",
-		cashflow: 11e4,
-		weightGain: 230
-	},
-	{
-		month: "Ago",
-		cashflow: 105e3,
-		weightGain: 220
-	},
-	{
-		month: "Set",
-		cashflow: 15e4,
-		weightGain: 250
-	},
-	{
-		month: "Out",
-		cashflow: 165e3,
-		weightGain: 270
-	},
-	{
-		month: "Nov",
-		cashflow: 18e4,
-		weightGain: 290
-	},
-	{
-		month: "Dez",
-		cashflow: 2e5,
-		weightGain: 310
-	},
-	{
-		month: "Jan",
-		cashflow: 22e4,
-		weightGain: 330
-	},
-	{
-		month: "Fev",
-		cashflow: 21e4,
-		weightGain: 320
-	},
-	{
-		month: "Mar",
-		cashflow: 247300,
-		weightGain: 350
-	}
-];
+const fleetData = [{
+	id: "M1",
+	name: "Trator John Deere 5090",
+	type: "Trator",
+	acquisitionValue: 25e4,
+	currentHours: 1200,
+	currentKm: null,
+	fuelConsumption: 450,
+	maintenanceCost: 4500,
+	depreciation: 12500,
+	status: "Ativo"
+}];
+const biMetricsList = [{
+	id: "ganhoPeso",
+	name: "GMD Médio Rebanho",
+	color: "hsl(var(--chart-1))",
+	unit: "kg"
+}, {
+	id: "custoCombustivel",
+	name: "Custo Combustível",
+	color: "hsl(var(--chart-2))",
+	unit: "R$"
+}];
+const biData = [{
+	period: "Out/25",
+	ganhoPeso: 1.1,
+	custoCombustivel: 4500,
+	arrobaPrice: 250,
+	taxaPrenhez: 70
+}, {
+	period: "Nov/25",
+	ganhoPeso: 1.15,
+	custoCombustivel: 4800,
+	arrobaPrice: 255,
+	taxaPrenhez: 75
+}];
+const twelveMonthsTrendData = [{
+	month: "Abr",
+	cashflow: 12e4,
+	weightGain: 200
+}, {
+	month: "Mai",
+	cashflow: 135e3,
+	weightGain: 220
+}];
 const defaultSavedReports = [{
 	id: "1",
 	name: "Ganho vs Combustível",
@@ -26783,25 +26588,11 @@ const performanceCorrelationData = [
 		conversaoAlimentar: 6.5
 	},
 	{
-		loteId: "LCR-02",
-		ganhoPeso: .85,
-		custoCabeca: 48,
-		ndvi: .8,
-		conversaoAlimentar: 6.2
-	},
-	{
 		loteId: "LRE-01",
 		ganhoPeso: 1.1,
 		custoCabeca: 65,
 		ndvi: .7,
 		conversaoAlimentar: 5.8
-	},
-	{
-		loteId: "LEN-01",
-		ganhoPeso: 1.45,
-		custoCabeca: 120,
-		ndvi: null,
-		conversaoAlimentar: 5.2
 	},
 	{
 		loteId: "LEN-02",
@@ -26811,6 +26602,109 @@ const performanceCorrelationData = [
 		conversaoAlimentar: 5
 	}
 ];
+const iatfProtocols = [{
+	id: "IATF-1",
+	lote: "LCR-01",
+	tipo: "Convencional 3 Manejos",
+	inicio: "01/03/2026",
+	inseminacao: "11/03/2026",
+	dg: "10/04/2026",
+	dgFinal: "-",
+	proximoManejo: "10/04/2026 - Toque DG",
+	status: "Aguardando DG"
+}, {
+	id: "IATF-2",
+	lote: "LCR-02",
+	tipo: "J-Synch",
+	inicio: "15/01/2026",
+	inseminacao: "25/01/2026",
+	dg: "25/02/2026",
+	dgFinal: "15/04/2026",
+	proximoManejo: "-",
+	status: "Finalizado (Prenhez 85%)"
+}];
+const bullsData = [
+	{
+		id: "B-1",
+		nome: "Fajardo",
+		raca: "Nelore",
+		central: "Alta Genetics",
+		doses: 150
+	},
+	{
+		id: "B-2",
+		nome: "Backup",
+		raca: "Nelore",
+		central: "CRV Lagoa",
+		doses: 80
+	},
+	{
+		id: "B-3",
+		nome: "Bitelo",
+		raca: "Nelore",
+		central: "ABS",
+		doses: 45
+	}
+];
+const bullUsageDistribution = [
+	{
+		name: "Fajardo",
+		value: 350,
+		fill: "hsl(var(--chart-1))"
+	},
+	{
+		name: "Backup",
+		value: 200,
+		fill: "hsl(var(--chart-2))"
+	},
+	{
+		name: "Bitelo",
+		value: 150,
+		fill: "hsl(var(--chart-3))"
+	}
+];
+const benchmarkingData = {
+	"LRE-01": [
+		{
+			periodo: "Seca 2025 (Jul-Set)",
+			dieta: "Sal Proteico 0.1%",
+			gmd: .45,
+			ganhoTotal: 40
+		},
+		{
+			periodo: "Águas 2025 (Out-Dez)",
+			dieta: "Sal Mineral",
+			gmd: .75,
+			ganhoTotal: 65
+		},
+		{
+			periodo: "Transição 2026 (Jan-Mar)",
+			dieta: "Ração 0.3%",
+			gmd: .85,
+			ganhoTotal: 75
+		}
+	],
+	"LEN-01": [
+		{
+			periodo: "Pasto (Jan-Fev)",
+			dieta: "Sal Mineral",
+			gmd: .6,
+			ganhoTotal: 36
+		},
+		{
+			periodo: "Adaptação (Março)",
+			dieta: "Adaptação 1",
+			gmd: 1.1,
+			ganhoTotal: 33
+		},
+		{
+			periodo: "Terminação (Abr-Mai)",
+			dieta: "Alto Grão",
+			gmd: 1.55,
+			ganhoTotal: 93
+		}
+	]
+};
 var initialWeights = {
 	"CONF-01": [
 		{
@@ -26873,6 +26767,26 @@ var initialInventory = [
 		custoUnitario: i.custoUnitario || 2.5
 	})),
 	{
+		id: "R-1",
+		item: "Sêmen Touro Fajardo",
+		tipo: "Sêmen",
+		qtd: 150,
+		minQtd: 50,
+		unidade: "Doses",
+		status: "Normal",
+		custoUnitario: 35
+	},
+	{
+		id: "R-2",
+		item: "Protocolo Sincronização J-Synch",
+		tipo: "Hormônio",
+		qtd: 200,
+		minQtd: 100,
+		unidade: "Doses",
+		status: "Normal",
+		custoUnitario: 15
+	},
+	{
 		id: "FL-1",
 		item: "Diesel S10",
 		tipo: "Combustível",
@@ -26881,46 +26795,6 @@ var initialInventory = [
 		unidade: "L",
 		status: "Normal",
 		custoUnitario: 5.5
-	},
-	{
-		id: "FL-2",
-		item: "Gasolina Comum",
-		tipo: "Combustível",
-		qtd: 1e3,
-		minQtd: 200,
-		unidade: "L",
-		status: "Normal",
-		custoUnitario: 6.2
-	},
-	{
-		id: "FL-3",
-		item: "Álcool",
-		tipo: "Combustível",
-		qtd: 1e3,
-		minQtd: 200,
-		unidade: "L",
-		status: "Normal",
-		custoUnitario: 4
-	},
-	{
-		id: "FL-4",
-		item: "Óleo Motor 15W40",
-		tipo: "Lubrificante",
-		qtd: 200,
-		minQtd: 50,
-		unidade: "L",
-		status: "Normal",
-		custoUnitario: 25
-	},
-	{
-		id: "FL-5",
-		item: "Filtro de Ar Universal",
-		tipo: "Peça",
-		qtd: 20,
-		minQtd: 5,
-		unidade: "Un",
-		status: "Normal",
-		custoUnitario: 80
 	}
 ];
 var FarmContext = (0, import_react.createContext)(void 0);
@@ -30046,7 +29920,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$80({ inst: {
+			cachedValue = useState$82({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -30083,7 +29957,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$80 = React$70.useState, useEffect$29 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$82 = React$70.useState, useEffect$29 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -59477,7 +59351,7 @@ function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
 						" Desempenho: ",
 						loteId
 					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Análise preditiva e acompanhamento de ganho de peso real vs projetado com base no GMD e plano nutricional." })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Análise preditiva e acompanhamento de ganho de peso real vs projetado com base no GMD e plano nutricional. Utilize a aba Benchmarking Interno em Relatórios para comparar dietas." })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "py-6 space-y-6",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -59525,26 +59399,267 @@ function LotPerformanceDrawer({ loteId, open, onOpenChange }) {
 		})
 	});
 }
-function ReproductionTab() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Previsão de Partos" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "ID Matriz" }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data Prevista" }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Touro / Sêmen" }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
-	] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: reproductionForecast.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-			className: "font-medium",
-			children: item.matriz
-		}),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.lote }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.dataPrevista }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.touro }),
-		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-			variant: item.status === "Confirmada" ? "default" : "secondary",
-			children: item.status
-		}) })
-	] }, item.id)) })] }) })] });
+function IatfTab() {
+	const [protocols, setProtocols] = (0, import_react.useState)(iatfProtocols);
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { toast: toast$2 } = useToast();
+	const [formData, setFormData] = (0, import_react.useState)({
+		lote: "",
+		tipo: "Convencional 3 Manejos",
+		inicio: "",
+		inseminacao: "",
+		dg: "",
+		status: "Aguardando DG"
+	});
+	const handleSave = () => {
+		if (!formData.lote || !formData.inicio) return;
+		setProtocols([{
+			id: `IATF-${Date.now().toString().slice(-4)}`,
+			lote: formData.lote,
+			tipo: formData.tipo,
+			inicio: formData.inicio,
+			inseminacao: formData.inseminacao || "-",
+			dg: formData.dg || "-",
+			dgFinal: "-",
+			proximoManejo: "Calculado Automaticamente",
+			status: formData.status
+		}, ...protocols]);
+		toast$2({
+			title: "Protocolo Registrado",
+			description: "O manejo reprodutivo foi adicionado à agenda."
+		});
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "space-y-6 animate-fade-in",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "lg:col-span-2 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+					className: "flex flex-row justify-between items-start pb-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Syringe, { className: "h-5 w-5 text-primary" }), " Protocolos IATF Ativos"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhe as datas de manejo, inseminação e diagnóstico de gestação." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+						open,
+						onOpenChange: setOpen,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+							asChild: true,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								size: "sm",
+								className: "gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Novo Protocolo"]
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Registrar Protocolo IATF" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Insira as datas para agendar os próximos manejos na propriedade." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-4 py-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-2 gap-4",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Lote Alvo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											placeholder: "Ex: LCR-01",
+											value: formData.lote,
+											onChange: (e) => setFormData({
+												...formData,
+												lote: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo de Protocolo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+											value: formData.tipo,
+											onValueChange: (v) => setFormData({
+												...formData,
+												tipo: v
+											}),
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "Convencional 3 Manejos",
+													children: "Convencional 3 Manejos"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "J-Synch",
+													children: "J-Synch"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "Presynch",
+													children: "Presynch"
+												})
+											] })]
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data de Início (D0)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "date",
+											value: formData.inicio,
+											onChange: (e) => setFormData({
+												...formData,
+												inicio: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data de Inseminação" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "date",
+											value: formData.inseminacao,
+											onChange: (e) => setFormData({
+												...formData,
+												inseminacao: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data DG (Diagnóstico)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+											type: "date",
+											value: formData.dg,
+											onChange: (e) => setFormData({
+												...formData,
+												dg: e.target.value
+											})
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Status" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+											value: formData.status,
+											onValueChange: (v) => setFormData({
+												...formData,
+												status: v
+											}),
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "Em andamento",
+													children: "Em andamento"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "Aguardando DG",
+													children: "Aguardando DG"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "Prenhez Positiva",
+													children: "Prenhez Positiva"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+													value: "Prenhez Negativa",
+													children: "Prenhez Negativa"
+												})
+											] })]
+										})]
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleSave,
+								className: "w-full",
+								children: "Registrar"
+							})]
+						})] })]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "px-0 sm:px-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "overflow-x-auto",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Protocolo" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Início" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Inseminação" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Próx. Manejo" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / DG" })
+						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: protocols.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "font-medium whitespace-nowrap",
+								children: p.lote
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "whitespace-nowrap",
+								children: p.tipo
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-muted-foreground whitespace-nowrap",
+								children: p.inicio
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-muted-foreground whitespace-nowrap",
+								children: p.inseminacao
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "font-semibold whitespace-nowrap",
+								children: p.proximoManejo
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: p.status.includes("Positiva") || p.status.includes("85%") ? "default" : "secondary",
+								children: p.status
+							}) })
+						] }, p.id)) })] })
+					})
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Reprodutores & Catálogo de Sêmen" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+					className: "px-0 sm:px-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "overflow-x-auto",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Touro (Nome)" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Raça" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Central / Fornecedor" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+								className: "text-right",
+								children: "Doses em Estoque"
+							})
+						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: bullsData.map((b$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "font-medium",
+								children: b$1.nome
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: b$1.raca }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-muted-foreground",
+								children: b$1.central
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-right font-mono",
+								children: b$1.doses
+							})
+						] }, b$1.id)) })] })
+					})
+				})] })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "space-y-6",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), " Uso de Sêmen (Histórico)"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Distribuição de doses utilizadas na estação." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "h-[250px] w-full",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+						config: { value: {
+							label: "Doses Usadas",
+							color: "hsl(var(--primary))"
+						} },
+						className: "h-full w-full",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
+								data: bullUsageDistribution,
+								dataKey: "value",
+								nameKey: "name",
+								cx: "50%",
+								cy: "50%",
+								innerRadius: 60,
+								outerRadius: 80,
+								paddingAngle: 2,
+								children: bullUsageDistribution.map((entry, index$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { fill: entry.fill }, `cell-${index$1}`))
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) })
+						] })
+					})
+				}) })] })
+			})]
+		})
+	});
 }
 var alertVariants = cva("relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground", {
 	variants: { variant: {
@@ -59787,7 +59902,7 @@ function Setor() {
 		replace: true
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-6 animate-fade-in-up pb-10",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 				className: "text-3xl font-bold tracking-tight",
@@ -59816,7 +59931,7 @@ function Setor() {
 							id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "reproduction",
 								className: "data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-2 py-3",
-								children: "Previsão de Partos"
+								children: "Gestão Reprodutiva (IATF)"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "calendar",
@@ -59865,22 +59980,39 @@ function Setor() {
 									children: data.kpis.custoCabeca
 								}) })] })
 							]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Composição de Lotes" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Composição de Lotes - Fichas Zootécnicas" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-x-auto",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote ID" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Cabeças"
-									}),
+									id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Categoria" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+											className: "text-right",
+											children: "Cabeças"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Taxa Prenhez" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Prev. Parto" })
+									] }),
+									id === "recria" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Peso Entrada" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Peso Atual Est." }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "GMD Atual" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Suplemento" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Dias Pasto" })
+									] }),
+									id === "engorda" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Peso Entrada" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Peso Atual Est." }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "GMD Previsto" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Dieta" })
+									] }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Localização" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status Sanitário" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
-										children: "Desempenho"
+										children: "Ação"
 									})
 								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: data.lotes.map((lote) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
 									className: "cursor-pointer hover:bg-muted/50 transition-colors",
@@ -59890,11 +60022,40 @@ function Setor() {
 											className: "font-medium text-primary",
 											children: lote.id
 										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-											className: "text-right",
-											children: lote.cabecas
-										}),
+										id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.categoria }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "text-right font-mono",
+												children: lote.cabecas
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "font-semibold text-emerald-600",
+												children: lote.taxaPrenhez
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.previsaoParto })
+										] }),
+										id === "recria" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [lote.pesoEntrada, " kg"] }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+												className: "font-medium",
+												children: [lote.pesoAtual, " kg"]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [lote.gmdAtual, " kg/d"] }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+												className: "truncate max-w-[120px]",
+												children: lote.supplement?.name || "-"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.diasPasto })
+										] }),
+										id === "engorda" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [lote.pesoEntrada, " kg"] }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+												className: "font-medium text-emerald-600",
+												children: [lote.pesoAtual, " kg"]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [lote.gmdPrevisto, " kg/d"] }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.dieta })
+										] }),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: lote.pasto }),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 											variant: lote.status === "Saudável" ? "default" : lote.status === "Pronto p/ Abate" ? "secondary" : "destructive",
@@ -59922,7 +60083,7 @@ function Setor() {
 					id === "cria" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "reproduction",
 						className: "mt-4",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReproductionTab, {})
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IatfTab, {})
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "calendar",
@@ -61177,9 +61338,10 @@ function RegisterPurchaseModal() {
 		if (!inventoryId || !amount || !totalCost) return;
 		registerPurchase(inventoryId, Number(amount), Number(totalCost));
 		const item = inventory.find((i) => i.id === inventoryId);
+		const isHealthOrRepro = item?.tipo === "Biológico" || item?.tipo === "Antiparasitário" || item?.tipo === "Sêmen" || item?.tipo === "Hormônio";
 		addEntry({
 			description: `Compra: ${item?.item || "Insumo Diversos"}`,
-			category: item?.tipo === "Biológico" || item?.tipo === "Antiparasitário" ? "Sanidade" : "Insumos",
+			category: isHealthOrRepro ? "Sanidade" : "Insumos",
 			amount: Number(totalCost),
 			type: "expense"
 		});
@@ -61273,7 +61435,7 @@ function RegisterConsumptionModal() {
 			const totalCost = Number(amount) * unitCost;
 			addEntry({
 				description: `Uso de Insumo: ${item.item}`,
-				category: item.tipo === "Biológico" || item.tipo === "Antiparasitário" ? "Sanidade" : "Custos Operacionais",
+				category: item.tipo === "Biológico" || item.tipo === "Antiparasitário" || item.tipo === "Sêmen" || item.tipo === "Hormônio" ? "Sanidade" : "Custos Operacionais",
 				amount: totalCost,
 				type: "expense",
 				loteId
@@ -61303,7 +61465,7 @@ function RegisterConsumptionModal() {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
 				className: "flex items-center gap-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), " Registrar Uso de Insumo"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Registre a utilização de itens de farmácia ou almoxarifado em lotes específicos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Registre a utilização de itens de farmácia, almoxarifado ou reprodução em lotes específicos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "space-y-4 py-4",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -61467,6 +61629,18 @@ function ManageInventoryItemModal({ item }) {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 									value: "Material Cerca",
 									children: "Material Cerca"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Sêmen",
+									children: "Sêmen"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Hormônio",
+									children: "Hormônio"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Fármaco Reprodutivo",
+									children: "Fármaco Reprodutivo"
 								})
 							] })]
 						})]
@@ -62668,6 +62842,7 @@ function Estoque() {
 	const farmaciaItems = inventory.filter((i) => ["Biológico", "Antiparasitário"].includes(i.tipo) || i.id.startsWith("F"));
 	const almoxarifadoItems = inventory.filter((i) => i.tipo === "Material Cerca" || i.id.startsWith("A"));
 	const materiaPrimaItems = inventory.filter((i) => i.tipo === "Materia Prima" || i.id.startsWith("M"));
+	const reproducaoItems = inventory.filter((i) => ["Sêmen", "Hormônio"].includes(i.tipo) || i.id.startsWith("R-"));
 	const forecastedItems = (0, import_react.useMemo)(() => {
 		return inventory.map((item) => {
 			const dailyRate = item.consumoDiario || (item.qtd > 0 ? item.qtd * .02 : 5);
@@ -62675,12 +62850,14 @@ function Estoque() {
 			const depletionDate = /* @__PURE__ */ new Date();
 			depletionDate.setDate(depletionDate.getDate() + daysRemaining);
 			const needsRestock = daysRemaining <= 30;
+			const idealPurchase = dailyRate * 30;
 			return {
 				...item,
 				dailyRate: Number(dailyRate.toFixed(1)),
 				daysRemaining,
 				depletionDate,
-				needsRestock
+				needsRestock,
+				idealPurchase: Number(idealPurchase.toFixed(0))
 			};
 		}).sort((a$1, b$1) => a$1.daysRemaining - b$1.daysRemaining);
 	}, [inventory]);
@@ -62699,7 +62876,7 @@ function Estoque() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Unidade" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
-		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
 			className: item.qtd <= item.minQtd ? "bg-destructive/5" : "",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
@@ -62739,7 +62916,11 @@ function Estoque() {
 					]
 				}) })
 			]
-		}, item.id)) })] })
+		}, item.id)), items.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+			colSpan: 6,
+			className: "text-center py-6 text-muted-foreground",
+			children: "Nenhum item cadastrado nesta categoria."
+		}) })] })] })
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
@@ -62751,7 +62932,7 @@ function Estoque() {
 					children: "Estoque & Insumos"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
-					children: "Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda."
+					children: "Gestão de almoxarifado, controle automatizado de nutrição animal e previsão de consumo."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap",
 					children: [
@@ -62778,7 +62959,7 @@ function Estoque() {
 								className: "font-bold",
 								children: [criticalItems.length, " itens"]
 							}),
-							" abaixo do limite mínimo de segurança configurado. A produção ou fornecimento de ração pode ser comprometida."
+							" abaixo do limite mínimo de segurança configurado. Verifique a previsão para o volume ideal de compra."
 						]
 					})
 				]
@@ -62788,36 +62969,41 @@ function Estoque() {
 				className: "w-full",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-						className: "grid w-full grid-cols-2 md:grid-cols-6 max-w-4xl mb-6 h-auto md:h-10",
+						className: "grid w-full grid-cols-2 md:flex max-w-full flex-wrap mb-6 h-auto",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "nutricao",
-								className: "py-2 md:py-1.5",
+								className: "py-2",
 								children: "Nutrição"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "fabrica",
-								className: "py-2 md:py-1.5 whitespace-nowrap",
+								className: "py-2",
 								children: "Fábrica de Ração"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "farmacia",
-								className: "py-2 md:py-1.5",
+								className: "py-2",
 								children: "Farmácia"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+								value: "reproducao",
+								className: "py-2",
+								children: "Reprodução"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "almoxarifado",
-								className: "py-2 md:py-1.5",
+								className: "py-2",
 								children: "Almoxarifado"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
 								value: "previsao",
-								className: "py-2 md:py-1.5 gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-3 w-3" }), " Previsão"]
+								className: "py-2 gap-2 text-primary",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-4 w-4" }), " Previsão"]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 								value: "custos",
-								className: "py-2 md:py-1.5 whitespace-normal sm:whitespace-nowrap",
+								className: "py-2",
 								children: "Custos por Fazenda"
 							})
 						]
@@ -62827,153 +63013,10 @@ function Estoque() {
 						className: "space-y-6",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Suplementação e Rações Produzidas" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "overflow-x-auto",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Insumo" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Estoque Atual"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Custo / Un"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
-											delayDuration: 300,
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip$1, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
-												className: "underline decoration-dashed underline-offset-4 cursor-help",
-												children: "Gatilho (Mínimo)"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Quantidade mínima configurada para disparar alertas e evitar paralisação do trato." })] })
-										})
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: nutricaoItems.map((item) => {
-									const isCritical = item.qtd <= item.minQtd;
-									const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5;
-									return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-										className: isCritical ? "bg-destructive/5" : "",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-												className: "font-medium whitespace-nowrap",
-												children: item.item
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: `text-right font-mono font-medium whitespace-nowrap ${isCritical ? "text-destructive font-bold" : ""}`,
-												children: [
-													formatNumber(item.qtd, 0),
-													" ",
-													item.unidade
-												]
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-												className: "text-right font-mono text-muted-foreground whitespace-nowrap",
-												children: formatCurrency(item.custoUnitario)
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: "text-right font-mono text-muted-foreground whitespace-nowrap",
-												children: [
-													formatNumber(item.minQtd, 0),
-													" ",
-													item.unidade
-												]
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "flex items-center gap-2",
-												children: [
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-														variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
-														className: isCritical ? "animate-pulse" : "",
-														children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta Baixo" : "Confortável"
-													}),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-														variant: "ghost",
-														size: "icon",
-														className: "h-8 w-8 text-destructive hover:bg-destructive/10",
-														onClick: () => removeInventoryItem(item.id),
-														title: "Remover Item",
-														children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
-													})
-												]
-											}) })
-										]
-									}, item.id);
-								}) })] })
-							})
+							children: renderGenericTable(nutricaoItems)
 						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Matérias-Primas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ingredientes utilizados na formulação e mistura de rações. Alertas automáticos baseados nos níveis mínimos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "overflow-x-auto",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Ingrediente" }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Estoque Atual"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Custo / Un"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-										className: "text-right",
-										children: "Mínimo de Alerta"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: materiaPrimaItems.map((item) => {
-									const isCritical = item.qtd <= item.minQtd;
-									return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-										className: isCritical ? "bg-destructive/5" : "",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-												className: "font-medium whitespace-nowrap",
-												children: item.item
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: `text-right font-mono font-medium whitespace-nowrap ${isCritical ? "text-destructive font-bold" : ""}`,
-												children: [
-													formatNumber(item.qtd, 0),
-													" ",
-													item.unidade
-												]
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-												className: "text-right font-mono text-muted-foreground whitespace-nowrap",
-												children: formatCurrency(item.custoUnitario)
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: "text-right font-mono text-muted-foreground whitespace-nowrap",
-												children: [
-													formatNumber(item.minQtd, 0),
-													" ",
-													item.unidade
-												]
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "flex items-center gap-2",
-												children: [
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-														variant: isCritical ? "destructive" : "secondary",
-														className: isCritical ? "animate-pulse" : "",
-														children: isCritical ? "Estoque Crítico" : "Normal"
-													}),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-														variant: "ghost",
-														size: "icon",
-														className: "h-8 w-8 text-destructive hover:bg-destructive/10",
-														onClick: () => removeInventoryItem(item.id),
-														title: "Remover Item",
-														children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
-													})
-												]
-											}) })
-										]
-									}, item.id);
-								}) })] })
-							})
+							children: renderGenericTable(materiaPrimaItems)
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
@@ -62983,24 +63026,34 @@ function Estoque() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "farmacia",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-							className: "pt-6",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Farmácia & Saúde Animal" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pt-0",
 							children: renderGenericTable(farmaciaItems)
-						}) })
+						})] })
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+						value: "reproducao",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldPlus, { className: "h-5 w-5 text-primary" }), " Estoque Reprodutivo"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Controle de Doses de Sêmen, Fármacos e Hormônios para Protocolos IATF." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pt-0",
+							children: renderGenericTable(reproducaoItems)
+						})] })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "almoxarifado",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-							className: "pt-6",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Almoxarifado Geral" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							className: "pt-0",
 							children: renderGenericTable(almoxarifadoItems)
-						}) })
+						})] })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 						value: "previsao",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 							className: "flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-5 w-5 text-primary" }), " Módulo de Previsão de Demanda"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise preditiva baseada no histórico de consumo médio dos últimos 6 meses." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "h-5 w-5 text-primary" }), " Módulo de Previsão de Demanda & Compras"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Análise preditiva baseada no histórico de consumo. O sistema projeta a data de falta de estoque e sugere o volume de compra para 30 dias." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-x-auto",
@@ -63012,19 +63065,17 @@ function Estoque() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
-											delayDuration: 300,
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip$1, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
-												className: "underline decoration-dashed underline-offset-4 cursor-help",
-												children: "Consumo Médio Diário"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Média de uso do item calculado com base nas movimentações do mês passado." })] })
-										})
+										children: "CMD (Consumo/dia)"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-center",
-										children: "Duração Estimada"
+										children: "Dias p/ Zerar"
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data de Reposição Sugerida" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data de Reposição" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+										className: "text-right font-bold text-primary",
+										children: "Vol. Ideal Compra"
+									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alerta" })
 								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: forecastedItems.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
 									className: item.needsRestock ? "bg-orange-500/5" : "",
@@ -63060,6 +63111,10 @@ function Estoque() {
 												className: "flex items-center gap-2 text-sm",
 												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarClock, { className: "h-4 w-4 text-muted-foreground" }), item.depletionDate.toLocaleDateString("pt-BR")]
 											})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "text-right font-mono font-bold text-primary whitespace-nowrap",
+											children: item.idealPurchase > 0 ? `${formatNumber(item.idealPurchase, 0)} ${item.unidade}` : "-"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.needsRestock ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 											variant: "outline",
@@ -72230,6 +72285,167 @@ function SupplierPerformanceTab() {
 		})]
 	});
 }
+function BenchmarkingTab() {
+	const [lote, setLote] = (0, import_react.useState)("LRE-01");
+	const data = benchmarkingData[lote] || [];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "border shadow-sm animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+			className: "flex flex-col sm:flex-row justify-between sm:items-start gap-4 pb-4 border-b bg-muted/5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+				className: "flex items-center gap-2 text-xl",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "h-5 w-5 text-primary" }), "Comparativo Histórico do Lote"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+				className: "mt-1",
+				children: "Avalie o desempenho de um mesmo lote em diferentes períodos. Identifique visualmente qual dieta/suplemento trouxe o melhor resultado."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "w-full sm:w-auto mt-2 sm:mt-0",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: lote,
+					onValueChange: setLote,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+						className: "w-full sm:w-[240px] bg-background",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o Lote" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: Object.keys(benchmarkingData).map((k$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: k$1,
+						children: k$1
+					}, k$1)) })]
+				})
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "pt-6",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+				config: {
+					gmd: {
+						label: "GMD (kg/dia)",
+						color: "hsl(var(--primary))"
+					},
+					ganhoTotal: {
+						label: "Ganho Total Período (kg)",
+						color: "hsl(var(--chart-2))"
+					}
+				},
+				className: "h-[400px] w-full",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ComposedChart, {
+					data,
+					margin: {
+						top: 20,
+						right: 20,
+						left: 0,
+						bottom: 20
+					},
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+							strokeDasharray: "3 3",
+							vertical: false,
+							className: "stroke-muted"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+							dataKey: "periodo",
+							tickLine: false,
+							axisLine: false,
+							className: "text-xs text-muted-foreground"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+							yAxisId: "left",
+							orientation: "left",
+							tickLine: false,
+							axisLine: false,
+							className: "text-xs text-muted-foreground",
+							tickFormatter: (v) => `${v}kg`
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+							yAxisId: "right",
+							orientation: "right",
+							tickLine: false,
+							axisLine: false,
+							className: "text-xs text-muted-foreground",
+							tickFormatter: (v) => v.toFixed(2)
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tooltip, {
+							cursor: { fill: "hsl(var(--muted)/0.4)" },
+							content: ({ active, payload, label }) => {
+								if (active && payload && payload.length) {
+									const dt = payload[0].payload;
+									return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "bg-background border border-border/50 rounded-lg p-3 shadow-xl text-sm min-w-[200px]",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "font-semibold mb-1 border-b pb-1",
+												children: label
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+												className: "text-muted-foreground mb-3 text-xs uppercase tracking-wider",
+												children: [
+													"Dieta Fornecida:",
+													" ",
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+														className: "font-bold text-foreground block mt-0.5",
+														children: dt.dieta
+													})
+												]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "space-y-1",
+												children: payload.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+													className: "flex justify-between items-center gap-4",
+													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+														className: "flex items-center gap-1.5 text-muted-foreground",
+														children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+															className: "w-2 h-2 rounded-sm",
+															style: { backgroundColor: p.color }
+														}), p.name]
+													}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+														className: "font-mono font-medium",
+														children: [
+															p.value,
+															" ",
+															p.dataKey === "gmd" ? "kg/d" : "kg"
+														]
+													})]
+												}, p.dataKey))
+											})
+										]
+									});
+								}
+								return null;
+							}
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+							yAxisId: "left",
+							dataKey: "ganhoTotal",
+							fill: "var(--color-ganhoTotal)",
+							radius: [
+								4,
+								4,
+								0,
+								0
+							],
+							barSize: 50,
+							name: "Ganho Total Período (kg)"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+							yAxisId: "right",
+							type: "monotone",
+							dataKey: "gmd",
+							stroke: "var(--color-gmd)",
+							strokeWidth: 3,
+							name: "GMD (kg/dia)",
+							dot: {
+								r: 5,
+								strokeWidth: 2,
+								fill: "var(--color-gmd)",
+								stroke: "hsl(var(--background))"
+							},
+							activeDot: { r: 7 }
+						})
+					]
+				})
+			})
+		})]
+	});
+}
 function RelatoriosDesempenho() {
 	const [categoria, setCategoria] = (0, import_react.useState)("Vacas de corte");
 	const chartData = (0, import_react.useMemo)(() => performanceByCategory[categoria] || performanceByCategory["Bois"], [categoria]);
@@ -72242,21 +72458,31 @@ function RelatoriosDesempenho() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-8 w-8 text-primary" }), "Relatórios de Desempenho"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-1",
-				children: "Acompanhe o Ganho Médio Diário (GMD) histórico e a eficiência atrelada às marcas de insumos."
+				children: "Acompanhe o Ganho Médio Diário, comparativos de lotes e eficiência nutricional."
 			})] })
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
 			defaultValue: "categoria",
 			className: "space-y-6",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "grid w-full sm:w-[450px] grid-cols-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "categoria",
-						children: "Evolução por Categoria"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
-						value: "fornecedores",
-						children: "Performance de Fornecedores"
-					})]
+					className: "grid w-full sm:flex sm:w-auto grid-cols-1 sm:grid-cols-3 h-auto",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "categoria",
+							className: "py-2",
+							children: "Evolução por Categoria"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "benchmarking",
+							className: "py-2",
+							children: "Benchmarking Interno"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "fornecedores",
+							className: "py-2",
+							children: "Performance de Fornecedores"
+						})
+					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "categoria",
@@ -72392,6 +72618,11 @@ function RelatoriosDesempenho() {
 							})
 						})]
 					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "benchmarking",
+					className: "mt-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BenchmarkingTab, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "fornecedores",
@@ -80153,4 +80384,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BLuV1FeV.js.map
+//# sourceMappingURL=index-DAP79gGi.js.map

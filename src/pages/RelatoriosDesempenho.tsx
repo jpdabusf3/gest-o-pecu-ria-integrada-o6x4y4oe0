@@ -14,6 +14,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { performanceByCategory } from '@/data/mock'
 import { LineChart as LineChartIcon, Activity } from 'lucide-react'
 import { SupplierPerformanceTab } from '@/components/reports/SupplierPerformanceTab'
+import { BenchmarkingTab } from '@/components/reports/BenchmarkingTab'
 
 export default function RelatoriosDesempenho() {
   const [categoria, setCategoria] = useState('Vacas de corte')
@@ -36,16 +37,22 @@ export default function RelatoriosDesempenho() {
             Relatórios de Desempenho
           </h2>
           <p className="text-muted-foreground mt-1">
-            Acompanhe o Ganho Médio Diário (GMD) histórico e a eficiência atrelada às marcas de
-            insumos.
+            Acompanhe o Ganho Médio Diário, comparativos de lotes e eficiência nutricional.
           </p>
         </div>
       </div>
 
       <Tabs defaultValue="categoria" className="space-y-6">
-        <TabsList className="grid w-full sm:w-[450px] grid-cols-2">
-          <TabsTrigger value="categoria">Evolução por Categoria</TabsTrigger>
-          <TabsTrigger value="fornecedores">Performance de Fornecedores</TabsTrigger>
+        <TabsList className="grid w-full sm:flex sm:w-auto grid-cols-1 sm:grid-cols-3 h-auto">
+          <TabsTrigger value="categoria" className="py-2">
+            Evolução por Categoria
+          </TabsTrigger>
+          <TabsTrigger value="benchmarking" className="py-2">
+            Benchmarking Interno
+          </TabsTrigger>
+          <TabsTrigger value="fornecedores" className="py-2">
+            Performance de Fornecedores
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="categoria" className="mt-0">
@@ -131,6 +138,10 @@ export default function RelatoriosDesempenho() {
               </ChartContainer>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="benchmarking" className="mt-0">
+          <BenchmarkingTab />
         </TabsContent>
 
         <TabsContent value="fornecedores" className="mt-0">

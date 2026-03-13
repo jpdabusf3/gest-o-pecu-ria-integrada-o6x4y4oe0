@@ -45,7 +45,10 @@ export function RegisterConsumptionModal() {
       addEntry({
         description: `Uso de Insumo: ${item.item}`,
         category:
-          item.tipo === 'Biológico' || item.tipo === 'Antiparasitário'
+          item.tipo === 'Biológico' ||
+          item.tipo === 'Antiparasitário' ||
+          item.tipo === 'Sêmen' ||
+          item.tipo === 'Hormônio'
             ? 'Sanidade'
             : 'Custos Operacionais',
         amount: totalCost,
@@ -77,7 +80,8 @@ export function RegisterConsumptionModal() {
             <Activity className="h-5 w-5 text-primary" /> Registrar Uso de Insumo
           </DialogTitle>
           <DialogDescription>
-            Registre a utilização de itens de farmácia ou almoxarifado em lotes específicos.
+            Registre a utilização de itens de farmácia, almoxarifado ou reprodução em lotes
+            específicos.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">

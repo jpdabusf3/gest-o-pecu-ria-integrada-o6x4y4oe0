@@ -38,11 +38,15 @@ export function RegisterPurchaseModal() {
     registerPurchase(inventoryId, Number(amount), Number(totalCost))
 
     const item = inventory.find((i) => i.id === inventoryId)
+    const isHealthOrRepro =
+      item?.tipo === 'Biológico' ||
+      item?.tipo === 'Antiparasitário' ||
+      item?.tipo === 'Sêmen' ||
+      item?.tipo === 'Hormônio'
 
     addEntry({
       description: `Compra: ${item?.item || 'Insumo Diversos'}`,
-      category:
-        item?.tipo === 'Biológico' || item?.tipo === 'Antiparasitário' ? 'Sanidade' : 'Insumos',
+      category: isHealthOrRepro ? 'Sanidade' : 'Insumos',
       amount: Number(totalCost),
       type: 'expense',
     })
