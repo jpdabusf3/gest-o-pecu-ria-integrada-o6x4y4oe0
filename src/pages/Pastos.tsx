@@ -46,7 +46,8 @@ export default function Pastos() {
 
   const handleSync = () => {
     const alerts = dynamicPastures.filter(
-      (p) => p.alturaAtual < p.alturaSaidaAlvo || p.alturaAtual > p.alturaEntradaAlvo,
+      (pasto) =>
+        pasto.alturaAtual < pasto.alturaSaidaAlvo || pasto.alturaAtual > pasto.alturaEntradaAlvo,
     )
     toast({
       title: 'Sincronização Concluída',
@@ -56,7 +57,7 @@ export default function Pastos() {
   }
 
   const activePaddockData = selectedPaddock
-    ? dynamicPastures.find((p) => p.id === selectedPaddock)
+    ? dynamicPastures.find((pasto) => pasto.id === selectedPaddock)
     : null
 
   return (
@@ -287,7 +288,7 @@ export default function Pastos() {
                     {dynamicPastures.map((pasto) => {
                       const isHeightAlert =
                         pasto.alturaAtual < pasto.alturaSaidaAlvo ||
-                        pasto.alturaAtual > p.alturaEntradaAlvo
+                        pasto.alturaAtual > pasto.alturaEntradaAlvo
 
                       return (
                         <TableRow key={pasto.id}>

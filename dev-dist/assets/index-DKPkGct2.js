@@ -15376,7 +15376,7 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
 		const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
 		const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
 		function allSettled(promises$2) {
-			return Promise.all(promises$2.map((p$1) => Promise.resolve(p$1).then((value$1) => ({
+			return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
 				status: "fulfilled",
 				value: value$1
 			}), (reason) => ({
@@ -21959,7 +21959,7 @@ function Toaster() {
 }
 var M = (e, i, s$1, u, m, a$1, l, h) => {
 	let d = document.documentElement, w = ["light", "dark"];
-	function p$1(n) {
+	function p(n) {
 		(Array.isArray(e) ? e : [e]).forEach((y$1) => {
 			let k$1 = y$1 === "class", S = k$1 && a$1 ? m.map((f) => a$1[f] || f) : m;
 			k$1 ? (d.classList.remove(...S), d.classList.add(a$1 && a$1[n] ? a$1[n] : n)) : d.setAttribute(y$1, n);
@@ -21971,10 +21971,10 @@ var M = (e, i, s$1, u, m, a$1, l, h) => {
 	function c$1() {
 		return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 	}
-	if (u) p$1(u);
+	if (u) p(u);
 	else try {
 		let n = localStorage.getItem(i) || s$1;
-		p$1(l && n === "system" ? c$1() : n);
+		p(l && n === "system" ? c$1() : n);
 	} catch (n) {}
 }, x$1 = import_react.createContext(void 0), U = {
 	setTheme: (e) => {},
@@ -21984,7 +21984,7 @@ var M = (e, i, s$1, u, m, a$1, l, h) => {
 	return (e = import_react.useContext(x$1)) != null ? e : U;
 };
 import_react.memo(({ forcedTheme: e, storageKey: i, attribute: s$1, enableSystem: u, enableColorScheme: m, defaultTheme: a$1, value: l, themes: h, nonce: d, scriptProps: w }) => {
-	let p$1 = JSON.stringify([
+	let p = JSON.stringify([
 		s$1,
 		i,
 		a$1,
@@ -21998,7 +21998,7 @@ import_react.memo(({ forcedTheme: e, storageKey: i, attribute: s$1, enableSystem
 		...w,
 		suppressHydrationWarning: !0,
 		nonce: typeof window == "undefined" ? d : "",
-		dangerouslySetInnerHTML: { __html: `(${M.toString()})(${p$1})` }
+		dangerouslySetInnerHTML: { __html: `(${M.toString()})(${p})` }
 	});
 });
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -22223,10 +22223,10 @@ var Observer = class {
 				message: data.loading,
 				description: typeof data.description !== "function" ? data.description : void 0
 			});
-			const p$1 = Promise.resolve(promise instanceof Function ? promise() : promise);
+			const p = Promise.resolve(promise instanceof Function ? promise() : promise);
 			let shouldDismiss = id !== void 0;
 			let result;
-			const originalPromise = p$1.then(async (response) => {
+			const originalPromise = p.then(async (response) => {
 				result = ["resolve", response];
 				if (import_react.isValidElement(response)) {
 					shouldDismiss = false;
@@ -25162,26 +25162,26 @@ function getHullPresorted(points) {
 	if (points.length <= 1) return points.slice();
 	const upperHull = [];
 	for (let i = 0; i < points.length; i++) {
-		const p$1 = points[i];
+		const p = points[i];
 		while (upperHull.length >= 2) {
 			const q = upperHull[upperHull.length - 1];
 			const r$1 = upperHull[upperHull.length - 2];
-			if ((q.x - r$1.x) * (p$1.y - r$1.y) >= (q.y - r$1.y) * (p$1.x - r$1.x)) upperHull.pop();
+			if ((q.x - r$1.x) * (p.y - r$1.y) >= (q.y - r$1.y) * (p.x - r$1.x)) upperHull.pop();
 			else break;
 		}
-		upperHull.push(p$1);
+		upperHull.push(p);
 	}
 	upperHull.pop();
 	const lowerHull = [];
 	for (let i = points.length - 1; i >= 0; i--) {
-		const p$1 = points[i];
+		const p = points[i];
 		while (lowerHull.length >= 2) {
 			const q = lowerHull[lowerHull.length - 1];
 			const r$1 = lowerHull[lowerHull.length - 2];
-			if ((q.x - r$1.x) * (p$1.y - r$1.y) >= (q.y - r$1.y) * (p$1.x - r$1.x)) lowerHull.pop();
+			if ((q.x - r$1.x) * (p.y - r$1.y) >= (q.y - r$1.y) * (p.x - r$1.x)) lowerHull.pop();
 			else break;
 		}
-		lowerHull.push(p$1);
+		lowerHull.push(p);
 	}
 	lowerHull.pop();
 	if (upperHull.length === 1 && lowerHull.length === 1 && upperHull[0].x === lowerHull[0].x && upperHull[0].y === lowerHull[0].y) return upperHull;
@@ -28092,7 +28092,7 @@ var __assign = function() {
 	__assign = Object.assign || function __assign$1(t) {
 		for (var s$1, i = 1, n = arguments.length; i < n; i++) {
 			s$1 = arguments[i];
-			for (var p$1 in s$1) if (Object.prototype.hasOwnProperty.call(s$1, p$1)) t[p$1] = s$1[p$1];
+			for (var p in s$1) if (Object.prototype.hasOwnProperty.call(s$1, p)) t[p] = s$1[p];
 		}
 		return t;
 	};
@@ -28100,9 +28100,9 @@ var __assign = function() {
 };
 function __rest(s$1, e) {
 	var t = {};
-	for (var p$1 in s$1) if (Object.prototype.hasOwnProperty.call(s$1, p$1) && e.indexOf(p$1) < 0) t[p$1] = s$1[p$1];
+	for (var p in s$1) if (Object.prototype.hasOwnProperty.call(s$1, p) && e.indexOf(p) < 0) t[p] = s$1[p];
 	if (s$1 != null && typeof Object.getOwnPropertySymbols === "function") {
-		for (var i = 0, p$1 = Object.getOwnPropertySymbols(s$1); i < p$1.length; i++) if (e.indexOf(p$1[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s$1, p$1[i])) t[p$1[i]] = s$1[p$1[i]];
+		for (var i = 0, p = Object.getOwnPropertySymbols(s$1); i < p.length; i++) if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s$1, p[i])) t[p[i]] = s$1[p[i]];
 	}
 	return t;
 }
@@ -34727,11 +34727,11 @@ Linear.prototype = {
 function linear_default(context) {
 	return new Linear(context);
 }
-function x(p$1) {
-	return p$1[0];
+function x(p) {
+	return p[0];
 }
-function y(p$1) {
-	return p$1[1];
+function y(p) {
+	return p[1];
 }
 function line_default(x$2, y$1) {
 	var defined$1 = constant_default$1(true), context = null, curve = linear_default, output = null, path$1 = withPath(line);
@@ -35154,8 +35154,8 @@ function sign(x$2) {
 	return x$2 < 0 ? -1 : 1;
 }
 function slope3(that, x2, y2) {
-	var h0 = that._x1 - that._x0, h1 = x2 - that._x1, s0 = (that._y1 - that._y0) / (h0 || h1 < 0 && -0), s1 = (y2 - that._y1) / (h1 || h0 < 0 && -0), p$1 = (s0 * h1 + s1 * h0) / (h0 + h1);
-	return (sign(s0) + sign(s1)) * Math.min(Math.abs(s0), Math.abs(s1), .5 * Math.abs(p$1)) || 0;
+	var h0 = that._x1 - that._x0, h1 = x2 - that._x1, s0 = (that._y1 - that._y0) / (h0 || h1 < 0 && -0), s1 = (y2 - that._y1) / (h1 || h0 < 0 && -0), p = (s0 * h1 + s1 * h0) / (h0 + h1);
+	return (sign(s0) + sign(s1)) * Math.min(Math.abs(s0), Math.abs(s1), .5 * Math.abs(p)) || 0;
 }
 function slope2(that, t) {
 	var h = that._x1 - that._x0;
@@ -35659,12 +35659,12 @@ function _inherits$21(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$21(subClass, superClass);
 }
-function _setPrototypeOf$21(o, p$1) {
-	_setPrototypeOf$21 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$21(o, p) {
+	_setPrototypeOf$21 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$21(o, p$1);
+	return _setPrototypeOf$21(o, p);
 }
 function _defineProperty$45(obj, key, value) {
 	key = _toPropertyKey$46(key);
@@ -36660,12 +36660,12 @@ function _inherits$20(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$20(subClass, superClass);
 }
-function _setPrototypeOf$20(o, p$1) {
-	_setPrototypeOf$20 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$20(o, p) {
+	_setPrototypeOf$20 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$20(o, p$1);
+	return _setPrototypeOf$20(o, p);
 }
 function _defineProperty$44(obj, key, value) {
 	key = _toPropertyKey$45(key);
@@ -37447,12 +37447,12 @@ function _inherits$19(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$19(subClass, superClass);
 }
-function _setPrototypeOf$19(o, p$1) {
-	_setPrototypeOf$19 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$19(o, p) {
+	_setPrototypeOf$19 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$19(o, p$1);
+	return _setPrototypeOf$19(o, p);
 }
 function _defineProperty$41(obj, key, value) {
 	key = _toPropertyKey$42(key);
@@ -37684,12 +37684,12 @@ function _inherits$18(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$18(subClass, superClass);
 }
-function _setPrototypeOf$18(o, p$1) {
-	_setPrototypeOf$18 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$18(o, p) {
+	_setPrototypeOf$18 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$18(o, p$1);
+	return _setPrototypeOf$18(o, p);
 }
 function _defineProperty$40(obj, key, value) {
 	key = _toPropertyKey$41(key);
@@ -38960,19 +38960,19 @@ function swap(array, i, j) {
 	array[i] = array[j];
 	array[j] = t;
 }
-function quantile(values, p$1, valueof) {
+function quantile(values, p, valueof) {
 	values = Float64Array.from(numbers(values, valueof));
-	if (!(n = values.length) || isNaN(p$1 = +p$1)) return;
-	if (p$1 <= 0 || n < 2) return min$3(values);
-	if (p$1 >= 1) return max$4(values);
-	var n, i = (n - 1) * p$1, i0 = Math.floor(i), value0 = max$4(quickselect(values, i0).subarray(0, i0 + 1));
+	if (!(n = values.length) || isNaN(p = +p)) return;
+	if (p <= 0 || n < 2) return min$3(values);
+	if (p >= 1) return max$4(values);
+	var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = max$4(quickselect(values, i0).subarray(0, i0 + 1));
 	return value0 + (min$3(values.subarray(i0 + 1)) - value0) * (i - i0);
 }
-function quantileSorted(values, p$1, valueof = number$2) {
-	if (!(n = values.length) || isNaN(p$1 = +p$1)) return;
-	if (p$1 <= 0 || n < 2) return +valueof(values[0], 0, values);
-	if (p$1 >= 1) return +valueof(values[n - 1], n - 1, values);
-	var n, i = (n - 1) * p$1, i0 = Math.floor(i), value0 = +valueof(values[i0], i0, values);
+function quantileSorted(values, p, valueof = number$2) {
+	if (!(n = values.length) || isNaN(p = +p)) return;
+	if (p <= 0 || n < 2) return +valueof(values[0], 0, values);
+	if (p >= 1) return +valueof(values[n - 1], n - 1, values);
+	var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = +valueof(values[i0], i0, values);
 	return value0 + (+valueof(values[i0 + 1], i0 + 1, values) - value0) * (i - i0);
 }
 function range$4(start, stop, step) {
@@ -39699,9 +39699,9 @@ function continuous() {
 function formatDecimal_default(x$2) {
 	return Math.abs(x$2 = Math.round(x$2)) >= 1e21 ? x$2.toLocaleString("en").replace(/,/g, "") : x$2.toString(10);
 }
-function formatDecimalParts(x$2, p$1) {
+function formatDecimalParts(x$2, p) {
 	if (!isFinite(x$2) || x$2 === 0) return null;
-	var i = (x$2 = p$1 ? x$2.toExponential(p$1 - 1) : x$2.toExponential()).indexOf("e"), coefficient = x$2.slice(0, i);
+	var i = (x$2 = p ? x$2.toExponential(p - 1) : x$2.toExponential()).indexOf("e"), coefficient = x$2.slice(0, i);
 	return [coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient, +x$2.slice(i + 1)];
 }
 function exponent_default(x$2) {
@@ -39776,28 +39776,28 @@ function formatTrim_default(s$1) {
 	return i0 > 0 ? s$1.slice(0, i0) + s$1.slice(i1 + 1) : s$1;
 }
 var prefixExponent;
-function formatPrefixAuto_default(x$2, p$1) {
-	var d = formatDecimalParts(x$2, p$1);
-	if (!d) return prefixExponent = void 0, x$2.toPrecision(p$1);
+function formatPrefixAuto_default(x$2, p) {
+	var d = formatDecimalParts(x$2, p);
+	if (!d) return prefixExponent = void 0, x$2.toPrecision(p);
 	var coefficient = d[0], exponent = d[1], i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1, n = coefficient.length;
-	return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + formatDecimalParts(x$2, Math.max(0, p$1 + i - 1))[0];
+	return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + formatDecimalParts(x$2, Math.max(0, p + i - 1))[0];
 }
-function formatRounded_default(x$2, p$1) {
-	var d = formatDecimalParts(x$2, p$1);
+function formatRounded_default(x$2, p) {
+	var d = formatDecimalParts(x$2, p);
 	if (!d) return x$2 + "";
 	var coefficient = d[0], exponent = d[1];
 	return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
 }
 var formatTypes_default = {
-	"%": (x$2, p$1) => (x$2 * 100).toFixed(p$1),
+	"%": (x$2, p) => (x$2 * 100).toFixed(p),
 	"b": (x$2) => Math.round(x$2).toString(2),
 	"c": (x$2) => x$2 + "",
 	"d": formatDecimal_default,
-	"e": (x$2, p$1) => x$2.toExponential(p$1),
-	"f": (x$2, p$1) => x$2.toFixed(p$1),
-	"g": (x$2, p$1) => x$2.toPrecision(p$1),
+	"e": (x$2, p) => x$2.toExponential(p),
+	"f": (x$2, p) => x$2.toFixed(p),
+	"g": (x$2, p) => x$2.toPrecision(p),
 	"o": (x$2) => Math.round(x$2).toString(8),
-	"p": (x$2, p$1) => formatRounded_default(x$2 * 100, p$1),
+	"p": (x$2, p) => formatRounded_default(x$2 * 100, p),
 	"r": formatRounded_default,
 	"s": formatPrefixAuto_default,
 	"X": (x$2) => Math.round(x$2).toString(16).toUpperCase(),
@@ -40959,11 +40959,11 @@ function formatLocale(locale$2) {
 			return f;
 		},
 		parse: function(specifier) {
-			var p$1 = newParse(specifier += "", false);
-			p$1.toString = function() {
+			var p = newParse(specifier += "", false);
+			p.toString = function() {
 				return specifier;
 			};
-			return p$1;
+			return p;
 		},
 		utcFormat: function(specifier) {
 			var f = newFormat(specifier += "", utcFormats);
@@ -40973,11 +40973,11 @@ function formatLocale(locale$2) {
 			return f;
 		},
 		utcParse: function(specifier) {
-			var p$1 = newParse(specifier += "", true);
-			p$1.toString = function() {
+			var p = newParse(specifier += "", true);
+			p.toString = function() {
 				return specifier;
 			};
-			return p$1;
+			return p;
 		}
 	};
 }
@@ -41079,135 +41079,135 @@ function parseUnixTimestampSeconds(d, string, i) {
 	var n = numberRe.exec(string.slice(i));
 	return n ? (d.s = +n[0], i + n[0].length) : -1;
 }
-function formatDayOfMonth(d, p$1) {
-	return pad(d.getDate(), p$1, 2);
+function formatDayOfMonth(d, p) {
+	return pad(d.getDate(), p, 2);
 }
-function formatHour24(d, p$1) {
-	return pad(d.getHours(), p$1, 2);
+function formatHour24(d, p) {
+	return pad(d.getHours(), p, 2);
 }
-function formatHour12(d, p$1) {
-	return pad(d.getHours() % 12 || 12, p$1, 2);
+function formatHour12(d, p) {
+	return pad(d.getHours() % 12 || 12, p, 2);
 }
-function formatDayOfYear(d, p$1) {
-	return pad(1 + timeDay.count(timeYear(d), d), p$1, 3);
+function formatDayOfYear(d, p) {
+	return pad(1 + timeDay.count(timeYear(d), d), p, 3);
 }
-function formatMilliseconds(d, p$1) {
-	return pad(d.getMilliseconds(), p$1, 3);
+function formatMilliseconds(d, p) {
+	return pad(d.getMilliseconds(), p, 3);
 }
-function formatMicroseconds(d, p$1) {
-	return formatMilliseconds(d, p$1) + "000";
+function formatMicroseconds(d, p) {
+	return formatMilliseconds(d, p) + "000";
 }
-function formatMonthNumber(d, p$1) {
-	return pad(d.getMonth() + 1, p$1, 2);
+function formatMonthNumber(d, p) {
+	return pad(d.getMonth() + 1, p, 2);
 }
-function formatMinutes(d, p$1) {
-	return pad(d.getMinutes(), p$1, 2);
+function formatMinutes(d, p) {
+	return pad(d.getMinutes(), p, 2);
 }
-function formatSeconds(d, p$1) {
-	return pad(d.getSeconds(), p$1, 2);
+function formatSeconds(d, p) {
+	return pad(d.getSeconds(), p, 2);
 }
 function formatWeekdayNumberMonday(d) {
 	var day = d.getDay();
 	return day === 0 ? 7 : day;
 }
-function formatWeekNumberSunday(d, p$1) {
-	return pad(timeSunday.count(timeYear(d) - 1, d), p$1, 2);
+function formatWeekNumberSunday(d, p) {
+	return pad(timeSunday.count(timeYear(d) - 1, d), p, 2);
 }
 function dISO(d) {
 	var day = d.getDay();
 	return day >= 4 || day === 0 ? timeThursday(d) : timeThursday.ceil(d);
 }
-function formatWeekNumberISO(d, p$1) {
+function formatWeekNumberISO(d, p) {
 	d = dISO(d);
-	return pad(timeThursday.count(timeYear(d), d) + (timeYear(d).getDay() === 4), p$1, 2);
+	return pad(timeThursday.count(timeYear(d), d) + (timeYear(d).getDay() === 4), p, 2);
 }
 function formatWeekdayNumberSunday(d) {
 	return d.getDay();
 }
-function formatWeekNumberMonday(d, p$1) {
-	return pad(timeMonday.count(timeYear(d) - 1, d), p$1, 2);
+function formatWeekNumberMonday(d, p) {
+	return pad(timeMonday.count(timeYear(d) - 1, d), p, 2);
 }
-function formatYear(d, p$1) {
-	return pad(d.getFullYear() % 100, p$1, 2);
+function formatYear(d, p) {
+	return pad(d.getFullYear() % 100, p, 2);
 }
-function formatYearISO(d, p$1) {
+function formatYearISO(d, p) {
 	d = dISO(d);
-	return pad(d.getFullYear() % 100, p$1, 2);
+	return pad(d.getFullYear() % 100, p, 2);
 }
-function formatFullYear(d, p$1) {
-	return pad(d.getFullYear() % 1e4, p$1, 4);
+function formatFullYear(d, p) {
+	return pad(d.getFullYear() % 1e4, p, 4);
 }
-function formatFullYearISO(d, p$1) {
+function formatFullYearISO(d, p) {
 	var day = d.getDay();
 	d = day >= 4 || day === 0 ? timeThursday(d) : timeThursday.ceil(d);
-	return pad(d.getFullYear() % 1e4, p$1, 4);
+	return pad(d.getFullYear() % 1e4, p, 4);
 }
 function formatZone(d) {
 	var z$1 = d.getTimezoneOffset();
 	return (z$1 > 0 ? "-" : (z$1 *= -1, "+")) + pad(z$1 / 60 | 0, "0", 2) + pad(z$1 % 60, "0", 2);
 }
-function formatUTCDayOfMonth(d, p$1) {
-	return pad(d.getUTCDate(), p$1, 2);
+function formatUTCDayOfMonth(d, p) {
+	return pad(d.getUTCDate(), p, 2);
 }
-function formatUTCHour24(d, p$1) {
-	return pad(d.getUTCHours(), p$1, 2);
+function formatUTCHour24(d, p) {
+	return pad(d.getUTCHours(), p, 2);
 }
-function formatUTCHour12(d, p$1) {
-	return pad(d.getUTCHours() % 12 || 12, p$1, 2);
+function formatUTCHour12(d, p) {
+	return pad(d.getUTCHours() % 12 || 12, p, 2);
 }
-function formatUTCDayOfYear(d, p$1) {
-	return pad(1 + utcDay.count(utcYear(d), d), p$1, 3);
+function formatUTCDayOfYear(d, p) {
+	return pad(1 + utcDay.count(utcYear(d), d), p, 3);
 }
-function formatUTCMilliseconds(d, p$1) {
-	return pad(d.getUTCMilliseconds(), p$1, 3);
+function formatUTCMilliseconds(d, p) {
+	return pad(d.getUTCMilliseconds(), p, 3);
 }
-function formatUTCMicroseconds(d, p$1) {
-	return formatUTCMilliseconds(d, p$1) + "000";
+function formatUTCMicroseconds(d, p) {
+	return formatUTCMilliseconds(d, p) + "000";
 }
-function formatUTCMonthNumber(d, p$1) {
-	return pad(d.getUTCMonth() + 1, p$1, 2);
+function formatUTCMonthNumber(d, p) {
+	return pad(d.getUTCMonth() + 1, p, 2);
 }
-function formatUTCMinutes(d, p$1) {
-	return pad(d.getUTCMinutes(), p$1, 2);
+function formatUTCMinutes(d, p) {
+	return pad(d.getUTCMinutes(), p, 2);
 }
-function formatUTCSeconds(d, p$1) {
-	return pad(d.getUTCSeconds(), p$1, 2);
+function formatUTCSeconds(d, p) {
+	return pad(d.getUTCSeconds(), p, 2);
 }
 function formatUTCWeekdayNumberMonday(d) {
 	var dow = d.getUTCDay();
 	return dow === 0 ? 7 : dow;
 }
-function formatUTCWeekNumberSunday(d, p$1) {
-	return pad(utcSunday.count(utcYear(d) - 1, d), p$1, 2);
+function formatUTCWeekNumberSunday(d, p) {
+	return pad(utcSunday.count(utcYear(d) - 1, d), p, 2);
 }
 function UTCdISO(d) {
 	var day = d.getUTCDay();
 	return day >= 4 || day === 0 ? utcThursday(d) : utcThursday.ceil(d);
 }
-function formatUTCWeekNumberISO(d, p$1) {
+function formatUTCWeekNumberISO(d, p) {
 	d = UTCdISO(d);
-	return pad(utcThursday.count(utcYear(d), d) + (utcYear(d).getUTCDay() === 4), p$1, 2);
+	return pad(utcThursday.count(utcYear(d), d) + (utcYear(d).getUTCDay() === 4), p, 2);
 }
 function formatUTCWeekdayNumberSunday(d) {
 	return d.getUTCDay();
 }
-function formatUTCWeekNumberMonday(d, p$1) {
-	return pad(utcMonday.count(utcYear(d) - 1, d), p$1, 2);
+function formatUTCWeekNumberMonday(d, p) {
+	return pad(utcMonday.count(utcYear(d) - 1, d), p, 2);
 }
-function formatUTCYear(d, p$1) {
-	return pad(d.getUTCFullYear() % 100, p$1, 2);
+function formatUTCYear(d, p) {
+	return pad(d.getUTCFullYear() % 100, p, 2);
 }
-function formatUTCYearISO(d, p$1) {
+function formatUTCYearISO(d, p) {
 	d = UTCdISO(d);
-	return pad(d.getUTCFullYear() % 100, p$1, 2);
+	return pad(d.getUTCFullYear() % 100, p, 2);
 }
-function formatUTCFullYear(d, p$1) {
-	return pad(d.getUTCFullYear() % 1e4, p$1, 4);
+function formatUTCFullYear(d, p) {
+	return pad(d.getUTCFullYear() % 1e4, p, 4);
 }
-function formatUTCFullYearISO(d, p$1) {
+function formatUTCFullYearISO(d, p) {
 	var day = d.getUTCDay();
 	d = day >= 4 || day === 0 ? utcThursday(d) : utcThursday.ceil(d);
-	return pad(d.getUTCFullYear() % 1e4, p$1, 4);
+	return pad(d.getUTCFullYear() % 1e4, p, 4);
 }
 function formatUTCZone() {
 	return "+0000";
@@ -42377,7 +42377,7 @@ var require_decimal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			}
 		}
 		function clone(obj) {
-			var i, p$1, ps;
+			var i, p, ps;
 			function Decimal$3(value) {
 				var x$2 = this;
 				if (!(x$2 instanceof Decimal$3)) return new Decimal$3(value);
@@ -42435,14 +42435,14 @@ var require_decimal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					"toExpPos",
 					"LN10"
 				];
-				for (i = 0; i < ps.length;) if (!obj.hasOwnProperty(p$1 = ps[i++])) obj[p$1] = this[p$1];
+				for (i = 0; i < ps.length;) if (!obj.hasOwnProperty(p = ps[i++])) obj[p] = this[p];
 			}
 			Decimal$3.config(obj);
 			return Decimal$3;
 		}
 		function config(obj) {
 			if (!obj || typeof obj !== "object") throw Error(decimalError + "Object expected");
-			var i, p$1, v, ps = [
+			var i, p, v, ps = [
 				"precision",
 				1,
 				MAX_DIGITS,
@@ -42456,10 +42456,10 @@ var require_decimal = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 				0,
 				Infinity
 			];
-			for (i = 0; i < ps.length; i += 3) if ((v = obj[p$1 = ps[i]]) !== void 0) if (mathfloor(v) === v && v >= ps[i + 1] && v <= ps[i + 2]) this[p$1] = v;
-			else throw Error(invalidArgument + p$1 + ": " + v);
-			if ((v = obj[p$1 = "LN10"]) !== void 0) if (v == Math.LN10) this[p$1] = new this(v);
-			else throw Error(invalidArgument + p$1 + ": " + v);
+			for (i = 0; i < ps.length; i += 3) if ((v = obj[p = ps[i]]) !== void 0) if (mathfloor(v) === v && v >= ps[i + 1] && v <= ps[i + 2]) this[p] = v;
+			else throw Error(invalidArgument + p + ": " + v);
+			if ((v = obj[p = "LN10"]) !== void 0) if (v == Math.LN10) this[p] = new this(v);
+			else throw Error(invalidArgument + p + ": " + v);
 			return this;
 		}
 		Decimal$2 = clone(Decimal$2);
@@ -42936,12 +42936,12 @@ function _inherits$17(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$17(subClass, superClass);
 }
-function _setPrototypeOf$17(o, p$1) {
-	_setPrototypeOf$17 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$17(o, p) {
+	_setPrototypeOf$17 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$17(o, p$1);
+	return _setPrototypeOf$17(o, p);
 }
 function _defineProperty$37(obj, key, value) {
 	key = _toPropertyKey$37(key);
@@ -44978,14 +44978,14 @@ var CURVE_FACTORIES = {
 	curveStepAfter: stepAfter,
 	curveStepBefore: stepBefore
 };
-var defined = function defined$1(p$1) {
-	return p$1.x === +p$1.x && p$1.y === +p$1.y;
+var defined = function defined$1(p) {
+	return p.x === +p.x && p.y === +p.y;
 };
-var getX = function getX$1(p$1) {
-	return p$1.x;
+var getX = function getX$1(p) {
+	return p.x;
 };
-var getY = function getY$1(p$1) {
-	return p$1.y;
+var getY = function getY$1(p) {
+	return p.y;
 };
 var getCurveFactory = function getCurveFactory$1(type, layout) {
 	if ((0, import_isFunction$15.default)(type)) return type;
@@ -46641,12 +46641,12 @@ function _inherits$16(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$16(subClass, superClass);
 }
-function _setPrototypeOf$16(o, p$1) {
-	_setPrototypeOf$16 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$16(o, p) {
+	_setPrototypeOf$16 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$16(o, p$1);
+	return _setPrototypeOf$16(o, p);
 }
 function _createSuper(Derived) {
 	var hasNativeReflectConstruct = _isNativeReflectConstruct$16();
@@ -47543,12 +47543,12 @@ function _inherits$15(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$15(subClass, superClass);
 }
-function _setPrototypeOf$15(o, p$1) {
-	_setPrototypeOf$15 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$15(o, p) {
+	_setPrototypeOf$15 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$15(o, p$1);
+	return _setPrototypeOf$15(o, p);
 }
 function _defineProperty$24(obj, key, value) {
 	key = _toPropertyKey$24(key);
@@ -47801,12 +47801,12 @@ function _inherits$14(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$14(subClass, superClass);
 }
-function _setPrototypeOf$14(o, p$1) {
-	_setPrototypeOf$14 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$14(o, p) {
+	_setPrototypeOf$14 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$14(o, p$1);
+	return _setPrototypeOf$14(o, p);
 }
 function _defineProperty$23(obj, key, value) {
 	key = _toPropertyKey$23(key);
@@ -48451,12 +48451,12 @@ function _inherits$13(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$13(subClass, superClass);
 }
-function _setPrototypeOf$13(o, p$1) {
-	_setPrototypeOf$13 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$13(o, p) {
+	_setPrototypeOf$13 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$13(o, p$1);
+	return _setPrototypeOf$13(o, p);
 }
 function _defineProperty$20(obj, key, value) {
 	key = _toPropertyKey$20(key);
@@ -49078,12 +49078,12 @@ function _inherits$12(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$12(subClass, superClass);
 }
-function _setPrototypeOf$12(o, p$1) {
-	_setPrototypeOf$12 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$12(o, p) {
+	_setPrototypeOf$12 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$12(o, p$1);
+	return _setPrototypeOf$12(o, p);
 }
 function _defineProperty$18(obj, key, value) {
 	key = _toPropertyKey$18(key);
@@ -49890,12 +49890,12 @@ function _inherits$11(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$11(subClass, superClass);
 }
-function _setPrototypeOf$11(o, p$1) {
-	_setPrototypeOf$11 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$11(o, p) {
+	_setPrototypeOf$11 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$11(o, p$1);
+	return _setPrototypeOf$11(o, p);
 }
 function _defineProperty$16(obj, key, value) {
 	key = _toPropertyKey$16(key);
@@ -50674,12 +50674,12 @@ function _inherits$10(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$10(subClass, superClass);
 }
-function _setPrototypeOf$10(o, p$1) {
-	_setPrototypeOf$10 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$10(o, p) {
+	_setPrototypeOf$10 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$10(o, p$1);
+	return _setPrototypeOf$10(o, p);
 }
 function ownKeys$10(e, r$1) {
 	var t = Object.keys(e);
@@ -50816,11 +50816,11 @@ var getEndPoints = function getEndPoints$1(scales, isFixedX, isFixedY, isSegment
 		return xAxisOrientation === "top" ? _points.reverse() : _points;
 	}
 	if (isSegment) {
-		var _points2 = props.segment.map(function(p$1) {
-			return scales.apply(p$1, { position });
+		var _points2 = props.segment.map(function(p) {
+			return scales.apply(p, { position });
 		});
-		if (ifOverflowMatches(props, "discard") && (0, import_some.default)(_points2, function(p$1) {
-			return !scales.isInRange(p$1);
+		if (ifOverflowMatches(props, "discard") && (0, import_some.default)(_points2, function(p) {
+			return !scales.isInRange(p);
 		})) return null;
 		return _points2;
 	}
@@ -50972,12 +50972,12 @@ function _inherits$9(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$9(subClass, superClass);
 }
-function _setPrototypeOf$9(o, p$1) {
-	_setPrototypeOf$9 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$9(o, p) {
+	_setPrototypeOf$9 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$9(o, p$1);
+	return _setPrototypeOf$9(o, p);
 }
 function _defineProperty$13(obj, key, value) {
 	key = _toPropertyKey$13(key);
@@ -51165,12 +51165,12 @@ function _inherits$8(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$8(subClass, superClass);
 }
-function _setPrototypeOf$8(o, p$1) {
-	_setPrototypeOf$8 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$8(o, p) {
+	_setPrototypeOf$8 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$8(o, p$1);
+	return _setPrototypeOf$8(o, p);
 }
 function _defineProperty$12(obj, key, value) {
 	key = _toPropertyKey$12(key);
@@ -51592,12 +51592,12 @@ function _inherits$7(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$7(subClass, superClass);
 }
-function _setPrototypeOf$7(o, p$1) {
-	_setPrototypeOf$7 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$7(o, p) {
+	_setPrototypeOf$7 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$7(o, p$1);
+	return _setPrototypeOf$7(o, p);
 }
 function _defineProperty$10(obj, key, value) {
 	key = _toPropertyKey$10(key);
@@ -52327,12 +52327,12 @@ function _inherits$6(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$6(subClass, superClass);
 }
-function _setPrototypeOf$6(o, p$1) {
-	_setPrototypeOf$6 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$6(o, p) {
+	_setPrototypeOf$6 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$6(o, p$1);
+	return _setPrototypeOf$6(o, p);
 }
 function _defineProperty$8(obj, key, value) {
 	key = _toPropertyKey$8(key);
@@ -52830,12 +52830,12 @@ function _inherits$5(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$5(subClass, superClass);
 }
-function _setPrototypeOf$5(o, p$1) {
-	_setPrototypeOf$5 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$5(o, p) {
+	_setPrototypeOf$5 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$5(o, p$1);
+	return _setPrototypeOf$5(o, p);
 }
 function _defineProperty$7(obj, key, value) {
 	key = _toPropertyKey$7(key);
@@ -53284,12 +53284,12 @@ function _inherits$4(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$4(subClass, superClass);
 }
-function _setPrototypeOf$4(o, p$1) {
-	_setPrototypeOf$4 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$4(o, p) {
+	_setPrototypeOf$4 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$4(o, p$1);
+	return _setPrototypeOf$4(o, p);
 }
 function _defineProperty$6(obj, key, value) {
 	key = _toPropertyKey$6(key);
@@ -53480,12 +53480,12 @@ function _inherits$3(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$3(subClass, superClass);
 }
-function _setPrototypeOf$3(o, p$1) {
-	_setPrototypeOf$3 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$3(o, p) {
+	_setPrototypeOf$3 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$3(o, p$1);
+	return _setPrototypeOf$3(o, p);
 }
 function _defineProperty$5(obj, key, value) {
 	key = _toPropertyKey$5(key);
@@ -53857,12 +53857,12 @@ function _inherits$2(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$2(subClass, superClass);
 }
-function _setPrototypeOf$2(o, p$1) {
-	_setPrototypeOf$2 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$2(o, p) {
+	_setPrototypeOf$2 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$2(o, p$1);
+	return _setPrototypeOf$2(o, p);
 }
 function _defineProperty$4(obj, key, value) {
 	key = _toPropertyKey$4(key);
@@ -54013,12 +54013,12 @@ function _inherits$1(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf$1(subClass, superClass);
 }
-function _setPrototypeOf$1(o, p$1) {
-	_setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf$1(o, p) {
+	_setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf$1(o, p$1);
+	return _setPrototypeOf$1(o, p);
 }
 function _defineProperty$3(obj, key, value) {
 	key = _toPropertyKey$3(key);
@@ -54711,12 +54711,12 @@ function _inherits(subClass, superClass) {
 	Object.defineProperty(subClass, "prototype", { writable: false });
 	if (superClass) _setPrototypeOf(subClass, superClass);
 }
-function _setPrototypeOf(o, p$1) {
-	_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$2) {
-		o$1.__proto__ = p$2;
+function _setPrototypeOf(o, p) {
+	_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf$22(o$1, p$1) {
+		o$1.__proto__ = p$1;
 		return o$1;
 	};
-	return _setPrototypeOf(o, p$1);
+	return _setPrototypeOf(o, p);
 }
 function _toConsumableArray(arr) {
 	return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
@@ -59230,13 +59230,13 @@ var AlertDescription = import_react.forwardRef(({ className, ...props }, ref) =>
 }));
 AlertDescription.displayName = "AlertDescription";
 function SectorPastureTab({ sectorId }) {
-	const [pastures, setPastures] = (0, import_react.useState)(pasturesData.filter((p$1) => p$1.sector === sectorId || p$1.sector === "todos"));
+	const [pastures, setPastures] = (0, import_react.useState)(pasturesData.filter((p) => p.sector === sectorId || p.sector === "todos"));
 	const [lotes, setLotes] = (0, import_react.useState)(sectorData[sectorId]?.lotes || []);
 	const handleScoreChange = (id, score) => {
-		setPastures((prev) => prev.map((p$1) => p$1.id === id ? {
-			...p$1,
+		setPastures((prev) => prev.map((p) => p.id === id ? {
+			...p,
 			score: parseInt(score)
-		} : p$1));
+		} : p));
 	};
 	const handleSupplementChange = (loteId, field, value) => {
 		setLotes((prev) => prev.map((l) => {
@@ -59271,7 +59271,7 @@ function SectorPastureTab({ sectorId }) {
 			variant: "outline"
 		};
 	};
-	const restedPastures = pastures.filter((p$1) => p$1.daysOfRest > 0 && p$1.daysOfRest >= p$1.optimalRestDuration);
+	const restedPastures = pastures.filter((p) => p.daysOfRest > 0 && p.daysOfRest >= p.optimalRestDuration);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
@@ -59281,30 +59281,30 @@ function SectorPastureTab({ sectorId }) {
 			className: "space-y-4",
 			children: [restedPastures.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "space-y-3 mb-6",
-				children: restedPastures.map((p$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
+				children: restedPastures.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
 					className: "bg-green-50/50 border-green-200 dark:bg-green-950/20 dark:border-green-900",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, { className: "h-4 w-4 text-green-600 dark:text-green-400" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AlertTitle, {
 							className: "text-green-800 dark:text-green-300",
-							children: ["Pasto Pronto: ", p$1.nome]
+							children: ["Pasto Pronto: ", p.nome]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AlertDescription, {
 							className: "text-green-700 dark:text-green-400",
 							children: [
 								"O pasto atingiu ",
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [p$1.daysOfRest, " dias"] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [p.daysOfRest, " dias"] }),
 								" de descanso (Meta:",
 								" ",
-								p$1.optimalRestDuration,
+								p.optimalRestDuration,
 								" dias). Lotação recomendada para entrada:",
 								" ",
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [p$1.recommendedLotSize, " cabeças"] }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [p.recommendedLotSize, " cabeças"] }),
 								"."
 							]
 						})
 					]
-				}, p$1.id))
+				}, p.id))
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "overflow-x-auto",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
@@ -59313,17 +59313,17 @@ function SectorPastureTab({ sectorId }) {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Escore (1-5)" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Ação Recomendada" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descanso (Dias / Meta)" })
-				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [pastures.map((p$1) => {
-					const status = getScoreStatus(p$1.score);
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [pastures.map((p) => {
+					const status = getScoreStatus(p.score);
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 							className: "font-medium",
-							children: p$1.nome
+							children: p.nome
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p$1.area }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.area }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-							value: p$1.score.toString(),
-							onValueChange: (val) => handleScoreChange(p$1.id, val),
+							value: p.score.toString(),
+							onValueChange: (val) => handleScoreChange(p.id, val),
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
 								className: "w-[80px]",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {})
@@ -59349,14 +59349,14 @@ function SectorPastureTab({ sectorId }) {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex items-center gap-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: p$1.daysOfRest >= p$1.optimalRestDuration ? "text-green-600 font-medium" : "",
-								children: p$1.daysOfRest
+								className: p.daysOfRest >= p.optimalRestDuration ? "text-green-600 font-medium" : "",
+								children: p.daysOfRest
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 								className: "text-muted-foreground",
-								children: ["/ ", p$1.optimalRestDuration]
+								children: ["/ ", p.optimalRestDuration]
 							})]
 						}) })
-					] }, p$1.id);
+					] }, p.id);
 				}), pastures.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					colSpan: 5,
 					className: "text-center text-muted-foreground py-6",
@@ -59866,10 +59866,10 @@ function usePastoStore() {
 		}, []),
 		updatePasto: (0, import_react.useCallback)((id, data) => {
 			setPastos((prev) => {
-				const updated = prev.map((p$1) => p$1.id === id ? {
-					...p$1,
+				const updated = prev.map((p) => p.id === id ? {
+					...p,
 					...data
-				} : p$1);
+				} : p);
 				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
 				window.dispatchEvent(new Event("pastos-updated"));
 				return updated;
@@ -59877,7 +59877,7 @@ function usePastoStore() {
 		}, []),
 		deletePasto: (0, import_react.useCallback)((id) => {
 			setPastos((prev) => {
-				const updated = prev.filter((p$1) => p$1.id !== id);
+				const updated = prev.filter((p) => p.id !== id);
 				localStorage.setItem(STORAGE_KEY$3, JSON.stringify(updated));
 				window.dispatchEvent(new Event("pastos-updated"));
 				return updated;
@@ -59896,7 +59896,7 @@ function ManagementTab() {
 	const [newInvDate, setNewInvDate] = (0, import_react.useState)("");
 	const [newInvDesc, setNewInvDesc] = (0, import_react.useState)("");
 	const [isInvOpen, setIsInvOpen] = (0, import_react.useState)(false);
-	const pasto = pastos.find((p$1) => p$1.id === selectedPasto);
+	const pasto = pastos.find((p) => p.id === selectedPasto);
 	const handleAddPasto = () => {
 		if (!newPastoName) return;
 		addPasto({
@@ -59998,18 +59998,18 @@ function ManagementTab() {
 				className: "flex-1 overflow-y-auto p-0",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex flex-col",
-					children: pastos.map((p$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						onClick: () => setSelectedPasto(p$1.id),
-						className: cn("px-4 py-3 text-left hover:bg-muted/50 transition-colors border-b cursor-pointer flex justify-between group", selectedPasto === p$1.id && "bg-muted"),
+					children: pastos.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						onClick: () => setSelectedPasto(p.id),
+						className: cn("px-4 py-3 text-left hover:bg-muted/50 transition-colors border-b cursor-pointer flex justify-between group", selectedPasto === p.id && "bg-muted"),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "font-medium text-sm",
-							children: p$1.nome
+							children: p.nome
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-xs text-muted-foreground",
 							children: [
-								p$1.cultivar,
+								p.cultivar,
 								" • ",
-								p$1.area,
+								p.area,
 								" ha"
 							]
 						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
@@ -60018,12 +60018,12 @@ function ManagementTab() {
 							className: "h-6 w-6 opacity-0 group-hover:opacity-100",
 							onClick: (e) => {
 								e.stopPropagation();
-								deletePasto(p$1.id);
-								if (selectedPasto === p$1.id) setSelectedPasto(null);
+								deletePasto(p.id);
+								if (selectedPasto === p.id) setSelectedPasto(null);
 							},
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-3 w-3 text-destructive" })
 						})]
-					}, p$1.id))
+					}, p.id))
 				})
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -60190,24 +60190,24 @@ function EfficiencyTab() {
 					className: "text-center",
 					children: "ROI (%)"
 				})
-			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: efficiencyData.map((p$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: efficiencyData.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "font-medium text-sm",
-					children: p$1.nome
+					children: p.nome
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "text-xs text-muted-foreground",
 					children: [
-						p$1.area,
+						p.area,
 						" ha • ",
-						p$1.cultivar
+						p.cultivar
 					]
 				})] }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p$1.heads > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.heads > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "font-semibold text-xs text-primary",
-					children: p$1.occupantLabel
+					children: p.occupantLabel
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "text-[10px] text-muted-foreground",
-					children: [p$1.daysOccupied, " dias"]
+					children: [p.daysOccupied, " dias"]
 				})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 					variant: "outline",
 					className: "text-muted-foreground",
@@ -60215,41 +60215,41 @@ function EfficiencyTab() {
 				}) }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 					className: "text-right text-destructive font-medium",
-					children: ["R$ ", p$1.totalMaintenanceCost.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+					children: ["R$ ", p.totalMaintenanceCost.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "text-right text-xs",
-					children: p$1.costPerHeadDay > 0 ? `R$ ${p$1.costPerHeadDay.toFixed(2)}` : "-"
+					children: p.costPerHeadDay > 0 ? `R$ ${p.costPerHeadDay.toFixed(2)}` : "-"
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "text-right",
-					children: p$1.weightGain > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					children: p.weightGain > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-center justify-end gap-1 text-emerald-600 font-medium",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3" }),
 							" ",
-							(p$1.weightGain / 30).toFixed(1),
+							(p.weightGain / 30).toFixed(1),
 							" @"
 						]
 					}) : "-"
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "text-right font-medium",
-					children: p$1.valueGenerated > 0 ? `R$ ${p$1.valueGenerated.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}` : "-"
+					children: p.valueGenerated > 0 ? `R$ ${p.valueGenerated.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}` : "-"
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "text-center",
-					children: p$1.roi !== 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-						variant: p$1.roi > 0 ? "default" : "destructive",
-						className: cn(p$1.roi > 0 && "bg-emerald-500 hover:bg-emerald-600"),
+					children: p.roi !== 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+						variant: p.roi > 0 ? "default" : "destructive",
+						className: cn(p.roi > 0 && "bg-emerald-500 hover:bg-emerald-600"),
 						children: [
-							p$1.roi > 0 ? "+" : "",
-							p$1.roi.toFixed(1),
+							p.roi > 0 ? "+" : "",
+							p.roi.toFixed(1),
 							"%"
 						]
 					}) : "-"
 				})
-			] }, p$1.id)) })] })
+			] }, p.id)) })] })
 		})]
 	});
 }
@@ -60272,14 +60272,14 @@ function Pastos() {
 		});
 	}, [pastos, animais]);
 	const handleSync = () => {
-		const alerts = dynamicPastures.filter((p$1) => p$1.alturaAtual < p$1.alturaSaidaAlvo || p$1.alturaAtual > p$1.alturaEntradaAlvo);
+		const alerts = dynamicPastures.filter((pasto) => pasto.alturaAtual < pasto.alturaSaidaAlvo || pasto.alturaAtual > pasto.alturaEntradaAlvo);
 		toast$2({
 			title: "Sincronização Concluída",
 			description: `Dados de campo atualizados. ${alerts.length > 0 ? `Atenção: ${alerts.length} pasto(s) com desvio de altura.` : ""}`,
 			variant: alerts.length > 0 ? "destructive" : "default"
 		});
 	};
-	const activePaddockData = selectedPaddock ? dynamicPastures.find((p$1) => p$1.id === selectedPaddock) : null;
+	const activePaddockData = selectedPaddock ? dynamicPastures.find((pasto) => pasto.id === selectedPaddock) : null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -60535,7 +60535,7 @@ function Pastos() {
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
 							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: dynamicPastures.map((pasto) => {
-								const isHeightAlert = pasto.alturaAtual < pasto.alturaSaidaAlvo || pasto.alturaAtual > p.alturaEntradaAlvo;
+								const isHeightAlert = pasto.alturaAtual < pasto.alturaSaidaAlvo || pasto.alturaAtual > pasto.alturaEntradaAlvo;
 								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 										className: "font-medium",
@@ -60710,7 +60710,7 @@ function useFinanceStore() {
 		lotThresholds,
 		setLotThreshold: (0, import_react.useCallback)((loteId, threshold$1) => {
 			setLotThresholds((prev) => {
-				return [...prev.filter((p$1) => p$1.loteId !== loteId), {
+				return [...prev.filter((p) => p.loteId !== loteId), {
 					loteId,
 					threshold: threshold$1
 				}];
@@ -66069,18 +66069,18 @@ function ProtocolosTab() {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Vacina / Manejo" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Frequência Recomendada" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status Legal" })
-			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: regionalProtocols.map((p$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+			] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: regionalProtocols.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "font-medium",
-					children: p$1.ageGroup
+					children: p.ageGroup
 				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p$1.vaccine }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p$1.frequency }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.vaccine }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: p.frequency }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-					variant: p$1.mandatory.includes("Sim") ? "default" : "secondary",
-					children: p$1.mandatory
+					variant: p.mandatory.includes("Sim") ? "default" : "secondary",
+					children: p.mandatory
 				}) })
-			] }, p$1.id)) })] })
+			] }, p.id)) })] })
 		})
 	})] });
 }
@@ -67882,9 +67882,9 @@ function NestedRoot({ onDrag, onOpenChange, open: nestedIsOpen, ...rest }) {
 		onClose: () => {
 			onNestedOpenChange(false);
 		},
-		onDrag: (e, p$1) => {
-			onNestedDrag(e, p$1);
-			onDrag?.(e, p$1);
+		onDrag: (e, p) => {
+			onNestedDrag(e, p);
+			onDrag?.(e, p);
 		},
 		onOpenChange: (o) => {
 			if (o) onNestedOpenChange(o);
@@ -70899,7 +70899,7 @@ function SimulationHistory() {
 	const [isPrinting, setIsPrinting] = (0, import_react.useState)(false);
 	const toggleSelect = (id) => {
 		setSelected((prev) => {
-			if (prev.includes(id)) return prev.filter((p$1) => p$1 !== id);
+			if (prev.includes(id)) return prev.filter((p) => p !== id);
 			return [...prev, id];
 		});
 	};
@@ -71445,18 +71445,18 @@ function ProjecaoVendas() {
 	]);
 	const totalProjNetProfit = projections.reduce((a$1, c$1) => a$1 + c$1.netProfitHead * c$1.cabecas, 0);
 	const handleExportCSV = () => {
-		downloadCSV(projections.map((p$1) => ({
-			Lote: p$1.id,
-			Origem: p$1.origin,
-			Categoria: p$1.categoria,
-			Cabeças: p$1.cabecas,
-			"Peso Médio (kg)": p$1.pesoMedio,
-			"GMD (kg/dia)": p$1.gmd,
-			"Dias p/ Abate": p$1.daysNeeded,
-			"Ação Recomendada": p$1.rec,
-			"Custo Proj. Total/Cab (R$)": p$1.totalCostHead.toFixed(2),
-			"Lucro Líq. Proj/Cab (R$)": p$1.netProfitHead.toFixed(2),
-			"Receita Bruta Total (R$)": p$1.projRevenue.toFixed(2)
+		downloadCSV(projections.map((p) => ({
+			Lote: p.id,
+			Origem: p.origin,
+			Categoria: p.categoria,
+			Cabeças: p.cabecas,
+			"Peso Médio (kg)": p.pesoMedio,
+			"GMD (kg/dia)": p.gmd,
+			"Dias p/ Abate": p.daysNeeded,
+			"Ação Recomendada": p.rec,
+			"Custo Proj. Total/Cab (R$)": p.totalCostHead.toFixed(2),
+			"Lucro Líq. Proj/Cab (R$)": p.netProfitHead.toFixed(2),
+			"Receita Bruta Total (R$)": p.projRevenue.toFixed(2)
 		})), "projecao_vendas_inteligencia");
 		toast$2({
 			title: "Exportação Concluída",
@@ -71665,17 +71665,17 @@ function ProjecaoVendas() {
 										className: "text-right font-bold text-primary",
 										children: "Receita Bruta Total"
 									})
-								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: projections.map((p$1, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: projections.map((p, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "font-medium text-primary",
 										children: [
-											p$1.id,
+											p.id,
 											" ",
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 												className: "text-xs font-normal text-muted-foreground",
 												children: [
 													"(",
-													p$1.cabecas,
+													p.cabecas,
 													" cab.)"
 												]
 											})
@@ -71683,36 +71683,36 @@ function ProjecaoVendas() {
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "text-xs text-muted-foreground flex items-center mt-1 gap-1",
 										children: [
-											p$1.pesoMedio,
+											p.pesoMedio,
 											"kg •",
 											" ",
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3 text-emerald-500 print:hidden" }),
 											" ",
-											p$1.gmd,
+											p.gmd,
 											"kg/dia"
 										]
 									})] }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 										className: "text-center",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-											className: cn("text-xs font-semibold whitespace-nowrap", p$1.color),
-											children: p$1.rec
+											className: cn("text-xs font-semibold whitespace-nowrap", p.color),
+											children: p.rec
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "text-[10px] text-muted-foreground mt-0.5 flex items-center justify-center gap-1",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3 print:hidden" }), p$1.daysNeeded === 0 ? "Disponível" : `Em ${p$1.daysNeeded} d`]
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3 w-3 print:hidden" }), p.daysNeeded === 0 ? "Disponível" : `Em ${p.daysNeeded} d`]
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 										className: "text-right text-destructive font-medium whitespace-nowrap",
-										children: ["- R$ ", p$1.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+										children: ["- R$ ", p.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 										className: "text-right font-bold text-primary whitespace-nowrap transition-all",
-										children: ["R$ ", p$1.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+										children: ["R$ ", p.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 										className: "text-right font-bold text-primary whitespace-nowrap text-base transition-all",
-										children: ["R$ ", p$1.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+										children: ["R$ ", p.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
 									})
 								] }, idx)) })] })
 							})]
@@ -73850,10 +73850,10 @@ function AnimalRegistrationModal() {
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o pasto..." }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 										value: "none",
 										children: "Nenhum / Selecionar depois"
-									}), pastos.map((p$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-										value: p$1.id.toString(),
-										children: p$1.nome
-									}, p$1.id))] })]
+									}), pastos.map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: p.id.toString(),
+										children: p.nome
+									}, p.id))] })]
 								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -74442,7 +74442,7 @@ function MapaPropriedade() {
 			height: "55%"
 		}
 	];
-	const activePastoData = pasturesData.find((p$1) => p$1.id === selectedPasto);
+	const activePastoData = pasturesData.find((p) => p.id === selectedPasto);
 	const activeOccupant = activePastoData ? allLotes.find((l) => l.id === activePastoData.ocupanteAtual) : null;
 	const getPastoStatusInfo = (pasto) => {
 		if (pasto.status === "Vedado") return {
@@ -74481,7 +74481,7 @@ function MapaPropriedade() {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Clique nas divisões de pasto para ver detalhes de ocupação." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "relative w-full aspect-video min-h-[300px] bg-emerald-50/50 rounded-xl border-2 border-emerald-100 overflow-hidden shadow-inner",
 					children: mapLayout.map((pos) => {
-						const pasto = pasturesData.find((p$1) => p$1.id === pos.id);
+						const pasto = pasturesData.find((p) => p.id === pos.id);
 						if (!pasto) return null;
 						const occupant = allLotes.find((l) => l.id === pasto.ocupanteAtual);
 						const isSelected = selectedPasto === pos.id;
@@ -75540,4 +75540,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BFYYaBOa.js.map
+//# sourceMappingURL=index-DKPkGct2.js.map
