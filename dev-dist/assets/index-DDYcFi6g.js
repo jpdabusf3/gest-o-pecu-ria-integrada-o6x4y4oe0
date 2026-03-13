@@ -20058,6 +20058,13 @@ var SquareCheckBig = createLucideIcon("square-check-big", [["path", {
 	d: "m9 11 3 3L22 4",
 	key: "1pflzl"
 }]]);
+var SquarePen = createLucideIcon("square-pen", [["path", {
+	d: "M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7",
+	key: "1m0v6g"
+}], ["path", {
+	d: "M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z",
+	key: "ohrbg2"
+}]]);
 var Syringe = createLucideIcon("syringe", [
 	["path", {
 		d: "m18 2 4 4",
@@ -26915,6 +26922,21 @@ function FarmProvider({ children }) {
 	const [inventory, setInventory] = (0, import_react.useState)(initialInventory);
 	const [lots, setLots] = (0, import_react.useState)(confinementData.lotes);
 	const [historicalWeights, setHistoricalWeights] = (0, import_react.useState)(initialWeights);
+	const addInventoryItem = (item) => {
+		setInventory((prev) => [{
+			...item,
+			id: `NEW-${crypto.randomUUID()}`
+		}, ...prev]);
+	};
+	const updateInventoryItem = (id, data) => {
+		setInventory((prev) => prev.map((item) => item.id === id ? {
+			...item,
+			...data
+		} : item));
+	};
+	const removeInventoryItem = (id) => {
+		setInventory((prev) => prev.filter((item) => item.id !== id));
+	};
 	const registerConsumption = (loteId, inventoryId, amount) => {
 		setInventory((prev) => prev.map((item) => item.id === inventoryId ? {
 			...item,
@@ -27031,6 +27053,9 @@ function FarmProvider({ children }) {
 			inventory,
 			lots,
 			historicalWeights,
+			addInventoryItem,
+			updateInventoryItem,
+			removeInventoryItem,
 			registerConsumption,
 			registerFeedConsumption: registerConsumption,
 			registerPurchase,
@@ -29714,7 +29739,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$23(function() {
+			useEffect$24(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -29737,7 +29762,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$65 = React$70.useState, useEffect$23 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$65 = React$70.useState, useEffect$24 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -58564,6 +58589,7 @@ function Index() {
 		"Vacas (Matrizes)",
 		"Touros"
 	].includes(a$1.categoria) && (a$1.pesoMedio >= targets.pesoAlvoCorte || a$1.idadeMeses && a$1.idadeMeses >= targets.idadeAlvoMesesCorte));
+	const upcomingAlerts = sanitaryEvents.filter((e) => e.status !== "Concluído");
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 pb-20 sm:pb-6 animate-fade-in-up",
 		children: [
@@ -58741,6 +58767,40 @@ function Index() {
 										" cb - ",
 										a$1.pesoMedio,
 										"kg"
+									]
+								})]
+							}, a$1.id))
+						})] })]
+					}),
+					upcomingAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "bg-blue-500/10 border-blue-500/30 sm:col-span-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+							className: "pb-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+								className: "text-sm font-medium text-blue-800 flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldAlert, { className: "h-4 w-4" }), " Alertas Preventivos de Manejo"]
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-sm mb-2 text-blue-800/80",
+							children: "Próximos manejos baseados no histórico e protocolos agendados."
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "max-h-20 overflow-y-auto space-y-1 pr-2",
+							children: upcomingAlerts.map((a$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-center text-xs bg-blue-500/20 p-1.5 rounded text-blue-900",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-medium truncate mr-2",
+									children: [
+										a$1.title,
+										" - Lote: ",
+										a$1.lote
+									]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: cn("font-semibold whitespace-nowrap", a$1.status === "Atrasado" ? "text-destructive" : "text-blue-700"),
+									children: [
+										a$1.date,
+										" (",
+										a$1.status,
+										")"
 									]
 								})]
 							}, a$1.id))
@@ -61157,11 +61217,54 @@ function RegisterConsumptionModal() {
 		})]
 	});
 }
-function EditThresholdModal({ item, updateMinThreshold }) {
+function ManageInventoryItemModal({ item }) {
+	const isEdit = !!item;
 	const [open, setOpen] = (0, import_react.useState)(false);
-	const [minQtd, setMinQtd] = (0, import_react.useState)(item.minQtd?.toString() || "0");
+	const { addInventoryItem, updateInventoryItem } = useFarm();
+	const { toast: toast$2 } = useToast();
+	const [formData, setFormData] = (0, import_react.useState)({
+		item: item?.item || "",
+		tipo: item?.tipo || "Suplemento",
+		qtd: item?.qtd?.toString() || "0",
+		minQtd: item?.minQtd?.toString() || "0",
+		unidade: item?.unidade || "kg",
+		status: item?.status || "Normal",
+		custoUnitario: item?.custoUnitario?.toString() || "0"
+	});
+	(0, import_react.useEffect)(() => {
+		if (item) setFormData({
+			item: item.item,
+			tipo: item.tipo,
+			qtd: item.qtd.toString(),
+			minQtd: item.minQtd.toString(),
+			unidade: item.unidade,
+			status: item.status,
+			custoUnitario: item.custoUnitario?.toString() || "0"
+		});
+	}, [item]);
 	const handleSave = () => {
-		updateMinThreshold(item.id, Number(minQtd));
+		const payload = {
+			item: formData.item,
+			tipo: formData.tipo,
+			qtd: Number(formData.qtd),
+			minQtd: Number(formData.minQtd),
+			unidade: formData.unidade,
+			status: Number(formData.qtd) <= Number(formData.minQtd) ? "Crítico" : "Normal",
+			custoUnitario: Number(formData.custoUnitario)
+		};
+		if (isEdit) {
+			updateInventoryItem(item.id, payload);
+			toast$2({
+				title: "Item atualizado",
+				description: "O insumo foi atualizado no estoque."
+			});
+		} else {
+			addInventoryItem(payload);
+			toast$2({
+				title: "Item adicionado",
+				description: "O novo insumo foi registrado no estoque."
+			});
+		}
 		setOpen(false);
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
@@ -61169,49 +61272,123 @@ function EditThresholdModal({ item, updateMinThreshold }) {
 		onOpenChange: setOpen,
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
 			asChild: true,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+			children: isEdit ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 				variant: "ghost",
-				size: "sm",
-				className: "h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-primary",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BellRing, { className: "h-3 w-3" }), " Config. Limite"]
+				size: "icon",
+				className: "h-8 w-8 text-muted-foreground hover:text-primary",
+				title: "Editar Insumo",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquarePen, { className: "h-4 w-4" })
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				className: "gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), " Novo Insumo"]
 			})
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
-			className: "sm:max-w-[325px]",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Ajustar Alerta de Estoque" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-4 py-4",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: isEdit ? "Editar Insumo" : "Adicionar Novo Insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "space-y-4 py-4",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nome do Item" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						value: formData.item,
+						onChange: (e) => setFormData({
+							...formData,
+							item: e.target.value
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							disabled: true,
-							value: item.item,
-							className: "bg-muted"
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Categoria" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: formData.tipo,
+							onValueChange: (v) => setFormData({
+								...formData,
+								tipo: v
+							}),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Suplemento",
+									children: "Suplemento"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Concentrado",
+									children: "Concentrado"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Biológico",
+									children: "Biológico"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Antiparasitário",
+									children: "Antiparasitário"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+									value: "Material Cerca",
+									children: "Material Cerca"
+								})
+							] })]
 						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, { children: [
-							"Quantidade Mínima (",
-							item.unidade,
-							")"
-						] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							type: "number",
-							value: minQtd,
-							onChange: (e) => setMinQtd(e.target.value)
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Unidade" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							value: formData.unidade,
+							onChange: (e) => setFormData({
+								...formData,
+								unidade: e.target.value
+							}),
+							placeholder: "ex: kg, Frascos, Doses"
 						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						onClick: handleSave,
-						className: "w-full",
-						children: "Salvar Limite"
-					})
-				]
-			})]
-		})]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-3 gap-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Qtd Atual" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: formData.qtd,
+								onChange: (e) => setFormData({
+									...formData,
+									qtd: e.target.value
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Qtd Mínima" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: formData.minQtd,
+								onChange: (e) => setFormData({
+									...formData,
+									minQtd: e.target.value
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Custo Unit. (R$)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "number",
+								value: formData.custoUnitario,
+								onChange: (e) => setFormData({
+									...formData,
+									custoUnitario: e.target.value
+								})
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					onClick: handleSave,
+					className: "w-full mt-2",
+					children: "Salvar Insumo"
+				})
+			]
+		})] })]
 	});
 }
 function Estoque() {
-	const { inventory, updateMinThreshold } = useFarm();
+	const { inventory, removeInventoryItem } = useFarm();
 	const { fazendas, updateFazenda } = useFazendaStore();
 	const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd);
 	const nutricaoItems = inventory.filter((i) => ["Suplemento", "Concentrado"].includes(i.tipo) || i.id.startsWith("N"));
@@ -61247,7 +61424,7 @@ function Estoque() {
 				children: "Mínimo"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Unidade" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status" })
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
 		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
 			className: item.qtd < item.minQtd ? "bg-destructive/5" : "",
 			children: [
@@ -61265,9 +61442,23 @@ function Estoque() {
 					children: item.minQtd
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.unidade }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-					variant: item.qtd < item.minQtd ? "destructive" : "secondary",
-					children: item.qtd < item.minQtd ? "Crítico" : "Normal"
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							variant: item.qtd < item.minQtd ? "destructive" : "secondary",
+							children: item.qtd < item.minQtd ? "Crítico" : "Normal"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							className: "h-8 w-8 text-destructive hover:bg-destructive/10",
+							onClick: () => removeInventoryItem(item.id),
+							title: "Remover Item",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+						})
+					]
 				}) })
 			]
 		}, item.id)) })] })
@@ -61285,7 +61476,11 @@ function Estoque() {
 					children: "Gestão de almoxarifado, controle automatizado de nutrição animal e custos por fazenda."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterConsumptionModal, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterPurchaseModal, {})]
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterConsumptionModal, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterPurchaseModal, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, {})
+					]
 				})]
 			}),
 			criticalItems.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
@@ -61386,13 +61581,21 @@ function Estoque() {
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 												className: "flex items-center gap-2",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-													variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
-													children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta Baixo" : "Confortável"
-												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(EditThresholdModal, {
-													item,
-													updateMinThreshold
-												})]
+												children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+														variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
+														children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta Baixo" : "Confortável"
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+														variant: "ghost",
+														size: "icon",
+														className: "h-8 w-8 text-destructive hover:bg-destructive/10",
+														onClick: () => removeInventoryItem(item.id),
+														title: "Remover Item",
+														children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4" })
+													})
+												]
 											}) })
 										]
 									}, item.id);
@@ -66332,11 +66535,15 @@ function ProtocolosTab() {
 function ExecutionModal({ event }) {
 	const { toast: toast$2 } = useToast();
 	const { user } = useAuth();
+	const { inventory, registerConsumption } = useFarm();
 	const [open, setOpen] = (0, import_react.useState)(false);
+	const [inventoryId, setInventoryId] = (0, import_react.useState)("none");
+	const [amount, setAmount] = (0, import_react.useState)("");
 	const handleExecute = () => {
+		if (inventoryId !== "none" && amount) registerConsumption(event.lote, inventoryId, Number(amount));
 		toast$2({
 			title: "Execução Registrada",
-			description: `Protocolo ${event.title} em ${event.target} registrado por ${user.name}.`
+			description: `Protocolo ${event.title} em ${event.target} registrado por ${user.name}.${inventoryId !== "none" ? " Estoque deduzido." : ""}`
 		});
 		setOpen(false);
 	};
@@ -66352,7 +66559,7 @@ function ExecutionModal({ event }) {
 				children: "Registrar"
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Registrar Execução Sanitária" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Confirme a aplicação do protocolo no alvo selecionado." })] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Registrar Execução Sanitária" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, { children: "Confirme a aplicação do protocolo no alvo selecionado e atualize o estoque." })] }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "py-4 space-y-4",
 				children: [
@@ -66377,6 +66584,35 @@ function ExecutionModal({ event }) {
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Data de Execução Real" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 							type: "date",
 							defaultValue: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Insumo Utilizado (Opcional)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: inventoryId,
+							onValueChange: setInventoryId,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o insumo" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "none",
+								children: "Não deduzir do estoque"
+							}), inventory.filter((i) => ["Biológico", "Antiparasitário"].includes(i.tipo)).map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem, {
+								value: i.id,
+								children: [
+									i.item,
+									" (Estoque: ",
+									i.qtd,
+									i.unidade,
+									")"
+								]
+							}, i.id))] })]
+						})]
+					}),
+					inventoryId !== "none" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Quantidade Consumida" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "number",
+							value: amount,
+							onChange: (e) => setAmount(e.target.value),
+							placeholder: "Ex: 50"
 						})]
 					})
 				]
@@ -66498,7 +66734,7 @@ function Sanidade() {
 								className: "md:col-span-8 lg:col-span-9",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 									className: "h-full",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Eventos Programados" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhamento de protocolos por lote e execução de tarefas." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Eventos Programados" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Acompanhamento de protocolos por lote e execução de tarefas com dedução de estoque." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 										className: "space-y-4",
 										children: sanitaryEvents.map((event) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors gap-4",
@@ -76421,4 +76657,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DVD8hVtv.js.map
+//# sourceMappingURL=index-DDYcFi6g.js.map

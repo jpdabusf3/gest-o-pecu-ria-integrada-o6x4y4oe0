@@ -16,9 +16,17 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { sanitaryEvents } from '@/data/mock'
 import { ProtocolosTab } from '@/components/sanidade/ProtocolosTab'
 import { useAuth } from '@/contexts/AuthContext'
+import { useFarm } from '@/contexts/FarmContext'
 import {
   Syringe,
   AlertCircle,
@@ -32,12 +40,19 @@ import { useToast } from '@/hooks/use-toast'
 function ExecutionModal({ event }: { event: any }) {
   const { toast } = useToast()
   const { user } = useAuth()
+  const { inventory, registerConsumption } = useFarm()
   const [open, setOpen] = useState(false)
+  const [inventoryId, setInventoryId] = useState('none')
+  const [amount, setAmount] = useState('')
 
   const handleExecute = () => {
+    if (inventoryId !== 'none' && amount) {
+      registerConsumption(event.lote, inventoryId, Number(amount))
+    }
+
     toast({
       title: 'Execução Registrada',
-      description: `Protocolo ${event.title} em ${event.target} registrado por ${user.name}.`,
+      description: `Protocolo ${event.title} em ${event.target} registrado por ${user.name}.${inventoryId !== 'none' ? ' Estoque deduzido.' : ''}`,
     })
     setOpen(false)
   }
@@ -53,7 +68,7 @@ function ExecutionModal({ event }: { event: any }) {
         <DialogHeader>
           <DialogTitle>Registrar Execução Sanitária</DialogTitle>
           <DialogDescription>
-            Confirme a aplicação do protocolo no alvo selecionado.
+            Confirme a aplicação do protocolo no alvo selecionado e atualize o estoque.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4 space-y-4">
@@ -69,6 +84,36 @@ function ExecutionModal({ event }: { event: any }) {
             <Label>Data de Execução Real</Label>
             <Input type="date" defaultValue={new Date().toISOString().split('T')[0]} />
           </div>
+          <div className="space-y-2">
+            <Label>Insumo Utilizado (Opcional)</Label>
+            <Select value={inventoryId} onValueChange={setInventoryId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione o insumo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Não deduzir do estoque</SelectItem>
+                {inventory
+                  .filter((i) => ['Biológico', 'Antiparasitário'].includes(i.tipo))
+                  .map((i) => (
+                    <SelectItem key={i.id} value={i.id}>
+                      {i.item} (Estoque: {i.qtd}
+                      {i.unidade})
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {inventoryId !== 'none' && (
+            <div className="space-y-2">
+              <Label>Quantidade Consumida</Label>
+              <Input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="Ex: 50"
+              />
+            </div>
+          )}
         </div>
         <DialogFooter>
           <Button className="w-full h-12" onClick={handleExecute}>
@@ -186,7 +231,8 @@ export default function Sanidade() {
                 <CardHeader>
                   <CardTitle>Eventos Programados</CardTitle>
                   <CardDescription>
-                    Acompanhamento de protocolos por lote e execução de tarefas.
+                    Acompanhamento de protocolos por lote e execução de tarefas com dedução de
+                    estoque.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

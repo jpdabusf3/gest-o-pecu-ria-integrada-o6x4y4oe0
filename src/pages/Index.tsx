@@ -29,8 +29,15 @@ import {
   LineChart,
   MapPinned,
   BellRing,
+  ShieldAlert,
 } from 'lucide-react'
-import { dashboardData, herdSummary, productionGoals, farmRegistry } from '@/data/mock'
+import {
+  dashboardData,
+  herdSummary,
+  productionGoals,
+  farmRegistry,
+  sanitaryEvents,
+} from '@/data/mock'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
@@ -41,6 +48,7 @@ import { Link } from 'react-router-dom'
 import useAnimalStore from '@/stores/useAnimalStore'
 import useFazendaStore from '@/stores/useFazendaStore'
 import useAnimalTargetsStore from '@/stores/useAnimalTargetsStore'
+import { cn } from '@/lib/utils'
 
 function GoalDialog() {
   const [open, setOpen] = useState(false)
@@ -130,6 +138,8 @@ export default function Index() {
       (a.pesoMedio >= targets.pesoAlvoCorte ||
         (a.idadeMeses && a.idadeMeses >= targets.idadeAlvoMesesCorte)),
   )
+
+  const upcomingAlerts = sanitaryEvents.filter((e) => e.status !== 'Concluído')
 
   return (
     <div className="space-y-6 pb-20 sm:pb-6 animate-fade-in-up">
@@ -273,6 +283,41 @@ export default function Index() {
                     <span>Lote/Animal: {a.id.split('-')[0]}</span>
                     <span className="font-semibold">
                       {a.quantidade} cb - {a.pesoMedio}kg
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {upcomingAlerts.length > 0 && (
+          <Card className="bg-blue-500/10 border-blue-500/30 sm:col-span-2">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-blue-800 flex items-center gap-2">
+                <ShieldAlert className="h-4 w-4" /> Alertas Preventivos de Manejo
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm mb-2 text-blue-800/80">
+                Próximos manejos baseados no histórico e protocolos agendados.
+              </p>
+              <div className="max-h-20 overflow-y-auto space-y-1 pr-2">
+                {upcomingAlerts.map((a) => (
+                  <div
+                    key={a.id}
+                    className="flex justify-between items-center text-xs bg-blue-500/20 p-1.5 rounded text-blue-900"
+                  >
+                    <span className="font-medium truncate mr-2">
+                      {a.title} - Lote: {a.lote}
+                    </span>
+                    <span
+                      className={cn(
+                        'font-semibold whitespace-nowrap',
+                        a.status === 'Atrasado' ? 'text-destructive' : 'text-blue-700',
+                      )}
+                    >
+                      {a.date} ({a.status})
                     </span>
                   </div>
                 ))}

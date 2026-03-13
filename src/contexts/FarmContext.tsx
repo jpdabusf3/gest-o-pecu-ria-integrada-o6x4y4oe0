@@ -19,6 +19,9 @@ export type FarmContextType = {
   inventory: InventoryItem[]
   lots: typeof confinementData.lotes
   historicalWeights: Record<string, LotWeightRecord[]>
+  addInventoryItem: (item: Omit<InventoryItem, 'id'>) => void
+  updateInventoryItem: (id: string, data: Partial<InventoryItem>) => void
+  removeInventoryItem: (id: string) => void
   registerConsumption: (loteId: string, inventoryId: string, amount: number) => void
   registerFeedConsumption: (loteId: string, inventoryId: string, amount: number) => void
   registerPurchase: (inventoryId: string, amount: number, totalCost: number) => void
@@ -60,6 +63,18 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
   const [lots, setLots] = useState(confinementData.lotes)
   const [historicalWeights, setHistoricalWeights] =
     useState<Record<string, LotWeightRecord[]>>(initialWeights)
+
+  const addInventoryItem = (item: Omit<InventoryItem, 'id'>) => {
+    setInventory((prev) => [{ ...item, id: `NEW-${crypto.randomUUID()}` }, ...prev])
+  }
+
+  const updateInventoryItem = (id: string, data: Partial<InventoryItem>) => {
+    setInventory((prev) => prev.map((item) => (item.id === id ? { ...item, ...data } : item)))
+  }
+
+  const removeInventoryItem = (id: string) => {
+    setInventory((prev) => prev.filter((item) => item.id !== id))
+  }
 
   const registerConsumption = (loteId: string, inventoryId: string, amount: number) => {
     setInventory((prev) =>
@@ -186,8 +201,11 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
         inventory,
         lots,
         historicalWeights,
+        addInventoryItem,
+        updateInventoryItem,
+        removeInventoryItem,
         registerConsumption,
-        registerFeedConsumption: registerConsumption, // alias backwards compat
+        registerFeedConsumption: registerConsumption,
         registerPurchase,
         updateMinThreshold,
         addWeightRecord,

@@ -12,65 +12,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { TriangleAlert, BellRing, TrendingDown, CalendarClock } from 'lucide-react'
+import { TriangleAlert, TrendingDown, CalendarClock, Trash2 } from 'lucide-react'
 import { useFarm } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
 import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
 import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
-
-function EditThresholdModal({ item, updateMinThreshold }: { item: any; updateMinThreshold: any }) {
-  const [open, setOpen] = useState(false)
-  const [minQtd, setMinQtd] = useState(item.minQtd?.toString() || '0')
-
-  const handleSave = () => {
-    updateMinThreshold(item.id, Number(minQtd))
-    setOpen(false)
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-primary"
-        >
-          <BellRing className="h-3 w-3" /> Config. Limite
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[325px]">
-        <DialogHeader>
-          <DialogTitle>Ajustar Alerta de Estoque</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label>Insumo</Label>
-            <Input disabled value={item.item} className="bg-muted" />
-          </div>
-          <div className="space-y-2">
-            <Label>Quantidade Mínima ({item.unidade})</Label>
-            <Input type="number" value={minQtd} onChange={(e) => setMinQtd(e.target.value)} />
-          </div>
-          <Button onClick={handleSave} className="w-full">
-            Salvar Limite
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
+import { ManageInventoryItemModal } from '@/components/forms/ManageInventoryItemModal'
 
 export default function Estoque() {
-  const { inventory, updateMinThreshold } = useFarm()
+  const { inventory, removeInventoryItem } = useFarm()
   const { fazendas, updateFazenda } = useFazendaStore()
 
   const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd)
@@ -85,11 +36,9 @@ export default function Estoque() {
     (i) => i.tipo === 'Material Cerca' || i.id.startsWith('A'),
   )
 
-  // Demand Forecasting Logic
   const forecastedItems = useMemo(() => {
     return inventory
       .map((item) => {
-        // Use existing daily consumption or mock a historical average
         const dailyRate = item.consumoDiario || (item.qtd > 0 ? item.qtd * 0.02 : 5)
         const daysRemaining = dailyRate > 0 ? Math.floor(item.qtd / dailyRate) : 999
 
@@ -119,7 +68,7 @@ export default function Estoque() {
             <TableHead className="text-right">Qtd Atual</TableHead>
             <TableHead className="text-right">Mínimo</TableHead>
             <TableHead>Unidade</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Status / Ação</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -137,9 +86,21 @@ export default function Estoque() {
               </TableCell>
               <TableCell>{item.unidade}</TableCell>
               <TableCell>
-                <Badge variant={item.qtd < item.minQtd ? 'destructive' : 'secondary'}>
-                  {item.qtd < item.minQtd ? 'Crítico' : 'Normal'}
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant={item.qtd < item.minQtd ? 'destructive' : 'secondary'}>
+                    {item.qtd < item.minQtd ? 'Crítico' : 'Normal'}
+                  </Badge>
+                  <ManageInventoryItemModal item={item} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                    onClick={() => removeInventoryItem(item.id)}
+                    title="Remover Item"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
@@ -160,6 +121,7 @@ export default function Estoque() {
         <div className="flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap">
           <RegisterConsumptionModal />
           <RegisterPurchaseModal />
+          <ManageInventoryItemModal />
         </div>
       </div>
 
@@ -238,10 +200,16 @@ export default function Estoque() {
                                     ? 'Alerta Baixo'
                                     : 'Confortável'}
                               </Badge>
-                              <EditThresholdModal
-                                item={item}
-                                updateMinThreshold={updateMinThreshold}
-                              />
+                              <ManageInventoryItemModal item={item} />
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                                onClick={() => removeInventoryItem(item.id)}
+                                title="Remover Item"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>
