@@ -1394,6 +1394,9 @@ section[aria-label='Notifications alt+T'] {
 .grid-cols-3{
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+.grid-cols-4{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 .flex-row{
   flex-direction: row;
 }
@@ -2107,6 +2110,10 @@ section[aria-label='Notifications alt+T'] {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.py-2\.5{
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
 .py-3{
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -2281,6 +2288,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .leading-none{
   line-height: 1;
+}
+.leading-snug{
+  line-height: 1.375;
 }
 .leading-tight{
   line-height: 1.25;

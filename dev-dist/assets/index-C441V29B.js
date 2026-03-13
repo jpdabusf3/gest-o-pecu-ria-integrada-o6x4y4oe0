@@ -60255,9 +60255,15 @@ function EfficiencyTab() {
 }
 function Pastos() {
 	const { toast: toast$2 } = useToast();
-	const { pastos } = usePastoStore();
+	const { pastos, updatePasto } = usePastoStore();
 	const { animais } = useAnimalStore();
 	const [selectedPaddock, setSelectedPaddock] = (0, import_react.useState)(null);
+	const [isHeightDialogOpen, setIsHeightDialogOpen] = (0, import_react.useState)(false);
+	const [heightData, setHeightData] = (0, import_react.useState)({
+		atual: 0,
+		entrada: 0,
+		saida: 0
+	});
 	const dynamicPastures = (0, import_react.useMemo)(() => {
 		return pastos.map((pasto) => {
 			const headCount = animais.filter((a$1) => a$1.pastoId === pasto.id.toString()).reduce((sum, a$1) => sum + a$1.quantidade, 0);
@@ -60280,6 +60286,30 @@ function Pastos() {
 		});
 	};
 	const activePaddockData = selectedPaddock ? dynamicPastures.find((pasto) => pasto.id === selectedPaddock) : null;
+	const handleOpenHeightDialog = () => {
+		if (activePaddockData) {
+			setHeightData({
+				atual: activePaddockData.alturaAtual,
+				entrada: activePaddockData.alturaEntradaAlvo,
+				saida: activePaddockData.alturaSaidaAlvo
+			});
+			setIsHeightDialogOpen(true);
+		}
+	};
+	const handleSaveHeights = () => {
+		if (activePaddockData) {
+			updatePasto(activePaddockData.id, {
+				alturaAtual: Number(heightData.atual),
+				alturaEntradaAlvo: Number(heightData.entrada),
+				alturaSaidaAlvo: Number(heightData.saida)
+			});
+			toast$2({
+				title: "Registro atualizado",
+				description: "As alturas do pasto foram salvas com sucesso."
+			});
+			setIsHeightDialogOpen(false);
+		}
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -60445,9 +60475,83 @@ function Pastos() {
 												})] })
 											]
 										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-											className: "w-full gap-2",
-											children: "Registrar Altura de Entrada/Saída"
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+											open: isHeightDialogOpen,
+											onOpenChange: setIsHeightDialogOpen,
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+												asChild: true,
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+													onClick: handleOpenHeightDialog,
+													className: "w-full h-auto py-2.5 whitespace-normal text-center leading-snug gap-2",
+													children: "Registro de Altura de Entrada e Saída"
+												})
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+												className: "sm:max-w-[425px]",
+												children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, { children: ["Ajustar Alturas - ", activePaddockData.nome] }) }),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+														className: "grid gap-4 py-4",
+														children: [
+															/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+																className: "grid grid-cols-4 items-center gap-4",
+																children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+																	htmlFor: "alturaAtual",
+																	className: "text-right col-span-2",
+																	children: "Altura Atual (cm)"
+																}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+																	id: "alturaAtual",
+																	type: "number",
+																	className: "col-span-2",
+																	value: heightData.atual,
+																	onChange: (e) => setHeightData({
+																		...heightData,
+																		atual: Number(e.target.value)
+																	})
+																})]
+															}),
+															/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+																className: "grid grid-cols-4 items-center gap-4",
+																children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+																	htmlFor: "metaEntrada",
+																	className: "text-right col-span-2",
+																	children: "Altura de Entrada (cm)"
+																}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+																	id: "metaEntrada",
+																	type: "number",
+																	className: "col-span-2",
+																	value: heightData.entrada,
+																	onChange: (e) => setHeightData({
+																		...heightData,
+																		entrada: Number(e.target.value)
+																	})
+																})]
+															}),
+															/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+																className: "grid grid-cols-4 items-center gap-4",
+																children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+																	htmlFor: "metaSaida",
+																	className: "text-right col-span-2",
+																	children: "Altura de Saída (cm)"
+																}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+																	id: "metaSaida",
+																	type: "number",
+																	className: "col-span-2",
+																	value: heightData.saida,
+																	onChange: (e) => setHeightData({
+																		...heightData,
+																		saida: Number(e.target.value)
+																	})
+																})]
+															})
+														]
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogFooter, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+														onClick: handleSaveHeights,
+														className: "w-full sm:w-auto",
+														children: "Salvar"
+													}) })
+												]
+											})]
 										})
 									]
 								})]
@@ -75540,4 +75644,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DKPkGct2.js.map
+//# sourceMappingURL=index-C441V29B.js.map

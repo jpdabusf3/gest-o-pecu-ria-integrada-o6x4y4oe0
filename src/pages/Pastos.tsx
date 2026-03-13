@@ -11,6 +11,16 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { rotationalSchedule } from '@/data/mock'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { useToast } from '@/hooks/use-toast'
@@ -23,9 +33,12 @@ import { cn } from '@/lib/utils'
 
 export default function Pastos() {
   const { toast } = useToast()
-  const { pastos } = usePastoStore()
+  const { pastos, updatePasto } = usePastoStore()
   const { animais } = useAnimalStore()
   const [selectedPaddock, setSelectedPaddock] = useState<number | string | null>(null)
+
+  const [isHeightDialogOpen, setIsHeightDialogOpen] = useState(false)
+  const [heightData, setHeightData] = useState({ atual: 0, entrada: 0, saida: 0 })
 
   // Dynamically attach animal allocations to pastures
   const dynamicPastures = useMemo(() => {
@@ -59,6 +72,32 @@ export default function Pastos() {
   const activePaddockData = selectedPaddock
     ? dynamicPastures.find((pasto) => pasto.id === selectedPaddock)
     : null
+
+  const handleOpenHeightDialog = () => {
+    if (activePaddockData) {
+      setHeightData({
+        atual: activePaddockData.alturaAtual,
+        entrada: activePaddockData.alturaEntradaAlvo,
+        saida: activePaddockData.alturaSaidaAlvo,
+      })
+      setIsHeightDialogOpen(true)
+    }
+  }
+
+  const handleSaveHeights = () => {
+    if (activePaddockData) {
+      updatePasto(activePaddockData.id, {
+        alturaAtual: Number(heightData.atual),
+        alturaEntradaAlvo: Number(heightData.entrada),
+        alturaSaidaAlvo: Number(heightData.saida),
+      })
+      toast({
+        title: 'Registro atualizado',
+        description: 'As alturas do pasto foram salvas com sucesso.',
+      })
+      setIsHeightDialogOpen(false)
+    }
+  }
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
@@ -210,7 +249,70 @@ export default function Pastos() {
                       </div>
                     </div>
 
-                    <Button className="w-full gap-2">Registrar Altura de Entrada/Saída</Button>
+                    <Dialog open={isHeightDialogOpen} onOpenChange={setIsHeightDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          onClick={handleOpenHeightDialog}
+                          className="w-full h-auto py-2.5 whitespace-normal text-center leading-snug gap-2"
+                        >
+                          Registro de Altura de Entrada e Saída
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Ajustar Alturas - {activePaddockData.nome}</DialogTitle>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="alturaAtual" className="text-right col-span-2">
+                              Altura Atual (cm)
+                            </Label>
+                            <Input
+                              id="alturaAtual"
+                              type="number"
+                              className="col-span-2"
+                              value={heightData.atual}
+                              onChange={(e) =>
+                                setHeightData({ ...heightData, atual: Number(e.target.value) })
+                              }
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="metaEntrada" className="text-right col-span-2">
+                              Altura de Entrada (cm)
+                            </Label>
+                            <Input
+                              id="metaEntrada"
+                              type="number"
+                              className="col-span-2"
+                              value={heightData.entrada}
+                              onChange={(e) =>
+                                setHeightData({ ...heightData, entrada: Number(e.target.value) })
+                              }
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="metaSaida" className="text-right col-span-2">
+                              Altura de Saída (cm)
+                            </Label>
+                            <Input
+                              id="metaSaida"
+                              type="number"
+                              className="col-span-2"
+                              value={heightData.saida}
+                              onChange={(e) =>
+                                setHeightData({ ...heightData, saida: Number(e.target.value) })
+                              }
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button onClick={handleSaveHeights} className="w-full sm:w-auto">
+                            Salvar
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                   </CardContent>
                 </Card>
               ) : (
