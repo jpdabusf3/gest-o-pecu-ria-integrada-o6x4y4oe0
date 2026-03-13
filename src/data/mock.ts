@@ -795,7 +795,7 @@ export const managementHistory = [
     responsavel: 'Administrador (Sede)',
     observacoes:
       'Lote uniforme, excelente acabamento de carcaça. Desconto de 1% de quebra no transporte acordado.',
-    custoCabeca: 45.0, // Ex: custo de frete/impostos por cabeça
+    custoCabeca: 45.0,
     pesoEntrada: 520,
     valorCabeca: 4250.0,
     valorArroba: 250.0,
@@ -812,7 +812,7 @@ export const managementHistory = [
     responsavel: 'Administrador (Sede)',
     observacoes:
       'Animais recém chegados. Colocados no pasto de quarentena. Agendar protocolo de entrada.',
-    custoCabeca: 120.0, // Frete + comissão
+    custoCabeca: 120.0,
     pesoEntrada: 210,
     valorCabeca: 1850.0,
     valorArroba: 264.0,
@@ -1022,164 +1022,64 @@ export const performanceGoalsList = [
 
 export const biMetricsList = [
   { id: 'ganhoPeso', name: 'GMD Médio Rebanho', color: 'hsl(var(--chart-1))', unit: 'kg' },
-  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R
-
-<skip-file path="src/stores/useFeedMillStore.ts" type="typescript">
-import { useState, useEffect, useCallback } from 'react'
-
-export interface FormulaIngredient {
-  inventoryId: string
-  percentage: number
-}
-
-export interface FeedFormula {
-  id: string
-  name: string
-  outputInventoryId: string
-  ingredients: FormulaIngredient[]
-  version: number
-  updatedAt: string
-}
-
-export interface FormulaHistory extends FeedFormula {
-  historyId: string
-  formulaId: string
-}
-
-export interface ProductionRun {
-  id: string
-  date: string
-  formulaId: string
-  formulaName: string
-  amountProducedKg: number
-  totalCost: number
-  costPerKg: number
-  destination: string
-}
-
-const STORAGE_KEY_FORMULAS = '@f3_feed_formulas'
-const STORAGE_KEY_HISTORY = '@f3_feed_formulas_history'
-const STORAGE_KEY_PRODUCTIONS = '@f3_feed_productions'
-
-const defaultFormulas: FeedFormula[] = [
-  {
-    id: 'FORM-1',
-    name: 'Ração Terminação Alto Grão',
-    outputInventoryId: 'N2',
-    ingredients: [
-      { inventoryId: 'M1', percentage: 75 },
-      { inventoryId: 'M2', percentage: 20 },
-      { inventoryId: 'M3', percentage: 5 },
-    ],
-    version: 1,
-    updatedAt: new Date().toISOString(),
-  },
+  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R$' },
+  { id: 'taxaPrenhez', name: 'Taxa de Prenhez', color: 'hsl(var(--chart-3))', unit: '%' },
+  { id: 'arrobaPrice', name: 'Preço da Arroba', color: 'hsl(var(--chart-4))', unit: 'R$' },
 ]
 
-export default function useFeedMillStore() {
-  const [formulas, setFormulas] = useState<FeedFormula[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_FORMULAS)
-      if (saved) return JSON.parse(saved)
-    } catch (e) {
-      console.error(e)
-    }
-    return defaultFormulas
-  })
+export const biData = [
+  { period: 'Out/25', ganhoPeso: 1.1, custoCombustivel: 4500, arrobaPrice: 250, taxaPrenhez: 70 },
+  { period: 'Nov/25', ganhoPeso: 1.15, custoCombustivel: 4800, arrobaPrice: 255, taxaPrenhez: 75 },
+  { period: 'Dez/25', ganhoPeso: 1.2, custoCombustivel: 4200, arrobaPrice: 260, taxaPrenhez: 80 },
+  { period: 'Jan/26', ganhoPeso: 1.25, custoCombustivel: 4600, arrobaPrice: 265, taxaPrenhez: 85 },
+  { period: 'Fev/26', ganhoPeso: 1.3, custoCombustivel: 4900, arrobaPrice: 270, taxaPrenhez: 86 },
+  { period: 'Mar/26', ganhoPeso: 1.35, custoCombustivel: 5100, arrobaPrice: 275, taxaPrenhez: 88 },
+]
 
-  const [history, setHistory] = useState<FormulaHistory[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_HISTORY)
-      if (saved) return JSON.parse(saved)
-    } catch (e) {
-      console.error(e)
-    }
-    return []
-  })
+export const twelveMonthsTrendData = [
+  { month: 'Abr', cashflow: 120000, weightGain: 200 },
+  { month: 'Mai', cashflow: 135000, weightGain: 220 },
+  { month: 'Jun', cashflow: 140000, weightGain: 240 },
+  { month: 'Jul', cashflow: 110000, weightGain: 230 },
+  { month: 'Ago', cashflow: 105000, weightGain: 220 },
+  { month: 'Set', cashflow: 150000, weightGain: 250 },
+  { month: 'Out', cashflow: 165000, weightGain: 270 },
+  { month: 'Nov', cashflow: 180000, weightGain: 290 },
+  { month: 'Dez', cashflow: 200000, weightGain: 310 },
+  { month: 'Jan', cashflow: 220000, weightGain: 330 },
+  { month: 'Fev', cashflow: 210000, weightGain: 320 },
+  { month: 'Mar', cashflow: 247300, weightGain: 350 },
+]
 
-  const [productions, setProductions] = useState<ProductionRun[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_PRODUCTIONS)
-      if (saved) return JSON.parse(saved)
-    } catch (e) {
-      console.error(e)
-    }
-    return [
-      {
-        id: 'PROD-1',
-        date: new Date(Date.now() - 86400000).toISOString(),
-        formulaId: 'FORM-1',
-        formulaName: 'Ração Terminação Alto Grão',
-        amountProducedKg: 2000,
-        totalCost: 2530,
-        costPerKg: 1.265,
-        destination: 'Estoque',
-      },
-    ]
-  })
+export const defaultSavedReports = [
+  { id: '1', name: 'Ganho vs Combustível', m1: 'ganhoPeso', m2: 'custoCombustivel' },
+]
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_FORMULAS, JSON.stringify(formulas))
-  }, [formulas])
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(history))
-  }, [history])
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_PRODUCTIONS, JSON.stringify(productions))
-  }, [productions])
-
-  const saveFormula = useCallback(
-    (formula: Omit<FeedFormula, 'id' | 'version' | 'updatedAt'>, id?: string) => {
-      setFormulas((prev) => {
-        if (id) {
-          const existing = prev.find((f) => f.id === id)
-          if (existing) {
-            const historyEntry: FormulaHistory = {
-              ...existing,
-              historyId: crypto.randomUUID(),
-              formulaId: existing.id,
-            }
-            setHistory((h) => [historyEntry, ...h])
-
-            return prev.map((f) =>
-              f.id === id
-                ? {
-                    ...f,
-                    ...formula,
-                    version: f.version + 1,
-                    updatedAt: new Date().toISOString(),
-                  }
-                : f,
-            )
-          }
-        }
-        return [
-          {
-            ...formula,
-            id: `FORM-${crypto.randomUUID()}`,
-            version: 1,
-            updatedAt: new Date().toISOString(),
-          },
-          ...prev,
-        ]
-      })
-    },
-    [],
-  )
-
-  const addProduction = useCallback((run: Omit<ProductionRun, 'id' | 'date'>) => {
-    setProductions((prev) => [
-      {
-        ...run,
-        id: `PROD-${crypto.randomUUID()}`,
-        date: new Date().toISOString(),
-      },
-      ...prev,
-    ])
-  }, [])
-
-  return { formulas, history, productions, saveFormula, addProduction }
+export const performanceByCategory: Record<string, any[]> = {
+  Bois: [
+    { period: 'Out', gmd: 1.1 },
+    { period: 'Nov', gmd: 1.2 },
+    { period: 'Dez', gmd: 1.3 },
+    { period: 'Jan', gmd: 1.35 },
+    { period: 'Fev', gmd: 1.4 },
+    { period: 'Mar', gmd: 1.45 },
+  ],
+  'Vacas de corte': [
+    { period: 'Out', gmd: 0.8 },
+    { period: 'Nov', gmd: 0.85 },
+    { period: 'Dez', gmd: 0.9 },
+    { period: 'Jan', gmd: 0.95 },
+    { period: 'Fev', gmd: 1.0 },
+    { period: 'Mar', gmd: 1.1 },
+  ],
 }
 
+export const savedCustomSimulations = [
+  {
+    id: 'sim-1',
+    name: 'Cenário Alta 2026',
+    basePrice: 280,
+    targetWeight: 540,
+    dietCostPerDay: 8.5,
+  },
+]
