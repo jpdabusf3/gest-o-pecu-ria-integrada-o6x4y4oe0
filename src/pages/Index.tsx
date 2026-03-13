@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Activity,
   Plus,
@@ -30,6 +31,8 @@ import {
   MapPinned,
   BellRing,
   ShieldAlert,
+  FileText,
+  Package,
 } from 'lucide-react'
 import {
   dashboardData,
@@ -48,7 +51,7 @@ import { Link } from 'react-router-dom'
 import useAnimalStore from '@/stores/useAnimalStore'
 import useFazendaStore from '@/stores/useFazendaStore'
 import useAnimalTargetsStore from '@/stores/useAnimalTargetsStore'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency, formatWeight, formatNumber } from '@/lib/utils'
 
 function GoalDialog() {
   const [open, setOpen] = useState(false)
@@ -150,12 +153,23 @@ export default function Index() {
           </h2>
           <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
         </div>
-        <Button asChild className="gap-2 w-full sm:w-auto shadow-sm">
-          <Link to="/bi">
-            <LineChart className="h-4 w-4" />
-            Acessar BI Dinâmico
-          </Link>
-        </Button>
+        <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
+          <Button asChild variant="outline" className="shadow-sm gap-2">
+            <Link to="/relatorios">
+              <FileText className="h-4 w-4" /> Histórico
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="shadow-sm gap-2">
+            <Link to="/estoque">
+              <Package className="h-4 w-4" /> Estoque
+            </Link>
+          </Button>
+          <Button asChild className="gap-2 shadow-sm">
+            <Link to="/projecoes">
+              <LineChart className="h-4 w-4" /> Simulador / IA
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -184,13 +198,23 @@ export default function Index() {
         <Card className="hover-lift">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Lotação Média
+              <TooltipProvider delayDuration={300}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                    Lotação Média
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Relação entre o número de cabeças de gado e a área de pastagem disponível
+                    (hectares).
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </CardTitle>
             <Map className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {(dashboardData.kpis.animais / farmRegistry.areaPastagem).toFixed(2)}
+            <div className="text-2xl font-bold text-primary">
+              {formatNumber(dashboardData.kpis.animais / farmRegistry.areaPastagem, 2)}
             </div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">
               Cab / Hectare
@@ -221,7 +245,6 @@ export default function Index() {
         </Card>
       </div>
 
-      {/* Livestock Intelligence Dashboard Summary */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="bg-primary/5 border-primary/20">
           <CardHeader className="pb-2">
@@ -252,11 +275,11 @@ export default function Index() {
           <CardContent className="space-y-2">
             <div className="flex justify-between items-center text-sm">
               <span>Machos</span>
-              <span className="font-bold">{(weightMachos / 1000).toFixed(1)} t</span>
+              <span className="font-bold">{formatWeight(weightMachos / 1000, 't')}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span>Fêmeas</span>
-              <span className="font-bold">{(weightFemeas / 1000).toFixed(1)} t</span>
+              <span className="font-bold">{formatWeight(weightFemeas / 1000, 't')}</span>
             </div>
           </CardContent>
         </Card>
@@ -271,8 +294,8 @@ export default function Index() {
             <CardContent>
               <p className="text-sm mb-2 text-amber-700/80">
                 Existem <strong>{readyAnimals.reduce((sum, a) => sum + a.quantidade, 0)}</strong>{' '}
-                animais atingindo o peso alvo ({targets.pesoAlvoCorte}kg) ou idade (
-                {targets.idadeAlvoMesesCorte}m).
+                animais atingindo o peso alvo ({formatWeight(targets.pesoAlvoCorte, 'kg')}) ou idade
+                ({targets.idadeAlvoMesesCorte}m).
               </p>
               <div className="max-h-20 overflow-y-auto space-y-1 pr-2">
                 {readyAnimals.map((a) => (
@@ -282,7 +305,7 @@ export default function Index() {
                   >
                     <span>Lote/Animal: {a.id.split('-')[0]}</span>
                     <span className="font-semibold">
-                      {a.quantidade} cb - {a.pesoMedio}kg
+                      {a.quantidade} cb - {formatWeight(a.pesoMedio, 'kg')}
                     </span>
                   </div>
                 ))}

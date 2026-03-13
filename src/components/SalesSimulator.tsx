@@ -20,6 +20,7 @@ import { useMarket } from '@/contexts/MarketContext'
 import { useFarm } from '@/contexts/FarmContext'
 import useSimulationStore from '@/stores/useSimulationStore'
 import useFazendaStore from '@/stores/useFazendaStore'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Calculator,
   TrendingUp,
@@ -31,7 +32,7 @@ import {
   PlusCircle,
 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency, formatWeight, formatNumber } from '@/lib/utils'
 
 export function SalesSimulator() {
   const { marketData } = useMarket()
@@ -269,7 +270,19 @@ export function SalesSimulator() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Rend. Carcaça Entrada (%)</Label>
+                  <Label>
+                    <TooltipProvider delayDuration={300}>
+                      <Tooltip>
+                        <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                          Rend. Carcaça Entrada (%)
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Porcentagem do animal vivo que compõe a carcaça útil no momento da
+                          entrada.
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
                   <Input
                     type="number"
                     className="bg-background"
@@ -331,7 +344,7 @@ export function SalesSimulator() {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full justify-start text-left font-normal bg-background"
+                        className="w-full justify-start text-left font-normal bg-background truncate"
                       >
                         {selectedFarms.length > 0
                           ? `${selectedFarms.length} Fazenda(s) Vinculada(s)`
@@ -357,7 +370,7 @@ export function SalesSimulator() {
                     <p className="text-xs text-muted-foreground flex justify-between mt-1">
                       <span>Rateio Estrutural (Nutrição/Manejo):</span>
                       <span className="font-semibold text-rose-500">
-                        + R$ {farmCostPerHead.toFixed(2)}/cab
+                        + {formatCurrency(farmCostPerHead)}/cab
                       </span>
                     </p>
                   )}
@@ -433,30 +446,22 @@ export function SalesSimulator() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-2 border-b border-border/50">
                   <span className="text-sm text-muted-foreground">Arrobas Produzidas (@)</span>
-                  <span className="font-medium">{results.saleArrobasPerHead.toFixed(1)} @</span>
+                  <span className="font-medium">
+                    {formatWeight(results.saleArrobasPerHead, '@')}
+                  </span>
                 </div>
 
                 <div className="flex justify-between items-center pb-2 border-b border-border/50">
                   <span className="text-sm text-muted-foreground">Receita Venda / Cab.</span>
-                  <span className="font-medium">
-                    R${' '}
-                    {results.revenuePerHead.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </span>
+                  <span className="font-medium">{formatCurrency(results.revenuePerHead)}</span>
                 </div>
 
                 <div className="flex justify-between items-center pb-2 border-b border-border/50">
-                  <span className="text-sm text-muted-foreground">
-                    Custo Total (Aquisição + Operacional)
+                  <span className="text-sm text-muted-foreground truncate mr-2">
+                    Custo Total (Aquisição + Op.)
                   </span>
-                  <span className="font-medium text-destructive">
-                    - R${' '}
-                    {results.totalCostPerHead.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                  <span className="font-medium text-destructive whitespace-nowrap">
+                    - {formatCurrency(results.totalCostPerHead)}
                   </span>
                 </div>
 
@@ -471,11 +476,7 @@ export function SalesSimulator() {
                           : 'text-destructive',
                       )}
                     >
-                      R${' '}
-                      {results.profitPerHead.toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
+                      {formatCurrency(results.profitPerHead)}
                     </span>
                     <div className="flex items-center justify-end gap-2 mt-1">
                       <span
@@ -486,7 +487,7 @@ export function SalesSimulator() {
                             : 'text-destructive',
                         )}
                       >
-                        Mg: {results.margin.toFixed(1)}%
+                        Mg: {formatNumber(results.margin, 1)}%
                       </span>
                       <span
                         className={cn(
@@ -496,7 +497,7 @@ export function SalesSimulator() {
                             : 'text-destructive',
                         )}
                       >
-                        ROI: {results.roi.toFixed(1)}%
+                        ROI: {formatNumber(results.roi, 1)}%
                       </span>
                     </div>
                   </div>
@@ -510,22 +511,12 @@ export function SalesSimulator() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-2 border-b border-border/50">
                   <span className="text-sm text-muted-foreground">Receita Bruta Total</span>
-                  <span className="font-medium">
-                    R${' '}
-                    {results.totalRevenue.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </span>
+                  <span className="font-medium">{formatCurrency(results.totalRevenue)}</span>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b border-border/50">
                   <span className="text-sm text-muted-foreground">Custo Total Projetado</span>
                   <span className="font-medium text-destructive">
-                    - R${' '}
-                    {results.totalCost.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                    - {formatCurrency(results.totalCost)}
                   </span>
                 </div>
                 <div className="flex justify-between items-end pt-2">
@@ -538,11 +529,7 @@ export function SalesSimulator() {
                         : 'text-destructive',
                     )}
                   >
-                    R${' '}
-                    {results.totalProfit.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                    {formatCurrency(results.totalProfit)}
                   </span>
                 </div>
               </div>

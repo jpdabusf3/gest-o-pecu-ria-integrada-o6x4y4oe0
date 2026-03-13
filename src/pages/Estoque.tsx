@@ -13,12 +13,14 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { TriangleAlert, TrendingDown, CalendarClock, Trash2 } from 'lucide-react'
 import { useFarm } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
 import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
 import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
 import { ManageInventoryItemModal } from '@/components/forms/ManageInventoryItemModal'
+import { formatCurrency, formatNumber } from '@/lib/utils'
 
 export default function Estoque() {
   const { inventory, removeInventoryItem } = useFarm()
@@ -74,15 +76,15 @@ export default function Estoque() {
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.id} className={item.qtd < item.minQtd ? 'bg-destructive/5' : ''}>
-              <TableCell className="font-medium">{item.item}</TableCell>
-              <TableCell>{item.tipo}</TableCell>
+              <TableCell className="font-medium whitespace-nowrap">{item.item}</TableCell>
+              <TableCell className="whitespace-nowrap">{item.tipo}</TableCell>
               <TableCell
                 className={`text-right font-mono ${item.qtd < item.minQtd ? 'text-destructive font-bold' : ''}`}
               >
-                {item.qtd}
+                {formatNumber(item.qtd, 0)}
               </TableCell>
               <TableCell className="text-right font-mono text-muted-foreground">
-                {item.minQtd}
+                {formatNumber(item.minQtd, 0)}
               </TableCell>
               <TableCell>{item.unidade}</TableCell>
               <TableCell>
@@ -170,7 +172,19 @@ export default function Estoque() {
                     <TableRow>
                       <TableHead>Insumo</TableHead>
                       <TableHead className="text-right">Estoque Atual</TableHead>
-                      <TableHead className="text-right">Gatilho (Mínimo)</TableHead>
+                      <TableHead className="text-right">
+                        <TooltipProvider delayDuration={300}>
+                          <Tooltip>
+                            <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                              Gatilho (Mínimo)
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              Quantidade mínima segura de estoque antes de necessitar de uma nova
+                              compra.
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableHead>
                       <TableHead>Status / Ação</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -180,12 +194,14 @@ export default function Estoque() {
                       const isWarning = !isCritical && item.qtd <= item.minQtd * 1.5
                       return (
                         <TableRow key={item.id} className={isCritical ? 'bg-destructive/5' : ''}>
-                          <TableCell className="font-medium">{item.item}</TableCell>
-                          <TableCell className="text-right font-mono font-medium">
-                            {item.qtd} {item.unidade}
+                          <TableCell className="font-medium whitespace-nowrap">
+                            {item.item}
                           </TableCell>
-                          <TableCell className="text-right font-mono text-muted-foreground">
-                            {item.minQtd} {item.unidade}
+                          <TableCell className="text-right font-mono font-medium whitespace-nowrap">
+                            {formatNumber(item.qtd, 0)} {item.unidade}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
+                            {formatNumber(item.minQtd, 0)} {item.unidade}
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
@@ -250,7 +266,19 @@ export default function Estoque() {
                     <TableRow>
                       <TableHead>Insumo</TableHead>
                       <TableHead className="text-right">Estoque</TableHead>
-                      <TableHead className="text-right">Consumo Médio Diário</TableHead>
+                      <TableHead className="text-right">
+                        <TooltipProvider delayDuration={300}>
+                          <Tooltip>
+                            <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                              Consumo Médio Diário
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              Média de uso do item calculado com base nas movimentações do mês
+                              passado.
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableHead>
                       <TableHead className="text-center">Duração Estimada</TableHead>
                       <TableHead>Data de Reposição Sugerida</TableHead>
                       <TableHead>Alerta</TableHead>
@@ -262,17 +290,17 @@ export default function Estoque() {
                         key={`forecast-${item.id}`}
                         className={item.needsRestock ? 'bg-orange-500/5' : ''}
                       >
-                        <TableCell className="font-medium">{item.item}</TableCell>
-                        <TableCell className="text-right font-mono">
-                          {item.qtd} {item.unidade}
+                        <TableCell className="font-medium whitespace-nowrap">{item.item}</TableCell>
+                        <TableCell className="text-right font-mono whitespace-nowrap">
+                          {formatNumber(item.qtd, 0)} {item.unidade}
                         </TableCell>
-                        <TableCell className="text-right font-mono text-muted-foreground">
-                          {item.dailyRate} {item.unidade}/dia
+                        <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
+                          {formatNumber(item.dailyRate, 1)} {item.unidade}/dia
                         </TableCell>
-                        <TableCell className="text-center font-medium">
+                        <TableCell className="text-center font-medium whitespace-nowrap">
                           {item.daysRemaining > 365 ? '+1 ano' : `${item.daysRemaining} dias`}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="whitespace-nowrap">
                           <div className="flex items-center gap-2 text-sm">
                             <CalendarClock className="h-4 w-4 text-muted-foreground" />
                             {item.depletionDate.toLocaleDateString('pt-BR')}
@@ -282,14 +310,14 @@ export default function Estoque() {
                           {item.needsRestock ? (
                             <Badge
                               variant="outline"
-                              className="text-orange-600 border-orange-600 bg-orange-50"
+                              className="text-orange-600 border-orange-600 bg-orange-50 whitespace-nowrap"
                             >
                               Alerta de Reposição
                             </Badge>
                           ) : (
                             <Badge
                               variant="secondary"
-                              className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
+                              className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50 whitespace-nowrap"
                             >
                               Estoque Seguro
                             </Badge>
@@ -329,7 +357,7 @@ export default function Estoque() {
                     const porCab = f.rebanho > 0 ? total / f.rebanho : 0
                     return (
                       <TableRow key={f.id}>
-                        <TableCell className="font-medium">{f.nome}</TableCell>
+                        <TableCell className="font-medium whitespace-nowrap">{f.nome}</TableCell>
                         <TableCell>
                           <div className="relative max-w-[150px]">
                             <span className="absolute left-2.5 top-2 text-xs text-muted-foreground font-medium">
@@ -361,12 +389,7 @@ export default function Estoque() {
                           </div>
                         </TableCell>
                         <TableCell className="text-right font-medium text-muted-foreground whitespace-nowrap">
-                          R${' '}
-                          {porCab.toLocaleString('pt-BR', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}{' '}
-                          / cab
+                          {formatCurrency(porCab)} / cab
                         </TableCell>
                       </TableRow>
                     )

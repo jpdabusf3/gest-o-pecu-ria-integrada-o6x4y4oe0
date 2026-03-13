@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { performanceByCategory } from '@/data/mock'
 import { LineChart as LineChartIcon, Activity } from 'lucide-react'
@@ -53,7 +54,16 @@ export default function RelatoriosDesempenho() {
               <div>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Activity className="h-5 w-5 text-primary" />
-                  Desempenho por Categoria Animal
+                  <TooltipProvider delayDuration={300}>
+                    <Tooltip>
+                      <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                        Desempenho por Categoria Animal
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Visualiza o Ganho Médio Diário (GMD) por categoria ao longo dos meses.
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </CardTitle>
                 <CardDescription className="mt-1">
                   Selecione uma categoria para visualizar a tendência de ganho de peso nos últimos

@@ -1126,6 +1126,9 @@ section[aria-label='Notifications alt+T'] {
 .w-\[140px\]{
   width: 140px;
 }
+.w-\[150px\]{
+  width: 150px;
+}
 .w-\[160px\]{
   width: 160px;
 }
@@ -1245,9 +1248,6 @@ section[aria-label='Notifications alt+T'] {
 }
 .max-w-sm{
   max-width: 24rem;
-}
-.max-w-xs{
-  max-width: 20rem;
 }
 .flex-1{
   flex: 1 1 0%;
@@ -1372,6 +1372,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .cursor-default{
   cursor: default;
+}
+.cursor-help{
+  cursor: help;
 }
 .cursor-pointer{
   cursor: pointer;
@@ -2557,6 +2560,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .line-through{
   text-decoration-line: line-through;
+}
+.decoration-dashed{
+  text-decoration-style: dashed;
 }
 .underline-offset-4{
   text-underline-offset: 4px;
@@ -3985,6 +3991,9 @@ section[aria-label='Notifications alt+T'] {
   .sm\:px-6{
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+  .sm\:pb-0{
+    padding-bottom: 0px;
   }
   .sm\:pb-6{
     padding-bottom: 1.5rem;

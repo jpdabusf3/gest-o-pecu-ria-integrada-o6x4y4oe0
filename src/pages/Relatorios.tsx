@@ -152,11 +152,11 @@ export default function Relatorios() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="px-6">Data</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Alvo / Lote</TableHead>
-                  <TableHead>Descrição</TableHead>
-                  <TableHead>Responsável</TableHead>
+                  <TableHead className="px-6 w-[180px]">Data</TableHead>
+                  <TableHead className="w-[150px]">Tipo</TableHead>
+                  <TableHead className="w-[180px]">Alvo / Lote</TableHead>
+                  <TableHead className="min-w-[250px]">Descrição</TableHead>
+                  <TableHead className="w-[180px]">Responsável</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -173,12 +173,14 @@ export default function Relatorios() {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{item.tipo}</Badge>
+                      <Badge variant="outline" className="whitespace-nowrap">
+                        {item.tipo}
+                      </Badge>
                     </TableCell>
                     <TableCell className="font-semibold text-primary whitespace-nowrap">
                       {item.alvo}
                     </TableCell>
-                    <TableCell className="min-w-[250px] truncate max-w-xs">
+                    <TableCell className="min-w-[250px] max-w-sm whitespace-normal break-words">
                       {item.descricao}
                     </TableCell>
                     <TableCell className="text-muted-foreground whitespace-nowrap">

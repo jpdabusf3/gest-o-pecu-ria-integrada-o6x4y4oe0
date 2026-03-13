@@ -17,6 +17,7 @@ import { SimulationComparison } from './SimulationComparison'
 import { SimulationPrintReport } from './SimulationPrintReport'
 import { ExportMenu } from '@/components/ExportMenu'
 import { downloadCSV } from '@/lib/exportUtils'
+import { formatCurrency, formatWeight, formatNumber } from '@/lib/utils'
 
 export function SimulationHistory() {
   const { simulations, deleteSimulation } = useSimulationStore()
@@ -162,30 +163,32 @@ export function SimulationHistory() {
                             ` • Vinc: ${sim.farmIds.length} Faz`}
                         </div>
                       </TableCell>
-                      <TableCell className="text-right text-xs">{sim.weight} kg</TableCell>
-                      <TableCell className="text-right text-xs">
-                        R$ {sim.salesPrice.toFixed(2)}
+                      <TableCell className="text-right text-xs whitespace-nowrap">
+                        {formatWeight(sim.finalWeight || sim.weight, 'kg')}
                       </TableCell>
-                      <TableCell className="text-right text-xs">
-                        R$ {totalCost.toFixed(2)}
+                      <TableCell className="text-right text-xs whitespace-nowrap">
+                        {formatCurrency(sim.salesPrice)}
+                      </TableCell>
+                      <TableCell className="text-right text-xs whitespace-nowrap">
+                        {formatCurrency(totalCost)}
                       </TableCell>
                       <TableCell
-                        className={`text-right font-semibold text-xs ${sim.profit >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
+                        className={`text-right font-semibold text-xs whitespace-nowrap ${sim.profit >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
                       >
-                        R$ {sim.profit.toFixed(2)}
+                        {formatCurrency(sim.profit)}
                         {sim.totalProfit && (
                           <div className="text-[10px] text-muted-foreground font-normal">
-                            Total: R$ {(sim.totalProfit / 1000).toFixed(1)}k
+                            Total: {formatCurrency(sim.totalProfit)}
                           </div>
                         )}
                       </TableCell>
                       <TableCell
-                        className={`text-right font-medium text-xs ${sim.margin >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
+                        className={`text-right font-medium text-xs whitespace-nowrap ${sim.margin >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-destructive'}`}
                       >
-                        {sim.margin.toFixed(1)}%
+                        {formatNumber(sim.margin, 1)}%
                         {sim.roi !== undefined && (
                           <div className="text-[10px] text-muted-foreground font-normal">
-                            ROI: {sim.roi.toFixed(1)}%
+                            ROI: {formatNumber(sim.roi, 1)}%
                           </div>
                         )}
                       </TableCell>

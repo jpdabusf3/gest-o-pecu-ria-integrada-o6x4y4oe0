@@ -22,10 +22,16 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from '@/components/ui/chart'
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { ExportMenu } from '@/components/ExportMenu'
 import { downloadCSV, downloadExcel } from '@/lib/exportUtils'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency, formatWeight, formatNumber } from '@/lib/utils'
 import { TrendingUp, Map as MapIcon, DollarSign, Sprout } from 'lucide-react'
 import usePastoStore from '@/stores/usePastoStore'
 import useAnimalStore from '@/stores/useAnimalStore'
@@ -175,10 +181,7 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </div>
               <div className="text-2xl font-bold text-destructive">
-                R${' '}
-                {stats
-                  .reduce((a, c) => a + c.maintenanceCost, 0)
-                  .toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                {formatCurrency(stats.reduce((a, c) => a + c.maintenanceCost, 0))}
               </div>
             </div>
 
@@ -188,20 +191,14 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
                 <TrendingUp className="h-4 w-4 text-emerald-500" />
               </div>
               <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">
-                R${' '}
-                {stats
-                  .reduce((a, c) => a + c.revenue, 0)
-                  .toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                {formatCurrency(stats.reduce((a, c) => a + c.revenue, 0))}
               </div>
             </div>
 
             <div className="pt-4 border-t border-border/50">
               <div className="text-sm font-semibold mb-1">Lucro Líquido Global</div>
               <div className="text-3xl font-bold text-primary">
-                R${' '}
-                {stats
-                  .reduce((a, c) => a + c.netProfit, 0)
-                  .toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                {formatCurrency(stats.reduce((a, c) => a + c.netProfit, 0))}
               </div>
             </div>
           </CardContent>
@@ -221,7 +218,18 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
                 <TableHead className="text-right">Ganho Peso Total</TableHead>
                 <TableHead className="text-right">Custo Manutenção</TableHead>
                 <TableHead className="text-right text-primary">Lucro Líquido</TableHead>
-                <TableHead className="text-right pr-6">ROI</TableHead>
+                <TableHead className="text-right pr-6">
+                  <TooltipProvider delayDuration={300}>
+                    <UITooltip>
+                      <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                        ROI
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Retorno Sobre Investimento (Lucro / Custo Manutenção).
+                      </TooltipContent>
+                    </UITooltip>
+                  </TooltipProvider>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -230,22 +238,22 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
                   <TableCell className="pl-6 font-medium">
                     <div className="flex items-center gap-2 text-primary">
                       <MapIcon className="h-4 w-4 text-muted-foreground" />
-                      {s.name}
+                      <span className="whitespace-nowrap">{s.name}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right text-muted-foreground">
+                  <TableCell className="text-right text-muted-foreground whitespace-nowrap">
                     {s.headCount} <span className="text-[10px]">cab.</span>
                   </TableCell>
-                  <TableCell className="text-right text-emerald-600 dark:text-emerald-400 font-medium">
-                    +{s.totalWeightGain.toLocaleString()} kg
+                  <TableCell className="text-right text-emerald-600 dark:text-emerald-400 font-medium whitespace-nowrap">
+                    +{formatWeight(s.totalWeightGain, 'kg')}
                   </TableCell>
-                  <TableCell className="text-right text-destructive">
-                    R$ {s.maintenanceCost.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                  <TableCell className="text-right text-destructive whitespace-nowrap">
+                    {formatCurrency(s.maintenanceCost)}
                   </TableCell>
-                  <TableCell className="text-right font-bold text-primary">
-                    R$ {s.netProfit.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                  <TableCell className="text-right font-bold text-primary whitespace-nowrap">
+                    {formatCurrency(s.netProfit)}
                   </TableCell>
-                  <TableCell className="text-right pr-6">
+                  <TableCell className="text-right pr-6 whitespace-nowrap">
                     <span
                       className={cn(
                         'inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold',
@@ -256,7 +264,7 @@ export function PastureProfitabilityDashboard({ currentArrobaPrice }: Props) {
                             : 'bg-destructive/10 text-destructive',
                       )}
                     >
-                      {s.roi.toFixed(1)}%
+                      {formatNumber(s.roi, 1)}%
                     </span>
                   </TableCell>
                 </TableRow>

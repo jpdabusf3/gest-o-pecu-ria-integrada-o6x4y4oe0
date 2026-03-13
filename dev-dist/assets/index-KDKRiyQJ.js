@@ -21948,6 +21948,27 @@ var twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
 function cn(...inputs) {
 	return twMerge(clsx(inputs));
 }
+function formatCurrency(value) {
+	if (value === void 0 || value === null) return "R$ 0,00";
+	return new Intl.NumberFormat("pt-BR", {
+		style: "currency",
+		currency: "BRL"
+	}).format(value);
+}
+function formatWeight(value, unit$1 = "kg") {
+	if (value === void 0 || value === null) return `0,00 ${unit$1}`;
+	return `${new Intl.NumberFormat("pt-BR", {
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
+	}).format(value)} ${unit$1}`;
+}
+function formatNumber(value, decimals = 2) {
+	if (value === void 0 || value === null) return "0".padEnd(decimals + 1, ",0");
+	return new Intl.NumberFormat("pt-BR", {
+		minimumFractionDigits: decimals,
+		maximumFractionDigits: decimals
+	}).format(value);
+}
 var ToastProvider = Provider$1;
 var ToastViewport = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Viewport$1, {
 	ref,
@@ -25247,7 +25268,7 @@ var Root3$1 = Tooltip$2;
 var Trigger$5 = TooltipTrigger$1;
 var Content2$4 = TooltipContent$1;
 var TooltipProvider = Provider;
-var Tooltip$1 = Root3$1;
+var Tooltip = Root3$1;
 var TooltipTrigger = Trigger$5;
 var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$4, {
 	ref,
@@ -29571,7 +29592,7 @@ var SidebarMenuButton = import_react.forwardRef(({ asChild = false, isActive = f
 	});
 	if (!tooltip) return button;
 	if (typeof tooltip === "string") tooltip = { children: tooltip };
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip$1, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
 		asChild: true,
 		children: button
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, {
@@ -37890,7 +37911,7 @@ function renderContent(content, props) {
 	if (typeof content === "function") return /* @__PURE__ */ import_react.createElement(content, props);
 	return /* @__PURE__ */ import_react.createElement(DefaultTooltipContent, props);
 }
-var Tooltip = /* @__PURE__ */ function(_PureComponent) {
+var Tooltip$1 = /* @__PURE__ */ function(_PureComponent) {
 	function Tooltip$3() {
 		_classCallCheck$21(this, Tooltip$3);
 		return _callSuper$17(this, Tooltip$3, arguments);
@@ -37924,8 +37945,8 @@ var Tooltip = /* @__PURE__ */ function(_PureComponent) {
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$40(Tooltip, "displayName", "Tooltip");
-_defineProperty$40(Tooltip, "defaultProps", {
+_defineProperty$40(Tooltip$1, "displayName", "Tooltip");
+_defineProperty$40(Tooltip$1, "defaultProps", {
 	accessibilityLayer: false,
 	allowEscapeViewBox: {
 		x: false,
@@ -55675,7 +55696,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			_defineProperty(_this, "renderTooltip", function() {
 				var _tooltipItem$props$ac;
 				var _this$props3 = _this.props, children = _this$props3.children, accessibilityLayer = _this$props3.accessibilityLayer;
-				var tooltipItem = findChildByType(children, Tooltip);
+				var tooltipItem = findChildByType(children, Tooltip$1);
 				if (!tooltipItem) return null;
 				var _this$state5 = _this.state, isTooltipActive = _this$state5.isTooltipActive, activeCoordinate = _this$state5.activeCoordinate, activePayload = _this$state5.activePayload, activeLabel = _this$state5.activeLabel, offset$3 = _this$state5.offset;
 				var isActive = (_tooltipItem$props$ac = tooltipItem.props.active) !== null && _tooltipItem$props$ac !== void 0 ? _tooltipItem$props$ac : isTooltipActive;
@@ -55757,7 +55778,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				var tooltipEventType = _this.getTooltipEventType();
 				var _this$state8 = _this.state, isTooltipActive = _this$state8.isTooltipActive, tooltipAxis = _this$state8.tooltipAxis, activeTooltipIndex = _this$state8.activeTooltipIndex, activeLabel = _this$state8.activeLabel;
 				var children = _this.props.children;
-				var tooltipItem = findChildByType(children, Tooltip);
+				var tooltipItem = findChildByType(children, Tooltip$1);
 				var _item$props = item.props, points = _item$props.points, isRange = _item$props.isRange, baseLine = _item$props.baseLine;
 				var itemItemProps = item.item.type.defaultProps !== void 0 ? _objectSpread(_objectSpread({}, item.item.type.defaultProps), item.item.props) : item.item.props;
 				var activeDot = itemItemProps.activeDot, hide$3 = itemItemProps.hide, activeBar = itemItemProps.activeBar, activeShape = itemItemProps.activeShape;
@@ -55879,7 +55900,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				key: "displayDefaultTooltip",
 				value: function displayDefaultTooltip() {
 					var _this$props5 = this.props, children = _this$props5.children, data = _this$props5.data, height = _this$props5.height, layout = _this$props5.layout;
-					var tooltipElem = findChildByType(children, Tooltip);
+					var tooltipElem = findChildByType(children, Tooltip$1);
 					if (!tooltipElem) return;
 					var defaultIndex = tooltipElem.props.defaultIndex;
 					if (typeof defaultIndex !== "number" || defaultIndex < 0 || defaultIndex > this.state.tooltipTicks.length - 1) return;
@@ -55932,7 +55953,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			{
 				key: "componentDidUpdate",
 				value: function componentDidUpdate(prevProps) {
-					if (!isChildrenEqual([findChildByType(prevProps.children, Tooltip)], [findChildByType(this.props.children, Tooltip)])) this.displayDefaultTooltip();
+					if (!isChildrenEqual([findChildByType(prevProps.children, Tooltip$1)], [findChildByType(this.props.children, Tooltip$1)])) this.displayDefaultTooltip();
 				}
 			},
 			{
@@ -55945,7 +55966,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			{
 				key: "getTooltipEventType",
 				value: function getTooltipEventType() {
-					var tooltipItem = findChildByType(this.props.children, Tooltip);
+					var tooltipItem = findChildByType(this.props.children, Tooltip$1);
 					if (tooltipItem && typeof tooltipItem.props.shared === "boolean") {
 						var eventType = tooltipItem.props.shared ? "axis" : "item";
 						return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
@@ -56013,7 +56034,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				value: function parseEventsOfWrapper() {
 					var children = this.props.children;
 					var tooltipEventType = this.getTooltipEventType();
-					var tooltipItem = findChildByType(children, Tooltip);
+					var tooltipItem = findChildByType(children, Tooltip$1);
 					var tooltipEvents = {};
 					if (tooltipItem && tooltipEventType === "axis") if (tooltipItem.props.trigger === "click") tooltipEvents = { onClick: this.handleClick };
 					else tooltipEvents = {
@@ -56408,7 +56429,7 @@ ${colorConfig.map(([key, itemConfig]) => {
 }
 `).join("\n") } });
 };
-var ChartTooltip = Tooltip;
+var ChartTooltip = Tooltip$1;
 var ChartTooltipContent = import_react.forwardRef(({ active, payload, className, indicator = "dot", hideLabel = false, hideIndicator = false, label, labelFormatter, labelClassName, formatter, color: color$1, nameKey, labelKey }, ref) => {
 	const { config } = useChart();
 	const tooltipLabel = import_react.useMemo(() => {
@@ -58601,13 +58622,36 @@ function Index() {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground mt-1",
 					children: "Visão consolidada da operação agropecuária."
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-					asChild: true,
-					className: "gap-2 w-full sm:w-auto shadow-sm",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-						to: "/bi",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-4 w-4" }), "Acessar BI Dinâmico"]
-					})
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							asChild: true,
+							variant: "outline",
+							className: "shadow-sm gap-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+								to: "/relatorios",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4" }), " Histórico"]
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							asChild: true,
+							variant: "outline",
+							className: "shadow-sm gap-2",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+								to: "/estoque",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Package, { className: "h-4 w-4" }), " Estoque"]
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							asChild: true,
+							className: "gap-2 shadow-sm",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+								to: "/projecoes",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLine, { className: "h-4 w-4" }), " Simulador / IA"]
+							})
+						})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -58645,11 +58689,17 @@ function Index() {
 							className: "flex flex-row items-center justify-between pb-2 space-y-0",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
 								className: "text-sm font-medium text-muted-foreground",
-								children: "Lotação Média"
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+									delayDuration: 300,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+										className: "underline decoration-dashed underline-offset-4 cursor-help",
+										children: "Lotação Média"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Relação entre o número de cabeças de gado e a área de pastagem disponível (hectares)." })] })
+								})
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "h-4 w-4 text-primary" })]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-2xl font-bold",
-							children: (dashboardData.kpis.animais / farmRegistry.areaPastagem).toFixed(2)
+							className: "text-2xl font-bold text-primary",
+							children: formatNumber(dashboardData.kpis.animais / farmRegistry.areaPastagem, 2)
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-[10px] text-muted-foreground uppercase tracking-wider mt-1",
 							children: "Cab / Hectare"
@@ -58723,15 +58773,15 @@ function Index() {
 							className: "space-y-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "flex justify-between items-center text-sm",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Machos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Machos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "font-bold",
-									children: [(weightMachos / 1e3).toFixed(1), " t"]
+									children: formatWeight(weightMachos / 1e3, "t")
 								})]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "flex justify-between items-center text-sm",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Fêmeas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Fêmeas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "font-bold",
-									children: [(weightFemeas / 1e3).toFixed(1), " t"]
+									children: formatWeight(weightFemeas / 1e3, "t")
 								})]
 							})]
 						})]
@@ -58751,8 +58801,8 @@ function Index() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: readyAnimals.reduce((sum, a$1) => sum + a$1.quantidade, 0) }),
 								" ",
 								"animais atingindo o peso alvo (",
-								targets.pesoAlvoCorte,
-								"kg) ou idade (",
+								formatWeight(targets.pesoAlvoCorte, "kg"),
+								") ou idade (",
 								targets.idadeAlvoMesesCorte,
 								"m)."
 							]
@@ -58765,8 +58815,7 @@ function Index() {
 									children: [
 										a$1.quantidade,
 										" cb - ",
-										a$1.pesoMedio,
-										"kg"
+										formatWeight(a$1.pesoMedio, "kg")
 									]
 								})]
 							}, a$1.id))
@@ -61429,17 +61478,20 @@ function Estoque() {
 			className: item.qtd < item.minQtd ? "bg-destructive/5" : "",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-					className: "font-medium",
+					className: "font-medium whitespace-nowrap",
 					children: item.item
 				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.tipo }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					className: "whitespace-nowrap",
+					children: item.tipo
+				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: `text-right font-mono ${item.qtd < item.minQtd ? "text-destructive font-bold" : ""}`,
-					children: item.qtd
+					children: formatNumber(item.qtd, 0)
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "text-right font-mono text-muted-foreground",
-					children: item.minQtd
+					children: formatNumber(item.minQtd, 0)
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.unidade }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -61550,7 +61602,13 @@ function Estoque() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
-										children: "Gatilho (Mínimo)"
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+											delayDuration: 300,
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+												className: "underline decoration-dashed underline-offset-4 cursor-help",
+												children: "Gatilho (Mínimo)"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Quantidade mínima segura de estoque antes de necessitar de uma nova compra." })] })
+										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
 								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: nutricaoItems.map((item) => {
@@ -61560,21 +61618,21 @@ function Estoque() {
 										className: isCritical ? "bg-destructive/5" : "",
 										children: [
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-												className: "font-medium",
+												className: "font-medium whitespace-nowrap",
 												children: item.item
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: "text-right font-mono font-medium",
+												className: "text-right font-mono font-medium whitespace-nowrap",
 												children: [
-													item.qtd,
+													formatNumber(item.qtd, 0),
 													" ",
 													item.unidade
 												]
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: "text-right font-mono text-muted-foreground",
+												className: "text-right font-mono text-muted-foreground whitespace-nowrap",
 												children: [
-													item.minQtd,
+													formatNumber(item.minQtd, 0),
 													" ",
 													item.unidade
 												]
@@ -61634,7 +61692,13 @@ function Estoque() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
-										children: "Consumo Médio Diário"
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+											delayDuration: 300,
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+												className: "underline decoration-dashed underline-offset-4 cursor-help",
+												children: "Consumo Médio Diário"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Média de uso do item calculado com base nas movimentações do mês passado." })] })
+										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-center",
@@ -61646,41 +61710,44 @@ function Estoque() {
 									className: item.needsRestock ? "bg-orange-500/5" : "",
 									children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-											className: "font-medium",
+											className: "font-medium whitespace-nowrap",
 											children: item.item
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-											className: "text-right font-mono",
+											className: "text-right font-mono whitespace-nowrap",
 											children: [
-												item.qtd,
+												formatNumber(item.qtd, 0),
 												" ",
 												item.unidade
 											]
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-											className: "text-right font-mono text-muted-foreground",
+											className: "text-right font-mono text-muted-foreground whitespace-nowrap",
 											children: [
-												item.dailyRate,
+												formatNumber(item.dailyRate, 1),
 												" ",
 												item.unidade,
 												"/dia"
 											]
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-											className: "text-center font-medium",
+											className: "text-center font-medium whitespace-nowrap",
 											children: item.daysRemaining > 365 ? "+1 ano" : `${item.daysRemaining} dias`
 										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: "flex items-center gap-2 text-sm",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarClock, { className: "h-4 w-4 text-muted-foreground" }), item.depletionDate.toLocaleDateString("pt-BR")]
-										}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "whitespace-nowrap",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+												className: "flex items-center gap-2 text-sm",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarClock, { className: "h-4 w-4 text-muted-foreground" }), item.depletionDate.toLocaleDateString("pt-BR")]
+											})
+										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: item.needsRestock ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 											variant: "outline",
-											className: "text-orange-600 border-orange-600 bg-orange-50",
+											className: "text-orange-600 border-orange-600 bg-orange-50 whitespace-nowrap",
 											children: "Alerta de Reposição"
 										}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 											variant: "secondary",
-											className: "bg-emerald-50 text-emerald-700 hover:bg-emerald-50",
+											className: "bg-emerald-50 text-emerald-700 hover:bg-emerald-50 whitespace-nowrap",
 											children: "Estoque Seguro"
 										}) })
 									]
@@ -61705,7 +61772,7 @@ function Estoque() {
 								const porCab = f.rebanho > 0 ? total / f.rebanho : 0;
 								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium",
+										className: "font-medium whitespace-nowrap",
 										children: f.nome
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -61734,16 +61801,7 @@ function Estoque() {
 									}) }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 										className: "text-right font-medium text-muted-foreground whitespace-nowrap",
-										children: [
-											"R$",
-											" ",
-											porCab.toLocaleString("pt-BR", {
-												minimumFractionDigits: 2,
-												maximumFractionDigits: 2
-											}),
-											" ",
-											"/ cab"
-										]
+										children: [formatCurrency(porCab), " / cab"]
 									})
 								] }, f.id);
 							}) })] })
@@ -69230,12 +69288,6 @@ function FilterBar({ dateRange, setDateRange, typeFilter, setTypeFilter, selecte
 	});
 }
 function InterventionModal({ intervention, onOpenChange }) {
-	const formatCurrency = (value) => {
-		return new Intl.NumberFormat("pt-BR", {
-			style: "currency",
-			currency: "BRL"
-		}).format(value);
-	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
 		open: !!intervention,
 		onOpenChange,
@@ -69262,7 +69314,7 @@ function InterventionModal({ intervention, onOpenChange }) {
 						]
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, {
-					className: "mt-2 text-base text-foreground",
+					className: "mt-2 text-base text-foreground whitespace-normal break-words",
 					children: intervention.descricao
 				})] }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
@@ -69312,9 +69364,9 @@ function InterventionModal({ intervention, onOpenChange }) {
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 										className: "text-xs text-muted-foreground flex items-center gap-1",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "w-3 h-3" }), " Peso Ref."]
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "font-semibold",
-										children: [intervention.pesoEntrada, " kg"]
+										children: formatWeight(intervention.pesoEntrada, "kg")
 									})]
 								}),
 								intervention.valorCabeca !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -69377,7 +69429,7 @@ function InterventionModal({ intervention, onOpenChange }) {
 								className: "text-sm font-semibold text-blue-800 flex items-center gap-1.5",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, { className: "w-4 h-4" }), " Observações Técnicas"]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "text-sm text-blue-900/80 leading-relaxed",
+								className: "text-sm text-blue-900/80 leading-relaxed whitespace-normal break-words",
 								children: intervention.observacoes
 							})]
 						})
@@ -69588,13 +69640,25 @@ function Relatorios() {
 					className: "overflow-x-auto",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-							className: "px-6",
+							className: "px-6 w-[180px]",
 							children: "Data"
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alvo / Lote" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" })
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "w-[150px]",
+							children: "Tipo"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "w-[180px]",
+							children: "Alvo / Lote"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "min-w-[250px]",
+							children: "Descrição"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							className: "w-[180px]",
+							children: "Responsável"
+						})
 					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [filteredHistory.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
 						className: "cursor-pointer hover:bg-muted/50 transition-colors",
 						onClick: () => setSelectedIntervention(item),
@@ -69612,6 +69676,7 @@ function Relatorios() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 								variant: "outline",
+								className: "whitespace-nowrap",
 								children: item.tipo
 							}) }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
@@ -69619,7 +69684,7 @@ function Relatorios() {
 								children: item.alvo
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-								className: "min-w-[250px] truncate max-w-xs",
+								className: "min-w-[250px] max-w-sm whitespace-normal break-words",
 								children: item.descricao
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
@@ -69775,7 +69840,13 @@ function RelatoriosDesempenho() {
 							className: "flex flex-col sm:flex-row justify-between sm:items-start gap-4 pb-4 border-b bg-muted/5",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 								className: "flex items-center gap-2 text-xl",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), "Desempenho por Categoria Animal"]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "h-5 w-5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+									delayDuration: 300,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+										className: "underline decoration-dashed underline-offset-4 cursor-help",
+										children: "Desempenho por Categoria Animal"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Visualiza o Ganho Médio Diário (GMD) por categoria ao longo dos meses." })] })
+								})]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
 								className: "mt-1",
 								children: "Selecione uma categoria para visualizar a tendência de ganho de peso nos últimos meses."
@@ -71068,7 +71139,13 @@ function SalesSimulator() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "space-y-2",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Rend. Carcaça Entrada (%)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+											delayDuration: 300,
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+												className: "underline decoration-dashed underline-offset-4 cursor-help",
+												children: "Rend. Carcaça Entrada (%)"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Porcentagem do animal vivo que compõe a carcaça útil no momento da entrada." })] })
+										}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 											type: "number",
 											className: "bg-background",
 											value: entryYield,
@@ -71135,7 +71212,7 @@ function SalesSimulator() {
 											asChild: true,
 											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 												variant: "outline",
-												className: "w-full justify-start text-left font-normal bg-background",
+												className: "w-full justify-start text-left font-normal bg-background truncate",
 												children: selectedFarms.length > 0 ? `${selectedFarms.length} Fazenda(s) Vinculada(s)` : "Opcional: Puxar custos..."
 											})
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropdownMenuContent, {
@@ -71154,8 +71231,8 @@ function SalesSimulator() {
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Rateio Estrutural (Nutrição/Manejo):" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 												className: "font-semibold text-rose-500",
 												children: [
-													"+ R$ ",
-													farmCostPerHead.toFixed(2),
+													"+ ",
+													formatCurrency(farmCostPerHead),
 													"/cab"
 												]
 											})]
@@ -71243,9 +71320,9 @@ function SalesSimulator() {
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "text-sm text-muted-foreground",
 											children: "Arrobas Produzidas (@)"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "font-medium",
-											children: [results.saleArrobasPerHead.toFixed(1), " @"]
+											children: formatWeight(results.saleArrobasPerHead, "@")
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -71253,33 +71330,19 @@ function SalesSimulator() {
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "text-sm text-muted-foreground",
 											children: "Receita Venda / Cab."
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "font-medium",
-											children: [
-												"R$",
-												" ",
-												results.revenuePerHead.toLocaleString("pt-BR", {
-													minimumFractionDigits: 2,
-													maximumFractionDigits: 2
-												})
-											]
+											children: formatCurrency(results.revenuePerHead)
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "flex justify-between items-center pb-2 border-b border-border/50",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-sm text-muted-foreground",
-											children: "Custo Total (Aquisição + Operacional)"
+											className: "text-sm text-muted-foreground truncate mr-2",
+											children: "Custo Total (Aquisição + Op.)"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "font-medium text-destructive",
-											children: [
-												"- R$",
-												" ",
-												results.totalCostPerHead.toLocaleString("pt-BR", {
-													minimumFractionDigits: 2,
-													maximumFractionDigits: 2
-												})
-											]
+											className: "font-medium text-destructive whitespace-nowrap",
+											children: ["- ", formatCurrency(results.totalCostPerHead)]
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -71289,30 +71352,23 @@ function SalesSimulator() {
 											children: "Lucro Líq. / Cab."
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "text-right",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 												className: cn("font-bold text-xl tracking-tight", results.profitPerHead >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
-												children: [
-													"R$",
-													" ",
-													results.profitPerHead.toLocaleString("pt-BR", {
-														minimumFractionDigits: 2,
-														maximumFractionDigits: 2
-													})
-												]
+												children: formatCurrency(results.profitPerHead)
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 												className: "flex items-center justify-end gap-2 mt-1",
 												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 													className: cn("text-[11px] font-semibold flex items-center gap-1", results.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
 													children: [
 														"Mg: ",
-														results.margin.toFixed(1),
+														formatNumber(results.margin, 1),
 														"%"
 													]
 												}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 													className: cn("text-[11px] font-semibold flex items-center gap-1", results.roi >= 0 ? "text-blue-600 dark:text-blue-400" : "text-destructive"),
 													children: [
 														"ROI: ",
-														results.roi.toFixed(1),
+														formatNumber(results.roi, 1),
 														"%"
 													]
 												})]
@@ -71337,16 +71393,9 @@ function SalesSimulator() {
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "text-sm text-muted-foreground",
 											children: "Receita Bruta Total"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "font-medium",
-											children: [
-												"R$",
-												" ",
-												results.totalRevenue.toLocaleString("pt-BR", {
-													minimumFractionDigits: 2,
-													maximumFractionDigits: 2
-												})
-											]
+											children: formatCurrency(results.totalRevenue)
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -71356,14 +71405,7 @@ function SalesSimulator() {
 											children: "Custo Total Projetado"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 											className: "font-medium text-destructive",
-											children: [
-												"- R$",
-												" ",
-												results.totalCost.toLocaleString("pt-BR", {
-													minimumFractionDigits: 2,
-													maximumFractionDigits: 2
-												})
-											]
+											children: ["- ", formatCurrency(results.totalCost)]
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -71371,16 +71413,9 @@ function SalesSimulator() {
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "font-bold text-base",
 											children: "Lucro Líquido Global"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: cn("font-bold text-2xl tracking-tight", results.totalProfit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"),
-											children: [
-												"R$",
-												" ",
-												results.totalProfit.toLocaleString("pt-BR", {
-													minimumFractionDigits: 2,
-													maximumFractionDigits: 2
-												})
-											]
+											children: formatCurrency(results.totalProfit)
 										})]
 									})
 								]
@@ -72140,43 +72175,35 @@ function SimulationHistory() {
 									children: [sim.quantity ? `${sim.quantity} cab.` : "1 cab.", sim.farmIds && sim.farmIds.length > 0 && ` • Vinc: ${sim.farmIds.length} Faz`]
 								})]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-								className: "text-right text-xs",
-								children: [sim.weight, " kg"]
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-right text-xs whitespace-nowrap",
+								children: formatWeight(sim.finalWeight || sim.weight, "kg")
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-right text-xs whitespace-nowrap",
+								children: formatCurrency(sim.salesPrice)
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-right text-xs whitespace-nowrap",
+								children: formatCurrency(totalCost)
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-								className: "text-right text-xs",
-								children: ["R$ ", sim.salesPrice.toFixed(2)]
+								className: `text-right font-semibold text-xs whitespace-nowrap ${sim.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
+								children: [formatCurrency(sim.profit), sim.totalProfit && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-[10px] text-muted-foreground font-normal",
+									children: ["Total: ", formatCurrency(sim.totalProfit)]
+								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-								className: "text-right text-xs",
-								children: ["R$ ", totalCost.toFixed(2)]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-								className: `text-right font-semibold text-xs ${sim.profit >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
+								className: `text-right font-medium text-xs whitespace-nowrap ${sim.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
 								children: [
-									"R$ ",
-									sim.profit.toFixed(2),
-									sim.totalProfit && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "text-[10px] text-muted-foreground font-normal",
-										children: [
-											"Total: R$ ",
-											(sim.totalProfit / 1e3).toFixed(1),
-											"k"
-										]
-									})
-								]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-								className: `text-right font-medium text-xs ${sim.margin >= 0 ? "text-emerald-600 dark:text-emerald-500" : "text-destructive"}`,
-								children: [
-									sim.margin.toFixed(1),
+									formatNumber(sim.margin, 1),
 									"%",
 									sim.roi !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "text-[10px] text-muted-foreground font-normal",
 										children: [
 											"ROI: ",
-											sim.roi.toFixed(1),
+											formatNumber(sim.roi, 1),
 											"%"
 										]
 									})
@@ -72370,37 +72397,25 @@ function PastureProfitabilityDashboard({ currentArrobaPrice }) {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-sm text-muted-foreground flex items-center justify-between",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Custo de Manutenção Total" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DollarSign, { className: "h-4 w-4 text-muted-foreground" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-2xl font-bold text-destructive",
-							children: [
-								"R$",
-								" ",
-								stats.reduce((a$1, c$1) => a$1 + c$1.maintenanceCost, 0).toLocaleString("pt-BR", { maximumFractionDigits: 0 })
-							]
+							children: formatCurrency(stats.reduce((a$1, c$1) => a$1 + c$1.maintenanceCost, 0))
 						})] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-sm text-muted-foreground flex items-center justify-between",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Receita Agregada (Ganho de Peso)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-4 w-4 text-emerald-500" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-2xl font-bold text-emerald-600 dark:text-emerald-500",
-							children: [
-								"R$",
-								" ",
-								stats.reduce((a$1, c$1) => a$1 + c$1.revenue, 0).toLocaleString("pt-BR", { maximumFractionDigits: 0 })
-							]
+							children: formatCurrency(stats.reduce((a$1, c$1) => a$1 + c$1.revenue, 0))
 						})] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "pt-4 border-t border-border/50",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-sm font-semibold mb-1",
 								children: "Lucro Líquido Global"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-3xl font-bold text-primary",
-								children: [
-									"R$",
-									" ",
-									stats.reduce((a$1, c$1) => a$1 + c$1.netProfit, 0).toLocaleString("pt-BR", { maximumFractionDigits: 0 })
-								]
+								children: formatCurrency(stats.reduce((a$1, c$1) => a$1 + c$1.netProfit, 0))
 							})]
 						})
 					]
@@ -72431,18 +72446,27 @@ function PastureProfitabilityDashboard({ currentArrobaPrice }) {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 						className: "text-right pr-6",
-						children: "ROI"
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+							delayDuration: 300,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+								className: "underline decoration-dashed underline-offset-4 cursor-help",
+								children: "ROI"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Retorno Sobre Investimento (Lucro / Custo Manutenção)." })] })
+						})
 					})
 				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: stats.map((s$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 						className: "pl-6 font-medium",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex items-center gap-2 text-primary",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "h-4 w-4 text-muted-foreground" }), s$1.name]
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Map$1, { className: "h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "whitespace-nowrap",
+								children: s$1.name
+							})]
 						})
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right text-muted-foreground",
+						className: "text-right text-muted-foreground whitespace-nowrap",
 						children: [
 							s$1.headCount,
 							" ",
@@ -72453,26 +72477,22 @@ function PastureProfitabilityDashboard({ currentArrobaPrice }) {
 						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right text-emerald-600 dark:text-emerald-400 font-medium",
-						children: [
-							"+",
-							s$1.totalWeightGain.toLocaleString(),
-							" kg"
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right text-destructive",
-						children: ["R$ ", s$1.maintenanceCost.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-						className: "text-right font-bold text-primary",
-						children: ["R$ ", s$1.netProfit.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+						className: "text-right text-emerald-600 dark:text-emerald-400 font-medium whitespace-nowrap",
+						children: ["+", formatWeight(s$1.totalWeightGain, "kg")]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "text-right pr-6",
+						className: "text-right text-destructive whitespace-nowrap",
+						children: formatCurrency(s$1.maintenanceCost)
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right font-bold text-primary whitespace-nowrap",
+						children: formatCurrency(s$1.netProfit)
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right pr-6 whitespace-nowrap",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 							className: cn("inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold", s$1.roi >= 100 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : s$1.roi >= 0 ? "bg-blue-500/10 text-blue-600 dark:text-blue-400" : "bg-destructive/10 text-destructive"),
-							children: [s$1.roi.toFixed(1), "%"]
+							children: [formatNumber(s$1.roi, 1), "%"]
 						})
 					})
 				] }, s$1.id)) })] })
@@ -72670,7 +72690,13 @@ function ProjecaoVendas() {
 										className: "pb-2",
 										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 											className: "text-sm font-medium text-primary flex items-center justify-between",
-											children: ["Preço Base da Arroba (R$)", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+												delayDuration: 300,
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+													className: "underline decoration-dashed underline-offset-4",
+													children: "Preço Base da Arroba (R$)"
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Preço base utilizado para calcular as receitas nas simulações e projeções abaixo." })] })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 												variant: "outline",
 												className: "text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate print:border print:bg-transparent",
 												children: activeLabel
@@ -72711,7 +72737,7 @@ function ProjecaoVendas() {
 											className: "text-muted-foreground font-medium flex-1",
 											children: [
 												"≈ ",
-												(targetWeight / 30).toFixed(1),
+												formatNumber(targetWeight / 30, 1),
 												" @"
 											]
 										})]
@@ -72728,16 +72754,9 @@ function ProjecaoVendas() {
 											className: "text-sm font-medium text-emerald-700 dark:text-emerald-500",
 											children: "Lucro Líquido Global Proj."
 										})
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 										className: "text-3xl font-bold text-emerald-700 dark:text-emerald-500 transition-all",
-										children: [
-											"R$",
-											" ",
-											totalProjNetProfit.toLocaleString("pt-BR", {
-												minimumFractionDigits: 2,
-												maximumFractionDigits: 2
-											})
-										]
+										children: formatCurrency(totalProjNetProfit)
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden",
 										children: "Receita deduzida de custos da tabela"
@@ -72768,7 +72787,13 @@ function ProjecaoVendas() {
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Lote / Origem" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-center",
-										children: "Janela Ideal / Ação"
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+											delayDuration: 300,
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+												className: "underline decoration-dashed underline-offset-4",
+												children: "Janela Ideal / Ação"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Momento recomendado para venda baseado em projeção de ganho e mercado." })] })
+										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
@@ -72800,13 +72825,18 @@ function ProjecaoVendas() {
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "text-xs text-muted-foreground flex items-center mt-1 gap-1",
 										children: [
-											p.pesoMedio,
-											"kg •",
+											formatWeight(p.pesoMedio, "kg"),
+											" •",
 											" ",
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-3 w-3 text-emerald-500 print:hidden" }),
 											" ",
-											p.gmd,
-											"kg/dia"
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+												delayDuration: 300,
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TooltipTrigger, {
+													className: "underline decoration-dashed underline-offset-4 cursor-help",
+													children: [formatNumber(p.gmd, 2), " kg/dia"]
+												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Ganho Médio Diário (GMD) projetado." })] })
+											})
 										]
 									})] }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
@@ -72821,15 +72851,15 @@ function ProjecaoVendas() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
 										className: "text-right text-destructive font-medium whitespace-nowrap",
-										children: ["- R$ ", p.totalCostHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+										children: ["- ", formatCurrency(p.totalCostHead)]
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "text-right font-bold text-primary whitespace-nowrap transition-all",
-										children: ["R$ ", p.netProfitHead.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+										children: formatCurrency(p.netProfitHead)
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "text-right font-bold text-primary whitespace-nowrap text-base transition-all",
-										children: ["R$ ", p.projRevenue.toLocaleString("pt-BR", { maximumFractionDigits: 0 })]
+										children: formatCurrency(p.projRevenue)
 									})
 								] }, idx)) })] })
 							})]
@@ -76657,4 +76687,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DDYcFi6g.js.map
+//# sourceMappingURL=index-KDKRiyQJ.js.map

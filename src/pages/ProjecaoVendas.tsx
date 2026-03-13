@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   BrainCircuit,
   DollarSign,
@@ -35,7 +36,7 @@ import { PastureProfitabilityDashboard } from '@/components/PastureProfitability
 import { downloadCSV, triggerPDFPrint } from '@/lib/exportUtils'
 import { useToast } from '@/hooks/use-toast'
 import { useMarket } from '@/contexts/MarketContext'
-import { cn } from '@/lib/utils'
+import { cn, formatCurrency, formatWeight, formatNumber } from '@/lib/utils'
 
 export default function ProjecaoVendas() {
   const { getPrice, b3Data, marketData, refreshMarketPrices, isRefreshing, lastUpdate } =
@@ -227,7 +228,17 @@ export default function ProjecaoVendas() {
             <Card className="bg-primary/5 border-primary/20 shadow-sm print:border print:shadow-none print:bg-transparent transition-all">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-primary flex items-center justify-between">
-                  Preço Base da Arroba (R$)
+                  <TooltipProvider delayDuration={300}>
+                    <Tooltip>
+                      <TooltipTrigger className="underline decoration-dashed underline-offset-4">
+                        Preço Base da Arroba (R$)
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Preço base utilizado para calcular as receitas nas simulações e projeções
+                        abaixo.
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <Badge
                     variant="outline"
                     className="text-[10px] bg-background text-muted-foreground border-primary/20 max-w-[120px] truncate print:border print:bg-transparent"
@@ -270,7 +281,7 @@ export default function ProjecaoVendas() {
                     className="text-2xl font-bold h-12 w-32 shadow-sm print:border-none print:shadow-none print:p-0"
                   />
                   <span className="text-muted-foreground font-medium flex-1">
-                    ≈ {(targetWeight / 30).toFixed(1)} @
+                    ≈ {formatNumber(targetWeight / 30, 1)} @
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-2 print:hidden">
@@ -287,11 +298,7 @@ export default function ProjecaoVendas() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-500 transition-all">
-                  R${' '}
-                  {totalProjNetProfit.toLocaleString('pt-BR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
+                  {formatCurrency(totalProjNetProfit)}
                 </div>
                 <p className="text-xs text-emerald-700/80 dark:text-emerald-500/80 mt-1 font-medium print:hidden">
                   Receita deduzida de custos da tabela
@@ -318,7 +325,18 @@ export default function ProjecaoVendas() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Lote / Origem</TableHead>
-                    <TableHead className="text-center">Janela Ideal / Ação</TableHead>
+                    <TableHead className="text-center">
+                      <TooltipProvider delayDuration={300}>
+                        <Tooltip>
+                          <TooltipTrigger className="underline decoration-dashed underline-offset-4">
+                            Janela Ideal / Ação
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Momento recomendado para venda baseado em projeção de ganho e mercado.
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableHead>
                     <TableHead className="text-right">Custos Proj. / Cab.</TableHead>
                     <TableHead className="text-right text-primary">Lucro Líq. / Cab.</TableHead>
                     <TableHead className="text-right font-bold text-primary">
@@ -337,9 +355,16 @@ export default function ProjecaoVendas() {
                           </span>
                         </div>
                         <div className="text-xs text-muted-foreground flex items-center mt-1 gap-1">
-                          {p.pesoMedio}kg •{' '}
-                          <TrendingUp className="h-3 w-3 text-emerald-500 print:hidden" /> {p.gmd}
-                          kg/dia
+                          {formatWeight(p.pesoMedio, 'kg')} •{' '}
+                          <TrendingUp className="h-3 w-3 text-emerald-500 print:hidden" />{' '}
+                          <TooltipProvider delayDuration={300}>
+                            <Tooltip>
+                              <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
+                                {formatNumber(p.gmd, 2)} kg/dia
+                              </TooltipTrigger>
+                              <TooltipContent>Ganho Médio Diário (GMD) projetado.</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         </div>
                       </TableCell>
                       <TableCell className="text-center">
@@ -352,13 +377,13 @@ export default function ProjecaoVendas() {
                         </div>
                       </TableCell>
                       <TableCell className="text-right text-destructive font-medium whitespace-nowrap">
-                        - R$ {p.totalCostHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                        - {formatCurrency(p.totalCostHead)}
                       </TableCell>
                       <TableCell className="text-right font-bold text-primary whitespace-nowrap transition-all">
-                        R$ {p.netProfitHead.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                        {formatCurrency(p.netProfitHead)}
                       </TableCell>
                       <TableCell className="text-right font-bold text-primary whitespace-nowrap text-base transition-all">
-                        R$ {p.projRevenue.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}
+                        {formatCurrency(p.projRevenue)}
                       </TableCell>
                     </TableRow>
                   ))}

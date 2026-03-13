@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Clock, Tag, MapPin, Users, Coins, Info, Scale } from 'lucide-react'
 import { managementHistory } from '@/data/mock'
+import { formatCurrency, formatWeight } from '@/lib/utils'
 
 type HistoryItem = (typeof managementHistory)[0]
 
@@ -18,10 +19,6 @@ interface InterventionModalProps {
 }
 
 export function InterventionModal({ intervention, onOpenChange }: InterventionModalProps) {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-  }
-
   return (
     <Dialog open={!!intervention} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] gap-6">
@@ -41,7 +38,7 @@ export function InterventionModal({ intervention, onOpenChange }: InterventionMo
                   {intervention.data} {intervention.hora ? `às ${intervention.hora}` : ''}
                 </Badge>
               </div>
-              <DialogDescription className="mt-2 text-base text-foreground">
+              <DialogDescription className="mt-2 text-base text-foreground whitespace-normal break-words">
                 {intervention.descricao}
               </DialogDescription>
             </DialogHeader>
@@ -87,7 +84,9 @@ export function InterventionModal({ intervention, onOpenChange }: InterventionMo
                       <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Scale className="w-3 h-3" /> Peso Ref.
                       </span>
-                      <p className="font-semibold">{intervention.pesoEntrada} kg</p>
+                      <p className="font-semibold">
+                        {formatWeight(intervention.pesoEntrada, 'kg')}
+                      </p>
                     </div>
                   )}
                   {intervention.valorCabeca !== undefined && (
@@ -138,7 +137,7 @@ export function InterventionModal({ intervention, onOpenChange }: InterventionMo
                   <span className="text-sm font-semibold text-blue-800 flex items-center gap-1.5">
                     <Info className="w-4 h-4" /> Observações Técnicas
                   </span>
-                  <p className="text-sm text-blue-900/80 leading-relaxed">
+                  <p className="text-sm text-blue-900/80 leading-relaxed whitespace-normal break-words">
                     {intervention.observacoes}
                   </p>
                 </div>
