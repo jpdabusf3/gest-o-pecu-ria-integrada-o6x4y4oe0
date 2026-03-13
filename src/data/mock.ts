@@ -1083,3 +1083,11 @@ export const savedCustomSimulations = [
     dietCostPerDay: 8.5,
   },
 ]
+
+export const performanceCorrelationData = [
+  { loteId: 'LCR-01', ganhoPeso: 0.8, custoCabeca: 45.0, ndvi: 0.75, conversaoAlimentar: 6.5 },
+  { loteId: 'LCR-02', ganhoPeso: 0.85, custoCabeca: 48.0, ndvi: 0.8, conversaoAlimentar: 6.2 },
+  { loteId: 'LRE-01', ganhoPeso: 1.1, custoCabeca: 65.0, ndvi: 0.7, conversaoAlimentar: 5.8 },
+  { loteId: 'LEN-01', ganhoPeso: 1.45, custoCabeca: 120.0, ndvi: null, conversaoAlimentar: 5.2 },
+  { loteId: 'LEN-02', ganhoPeso: 1.6, custoCabeca: 125.0, ndvi: null, conversaoAlimentar: 5.0 },
+]
