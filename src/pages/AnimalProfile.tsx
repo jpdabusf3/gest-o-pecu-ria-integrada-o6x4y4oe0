@@ -34,7 +34,16 @@ import { useAuth } from '@/contexts/AuthContext'
 import useAuditStore from '@/stores/useAuditStore'
 import useFinanceStore from '@/stores/useFinanceStore'
 import { animalData } from '@/data/mock'
-import { ArrowLeft, Plus, History, Files, ShieldCheck, DollarSign, TrendingUp } from 'lucide-react'
+import {
+  ArrowLeft,
+  Plus,
+  History,
+  Files,
+  ShieldCheck,
+  DollarSign,
+  TrendingUp,
+  AlertTriangle,
+} from 'lucide-react'
 import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
 import { DocumentManager } from '@/components/DocumentManager'
 
@@ -219,14 +228,28 @@ export default function AnimalProfile() {
 
   const animalLogs = logs.filter((l) => l.entityType === 'Animal' && l.entityId === animal.id)
 
-  // Financial Computations
+  // Financial Computations for Individual Profitability Report
   const animalLedger = ledger.filter((l) => l.animalId === animal.id)
-  const totalExpenses = animalLedger
-    .filter((l) => l.type === 'expense')
+
+  const totalNutrition = animalLedger
+    .filter((l) => l.category === 'Nutrição' && l.type === 'expense')
     .reduce((acc, curr) => acc + curr.amount, 0)
+  const totalSanity = animalLedger
+    .filter((l) => l.category === 'Sanidade' && l.type === 'expense')
+    .reduce((acc, curr) => acc + curr.amount, 0)
+  const totalOther = animalLedger
+    .filter((l) => !['Nutrição', 'Sanidade'].includes(l.category) && l.type === 'expense')
+    .reduce((acc, curr) => acc + curr.amount, 0)
+  const totalExpenses = totalNutrition + totalSanity + totalOther
+
   const currentWeightNum = parseFloat(pesoAtual.replace('kg', '').trim()) || 0
-  const estimatedMarketValue = currentWeightNum * 12.5 // Mock: R$ 12.50 per kg
+  const estimatedArrobas = currentWeightNum / 15 // Assuming /15 as per AC projection formula
+
+  const currentDatagroPrice = 265.5 // Mock sync to MT price
+  const estimatedMarketValue = estimatedArrobas * currentDatagroPrice
   const netProfit = estimatedMarketValue - totalExpenses
+
+  const realUnitCost = estimatedArrobas > 0 ? totalExpenses / estimatedArrobas : 0
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
@@ -267,6 +290,9 @@ export default function AnimalProfile() {
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold text-primary">{pesoAtual}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Estimado: {estimatedArrobas.toFixed(1)} @
+            </p>
           </CardContent>
         </Card>
         <Card className="bg-emerald-500/10 border-emerald-500/20">
@@ -283,13 +309,13 @@ export default function AnimalProfile() {
         </Card>
       </div>
 
-      <Tabs defaultValue="history" className="w-full">
+      <Tabs defaultValue="financial" className="w-full">
         <TabsList className="flex flex-wrap w-full sm:w-auto mb-4 h-auto p-1 py-1.5 justify-start">
+          <TabsTrigger value="financial" className="gap-2 py-2">
+            <DollarSign className="h-4 w-4 hidden sm:block" /> Custo e Rentabilidade
+          </TabsTrigger>
           <TabsTrigger value="history" className="gap-2 py-2">
             <History className="h-4 w-4 hidden sm:block" /> Operacional
-          </TabsTrigger>
-          <TabsTrigger value="financial" className="gap-2 py-2">
-            <DollarSign className="h-4 w-4 hidden sm:block" /> Financeiro
           </TabsTrigger>
           <TabsTrigger value="documents" className="gap-2 py-2">
             <Files className="h-4 w-4 hidden sm:block" /> Documentos
@@ -299,80 +325,72 @@ export default function AnimalProfile() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="history" className="mt-2 outline-none space-y-6">
-          <Card>
-            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <CardTitle>Histórico de Eventos e Pesagens</CardTitle>
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-                <ScaleIntegrationModal animalId={animal.id} onSaveWeight={handleNewWeight} />
-                <QuickEventModal animalId={animal.id} />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Data</TableHead>
-                      <TableHead>Tipo</TableHead>
-                      <TableHead>Valor / Detalhe</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {historico.map((ev: any, idx: number) => (
-                      <TableRow key={idx}>
-                        <TableCell className="whitespace-nowrap">{ev.data}</TableCell>
-                        <TableCell>
-                          <Badge variant={ev.tipo.includes('Sensor') ? 'default' : 'outline'}>
-                            {ev.tipo}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="font-medium">{ev.valor}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="financial" className="mt-2 outline-none space-y-6">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-muted-foreground">
-                  Valor de Mercado Estimado
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  R$ {estimatedMarketValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Baseado no peso vivo (R$ 12,50/kg)
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-muted-foreground">Custos Acumulados</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-destructive">
-                  - R$ {totalExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </div>
-              </CardContent>
-            </Card>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-primary/5 border-primary/20">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm text-primary font-medium flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4" /> Margem de Lucro / Cabeça
+                  <TrendingUp className="h-4 w-4" /> Custo Unitário Real no Abate
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-primary">
-                  R$ {netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                <div className="text-3xl font-bold text-primary">
+                  R$ {realUnitCost.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}{' '}
+                  <span className="text-base font-normal text-muted-foreground">/@</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 border-t border-primary/10 pt-2">
+                  Custo Total ÷ Arrobas Produzidas
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-muted-foreground">
+                  Receita Projetada (Datagro)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">
+                  R$ {estimatedMarketValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Base B3/Datagro: R$ {currentDatagroPrice.toFixed(2)} / @
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="lg:col-span-2">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-muted-foreground">
+                  Composição do Custo Acumulado
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-1">
+                  <div className="text-2xl font-bold text-destructive min-w-[120px]">
+                    - R$ {totalExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </div>
+                  <div className="flex-1 w-full grid grid-cols-3 gap-2 text-sm border-l pl-4">
+                    <div>
+                      <div className="text-xs text-muted-foreground">Nutrição (Insumos)</div>
+                      <div className="font-semibold text-destructive/80">
+                        R$ {totalNutrition.toFixed(2)}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">Sanidade (Vac/Med)</div>
+                      <div className="font-semibold text-destructive/80">
+                        R$ {totalSanity.toFixed(2)}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">Manejo e Outros</div>
+                      <div className="font-semibold text-destructive/80">
+                        R$ {totalOther.toFixed(2)}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -381,9 +399,10 @@ export default function AnimalProfile() {
           <Card>
             <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <CardTitle>Livro Razão do Animal</CardTitle>
+                <CardTitle>Livro Razão Individual</CardTitle>
                 <CardDescription>
-                  Detalhamento de todas as despesas vinculadas a este registro.
+                  Detalhamento de todos os custos (nutrição, sanidade, manejo) injetados neste
+                  animal.
                 </CardDescription>
               </div>
               <AddExpenseModal animalId={animal.id} />
@@ -421,6 +440,44 @@ export default function AnimalProfile() {
                         </TableCell>
                       </TableRow>
                     )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="history" className="mt-2 outline-none space-y-6">
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <CardTitle>Histórico de Eventos e Pesagens</CardTitle>
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <ScaleIntegrationModal animalId={animal.id} onSaveWeight={handleNewWeight} />
+                <QuickEventModal animalId={animal.id} />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Valor / Detalhe</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {historico.map((ev: any, idx: number) => (
+                      <TableRow key={idx}>
+                        <TableCell className="whitespace-nowrap">{ev.data}</TableCell>
+                        <TableCell>
+                          <Badge variant={ev.tipo.includes('Sensor') ? 'default' : 'outline'}>
+                            {ev.tipo}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-medium">{ev.valor}</TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </div>

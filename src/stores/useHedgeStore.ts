@@ -3,11 +3,13 @@ import { useState, useEffect, useCallback } from 'react'
 export interface HedgePosition {
   id: string
   contractCode: string
-  type: 'Future' | 'Put' | 'Call'
-  quantity: number
+  type: 'Futuro' | 'Put' | 'Call' | 'Collar'
+  quantityArrobas: number
   strikePrice: number
   premiumPaid: number
+  entryDate: string
   expiryDate: string
+  objective: string
   basisLocal: number
   status: 'Aberto' | 'Encerrado'
 }
@@ -27,10 +29,12 @@ export default function useHedgeStore() {
         id: 'H1',
         contractCode: 'BGIV26',
         type: 'Put',
-        quantity: 10,
+        quantityArrobas: 3300,
         strikePrice: 280.0,
         premiumPaid: 5.5,
+        entryDate: '2026-03-01',
         expiryDate: '2026-10-31',
+        objective: 'Proteção Piso Confinamento',
         basisLocal: -15.0,
         status: 'Aberto',
       },

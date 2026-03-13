@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { useToast } from '@/hooks/use-toast'
 
@@ -36,6 +36,19 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const auth = useAuth()
   const { toast } = useToast()
 
+  // Simulated Mobile Alert Workflow for Management Tasks (e.g. DG)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      addNotification({
+        title: '⏰ Alerta de Manejo Crítico (DG)',
+        message:
+          'O lote LCR-01 possui Diagnóstico de Gestação (DG) agendado para as próximas 48h. Evite atrasos no protocolo IATF.',
+        type: 'alert',
+      })
+    }, 4500)
+    return () => clearTimeout(timer)
+  }, [])
+
   const addNotification = (notif: Omit<AppNotification, 'id' | 'date' | 'read'>) => {
     const newNotif: AppNotification = {
       ...notif,
@@ -52,7 +65,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     if (
       notif.type === 'alert' &&
       prefs.notifyHealth &&
-      (lowerTitle.includes('sanit') || lowerTitle.includes('vacina') || lowerTitle.includes('peso'))
+      (lowerTitle.includes('sanit') ||
+        lowerTitle.includes('vacina') ||
+        lowerTitle.includes('peso') ||
+        lowerTitle.includes('iatf') ||
+        lowerTitle.includes('manejo'))
     ) {
       shouldSend = true
     } else if (
@@ -92,9 +109,10 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       if (prefs.whatsappEnabled && auth.user.whatsapp) {
         setTimeout(() => {
           toast({
-            title: '📱 WhatsApp Enviado',
-            description: `Alerta automatizado despachado para ${auth.user.whatsapp}: "${notif.title}"`,
+            title: '📱 Notificação Push / WhatsApp',
+            description: `Alerta automatizado enviado para ${auth.user.whatsapp}: "${notif.title}"`,
             variant: 'default',
+            className: 'border-blue-500 bg-blue-500/10 text-blue-900 dark:text-blue-100',
           })
         }, 1500)
       }

@@ -13,7 +13,7 @@ export const marketIndicators: MarketIndicator[] = [
   {
     id: 'boi-gordo-mt',
     label: 'Boi Gordo - MT (À vista)',
-    source: 'Indicador do Boi',
+    source: 'Datagro',
     price: 265.5,
     trend: 'up',
     change: '+1.2%',
@@ -21,7 +21,7 @@ export const marketIndicators: MarketIndicator[] = [
   {
     id: 'novilha-mt',
     label: 'Novilha Gorda - MT',
-    source: 'Indicador do Boi',
+    source: 'Datagro',
     price: 250.0,
     trend: 'stable',
     change: '0.0%',
@@ -29,7 +29,7 @@ export const marketIndicators: MarketIndicator[] = [
   {
     id: 'vaca-mt',
     label: 'Vaca Gorda - MT',
-    source: 'Indicador do Boi',
+    source: 'Datagro',
     price: 235.0,
     trend: 'down',
     change: '-0.5%',
@@ -83,7 +83,7 @@ export const commodityIndicators: MarketIndicator[] = [
   {
     id: 'milho-mt',
     label: 'Milho - MT (sc 60kg)',
-    source: 'Físico',
+    source: 'Datagro',
     price: 55.5,
     trend: 'down',
     change: '-1.2%',
@@ -99,7 +99,7 @@ export const commodityIndicators: MarketIndicator[] = [
   {
     id: 'soja-mt',
     label: 'Soja - MT (sc 60kg)',
-    source: 'Físico',
+    source: 'Datagro',
     price: 125.0,
     trend: 'stable',
     change: '0.0%',
@@ -111,6 +111,22 @@ export const commodityIndicators: MarketIndicator[] = [
     price: 140.5,
     trend: 'up',
     change: '+1.5%',
+  },
+  {
+    id: 'farelo-mt',
+    label: 'Farelo de Soja - MT (t)',
+    source: 'Datagro',
+    price: 2200.0,
+    trend: 'up',
+    change: '+1.5%',
+  },
+  {
+    id: 'nucleo-mt',
+    label: 'Núcleo Mineral - MT (kg)',
+    source: 'Datagro',
+    price: 4.5,
+    trend: 'stable',
+    change: '0.0%',
   },
 ]
 
@@ -134,7 +150,7 @@ export const b3FuturesData: Record<
   ],
 }
 
-export const marketLastUpdate = '07/03/2026 14:30'
+export const marketLastUpdate = '07/03/2026 10:00'
 
 export const historicalMarketData = [
   { month: 'Abr/25', sp: 265, mt: 255, b3: 270 },

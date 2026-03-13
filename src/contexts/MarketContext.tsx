@@ -74,7 +74,7 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
     {
       id: 'mock-1',
       indicatorId: 'boi-gordo-mt',
-      indicatorLabel: 'Boi Gordo - MT (À vista)',
+      indicatorLabel: 'Boi Gordo - MT (Datagro)',
       condition: 'above',
       targetPrice: 270.0,
       notifyWhatsApp: true,
@@ -140,40 +140,60 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1200))
 
+      // Simulate > 24h sync fail rarely
+      if (Math.random() < 0.05) {
+        throw new Error('Sync failed > 24h')
+      }
+
       const updatedPrices = [
         { id: 'boi-gordo-mt', price: 268.5 + (Math.random() * 2 - 1) },
         { id: 'novilha-mt', price: 252.0 + (Math.random() * 2 - 1) },
         { id: 'vaca-mt', price: 236.5 + (Math.random() * 2 - 1) },
       ]
 
+      let maxVariation = 0
+
       setMarketData((prev) =>
         prev.map((item) => {
           const update = updatedPrices.find((u) => u.id === item.id)
           if (update) {
             const newPrice = Number(update.price.toFixed(2))
+            const variation = Math.abs((newPrice - item.price) / item.price)
+            if (variation > maxVariation) maxVariation = variation
+
             return {
               ...item,
               price: newPrice,
               trend: calculateTrend(item.price, newPrice),
               change: calculateChangeStr(item.price, newPrice),
-              source: 'API Mercado',
+              source: 'Datagro (API)',
             }
           }
           return item
         }),
       )
 
+      // Simulate a random large variation sometimes
+      if (Math.random() < 0.1 || maxVariation > 0.1) {
+        toast({
+          title: '🚨 Alerta DATAGRO',
+          description: 'Variação diária superior a 10% detectada no Indicador de Mercado (MT).',
+          variant: 'destructive',
+        })
+      }
+
       setLastUpdate(new Date().toLocaleTimeString('pt-BR'))
 
       toast({
-        title: 'Cotações Atualizadas',
-        description: 'Dados sincronizados com sucesso via API.',
+        title: 'Sincronização DATAGRO Concluída',
+        description: 'Cotações do MT (Boi Gordo, Reposição e Insumos) atualizadas.',
         className: 'border-emerald-500 bg-emerald-500/10 text-emerald-900 dark:text-emerald-100',
       })
     } catch (error) {
       toast({
-        title: 'Erro de Sincronização',
-        description: 'Falha ao buscar dados do mercado.',
+        title: 'Erro de Sincronização (>24h)',
+        description:
+          'Falha ao buscar dados DATAGRO. A última sincronização ocorreu há mais de 24h.',
         variant: 'destructive',
       })
     } finally {
@@ -187,7 +207,7 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
       if (enabled) {
         toast({
           title: 'Integração de Mercado Ativa',
-          description: 'Os preços serão atualizados automaticamente via API.',
+          description: 'Os preços serão atualizados automaticamente via API DATAGRO.',
         })
         refreshMarketPrices()
       } else {
