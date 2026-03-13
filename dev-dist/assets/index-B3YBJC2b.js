@@ -19397,6 +19397,26 @@ var Cloud = createLucideIcon("cloud", [["path", {
 	d: "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z",
 	key: "p7xjir"
 }]]);
+var Coins = createLucideIcon("coins", [
+	["path", {
+		d: "M13.744 17.736a6 6 0 1 1-7.48-7.48",
+		key: "bq4yh3"
+	}],
+	["path", {
+		d: "M15 6h1v4",
+		key: "11y1tn"
+	}],
+	["path", {
+		d: "m6.134 14.768.866-.5 2 3.464",
+		key: "17snzx"
+	}],
+	["circle", {
+		cx: "16",
+		cy: "8",
+		r: "6",
+		key: "14bfc9"
+	}]
+]);
 var Database = createLucideIcon("database", [
 	["ellipse", {
 		cx: "12",
@@ -20068,6 +20088,16 @@ var TableProperties = createLucideIcon("table-properties", [
 		key: "9uk58r"
 	}]
 ]);
+var Tag = createLucideIcon("tag", [["path", {
+	d: "M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z",
+	key: "vktsd0"
+}], ["circle", {
+	cx: "7.5",
+	cy: "7.5",
+	r: ".5",
+	fill: "currentColor",
+	key: "kqv944"
+}]]);
 var Tags = createLucideIcon("tags", [
 	["path", {
 		d: "M13.172 2a2 2 0 0 1 1.414.586l6.71 6.71a2.4 2.4 0 0 1 0 3.408l-4.592 4.592a2.4 2.4 0 0 1-3.408 0l-6.71-6.71A2 2 0 0 1 6 9.172V3a1 1 0 0 1 1-1z",
@@ -26106,42 +26136,103 @@ const managementHistory = [
 	{
 		id: "H-1",
 		data: "10/Mar/2026",
+		hora: "08:30",
 		tipo: "Nutrição",
 		alvo: "Lote LEN-01",
 		descricao: "Ajuste de dieta para Terminação Alto Grão",
-		responsavel: "João (Operador Campo)"
+		responsavel: "João (Operador Campo)",
+		observacoes: "Animais aceitaram bem a nova formulação. Consumo esperado ajustado para 2.2% do PV.",
+		custoCabeca: 1.45,
+		insumosUtilizados: [
+			"Milho Moído (45%)",
+			"Farelo de Soja (15%)",
+			"Núcleo Mineral (5%)"
+		],
+		animaisEnvolvidos: "150 cabeças (Bois Magros)"
 	},
 	{
 		id: "H-2",
 		data: "09/Mar/2026",
+		hora: "14:15",
 		tipo: "Manejo de Pasto",
 		alvo: "Pasto 02 - Fundo",
 		descricao: "Aplicação de Herbicida (Folha Larga)",
-		responsavel: "Carlos (Tratorista)"
+		responsavel: "Carlos (Tratorista)",
+		observacoes: "Aplicação realizada com tempo bom, sem vento. Área total coberta.",
+		custoCabeca: null,
+		insumosUtilizados: ["Herbicida Tordon 2L/ha"],
+		animaisEnvolvidos: "Nenhum (Pasto Vedado temporariamente)"
 	},
 	{
 		id: "H-3",
 		data: "08/Mar/2026",
+		hora: "09:00",
 		tipo: "Sanidade",
 		alvo: "Lote LCR-04",
-		descricao: "Vacinação Febre Aftosa",
-		responsavel: "Ana (Veterinária)"
+		descricao: "Vacinação Febre Aftosa e Vermifugação",
+		responsavel: "Ana (Veterinária)",
+		observacoes: "Lote em ótimo estado sanitário. 3 animais precisaram de reforço no curativo de umbigo.",
+		custoCabeca: 4.5,
+		insumosUtilizados: ["Vacina Aftosa (140 doses)", "Ivermectina 1% (140 doses)"],
+		animaisEnvolvidos: "140 cabeças (Bezerras Desmame)"
 	},
 	{
 		id: "H-4",
 		data: "05/Mar/2026",
+		hora: "16:45",
 		tipo: "Movimentação",
 		alvo: "Lote LRE-01",
 		descricao: "Transferência do Pasto 05 para Pasto 06",
-		responsavel: "João (Operador Campo)"
+		responsavel: "João (Operador Campo)",
+		observacoes: "Movimentação tranquila. Pasto 05 entra em período de descanso.",
+		custoCabeca: 0,
+		insumosUtilizados: [],
+		animaisEnvolvidos: "220 cabeças (Garrotes)"
 	},
 	{
 		id: "H-5",
 		data: "02/Mar/2026",
+		hora: "07:30",
 		tipo: "Adubação",
 		alvo: "Pasto 01 - Sede",
 		descricao: "Aplicação de Ureia (50kg/ha)",
-		responsavel: "Administrador (Sede)"
+		responsavel: "Administrador (Sede)",
+		observacoes: "Adubação de cobertura visando o pico das águas.",
+		custoCabeca: null,
+		insumosUtilizados: ["Ureia Agrícola (2.275 kg total)"],
+		animaisEnvolvidos: "120 cabeças (Vacas Solteiras) mantidas no pasto"
+	},
+	{
+		id: "H-6",
+		data: "01/Mar/2026",
+		hora: "10:00",
+		tipo: "Venda",
+		alvo: "Lote LEN-02 (Parcial)",
+		descricao: "Venda de bois gordos para Frigorífico Boi Forte",
+		responsavel: "Administrador (Sede)",
+		observacoes: "Lote uniforme, excelente acabamento de carcaça. Desconto de 1% de quebra no transporte acordado.",
+		custoCabeca: 45,
+		pesoEntrada: 520,
+		valorCabeca: 4250,
+		valorArroba: 250,
+		rendimentoCarcaca: 54.5,
+		animaisEnvolvidos: "50 cabeças (Bois Terminação)"
+	},
+	{
+		id: "H-7",
+		data: "28/Fev/2026",
+		hora: "08:15",
+		tipo: "Entrada",
+		alvo: "Lote LRE-03 (Novo)",
+		descricao: "Compra de bezerros desmamados de terceiros",
+		responsavel: "Administrador (Sede)",
+		observacoes: "Animais recém chegados. Colocados no pasto de quarentena. Agendar protocolo de entrada.",
+		custoCabeca: 120,
+		pesoEntrada: 210,
+		valorCabeca: 1850,
+		valorArroba: 264,
+		rendimentoCarcaca: null,
+		animaisEnvolvidos: "100 cabeças (Bezerros)"
 	}
 ];
 const costPerArrobaData = [{
@@ -27870,14 +27961,14 @@ function isValidOrientation(orientation) {
 	return ORIENTATIONS.includes(orientation);
 }
 var Root$9 = Separator$3;
-var Separator$2 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
+var Separator = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 	ref,
 	decorative,
 	orientation,
 	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
 	...props
 }));
-Separator$2.displayName = Root$9.displayName;
+Separator.displayName = Root$9.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -29307,7 +29398,7 @@ var SidebarFooter = import_react.forwardRef(({ className, ...props }, ref) => {
 });
 SidebarFooter.displayName = "SidebarFooter";
 var SidebarSeparator = import_react.forwardRef(({ className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
 		ref,
 		"data-sidebar": "separator",
 		className: cn("mx-2 w-auto bg-sidebar-border", className),
@@ -30951,7 +31042,7 @@ var ItemText = SelectItemText;
 var ItemIndicator$1 = SelectItemIndicator;
 var ScrollUpButton = SelectScrollUpButton$1;
 var ScrollDownButton = SelectScrollDownButton$1;
-var Separator$1 = SelectSeparator$1;
+var Separator$2 = SelectSeparator$1;
 var Select = Root2$4;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$2, {
@@ -31009,12 +31100,12 @@ var SelectItem = import_react.forwardRef(({ className, children, ...props }, ref
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemText, { children })]
 }));
 SelectItem.displayName = Item$1.displayName;
-var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
+var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$2, {
 	ref,
 	className: cn("-mx-1 my-1 h-px bg-muted", className),
 	...props
 }));
-SelectSeparator.displayName = Separator$1.displayName;
+SelectSeparator.displayName = Separator$2.displayName;
 function QuickAddModal() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { toast: toast$2 } = useToast();
@@ -32135,7 +32226,7 @@ var CheckboxItem = MenuCheckboxItem;
 var RadioGroup$2 = MenuRadioGroup;
 var RadioItem = MenuRadioItem;
 var ItemIndicator = MenuItemIndicator;
-var Separator = MenuSeparator;
+var Separator$1 = MenuSeparator;
 var Arrow2 = MenuArrow;
 var SubTrigger = MenuSubTrigger;
 var SubContent = MenuSubContent;
@@ -32337,7 +32428,7 @@ var SEPARATOR_NAME = "DropdownMenuSeparator";
 var DropdownMenuSeparator$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDropdownMenu, ...separatorProps } = props;
 	const menuScope = useMenuScope(__scopeDropdownMenu);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
 		...menuScope,
 		...separatorProps,
 		ref: forwardedRef
@@ -68500,6 +68591,7 @@ function Relatorios() {
 	const { toast: toast$2 } = useToast();
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
 	const [typeFilter, setTypeFilter] = (0, import_react.useState)("todos");
+	const [selectedIntervention, setSelectedIntervention] = (0, import_react.useState)(null);
 	const filteredHistory = managementHistory.filter((item) => {
 		const matchesSearch = item.alvo.toLowerCase().includes(searchTerm.toLowerCase()) || item.descricao.toLowerCase().includes(searchTerm.toLowerCase());
 		const matchesType = typeFilter === "todos" || item.tipo.toLowerCase().includes(typeFilter.toLowerCase());
@@ -68519,114 +68611,288 @@ function Relatorios() {
 			description: "O histórico foi baixado em formato Excel com sucesso."
 		});
 	};
+	const formatCurrency = (value) => {
+		return new Intl.NumberFormat("pt-BR", {
+			style: "currency",
+			currency: "BRL"
+		}).format(value);
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in-up pb-8",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-3xl font-bold tracking-tight",
-				children: "Relatórios & Histórico"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-1",
-				children: "Registro detalhado de intervenções operacionais e ferramentas analíticas."
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-wrap gap-2 w-full sm:w-auto",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
-					to: "/sustentabilidade",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						variant: "secondary",
-						className: "gap-2 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaf, { className: "h-4 w-4" }), "Relatório de Sustentabilidade"]
-					})
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
-					className: "w-full sm:w-auto",
-					label: "Exportar Histórico",
-					onExportCSV: handleExportCSV,
-					onExportExcel: handleExportExcel,
-					onExportPDF: triggerPDFPrint
-				})]
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-			className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Log de Intervenções e Atividades" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Filtre por lote, pasto ou tipo de manejo" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex gap-2 w-full sm:w-auto",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative w-full sm:w-64",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-						type: "search",
-						placeholder: "Buscar alvo ou descrição...",
-						className: "pl-8",
-						value: searchTerm,
-						onChange: (e) => setSearchTerm(e.target.value)
-					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-					value: typeFilter,
-					onValueChange: setTypeFilter,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
-						className: "w-full sm:w-[150px]",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Tipo" })
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-							value: "todos",
-							children: "Todos"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-							value: "sanidade",
-							children: "Sanidade"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-							value: "nutrição",
-							children: "Nutrição"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-							value: "pasto",
-							children: "Pasto"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-							value: "adubação",
-							children: "Adubação"
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					className: "text-3xl font-bold tracking-tight",
+					children: "Relatórios & Histórico"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground mt-1",
+					children: "Registro detalhado de intervenções operacionais e ferramentas analíticas."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-wrap gap-2 w-full sm:w-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+						to: "/sustentabilidade",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							variant: "secondary",
+							className: "gap-2 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaf, { className: "h-4 w-4" }), "Sustentabilidade"]
 						})
-					] })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExportMenu, {
+						className: "w-full sm:w-auto",
+						label: "Exportar Histórico",
+						onExportCSV: handleExportCSV,
+						onExportExcel: handleExportExcel,
+						onExportPDF: triggerPDFPrint
+					})]
 				})]
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-			className: "px-0 sm:px-6",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "overflow-x-auto",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alvo (Lote/Pasto)" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição da Intervenção" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" })
-				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [filteredHistory.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "whitespace-nowrap font-medium",
-						children: item.data
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						variant: "outline",
-						children: item.tipo
-					}) }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "font-semibold text-primary whitespace-nowrap",
-						children: item.alvo
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "min-w-[250px]",
-						children: item.descricao
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-						className: "text-muted-foreground whitespace-nowrap",
-						children: item.responsavel
-					})
-				] }, item.id)), filteredHistory.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-					colSpan: 5,
-					className: "h-24 text-center text-muted-foreground",
-					children: "Nenhum registro encontrado com os filtros atuais."
-				}) })] })] })
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+				className: "flex flex-col sm:flex-row justify-between sm:items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Log de Intervenções e Atividades" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Clique em um registro para ver os detalhes completos" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex gap-2 w-full sm:w-auto",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative w-full sm:w-64",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							type: "search",
+							placeholder: "Buscar alvo ou descrição...",
+							className: "pl-8",
+							value: searchTerm,
+							onChange: (e) => setSearchTerm(e.target.value)
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+						value: typeFilter,
+						onValueChange: setTypeFilter,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+							className: "w-full sm:w-[150px]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Tipo" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "todos",
+								children: "Todos"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "sanidade",
+								children: "Sanidade"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "nutrição",
+								children: "Nutrição"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "pasto",
+								children: "Pasto"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "venda",
+								children: "Venda"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "entrada",
+								children: "Entrada"
+							})
+						] })]
+					})]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+				className: "px-0 sm:px-6",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "overflow-x-auto",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Tipo" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Alvo" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Descrição" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Responsável" })
+					] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [filteredHistory.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+						className: "cursor-pointer hover:bg-muted/50 transition-colors",
+						onClick: () => setSelectedIntervention(item),
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+								className: "whitespace-nowrap font-medium",
+								children: [
+									item.data,
+									" ",
+									item.hora && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-xs text-muted-foreground ml-1",
+										children: item.hora
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								variant: "outline",
+								children: item.tipo
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "font-semibold text-primary whitespace-nowrap",
+								children: item.alvo
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "min-w-[250px] truncate max-w-xs",
+								children: item.descricao
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								className: "text-muted-foreground whitespace-nowrap",
+								children: item.responsavel
+							})
+						]
+					}, item.id)), filteredHistory.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						colSpan: 5,
+						className: "h-24 text-center text-muted-foreground",
+						children: "Nenhum registro encontrado com os filtros atuais."
+					}) })] })] })
+				})
+			})] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+				open: !!selectedIntervention,
+				onOpenChange: (open) => !open && setSelectedIntervention(null),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+					className: "sm:max-w-[600px] gap-6",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col sm:flex-row sm:items-center justify-between gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+								className: "text-2xl font-bold flex items-center gap-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Tag, { className: "w-5 h-5 text-primary" }),
+									"Intervenção: ",
+									selectedIntervention?.tipo
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+								variant: "secondary",
+								className: "w-fit text-sm px-3 py-1 flex items-center gap-1.5",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "w-3.5 h-3.5" }),
+									selectedIntervention?.data,
+									" ",
+									selectedIntervention?.hora ? `às ${selectedIntervention.hora}` : ""
+								]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, {
+							className: "mt-2 text-base text-foreground",
+							children: selectedIntervention?.descricao
+						})] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid gap-5",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-sm font-medium text-muted-foreground flex items-center gap-1.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { className: "w-4 h-4" }), " Alvo Principal"]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-semibold text-primary",
+											children: selectedIntervention?.alvo
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-sm font-medium text-muted-foreground flex items-center gap-1.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "w-4 h-4" }), " Animais Envolvidos"]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-medium",
+											children: selectedIntervention?.animaisEnvolvidos || "N/A"
+										})]
+									})]
+								}),
+								selectedIntervention?.insumosUtilizados && selectedIntervention.insumosUtilizados.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-sm font-medium text-muted-foreground",
+										children: "Insumos Utilizados:"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+										className: "list-disc list-inside pl-5 space-y-1",
+										children: selectedIntervention.insumosUtilizados.map((insumo, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+											className: "text-sm",
+											children: insumo
+										}, idx))
+									})]
+								}),
+								(selectedIntervention?.tipo.toLowerCase() === "venda" || selectedIntervention?.tipo.toLowerCase() === "entrada") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "bg-muted/30 p-4 rounded-lg border border-border/50 grid grid-cols-2 sm:grid-cols-4 gap-4",
+									children: [
+										selectedIntervention?.pesoEntrada !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "text-xs text-muted-foreground flex items-center gap-1",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scale, { className: "w-3 h-3" }), " Peso Ref."]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+												className: "font-semibold",
+												children: [selectedIntervention.pesoEntrada, " kg"]
+											})]
+										}),
+										selectedIntervention?.valorCabeca !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs text-muted-foreground",
+												children: "Valor/Cabeça"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "font-semibold text-emerald-600",
+												children: formatCurrency(selectedIntervention.valorCabeca)
+											})]
+										}),
+										selectedIntervention?.valorArroba !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs text-muted-foreground",
+												children: "Valor/@"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "font-semibold",
+												children: formatCurrency(selectedIntervention.valorArroba)
+											})]
+										}),
+										selectedIntervention?.rendimentoCarcaca !== void 0 && selectedIntervention.rendimentoCarcaca !== null && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "space-y-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs text-muted-foreground",
+												children: "Rend. Carcaça"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+												className: "font-semibold",
+												children: [selectedIntervention.rendimentoCarcaca, "%"]
+											})]
+										})
+									]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-sm font-medium text-muted-foreground flex items-center gap-1.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Coins, { className: "w-4 h-4" }), " Custo Associado (por cabeça)"]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-medium text-destructive",
+											children: selectedIntervention?.custoCabeca !== void 0 && selectedIntervention.custoCabeca !== null ? formatCurrency(selectedIntervention.custoCabeca) : "Nenhum custo direto associado"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "space-y-1",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "text-sm font-medium text-muted-foreground flex items-center gap-1.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "w-4 h-4" }), " Responsável Operacional"]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "font-medium",
+											children: selectedIntervention?.responsavel
+										})]
+									})]
+								}),
+								selectedIntervention?.observacoes && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-1.5 bg-blue-50/50 p-3 rounded-md border border-blue-100 mt-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-sm font-semibold text-blue-800 flex items-center gap-1.5",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, { className: "w-4 h-4" }), " Observações Técnicas"]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-sm text-blue-900/80 leading-relaxed",
+										children: selectedIntervention.observacoes
+									})]
+								})
+							]
+						})
+					]
+				})
 			})
-		})] })]
+		]
 	});
 }
 function SupplierPerformanceTab() {
@@ -75644,4 +75910,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-C441V29B.js.map
+//# sourceMappingURL=index-B3YBJC2b.js.map
