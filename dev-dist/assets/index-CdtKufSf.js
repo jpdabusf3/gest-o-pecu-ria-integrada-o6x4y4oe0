@@ -78508,8 +78508,8 @@ function DynamicBIChart({ m1, m2, data }) {
 	});
 }
 function BI() {
-	const [m1, setM1] = (0, import_react.useState)(biMetricsList[3].id);
-	const [m2, setM2] = (0, import_react.useState)(biMetricsList[1].id);
+	const [m1, setM1] = (0, import_react.useState)(biMetricsList[0]?.id || "");
+	const [m2, setM2] = (0, import_react.useState)(biMetricsList[1]?.id || biMetricsList[0]?.id || "");
 	const [dateRange, setDateRange] = (0, import_react.useState)("ultimos_6");
 	const [saved, setSaved] = (0, import_react.useState)(defaultSavedReports);
 	const { toast: toast$2 } = useToast();
@@ -80732,4 +80732,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-fBMS-83O.js.map
+//# sourceMappingURL=index-CdtKufSf.js.map

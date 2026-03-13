@@ -24,8 +24,8 @@ import { downloadCSV, downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 import { Save, Bookmark } from 'lucide-react'
 
 export default function BI() {
-  const [m1, setM1] = useState<string>(biMetricsList[3].id) // Default: Arrobas
-  const [m2, setM2] = useState<string>(biMetricsList[1].id) // Default: Combustivel
+  const [m1, setM1] = useState<string>(biMetricsList[0]?.id || '')
+  const [m2, setM2] = useState<string>(biMetricsList[1]?.id || biMetricsList[0]?.id || '')
   const [dateRange, setDateRange] = useState('ultimos_6')
   const [saved, setSaved] = useState(defaultSavedReports)
   const { toast } = useToast()
