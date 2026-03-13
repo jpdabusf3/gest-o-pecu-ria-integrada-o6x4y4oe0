@@ -55,7 +55,9 @@ export default function useFrotaStore() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) return JSON.parse(saved)
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to parse machines:', e)
+    }
     return fleetData as Machine[]
   })
 
@@ -63,7 +65,9 @@ export default function useFrotaStore() {
     try {
       const saved = localStorage.getItem(REFUEL_KEY)
       if (saved) return JSON.parse(saved)
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to parse refuels:', e)
+    }
     return []
   })
 
@@ -71,7 +75,9 @@ export default function useFrotaStore() {
     try {
       const saved = localStorage.getItem(MAINT_KEY)
       if (saved) return JSON.parse(saved)
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to parse maintenances:', e)
+    }
     return []
   })
 
@@ -79,7 +85,9 @@ export default function useFrotaStore() {
     try {
       const saved = localStorage.getItem(INCIDENT_KEY)
       if (saved) return JSON.parse(saved)
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to parse incidents:', e)
+    }
     return []
   })
 

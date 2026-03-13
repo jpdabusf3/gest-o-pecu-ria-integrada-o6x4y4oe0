@@ -62018,28 +62018,36 @@ function useFrotaStore() {
 		try {
 			const saved = localStorage.getItem(STORAGE_KEY$4);
 			if (saved) return JSON.parse(saved);
-		} catch (e) {}
+		} catch (e) {
+			console.error("Failed to parse machines:", e);
+		}
 		return fleetData;
 	});
 	const [refuels, setRefuels] = (0, import_react.useState)(() => {
 		try {
 			const saved = localStorage.getItem(REFUEL_KEY);
 			if (saved) return JSON.parse(saved);
-		} catch (e) {}
+		} catch (e) {
+			console.error("Failed to parse refuels:", e);
+		}
 		return [];
 	});
 	const [maintenances, setMaintenances] = (0, import_react.useState)(() => {
 		try {
 			const saved = localStorage.getItem(MAINT_KEY);
 			if (saved) return JSON.parse(saved);
-		} catch (e) {}
+		} catch (e) {
+			console.error("Failed to parse maintenances:", e);
+		}
 		return [];
 	});
 	const [incidents, setIncidents] = (0, import_react.useState)(() => {
 		try {
 			const saved = localStorage.getItem(INCIDENT_KEY);
 			if (saved) return JSON.parse(saved);
-		} catch (e) {}
+		} catch (e) {
+			console.error("Failed to parse incidents:", e);
+		}
 		return [];
 	});
 	(0, import_react.useEffect)(() => {
@@ -79022,4 +79030,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DlbvILNn.js.map
+//# sourceMappingURL=index-DjMmoRbH.js.map
