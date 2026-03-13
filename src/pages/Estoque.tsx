@@ -72,18 +72,18 @@ export default function Estoque() {
             <TableHead>Item</TableHead>
             <TableHead>Categoria</TableHead>
             <TableHead className="text-right">Qtd Atual</TableHead>
-            <TableHead className="text-right">Mínimo</TableHead>
+            <TableHead className="text-right">Mínimo (Alerta)</TableHead>
             <TableHead>Unidade</TableHead>
             <TableHead>Status / Ação</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {items.map((item) => (
-            <TableRow key={item.id} className={item.qtd < item.minQtd ? 'bg-destructive/5' : ''}>
+            <TableRow key={item.id} className={item.qtd <= item.minQtd ? 'bg-destructive/5' : ''}>
               <TableCell className="font-medium whitespace-nowrap">{item.item}</TableCell>
               <TableCell className="whitespace-nowrap">{item.tipo}</TableCell>
               <TableCell
-                className={`text-right font-mono ${item.qtd < item.minQtd ? 'text-destructive font-bold' : ''}`}
+                className={`text-right font-mono ${item.qtd <= item.minQtd ? 'text-destructive font-bold' : ''}`}
               >
                 {formatNumber(item.qtd, 0)}
               </TableCell>
@@ -93,8 +93,11 @@ export default function Estoque() {
               <TableCell>{item.unidade}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <Badge variant={item.qtd < item.minQtd ? 'destructive' : 'secondary'}>
-                    {item.qtd < item.minQtd ? 'Crítico' : 'Normal'}
+                  <Badge
+                    variant={item.qtd <= item.minQtd ? 'destructive' : 'secondary'}
+                    className={item.qtd <= item.minQtd ? 'animate-pulse' : ''}
+                  >
+                    {item.qtd <= item.minQtd ? 'Crítico' : 'Normal'}
                   </Badge>
                   <ManageInventoryItemModal item={item} />
                   <Button
@@ -132,12 +135,18 @@ export default function Estoque() {
       </div>
 
       {criticalItems.length > 0 && (
-        <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+        <Alert
+          variant="destructive"
+          className="border-destructive/50 bg-destructive/10 border-l-4 shadow-sm animate-in slide-in-from-top-2"
+        >
           <TriangleAlert className="h-5 w-5" />
-          <AlertTitle className="text-base font-bold">Alerta de Compras Necessárias</AlertTitle>
-          <AlertDescription className="mt-2 text-destructive-foreground/90">
-            Atenção: {criticalItems.length} itens operando abaixo do nível de segurança. Reabasteça
-            para evitar falta de manejo.
+          <AlertTitle className="text-base font-bold tracking-tight">
+            Alerta de Estoque Crítico
+          </AlertTitle>
+          <AlertDescription className="mt-2 text-destructive-foreground/90 font-medium">
+            Existem <span className="font-bold">{criticalItems.length} itens</span> abaixo do limite
+            mínimo de segurança configurado. A produção ou fornecimento de ração pode ser
+            comprometida.
           </AlertDescription>
         </Alert>
       )}
@@ -187,8 +196,8 @@ export default function Estoque() {
                               Gatilho (Mínimo)
                             </TooltipTrigger>
                             <TooltipContent>
-                              Quantidade mínima segura de estoque antes de necessitar de uma nova
-                              compra ou produção.
+                              Quantidade mínima configurada para disparar alertas e evitar
+                              paralisação do trato.
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -205,7 +214,9 @@ export default function Estoque() {
                           <TableCell className="font-medium whitespace-nowrap">
                             {item.item}
                           </TableCell>
-                          <TableCell className="text-right font-mono font-medium whitespace-nowrap">
+                          <TableCell
+                            className={`text-right font-mono font-medium whitespace-nowrap ${isCritical ? 'text-destructive font-bold' : ''}`}
+                          >
                             {formatNumber(item.qtd, 0)} {item.unidade}
                           </TableCell>
                           <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
@@ -220,6 +231,7 @@ export default function Estoque() {
                                 variant={
                                   isCritical ? 'destructive' : isWarning ? 'secondary' : 'default'
                                 }
+                                className={isCritical ? 'animate-pulse' : ''}
                               >
                                 {isCritical
                                   ? 'Estoque Crítico'
@@ -252,7 +264,8 @@ export default function Estoque() {
             <CardHeader>
               <CardTitle>Matérias-Primas</CardTitle>
               <CardDescription>
-                Ingredientes utilizados na formulação e mistura de rações.
+                Ingredientes utilizados na formulação e mistura de rações. Alertas automáticos
+                baseados nos níveis mínimos.
               </CardDescription>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
@@ -263,7 +276,7 @@ export default function Estoque() {
                       <TableHead>Ingrediente</TableHead>
                       <TableHead className="text-right">Estoque Atual</TableHead>
                       <TableHead className="text-right">Custo / Un</TableHead>
-                      <TableHead className="text-right">Mínimo</TableHead>
+                      <TableHead className="text-right">Mínimo de Alerta</TableHead>
                       <TableHead>Status / Ação</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -275,7 +288,9 @@ export default function Estoque() {
                           <TableCell className="font-medium whitespace-nowrap">
                             {item.item}
                           </TableCell>
-                          <TableCell className="text-right font-mono font-medium whitespace-nowrap">
+                          <TableCell
+                            className={`text-right font-mono font-medium whitespace-nowrap ${isCritical ? 'text-destructive font-bold' : ''}`}
+                          >
                             {formatNumber(item.qtd, 0)} {item.unidade}
                           </TableCell>
                           <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
@@ -286,7 +301,10 @@ export default function Estoque() {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <Badge variant={isCritical ? 'destructive' : 'secondary'}>
+                              <Badge
+                                variant={isCritical ? 'destructive' : 'secondary'}
+                                className={isCritical ? 'animate-pulse' : ''}
+                              >
                                 {isCritical ? 'Estoque Crítico' : 'Normal'}
                               </Badge>
                               <ManageInventoryItemModal item={item} />

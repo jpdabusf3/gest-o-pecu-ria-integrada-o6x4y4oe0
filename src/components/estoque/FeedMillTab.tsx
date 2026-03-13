@@ -13,6 +13,8 @@ import useFeedMillStore from '@/stores/useFeedMillStore'
 import { useFarm } from '@/contexts/FarmContext'
 import { ManageFormulaModal } from '@/components/forms/ManageFormulaModal'
 import { RegisterProductionModal } from '@/components/forms/RegisterProductionModal'
+import { IntegrationTab } from './IntegrationTab'
+import { FormulaPerformanceChart } from './FormulaPerformanceChart'
 import { formatCurrency, formatWeight } from '@/lib/utils'
 import { Factory } from 'lucide-react'
 
@@ -28,8 +30,8 @@ export function FeedMillTab() {
             <Factory className="h-5 w-5 text-primary" /> Fábrica de Ração e Misturas
           </CardTitle>
           <CardDescription>
-            Gerencie suas fórmulas, produza ração e integre custos automaticamente no estoque e
-            financeiro.
+            Gerencie fórmulas, automatize a produção via API e monitore a performance nutricional
+            (ROI).
           </CardDescription>
         </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
@@ -39,15 +41,21 @@ export function FeedMillTab() {
       </div>
 
       <Tabs defaultValue="formulas" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-md h-auto py-1">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 max-w-3xl h-auto py-1 mb-4">
           <TabsTrigger value="formulas" className="py-1.5">
-            Fórmulas Ativas
+            Ativas
           </TabsTrigger>
           <TabsTrigger value="producoes" className="py-1.5">
             Produções
           </TabsTrigger>
           <TabsTrigger value="historico" className="py-1.5">
             Histórico
+          </TabsTrigger>
+          <TabsTrigger value="integracao" className="py-1.5">
+            API / Bot
+          </TabsTrigger>
+          <TabsTrigger value="desempenho" className="py-1.5">
+            Desempenho
           </TabsTrigger>
         </TabsList>
 
@@ -179,39 +187,50 @@ export function FeedMillTab() {
                       <TableHead>Fórmula</TableHead>
                       <TableHead>Versão Antiga</TableHead>
                       <TableHead>Composição Anterior (%)</TableHead>
+                      <TableHead className="text-right">Custo/Kg (Histórico)</TableHead>
                       <TableHead>Substituída Em</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {history.map((h) => (
-                      <TableRow key={h.historyId} className="opacity-80">
-                        <TableCell className="font-medium whitespace-nowrap">{h.name}</TableCell>
-                        <TableCell className="whitespace-nowrap">v{h.version}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1 min-w-[200px]">
-                            {h.ingredients.map((ing, idx) => {
-                              const invItem = inventory.find((i) => i.id === ing.inventoryId)
-                              return (
-                                <Badge
-                                  key={idx}
-                                  variant="secondary"
-                                  className="text-[10px] font-normal whitespace-nowrap"
-                                >
-                                  {invItem?.item || ing.inventoryId}: {ing.percentage}%
-                                </Badge>
-                              )
-                            })}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground whitespace-nowrap">
-                          {new Date(h.updatedAt).toLocaleString('pt-BR')}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {history.map((h) => {
+                      const oldCostPerKg = h.ingredients.reduce((acc, ing) => {
+                        const item = inventory.find((i) => i.id === ing.inventoryId)
+                        return acc + (ing.percentage / 100) * (item?.custoUnitario || 0)
+                      }, 0)
+
+                      return (
+                        <TableRow key={h.historyId} className="opacity-80">
+                          <TableCell className="font-medium whitespace-nowrap">{h.name}</TableCell>
+                          <TableCell className="whitespace-nowrap">v{h.version}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1 min-w-[200px]">
+                              {h.ingredients.map((ing, idx) => {
+                                const invItem = inventory.find((i) => i.id === ing.inventoryId)
+                                return (
+                                  <Badge
+                                    key={idx}
+                                    variant="secondary"
+                                    className="text-[10px] font-normal whitespace-nowrap"
+                                  >
+                                    {invItem?.item || ing.inventoryId}: {ing.percentage}%
+                                  </Badge>
+                                )
+                              })}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right font-mono whitespace-nowrap">
+                            {formatCurrency(oldCostPerKg)}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground whitespace-nowrap">
+                            {new Date(h.updatedAt).toLocaleString('pt-BR')}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                     {history.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={4} className="text-center py-6 text-muted-foreground">
-                          Nenhum histórico de alterações.
+                        <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                          Nenhum histórico de alterações. Fórmulas antigas aparecerão aqui.
                         </TableCell>
                       </TableRow>
                     )}
@@ -220,6 +239,14 @@ export function FeedMillTab() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="integracao" className="pt-2">
+          <IntegrationTab />
+        </TabsContent>
+
+        <TabsContent value="desempenho" className="pt-2">
+          <FormulaPerformanceChart />
         </TabsContent>
       </Tabs>
     </div>

@@ -30,9 +30,19 @@ export interface ProductionRun {
   destination: string
 }
 
+export interface IntegrationLog {
+  id: string
+  timestamp: string
+  formulaName: string
+  amountKg: number
+  status: 'Processado' | 'Erro - Estoque Insuficiente' | 'Pendente'
+  message: string
+}
+
 const STORAGE_KEY_FORMULAS = '@f3_feed_formulas'
 const STORAGE_KEY_HISTORY = '@f3_feed_formulas_history'
 const STORAGE_KEY_PRODUCTIONS = '@f3_feed_productions'
+const STORAGE_KEY_LOGS = '@f3_feed_integration_logs'
 
 const defaultFormulas: FeedFormula[] = [
   {
@@ -91,6 +101,16 @@ export default function useFeedMillStore() {
     ]
   })
 
+  const [integrationLogs, setIntegrationLogs] = useState<IntegrationLog[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_LOGS)
+      if (saved) return JSON.parse(saved)
+    } catch (e) {
+      console.error(e)
+    }
+    return []
+  })
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_FORMULAS, JSON.stringify(formulas))
   }, [formulas])
@@ -102,6 +122,10 @@ export default function useFeedMillStore() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_PRODUCTIONS, JSON.stringify(productions))
   }, [productions])
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(integrationLogs))
+  }, [integrationLogs])
 
   const saveFormula = useCallback(
     (formula: Omit<FeedFormula, 'id' | 'version' | 'updatedAt'>, id?: string) => {
@@ -153,5 +177,17 @@ export default function useFeedMillStore() {
     ])
   }, [])
 
-  return { formulas, history, productions, saveFormula, addProduction }
+  const addIntegrationLog = useCallback((log: IntegrationLog) => {
+    setIntegrationLogs((prev) => [log, ...prev])
+  }, [])
+
+  return {
+    formulas,
+    history,
+    productions,
+    integrationLogs,
+    saveFormula,
+    addProduction,
+    addIntegrationLog,
+  }
 }

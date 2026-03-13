@@ -19077,6 +19077,36 @@ var Bookmark = createLucideIcon("bookmark", [["path", {
 	d: "M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z",
 	key: "oz39mx"
 }]]);
+var Bot = createLucideIcon("bot", [
+	["path", {
+		d: "M12 8V4H8",
+		key: "hb8ula"
+	}],
+	["rect", {
+		width: "16",
+		height: "12",
+		x: "4",
+		y: "8",
+		rx: "2",
+		key: "enze0r"
+	}],
+	["path", {
+		d: "M2 14h2",
+		key: "vft8re"
+	}],
+	["path", {
+		d: "M20 14h2",
+		key: "4cs60a"
+	}],
+	["path", {
+		d: "M15 13v2",
+		key: "1xurst"
+	}],
+	["path", {
+		d: "M9 13v2",
+		key: "rq6x2g"
+	}]
+]);
 var BrainCircuit = createLucideIcon("brain-circuit", [
 	["path", {
 		d: "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z",
@@ -19437,6 +19467,22 @@ var CirclePlus = createLucideIcon("circle-plus", [
 	["path", {
 		d: "M12 8v8",
 		key: "napkw2"
+	}]
+]);
+var CircleX = createLucideIcon("circle-x", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["path", {
+		d: "m15 9-6 6",
+		key: "1uzhvr"
+	}],
+	["path", {
+		d: "m9 9 6 6",
+		key: "z0biqf"
 	}]
 ]);
 var Circle = createLucideIcon("circle", [["circle", {
@@ -20507,6 +20553,20 @@ var Wallet = createLucideIcon("wallet", [["path", {
 	d: "M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4",
 	key: "xoc0q4"
 }]]);
+var Webhook = createLucideIcon("webhook", [
+	["path", {
+		d: "M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 0 1 2 17c.01-.7.2-1.4.57-2",
+		key: "q3hayz"
+	}],
+	["path", {
+		d: "m6 17 3.13-5.78c.53-.97.1-2.18-.5-3.1a4 4 0 1 1 6.89-4.06",
+		key: "1go1hn"
+	}],
+	["path", {
+		d: "m12 6 3.13 5.73C15.66 12.7 16.9 13 18 13a4 4 0 0 1 0 8",
+		key: "qlwsc0"
+	}]
+]);
 var Wheat = createLucideIcon("wheat", [
 	["path", {
 		d: "M2 22 16 8",
@@ -29986,7 +30046,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$79({ inst: {
+			cachedValue = useState$80({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -30023,7 +30083,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$79 = React$70.useState, useEffect$29 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$70 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$80 = React$70.useState, useEffect$29 = React$70.useEffect, useLayoutEffect$3 = React$70.useLayoutEffect, useDebugValue = React$70.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$70.useSyncExternalStore ? React$70.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -61472,6 +61532,7 @@ function ManageInventoryItemModal({ item }) {
 var STORAGE_KEY_FORMULAS = "@f3_feed_formulas";
 var STORAGE_KEY_HISTORY = "@f3_feed_formulas_history";
 var STORAGE_KEY_PRODUCTIONS = "@f3_feed_productions";
+var STORAGE_KEY_LOGS = "@f3_feed_integration_logs";
 var defaultFormulas = [{
 	id: "FORM-1",
 	name: "Ração Terminação Alto Grão",
@@ -61530,6 +61591,15 @@ function useFeedMillStore() {
 			destination: "Estoque"
 		}];
 	});
+	const [integrationLogs, setIntegrationLogs] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY_LOGS);
+			if (saved) return JSON.parse(saved);
+		} catch (e) {
+			console.error(e);
+		}
+		return [];
+	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem(STORAGE_KEY_FORMULAS, JSON.stringify(formulas));
 	}, [formulas]);
@@ -61539,10 +61609,14 @@ function useFeedMillStore() {
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem(STORAGE_KEY_PRODUCTIONS, JSON.stringify(productions));
 	}, [productions]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(integrationLogs));
+	}, [integrationLogs]);
 	return {
 		formulas,
 		history,
 		productions,
+		integrationLogs,
 		saveFormula: (0, import_react.useCallback)((formula, id) => {
 			setFormulas((prev) => {
 				if (id) {
@@ -61576,6 +61650,9 @@ function useFeedMillStore() {
 				id: `PROD-${crypto.randomUUID()}`,
 				date: (/* @__PURE__ */ new Date()).toISOString()
 			}, ...prev]);
+		}, []),
+		addIntegrationLog: (0, import_react.useCallback)((log$1) => {
+			setIntegrationLogs((prev) => [log$1, ...prev]);
 		}, [])
 	};
 }
@@ -62026,6 +62103,312 @@ function RegisterProductionModal() {
 		})]
 	});
 }
+function IntegrationTab() {
+	const { formulas, addProduction, integrationLogs, addIntegrationLog } = useFeedMillStore();
+	const { inventory, updateInventoryItem } = useFarm();
+	const { addEntry } = useFinanceStore();
+	const { toast: toast$2 } = useToast();
+	const [isSimulating, setIsSimulating] = (0, import_react.useState)(false);
+	const webhookUrl = "https://api.gestao-pecuaria.com/v1/webhooks/production/WHK-987654";
+	const simulateWebhook = () => {
+		if (formulas.length === 0) {
+			toast$2({
+				title: "Aviso",
+				description: "Nenhuma fórmula cadastrada para simular.",
+				variant: "destructive"
+			});
+			return;
+		}
+		setIsSimulating(true);
+		setTimeout(() => {
+			const formula = formulas[Math.floor(Math.random() * formulas.length)];
+			const amountKg = [
+				500,
+				1e3,
+				2e3,
+				5e3
+			][Math.floor(Math.random() * 4)];
+			let totalCost = 0;
+			let hasShortage = false;
+			const itemsToUpdate = [];
+			for (const ing of formula.ingredients) {
+				const invItem = inventory.find((i) => i.id === ing.inventoryId);
+				const reqQty = amountKg * ing.percentage / 100;
+				if (!invItem || invItem.qtd < reqQty) hasShortage = true;
+				else {
+					totalCost += reqQty * (invItem.custoUnitario || 0);
+					itemsToUpdate.push({
+						id: ing.inventoryId,
+						newQtd: invItem.qtd - reqQty
+					});
+				}
+			}
+			if (hasShortage) {
+				addIntegrationLog({
+					id: crypto.randomUUID(),
+					timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+					formulaName: formula.name,
+					amountKg,
+					status: "Erro - Estoque Insuficiente",
+					message: "Processamento falhou devido à falta de ingredientes no estoque físico."
+				});
+				toast$2({
+					title: "Erro de Automação",
+					description: `Falha na produção de ${formatWeight(amountKg)} de ${formula.name}. Estoque insuficiente.`,
+					variant: "destructive"
+				});
+				setIsSimulating(false);
+				return;
+			}
+			itemsToUpdate.forEach((item) => updateInventoryItem(item.id, { qtd: item.newQtd }));
+			const outItem = inventory.find((i) => i.id === formula.outputInventoryId);
+			if (outItem) {
+				const newQtd = outItem.qtd + amountKg;
+				const currentTotalValue = outItem.qtd * (outItem.custoUnitario || 0);
+				const newCustoUnitario = newQtd > 0 ? (currentTotalValue + totalCost) / newQtd : 0;
+				updateInventoryItem(formula.outputInventoryId, {
+					qtd: newQtd,
+					custoUnitario: newCustoUnitario
+				});
+			}
+			const costPerKg = amountKg > 0 ? totalCost / amountKg : 0;
+			addProduction({
+				formulaId: formula.id,
+				formulaName: formula.name,
+				amountProducedKg: amountKg,
+				totalCost,
+				costPerKg,
+				destination: "Estoque"
+			});
+			addEntry({
+				description: `Produção Automatizada: ${formula.name}`,
+				category: "Nutrição",
+				amount: totalCost,
+				type: "expense"
+			});
+			addIntegrationLog({
+				id: crypto.randomUUID(),
+				timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+				formulaName: formula.name,
+				amountKg,
+				status: "Processado",
+				message: "Dedução de estoque e registro financeiro efetuados com sucesso."
+			});
+			toast$2({
+				title: "Produção Automatizada",
+				description: `${formatWeight(amountKg)} de ${formula.name} processados e registrados.`
+			});
+			setIsSimulating(false);
+		}, 800);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-6 animate-in fade-in zoom-in-95 duration-300",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Webhook, { className: "h-5 w-5 text-primary" }), " Integração de Automação (API / WhatsApp)"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Configure endpoints para receber registros de produção de ração diretamente da fábrica ou balança através de bots (ex: WhatsApp)." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "space-y-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-2",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", {
+						className: "text-sm font-medium",
+						children: "Webhook URL Exclusiva"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							value: webhookUrl,
+							readOnly: true,
+							className: "font-mono bg-muted text-muted-foreground"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "outline",
+							onClick: () => navigator.clipboard.writeText(webhookUrl),
+							children: "Copiar"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-muted-foreground mt-1",
+						children: "Envie um POST para esta URL com o payload da produção para que o sistema debite os ingredientes automaticamente."
+					})
+				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between p-4 bg-primary/5 border border-primary/20 rounded-lg",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h4", {
+						className: "font-semibold text-primary flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bot, { className: "h-4 w-4" }), " Ambiente de Testes"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground",
+						children: "Gere um evento simulado de recebimento de produção externa para testar as regras de dedução de estoque e alertas críticos."
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					onClick: simulateWebhook,
+					disabled: isSimulating,
+					className: "gap-2 shrink-0",
+					children: isSimulating ? "Processando..." : "Simular Mensagem do Bot"
+				})]
+			})]
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Log de Produções Recebidas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Histórico de chamadas processadas pela integração automática." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+			className: "p-0",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "overflow-x-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Data / Hora" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Fórmula Identificada" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+						className: "text-right",
+						children: "Volume (Kg)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status da Operação" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Detalhes" })
+				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [integrationLogs.map((log$1) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "whitespace-nowrap text-muted-foreground text-sm",
+						children: new Date(log$1.timestamp).toLocaleString("pt-BR")
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "font-medium whitespace-nowrap",
+						children: log$1.formulaName
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-right font-mono font-medium whitespace-nowrap",
+						children: formatWeight(log$1.amountKg, "kg")
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "whitespace-nowrap",
+						children: log$1.status === "Processado" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+							variant: "outline",
+							className: "text-emerald-600 border-emerald-600 bg-emerald-50 gap-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "h-3 w-3" }), " Processado"]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+							variant: "destructive",
+							className: "gap-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "h-3 w-3" }), " Estoque Insuficiente"]
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+						className: "text-xs text-muted-foreground truncate max-w-[200px]",
+						title: log$1.message,
+						children: log$1.message
+					})
+				] }, log$1.id)), integrationLogs.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+					colSpan: 5,
+					className: "text-center py-8 text-muted-foreground",
+					children: "Nenhum registro recebido via integração até o momento."
+				}) })] })] })
+			})
+		})] })]
+	});
+}
+function FormulaPerformanceChart() {
+	const { formulas } = useFeedMillStore();
+	const { inventory } = useFarm();
+	const data = (0, import_react.useMemo)(() => {
+		return formulas.map((f) => {
+			const costPerKg = f.ingredients.reduce((acc, ing) => {
+				const item = inventory.find((i) => i.id === ing.inventoryId);
+				return acc + ing.percentage / 100 * (item?.custoUnitario || 0);
+			}, 0);
+			const mockGmd = f.name.toLowerCase().includes("terminação") || f.name.toLowerCase().includes("grão") ? 1.55 : 1.15;
+			return {
+				name: f.name,
+				cost: Number(costPerKg.toFixed(3)),
+				gmd: mockGmd
+			};
+		});
+	}, [formulas, inventory]);
+	const chartConfig$3 = {
+		gmd: {
+			label: "GMD Projetado (kg/dia)",
+			color: "hsl(var(--primary))"
+		},
+		cost: {
+			label: "Custo Atual (R$/kg)",
+			color: "hsl(var(--destructive))"
+		}
+	};
+	if (data.length === 0) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "animate-in fade-in zoom-in-95 duration-300",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+			className: "flex items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "h-5 w-5 text-primary" }), " Dashboard de Performance (ROI Nutricional)"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cruzamento analítico entre o Custo de Produção (R$/kg) baseado no estoque atual e o Ganho Médio Diário (GMD) esperado das fórmulas." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+			config: chartConfig$3,
+			className: "h-[400px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(ComposedChart, {
+				data,
+				margin: {
+					top: 20,
+					right: 20,
+					left: -20,
+					bottom: 20
+				},
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+						strokeDasharray: "3 3",
+						vertical: false,
+						className: "stroke-muted"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+						dataKey: "name",
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground",
+						tickMargin: 10
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						yAxisId: "left",
+						orientation: "left",
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground",
+						tickFormatter: (v) => `${v} kg`
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+						yAxisId: "right",
+						orientation: "right",
+						tickLine: false,
+						axisLine: false,
+						className: "text-xs text-muted-foreground",
+						tickFormatter: (v) => `R$ ${v}`
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, { content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
+						yAxisId: "right",
+						dataKey: "cost",
+						fill: "var(--color-cost)",
+						radius: [
+							4,
+							4,
+							0,
+							0
+						],
+						maxBarSize: 60,
+						animationDuration: 1500
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
+						yAxisId: "left",
+						type: "monotone",
+						dataKey: "gmd",
+						stroke: "var(--color-gmd)",
+						strokeWidth: 3,
+						dot: {
+							r: 4,
+							strokeWidth: 2,
+							fill: "var(--color-gmd)",
+							stroke: "hsl(var(--background))"
+						},
+						animationDuration: 1500
+					})
+				]
+			})
+		}) })]
+	});
+}
 function FeedMillTab() {
 	const { formulas, history, productions } = useFeedMillStore();
 	const { inventory } = useFarm();
@@ -62038,7 +62421,7 @@ function FeedMillTab() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
 					className: "flex items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Factory, { className: "h-5 w-5 text-primary" }), " Fábrica de Ração e Misturas"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Gerencie suas fórmulas, produza ração e integre custos automaticamente no estoque e financeiro." })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Gerencie fórmulas, automatize a produção via API e monitore a performance nutricional (ROI)." })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex flex-wrap gap-2 w-full sm:w-auto",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageFormulaModal, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegisterProductionModal, {})]
@@ -62048,12 +62431,12 @@ function FeedMillTab() {
 			className: "w-full",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "grid w-full grid-cols-3 max-w-md h-auto py-1",
+					className: "grid w-full grid-cols-2 md:grid-cols-5 max-w-3xl h-auto py-1 mb-4",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "formulas",
 							className: "py-1.5",
-							children: "Fórmulas Ativas"
+							children: "Ativas"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
 							value: "producoes",
@@ -62064,6 +62447,16 @@ function FeedMillTab() {
 							value: "historico",
 							className: "py-1.5",
 							children: "Histórico"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "integracao",
+							className: "py-1.5",
+							children: "API / Bot"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+							value: "desempenho",
+							className: "py-1.5",
+							children: "Desempenho"
 						})
 					]
 				}),
@@ -62199,45 +62592,69 @@ function FeedMillTab() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Fórmula" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Versão Antiga" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Composição Anterior (%)" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+									className: "text-right",
+									children: "Custo/Kg (Histórico)"
+								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Substituída Em" })
-							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [history.map((h) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-								className: "opacity-80",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "font-medium whitespace-nowrap",
-										children: h.name
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "whitespace-nowrap",
-										children: ["v", h.version]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "flex flex-wrap gap-1 min-w-[200px]",
-										children: h.ingredients.map((ing, idx) => {
-											return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
-												variant: "secondary",
-												className: "text-[10px] font-normal whitespace-nowrap",
-												children: [
-													inventory.find((i) => i.id === ing.inventoryId)?.item || ing.inventoryId,
-													": ",
-													ing.percentage,
-													"%"
-												]
-											}, idx);
+							] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableBody, { children: [history.map((h) => {
+								const oldCostPerKg = h.ingredients.reduce((acc, ing) => {
+									const item = inventory.find((i) => i.id === ing.inventoryId);
+									return acc + ing.percentage / 100 * (item?.custoUnitario || 0);
+								}, 0);
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+									className: "opacity-80",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "font-medium whitespace-nowrap",
+											children: h.name
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+											className: "whitespace-nowrap",
+											children: ["v", h.version]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "flex flex-wrap gap-1 min-w-[200px]",
+											children: h.ingredients.map((ing, idx) => {
+												return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+													variant: "secondary",
+													className: "text-[10px] font-normal whitespace-nowrap",
+													children: [
+														inventory.find((i) => i.id === ing.inventoryId)?.item || ing.inventoryId,
+														": ",
+														ing.percentage,
+														"%"
+													]
+												}, idx);
+											})
+										}) }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "text-right font-mono whitespace-nowrap",
+											children: formatCurrency(oldCostPerKg)
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+											className: "text-muted-foreground whitespace-nowrap",
+											children: new Date(h.updatedAt).toLocaleString("pt-BR")
 										})
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-										className: "text-muted-foreground whitespace-nowrap",
-										children: new Date(h.updatedAt).toLocaleString("pt-BR")
-									})
-								]
-							}, h.historyId)), history.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-								colSpan: 4,
+									]
+								}, h.historyId);
+							}), history.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+								colSpan: 5,
 								className: "text-center py-6 text-muted-foreground",
-								children: "Nenhum histórico de alterações."
+								children: "Nenhum histórico de alterações. Fórmulas antigas aparecerão aqui."
 							}) })] })] })
 						})
 					}) })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "integracao",
+					className: "pt-2",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IntegrationTab, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "desempenho",
+					className: "pt-2",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormulaPerformanceChart, {})
 				})
 			]
 		})]
@@ -62278,12 +62695,12 @@ function Estoque() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 				className: "text-right",
-				children: "Mínimo"
+				children: "Mínimo (Alerta)"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Unidade" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
 		] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
-			className: item.qtd < item.minQtd ? "bg-destructive/5" : "",
+			className: item.qtd <= item.minQtd ? "bg-destructive/5" : "",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 					className: "font-medium whitespace-nowrap",
@@ -62294,7 +62711,7 @@ function Estoque() {
 					children: item.tipo
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
-					className: `text-right font-mono ${item.qtd < item.minQtd ? "text-destructive font-bold" : ""}`,
+					className: `text-right font-mono ${item.qtd <= item.minQtd ? "text-destructive font-bold" : ""}`,
 					children: formatNumber(item.qtd, 0)
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
@@ -62306,8 +62723,9 @@ function Estoque() {
 					className: "flex items-center gap-2",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-							variant: item.qtd < item.minQtd ? "destructive" : "secondary",
-							children: item.qtd < item.minQtd ? "Crítico" : "Normal"
+							variant: item.qtd <= item.minQtd ? "destructive" : "secondary",
+							className: item.qtd <= item.minQtd ? "animate-pulse" : "",
+							children: item.qtd <= item.minQtd ? "Crítico" : "Normal"
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
@@ -62345,19 +62763,22 @@ function Estoque() {
 			}),
 			criticalItems.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Alert, {
 				variant: "destructive",
-				className: "border-destructive/50 bg-destructive/10",
+				className: "border-destructive/50 bg-destructive/10 border-l-4 shadow-sm animate-in slide-in-from-top-2",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "h-5 w-5" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlertTitle, {
-						className: "text-base font-bold",
-						children: "Alerta de Compras Necessárias"
+						className: "text-base font-bold tracking-tight",
+						children: "Alerta de Estoque Crítico"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AlertDescription, {
-						className: "mt-2 text-destructive-foreground/90",
+						className: "mt-2 text-destructive-foreground/90 font-medium",
 						children: [
-							"Atenção: ",
-							criticalItems.length,
-							" itens operando abaixo do nível de segurança. Reabasteça para evitar falta de manejo."
+							"Existem ",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "font-bold",
+								children: [criticalItems.length, " itens"]
+							}),
+							" abaixo do limite mínimo de segurança configurado. A produção ou fornecimento de ração pode ser comprometida."
 						]
 					})
 				]
@@ -62425,7 +62846,7 @@ function Estoque() {
 											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip$1, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
 												className: "underline decoration-dashed underline-offset-4 cursor-help",
 												children: "Gatilho (Mínimo)"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Quantidade mínima segura de estoque antes de necessitar de uma nova compra ou produção." })] })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, { children: "Quantidade mínima configurada para disparar alertas e evitar paralisação do trato." })] })
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
@@ -62440,7 +62861,7 @@ function Estoque() {
 												children: item.item
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: "text-right font-mono font-medium whitespace-nowrap",
+												className: `text-right font-mono font-medium whitespace-nowrap ${isCritical ? "text-destructive font-bold" : ""}`,
 												children: [
 													formatNumber(item.qtd, 0),
 													" ",
@@ -62464,6 +62885,7 @@ function Estoque() {
 												children: [
 													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 														variant: isCritical ? "destructive" : isWarning ? "secondary" : "default",
+														className: isCritical ? "animate-pulse" : "",
 														children: isCritical ? "Estoque Crítico" : isWarning ? "Alerta Baixo" : "Confortável"
 													}),
 													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
@@ -62481,7 +62903,7 @@ function Estoque() {
 									}, item.id);
 								}) })] })
 							})
-						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Matérias-Primas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ingredientes utilizados na formulação e mistura de rações." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Matérias-Primas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ingredientes utilizados na formulação e mistura de rações. Alertas automáticos baseados nos níveis mínimos." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
 							className: "px-0 sm:px-6",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-x-auto",
@@ -62497,7 +62919,7 @@ function Estoque() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 										className: "text-right",
-										children: "Mínimo"
+										children: "Mínimo de Alerta"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { children: "Status / Ação" })
 								] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: materiaPrimaItems.map((item) => {
@@ -62510,7 +62932,7 @@ function Estoque() {
 												children: item.item
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-												className: "text-right font-mono font-medium whitespace-nowrap",
+												className: `text-right font-mono font-medium whitespace-nowrap ${isCritical ? "text-destructive font-bold" : ""}`,
 												children: [
 													formatNumber(item.qtd, 0),
 													" ",
@@ -62534,6 +62956,7 @@ function Estoque() {
 												children: [
 													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 														variant: isCritical ? "destructive" : "secondary",
+														className: isCritical ? "animate-pulse" : "",
 														children: isCritical ? "Estoque Crítico" : "Normal"
 													}),
 													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ManageInventoryItemModal, { item }),
@@ -79730,4 +80153,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { chil
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Od0eoFob.js.map
+//# sourceMappingURL=index-BLuV1FeV.js.map
