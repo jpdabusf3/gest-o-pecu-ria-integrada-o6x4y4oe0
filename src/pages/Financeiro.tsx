@@ -19,6 +19,7 @@ import { CostAnalysisTab } from '@/components/finance/CostAnalysisTab'
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { BreakEvenTab } from '@/components/finance/BreakEvenTab'
 import { LotBudgetsTab } from '@/components/finance/LotBudgetsTab'
+import { DRETab } from '@/components/finance/DRETab'
 import { ExportMenu } from '@/components/ExportMenu'
 import { downloadCSV, downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 import useFinanceStore from '@/stores/useFinanceStore'
@@ -114,8 +115,11 @@ export default function Financeiro() {
         </div>
       </div>
 
-      <Tabs defaultValue="dashboard-custos" className="space-y-6">
+      <Tabs defaultValue="dre" className="space-y-6">
         <TabsList className="mb-2 w-full sm:w-auto flex flex-wrap sm:flex-nowrap overflow-x-auto justify-start h-auto p-1 py-1.5">
+          <TabsTrigger value="dre" className="py-2 text-primary font-medium">
+            DRE Mensal
+          </TabsTrigger>
           <TabsTrigger value="dashboard-custos" className="py-2">
             Análise de Custos
           </TabsTrigger>
@@ -128,7 +132,7 @@ export default function Financeiro() {
           <TabsTrigger value="orcamento-lotes" className="py-2">
             Alertas por Lote
           </TabsTrigger>
-          <TabsTrigger value="lucro-cabeca" className="py-2 text-primary font-medium">
+          <TabsTrigger value="lucro-cabeca" className="py-2">
             Lucro Indiv.
           </TabsTrigger>
           <TabsTrigger value="desempenho" className="py-2">
@@ -138,6 +142,10 @@ export default function Financeiro() {
             Custo / @
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="dre" className="space-y-6 mt-0">
+          <DRETab />
+        </TabsContent>
 
         <TabsContent value="dashboard-custos" className="space-y-6 mt-0">
           <CostAnalysisTab />
@@ -272,14 +280,14 @@ export default function Financeiro() {
                             {a.lote}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-right whitespace-nowrap">
                           R${' '}
                           {a.estimatedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
-                        <TableCell className="text-right text-destructive">
+                        <TableCell className="text-right text-destructive whitespace-nowrap">
                           - R$ {a.expenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
-                        <TableCell className="text-right font-bold text-primary text-base">
+                        <TableCell className="text-right font-bold text-primary text-base whitespace-nowrap">
                           R$ {a.netProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
                       </TableRow>
@@ -318,18 +326,20 @@ export default function Financeiro() {
                       <TableRow key={lote.loteId}>
                         <TableCell className="font-medium">{lote.loteId}</TableCell>
                         <TableCell>{lote.categoria}</TableCell>
-                        <TableCell className="text-right text-destructive">
-                          - R$ {lote.custos.toLocaleString('pt-BR')}
+                        <TableCell className="text-right text-destructive whitespace-nowrap">
+                          - R$ {lote.custos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
-                        <TableCell className="text-right text-primary">
-                          + R$ {lote.receita.toLocaleString('pt-BR')}
+                        <TableCell className="text-right text-primary whitespace-nowrap">
+                          + R$ {lote.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
                         <TableCell
-                          className={`text-right font-bold ${lote.lucro >= 0 ? 'text-primary' : 'text-destructive'}`}
+                          className={`text-right font-bold whitespace-nowrap ${lote.lucro >= 0 ? 'text-primary' : 'text-destructive'}`}
                         >
-                          R$ {lote.lucro.toLocaleString('pt-BR')}
+                          R$ {lote.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </TableCell>
-                        <TableCell className="text-right font-medium">{lote.margem}</TableCell>
+                        <TableCell className="text-right font-medium whitespace-nowrap">
+                          {lote.margem}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -366,16 +376,20 @@ export default function Financeiro() {
                       <TableRow key={lote.loteId}>
                         <TableCell className="font-medium">{lote.loteId}</TableCell>
                         <TableCell>{lote.categoria}</TableCell>
-                        <TableCell className="text-right text-destructive">
-                          R$ {lote.custoAcumulado.toLocaleString('pt-BR')}
+                        <TableCell className="text-right text-destructive whitespace-nowrap">
+                          R${' '}
+                          {lote.custoAcumulado.toLocaleString('pt-BR', {
+                            minimumFractionDigits: 2,
+                          })}
                         </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {lote.ganhoPesoKg.toLocaleString('pt-BR')} kg
+                        <TableCell className="text-right font-mono whitespace-nowrap">
+                          {lote.ganhoPesoKg.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}{' '}
+                          kg
                         </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {lote.ganhoArroba.toLocaleString('pt-BR')} @
+                        <TableCell className="text-right font-mono whitespace-nowrap">
+                          {lote.ganhoArroba.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} @
                         </TableCell>
-                        <TableCell className="text-right font-bold text-primary text-lg">
+                        <TableCell className="text-right font-bold text-primary text-lg whitespace-nowrap">
                           R${' '}
                           {lote.custoPorArroba.toLocaleString('pt-BR', {
                             minimumFractionDigits: 2,

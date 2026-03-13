@@ -32,6 +32,8 @@ import Animais from './pages/Animais'
 import MapaPropriedade from './pages/MapaPropriedade'
 import BI from './pages/BI'
 import Sustentabilidade from './pages/Sustentabilidade'
+import Abates from './pages/Abates'
+import Hedge from './pages/Hedge'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -72,6 +74,8 @@ const App = () => (
                       <Route path="/administrativo" element={<Administrativo />} />
                       <Route path="/fazendas" element={<Fazendas />} />
                       <Route path="/mapa" element={<MapaPropriedade />} />
+                      <Route path="/abates" element={<Abates />} />
+                      <Route path="/hedge" element={<Hedge />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>

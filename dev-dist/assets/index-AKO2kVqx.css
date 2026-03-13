@@ -821,6 +821,9 @@ section[aria-label='Notifications alt+T'] {
 .mt-24{
   margin-top: 6rem;
 }
+.mt-3{
+  margin-top: 0.75rem;
+}
 .mt-4{
   margin-top: 1rem;
 }
@@ -1199,6 +1202,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .min-w-\[250px\]{
   min-width: 250px;
+}
+.min-w-\[400px\]{
+  min-width: 400px;
 }
 .min-w-\[44px\]{
   min-width: 44px;
@@ -1666,6 +1672,9 @@ section[aria-label='Notifications alt+T'] {
 }
 .border-t{
   border-top-width: 1px;
+}
+.border-t-2{
+  border-top-width: 2px;
 }
 .border-dashed{
   border-style: dashed;
@@ -2430,6 +2439,9 @@ section[aria-label='Notifications alt+T'] {
 .text-emerald-700{
   --tw-text-opacity: 1;
   color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+.text-emerald-700\/70{
+  color: rgb(4 120 87 / 0.7);
 }
 .text-emerald-700\/80{
   color: rgb(4 120 87 / 0.8);
@@ -3896,6 +3908,9 @@ section[aria-label='Notifications alt+T'] {
   }
   .sm\:max-w-\[425px\]{
     max-width: 425px;
+  }
+  .sm\:max-w-\[450px\]{
+    max-width: 450px;
   }
   .sm\:max-w-\[500px\]{
     max-width: 500px;

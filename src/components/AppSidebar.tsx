@@ -32,6 +32,8 @@ import {
   Tags,
   Users,
   Camera,
+  Factory,
+  Shield,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -49,7 +51,8 @@ const navigationGroups = [
   {
     sector: 'Financeiro',
     items: [
-      { title: 'Financeiro', icon: DollarSign, url: '/financeiro' },
+      { title: 'Financeiro & DRE', icon: DollarSign, url: '/financeiro' },
+      { title: 'Hedge & Risco B3', icon: Shield, url: '/hedge' },
       { title: 'Projeções & AI', icon: BrainCircuit, url: '/projecoes' },
     ].sort((a, b) => a.title.localeCompare(b.title)),
   },
@@ -66,6 +69,7 @@ const navigationGroups = [
   {
     sector: 'Zootécnico',
     items: [
+      { title: 'Abates & Romaneios', icon: Factory, url: '/abates' },
       { title: 'Confinamento', icon: Wheat, url: '/confinamento' },
       { title: 'Gestão de Pastos', icon: Map, url: '/pastos' },
       { title: 'Gestão de Rebanho', icon: Tags, url: '/animais' },
