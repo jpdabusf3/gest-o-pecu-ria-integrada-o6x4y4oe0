@@ -20,6 +20,7 @@ import useFazendaStore from '@/stores/useFazendaStore'
 import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
 import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
 import { ManageInventoryItemModal } from '@/components/forms/ManageInventoryItemModal'
+import { FeedMillTab } from '@/components/estoque/FeedMillTab'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 
 export default function Estoque() {
@@ -36,6 +37,9 @@ export default function Estoque() {
   )
   const almoxarifadoItems = inventory.filter(
     (i) => i.tipo === 'Material Cerca' || i.id.startsWith('A'),
+  )
+  const materiaPrimaItems = inventory.filter(
+    (i) => i.tipo === 'Materia Prima' || i.id.startsWith('M'),
   )
 
   const forecastedItems = useMemo(() => {
@@ -139,9 +143,12 @@ export default function Estoque() {
       )}
 
       <Tabs defaultValue="nutricao" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 max-w-3xl mb-6 h-auto md:h-10">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 max-w-4xl mb-6 h-auto md:h-10">
           <TabsTrigger value="nutricao" className="py-2 md:py-1.5">
             Nutrição
+          </TabsTrigger>
+          <TabsTrigger value="fabrica" className="py-2 md:py-1.5 whitespace-nowrap">
+            Fábrica de Ração
           </TabsTrigger>
           <TabsTrigger value="farmacia" className="py-2 md:py-1.5">
             Farmácia
@@ -160,10 +167,10 @@ export default function Estoque() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="nutricao">
+        <TabsContent value="nutricao" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Suplementação e Rações</CardTitle>
+              <CardTitle>Suplementação e Rações Produzidas</CardTitle>
             </CardHeader>
             <CardContent className="px-0 sm:px-6">
               <div className="overflow-x-auto">
@@ -172,6 +179,7 @@ export default function Estoque() {
                     <TableRow>
                       <TableHead>Insumo</TableHead>
                       <TableHead className="text-right">Estoque Atual</TableHead>
+                      <TableHead className="text-right">Custo / Un</TableHead>
                       <TableHead className="text-right">
                         <TooltipProvider delayDuration={300}>
                           <Tooltip>
@@ -180,7 +188,7 @@ export default function Estoque() {
                             </TooltipTrigger>
                             <TooltipContent>
                               Quantidade mínima segura de estoque antes de necessitar de uma nova
-                              compra.
+                              compra ou produção.
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -199,6 +207,9 @@ export default function Estoque() {
                           </TableCell>
                           <TableCell className="text-right font-mono font-medium whitespace-nowrap">
                             {formatNumber(item.qtd, 0)} {item.unidade}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
+                            {formatCurrency(item.custoUnitario)}
                           </TableCell>
                           <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
                             {formatNumber(item.minQtd, 0)} {item.unidade}
@@ -236,6 +247,72 @@ export default function Estoque() {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Matérias-Primas</CardTitle>
+              <CardDescription>
+                Ingredientes utilizados na formulação e mistura de rações.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ingrediente</TableHead>
+                      <TableHead className="text-right">Estoque Atual</TableHead>
+                      <TableHead className="text-right">Custo / Un</TableHead>
+                      <TableHead className="text-right">Mínimo</TableHead>
+                      <TableHead>Status / Ação</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {materiaPrimaItems.map((item) => {
+                      const isCritical = item.qtd <= item.minQtd
+                      return (
+                        <TableRow key={item.id} className={isCritical ? 'bg-destructive/5' : ''}>
+                          <TableCell className="font-medium whitespace-nowrap">
+                            {item.item}
+                          </TableCell>
+                          <TableCell className="text-right font-mono font-medium whitespace-nowrap">
+                            {formatNumber(item.qtd, 0)} {item.unidade}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
+                            {formatCurrency(item.custoUnitario)}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-muted-foreground whitespace-nowrap">
+                            {formatNumber(item.minQtd, 0)} {item.unidade}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Badge variant={isCritical ? 'destructive' : 'secondary'}>
+                                {isCritical ? 'Estoque Crítico' : 'Normal'}
+                              </Badge>
+                              <ManageInventoryItemModal item={item} />
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                                onClick={() => removeInventoryItem(item.id)}
+                                title="Remover Item"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="fabrica" className="mt-0">
+          <FeedMillTab />
         </TabsContent>
 
         <TabsContent value="farmacia">
@@ -243,6 +320,7 @@ export default function Estoque() {
             <CardContent className="pt-6">{renderGenericTable(farmaciaItems)}</CardContent>
           </Card>
         </TabsContent>
+
         <TabsContent value="almoxarifado">
           <Card>
             <CardContent className="pt-6">{renderGenericTable(almoxarifadoItems)}</CardContent>

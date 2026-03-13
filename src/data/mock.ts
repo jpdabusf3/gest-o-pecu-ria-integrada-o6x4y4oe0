@@ -479,6 +479,36 @@ export const inventoryData = {
       status: 'Baixo',
       custoUnitario: 2.9,
     },
+    {
+      id: 'M1',
+      item: 'Milho em Grão',
+      tipo: 'Materia Prima',
+      qtd: 50000,
+      minQtd: 10000,
+      unidade: 'kg',
+      status: 'Normal',
+      custoUnitario: 0.8,
+    },
+    {
+      id: 'M2',
+      item: 'Farelo de Soja',
+      tipo: 'Materia Prima',
+      qtd: 15000,
+      minQtd: 5000,
+      unidade: 'kg',
+      status: 'Normal',
+      custoUnitario: 2.2,
+    },
+    {
+      id: 'M3',
+      item: 'Núcleo Mineral Confinamento',
+      tipo: 'Materia Prima',
+      qtd: 2000,
+      minQtd: 500,
+      unidade: 'kg',
+      status: 'Normal',
+      custoUnitario: 4.5,
+    },
   ],
 }
 
@@ -992,173 +1022,164 @@ export const performanceGoalsList = [
 
 export const biMetricsList = [
   { id: 'ganhoPeso', name: 'GMD Médio Rebanho', color: 'hsl(var(--chart-1))', unit: 'kg' },
-  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R$' },
-  {
-    id: 'custoManutencao',
-    name: 'Custo Manutenção Frota',
-    color: 'hsl(var(--chart-3))',
-    unit: 'R$',
-  },
-  { id: 'arrobasProduzidas', name: 'Arrobas Produzidas', color: 'hsl(var(--chart-4))', unit: '@' },
-  { id: 'custoNutricao', name: 'Custo Nutrição', color: 'hsl(var(--chart-5))', unit: 'R$' },
-]
+  { id: 'custoCombustivel', name: 'Custo Combustível', color: 'hsl(var(--chart-2))', unit: 'R
 
-export const biData = [
-  {
-    period: 'Jan',
-    ganhoPeso: 1.1,
-    custoCombustivel: 12000,
-    custoManutencao: 4500,
-    arrobasProduzidas: 850,
-    custoNutricao: 35000,
-  },
-  {
-    period: 'Fev',
-    ganhoPeso: 1.2,
-    custoCombustivel: 13500,
-    custoManutencao: 2100,
-    arrobasProduzidas: 900,
-    custoNutricao: 38000,
-  },
-  {
-    period: 'Mar',
-    ganhoPeso: 1.35,
-    custoCombustivel: 11000,
-    custoManutencao: 5200,
-    arrobasProduzidas: 1100,
-    custoNutricao: 42000,
-  },
-  {
-    period: 'Abr',
-    ganhoPeso: 1.45,
-    custoCombustivel: 14000,
-    custoManutencao: 1800,
-    arrobasProduzidas: 1250,
-    custoNutricao: 45000,
-  },
-  {
-    period: 'Mai',
-    ganhoPeso: 1.4,
-    custoCombustivel: 15500,
-    custoManutencao: 3000,
-    arrobasProduzidas: 1300,
-    custoNutricao: 48000,
-  },
-  {
-    period: 'Jun',
-    ganhoPeso: 1.5,
-    custoCombustivel: 16000,
-    custoManutencao: 2500,
-    arrobasProduzidas: 1450,
-    custoNutricao: 50000,
-  },
-]
+<skip-file path="src/stores/useFeedMillStore.ts" type="typescript">
+import { useState, useEffect, useCallback } from 'react'
 
-export const twelveMonthsTrendData = [
-  { month: 'Mar/25', cashflow: 120000, weightGain: 4500 },
-  { month: 'Abr/25', cashflow: 135000, weightGain: 4800 },
-  { month: 'Mai/25', cashflow: 110000, weightGain: 5100 },
-  { month: 'Jun/25', cashflow: 145000, weightGain: 5200 },
-  { month: 'Jul/25', cashflow: 160000, weightGain: 4900 },
-  { month: 'Ago/25', cashflow: 155000, weightGain: 5300 },
-  { month: 'Set/25', cashflow: 170000, weightGain: 5500 },
-  { month: 'Out/25', cashflow: 185000, weightGain: 5800 },
-  { month: 'Nov/25', cashflow: 190000, weightGain: 6000 },
-  { month: 'Dez/25', cashflow: 210000, weightGain: 6200 },
-  { month: 'Jan/26', cashflow: 200000, weightGain: 6100 },
-  { month: 'Fev/26', cashflow: 220000, weightGain: 6500 },
-]
-
-export const defaultSavedReports = [
-  {
-    id: 'R1',
-    name: 'Combustível vs Produtividade',
-    m1: 'arrobasProduzidas',
-    m2: 'custoCombustivel',
-  },
-  { id: 'R2', name: 'GMD vs Custo Nutrição', m1: 'custoNutricao', m2: 'ganhoPeso' },
-]
-
-export const performanceByCategory: Record<string, any[]> = {
-  'Vacas de corte': [
-    { period: 'Jan', gmd: 0.6 },
-    { period: 'Fev', gmd: 0.65 },
-    { period: 'Mar', gmd: 0.7 },
-    { period: 'Abr', gmd: 0.68 },
-    { period: 'Mai', gmd: 0.75 },
-    { period: 'Jun', gmd: 0.8 },
-  ],
-  'Novilhas matrizes': [
-    { period: 'Jan', gmd: 0.8 },
-    { period: 'Fev', gmd: 0.85 },
-    { period: 'Mar', gmd: 0.9 },
-    { period: 'Abr', gmd: 0.88 },
-    { period: 'Mai', gmd: 0.95 },
-    { period: 'Jun', gmd: 1.0 },
-  ],
-  Bois: [
-    { period: 'Jan', gmd: 1.2 },
-    { period: 'Fev', gmd: 1.3 },
-    { period: 'Mar', gmd: 1.4 },
-    { period: 'Abr', gmd: 1.45 },
-    { period: 'Mai', gmd: 1.5 },
-    { period: 'Jun', gmd: 1.6 },
-  ],
-  Bezerros: [
-    { period: 'Jan', gmd: 0.85 },
-    { period: 'Fev', gmd: 0.9 },
-    { period: 'Mar', gmd: 0.92 },
-    { period: 'Abr', gmd: 0.95 },
-    { period: 'Mai', gmd: 1.0 },
-    { period: 'Jun', gmd: 1.05 },
-  ],
-  Garrotes: [
-    { period: 'Jan', gmd: 1.0 },
-    { period: 'Fev', gmd: 1.1 },
-    { period: 'Mar', gmd: 1.15 },
-    { period: 'Abr', gmd: 1.2 },
-    { period: 'Mai', gmd: 1.25 },
-    { period: 'Jun', gmd: 1.3 },
-  ],
-  Bezerras: [
-    { period: 'Jan', gmd: 0.75 },
-    { period: 'Fev', gmd: 0.8 },
-    { period: 'Mar', gmd: 0.82 },
-    { period: 'Abr', gmd: 0.85 },
-    { period: 'Mai', gmd: 0.9 },
-    { period: 'Jun', gmd: 0.95 },
-  ],
-  Novilhas: [
-    { period: 'Jan', gmd: 0.85 },
-    { period: 'Fev', gmd: 0.9 },
-    { period: 'Mar', gmd: 0.95 },
-    { period: 'Abr', gmd: 1.0 },
-    { period: 'Mai', gmd: 1.05 },
-    { period: 'Jun', gmd: 1.1 },
-  ],
-  'Vacas (Matrizes)': [
-    { period: 'Jan', gmd: 0.4 },
-    { period: 'Fev', gmd: 0.45 },
-    { period: 'Mar', gmd: 0.5 },
-    { period: 'Abr', gmd: 0.55 },
-    { period: 'Mai', gmd: 0.6 },
-    { period: 'Jun', gmd: 0.65 },
-  ],
-  Touros: [
-    { period: 'Jan', gmd: 0.5 },
-    { period: 'Fev', gmd: 0.55 },
-    { period: 'Mar', gmd: 0.6 },
-    { period: 'Abr', gmd: 0.65 },
-    { period: 'Mai', gmd: 0.7 },
-    { period: 'Jun', gmd: 0.75 },
-  ],
+export interface FormulaIngredient {
+  inventoryId: string
+  percentage: number
 }
 
-export const performanceCorrelationData = [
-  { lote: 'Lote LEN-01', custoIntervencao: 12.5, ganhoPeso: 1.45 },
-  { lote: 'Lote LEN-02 (Parcial)', custoIntervencao: 14.8, ganhoPeso: 1.55 },
-  { lote: 'Lote LRE-01', custoIntervencao: 8.5, ganhoPeso: 0.95 },
-  { lote: 'Lote LCR-04', custoIntervencao: 4.5, ganhoPeso: 0.65 },
-  { lote: 'Pasto 01 - Sede', custoIntervencao: 15.2, ganhoPeso: 1.1 },
-  { lote: 'Pasto 02 - Fundo', custoIntervencao: 18.0, ganhoPeso: 1.2 },
+export interface FeedFormula {
+  id: string
+  name: string
+  outputInventoryId: string
+  ingredients: FormulaIngredient[]
+  version: number
+  updatedAt: string
+}
+
+export interface FormulaHistory extends FeedFormula {
+  historyId: string
+  formulaId: string
+}
+
+export interface ProductionRun {
+  id: string
+  date: string
+  formulaId: string
+  formulaName: string
+  amountProducedKg: number
+  totalCost: number
+  costPerKg: number
+  destination: string
+}
+
+const STORAGE_KEY_FORMULAS = '@f3_feed_formulas'
+const STORAGE_KEY_HISTORY = '@f3_feed_formulas_history'
+const STORAGE_KEY_PRODUCTIONS = '@f3_feed_productions'
+
+const defaultFormulas: FeedFormula[] = [
+  {
+    id: 'FORM-1',
+    name: 'Ração Terminação Alto Grão',
+    outputInventoryId: 'N2',
+    ingredients: [
+      { inventoryId: 'M1', percentage: 75 },
+      { inventoryId: 'M2', percentage: 20 },
+      { inventoryId: 'M3', percentage: 5 },
+    ],
+    version: 1,
+    updatedAt: new Date().toISOString(),
+  },
 ]
+
+export default function useFeedMillStore() {
+  const [formulas, setFormulas] = useState<FeedFormula[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_FORMULAS)
+      if (saved) return JSON.parse(saved)
+    } catch (e) {
+      console.error(e)
+    }
+    return defaultFormulas
+  })
+
+  const [history, setHistory] = useState<FormulaHistory[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_HISTORY)
+      if (saved) return JSON.parse(saved)
+    } catch (e) {
+      console.error(e)
+    }
+    return []
+  })
+
+  const [productions, setProductions] = useState<ProductionRun[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_PRODUCTIONS)
+      if (saved) return JSON.parse(saved)
+    } catch (e) {
+      console.error(e)
+    }
+    return [
+      {
+        id: 'PROD-1',
+        date: new Date(Date.now() - 86400000).toISOString(),
+        formulaId: 'FORM-1',
+        formulaName: 'Ração Terminação Alto Grão',
+        amountProducedKg: 2000,
+        totalCost: 2530,
+        costPerKg: 1.265,
+        destination: 'Estoque',
+      },
+    ]
+  })
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_FORMULAS, JSON.stringify(formulas))
+  }, [formulas])
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(history))
+  }, [history])
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_PRODUCTIONS, JSON.stringify(productions))
+  }, [productions])
+
+  const saveFormula = useCallback(
+    (formula: Omit<FeedFormula, 'id' | 'version' | 'updatedAt'>, id?: string) => {
+      setFormulas((prev) => {
+        if (id) {
+          const existing = prev.find((f) => f.id === id)
+          if (existing) {
+            const historyEntry: FormulaHistory = {
+              ...existing,
+              historyId: crypto.randomUUID(),
+              formulaId: existing.id,
+            }
+            setHistory((h) => [historyEntry, ...h])
+
+            return prev.map((f) =>
+              f.id === id
+                ? {
+                    ...f,
+                    ...formula,
+                    version: f.version + 1,
+                    updatedAt: new Date().toISOString(),
+                  }
+                : f,
+            )
+          }
+        }
+        return [
+          {
+            ...formula,
+            id: `FORM-${crypto.randomUUID()}`,
+            version: 1,
+            updatedAt: new Date().toISOString(),
+          },
+          ...prev,
+        ]
+      })
+    },
+    [],
+  )
+
+  const addProduction = useCallback((run: Omit<ProductionRun, 'id' | 'date'>) => {
+    setProductions((prev) => [
+      {
+        ...run,
+        id: `PROD-${crypto.randomUUID()}`,
+        date: new Date().toISOString(),
+      },
+      ...prev,
+    ])
+  }, [])
+
+  return { formulas, history, productions, saveFormula, addProduction }
+}
+
