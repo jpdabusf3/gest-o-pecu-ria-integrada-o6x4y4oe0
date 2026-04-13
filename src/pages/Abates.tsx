@@ -11,8 +11,10 @@ import {
 import { Badge } from '@/components/ui/badge'
 import useAbateStore from '@/stores/useAbateStore'
 import { formatCurrency, formatNumber, formatWeight } from '@/lib/utils'
-import { Factory, TrendingUp, Scale } from 'lucide-react'
+import { Factory, TrendingUp, Scale, ShieldCheck } from 'lucide-react'
 import { RegisterSlaughterModal } from '@/components/forms/RegisterSlaughterModal'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 import {
   BarChart,
   Bar,
@@ -69,7 +71,17 @@ export default function Abates() {
             Controle de frigoríficos, pesagens e apuração de rendimento de carcaça.
           </p>
         </div>
-        <RegisterSlaughterModal />
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <Button asChild variant="outline" className="flex-1 sm:flex-none min-h-[44px]">
+            <Link to="/hedge">
+              <ShieldCheck className="h-4 w-4 mr-2" />
+              Ver Eficiência de Hedge
+            </Link>
+          </Button>
+          <div className="flex-1 sm:flex-none">
+            <RegisterSlaughterModal />
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">

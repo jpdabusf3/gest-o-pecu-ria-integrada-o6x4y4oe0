@@ -147,3 +147,26 @@
     @apply transition-transform duration-200 hover:-translate-y-1 hover:shadow-md;
   }
 }
+
+@media print {
+  [data-sidebar] {
+    display: none !important;
+  }
+  header {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body {
+    background-color: white !important;
+  }
+  .print-break-inside-avoid {
+    break-inside: avoid;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
