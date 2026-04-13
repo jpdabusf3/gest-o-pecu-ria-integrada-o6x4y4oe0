@@ -68,6 +68,7 @@ const navItems = {
       title: 'Financeiro e Comercial',
       items: [
         { title: 'Controle Financeiro', icon: DollarSign, url: '/financeiro' },
+        { title: 'Vendas & Desmame', icon: DollarSign, url: '/vendas' },
         { title: 'Inteligência de Vendas', icon: LineChart, url: '/projecoes' },
         { title: 'Hedge & Mercado B3', icon: Shield, url: '/hedge' },
         { title: 'Abates & Romaneios', icon: Factory, url: '/abates' },

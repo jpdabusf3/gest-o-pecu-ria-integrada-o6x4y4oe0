@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -13,18 +13,66 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { sectorData } from '@/data/mock'
-import { Beef, Activity, DollarSign, LineChart } from 'lucide-react'
+import { Beef, Activity, DollarSign, LineChart, BarChart2, Users } from 'lucide-react'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
 import { IatfTab } from '@/components/sector/IatfTab'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
 import { SectorPastureTab } from '@/components/sector/SectorPastureTab'
+import { getLots, type LotRecord } from '@/services/lots'
+import { useRealtime } from '@/hooks/use-realtime'
+import { differenceInDays, parseISO } from 'date-fns'
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  Cell,
+} from 'recharts'
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart'
+import { cn } from '@/lib/utils'
 
 export default function Setor() {
   const { id } = useParams<{ id: string }>()
   const [selectedLote, setSelectedLote] = useState<string | null>(null)
+  const [lots, setLots] = useState<LotRecord[]>([])
+  const [activeChart, setActiveChart] = useState<'gmd' | 'headcount'>('gmd')
+
+  const loadData = useCallback(async () => {
+    try {
+      if (id) {
+        const records = await getLots(`sector = '${id}'`)
+        setLots(records)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }, [id])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
+  useRealtime('lots', () => loadData())
 
   const data = sectorData[id as keyof typeof sectorData]
   if (!data) return <Navigate to="/" replace />
+
+  const chartData = lots.map((l) => {
+    const days =
+      l.entry_date && l.exit_date
+        ? differenceInDays(parseISO(l.exit_date), parseISO(l.entry_date))
+        : 30
+    const gmd = days > 0 ? ((l.final_weight || 0) - (l.initial_weight || 0)) / days : 0
+    return { name: l.name, gmd: Number(gmd.toFixed(3)), headcount: l.headcount || 0 }
+  })
+
+  const avgGmd = chartData.length
+    ? chartData.reduce((acc, curr) => acc + curr.gmd, 0) / chartData.length
+    : 0
+  const totalHeads = chartData.reduce((acc, curr) => acc + curr.headcount, 0)
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-10">
@@ -64,6 +112,76 @@ export default function Setor() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6 mt-4">
+          <div className="flex gap-2 mb-4">
+            <Button
+              variant={activeChart === 'gmd' ? 'default' : 'outline'}
+              onClick={() => setActiveChart('gmd')}
+              className="gap-2"
+            >
+              <Activity className="h-4 w-4" /> Desempenho GMD
+            </Button>
+            <Button
+              variant={activeChart === 'headcount' ? 'default' : 'outline'}
+              onClick={() => setActiveChart('headcount')}
+              className="gap-2"
+            >
+              <Users className="h-4 w-4" /> Contagem de Animais
+            </Button>
+          </div>
+
+          {lots.length > 0 && (
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle>
+                  {activeChart === 'gmd'
+                    ? 'Comparativo de GMD por Lote'
+                    : 'Distribuição de Cabeças por Lote'}
+                </CardTitle>
+                <CardDescription>
+                  {activeChart === 'gmd'
+                    ? `Média do setor: ${avgGmd.toFixed(3)} kg/d`
+                    : `Total no setor: ${totalHeads} cabeças`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer
+                  config={{
+                    value: {
+                      label: activeChart === 'gmd' ? 'GMD (kg/d)' : 'Cabeças',
+                      color: 'hsl(var(--primary))',
+                    },
+                  }}
+                  className="h-[300px] w-full"
+                >
+                  <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="name" tickLine={false} axisLine={false} />
+                    <YAxis tickLine={false} axisLine={false} />
+                    <RechartsTooltip
+                      cursor={{ fill: 'var(--color-muted)' }}
+                      content={<ChartTooltipContent />}
+                    />
+                    <Bar
+                      dataKey={activeChart === 'gmd' ? 'gmd' : 'headcount'}
+                      radius={[4, 4, 0, 0]}
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            activeChart === 'gmd' && entry.gmd < avgGmd
+                              ? 'hsl(var(--destructive))'
+                              : 'hsl(var(--primary))'
+                          }
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          )}
+
           <div className="grid gap-4 sm:grid-cols-3">
             <Card className="bg-primary/5 border-primary/20">
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">

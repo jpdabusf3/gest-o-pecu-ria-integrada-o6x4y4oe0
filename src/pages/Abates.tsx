@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -9,209 +9,398 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import useAbateStore from '@/stores/useAbateStore'
-import { formatCurrency, formatNumber, formatWeight } from '@/lib/utils'
-import { Factory, TrendingUp, Scale, ShieldCheck } from 'lucide-react'
-import { RegisterSlaughterModal } from '@/components/forms/RegisterSlaughterModal'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router-dom'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  Factory,
+  TrendingUp,
+  Scale,
+  FileText,
+  MoreHorizontal,
+  Download,
+  Printer,
+} from 'lucide-react'
+import { RegisterSlaughterModal } from '@/components/forms/RegisterSlaughterModal'
+import { getLots, type LotRecord } from '@/services/lots'
+import { useRealtime } from '@/hooks/use-realtime'
+import { formatCurrency, formatNumber, formatWeight } from '@/lib/utils'
+import { differenceInDays, parseISO, format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer,
   Tooltip as RechartsTooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from 'recharts'
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart'
 
 export default function Abates() {
-  const { records } = useAbateStore()
+  const [lots, setLots] = useState<LotRecord[]>([])
+  const [loading, setLoading] = useState(true)
+  const [printingLotId, setPrintingLotId] = useState<string | null>(null)
 
-  const avgYield = useMemo(() => {
-    if (records.length === 0) return 0
-    return records.reduce((acc, r) => acc + r.yieldPct, 0) / records.length
-  }, [records])
+  const loadData = useCallback(async () => {
+    try {
+      const records = await getLots("status = 'abated'")
+      setLots(records)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  const totalCarcass = useMemo(() => {
-    return records.reduce((acc, r) => acc + r.pesoCarcacaTotal, 0)
-  }, [records])
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
-  const chartData = useMemo(() => {
-    const grouped = records.reduce(
-      (acc, r) => {
-        if (!acc[r.frigorificoName])
-          acc[r.frigorificoName] = { name: r.frigorificoName, totalYield: 0, count: 0 }
-        acc[r.frigorificoName].totalYield += r.yieldPct
-        acc[r.frigorificoName].count += 1
-        return acc
-      },
-      {} as Record<string, any>,
-    )
-    return Object.values(grouped).map((f) => ({
-      name: f.name,
-      yieldPct: Number((f.totalYield / f.count).toFixed(2)),
-    }))
-  }, [records])
+  useRealtime('lots', () => loadData())
 
-  const chartConfig = {
-    yieldPct: { label: 'Rendimento (%)', color: 'hsl(var(--primary))' },
+  const handlePrintLot = (id: string) => {
+    setPrintingLotId(id)
+    setTimeout(() => {
+      window.print()
+      setPrintingLotId(null)
+    }, 500)
   }
 
+  const handlePrintGlobal = () => {
+    window.print()
+  }
+
+  // --- Calculations ---
+  const totalCarcass = useMemo(
+    () => lots.reduce((acc, r) => acc + (r.final_weight || 0) * (r.headcount || 0), 0),
+    [lots],
+  )
+  const totalHeads = useMemo(() => lots.reduce((acc, r) => acc + (r.headcount || 0), 0), [lots])
+
+  // Chart 1: Frequency over time
+  const freqData = useMemo(() => {
+    const grouped = lots.reduce(
+      (acc, lot) => {
+        if (!lot.exit_date) return acc
+        const month = format(parseISO(lot.exit_date), 'MMM yyyy', { locale: ptBR })
+        if (!acc[month]) acc[month] = 0
+        acc[month] += lot.headcount || 0
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+    return Object.entries(grouped).map(([name, count]) => ({ name, count }))
+  }, [lots])
+
+  // Chart 2: Headcount by category
+  const categoryData = useMemo(() => {
+    const grouped = lots.reduce(
+      (acc, lot) => {
+        const cat = lot.category || 'Não definida'
+        if (!acc[cat]) acc[cat] = 0
+        acc[cat] += lot.headcount || 0
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+    return Object.entries(grouped).map(([name, value]) => ({ name, value }))
+  }, [lots])
+
+  const COLORS = [
+    'hsl(var(--chart-1))',
+    'hsl(var(--chart-2))',
+    'hsl(var(--chart-3))',
+    'hsl(var(--chart-4))',
+  ]
+
+  const printingLot = lots.find((l) => l.id === printingLotId)
+
   return (
-    <div className="space-y-6 animate-fade-in-up pb-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Factory className="h-8 w-8 text-primary" />
-            Abates & Romaneios
-          </h2>
-          <p className="text-muted-foreground mt-1">
-            Controle de frigoríficos, pesagens e apuração de rendimento de carcaça.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-          <Button asChild variant="outline" className="flex-1 sm:flex-none min-h-[44px]">
-            <Link to="/hedge">
-              <ShieldCheck className="h-4 w-4 mr-2" />
-              Ver Eficiência de Hedge
-            </Link>
-          </Button>
-          <div className="flex-1 sm:flex-none">
-            <RegisterSlaughterModal />
+    <div className="space-y-6 animate-fade-in-up pb-8 print:p-0 print:m-0">
+      {/* --- PRINT VIEW FOR SINGLE LOT --- */}
+      {printingLot && (
+        <div className="hidden print:block space-y-6">
+          <div className="border-b-2 border-primary pb-4 mb-8">
+            <h1 className="text-3xl font-bold">Relatório Oficial de Abate</h1>
+            <p className="text-muted-foreground">Fazenda 3 Irmãos - Gestão Pecuária Integrada</p>
+          </div>
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-bold text-lg border-b mb-4">Dados do Lote</h3>
+              <p>
+                <strong>Nome:</strong> {printingLot.name}
+              </p>
+              <p>
+                <strong>Categoria:</strong> {printingLot.category} ({printingLot.sex})
+              </p>
+              <p>
+                <strong>Cabeças:</strong> {printingLot.headcount}
+              </p>
+              <p>
+                <strong>Data Saída:</strong>{' '}
+                {printingLot.exit_date
+                  ? format(parseISO(printingLot.exit_date), 'dd/MM/yyyy')
+                  : '-'}
+              </p>
+            </div>
+            <div>
+              <h3 className="font-bold text-lg border-b mb-4">
+                Resultados Zootécnicos & Financeiros
+              </h3>
+              <p>
+                <strong>Peso Entrada:</strong> {formatWeight(printingLot.initial_weight, 'kg')}
+              </p>
+              <p>
+                <strong>Peso Abate (Estimado/Carcaça):</strong>{' '}
+                {formatWeight(printingLot.final_weight, 'kg')}
+              </p>
+              <p>
+                <strong>GMD:</strong>{' '}
+                {formatNumber(
+                  (printingLot.final_weight - printingLot.initial_weight) /
+                    Math.max(
+                      1,
+                      differenceInDays(
+                        parseISO(printingLot.exit_date || new Date().toISOString()),
+                        parseISO(printingLot.entry_date || new Date().toISOString()),
+                      ),
+                    ),
+                  3,
+                )}{' '}
+                kg/d
+              </p>
+              <p>
+                <strong>Valor Base / Animal:</strong> {formatCurrency(printingLot.value_per_animal)}
+              </p>
+              <p className="text-xl font-bold mt-4">
+                <strong>Receita Bruta do Lote:</strong>{' '}
+                {formatCurrency((printingLot.value_per_animal || 0) * (printingLot.headcount || 0))}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-primary">
-              Rendimento Médio Global
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-primary">{formatNumber(avgYield, 2)}%</div>
-            <p className="text-xs text-muted-foreground mt-1">Peso Carcaça vs Peso Vivo</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Volume de Carcaça
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold flex items-center gap-2">
-              <Scale className="h-6 w-6 text-muted-foreground" /> {formatWeight(totalCarcass, 'kg')}
+      {/* --- STANDARD VIEW --- */}
+      <div className={printingLotId ? 'print:hidden' : ''}>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 print:hidden">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+              <Factory className="h-8 w-8 text-primary" />
+              Gestão de Abates
+            </h2>
+            <p className="text-muted-foreground mt-1">
+              Controle de frigoríficos, pesagens e emissão de relatórios oficiais.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <Button onClick={handlePrintGlobal} variant="outline" className="flex-1 sm:flex-none">
+              <Download className="h-4 w-4 mr-2" />
+              Exportar Relatório Global
+            </Button>
+            <div className="flex-1 sm:flex-none">
+              <RegisterSlaughterModal />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Arrobas Produzidas
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold flex items-center gap-2">
-              <TrendingUp className="h-6 w-6 text-emerald-500" />{' '}
-              {formatNumber(totalCarcass / 15, 0)} @
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle>Rendimento por Frigorífico</CardTitle>
-            <CardDescription>Comparativo de aproveitamento de carcaça</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {chartData.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" tickLine={false} axisLine={false} />
-                  <YAxis
-                    domain={['dataMin - 2', 'dataMax + 2']}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(v) => `${v}%`}
-                  />
-                  <RechartsTooltip
-                    cursor={{ fill: 'var(--color-muted)' }}
-                    content={<ChartTooltipContent />}
-                  />
-                  <Bar
-                    dataKey="yieldPct"
-                    fill="var(--color-yieldPct)"
-                    radius={[4, 4, 0, 0]}
-                    maxBarSize={50}
-                  />
-                </BarChart>
-              </ChartContainer>
-            ) : (
-              <div className="h-[250px] flex items-center justify-center text-muted-foreground bg-muted/20 rounded border border-dashed">
-                Sem dados de abates
+        {/* Global Print Header */}
+        <div className="hidden print:block print:mb-8 border-b-2 border-primary pb-4">
+          <h1 className="text-3xl font-bold">Relatório Global de Abates</h1>
+          <p className="text-muted-foreground">
+            Emitido em: {new Date().toLocaleDateString('pt-BR')}
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3 mb-6">
+          <Card className="bg-primary/5 border-primary/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-primary">Animais Abatidos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-primary">{formatNumber(totalHeads, 0)}</div>
+              <p className="text-xs text-muted-foreground mt-1">Cabeças totais no histórico</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Volume Total (Estimado)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold flex items-center gap-2">
+                <Scale className="h-6 w-6 text-muted-foreground" />{' '}
+                {formatWeight(totalCarcass, 'kg')}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Total Arrobas Produzidas
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-emerald-500" />{' '}
+                {formatNumber(totalCarcass / 15, 0)} @
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Histórico de Romaneios</CardTitle>
+        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+          <Card className="print:break-inside-avoid">
+            <CardHeader>
+              <CardTitle>Frequência de Abates</CardTitle>
+              <CardDescription>Volume de animais abatidos ao longo do tempo</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {freqData.length > 0 ? (
+                <ChartContainer
+                  config={{ count: { label: 'Cabeças', color: 'hsl(var(--primary))' } }}
+                  className="h-[250px] w-full"
+                >
+                  <BarChart data={freqData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="name" tickLine={false} axisLine={false} />
+                    <YAxis tickLine={false} axisLine={false} />
+                    <RechartsTooltip
+                      cursor={{ fill: 'var(--color-muted)' }}
+                      content={<ChartTooltipContent />}
+                    />
+                    <Bar
+                      dataKey="count"
+                      fill="var(--color-count)"
+                      radius={[4, 4, 0, 0]}
+                      maxBarSize={50}
+                    />
+                  </BarChart>
+                </ChartContainer>
+              ) : (
+                <div className="h-[250px] flex items-center justify-center text-muted-foreground">
+                  Sem dados de abates
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="print:break-inside-avoid">
+            <CardHeader>
+              <CardTitle>Resumo por Categoria</CardTitle>
+              <CardDescription>Distribuição de perfil zootécnico</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {categoryData.length > 0 ? (
+                <ChartContainer config={{}} className="h-[250px] w-full">
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {categoryData.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip />
+                    <Legend />
+                  </PieChart>
+                </ChartContainer>
+              ) : (
+                <div className="h-[250px] flex items-center justify-center text-muted-foreground">
+                  Sem dados de abates
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="print:shadow-none print:border-none">
+          <CardHeader className="print:px-0">
+            <CardTitle>Lotes Abatidos</CardTitle>
           </CardHeader>
-          <CardContent className="px-0 sm:px-6 overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Frigorífico</TableHead>
-                  <TableHead>Lote (Cab)</TableHead>
-                  <TableHead className="text-right">Peso Vivo</TableHead>
-                  <TableHead className="text-right">Carcaça</TableHead>
-                  <TableHead className="text-right text-primary">Rend. %</TableHead>
-                  <TableHead className="text-right">Preço / @</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {records.map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell className="whitespace-nowrap text-muted-foreground">
-                      {new Date(r.date).toLocaleDateString('pt-BR')}
-                    </TableCell>
-                    <TableCell className="font-semibold">{r.frigorificoName}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{r.lotId}</Badge>{' '}
-                      <span className="text-xs text-muted-foreground ml-1">({r.headcount})</span>
-                    </TableCell>
-                    <TableCell className="text-right whitespace-nowrap">
-                      {formatWeight(r.pesoVivoTotal, 'kg')}
-                    </TableCell>
-                    <TableCell className="text-right whitespace-nowrap">
-                      {formatWeight(r.pesoCarcacaTotal, 'kg')}
-                    </TableCell>
-                    <TableCell className="text-right font-bold text-primary whitespace-nowrap">
-                      {formatNumber(r.yieldPct, 2)}%
-                    </TableCell>
-                    <TableCell className="text-right whitespace-nowrap">
-                      {formatCurrency(r.pricePerArroba)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {records.length === 0 && (
+          <CardContent className="px-0 sm:px-6 overflow-x-auto print:px-0">
+            {loading ? (
+              <div className="p-6 text-center text-muted-foreground">Carregando...</div>
+            ) : (
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-6 text-muted-foreground">
-                      Nenhum romaneio registrado.
-                    </TableCell>
+                    <TableHead>Data Abate</TableHead>
+                    <TableHead>Lote</TableHead>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead className="text-right">Cabeças</TableHead>
+                    <TableHead className="text-right">Peso Final</TableHead>
+                    <TableHead className="text-right">Receita Total</TableHead>
+                    <TableHead className="w-[80px] print:hidden"></TableHead>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {lots.map((lote) => (
+                    <TableRow key={lote.id}>
+                      <TableCell className="whitespace-nowrap text-muted-foreground">
+                        {lote.exit_date ? format(parseISO(lote.exit_date), 'dd/MM/yyyy') : '-'}
+                      </TableCell>
+                      <TableCell className="font-semibold text-primary">{lote.name}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{lote.category}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-mono">{lote.headcount}</TableCell>
+                      <TableCell className="text-right whitespace-nowrap">
+                        {formatWeight(lote.final_weight, 'kg')}
+                      </TableCell>
+                      <TableCell className="text-right whitespace-nowrap text-emerald-600 font-medium">
+                        {formatCurrency((lote.value_per_animal || 0) * (lote.headcount || 0))}
+                      </TableCell>
+                      <TableCell className="text-center print:hidden">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Abrir menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => handlePrintLot(lote.id)}>
+                              <Printer className="mr-2 h-4 w-4" /> Exportar PDF do Lote
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <FileText className="mr-2 h-4 w-4" /> Ver Detalhes
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {lots.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-6 text-muted-foreground">
+                        Nenhum lote abatido registrado.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            )}
           </CardContent>
         </Card>
       </div>
