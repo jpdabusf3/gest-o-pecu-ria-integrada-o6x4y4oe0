@@ -16,6 +16,7 @@ import { formatCurrency, formatNumber } from '@/lib/utils'
 import { Shield, TrendingUp, CandlestickChart, Plus } from 'lucide-react'
 import { RegisterHedgeModal } from '@/components/forms/RegisterHedgeModal'
 import { HedgeSimulator } from '@/components/HedgeSimulator'
+import { HedgeEfficiencyDashboard } from '@/components/hedge/HedgeEfficiencyDashboard'
 import { useMarket } from '@/contexts/MarketContext'
 
 export default function Hedge() {
@@ -101,6 +102,7 @@ export default function Hedge() {
         <TabsList>
           <TabsTrigger value="dashboard">Dashboard & Carteira B3</TabsTrigger>
           <TabsTrigger value="simulator">Calculadora de Cenários</TabsTrigger>
+          <TabsTrigger value="efficiency">Eficiência de Hedge</TabsTrigger>
         </TabsList>
 
         <TabsContent value="dashboard" className="space-y-6 mt-0">
@@ -237,6 +239,10 @@ export default function Hedge() {
 
         <TabsContent value="simulator" className="mt-0">
           <HedgeSimulator onConvertToReal={handleOpenModal} />
+        </TabsContent>
+
+        <TabsContent value="efficiency" className="mt-0">
+          <HedgeEfficiencyDashboard onRegister={() => handleOpenModal()} />
         </TabsContent>
       </Tabs>
     </div>
