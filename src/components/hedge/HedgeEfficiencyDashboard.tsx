@@ -40,6 +40,8 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { triggerPDFPrint } from '@/lib/exportUtils'
 import { Badge } from '@/components/ui/badge'
+import { PrintReportHeader } from '@/components/PrintReportHeader'
+import { BasisMonitoringChart } from '@/components/BasisMonitoringChart'
 
 export function HedgeEfficiencyDashboard({ onRegister }: { onRegister: () => void }) {
   const [operations, setOperations] = useState<HedgeOperation[]>([])
@@ -203,10 +205,10 @@ export function HedgeEfficiencyDashboard({ onRegister }: { onRegister: () => voi
       </div>
 
       {/* Print Header */}
-      <div className="hidden print:block mb-8 text-center border-b pb-4">
-        <h1 className="text-2xl font-bold">Relatório de Eficiência de Hedge</h1>
-        <p className="text-muted-foreground">Período de Análise: Histórico Completo</p>
-      </div>
+      <PrintReportHeader
+        title="Relatório de Eficiência de Hedge"
+        subtitle="Período de Análise: Histórico Completo"
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 print-break-inside-avoid">
         <Card className="bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200">
@@ -395,6 +397,8 @@ export function HedgeEfficiencyDashboard({ onRegister }: { onRegister: () => voi
           </CardContent>
         </Card>
       </div>
+
+      <BasisMonitoringChart />
 
       <Card className="print-break-inside-avoid">
         <CardHeader>

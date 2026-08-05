@@ -74,3 +74,12 @@ export function downloadExcel(data: Record<string, any>[], filename: string) {
 export function triggerPDFPrint() {
   window.print()
 }
+
+export function printWithHeader(title: string, farmName?: string) {
+  const originalTitle = document.title
+  document.title = `${farmName || 'Gestão Pecuária Integrada'} - ${title}`
+  window.print()
+  setTimeout(() => {
+    document.title = originalTitle
+  }, 500)
+}

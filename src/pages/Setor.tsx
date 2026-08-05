@@ -33,6 +33,9 @@ import {
 } from 'recharts'
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
+import { useExitAlerts } from '@/hooks/use-exit-alerts'
+import { ExitPointAlertCard } from '@/components/ExitPointAlertCard'
+import { BasisMonitoringChart } from '@/components/BasisMonitoringChart'
 
 export default function Setor() {
   const { id } = useParams<{ id: string }>()
@@ -57,6 +60,9 @@ export default function Setor() {
 
   useRealtime('lots', () => loadData())
 
+  const lotIds = lots.map((l) => l.id)
+  const { alerts: exitAlerts } = useExitAlerts(lotIds)
+
   const data = sectorData[id as keyof typeof sectorData]
   if (!data) return <Navigate to="/" replace />
 
@@ -80,6 +86,8 @@ export default function Setor() {
         <h2 className="text-3xl font-bold tracking-tight">{data.title}</h2>
         <p className="text-muted-foreground mt-1">{data.description}</p>
       </div>
+
+      {exitAlerts.length > 0 && <ExitPointAlertCard alerts={exitAlerts} />}
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="flex w-full justify-start overflow-x-auto bg-transparent border-b rounded-none p-0 h-auto gap-4">
@@ -215,6 +223,8 @@ export default function Setor() {
               </CardContent>
             </Card>
           </div>
+
+          <BasisMonitoringChart />
 
           <Card>
             <CardHeader>

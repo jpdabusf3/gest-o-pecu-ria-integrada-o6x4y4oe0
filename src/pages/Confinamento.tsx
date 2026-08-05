@@ -16,10 +16,13 @@ import { useFarm } from '@/contexts/FarmContext'
 import { RegisterFeedModal } from '@/components/forms/RegisterFeedModal'
 import { RegisterWeightModal } from '@/components/forms/RegisterWeightModal'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
+import { useExitAlerts } from '@/hooks/use-exit-alerts'
+import { ExitPointAlertCard } from '@/components/ExitPointAlertCard'
 
 export default function Confinamento() {
   const { lots, getPredictedSlaughterDate, inventory } = useFarm()
   const [selectedLote, setSelectedLote] = useState<string | null>(null)
+  const { alerts: exitAlerts } = useExitAlerts()
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-8">
@@ -35,6 +38,8 @@ export default function Confinamento() {
           <RegisterFeedModal />
         </div>
       </div>
+
+      {exitAlerts.length > 0 && <ExitPointAlertCard alerts={exitAlerts} />}
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="bg-primary/5 border-primary/20">
