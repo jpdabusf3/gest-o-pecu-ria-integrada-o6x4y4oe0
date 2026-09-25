@@ -133,7 +133,7 @@ export const fallbackUsers: Record<Role, User> = {
 interface AuthContextType {
   user: User
   setUser: (user: User) => void
-  login: (email: string, pass: string) => Promise<boolean>
+  login: (identificadorOuEmail: string, pass: string) => Promise<boolean>
   logout: () => void
   switchRole: (role: Role) => void
   updatePreferences: (preferences: Partial<UserPreferences>) => void
@@ -211,17 +211,136 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsub()
   }, [])
 
-  // Login individual no PocketBase
-  const login = useCallback(async (email: string, pass: string): Promise<boolean> => {
+  // Login geral no PocketBase: aceita "Nome do usuário" (case-insensitive) ou e-mail
+  const login = useCallback(async (identificador: string, pass: string): Promise<boolean> => {
+    const termo = (identificador || '').trim()
+    if (!termo) {
+      throw new Error('Informe o nome de usuário ou e-mail.')
+    }
+
     try {
       setIsLoadingAuth(true)
-      const authData = await pb.collection('users').authWithPassword(email.trim(), pass)
+
+      let emailParaAutenticar = termo
+      const ehEmail = termo.includes('@') && termo.includes('.')
+
+      if (!ehEmail) {
+        // 1. Tentar resolver o nome digitado na coleção equipe (case-insensitive)
+        let resolvedEmail: string | null = null
+        try {
+          const escapeFilter = termo.replace(/'/g, "\\'")
+          const equipeRecords = await pb.collection('equipe').getFullList({
+            filter: `nome ~ '${escapeFilter}'`,
+            expand: 'user_id',
+          })
+
+          const termoNorm = termo
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+
+          // Match exato (sem acentos e case-insensitive)
+          const matchExato = equipeRecords.find((rec) => {
+            const nomeNorm = String(rec.nome || '')
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+            return nomeNorm === termoNorm
+          })
+
+          // Match inicial ou por primeiro nome (ex: "João", "Dr. Carlos", "Antônio")
+          const matchAproximado =
+            matchExato ||
+            equipeRecords.find((rec) => {
+              const nomeNorm = String(rec.nome || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+              return nomeNorm.includes(termoNorm) || termoNorm.includes(nomeNorm.split(' ')[0])
+            })
+
+          if (matchAproximado) {
+            const expandedUser = matchAproximado.expand?.user_id
+            if (expandedUser?.email) {
+              resolvedEmail = expandedUser.email
+            } else if (matchAproximado.email) {
+              resolvedEmail = matchAproximado.email
+            }
+          }
+        } catch (errEquipe) {
+          console.warn(
+            'Busca de usuário por nome na equipe falhou, tentando coleção users:',
+            errEquipe,
+          )
+        }
+
+        // 2. Se não encontrou na equipe, busca diretamente no users por name
+        if (!resolvedEmail) {
+          try {
+            const escapeFilter = termo.replace(/'/g, "\\'")
+            const userRecords = await pb.collection('users').getFullList({
+              filter: `name ~ '${escapeFilter}'`,
+            })
+            const termoNorm = termo
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+            const matchUser = userRecords.find((u) => {
+              const nameNorm = String(u.name || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+              return nameNorm === termoNorm || nameNorm.includes(termoNorm)
+            })
+            if (matchUser?.email) {
+              resolvedEmail = matchUser.email
+            }
+          } catch (errUser) {
+            console.warn('Busca direta por nome no users falhou:', errUser)
+          }
+        }
+
+        // 3. Fallbacks estáticos locais caso backend offline ou sem dados
+        if (!resolvedEmail) {
+          const termoNorm = termo
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+          const matchFallback = Object.values(fallbackUsers).find((u) => {
+            const nameNorm = u.name
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+            return (
+              nameNorm === termoNorm ||
+              nameNorm.includes(termoNorm) ||
+              termoNorm.includes(nameNorm.split(' ')[0])
+            )
+          })
+          if (matchFallback?.email) {
+            resolvedEmail = matchFallback.email
+          }
+        }
+
+        if (!resolvedEmail) {
+          throw new Error(
+            `Usuário "${termo}" não encontrado no sistema. Verifique a grafia do nome ou use o e-mail cadastrado.`,
+          )
+        }
+
+        emailParaAutenticar = resolvedEmail
+      }
+
+      // Autenticar com o e-mail resolvido e a senha
+      const authData = await pb
+        .collection('users')
+        .authWithPassword(emailParaAutenticar.trim(), pass)
       if (authData?.record) {
         const r = authData.record
         const role = (r.role as Role) || 'gestor'
         setCurrentUser({
           id: r.id,
-          name: r.name || r.email,
+          name: r.name || termo || r.email,
           email: r.email,
           role,
           avatar: r.avatar
@@ -232,8 +351,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return true
       }
       return false
-    } catch (err) {
+    } catch (err: any) {
       console.warn('Falha no login PocketBase:', err)
+      // Mensagem amigável de erro se falha de credenciais
+      if (err?.status === 400 || err?.message?.includes('Failed to authenticate')) {
+        throw new Error(
+          'Nome de usuário e senha não coincidem. Verifique seus dados e tente novamente.',
+        )
+      }
       throw err
     } finally {
       setIsLoadingAuth(false)

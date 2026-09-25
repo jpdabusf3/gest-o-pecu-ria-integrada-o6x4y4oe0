@@ -329,7 +329,7 @@ export function ModalCadastroEquipe({
 
   const copiarCredenciais = () => {
     if (!credencialCriada) return
-    const texto = `Olá ${credencialCriada.nome}, seu acesso ao sistema Pecuária F3 foi criado!\nLogin: ${credencialCriada.email}\nSenha Provisória: ${credencialCriada.senha}\n(Troca obrigatória no primeiro acesso).`
+    const texto = `Olá ${credencialCriada.nome}, seu acesso ao sistema Pecuária F3 foi criado!\nNome do usuário: ${credencialCriada.nome}\nSenha Provisória: ${credencialCriada.senha}\n(Você também pode entrar com o e-mail: ${credencialCriada.email}).\nTroca obrigatória no primeiro acesso.`
     navigator.clipboard.writeText(texto)
     toast({
       title: 'Credenciais Copiadas!',
@@ -443,11 +443,14 @@ export function ModalCadastroEquipe({
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-1">
-                <div className="p-3 bg-muted/40 rounded-lg">
-                  <span className="text-[11px] text-muted-foreground block">Login / E-mail:</span>
-                  <span className="font-mono text-sm font-semibold break-all">
-                    {credencialCriada.email}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="p-3 bg-muted/40 rounded-lg space-y-1">
+                  <span className="text-[11px] text-muted-foreground block">Nome do usuário:</span>
+                  <span className="font-mono text-sm font-bold text-foreground block">
+                    {credencialCriada.nome}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground block truncate">
+                    E-mail: {credencialCriada.email}
                   </span>
                 </div>
 
@@ -455,6 +458,9 @@ export function ModalCadastroEquipe({
                   <span className="text-[11px] text-muted-foreground block">Senha Temporária:</span>
                   <span className="font-mono text-base font-bold text-primary">
                     {credencialCriada.senha}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground block pt-1">
+                    Login geral: Nome do usuário + Senha
                   </span>
                 </div>
               </div>
@@ -944,10 +950,19 @@ export function ModalCadastroEquipe({
                   </div>
 
                   <div className="space-y-2 pt-2">
-                    <Label className="text-xs font-semibold">Login do Usuário</Label>
-                    <div className="p-2.5 bg-muted/40 rounded-lg text-sm font-mono">
-                      {email.trim() || `${cpf.replace(/\D/g, '')}@pecuariaf3.com.br`}
+                    <Label className="text-xs font-semibold">Nome do usuário de Acesso</Label>
+                    <div className="p-2.5 bg-muted/40 rounded-lg text-sm font-mono flex items-center justify-between">
+                      <span className="font-semibold text-foreground">
+                        {nome.trim() || 'Nome do Colaborador'}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {email.trim() || `${cpf.replace(/\D/g, '')}@pecuariaf3.com.br`}
+                      </span>
                     </div>
+                    <p className="text-[11px] text-muted-foreground">
+                      O login geral da ferramenta é realizado com o <strong>Nome do usuário</strong>{' '}
+                      e a senha.
+                    </p>
                   </div>
 
                   <div className="space-y-1.5">

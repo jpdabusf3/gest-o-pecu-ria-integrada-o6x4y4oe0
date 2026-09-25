@@ -24,17 +24,17 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const { login, isLoadingAuth } = useAuth()
   const { toast } = useToast()
 
-  const [email, setEmail] = useState('joaopedro_zoo@hotmail.com')
+  const [nomeUsuario, setNomeUsuario] = useState('João Pedro')
   const [password, setPassword] = useState('Skip@Pass')
   const [submitting, setSubmitting] = useState(false)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !password) return
+    if (!nomeUsuario || !password) return
 
     try {
       setSubmitting(true)
-      await login(email, password)
+      await login(nomeUsuario, password)
       toast({
         title: 'Login Realizado com Sucesso!',
         description:
@@ -44,7 +44,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
     } catch (err: any) {
       toast({
         title: 'Falha no Login',
-        description: err?.message || 'E-mail ou senha incorretos.',
+        description: err?.message || 'Nome do usuário ou senha incorretos.',
         variant: 'destructive',
       })
     } finally {
@@ -52,8 +52,8 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
     }
   }
 
-  const handleQuickFill = (quickEmail: string) => {
-    setEmail(quickEmail)
+  const handleQuickFill = (quickName: string) => {
+    setNomeUsuario(quickName)
     setPassword('Skip@Pass')
   }
 
@@ -63,46 +63,48 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
         <DialogHeader>
           <div className="flex items-center gap-2 text-primary">
             <Shield className="h-5 w-5" />
-            <DialogTitle>Autenticação Individual de Colaborador</DialogTitle>
+            <DialogTitle>Autenticação do Sistema</DialogTitle>
           </div>
           <DialogDescription>
-            Cada colaborador (Vaqueiro, Capataz, Gestor) entra com sua credencial própria para
-            auditoria zootécnica e financeira no PocketBase.
+            Acesse com o <strong>Nome do usuário</strong> e a senha cadastrada. Você também pode
+            utilizar seu e-mail corporativo.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleLogin} className="space-y-4 pt-2">
           <div className="space-y-1.5">
-            <Label className="text-xs font-semibold">E-mail Corporativo</Label>
+            <Label className="text-xs font-semibold">Nome do usuário</Label>
             <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="seu.email@pecuariaf3.com.br"
+              type="text"
+              value={nomeUsuario}
+              onChange={(e) => setNomeUsuario(e.target.value)}
+              placeholder="Ex: João Pedro ou seu.email@pecuariaf3.com.br"
+              autoComplete="username"
               required
             />
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs font-semibold">Senha de Acesso</Label>
+            <Label className="text-xs font-semibold">Senha</Label>
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              autoComplete="current-password"
               required
             />
           </div>
 
           <div className="p-3 bg-muted/40 rounded-lg space-y-2 border text-xs">
             <span className="font-semibold text-muted-foreground block">
-              Contas de Acesso Cadastradas:
+              Usuários cadastrados na equipe:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('proprietario@pecuariaf3.com.br')}
+                onClick={() => handleQuickFill('Dr. Carlos Eduardo')}
               >
                 <span className="truncate">Dr. Carlos (Proprietário)</span>
                 <Badge
@@ -115,7 +117,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('socio@pecuariaf3.com.br')}
+                onClick={() => handleQuickFill('Mariana Castro')}
               >
                 <span className="truncate">Mariana (Sócia Adm)</span>
                 <Badge
@@ -128,7 +130,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('joaopedro_zoo@hotmail.com')}
+                onClick={() => handleQuickFill('João Pedro')}
               >
                 <span className="truncate">João Pedro (Gestor RT)</span>
                 <Badge
@@ -141,7 +143,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('antonio.capataz@pecuariaf3.com.br')}
+                onClick={() => handleQuickFill('Antônio Capataz')}
               >
                 <span className="truncate">Antônio (Capataz)</span>
                 <Badge
@@ -154,7 +156,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('joao.vaqueiro@pecuariaf3.com.br')}
+                onClick={() => handleQuickFill('João Vaqueiro')}
               >
                 <span className="truncate">João Vaqueiro (Campo)</span>
                 <Badge
@@ -167,7 +169,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('tiago.servente@pecuariaf3.com.br')}
+                onClick={() => handleQuickFill('Tiago Servente')}
               >
                 <span className="truncate">Tiago (Servente Trato)</span>
                 <Badge
