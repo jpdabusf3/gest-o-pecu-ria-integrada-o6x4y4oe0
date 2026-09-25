@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T14:46:19.254Z",
+  "generatedAt": "2026-09-25T15:05:14.216Z",
   "collections": [
     {
       "name": "users",
@@ -2026,6 +2026,85 @@
         }
       ],
       "indexes": ["CREATE UNIQUE INDEX idx_metas_safra_indicador ON metas_safra (safra, indicador)"]
+    },
+    {
+      "name": "reconhecimentos_trajetoria",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "safra_atual",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "safra_anterior",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo_indicador",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["produtividade", "custo"]
+        },
+        {
+          "name": "faixa_anterior",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "faixa_atual",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "reconhecido",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "reconhecido_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "reconhecido_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_rec_traj_safras ON reconhecimentos_trajetoria (safra_atual, tipo_indicador)"
+      ]
     }
   ]
 }

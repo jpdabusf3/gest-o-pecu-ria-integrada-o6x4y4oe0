@@ -31,13 +31,19 @@ import {
 import { SemaforoGmdBadge } from './SemaforoGmdBadge'
 import { ResolverAlertaModal } from './ResolverAlertaModal'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
+import { DiagnosticoLoteBadge } from './DiagnosticoLoteBadge'
+import { calcularDiagnosticoLote, DiagnosticoLoteResult } from '@/services/diagnosticoLote'
 import { Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { pb } from '@/lib/pocketbase/client'
 
 export function TopDesvioGmdCard() {
   const [lots, setLots] = useState<LotRecord[]>([])
   const [pesagens, setPesagens] = useState<PesagemRecord[]>([])
   const [alertas, setAlertas] = useState<AlertaGMDRecord[]>([])
+  const [atividades, setAtividades] = useState<any[]>([])
+  const [movimentacoes, setMovimentacoes] = useState<any[]>([])
+  const [estoque, setEstoque] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   // Modais
@@ -49,14 +55,29 @@ export function TopDesvioGmdCard() {
   const carregarDados = async () => {
     try {
       setLoading(true)
-      const [lotsData, pesagensData, alertasData] = await Promise.all([
+      const [lotsData, pesagensData, alertasData, ativData, movData, estData] = await Promise.all([
         getLots(),
         getPesagens(),
         getAlertasGMD(),
+        pb
+          .collection('atividades')
+          .getFullList({ limit: 50 })
+          .catch(() => []),
+        pb
+          .collection('movimentacoes_rebanho')
+          .getFullList({ limit: 30 })
+          .catch(() => []),
+        pb
+          .collection('estoque_insumos')
+          .getFullList({ limit: 30 })
+          .catch(() => []),
       ])
       setLots(lotsData || [])
       setPesagens(pesagensData || [])
       setAlertas(alertasData || [])
+      setAtividades(ativData || [])
+      setMovimentacoes(movData || [])
+      setEstoque(estData || [])
     } catch (err) {
       console.error('Erro ao carregar dados de GMD no dashboard:', err)
     } finally {
@@ -129,13 +150,23 @@ export function TopDesvioGmdCard() {
             <div className="space-y-2 pt-1">
               {alertasAbertos.map((alerta) => {
                 const lote = alerta.expand?.lote_id || lots.find((l) => l.id === alerta.lote_id)
+                const diag = lote
+                  ? calcularDiagnosticoLote({
+                      lote,
+                      pesagensLote: pesagens.filter((p) => p.lote_id === lote.id),
+                      atividadesLote: atividades,
+                      movimentacoesLote: movimentacoes,
+                      estoqueInsumos: estoque,
+                    })
+                  : null
+
                 return (
                   <div
                     key={alerta.id}
                     className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-3 bg-background/80 rounded-lg border border-destructive/20 shadow-xs text-xs"
                   >
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
+                    <div className="space-y-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
                         <span className="font-bold text-sm text-foreground">
                           {lote?.name || 'Lote Não Identificado'}
                         </span>
@@ -163,13 +194,28 @@ export function TopDesvioGmdCard() {
                           kg/dia)
                         </span>
                       </div>
-                      <p className="text-muted-foreground text-[11px]">
-                        Sugestão técnica: Revisar formulação do suplemento, aferir consumo de cocho,
-                        oferta de matéria seca ou realizar repasse sanitário.
-                      </p>
+
+                      {diag && (
+                        <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                          <DiagnosticoLoteBadge
+                            diagnostico={diag}
+                            onAdotarCausa={(c, cont) => {
+                              setAlertaSelecionado({
+                                ...alerta,
+                                causa: c,
+                                contramedida: cont,
+                              })
+                              setModalResolverOpen(true)
+                            }}
+                          />
+                          <span className="text-[11px] text-muted-foreground truncate max-w-md">
+                            {diag.racional}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                    <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
                       <Button
                         size="sm"
                         variant="outline"
@@ -266,7 +312,7 @@ export function TopDesvioGmdCard() {
                           )}
                         </TableCell>
                         <TableCell className="text-right font-mono font-medium text-xs">
-                          {item.gmdAlvoG} g/d
+                          {(item.gmdAlvoG / 1000).toFixed(3)} kg/dia
                         </TableCell>
                         <TableCell className="text-right font-mono font-bold text-xs whitespace-nowrap">
                           {item.gmdRealKg !== null ? (
@@ -274,10 +320,12 @@ export function TopDesvioGmdCard() {
                               className={
                                 item.gmdRealG! >= item.gmdAlvoG
                                   ? 'text-emerald-600'
-                                  : 'text-foreground'
+                                  : item.statusSemaforo === 'vermelho'
+                                    ? 'text-rose-600'
+                                    : 'text-foreground'
                               }
                             >
-                              {item.gmdRealG} g/d
+                              {item.gmdRealKg.toFixed(3)} kg/dia
                             </span>
                           ) : (
                             <span className="text-muted-foreground font-normal">-</span>
@@ -286,7 +334,7 @@ export function TopDesvioGmdCard() {
                         <TableCell className="text-right font-mono text-xs whitespace-nowrap">
                           {item.gdcRealKg !== null ? (
                             <span className="text-purple-600 font-semibold">
-                              {Math.round(item.gdcRealKg * 1000)} g/d
+                              {item.gdcRealKg.toFixed(3)} kg/dia
                             </span>
                           ) : (
                             <span className="text-muted-foreground">-</span>
@@ -310,11 +358,27 @@ export function TopDesvioGmdCard() {
                           )}
                         </TableCell>
                         <TableCell>
-                          <SemaforoGmdBadge
-                            status={item.statusSemaforo}
-                            desvioPct={item.desvioPct}
-                            diasSemPesagem={item.diasSemPesagem}
-                          />
+                          <div className="space-y-1">
+                            <SemaforoGmdBadge
+                              status={item.statusSemaforo}
+                              desvioPct={item.desvioPct}
+                              diasSemPesagem={item.diasSemPesagem}
+                            />
+                            {item.statusSemaforo === 'vermelho' && (
+                              <div>
+                                <DiagnosticoLoteBadge
+                                  compact
+                                  diagnostico={calcularDiagnosticoLote({
+                                    lote,
+                                    pesagensLote: pesagens.filter((p) => p.lote_id === lote.id),
+                                    atividadesLote: atividades,
+                                    movimentacoesLote: movimentacoes,
+                                    estoqueInsumos: estoque,
+                                  })}
+                                />
+                              </div>
+                            )}
+                          </div>
                         </TableCell>
                         <TableCell className="text-right">
                           <Button

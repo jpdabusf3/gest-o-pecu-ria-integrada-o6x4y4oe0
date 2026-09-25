@@ -12,10 +12,11 @@ export function RoleRoute({ allowedRoles, children, fallbackPath = '/campo' }: R
   const { user } = useAuth()
 
   // 'admin' e 'gerente' possuem prerrogativas equivalentes a 'gestor'
-  const effectiveRole = user.role === 'admin' || user.role === 'gerente' ? 'gestor' : user.role
+  const effectiveRole = user?.role === 'admin' || user?.role === 'gerente' ? 'gestor' : user?.role
   const hasAccess =
-    allowedRoles.includes(user.role) ||
-    (allowedRoles.includes('gestor') && effectiveRole === 'gestor')
+    Boolean(user?.role) &&
+    (allowedRoles.includes(user.role) ||
+      (allowedRoles.includes('gestor') && effectiveRole === 'gestor'))
 
   if (!hasAccess) {
     return <Navigate to={fallbackPath} replace />

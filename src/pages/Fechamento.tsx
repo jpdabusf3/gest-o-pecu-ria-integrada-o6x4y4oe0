@@ -181,7 +181,7 @@ export default function Fechamento() {
   ])
 
   // Verificação de permissão de Gestor (gestor, admin ou gerente)
-  const isGestorRole = user.role === 'gestor' || user.role === 'admin' || user.role === 'gerente'
+  const isGestorRole = user?.role === 'gestor' || user?.role === 'admin' || user?.role === 'gerente'
 
   if (!isGestorRole) {
     return (
@@ -190,7 +190,7 @@ export default function Fechamento() {
         <h2 className="text-2xl font-bold">Acesso Restrito ao Gestor</h2>
         <p className="text-muted-foreground text-sm">
           O módulo de Fechamento e Resultado Consolidado é visível exclusivamente para perfis com
-          nível de Gestão (Gestor, Administrador ou Gerente). Alterne seu usuário no menu inferior
+          nível de Gestão (Gestor, Administrador ou Gerente). Alterne seu usuário no menu superior
           ou contate a sede.
         </p>
       </div>

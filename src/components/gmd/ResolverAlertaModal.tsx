@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -11,17 +11,20 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { AlertTriangle, CheckCircle2, ShieldAlert } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, ShieldAlert, Sparkles, Utensils, Wheat } from 'lucide-react'
 import { AlertaGMDRecord, resolverAlertaGMD } from '@/services/gmdAlertas'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { format, parseISO } from 'date-fns'
+import { obterDiagnosticoLote, DiagnosticoLoteResult } from '@/services/diagnosticoLote'
 
 interface ResolverAlertaModalProps {
   alerta: AlertaGMDRecord | null
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess: () => void
+  initialCausa?: string
+  initialContramedida?: string
 }
 
 export function ResolverAlertaModal({
@@ -35,6 +38,29 @@ export function ResolverAlertaModal({
   const [causa, setCausa] = useState('')
   const [contramedida, setContramedida] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [diagnostico, setDiagnostico] = useState<DiagnosticoLoteResult | null>(null)
+  const [carregandoDiagnostico, setCarregandoDiagnostico] = useState(false)
+
+  useEffect(() => {
+    if (alerta && open) {
+      setCausa(alerta.causa || '')
+      setContramedida(alerta.contramedida || '')
+      setCarregandoDiagnostico(true)
+      const loteId = alerta.lote_id
+      obterDiagnosticoLote(loteId)
+        .then((diag) => {
+          setDiagnostico(diag)
+          // Se campos vazios, pré-preencher com a causa provável
+          if (!alerta.causa && diag?.sugestaoCausaPreenchimento) {
+            setCausa(diag.sugestaoCausaPreenchimento)
+          }
+          if (!alerta.contramedida && diag?.sugestaoContramedidaPreenchimento) {
+            setContramedida(diag.sugestaoContramedidaPreenchimento)
+          }
+        })
+        .finally(() => setCarregandoDiagnostico(false))
+    }
+  }, [alerta, open])
 
   if (!alerta) return null
 
@@ -126,8 +152,55 @@ export function ResolverAlertaModal({
             </div>
           </div>
 
+          {/* Caixa de Sugestão Automática de Causa */}
+          {diagnostico && (
+            <div className="rounded-lg border border-indigo-200 dark:border-indigo-900 bg-indigo-50/70 dark:bg-indigo-950/30 p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-indigo-900 dark:text-indigo-200 flex items-center gap-1.5">
+                  <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  Diagnóstico Automático: Causa Provável Sugerida
+                </span>
+                <Badge
+                  variant="outline"
+                  className="text-[10px] bg-background border-indigo-300 font-semibold uppercase"
+                >
+                  {diagnostico.tituloCausaProvavel}
+                </Badge>
+              </div>
+              <p className="text-xs text-indigo-950 dark:text-indigo-100">{diagnostico.racional}</p>
+
+              {/* Botões de 1 toque para adotar hipóteses */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {diagnostico.hipoteses.map((hip) => (
+                  <Button
+                    key={hip.categoria}
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    className="h-6 text-[10px] px-2 gap-1 bg-background hover:bg-indigo-100 dark:hover:bg-indigo-900"
+                    onClick={() => {
+                      setCausa(hip.sugestaoCausa)
+                      setContramedida(hip.sugestaoContramedida)
+                      toast({
+                        title: 'Sugestão Adotada',
+                        description: `Causa e contramedida preenchidas para a hipótese de ${hip.categoria}.`,
+                      })
+                    }}
+                  >
+                    <span>
+                      Adotar {hip.categoria} ({hip.probabilidade}%)
+                    </span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="space-y-1.5">
-            <Label className="text-sm font-semibold">Causa Identificada *</Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-semibold">Causa Identificada *</Label>
+              <span className="text-[11px] text-muted-foreground">Editável</span>
+            </div>
             <Textarea
               required
               rows={3}
