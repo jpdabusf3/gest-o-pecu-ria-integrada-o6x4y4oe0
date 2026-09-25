@@ -18,6 +18,25 @@ export interface ConfigBenchmarkRecord {
   updated?: string
 }
 
+export interface ConfigBenchmarkHistoricoRecord {
+  id: string
+  data_recalibracao: string
+  ano_safra: string
+  codigo: string
+  indicador: string
+  unidade?: string
+  categoria?: string
+  valor_media: number
+  valor_referencia: number
+  valor_top: number
+  alvo_fazenda: number
+  usuario_id?: string
+  usuario_nome?: string
+  observacao?: string
+  created?: string
+  updated?: string
+}
+
 export type StatusCamada2 = 'vermelho' | 'amarelo' | 'verde' | 'top'
 
 export interface ClassificacaoCamada2 {
@@ -156,26 +175,135 @@ export async function getConfigBenchmarks(): Promise<ConfigBenchmarkRecord[]> {
 export async function updateConfigBenchmark(
   id: string,
   data: Partial<ConfigBenchmarkRecord>,
+  options?: { registrarHistorico?: boolean; usuarioId?: string; usuarioNome?: string },
 ): Promise<ConfigBenchmarkRecord> {
-  return pb.collection('config_benchmark').update<ConfigBenchmarkRecord>(id, data)
+  const updated = await pb.collection('config_benchmark').update<ConfigBenchmarkRecord>(id, data)
+
+  if (options?.registrarHistorico) {
+    try {
+      await gravarSnapshotHistoricoBenchmark([updated], {
+        usuarioId: options.usuarioId,
+        usuarioNome: options.usuarioNome,
+        observacao: 'Ajuste manual individual de benchmark',
+      })
+    } catch (err) {
+      console.warn('Erro ao gravar histórico individual de benchmark:', err)
+    }
+  }
+
+  return updated
 }
 
 /**
- * Registra a recalibração de toda a grade de benchmarks com a data atual
+ * Calcula o rótulo de safra padrão brasileiro (safra agropecuária vai de 01/julho a 30/junho)
+ */
+export function calcularSafraAtual(data: Date = new Date()): string {
+  const ano = data.getFullYear()
+  const mes = data.getMonth() + 1 // 1 a 12
+  if (mes >= 7) {
+    return `${ano}/${ano + 1}`
+  }
+  return `${ano - 1}/${ano}`
+}
+
+/**
+ * Grava snapshot na coleção config_benchmark_historico
+ */
+export async function gravarSnapshotHistoricoBenchmark(
+  benchmarks: ConfigBenchmarkRecord[],
+  meta?: {
+    anoSafra?: string
+    dataRecalibracao?: string
+    usuarioId?: string
+    usuarioNome?: string
+    observacao?: string
+  },
+): Promise<void> {
+  const dataRecalibracao = meta?.dataRecalibracao || new Date().toISOString()
+  const anoSafra = meta?.anoSafra || calcularSafraAtual(new Date(dataRecalibracao))
+  const usuarioId = meta?.usuarioId || pb.authStore.record?.id || ''
+  const usuarioNome =
+    meta?.usuarioNome ||
+    (pb.authStore.record?.get
+      ? pb.authStore.record.get('name')
+      : (pb.authStore.record as any)?.name) ||
+    'Gestor'
+
+  for (const b of benchmarks) {
+    try {
+      await pb.collection('config_benchmark_historico').create({
+        data_recalibracao: dataRecalibracao,
+        ano_safra: anoSafra,
+        codigo: b.codigo,
+        indicador: b.indicador,
+        unidade: b.unidade,
+        categoria: b.categoria || 'geral',
+        valor_media: b.valor_media,
+        valor_referencia: b.valor_referencia,
+        valor_top: b.valor_top,
+        alvo_fazenda: b.alvo_fazenda,
+        usuario_id: usuarioId || null,
+        usuario_nome: usuarioNome,
+        observacao: meta?.observacao || `Recalibração anual registrada para a safra ${anoSafra}`,
+      })
+    } catch (err) {
+      console.warn('Erro ao gravar registro de histórico:', b.codigo, err)
+    }
+  }
+}
+
+/**
+ * Busca o histórico completo de recalibrações de benchmarking
+ */
+export async function getConfigBenchmarkHistorico(
+  filter?: string,
+): Promise<ConfigBenchmarkHistoricoRecord[]> {
+  try {
+    return await pb
+      .collection('config_benchmark_historico')
+      .getFullList<ConfigBenchmarkHistoricoRecord>({
+        filter,
+        sort: '-data_recalibracao,-created',
+      })
+  } catch (err) {
+    console.warn('Erro ao carregar config_benchmark_historico:', err)
+    return []
+  }
+}
+
+/**
+ * Registra a recalibração de toda a grade de benchmarks com a data atual e grava snapshot no histórico
  */
 export async function registrarRecalibracaoBenchmark(
   benchmarks: ConfigBenchmarkRecord[],
+  usuarioInfo?: { usuarioId?: string; usuarioNome?: string },
 ): Promise<void> {
   const agora = new Date().toISOString()
+  const benchmarksAtualizados: ConfigBenchmarkRecord[] = []
+
   for (const b of benchmarks) {
     try {
-      await pb.collection('config_benchmark').update(b.id, {
+      const updated = await pb.collection('config_benchmark').update<ConfigBenchmarkRecord>(b.id, {
         data_ultima_recalibracao: agora,
         recalibracao_adiada_ate: '',
       })
+      benchmarksAtualizados.push(updated)
     } catch (err) {
       console.warn('Erro ao atualizar recalibração de indicador:', b.codigo, err)
+      benchmarksAtualizados.push(b)
     }
+  }
+
+  // Gravar no histórico de recalibrações anuais
+  try {
+    await gravarSnapshotHistoricoBenchmark(benchmarksAtualizados, {
+      dataRecalibracao: agora,
+      usuarioId: usuarioInfo?.usuarioId,
+      usuarioNome: usuarioInfo?.usuarioNome,
+      observacao: 'Recalibração anual registrada no painel de benchmarking',
+    })
+  } catch (err) {
+    console.warn('Erro ao persistir histórico da recalibração:', err)
   }
 }
 

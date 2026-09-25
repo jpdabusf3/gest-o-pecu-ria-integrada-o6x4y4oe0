@@ -21,6 +21,8 @@ import { MedidorBenchmarkAnualCard } from '@/components/gmd/MedidorBenchmarkAnua
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
 import { CentralNotificacoesGestor } from '@/components/gestor/CentralNotificacoesGestor'
 import { BannerRecalibracaoAnual } from '@/components/gestor/BannerRecalibracaoAnual'
+import { DesempenhoPorFrenteCard } from '@/components/gestor/DesempenhoPorFrenteCard'
+import { getConfigBenchmarks, ConfigBenchmarkRecord } from '@/services/configBenchmark'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
 import { Link } from 'react-router-dom'
@@ -62,6 +64,7 @@ export default function Index() {
   const [imobilizado, setImobilizado] = useState<ImobilizadoRecord[]>([])
   const [alertas, setAlertas] = useState<AlertaGMDRecord[]>([])
   const [atividades, setAtividades] = useState<AtividadeRecord[]>([])
+  const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
   const [loading, setLoading] = useState(true)
 
   const loadData = useCallback(async () => {
@@ -78,6 +81,7 @@ export default function Index() {
         imobRes,
         alertasRes,
         atividadesRes,
+        benchmarksRes,
       ] = await Promise.all([
         getLots(),
         getPesagens(),
@@ -89,6 +93,7 @@ export default function Index() {
         getImobilizado(),
         getAlertasGMD(),
         getAtividades(),
+        getConfigBenchmarks(),
       ])
 
       setLots(lotsRes || [])
@@ -101,6 +106,7 @@ export default function Index() {
       setImobilizado(imobRes || [])
       setAlertas(alertasRes || [])
       setAtividades(atividadesRes || [])
+      setBenchmarks(benchmarksRes || [])
     } catch (err) {
       console.warn('Erro ao carregar dados do dashboard real:', err)
     } finally {
@@ -523,50 +529,13 @@ export default function Index() {
         </Card>
       </div>
 
-      {/* Card Horizontal: GMD Médio por Frente de Produção */}
-      <Card className="border bg-gradient-to-r from-card via-card to-primary/5 shadow-xs">
-        <CardHeader className="pb-3">
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="text-base flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" /> GMD Médio por Frente de Produção
-                (Banco Real)
-              </CardTitle>
-              <CardDescription className="text-xs">
-                Performance ponderada das aferições reais de pesagem por frente zootécnica
-              </CardDescription>
-            </div>
-            <Button asChild variant="ghost" size="sm" className="h-7 text-xs text-primary gap-1">
-              <Link to="/pesagens">
-                Histórico de Pesagens <ArrowRight className="h-3 w-3" />
-              </Link>
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {gmdPorFrente.map((item) => (
-              <div
-                key={item.frente}
-                className="flex items-center justify-between p-3.5 rounded-xl border bg-background/80 shadow-2xs"
-              >
-                <div>
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-                    Frente {item.frente}
-                  </span>
-                  <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">
-                    {item.gmdKgDia.toFixed(2)}{' '}
-                    <span className="text-xs font-normal text-muted-foreground">kg/dia</span>
-                  </span>
-                </div>
-                <Badge variant="outline" className="text-xs font-mono">
-                  {item.qtdLotes} lote(s)
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Seção Desempenho por Frente com Semáforo Camada 1 & Metas do Benchmarking */}
+      <DesempenhoPorFrenteCard
+        lots={lots}
+        pesagens={pesagens}
+        movimentacoes={movimentacoes}
+        benchmarks={benchmarks}
+      />
 
       {/* Benchmarking Exagro Camada 2: Medidor Anual @/ha/ano em Pastagem */}
       <MedidorBenchmarkAnualCard />

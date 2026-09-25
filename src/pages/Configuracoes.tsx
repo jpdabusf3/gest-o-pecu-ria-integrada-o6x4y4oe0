@@ -18,6 +18,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useMarket } from '@/contexts/MarketContext'
 import { BenchmarkingConfigTab } from '@/components/reports/BenchmarkingConfigTab'
+import { BenchmarkingHistoricoTab } from '@/components/reports/BenchmarkingHistoricoTab'
 import {
   Save,
   UserCog,
@@ -25,6 +26,7 @@ import {
   BellRing,
   TrendingUp,
   Trophy,
+  History,
   ShieldAlert,
   CheckCircle2,
 } from 'lucide-react'
@@ -138,6 +140,12 @@ export default function Configuracoes() {
           >
             <Trophy className="w-3.5 h-3.5 text-emerald-600" /> Benchmarking Exagro
           </TabsTrigger>
+          <TabsTrigger
+            value="historico-benchmark"
+            className="py-2 gap-1.5 font-semibold text-blue-700 dark:text-blue-300"
+          >
+            <History className="w-3.5 h-3.5 text-blue-600" /> Histórico de Benchmarking
+          </TabsTrigger>
           <TabsTrigger value="notificacoes" className="py-2">
             Notificações
           </TabsTrigger>
@@ -146,8 +154,12 @@ export default function Configuracoes() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="benchmark" className="mt-0">
+        <TabsContent value="benchmark" className="mt-0 space-y-6">
           <BenchmarkingConfigTab />
+        </TabsContent>
+
+        <TabsContent value="historico-benchmark" className="mt-0">
+          <BenchmarkingHistoricoTab />
         </TabsContent>
 
         <TabsContent value="perfil" className="mt-0">

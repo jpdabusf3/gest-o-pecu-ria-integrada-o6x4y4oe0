@@ -13,6 +13,7 @@ import {
   emitirNotificacaoRecalibracaoSeNecessario,
 } from '@/services/configBenchmark'
 import { useToast } from '@/hooks/use-toast'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface BannerRecalibracaoAnualProps {
   /** Callback opcional quando os benchmarks forem recalibrados ou adiados */
@@ -25,6 +26,7 @@ export function BannerRecalibracaoAnual({
   onRecalibracaoAtualizada,
   className = '',
 }: BannerRecalibracaoAnualProps) {
+  const { user } = useAuth()
   const { toast } = useToast()
   const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
   const [isDevida, setIsDevida] = useState(false)
@@ -65,11 +67,14 @@ export function BannerRecalibracaoAnual({
   const handleRegistrarRecalibracao = async () => {
     try {
       setProcessando(true)
-      await registrarRecalibracaoBenchmark(benchmarks)
+      await registrarRecalibracaoBenchmark(benchmarks, {
+        usuarioId: user?.id,
+        usuarioNome: user?.name,
+      })
       toast({
         title: 'Recalibração Anual Registrada',
         description:
-          'Data da calibração atualizada com sucesso para a safra atual. Próxima revisão em 12 meses.',
+          'Data da calibração e snapshot gravados no histórico safra a safra. Próxima revisão em 12 meses.',
       })
       await checarStatus()
       if (onRecalibracaoAtualizada) onRecalibracaoAtualizada()
