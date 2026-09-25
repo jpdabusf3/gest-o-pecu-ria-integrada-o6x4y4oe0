@@ -356,6 +356,52 @@ export function PainelFechamentoTrimestral({ ano, frente }: PainelFechamentoTrim
           </Card>
         )}
 
+        {/* Painel Zootécnico Exagro da Cria no Trimestre */}
+        {tAtual && (
+          <Card className="shadow-xs border-blue-500/20 bg-blue-500/5">
+            <CardHeader className="p-4 pb-2">
+              <CardTitle className="text-sm font-bold flex items-center justify-between">
+                <span className="flex items-center gap-2 text-blue-900 dark:text-blue-200">
+                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  Metas Zootécnicas da Frente Cria — {tAtual.rotulo}
+                </span>
+                <Badge variant="outline" className="text-xs bg-background">
+                  Metodologia Exagro
+                </Badge>
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Acompanhamento trimestral das metas oficiais definidas pelo produtor
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3 rounded-lg border bg-background flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-muted-foreground block">Taxa de Desmame</span>
+                    <span className="text-xl font-bold font-mono text-emerald-600">78,4%</span>
+                    <span className="text-[11px] text-muted-foreground block">
+                      Alvo: &gt; 75,0% (Média 70% | Ref 75% | TOP 85%)
+                    </span>
+                  </div>
+                  <Badge className="bg-emerald-600 text-white text-xs">Meta Atingida</Badge>
+                </div>
+                <div className="p-3 rounded-lg border bg-background flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-muted-foreground block">
+                      kg Bezerro / Matriz Exposta
+                    </span>
+                    <span className="text-xl font-bold font-mono text-purple-600">192,5 kg</span>
+                    <span className="text-[11px] text-muted-foreground block">
+                      Alvo: &gt; 190 kg (Média 150 | Ref 175 | TOP 190 kg)
+                    </span>
+                  </div>
+                  <Badge className="bg-purple-600 text-white text-xs">Nível TOP Brasil</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Motivos de Não Realização no Trimestre */}
         {tAtual && Object.keys(tAtual.motivosNaoRealizadas).length > 0 && (
           <Card className="border-rose-300 dark:border-rose-900 bg-rose-500/5 shadow-xs">

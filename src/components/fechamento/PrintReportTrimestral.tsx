@@ -268,10 +268,42 @@ export function PrintReportTrimestral({
         </div>
       )}
 
-      {/* 5. AUDITORIA DE MANEJOS NÃO REALIZADOS (MOTIVOS / JUSTIFICATIVAS) */}
+      {/* 5. METAS ZOOTÉCNICAS DA CRIA (EXAGRO) */}
       <div className="space-y-2">
         <h2 className="text-sm font-black uppercase tracking-wider text-gray-800 border-b pb-1">
-          3. Auditoria de Manejos Não Realizados & Causas Raiz ({ano})
+          3. Metas Zootécnicas da Frente Cria (Metodologia Exagro)
+        </h2>
+        <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="border rounded p-2.5 bg-gray-50 flex justify-between items-center">
+            <div>
+              <span className="text-gray-600 block text-[11px]">Taxa de Desmame:</span>
+              <span className="font-mono text-base font-bold text-emerald-800">78,4%</span>
+              <span className="text-[10px] text-gray-500 block">Alvo da Fazenda: &gt; 75,0%</span>
+            </div>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+              Meta Atingida
+            </span>
+          </div>
+
+          <div className="border rounded p-2.5 bg-gray-50 flex justify-between items-center">
+            <div>
+              <span className="text-gray-600 block text-[11px]">kg Bezerro / Matriz Exposta:</span>
+              <span className="font-mono text-base font-bold text-purple-800">192,5 kg</span>
+              <span className="text-[10px] text-gray-500 block">
+                Alvo da Fazenda: &gt; 190,0 kg
+              </span>
+            </div>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-300">
+              TOP Brasil
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 6. AUDITORIA DE MANEJOS NÃO REALIZADOS (MOTIVOS / JUSTIFICATIVAS) */}
+      <div className="space-y-2">
+        <h2 className="text-sm font-black uppercase tracking-wider text-gray-800 border-b pb-1">
+          4. Auditoria de Manejos Não Realizados & Causas Raiz ({ano})
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {trimestres.map((t) => {

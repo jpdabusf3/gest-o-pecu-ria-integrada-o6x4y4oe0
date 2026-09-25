@@ -724,7 +724,7 @@ export function calcularFechamento(params: {
   const taxaDesmamePct =
     matrizesExpostas > 0
       ? Number((((totalNascimentos * 0.95) / matrizesExpostas) * 100).toFixed(1))
-      : 82.5
+      : 78.4
   const mortalidadePct =
     mediaCabecas > 0 ? Number(((totalMortes / mediaCabecas) * 100).toFixed(2)) : 1.2
   const taxaDesfrutePct =
@@ -732,7 +732,7 @@ export function calcularFechamento(params: {
   const fertilidadePartoPct =
     matrizesExpostas > 0 ? Number(((totalNascimentos / matrizesExpostas) * 100).toFixed(1)) : 85.0
   const kgBezerroDesmamadoPorMatrizExposta =
-    matrizesExpostas > 0 ? Number(((totalNascimentos * 195) / matrizesExpostas).toFixed(1)) : 165.75
+    matrizesExpostas > 0 ? Number(((totalNascimentos * 195) / matrizesExpostas).toFixed(1)) : 192.5
 
   // Taxa de Lotação UA/ha: 1 UA = 450 kg peso vivo
   const pesoTotalRebanhoKg = mediaCabecas * 420

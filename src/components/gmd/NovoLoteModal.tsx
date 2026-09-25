@@ -51,14 +51,22 @@ export function NovoLoteModal({ open, onOpenChange, onSuccess }: NovoLoteModalPr
   const [categoria, setCategoria] = useState('Boi Gordo')
   const [dataEntrada, setDataEntrada] = useState(new Date().toISOString().split('T')[0])
 
-  // Metas de cria
-  const [taxaDesmameAlvo, setTaxaDesmameAlvo] = useState('85.0')
-  const [kgBezerroMatrizAlvo, setKgBezerroMatrizAlvo] = useState('165.0')
+  // Metas de cria (alvos definidos pelo usuário: Taxa desmame > 75%, kg bezerro/matriz > 190 kg)
+  const [taxaDesmameAlvo, setTaxaDesmameAlvo] = useState('75.0')
+  const [kgBezerroMatrizAlvo, setKgBezerroMatrizAlvo] = useState('190.0')
 
   useEffect(() => {
     if (open) {
       getConfigBenchmarks().then((data) => {
         setBenchmarks(data)
+        const desmameBench = data.find((b) => b.codigo === 'cria_taxa_desmame')
+        if (desmameBench?.alvo_fazenda) {
+          setTaxaDesmameAlvo(desmameBench.alvo_fazenda.toFixed(1))
+        }
+        const bezerroBench = data.find((b) => b.codigo === 'cria_kg_bezerro_matriz')
+        if (bezerroBench?.alvo_fazenda) {
+          setKgBezerroMatrizAlvo(bezerroBench.alvo_fazenda.toFixed(1))
+        }
         const info = getGmdAlvoPadraoFase('engorda', data)
         if (info.gmdKgDia !== null) {
           setGmdAlvoKg(info.gmdKgDia.toFixed(2))

@@ -161,66 +161,128 @@ export function LotPerformanceDrawer({
             </div>
           )}
 
-          {/* Meta de GMD e Semáforo */}
-          <div className="bg-card border rounded-xl p-4 shadow-sm space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Target className="h-4 w-4 text-primary" />
-                <span className="font-bold text-sm">
-                  Meta de GMD:{' '}
-                  {((analise?.gmdAlvoG || 900) > 10
-                    ? (analise?.gmdAlvoG || 900) / 1000
-                    : analise?.gmdAlvoG || 0.9
-                  ).toFixed(2)}{' '}
-                  kg/dia
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  ({lotDetails?.fase_atual || 'recria'})
-                </span>
+          {/* Meta de GMD e Semáforo / Metas da Frente Cria */}
+          {lotDetails?.fase_atual === 'cria' ? (
+            <div className="bg-card border rounded-xl p-4 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Target className="h-4 w-4 text-primary" />
+                  <span className="font-bold text-sm">Frente Cria — Metas Exagro</span>
+                  <Badge variant="outline" className="text-xs font-normal">
+                    Fase de Matrizes e Bezerros
+                  </Badge>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => setModalMetaOpen(true)}
+                >
+                  Configurar
+                </Button>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-7 text-xs"
-                onClick={() => setModalMetaOpen(true)}
-              >
-                Ajustar Meta
-              </Button>
-            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 border-t">
-              <div>
-                <span className="text-xs text-muted-foreground block">Semáforo:</span>
-                {analise && (
-                  <SemaforoGmdBadge
-                    status={analise.statusSemaforo}
-                    desvioPct={analise.desvioPct}
-                    diasSemPesagem={analise.diasSemPesagem}
-                  />
-                )}
-              </div>
-              <div>
-                <span className="text-xs text-muted-foreground block">GMD Real Último:</span>
-                <span className="text-base font-bold text-emerald-600 font-mono">
-                  {analise?.gmdRealKg ? `${analise.gmdRealKg.toFixed(2)} kg/dia` : '-'}
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-muted-foreground block">GDC Carcaça:</span>
-                <span className="text-base font-bold text-purple-600 font-mono">
-                  {analise?.gdcRealKg ? `${analise.gdcRealKg.toFixed(2)} kg/dia` : '-'}
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-muted-foreground block">Desvio Meta:</span>
-                <span className="text-base font-bold">
-                  {analise?.desvioPct !== null && analise?.desvioPct !== undefined
-                    ? `${analise.desvioPct > 0 ? '+' : ''}${analise.desvioPct}%`
-                    : '-'}
-                </span>
+              <div className="grid grid-cols-2 gap-3 pt-1 border-t">
+                <div className="p-2.5 rounded-lg border bg-muted/30">
+                  <span className="text-[11px] text-muted-foreground block">
+                    Taxa de Desmame Alvo:
+                  </span>
+                  <div className="flex items-baseline gap-2 mt-0.5">
+                    <span className="text-lg font-bold font-mono text-emerald-600">&gt; 75,0%</span>
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
+                    >
+                      Alvo Exagro
+                    </Badge>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground block mt-1">
+                    Média 70% | Ref 75% | TOP 85%
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-lg border bg-muted/30">
+                  <span className="text-[11px] text-muted-foreground block">
+                    kg Bezerro / Matriz Exposta:
+                  </span>
+                  <div className="flex items-baseline gap-2 mt-0.5">
+                    <span className="text-lg font-bold font-mono text-emerald-600">
+                      &gt; 190 kg
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] bg-purple-500/10 text-purple-700 border-purple-500/20"
+                    >
+                      Alvo TOP Exagro
+                    </Badge>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground block mt-1">
+                    Média 150 kg | Ref 175 kg | TOP 190 kg
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-card border rounded-xl p-4 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Target className="h-4 w-4 text-primary" />
+                  <span className="font-bold text-sm">
+                    Meta de GMD:{' '}
+                    {((analise?.gmdAlvoG || 900) > 10
+                      ? (analise?.gmdAlvoG || 900) / 1000
+                      : analise?.gmdAlvoG || 0.9
+                    ).toFixed(2)}{' '}
+                    kg/dia
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    ({lotDetails?.fase_atual || 'recria'})
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => setModalMetaOpen(true)}
+                >
+                  Ajustar Meta
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 border-t">
+                <div>
+                  <span className="text-xs text-muted-foreground block">Semáforo:</span>
+                  {analise && (
+                    <SemaforoGmdBadge
+                      status={analise.statusSemaforo}
+                      desvioPct={analise.desvioPct}
+                      diasSemPesagem={analise.diasSemPesagem}
+                    />
+                  )}
+                </div>
+                <div>
+                  <span className="text-xs text-muted-foreground block">GMD Real Último:</span>
+                  <span className="text-base font-bold text-emerald-600 font-mono">
+                    {analise?.gmdRealKg ? `${analise.gmdRealKg.toFixed(2)} kg/dia` : '-'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-xs text-muted-foreground block">GDC Carcaça:</span>
+                  <span className="text-base font-bold text-purple-600 font-mono">
+                    {analise?.gdcRealKg ? `${analise.gdcRealKg.toFixed(2)} kg/dia` : '-'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-xs text-muted-foreground block">Desvio Meta:</span>
+                  <span className="text-base font-bold">
+                    {analise?.desvioPct !== null && analise?.desvioPct !== undefined
+                      ? `${analise.desvioPct > 0 ? '+' : ''}${analise.desvioPct}%`
+                      : '-'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Card de Custo por Arroba Produzida Exagro */}
           {custoArroba && (

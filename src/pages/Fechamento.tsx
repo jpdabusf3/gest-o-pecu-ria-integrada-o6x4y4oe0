@@ -905,17 +905,39 @@ export default function Fechamento() {
         {/* ------------------------------------------------------------- */}
         <TabsContent value="zootecnico" className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card>
+            <Card className="relative overflow-hidden">
               <CardHeader className="pb-1">
-                <CardDescription className="text-xs font-bold uppercase">
-                  Taxa de Desmame
-                </CardDescription>
+                <div className="flex items-center justify-between">
+                  <CardDescription className="text-xs font-bold uppercase">
+                    Taxa de Desmame
+                  </CardDescription>
+                  <Badge
+                    variant="outline"
+                    className={`text-[10px] font-semibold ${
+                      resultado.zootecnico.taxaDesmamePct >= 75
+                        ? 'border-emerald-500/40 text-emerald-700 bg-emerald-500/10'
+                        : resultado.zootecnico.taxaDesmamePct >= 70
+                          ? 'border-amber-500/40 text-amber-700 bg-amber-500/10'
+                          : 'border-destructive/40 text-destructive bg-destructive/10'
+                    }`}
+                  >
+                    {resultado.zootecnico.taxaDesmamePct >= 75
+                      ? 'Meta Atingida'
+                      : resultado.zootecnico.taxaDesmamePct >= 70
+                        ? 'Próximo da Meta'
+                        : 'Abaixo da Meta'}
+                  </Badge>
+                </div>
                 <CardTitle className="text-2xl font-black font-mono text-primary">
                   {resultado.zootecnico.taxaDesmamePct}%
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-xs text-muted-foreground">
-                Bezerros desmamados vs. vacas expostas
+              <CardContent className="text-xs text-muted-foreground space-y-1">
+                <div>Bezerros desmamados vs. vacas expostas</div>
+                <div className="text-[11px] font-medium text-foreground flex items-center justify-between pt-1 border-t">
+                  <span>Alvo da Fazenda:</span>
+                  <strong className="font-mono text-emerald-600">&gt; 75,0%</strong>
+                </div>
               </CardContent>
             </Card>
 
@@ -976,18 +998,44 @@ export default function Fechamento() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="relative overflow-hidden">
               <CardHeader className="pb-1">
-                <CardDescription className="text-xs font-bold uppercase">
-                  Kg Bezerro / Matriz Exposta
-                </CardDescription>
+                <div className="flex items-center justify-between">
+                  <CardDescription className="text-xs font-bold uppercase">
+                    Kg Bezerro / Matriz Exposta
+                  </CardDescription>
+                  <Badge
+                    variant="outline"
+                    className={`text-[10px] font-semibold ${
+                      resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta >= 190
+                        ? 'border-purple-500/40 text-purple-700 bg-purple-500/10'
+                        : resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta >= 175
+                          ? 'border-emerald-500/40 text-emerald-700 bg-emerald-500/10'
+                          : resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta >= 150
+                            ? 'border-amber-500/40 text-amber-700 bg-amber-500/10'
+                            : 'border-destructive/40 text-destructive bg-destructive/10'
+                    }`}
+                  >
+                    {resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta >= 190
+                      ? 'Nível TOP'
+                      : resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta >= 175
+                        ? 'Referência'
+                        : resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta >= 150
+                          ? 'Na Média'
+                          : 'Abaixo da Média'}
+                  </Badge>
+                </div>
                 <CardTitle className="text-2xl font-black font-mono text-primary">
                   {resultado.zootecnico.kgBezerroDesmamadoPorMatrizExposta}{' '}
                   <span className="text-sm font-normal">kg</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-xs text-muted-foreground">
-                Quilos desmamados por vaca na estação de monta
+              <CardContent className="text-xs text-muted-foreground space-y-1">
+                <div>Quilos desmamados por vaca na estação de monta</div>
+                <div className="text-[11px] font-medium text-foreground flex items-center justify-between pt-1 border-t">
+                  <span>Alvo da Fazenda:</span>
+                  <strong className="font-mono text-purple-600">&gt; 190 kg</strong>
+                </div>
               </CardContent>
             </Card>
 
