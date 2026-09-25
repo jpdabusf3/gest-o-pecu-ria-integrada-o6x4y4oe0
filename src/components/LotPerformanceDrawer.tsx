@@ -34,6 +34,9 @@ import { GmdEstimadoVsRealChart } from './gmd/GmdEstimadoVsRealChart'
 import { SemaforoGmdBadge } from './gmd/SemaforoGmdBadge'
 import { EditarMetaLoteModal } from './gmd/EditarMetaLoteModal'
 import { ResolverAlertaModal } from './gmd/ResolverAlertaModal'
+import useFinanceStore from '@/stores/useFinanceStore'
+import { calcularCustoArrobaLote } from '@/services/custoArroba'
+import { formatCurrency } from '@/lib/utils'
 import { format, parseISO, differenceInDays } from 'date-fns'
 import {
   Table,
@@ -90,8 +93,11 @@ export function LotPerformanceDrawer({
     }
   }, [loteId, open])
 
-  // Diagnóstico zootécnico
+  const { ledger } = useFinanceStore()
+
+  // Diagnóstico zootécnico e cálculo de custo por @ produzida
   const analise = lotDetails ? analisarLoteGMD(lotDetails, pesagens, alertas) : null
+  const custoArroba = lotDetails ? calcularCustoArrobaLote(lotDetails, pesagens, ledger) : null
 
   // Alerta em aberto para esse lote
   const alertaAberto = alertas.find((a) => a.status === 'aberto')
@@ -211,18 +217,138 @@ export function LotPerformanceDrawer({
             </div>
           </div>
 
+          {/* Card de Custo por Arroba Produzida Exagro */}
+          {custoArroba && (
+            <div className="bg-muted/30 border rounded-xl p-4 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Scale className="h-4 w-4 text-primary" /> Fechamento Zootécnico & Custo / @
+                </span>
+                {custoArroba.temFechamentoValido ? (
+                  <Badge
+                    variant="outline"
+                    className="text-emerald-600 border-emerald-300 bg-emerald-50 text-[10px]"
+                  >
+                    Fechamento Válido
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-amber-600 border-amber-300 text-[10px]">
+                    Em Andamento (Sem saída)
+                  </Badge>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 border-t text-xs">
+                <div>
+                  <span className="text-muted-foreground block text-[11px]">@ Produzidas:</span>
+                  <span className="text-base font-bold text-foreground">
+                    {custoArroba.arrobasProduzidasTotal > 0
+                      ? `${custoArroba.arrobasProduzidasTotal} @`
+                      : '-'}
+                  </span>
+                  {custoArroba.arrobasProduzidasPorCabeca > 0 && (
+                    <span className="text-[10px] text-muted-foreground block">
+                      ({custoArroba.arrobasProduzidasPorCabeca} @/cab)
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <span className="text-muted-foreground block text-[11px]">
+                    Custo Total Acumulado:
+                  </span>
+                  <span className="text-base font-bold text-foreground">
+                    {formatCurrency(custoArroba.custoTotal)}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground block">
+                    {formatCurrency(custoArroba.custoPorCabeca)}/cab
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-muted-foreground block text-[11px]">
+                    Custo / @ Produzida:
+                  </span>
+                  <span className="text-base font-bold text-destructive font-mono">
+                    {custoArroba.custoPorArroba
+                      ? formatCurrency(custoArroba.custoPorArroba)
+                      : custoArroba.arrobasProduzidasTotal <= 0
+                        ? 'Requer pesagem saída'
+                        : '-'}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-muted-foreground block text-[11px]">
+                    Nutrição vs Sanidade:
+                  </span>
+                  <span className="text-xs font-medium text-foreground block font-mono">
+                    Nutri: {formatCurrency(custoArroba.custoNutricao)}
+                  </span>
+                  <span className="text-xs font-medium text-muted-foreground block font-mono">
+                    Sani: {formatCurrency(custoArroba.custoSanidade)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
           <Tabs defaultValue="gmd_comparativo" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="gmd_comparativo" className="text-xs">
-                GMD Estimado vs Real
+                GMD Estimado
+              </TabsTrigger>
+              <TabsTrigger value="custo_arroba_tab" className="text-xs">
+                Custo / @
               </TabsTrigger>
               <TabsTrigger value="intervalos" className="text-xs">
-                Tabela de Intervalos
+                Intervalos
               </TabsTrigger>
               <TabsTrigger value="monthly" className="text-xs">
                 Projeção IA
               </TabsTrigger>
             </TabsList>
+
+            {/* Nova Aba: Detalhamento do Custo por Arroba */}
+            <TabsContent
+              value="custo_arroba_tab"
+              className="mt-3 rounded-xl border bg-card p-4 shadow-sm space-y-3"
+            >
+              <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                <Scale className="h-4 w-4 text-primary" /> Metodologia de Custo por Arroba (@)
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Cálculo baseado no ganho de peso aferido entre a pesagem de entrada (
+                {custoArroba?.pesoEntradaKg} kg) e a pesagem final ({custoArroba?.pesoSaidaKg} kg)
+                multiplicado por {custoArroba?.headcount} cabeças, dividido por 15 kg/@.
+              </p>
+
+              <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+                <div className="p-3 bg-muted/40 rounded-lg border">
+                  <span className="text-muted-foreground block text-[11px]">Nutrição por @:</span>
+                  <span className="font-bold text-sm text-foreground">
+                    {custoArroba?.custoNutricaoPorArroba
+                      ? formatCurrency(custoArroba.custoNutricaoPorArroba)
+                      : '-'}
+                  </span>
+                </div>
+                <div className="p-3 bg-muted/40 rounded-lg border">
+                  <span className="text-muted-foreground block text-[11px]">Sanidade por @:</span>
+                  <span className="font-bold text-sm text-foreground">
+                    {custoArroba?.custoSanidadePorArroba
+                      ? formatCurrency(custoArroba.custoSanidadePorArroba)
+                      : '-'}
+                  </span>
+                </div>
+              </div>
+
+              {custoArroba?.arrobasProduzidasTotal === 0 && (
+                <div className="p-3 border border-amber-200 bg-amber-50/50 rounded-lg text-xs text-amber-800">
+                  Para calcular o custo por arroba deste lote, registre uma pesagem de saída ou
+                  feche o lote.
+                </div>
+              )}
+            </TabsContent>
 
             {/* Aba 1: Gráfico Estimado vs Real */}
             <TabsContent

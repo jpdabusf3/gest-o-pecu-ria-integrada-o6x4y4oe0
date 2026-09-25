@@ -42,6 +42,7 @@ import {
 import { SemaforoGmdBadge } from './SemaforoGmdBadge'
 import { ResolverAlertaModal } from './ResolverAlertaModal'
 import { EditarMetaLoteModal } from './EditarMetaLoteModal'
+import { PrintReportGMD } from './PrintReportGMD'
 import { downloadExcel, triggerPDFPrint } from '@/lib/exportUtils'
 import { useToast } from '@/hooks/use-toast'
 import { format, parseISO } from 'date-fns'
@@ -292,10 +293,10 @@ export function RelatorioMensalGMD() {
   }
 
   const handleExportPdf = () => {
-    triggerPDFPrint()
+    window.print()
     toast({
-      title: 'Impressão PDF',
-      description: 'Painel formatado pronto para envio aos sócios e consultores.',
+      title: 'Gerando PDF Exagro',
+      description: 'Relatório zootécnico pronto para nutricionista e reunião de sócios.',
     })
   }
 
@@ -471,528 +472,556 @@ export function RelatorioMensalGMD() {
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-10">
-      {/* Cabeçalho do Relatório */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
-            <BarChart3 className="h-7 w-7 text-primary" /> Relatório Mensal de GMD (Padrão Exagro)
-          </h2>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Fechamento de desempenho ponderado, recortes por sexo, faixa de permanência, frente
-            segregada e controle de alertas.
-          </p>
-        </div>
+      {/* Relatório Formatado Exclusivo para Impressão / Exportação PDF (Metodologia Exagro) */}
+      <PrintReportGMD
+        kpisGerais={kpisGerais}
+        lotesMachos={lotesMachos}
+        lotesFemeas={lotesFemeas}
+        lotesOutros={lotesOutros}
+        recortesFaixa={recortesFaixa}
+        recortesFrente={recortesFrente}
+        alertasComCausas={alertasComCausas}
+      />
 
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExportPdf}
-            className="gap-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
-          >
-            <FileText className="h-4 w-4" /> Imprimir Relatório
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExportExcel}
-            className="gap-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 border-emerald-200"
-          >
-            <FileSpreadsheet className="h-4 w-4" /> Exportar Planilha Exagro
-          </Button>
-        </div>
-      </div>
-
-      {/* KPIs Gerais do Fechamento */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
-              Rebanho Monitorado
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">{kpisGerais.cabTotal} cab</div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {kpisGerais.totalLotes} lote(s) no fechamento
+      <div className="space-y-6 print:hidden">
+        {/* Cabeçalho do Relatório */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
+              <BarChart3 className="h-7 w-7 text-primary" /> Relatório Mensal de GMD (Padrão Exagro)
+            </h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Fechamento de desempenho ponderado, recortes por sexo, faixa de permanência, frente
+              segregada e controle de alertas.
             </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
-              GMD Médio Ponderado
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-emerald-600">
-              {kpisGerais.gmdMedioPonderadoG} g/dia
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Meta Média: {kpisGerais.gmdMetaMedioG} g/dia
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
-              Desvio Geral vs Meta
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div
-              className={`text-2xl font-bold ${
-                kpisGerais.desvioMedio >= -10
-                  ? 'text-emerald-600'
-                  : kpisGerais.desvioMedio >= -20
-                    ? 'text-amber-600'
-                    : 'text-destructive'
-              }`}
-            >
-              {kpisGerais.desvioMedio > 0
-                ? `+${kpisGerais.desvioMedio}%`
-                : `${kpisGerais.desvioMedio}%`}
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">Média ponderada do período</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
-              GDC Carcaça Estimado
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-600">
-              {kpisGerais.gdcMedioPonderadoG ? `${kpisGerais.gdcMedioPonderadoG} g/dia` : '-'}
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">Ganho diário de carcaça</p>
-          </CardContent>
-        </Card>
-
-        <Card className={kpisGerais.emAlerta > 0 ? 'bg-destructive/10 border-destructive/30' : ''}>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
-              Lotes Críticos (&gt;20%)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div
-              className={`text-2xl font-bold ${
-                kpisGerais.emAlerta > 0 ? 'text-destructive' : 'text-foreground'
-              }`}
-            >
-              {kpisGerais.emAlerta} lote(s)
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {alertas.filter((a) => a.status === 'aberto').length} alerta(s) persistente(s)
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filtros de Recorte */}
-      <Card>
-        <CardContent className="p-4 space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div>
-              <span className="text-xs text-muted-foreground block mb-1 font-semibold">
-                Frente Operacional
-              </span>
-              <Select value={filtroFrente} onValueChange={setFiltroFrente}>
-                <SelectTrigger className="h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as Frentes</SelectItem>
-                  <SelectItem value="cria">Cria (Fazenda Própria)</SelectItem>
-                  <SelectItem value="recria">Recria (Fazenda Própria)</SelectItem>
-                  <SelectItem value="engorda">Engorda (Fazenda Própria)</SelectItem>
-                  <SelectItem value="arrendamento">Arrendamento (Segregado)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <span className="text-xs text-muted-foreground block mb-1 font-semibold">Sexo</span>
-              <Select value={filtroSexo} onValueChange={setFiltroSexo}>
-                <SelectTrigger className="h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Ambos os Sexos</SelectItem>
-                  <SelectItem value="macho">Machos (Separado)</SelectItem>
-                  <SelectItem value="femea">Fêmeas (Separado)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <span className="text-xs text-muted-foreground block mb-1 font-semibold">
-                Faixa de Permanência (Exagro)
-              </span>
-              <Select value={filtroFaixa} onValueChange={setFiltroFaixa}>
-                <SelectTrigger className="h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as Faixas</SelectItem>
-                  <SelectItem value="ate_90">Até 90 dias</SelectItem>
-                  <SelectItem value="91_120">91 a 120 dias</SelectItem>
-                  <SelectItem value="acima_120">Acima de 120 dias</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <span className="text-xs text-muted-foreground block mb-1 font-semibold">
-                Semáforo de Desvio
-              </span>
-              <Select value={filtroStatus} onValueChange={setFiltroStatus}>
-                <SelectTrigger className="h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os Status</SelectItem>
-                  <SelectItem value="verde">Verde (No Alvo: até 10%)</SelectItem>
-                  <SelectItem value="amarelo">Amarelo (Atenção: 10-20%)</SelectItem>
-                  <SelectItem value="vermelho">Vermelho (Crítico: &gt; 20%)</SelectItem>
-                  <SelectItem value="cinza">Cinza (Sem dados &gt; 60 dias)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Abas com os 4 Recortes Exagro Principais */}
-      <Tabs defaultValue="sexo" className="space-y-4">
-        <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full h-auto p-1 bg-muted/60">
-          <TabsTrigger value="sexo" className="py-2.5 text-xs sm:text-sm">
-            1. Recorte por Sexo (Blocos)
-          </TabsTrigger>
-          <TabsTrigger value="faixa" className="py-2.5 text-xs sm:text-sm">
-            2. Faixa de Permanência
-          </TabsTrigger>
-          <TabsTrigger value="frente" className="py-2.5 text-xs sm:text-sm">
-            3. Frente Segregada
-          </TabsTrigger>
-          <TabsTrigger value="alertas" className="py-2.5 text-xs sm:text-sm">
-            4. Lotes em Alerta & Causas ({alertas.length})
-          </TabsTrigger>
-        </TabsList>
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportPdf}
+              className="gap-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
+            >
+              <FileText className="h-4 w-4" /> Imprimir Relatório
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportExcel}
+              className="gap-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 border-emerald-200"
+            >
+              <FileSpreadsheet className="h-4 w-4" /> Exportar Planilha Exagro
+            </Button>
+          </div>
+        </div>
 
-        {/* 1. Recorte por Sexo (Machos e Fêmeas em blocos distintos) */}
-        <TabsContent value="sexo" className="space-y-6 mt-2">
-          {renderLotesTable(
-            lotesMachos,
-            'Bloco de Machos (Bois / Garrotes / Bezerros)',
-            'bg-blue-600 text-white',
-          )}
-
-          {renderLotesTable(
-            lotesFemeas,
-            'Bloco de Fêmeas (Vacas / Novilhas / Bezerras)',
-            'bg-rose-600 text-white',
-          )}
-
-          {lotesOutros.length > 0 &&
-            renderLotesTable(
-              lotesOutros,
-              'Outros Lotes / Rebanho Misto',
-              'bg-slate-700 text-white',
-            )}
-        </TabsContent>
-
-        {/* 2. Recorte por Faixa de Permanência */}
-        <TabsContent value="faixa" className="space-y-4 mt-2">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">GMD Médio por Faixa de Permanência</CardTitle>
-              <CardDescription>
-                Padrão de fechamento Exagro: segregação entre lotes novos (&le;90d), intermediários
-                (91-120d) e de longa permanência (&gt;120d).
-              </CardDescription>
+        {/* KPIs Gerais do Fechamento */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <Card className="bg-primary/5 border-primary/20">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
+                Rebanho Monitorado
+              </CardTitle>
             </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Faixa de Permanência</TableHead>
-                    <TableHead className="text-right">Lotes</TableHead>
-                    <TableHead className="text-right">Total Cabeças</TableHead>
-                    <TableHead className="text-right">GMD Machos</TableHead>
-                    <TableHead className="text-right">GMD Fêmeas</TableHead>
-                    <TableHead className="text-right">GMD Consolidado</TableHead>
-                    <TableHead className="text-right">Desvio Médio</TableHead>
-                    <TableHead className="text-right">Lotes Críticos</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recortesFaixa.map((row) => (
-                    <TableRow key={row.faixa}>
-                      <TableCell className="font-semibold text-primary">{row.label}</TableCell>
-                      <TableCell className="text-right font-mono">
-                        {row.statsGeral.totalLotes}
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-medium">
-                        {row.statsGeral.cabTotal} cab
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-blue-700 font-semibold">
-                        {row.statsMachos.gmdMedioPonderadoG > 0
-                          ? `${row.statsMachos.gmdMedioPonderadoG} g/d`
-                          : '-'}
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-rose-700 font-semibold">
-                        {row.statsFemeas.gmdMedioPonderadoG > 0
-                          ? `${row.statsFemeas.gmdMedioPonderadoG} g/d`
-                          : '-'}
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-bold text-emerald-700">
-                        {row.statsGeral.gmdMedioPonderadoG > 0
-                          ? `${row.statsGeral.gmdMedioPonderadoG} g/d`
-                          : '-'}
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-semibold">
-                        <span
-                          className={
-                            row.statsGeral.desvioMedio >= -10
-                              ? 'text-emerald-600'
-                              : row.statsGeral.desvioMedio >= -20
-                                ? 'text-amber-600'
-                                : 'text-destructive'
-                          }
-                        >
-                          {row.statsGeral.desvioMedio > 0
-                            ? `+${row.statsGeral.desvioMedio}%`
-                            : `${row.statsGeral.desvioMedio}%`}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right font-mono">
-                        {row.statsGeral.emAlerta > 0 ? (
-                          <Badge variant="destructive">{row.statsGeral.emAlerta}</Badge>
-                        ) : (
-                          <Badge variant="outline" className="text-emerald-600 border-emerald-300">
-                            0
-                          </Badge>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+            <CardContent>
+              <div className="text-2xl font-bold text-primary">{kpisGerais.cabTotal} cab</div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {kpisGerais.totalLotes} lote(s) no fechamento
+              </p>
             </CardContent>
           </Card>
-        </TabsContent>
 
-        {/* 3. Recorte por Frente Operacional Segregada */}
-        <TabsContent value="frente" className="space-y-4 mt-2">
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">GMD Médio Ponderado por Frente</CardTitle>
-              <CardDescription>
-                Segregação contábil e zootécnica:{' '}
-                <strong>Arrendamento NUNCA é misturado com a fazenda própria</strong>.
-              </CardDescription>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
+                GMD Médio Ponderado
+              </CardTitle>
             </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Frente Operacional</TableHead>
-                    <TableHead className="text-right">Lotes</TableHead>
-                    <TableHead className="text-right">Cabeças</TableHead>
-                    <TableHead className="text-right">GMD Meta</TableHead>
-                    <TableHead className="text-right">GMD Real Ponderado</TableHead>
-                    <TableHead className="text-right">GDC Carcaça</TableHead>
-                    <TableHead className="text-right">Desvio vs Meta</TableHead>
-                    <TableHead className="text-right">Lotes Críticos</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recortesFrente.map((row) => (
-                    <TableRow
-                      key={row.frente}
-                      className={row.isArrendamento ? 'bg-amber-50/50 dark:bg-amber-950/20' : ''}
-                    >
-                      <TableCell className="font-semibold text-foreground">
-                        {row.label}
-                        {row.isArrendamento && (
-                          <Badge variant="outline" className="ml-2 text-amber-700 border-amber-300">
-                            Segregado
-                          </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right font-mono">{row.stats.totalLotes}</TableCell>
-                      <TableCell className="text-right font-mono font-medium">
-                        {row.stats.cabTotal} cab
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-muted-foreground text-xs">
-                        {row.stats.gmdMetaMedioG > 0 ? `${row.stats.gmdMetaMedioG} g/d` : '-'}
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-bold text-emerald-700">
-                        {row.stats.gmdMedioPonderadoG > 0
-                          ? `${row.stats.gmdMedioPonderadoG} g/d`
-                          : '-'}
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-purple-700 font-semibold text-xs">
-                        {row.stats.gdcMedioPonderadoG ? `${row.stats.gdcMedioPonderadoG} g/d` : '-'}
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-semibold">
-                        <span
-                          className={
-                            row.stats.desvioMedio >= -10
-                              ? 'text-emerald-600'
-                              : row.stats.desvioMedio >= -20
-                                ? 'text-amber-600'
-                                : 'text-destructive'
-                          }
-                        >
-                          {row.stats.desvioMedio > 0
-                            ? `+${row.stats.desvioMedio}%`
-                            : `${row.stats.desvioMedio}%`}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right font-mono">
-                        {row.stats.emAlerta > 0 ? (
-                          <Badge variant="destructive">{row.stats.emAlerta}</Badge>
-                        ) : (
-                          <Badge variant="outline" className="text-emerald-600 border-emerald-300">
-                            0
-                          </Badge>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* 4. Lotes em Alerta & Causas Registradas */}
-        <TabsContent value="alertas" className="space-y-4 mt-2">
-          <Card>
-            <CardHeader className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-3">
-              <div>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <ShieldAlert className="h-5 w-5 text-destructive" /> Registro de Ocorrências e
-                  Contramedidas
-                </CardTitle>
-                <CardDescription>
-                  Histórico de alertas com diagnóstico de causas zootécnicas e planos de ação
-                  registrados.
-                </CardDescription>
+            <CardContent>
+              <div className="text-2xl font-bold text-emerald-600">
+                {kpisGerais.gmdMedioPonderadoG} g/dia
               </div>
-              <Badge variant="outline" className="text-xs font-mono">
-                {alertasComCausas.length} registro(s)
-              </Badge>
-            </CardHeader>
-            <CardContent className="px-0 sm:px-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Lote</TableHead>
-                    <TableHead className="text-right">Desvio</TableHead>
-                    <TableHead className="text-right">GMD Real / Meta</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="min-w-[200px]">Causa Diagnosticada</TableHead>
-                    <TableHead className="min-w-[200px]">Contramedida Adotada</TableHead>
-                    <TableHead className="w-16"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {alertasComCausas.map((alerta) => (
-                    <TableRow key={alerta.id}>
-                      <TableCell className="font-mono text-xs whitespace-nowrap">
-                        {alerta.data ? format(parseISO(alerta.data), 'dd/MM/yyyy') : '-'}
-                      </TableCell>
-                      <TableCell className="font-semibold text-primary">
-                        {alerta.loteNome}
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-bold text-destructive text-xs">
-                        {alerta.desvio_pct.toFixed(1)}%
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-xs whitespace-nowrap">
-                        {alerta.gmd_real || '-'} / {alerta.gmd_alvo || 900} g/d
-                      </TableCell>
-                      <TableCell>
-                        {alerta.status === 'aberto' ? (
-                          <Badge variant="destructive" className="text-[10px] animate-pulse">
-                            Aberto
-                          </Badge>
-                        ) : (
-                          <Badge
-                            variant="outline"
-                            className="text-emerald-700 border-emerald-300 bg-emerald-50"
-                          >
-                            Resolvido
-                          </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-xs text-muted-foreground max-w-xs">
-                        {alerta.causa || (
-                          <span className="italic text-amber-600">Pendente de diagnóstico</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-xs text-muted-foreground max-w-xs">
-                        {alerta.contramedida || (
-                          <span className="italic text-amber-600">Pendente de contramedida</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {alerta.status === 'aberto' && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 text-xs text-destructive border-destructive/40"
-                            onClick={() => {
-                              setAlertaParaResolver(alerta)
-                              setModalResolverOpen(true)
-                            }}
-                          >
-                            Resolver
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-
-                  {alertasComCausas.length === 0 && (
-                    <TableRow>
-                      <TableCell
-                        colSpan={8}
-                        className="h-24 text-center text-muted-foreground text-xs"
-                      >
-                        Nenhum alerta de desvio registrado no histórico.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Meta Média: {kpisGerais.gmdMetaMedioG} g/dia
+              </p>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
 
-      {/* Modais */}
-      <ResolverAlertaModal
-        alerta={alertaParaResolver}
-        open={modalResolverOpen}
-        onOpenChange={setModalResolverOpen}
-        onSuccess={carregarDados}
-      />
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
+                Desvio Geral vs Meta
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className={`text-2xl font-bold ${
+                  kpisGerais.desvioMedio >= -10
+                    ? 'text-emerald-600'
+                    : kpisGerais.desvioMedio >= -20
+                      ? 'text-amber-600'
+                      : 'text-destructive'
+                }`}
+              >
+                {kpisGerais.desvioMedio > 0
+                  ? `+${kpisGerais.desvioMedio}%`
+                  : `${kpisGerais.desvioMedio}%`}
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5">Média ponderada do período</p>
+            </CardContent>
+          </Card>
 
-      <EditarMetaLoteModal
-        lote={loteParaEditarMeta}
-        open={modalMetaOpen}
-        onOpenChange={setModalMetaOpen}
-        onSuccess={carregarDados}
-      />
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
+                GDC Carcaça Estimado
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-purple-600">
+                {kpisGerais.gdcMedioPonderadoG ? `${kpisGerais.gdcMedioPonderadoG} g/dia` : '-'}
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5">Ganho diário de carcaça</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className={kpisGerais.emAlerta > 0 ? 'bg-destructive/10 border-destructive/30' : ''}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground">
+                Lotes Críticos (&gt;20%)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className={`text-2xl font-bold ${
+                  kpisGerais.emAlerta > 0 ? 'text-destructive' : 'text-foreground'
+                }`}
+              >
+                {kpisGerais.emAlerta} lote(s)
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {alertas.filter((a) => a.status === 'aberto').length} alerta(s) persistente(s)
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filtros de Recorte */}
+        <Card>
+          <CardContent className="p-4 space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div>
+                <span className="text-xs text-muted-foreground block mb-1 font-semibold">
+                  Frente Operacional
+                </span>
+                <Select value={filtroFrente} onValueChange={setFiltroFrente}>
+                  <SelectTrigger className="h-10">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as Frentes</SelectItem>
+                    <SelectItem value="cria">Cria (Fazenda Própria)</SelectItem>
+                    <SelectItem value="recria">Recria (Fazenda Própria)</SelectItem>
+                    <SelectItem value="engorda">Engorda (Fazenda Própria)</SelectItem>
+                    <SelectItem value="arrendamento">Arrendamento (Segregado)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <span className="text-xs text-muted-foreground block mb-1 font-semibold">Sexo</span>
+                <Select value={filtroSexo} onValueChange={setFiltroSexo}>
+                  <SelectTrigger className="h-10">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Ambos os Sexos</SelectItem>
+                    <SelectItem value="macho">Machos (Separado)</SelectItem>
+                    <SelectItem value="femea">Fêmeas (Separado)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <span className="text-xs text-muted-foreground block mb-1 font-semibold">
+                  Faixa de Permanência (Exagro)
+                </span>
+                <Select value={filtroFaixa} onValueChange={setFiltroFaixa}>
+                  <SelectTrigger className="h-10">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as Faixas</SelectItem>
+                    <SelectItem value="ate_90">Até 90 dias</SelectItem>
+                    <SelectItem value="91_120">91 a 120 dias</SelectItem>
+                    <SelectItem value="acima_120">Acima de 120 dias</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <span className="text-xs text-muted-foreground block mb-1 font-semibold">
+                  Semáforo de Desvio
+                </span>
+                <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                  <SelectTrigger className="h-10">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os Status</SelectItem>
+                    <SelectItem value="verde">Verde (No Alvo: até 10%)</SelectItem>
+                    <SelectItem value="amarelo">Amarelo (Atenção: 10-20%)</SelectItem>
+                    <SelectItem value="vermelho">Vermelho (Crítico: &gt; 20%)</SelectItem>
+                    <SelectItem value="cinza">Cinza (Sem dados &gt; 60 dias)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Abas com os 4 Recortes Exagro Principais */}
+        <Tabs defaultValue="sexo" className="space-y-4">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full h-auto p-1 bg-muted/60">
+            <TabsTrigger value="sexo" className="py-2.5 text-xs sm:text-sm">
+              1. Recorte por Sexo (Blocos)
+            </TabsTrigger>
+            <TabsTrigger value="faixa" className="py-2.5 text-xs sm:text-sm">
+              2. Faixa de Permanência
+            </TabsTrigger>
+            <TabsTrigger value="frente" className="py-2.5 text-xs sm:text-sm">
+              3. Frente Segregada
+            </TabsTrigger>
+            <TabsTrigger value="alertas" className="py-2.5 text-xs sm:text-sm">
+              4. Lotes em Alerta & Causas ({alertas.length})
+            </TabsTrigger>
+          </TabsList>
+
+          {/* 1. Recorte por Sexo (Machos e Fêmeas em blocos distintos) */}
+          <TabsContent value="sexo" className="space-y-6 mt-2">
+            {renderLotesTable(
+              lotesMachos,
+              'Bloco de Machos (Bois / Garrotes / Bezerros)',
+              'bg-blue-600 text-white',
+            )}
+
+            {renderLotesTable(
+              lotesFemeas,
+              'Bloco de Fêmeas (Vacas / Novilhas / Bezerras)',
+              'bg-rose-600 text-white',
+            )}
+
+            {lotesOutros.length > 0 &&
+              renderLotesTable(
+                lotesOutros,
+                'Outros Lotes / Rebanho Misto',
+                'bg-slate-700 text-white',
+              )}
+          </TabsContent>
+
+          {/* 2. Recorte por Faixa de Permanência */}
+          <TabsContent value="faixa" className="space-y-4 mt-2">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">GMD Médio por Faixa de Permanência</CardTitle>
+                <CardDescription>
+                  Padrão de fechamento Exagro: segregação entre lotes novos (&le;90d),
+                  intermediários (91-120d) e de longa permanência (&gt;120d).
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-0 sm:px-6">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Faixa de Permanência</TableHead>
+                      <TableHead className="text-right">Lotes</TableHead>
+                      <TableHead className="text-right">Total Cabeças</TableHead>
+                      <TableHead className="text-right">GMD Machos</TableHead>
+                      <TableHead className="text-right">GMD Fêmeas</TableHead>
+                      <TableHead className="text-right">GMD Consolidado</TableHead>
+                      <TableHead className="text-right">Desvio Médio</TableHead>
+                      <TableHead className="text-right">Lotes Críticos</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {recortesFaixa.map((row) => (
+                      <TableRow key={row.faixa}>
+                        <TableCell className="font-semibold text-primary">{row.label}</TableCell>
+                        <TableCell className="text-right font-mono">
+                          {row.statsGeral.totalLotes}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-medium">
+                          {row.statsGeral.cabTotal} cab
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-blue-700 font-semibold">
+                          {row.statsMachos.gmdMedioPonderadoG > 0
+                            ? `${row.statsMachos.gmdMedioPonderadoG} g/d`
+                            : '-'}
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-rose-700 font-semibold">
+                          {row.statsFemeas.gmdMedioPonderadoG > 0
+                            ? `${row.statsFemeas.gmdMedioPonderadoG} g/d`
+                            : '-'}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-bold text-emerald-700">
+                          {row.statsGeral.gmdMedioPonderadoG > 0
+                            ? `${row.statsGeral.gmdMedioPonderadoG} g/d`
+                            : '-'}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-semibold">
+                          <span
+                            className={
+                              row.statsGeral.desvioMedio >= -10
+                                ? 'text-emerald-600'
+                                : row.statsGeral.desvioMedio >= -20
+                                  ? 'text-amber-600'
+                                  : 'text-destructive'
+                            }
+                          >
+                            {row.statsGeral.desvioMedio > 0
+                              ? `+${row.statsGeral.desvioMedio}%`
+                              : `${row.statsGeral.desvioMedio}%`}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {row.statsGeral.emAlerta > 0 ? (
+                            <Badge variant="destructive">{row.statsGeral.emAlerta}</Badge>
+                          ) : (
+                            <Badge
+                              variant="outline"
+                              className="text-emerald-600 border-emerald-300"
+                            >
+                              0
+                            </Badge>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* 3. Recorte por Frente Operacional Segregada */}
+          <TabsContent value="frente" className="space-y-4 mt-2">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">GMD Médio Ponderado por Frente</CardTitle>
+                <CardDescription>
+                  Segregação contábil e zootécnica:{' '}
+                  <strong>Arrendamento NUNCA é misturado com a fazenda própria</strong>.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-0 sm:px-6">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Frente Operacional</TableHead>
+                      <TableHead className="text-right">Lotes</TableHead>
+                      <TableHead className="text-right">Cabeças</TableHead>
+                      <TableHead className="text-right">GMD Meta</TableHead>
+                      <TableHead className="text-right">GMD Real Ponderado</TableHead>
+                      <TableHead className="text-right">GDC Carcaça</TableHead>
+                      <TableHead className="text-right">Desvio vs Meta</TableHead>
+                      <TableHead className="text-right">Lotes Críticos</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {recortesFrente.map((row) => (
+                      <TableRow
+                        key={row.frente}
+                        className={row.isArrendamento ? 'bg-amber-50/50 dark:bg-amber-950/20' : ''}
+                      >
+                        <TableCell className="font-semibold text-foreground">
+                          {row.label}
+                          {row.isArrendamento && (
+                            <Badge
+                              variant="outline"
+                              className="ml-2 text-amber-700 border-amber-300"
+                            >
+                              Segregado
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {row.stats.totalLotes}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-medium">
+                          {row.stats.cabTotal} cab
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-muted-foreground text-xs">
+                          {row.stats.gmdMetaMedioG > 0 ? `${row.stats.gmdMetaMedioG} g/d` : '-'}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-bold text-emerald-700">
+                          {row.stats.gmdMedioPonderadoG > 0
+                            ? `${row.stats.gmdMedioPonderadoG} g/d`
+                            : '-'}
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-purple-700 font-semibold text-xs">
+                          {row.stats.gdcMedioPonderadoG
+                            ? `${row.stats.gdcMedioPonderadoG} g/d`
+                            : '-'}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-semibold">
+                          <span
+                            className={
+                              row.stats.desvioMedio >= -10
+                                ? 'text-emerald-600'
+                                : row.stats.desvioMedio >= -20
+                                  ? 'text-amber-600'
+                                  : 'text-destructive'
+                            }
+                          >
+                            {row.stats.desvioMedio > 0
+                              ? `+${row.stats.desvioMedio}%`
+                              : `${row.stats.desvioMedio}%`}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {row.stats.emAlerta > 0 ? (
+                            <Badge variant="destructive">{row.stats.emAlerta}</Badge>
+                          ) : (
+                            <Badge
+                              variant="outline"
+                              className="text-emerald-600 border-emerald-300"
+                            >
+                              0
+                            </Badge>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* 4. Lotes em Alerta & Causas Registradas */}
+          <TabsContent value="alertas" className="space-y-4 mt-2">
+            <Card>
+              <CardHeader className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-3">
+                <div>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <ShieldAlert className="h-5 w-5 text-destructive" /> Registro de Ocorrências e
+                    Contramedidas
+                  </CardTitle>
+                  <CardDescription>
+                    Histórico de alertas com diagnóstico de causas zootécnicas e planos de ação
+                    registrados.
+                  </CardDescription>
+                </div>
+                <Badge variant="outline" className="text-xs font-mono">
+                  {alertasComCausas.length} registro(s)
+                </Badge>
+              </CardHeader>
+              <CardContent className="px-0 sm:px-6">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Lote</TableHead>
+                      <TableHead className="text-right">Desvio</TableHead>
+                      <TableHead className="text-right">GMD Real / Meta</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="min-w-[200px]">Causa Diagnosticada</TableHead>
+                      <TableHead className="min-w-[200px]">Contramedida Adotada</TableHead>
+                      <TableHead className="w-16"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {alertasComCausas.map((alerta) => (
+                      <TableRow key={alerta.id}>
+                        <TableCell className="font-mono text-xs whitespace-nowrap">
+                          {alerta.data ? format(parseISO(alerta.data), 'dd/MM/yyyy') : '-'}
+                        </TableCell>
+                        <TableCell className="font-semibold text-primary">
+                          {alerta.loteNome}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-bold text-destructive text-xs">
+                          {alerta.desvio_pct.toFixed(1)}%
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-xs whitespace-nowrap">
+                          {alerta.gmd_real || '-'} / {alerta.gmd_alvo || 900} g/d
+                        </TableCell>
+                        <TableCell>
+                          {alerta.status === 'aberto' ? (
+                            <Badge variant="destructive" className="text-[10px] animate-pulse">
+                              Aberto
+                            </Badge>
+                          ) : (
+                            <Badge
+                              variant="outline"
+                              className="text-emerald-700 border-emerald-300 bg-emerald-50"
+                            >
+                              Resolvido
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground max-w-xs">
+                          {alerta.causa || (
+                            <span className="italic text-amber-600">Pendente de diagnóstico</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground max-w-xs">
+                          {alerta.contramedida || (
+                            <span className="italic text-amber-600">Pendente de contramedida</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {alerta.status === 'aberto' && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 text-xs text-destructive border-destructive/40"
+                              onClick={() => {
+                                setAlertaParaResolver(alerta)
+                                setModalResolverOpen(true)
+                              }}
+                            >
+                              Resolver
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+
+                    {alertasComCausas.length === 0 && (
+                      <TableRow>
+                        <TableCell
+                          colSpan={8}
+                          className="h-24 text-center text-muted-foreground text-xs"
+                        >
+                          Nenhum alerta de desvio registrado no histórico.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Modais */}
+        <ResolverAlertaModal
+          alerta={alertaParaResolver}
+          open={modalResolverOpen}
+          onOpenChange={setModalResolverOpen}
+          onSuccess={carregarDados}
+        />
+
+        <EditarMetaLoteModal
+          lote={loteParaEditarMeta}
+          open={modalMetaOpen}
+          onOpenChange={setModalMetaOpen}
+          onSuccess={carregarDados}
+        />
+      </div>
     </div>
   )
 }

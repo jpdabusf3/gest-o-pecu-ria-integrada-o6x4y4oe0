@@ -48,6 +48,7 @@ import { ScaleIntegrationModal, BatchWeightItem } from '@/components/ScaleIntegr
 import { ScannerModal } from '@/components/ScannerModal'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
 import { EditarMetaLoteModal } from '@/components/gmd/EditarMetaLoteModal'
+import { CurvaPesoComparativa } from '@/components/CurvaPesoComparativa'
 import { SemaforoGmdBadge } from '@/components/gmd/SemaforoGmdBadge'
 import { calcularDesvioGMD, calcularSemaforoGMD, analisarLoteGMD } from '@/services/gmdAlertas'
 import { formatWeight, formatNumber } from '@/lib/utils'
@@ -761,359 +762,396 @@ export default function Pesagens() {
         </div>
       </div>
 
-      {/* Cards de Métricas Gerais */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-primary">Total de Pesagens</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-primary">{kpis.totalRegistros}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {kpis.totalAnimais} cabeças processadas no filtro
-            </p>
-          </CardContent>
-        </Card>
+      {/* Abas Principais do Módulo de Pesagens: Histórico e Curva Comparativa */}
+      <Tabs defaultValue="historico" className="space-y-6">
+        <TabsList className="grid w-full sm:w-auto grid-cols-2 h-auto p-1 bg-muted/70">
+          <TabsTrigger
+            value="historico"
+            className="py-2.5 text-xs sm:text-sm font-semibold gap-1.5"
+          >
+            <Scale className="h-4 w-4" /> Histórico & Lançamentos
+          </TabsTrigger>
+          <TabsTrigger
+            value="curva_comparativa"
+            className="py-2.5 text-xs sm:text-sm font-semibold gap-1.5"
+          >
+            <TrendingUp className="h-4 w-4 text-emerald-600" /> Curva de Peso Comparativa
+            (Multi-lotes)
+          </TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Peso Médio Geral
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold flex items-center gap-1.5">
-              <Scale className="h-6 w-6 text-muted-foreground" />
-              {kpis.mediaPesoGeral > 0 ? `${kpis.mediaPesoGeral.toFixed(1)} kg` : '-'}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              ~{(kpis.mediaPesoGeral / 15).toFixed(1)} @ por cabeça
-            </p>
-          </CardContent>
-        </Card>
+        <TabsContent value="curva_comparativa" className="mt-0">
+          <CurvaPesoComparativa
+            lots={lots}
+            pesagens={pesagens}
+            onOpenLotDetails={(id) => {
+              setDrawerLoteId(id)
+              setDrawerOpen(true)
+            }}
+          />
+        </TabsContent>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              GMD Médio Ponderado
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-emerald-600 flex items-center gap-1.5">
-              <TrendingUp className="h-6 w-6" />
-              {kpis.gmdMedioGeral > 0 ? `${kpis.gmdMedioGeral.toFixed(3)} kg/d` : '-'}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">Ganho Médio Diário aferido</p>
-          </CardContent>
-        </Card>
+        <TabsContent value="historico" className="space-y-6 mt-0">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="bg-primary/5 border-primary/20">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-primary">
+                  Total de Pesagens
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-primary">{kpis.totalRegistros}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {kpis.totalAnimais} cabeças processadas no filtro
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Lotes Ativos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              {lots.filter((l) => l.status === 'active').length}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">Monitorados com dados reais</p>
-          </CardContent>
-        </Card>
-      </div>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Peso Médio Geral
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold flex items-center gap-1.5">
+                  <Scale className="h-6 w-6 text-muted-foreground" />
+                  {kpis.mediaPesoGeral > 0 ? `${kpis.mediaPesoGeral.toFixed(1)} kg` : '-'}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  ~{(kpis.mediaPesoGeral / 15).toFixed(1)} @ por cabeça
+                </p>
+              </CardContent>
+            </Card>
 
-      {/* Barra de Filtros */}
-      <Card>
-        <CardContent className="p-4 space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-            <Filter className="h-4 w-4" /> Filtros e Busca de Histórico
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  GMD Médio Ponderado
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-emerald-600 flex items-center gap-1.5">
+                  <TrendingUp className="h-6 w-6" />
+                  {kpis.gmdMedioGeral > 0 ? `${kpis.gmdMedioGeral.toFixed(3)} kg/d` : '-'}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Ganho Médio Diário aferido</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Lotes Ativos
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {lots.filter((l) => l.status === 'active').length}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Monitorados com dados reais</p>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
-            <div className="relative lg:col-span-2">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar lote, brinco, operador..."
-                className="pl-9 h-10"
-                value={buscaTermo}
-                onChange={(e) => setBuscaTermo(e.target.value)}
-              />
-            </div>
+          {/* Barra de Filtros */}
+          <Card>
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                <Filter className="h-4 w-4" /> Filtros e Busca de Histórico
+              </div>
 
-            <div>
-              <Select value={filtroLote} onValueChange={setFiltroLote}>
-                <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Lote" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os Lotes</SelectItem>
-                  {lots.map((l) => (
-                    <SelectItem key={l.id} value={l.id}>
-                      {l.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                <div className="relative lg:col-span-2">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Buscar lote, brinco, operador..."
+                    className="pl-9 h-10"
+                    value={buscaTermo}
+                    onChange={(e) => setBuscaTermo(e.target.value)}
+                  />
+                </div>
 
-            <div>
-              <Select value={filtroSetor} onValueChange={setFiltroSetor}>
-                <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Setor" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os Setores</SelectItem>
-                  <SelectItem value="cria">Cria</SelectItem>
-                  <SelectItem value="recria">Recria</SelectItem>
-                  <SelectItem value="engorda">Engorda</SelectItem>
-                  <SelectItem value="venda">Venda</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+                <div>
+                  <Select value={filtroLote} onValueChange={setFiltroLote}>
+                    <SelectTrigger className="h-10">
+                      <SelectValue placeholder="Lote" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os Lotes</SelectItem>
+                      {lots.map((l) => (
+                        <SelectItem key={l.id} value={l.id}>
+                          {l.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div>
-              <Select value={filtroSexo} onValueChange={setFiltroSexo}>
-                <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Sexo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Ambos os Sexos</SelectItem>
-                  <SelectItem value="macho">Machos</SelectItem>
-                  <SelectItem value="femea">Fêmeas</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+                <div>
+                  <Select value={filtroSetor} onValueChange={setFiltroSetor}>
+                    <SelectTrigger className="h-10">
+                      <SelectValue placeholder="Setor" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os Setores</SelectItem>
+                      <SelectItem value="cria">Cria</SelectItem>
+                      <SelectItem value="recria">Recria</SelectItem>
+                      <SelectItem value="engorda">Engorda</SelectItem>
+                      <SelectItem value="venda">Venda</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div>
-              <Select value={filtroCategoria} onValueChange={setFiltroCategoria}>
-                <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Categoria" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas Categorias</SelectItem>
-                  {categoriasDisponiveis.map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+                <div>
+                  <Select value={filtroSexo} onValueChange={setFiltroSexo}>
+                    <SelectTrigger className="h-10">
+                      <SelectValue placeholder="Sexo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Ambos os Sexos</SelectItem>
+                      <SelectItem value="macho">Machos</SelectItem>
+                      <SelectItem value="femea">Fêmeas</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-      {/* Tabela do Histórico de Pesagens */}
-      <Card>
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-3">
-          <div>
-            <CardTitle>Histórico de Pesagens Zootécnicas</CardTitle>
-            <CardDescription>
-              Registros com peso médio, variação em kg e @, GMD do intervalo e dias decorridos
-            </CardDescription>
-          </div>
-          <Badge variant="outline" className="font-mono text-xs">
-            {pesagensFiltradas.length} registro(s)
-          </Badge>
-        </CardHeader>
-        <CardContent className="px-0 sm:px-6">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Lote</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead className="text-right">Animais</TableHead>
-                  <TableHead className="text-right">Peso Médio</TableHead>
-                  <TableHead className="text-right">Var. (kg / @)</TableHead>
-                  <TableHead className="text-right">Dias Interv.</TableHead>
-                  <TableHead className="text-right">GMD Interv.</TableHead>
-                  <TableHead className="text-right">GDC Carcaça</TableHead>
-                  <TableHead className="text-right">Desvio vs Meta</TableHead>
-                  <TableHead>Semáforo</TableHead>
-                  <TableHead>Origem</TableHead>
-                  <TableHead className="w-16"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {pesagensFiltradas.map((pesagem) => {
-                  const lote = pesagem.expand?.lote_id || lots.find((l) => l.id === pesagem.lote_id)
-                  const metaG = lote?.gmd_alvo_g_dia || 900
-                  const metaKg = metaG / 1000
-                  const gmd = pesagem.gmd_intervalo
-                  const desvio =
-                    typeof gmd === 'number' && gmd > 0 ? calcularDesvioGMD(gmd, metaKg) : null
-                  const semaforo = calcularSemaforoGMD(desvio, null)
-                  const rendimento = lote?.rendimento_carcaca_pct || 0
-                  const gdc =
-                    typeof gmd === 'number' && gmd > 0 && rendimento > 0
-                      ? Number((gmd * (rendimento / 100)).toFixed(3))
-                      : null
+                <div>
+                  <Select value={filtroCategoria} onValueChange={setFiltroCategoria}>
+                    <SelectTrigger className="h-10">
+                      <SelectValue placeholder="Categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas Categorias</SelectItem>
+                      {categoriasDisponiveis.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-                  const variacaoKg =
-                    pesagem.peso_anterior_kg !== undefined && pesagem.peso_anterior_kg !== null
-                      ? Number((pesagem.peso_medio_kg - pesagem.peso_anterior_kg).toFixed(1))
-                      : null
-                  const variacaoArr = variacaoKg !== null ? (variacaoKg / 15).toFixed(2) : null
-
-                  return (
-                    <TableRow key={pesagem.id} className="hover:bg-muted/50 transition-colors">
-                      <TableCell className="whitespace-nowrap font-medium">
-                        {pesagem.data_pesagem
-                          ? format(parseISO(pesagem.data_pesagem), 'dd/MM/yyyy')
-                          : '-'}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-col">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (lote) {
-                                setDrawerLoteId(lote.id)
-                                setDrawerOpen(true)
-                              }
-                            }}
-                            className="font-semibold text-primary hover:underline text-left"
-                          >
-                            {lote?.name || 'Lote Não Identificado'}
-                          </button>
-                          <span className="text-xs text-muted-foreground">
-                            {lote?.category || lote?.sector || ''} • Meta: {metaG} g/d
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={pesagem.tipo === 'individual' ? 'outline' : 'secondary'}
-                          className="text-[11px]"
-                        >
-                          {pesagem.tipo === 'individual'
-                            ? `Individual (${pesagem.animal_id || '-'})`
-                            : 'Lote'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right font-mono font-medium">
-                        {pesagem.qtd_animais}
-                      </TableCell>
-                      <TableCell className="text-right whitespace-nowrap font-bold text-foreground">
-                        {pesagem.peso_medio_kg.toFixed(1)} kg
-                      </TableCell>
-                      <TableCell className="text-right whitespace-nowrap">
-                        {variacaoKg !== null ? (
-                          <span
-                            className={
-                              variacaoKg >= 0
-                                ? 'text-emerald-600 font-semibold'
-                                : 'text-destructive font-semibold'
-                            }
-                          >
-                            {variacaoKg >= 0 ? `+${variacaoKg} kg` : `${variacaoKg} kg`}{' '}
-                            <span className="text-xs text-muted-foreground">({variacaoArr} @)</span>
-                          </span>
-                        ) : (
-                          <span className="text-muted-foreground text-xs">-</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-muted-foreground">
-                        {pesagem.dias_intervalo ? `${pesagem.dias_intervalo} d` : '-'}
-                      </TableCell>
-                      <TableCell className="text-right whitespace-nowrap font-mono">
-                        {pesagem.gmd_intervalo !== undefined && pesagem.gmd_intervalo !== null ? (
-                          <Badge
-                            variant={pesagem.gmd_intervalo > 0 ? 'default' : 'secondary'}
-                            className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30 font-semibold"
-                          >
-                            {pesagem.gmd_intervalo.toFixed(3)} kg/d
-                          </Badge>
-                        ) : (
-                          <span className="text-muted-foreground text-xs">Inicial</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right whitespace-nowrap font-mono text-xs">
-                        {gdc ? (
-                          <span className="text-purple-600 font-semibold">
-                            {Math.round(gdc * 1000)} g/d
-                          </span>
-                        ) : (
-                          <span className="text-muted-foreground">-</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right whitespace-nowrap font-mono text-xs font-semibold">
-                        {desvio !== null ? (
-                          <span
-                            className={
-                              desvio >= -10
-                                ? 'text-emerald-600'
-                                : desvio >= -20
-                                  ? 'text-amber-600'
-                                  : 'text-destructive'
-                            }
-                          >
-                            {desvio > 0 ? `+${desvio}%` : `${desvio}%`}
-                          </span>
-                        ) : (
-                          <span className="text-muted-foreground">-</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <SemaforoGmdBadge status={semaforo} desvioPct={desvio} />
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="outline"
-                          className={
-                            pesagem.origem === 'balanca'
-                              ? 'text-blue-600 border-blue-200 bg-blue-50/50'
-                              : 'text-muted-foreground'
-                          }
-                        >
-                          {pesagem.origem === 'balanca' ? 'Balança' : 'Manual'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-muted-foreground hover:text-primary"
-                            onClick={() => {
-                              if (lote) {
-                                setDrawerLoteId(lote.id)
-                                setDrawerOpen(true)
-                              }
-                            }}
-                            title="Ver Desempenho / Gráfico"
-                          >
-                            <TrendingUp className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                            onClick={() => handleDelete(pesagem.id)}
-                            title="Excluir pesagem"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
+          {/* Tabela do Histórico de Pesagens */}
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-3">
+              <div>
+                <CardTitle>Histórico de Pesagens Zootécnicas</CardTitle>
+                <CardDescription>
+                  Registros com peso médio, variação em kg e @, GMD do intervalo e dias decorridos
+                </CardDescription>
+              </div>
+              <Badge variant="outline" className="font-mono text-xs">
+                {pesagensFiltradas.length} registro(s)
+              </Badge>
+            </CardHeader>
+            <CardContent className="px-0 sm:px-6">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Lote</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead className="text-right">Animais</TableHead>
+                      <TableHead className="text-right">Peso Médio</TableHead>
+                      <TableHead className="text-right">Var. (kg / @)</TableHead>
+                      <TableHead className="text-right">Dias Interv.</TableHead>
+                      <TableHead className="text-right">GMD Interv.</TableHead>
+                      <TableHead className="text-right">GDC Carcaça</TableHead>
+                      <TableHead className="text-right">Desvio vs Meta</TableHead>
+                      <TableHead>Semáforo</TableHead>
+                      <TableHead>Origem</TableHead>
+                      <TableHead className="w-16"></TableHead>
                     </TableRow>
-                  )
-                })}
+                  </TableHeader>
+                  <TableBody>
+                    {pesagensFiltradas.map((pesagem) => {
+                      const lote =
+                        pesagem.expand?.lote_id || lots.find((l) => l.id === pesagem.lote_id)
+                      const metaG = lote?.gmd_alvo_g_dia || 900
+                      const metaKg = metaG / 1000
+                      const gmd = pesagem.gmd_intervalo
+                      const desvio =
+                        typeof gmd === 'number' && gmd > 0 ? calcularDesvioGMD(gmd, metaKg) : null
+                      const semaforo = calcularSemaforoGMD(desvio, null)
+                      const rendimento = lote?.rendimento_carcaca_pct || 0
+                      const gdc =
+                        typeof gmd === 'number' && gmd > 0 && rendimento > 0
+                          ? Number((gmd * (rendimento / 100)).toFixed(3))
+                          : null
 
-                {pesagensFiltradas.length === 0 && !loading && (
-                  <TableRow>
-                    <TableCell colSpan={11} className="h-32 text-center text-muted-foreground">
-                      Nenhuma pesagem encontrada com os filtros selecionados.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                      const variacaoKg =
+                        pesagem.peso_anterior_kg !== undefined && pesagem.peso_anterior_kg !== null
+                          ? Number((pesagem.peso_medio_kg - pesagem.peso_anterior_kg).toFixed(1))
+                          : null
+                      const variacaoArr = variacaoKg !== null ? (variacaoKg / 15).toFixed(2) : null
+
+                      return (
+                        <TableRow key={pesagem.id} className="hover:bg-muted/50 transition-colors">
+                          <TableCell className="whitespace-nowrap font-medium">
+                            {pesagem.data_pesagem
+                              ? format(parseISO(pesagem.data_pesagem), 'dd/MM/yyyy')
+                              : '-'}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (lote) {
+                                    setDrawerLoteId(lote.id)
+                                    setDrawerOpen(true)
+                                  }
+                                }}
+                                className="font-semibold text-primary hover:underline text-left"
+                              >
+                                {lote?.name || 'Lote Não Identificado'}
+                              </button>
+                              <span className="text-xs text-muted-foreground">
+                                {lote?.category || lote?.sector || ''} • Meta: {metaG} g/d
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={pesagem.tipo === 'individual' ? 'outline' : 'secondary'}
+                              className="text-[11px]"
+                            >
+                              {pesagem.tipo === 'individual'
+                                ? `Individual (${pesagem.animal_id || '-'})`
+                                : 'Lote'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right font-mono font-medium">
+                            {pesagem.qtd_animais}
+                          </TableCell>
+                          <TableCell className="text-right whitespace-nowrap font-bold text-foreground">
+                            {pesagem.peso_medio_kg.toFixed(1)} kg
+                          </TableCell>
+                          <TableCell className="text-right whitespace-nowrap">
+                            {variacaoKg !== null ? (
+                              <span
+                                className={
+                                  variacaoKg >= 0
+                                    ? 'text-emerald-600 font-semibold'
+                                    : 'text-destructive font-semibold'
+                                }
+                              >
+                                {variacaoKg >= 0 ? `+${variacaoKg} kg` : `${variacaoKg} kg`}{' '}
+                                <span className="text-xs text-muted-foreground">
+                                  ({variacaoArr} @)
+                                </span>
+                              </span>
+                            ) : (
+                              <span className="text-muted-foreground text-xs">-</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-muted-foreground">
+                            {pesagem.dias_intervalo ? `${pesagem.dias_intervalo} d` : '-'}
+                          </TableCell>
+                          <TableCell className="text-right whitespace-nowrap font-mono">
+                            {pesagem.gmd_intervalo !== undefined &&
+                            pesagem.gmd_intervalo !== null ? (
+                              <Badge
+                                variant={pesagem.gmd_intervalo > 0 ? 'default' : 'secondary'}
+                                className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30 font-semibold"
+                              >
+                                {pesagem.gmd_intervalo.toFixed(3)} kg/d
+                              </Badge>
+                            ) : (
+                              <span className="text-muted-foreground text-xs">Inicial</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right whitespace-nowrap font-mono text-xs">
+                            {gdc ? (
+                              <span className="text-purple-600 font-semibold">
+                                {Math.round(gdc * 1000)} g/d
+                              </span>
+                            ) : (
+                              <span className="text-muted-foreground">-</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right whitespace-nowrap font-mono text-xs font-semibold">
+                            {desvio !== null ? (
+                              <span
+                                className={
+                                  desvio >= -10
+                                    ? 'text-emerald-600'
+                                    : desvio >= -20
+                                      ? 'text-amber-600'
+                                      : 'text-destructive'
+                                }
+                              >
+                                {desvio > 0 ? `+${desvio}%` : `${desvio}%`}
+                              </span>
+                            ) : (
+                              <span className="text-muted-foreground">-</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <SemaforoGmdBadge status={semaforo} desvioPct={desvio} />
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant="outline"
+                              className={
+                                pesagem.origem === 'balanca'
+                                  ? 'text-blue-600 border-blue-200 bg-blue-50/50'
+                                  : 'text-muted-foreground'
+                              }
+                            >
+                              {pesagem.origem === 'balanca' ? 'Balança' : 'Manual'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-muted-foreground hover:text-primary"
+                                onClick={() => {
+                                  if (lote) {
+                                    setDrawerLoteId(lote.id)
+                                    setDrawerOpen(true)
+                                  }
+                                }}
+                                title="Ver Desempenho / Gráfico"
+                              >
+                                <TrendingUp className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                                onClick={() => handleDelete(pesagem.id)}
+                                title="Excluir pesagem"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+
+                    {pesagensFiltradas.length === 0 && !loading && (
+                      <TableRow>
+                        <TableCell colSpan={11} className="h-32 text-center text-muted-foreground">
+                          Nenhuma pesagem encontrada com os filtros selecionados.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
       {/* Drawer de Desempenho do Lote */}
       <LotPerformanceDrawer loteId={drawerLoteId} open={drawerOpen} onOpenChange={setDrawerOpen} />
