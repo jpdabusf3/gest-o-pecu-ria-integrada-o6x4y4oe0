@@ -207,6 +207,31 @@ export function calcularSafraAtual(data: Date = new Date()): string {
 }
 
 /**
+ * Retorna a safra pecuária imediatamente anterior (ex: "2024/2025" -> "2023/2024")
+ */
+export function calcularSafraAnterior(safraOuData?: string | Date): string {
+  let safra: string
+  if (safraOuData instanceof Date) {
+    safra = calcularSafraAtual(safraOuData)
+  } else if (typeof safraOuData === 'string' && safraOuData.includes('/')) {
+    safra = safraOuData
+  } else {
+    safra = calcularSafraAtual()
+  }
+
+  const partes = safra.split('/')
+  if (partes.length === 2) {
+    const a1 = parseInt(partes[0], 10)
+    const a2 = parseInt(partes[1], 10)
+    if (!isNaN(a1) && !isNaN(a2)) {
+      return `${a1 - 1}/${a2 - 1}`
+    }
+  }
+  const ano = new Date().getFullYear()
+  return `${ano - 2}/${ano - 1}`
+}
+
+/**
  * Grava snapshot na coleção config_benchmark_historico
  */
 export async function gravarSnapshotHistoricoBenchmark(

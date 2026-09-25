@@ -1,3 +1,5 @@
+allowBuilds:
+  core-js: true
 injectWorkspacePackages: false
 onlyBuiltDependencies:
   - '@swc/core'

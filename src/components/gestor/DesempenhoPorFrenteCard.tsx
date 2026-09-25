@@ -17,13 +17,33 @@ import {
   Sparkles,
   ArrowRight,
   Info,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
 } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { differenceInDays, parseISO } from 'date-fns'
 import { LotRecord } from '@/services/lots'
 import { PesagemRecord } from '@/services/pesagens'
 import { ConfigBenchmarkRecord, DEFAULT_BENCHMARKS } from '@/services/configBenchmark'
 import { StatusSemaforo } from '@/services/gmdAlertas'
+
+export interface LoteDetalhamentoItem {
+  id: string
+  name: string
+  code?: string
+  fase: string
+  headcount: number
+  pasto?: string
+  indicadorNome: string
+  valorReal: number | null
+  valorAlvo: number
+  unidade: string
+  desvioPct: number | null
+  status: StatusSemaforo
+  diasSemPesagem: number | null
+  puxandoParaBaixo: boolean
+}
 
 export interface DesempenhoPorFrenteProps {
   lots: LotRecord[]
@@ -42,7 +62,9 @@ export function DesempenhoPorFrenteCard({
   benchmarks,
   className = '',
 }: DesempenhoPorFrenteProps) {
+  const navigate = useNavigate()
   const [segregacao, setSegregacao] = useState<TipoSegregacaoFrente>('propria')
+  const [frenteExpandida, setFrenteExpandida] = useState<'cria' | 'recria' | 'engorda' | null>(null)
 
   // Mapa de benchmarks com fallbacks seguros
   const mapBenchmarks = useMemo(() => {
@@ -216,6 +238,66 @@ export function DesempenhoPorFrenteCard({
       statusGeral = 'amarelo'
     }
 
+    // Detalhamento individual dos lotes da cria (avaliados por taxa de desmame / kg bezerro)
+    const lotesDetalhados: LoteDetalhamentoItem[] = lotesCria.map((lote) => {
+      // Cálculo aproximado por lote baseado em nascimentos vinculados ao pasto/lote se houver
+      const movDoLote = movCria.filter(
+        (m) => m.lote_id === lote.id || m.pasto_id === (lote as any).pasto_atual_id,
+      )
+      const nasc = movDoLote
+        .filter((m) => m.tipo === 'nascimento')
+        .reduce((acc, m) => acc + (m.qtd_cabecas || 0), 0)
+      const mort = movDoLote
+        .filter((m) => m.tipo === 'morte')
+        .reduce((acc, m) => acc + (m.qtd_cabecas || 0), 0)
+      const bezVivos = Math.max(0, nasc - mort)
+      const matrizesLote = lote.headcount || 1
+
+      const txDesmameLote =
+        bezVivos > 0 ? Number(((bezVivos / matrizesLote) * 100).toFixed(1)) : taxaDesmameReal || 75
+
+      const semLote = calcularSemaforo(
+        txDesmameLote,
+        bmCriaDesmame.alvo_fazenda,
+        diasSemDados,
+        true,
+      )
+      const puxandoParaBaixo =
+        semLote.status === 'vermelho' ||
+        (statusGeral !== 'vermelho' && semLote.status === 'amarelo')
+
+      return {
+        id: lote.id,
+        name: lote.name,
+        code: (lote as any).code || undefined,
+        fase: lote.fase_atual || lote.sector || 'cria',
+        headcount: lote.headcount || 0,
+        pasto: lote.pasto_atual || (lote as any).pasto_nome || undefined,
+        indicadorNome: 'Taxa Desmame / kg Matriz',
+        valorReal: txDesmameLote,
+        valorAlvo: bmCriaDesmame.alvo_fazenda,
+        unidade: '%',
+        desvioPct: semLote.desvioPct,
+        status: semLote.status,
+        diasSemPesagem: diasSemDados,
+        puxandoParaBaixo,
+      }
+    })
+
+    // Ordenar: piores desvios primeiro (vermelhos primeiro, menores desvios)
+    lotesDetalhados.sort((a, b) => {
+      const prioridadeStatus: Record<StatusSemaforo, number> = {
+        vermelho: 0,
+        amarelo: 1,
+        cinza: 2,
+        verde: 3,
+      }
+      if (prioridadeStatus[a.status] !== prioridadeStatus[b.status]) {
+        return prioridadeStatus[a.status] - prioridadeStatus[b.status]
+      }
+      return (a.desvioPct ?? 0) - (b.desvioPct ?? 0)
+    })
+
     return {
       totalLotes: lotesCria.length,
       totalMatrizes,
@@ -225,6 +307,7 @@ export function DesempenhoPorFrenteCard({
       semaforoDesmame,
       semaforoKg,
       statusGeral,
+      lotesDetalhados,
     }
   }, [lotesFiltrados, movimentacoesFiltradas, bmCriaDesmame, bmCriaKgBezerro])
 
@@ -265,12 +348,82 @@ export function DesempenhoPorFrenteCard({
 
     const semaforo = calcularSemaforo(gmdRealKg, bmGmdRecria.alvo_fazenda, diasSemPesagem, true)
 
+    // Detalhamento individual dos lotes da recria
+    const lotesDetalhados: LoteDetalhamentoItem[] = lotesRecria.map((lote) => {
+      const pesagensDoLote = pesagens.filter(
+        (p) => p.lote_id === lote.id && p.gmd_intervalo !== undefined && p.gmd_intervalo > 0,
+      )
+      const todasDoLote = pesagens.filter((p) => p.lote_id === lote.id)
+      const ultPesagemLote = todasDoLote.sort(
+        (a, b) => new Date(b.data_pesagem).getTime() - new Date(a.data_pesagem).getTime(),
+      )[0]
+      const diasLote = ultPesagemLote
+        ? Math.max(0, differenceInDays(new Date(), parseISO(ultPesagemLote.data_pesagem)))
+        : 999
+
+      let gmdLote: number | null = null
+      if (pesagensDoLote.length > 0) {
+        const media =
+          pesagensDoLote.reduce((acc, p) => acc + (p.gmd_intervalo || 0), 0) / pesagensDoLote.length
+        gmdLote = Number((media > 10 ? media / 1000 : media).toFixed(3))
+      } else if ((lote as any).gmd_medio !== undefined && (lote as any).gmd_medio > 0) {
+        const g = (lote as any).gmd_medio
+        gmdLote = Number((g > 10 ? g / 1000 : g).toFixed(3))
+      }
+
+      const alvoCustom =
+        (lote as any).target_weight_gain ||
+        (lote.gmd_alvo_g_dia ? lote.gmd_alvo_g_dia / 1000 : null)
+      const metaAlvo = alvoCustom
+        ? alvoCustom > 10
+          ? alvoCustom / 1000
+          : alvoCustom
+        : bmGmdRecria.alvo_fazenda
+
+      const semLote = calcularSemaforo(gmdLote, metaAlvo, diasLote, true)
+      const puxandoParaBaixo =
+        semLote.status === 'vermelho' ||
+        (semaforo.status !== 'vermelho' && semLote.status === 'amarelo')
+
+      return {
+        id: lote.id,
+        name: lote.name,
+        code: (lote as any).code || undefined,
+        fase: lote.fase_atual || lote.sector || 'recria',
+        headcount: lote.headcount || 0,
+        pasto: lote.pasto_atual || (lote as any).pasto_nome || undefined,
+        indicadorNome: 'GMD Recria a Pasto',
+        valorReal: gmdLote,
+        valorAlvo: metaAlvo,
+        unidade: 'kg/dia',
+        desvioPct: semLote.desvioPct,
+        status: semLote.status,
+        diasSemPesagem: diasLote,
+        puxandoParaBaixo,
+      }
+    })
+
+    // Ordenar pelos piores desvios primeiro (vermelhos e maiores distâncias do alvo)
+    lotesDetalhados.sort((a, b) => {
+      const prioridadeStatus: Record<StatusSemaforo, number> = {
+        vermelho: 0,
+        amarelo: 1,
+        cinza: 2,
+        verde: 3,
+      }
+      if (prioridadeStatus[a.status] !== prioridadeStatus[b.status]) {
+        return prioridadeStatus[a.status] - prioridadeStatus[b.status]
+      }
+      return (a.desvioPct ?? 0) - (b.desvioPct ?? 0)
+    })
+
     return {
       totalLotes: lotesRecria.length,
       totalCabecas,
       gmdRealKg,
       diasSemPesagem,
       semaforo,
+      lotesDetalhados,
     }
   }, [lotesFiltrados, pesagens, bmGmdRecria])
 
@@ -313,12 +466,82 @@ export function DesempenhoPorFrenteCard({
 
     const semaforo = calcularSemaforo(gmdRealKg, bmGmdEngorda.alvo_fazenda, diasSemPesagem, true)
 
+    // Detalhamento individual dos lotes da engorda/TIP
+    const lotesDetalhados: LoteDetalhamentoItem[] = lotesEngorda.map((lote) => {
+      const pesagensDoLote = pesagens.filter(
+        (p) => p.lote_id === lote.id && p.gmd_intervalo !== undefined && p.gmd_intervalo > 0,
+      )
+      const todasDoLote = pesagens.filter((p) => p.lote_id === lote.id)
+      const ultPesagemLote = todasDoLote.sort(
+        (a, b) => new Date(b.data_pesagem).getTime() - new Date(a.data_pesagem).getTime(),
+      )[0]
+      const diasLote = ultPesagemLote
+        ? Math.max(0, differenceInDays(new Date(), parseISO(ultPesagemLote.data_pesagem)))
+        : 999
+
+      let gmdLote: number | null = null
+      if (pesagensDoLote.length > 0) {
+        const media =
+          pesagensDoLote.reduce((acc, p) => acc + (p.gmd_intervalo || 0), 0) / pesagensDoLote.length
+        gmdLote = Number((media > 10 ? media / 1000 : media).toFixed(3))
+      } else if ((lote as any).gmd_medio !== undefined && (lote as any).gmd_medio > 0) {
+        const g = (lote as any).gmd_medio
+        gmdLote = Number((g > 10 ? g / 1000 : g).toFixed(3))
+      }
+
+      const alvoCustom =
+        (lote as any).target_weight_gain ||
+        (lote.gmd_alvo_g_dia ? lote.gmd_alvo_g_dia / 1000 : null)
+      const metaAlvo = alvoCustom
+        ? alvoCustom > 10
+          ? alvoCustom / 1000
+          : alvoCustom
+        : bmGmdEngorda.alvo_fazenda
+
+      const semLote = calcularSemaforo(gmdLote, metaAlvo, diasLote, true)
+      const puxandoParaBaixo =
+        semLote.status === 'vermelho' ||
+        (semaforo.status !== 'vermelho' && semLote.status === 'amarelo')
+
+      return {
+        id: lote.id,
+        name: lote.name,
+        code: (lote as any).code || undefined,
+        fase: lote.fase_atual || lote.sector || 'engorda',
+        headcount: lote.headcount || 0,
+        pasto: lote.pasto_atual || (lote as any).pasto_nome || undefined,
+        indicadorNome: 'GMD Engorda / TIP',
+        valorReal: gmdLote,
+        valorAlvo: metaAlvo,
+        unidade: 'kg/dia',
+        desvioPct: semLote.desvioPct,
+        status: semLote.status,
+        diasSemPesagem: diasLote,
+        puxandoParaBaixo,
+      }
+    })
+
+    // Ordenar pelos piores desvios primeiro (vermelhos e maiores desvios negativos)
+    lotesDetalhados.sort((a, b) => {
+      const prioridadeStatus: Record<StatusSemaforo, number> = {
+        vermelho: 0,
+        amarelo: 1,
+        cinza: 2,
+        verde: 3,
+      }
+      if (prioridadeStatus[a.status] !== prioridadeStatus[b.status]) {
+        return prioridadeStatus[a.status] - prioridadeStatus[b.status]
+      }
+      return (a.desvioPct ?? 0) - (b.desvioPct ?? 0)
+    })
+
     return {
       totalLotes: lotesEngorda.length,
       totalCabecas,
       gmdRealKg,
       diasSemPesagem,
       semaforo,
+      lotesDetalhados,
     }
   }, [lotesFiltrados, pesagens, bmGmdEngorda])
 
@@ -455,7 +678,21 @@ export function DesempenhoPorFrenteCard({
           {/* 1) CARD FRENTE CRIA                                      */}
           {/* Regra do usuário: avaliada por Taxa de Desmame e kg/matriz */}
           {/* ========================================================= */}
-          <div className="p-4 rounded-xl border bg-card/60 flex flex-col justify-between space-y-3 relative overflow-hidden">
+          <div
+            className={`p-4 rounded-xl border bg-card/60 flex flex-col justify-between space-y-3 relative overflow-hidden transition-all cursor-pointer hover:border-primary/50 ${
+              frenteExpandida === 'cria' ? 'ring-2 ring-primary/40 border-primary' : ''
+            }`}
+            onClick={() => setFrenteExpandida(frenteExpandida === 'cria' ? null : 'cria')}
+            role="button"
+            tabIndex={0}
+            aria-expanded={frenteExpandida === 'cria'}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setFrenteExpandida(frenteExpandida === 'cria' ? null : 'cria')
+              }
+            }}
+          >
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
@@ -538,18 +775,31 @@ export function DesempenhoPorFrenteCard({
               </div>
             </div>
 
-            {/* Posição no Benchmark Exagro */}
+            {/* Posição no Benchmark Exagro & Botão Expansão */}
             <div className="pt-2 border-t border-border/50 text-[11px] flex items-center justify-between text-muted-foreground">
-              <span>
+              <span className="truncate">
                 Ref Exagro: {bmCriaDesmame.valor_referencia}% / {bmCriaKgBezerro.valor_referencia}{' '}
                 kg
               </span>
-              <Badge
-                variant="outline"
-                className="text-[10px] text-purple-600 border-purple-300 font-mono"
-              >
-                TOP: {bmCriaDesmame.valor_top}% / {bmCriaKgBezerro.valor_top} kg
-              </Badge>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] text-purple-600 border-purple-300 font-mono hidden sm:inline-flex"
+                >
+                  TOP: {bmCriaDesmame.valor_top}%
+                </Badge>
+                <span className="flex items-center text-xs font-semibold text-primary gap-0.5">
+                  {frenteExpandida === 'cria' ? (
+                    <>
+                      Recolher <ChevronUp className="w-3.5 h-3.5" />
+                    </>
+                  ) : (
+                    <>
+                      Ver {dadosCria.totalLotes} lotes <ChevronDown className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -557,7 +807,21 @@ export function DesempenhoPorFrenteCard({
           {/* 2) CARD FRENTE RECRIA                                     */}
           {/* GMD vs. Alvo RIP configurado em config_benchmark          */}
           {/* ========================================================= */}
-          <div className="p-4 rounded-xl border bg-card/60 flex flex-col justify-between space-y-3 relative overflow-hidden">
+          <div
+            className={`p-4 rounded-xl border bg-card/60 flex flex-col justify-between space-y-3 relative overflow-hidden transition-all cursor-pointer hover:border-primary/50 ${
+              frenteExpandida === 'recria' ? 'ring-2 ring-primary/40 border-primary' : ''
+            }`}
+            onClick={() => setFrenteExpandida(frenteExpandida === 'recria' ? null : 'recria')}
+            role="button"
+            tabIndex={0}
+            aria-expanded={frenteExpandida === 'recria'}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setFrenteExpandida(frenteExpandida === 'recria' ? null : 'recria')
+              }
+            }}
+          >
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
@@ -630,15 +894,30 @@ export function DesempenhoPorFrenteCard({
               </div>
             </div>
 
-            {/* Posição no Benchmark Exagro */}
+            {/* Posição no Benchmark Exagro & Botão Expansão */}
             <div className="pt-2 border-t border-border/50 text-[11px] flex items-center justify-between text-muted-foreground">
-              <span>Média Exagro: {bmGmdRecria.valor_media.toFixed(3)} kg/dia</span>
-              <Badge
-                variant="outline"
-                className="text-[10px] text-purple-600 border-purple-300 font-mono"
-              >
-                TOP: {bmGmdRecria.valor_top.toFixed(2)} kg/dia
-              </Badge>
+              <span className="truncate">
+                Ref Exagro: {bmGmdRecria.valor_referencia.toFixed(2)} kg/dia
+              </span>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] text-purple-600 border-purple-300 font-mono hidden sm:inline-flex"
+                >
+                  TOP: {bmGmdRecria.valor_top.toFixed(2)} kg/dia
+                </Badge>
+                <span className="flex items-center text-xs font-semibold text-primary gap-0.5">
+                  {frenteExpandida === 'recria' ? (
+                    <>
+                      Recolher <ChevronUp className="w-3.5 h-3.5" />
+                    </>
+                  ) : (
+                    <>
+                      Ver {dadosRecria.totalLotes} lotes <ChevronDown className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -646,7 +925,21 @@ export function DesempenhoPorFrenteCard({
           {/* 3) CARD FRENTE ENGORDA / TIP                              */}
           {/* GMD vs. Alvo Engorda TIP configurado (1,30 kg/dia)         */}
           {/* ========================================================= */}
-          <div className="p-4 rounded-xl border bg-card/60 flex flex-col justify-between space-y-3 relative overflow-hidden">
+          <div
+            className={`p-4 rounded-xl border bg-card/60 flex flex-col justify-between space-y-3 relative overflow-hidden transition-all cursor-pointer hover:border-primary/50 ${
+              frenteExpandida === 'engorda' ? 'ring-2 ring-primary/40 border-primary' : ''
+            }`}
+            onClick={() => setFrenteExpandida(frenteExpandida === 'engorda' ? null : 'engorda')}
+            role="button"
+            tabIndex={0}
+            aria-expanded={frenteExpandida === 'engorda'}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setFrenteExpandida(frenteExpandida === 'engorda' ? null : 'engorda')
+              }
+            }}
+          >
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400">
@@ -719,18 +1012,192 @@ export function DesempenhoPorFrenteCard({
               </div>
             </div>
 
-            {/* Posição no Benchmark Exagro */}
+            {/* Posição no Benchmark Exagro & Botão Expansão */}
             <div className="pt-2 border-t border-border/50 text-[11px] flex items-center justify-between text-muted-foreground">
-              <span>Ref MT/TIP: {bmGmdEngorda.valor_referencia.toFixed(2)} kg/dia</span>
-              <Badge
-                variant="outline"
-                className="text-[10px] text-purple-600 border-purple-300 font-mono"
-              >
-                TOP: {bmGmdEngorda.valor_top.toFixed(3)} kg/dia
-              </Badge>
+              <span className="truncate">
+                Ref MT/TIP: {bmGmdEngorda.valor_referencia.toFixed(2)} kg/dia
+              </span>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] text-purple-600 border-purple-300 font-mono hidden sm:inline-flex"
+                >
+                  TOP: {bmGmdEngorda.valor_top.toFixed(3)} kg/dia
+                </Badge>
+                <span className="flex items-center text-xs font-semibold text-primary gap-0.5">
+                  {frenteExpandida === 'engorda' ? (
+                    <>
+                      Recolher <ChevronUp className="w-3.5 h-3.5" />
+                    </>
+                  ) : (
+                    <>
+                      Ver {dadosEngorda.totalLotes} lotes <ChevronDown className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* ========================================================= */}
+        {/* PAINEL DE DETALHAMENTO EXPANSÍVEL POR LOTE (ITEM 2)       */}
+        {/* Mostra lotes individuais da frente selecionada com semáforo */}
+        {/* Destaca em vermelho os que puxam a média para baixo         */}
+        {/* ========================================================= */}
+        {frenteExpandida && (
+          <div className="p-4 rounded-xl border border-primary/30 bg-muted/20 space-y-3 transition-all animate-in fade-in-50">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-2.5">
+              <div>
+                <h5 className="font-bold text-sm text-foreground flex items-center gap-2">
+                  <span>Detalhamento Individual de Lotes:</span>
+                  <Badge className="bg-primary text-primary-foreground font-semibold uppercase text-[11px]">
+                    {frenteExpandida === 'cria'
+                      ? 'Frente Cria'
+                      : frenteExpandida === 'recria'
+                        ? 'Frente Recria'
+                        : 'Frente Engorda / TIP'}
+                  </Badge>
+                </h5>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Lotes individuais ordenados pelos maiores desvios da meta. Lotes com borda
+                  vermelha estão puxando o semáforo da frente para baixo. Clique para abrir o
+                  desempenho do lote.
+                </p>
+              </div>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setFrenteExpandida(null)}
+                className="h-7 text-xs text-muted-foreground hover:text-foreground"
+              >
+                Fechar detalhamento
+              </Button>
+            </div>
+
+            {/* Listagem de Lotes da Frente */}
+            {(() => {
+              const listaLotes =
+                frenteExpandida === 'cria'
+                  ? dadosCria.lotesDetalhados
+                  : frenteExpandida === 'recria'
+                    ? dadosRecria.lotesDetalhados
+                    : dadosEngorda.lotesDetalhados
+
+              if (!listaLotes || listaLotes.length === 0) {
+                return (
+                  <div className="text-center py-6 text-xs text-muted-foreground italic">
+                    Nenhum lote ativo registrado nesta frente com a segregação selecionada.
+                  </div>
+                )
+              }
+
+              return (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    {listaLotes.map((lote) => {
+                      const isCritico = lote.puxandoParaBaixo
+
+                      return (
+                        <div
+                          key={lote.id}
+                          onClick={() => navigate(`/pesagens?drawerLoteId=${lote.id}`)}
+                          className={`p-3 rounded-lg border bg-card transition-all cursor-pointer hover:shadow-md hover:border-primary flex flex-col justify-between space-y-2 text-xs relative ${
+                            isCritico
+                              ? 'border-destructive/60 bg-destructive/5 dark:bg-destructive/10 ring-1 ring-destructive/40'
+                              : 'border-border/60 hover:bg-accent/40'
+                          }`}
+                          title="Clique para ver perfil do lote"
+                        >
+                          <div className="flex items-start justify-between gap-1.5">
+                            <div>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="font-bold text-foreground text-sm">
+                                  {lote.name}
+                                </span>
+                                {lote.code && (
+                                  <Badge
+                                    variant="outline"
+                                    className="text-[9px] font-mono px-1 py-0"
+                                  >
+                                    {lote.code}
+                                  </Badge>
+                                )}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                {lote.headcount} animais • Fase {lote.fase}
+                                {lote.pasto ? ` • ${lote.pasto}` : ''}
+                              </span>
+                            </div>
+
+                            <div className="shrink-0 flex items-center gap-1">
+                              {renderBadgeSemaforo(
+                                lote.status,
+                                lote.desvioPct,
+                                lote.diasSemPesagem,
+                              )}
+                              <ExternalLink className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground" />
+                            </div>
+                          </div>
+
+                          <div className="p-2 rounded bg-muted/50 border border-border/40 flex items-baseline justify-between">
+                            <div>
+                              <span className="text-[10px] text-muted-foreground uppercase font-mono block">
+                                {lote.indicadorNome}
+                              </span>
+                              <div className="flex items-baseline gap-1 mt-0.5">
+                                <span className="font-bold font-mono text-foreground text-sm">
+                                  {lote.valorReal !== null
+                                    ? lote.unidade === 'kg/dia'
+                                      ? lote.valorReal.toFixed(2)
+                                      : lote.valorReal.toFixed(1)
+                                    : '—'}{' '}
+                                  <span className="text-[10px] font-normal text-muted-foreground">
+                                    {lote.unidade}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="text-right">
+                              <span className="text-[10px] text-muted-foreground font-mono block">
+                                Alvo: {lote.valorAlvo.toFixed(lote.unidade === 'kg/dia' ? 2 : 1)}{' '}
+                                {lote.unidade}
+                              </span>
+                              <span className="font-mono text-[10px] font-bold">
+                                {lote.desvioPct !== null ? (
+                                  lote.desvioPct >= 0 ? (
+                                    <span className="text-emerald-600">
+                                      +{lote.desvioPct.toFixed(1)}%
+                                    </span>
+                                  ) : (
+                                    <span className="text-destructive">
+                                      {lote.desvioPct.toFixed(1)}%
+                                    </span>
+                                  )
+                                ) : (
+                                  <span className="text-muted-foreground italic">sem dados</span>
+                                )}
+                              </span>
+                            </div>
+                          </div>
+
+                          {isCritico && (
+                            <div className="flex items-center gap-1 text-[10px] font-semibold text-destructive">
+                              <AlertCircle className="w-3 h-3 shrink-0" />
+                              <span>Puxando semáforo da frente para baixo</span>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })()}
+          </div>
+        )}
 
         {/* Rodapé explicativo das regras do semáforo Camada 1 */}
         <div className="rounded-lg bg-muted/30 border border-border/50 p-2.5 flex items-center justify-between text-xs text-muted-foreground flex-wrap gap-2">

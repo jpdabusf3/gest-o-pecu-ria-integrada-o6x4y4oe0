@@ -27,7 +27,11 @@ import {
   Minus,
   RefreshCw,
   Sparkles,
+  Download,
+  FileText,
 } from 'lucide-react'
+import { gerarPdfHistoricoBenchmarking } from '@/services/pdfBenchmarking'
+import { useToast } from '@/hooks/use-toast'
 import {
   LineChart,
   Line,
@@ -45,8 +49,10 @@ import {
 } from '@/services/configBenchmark'
 
 export function BenchmarkingHistoricoTab() {
+  const { toast } = useToast()
   const [historico, setHistorico] = useState<ConfigBenchmarkHistoricoRecord[]>([])
   const [loading, setLoading] = useState(true)
+  const [gerandoPdf, setGerandoPdf] = useState(false)
   const [indicadorSelecionado, setIndicadorSelecionado] = useState<string>(
     'prod_arroba_ha_ano_pasto',
   )
@@ -153,6 +159,42 @@ export function BenchmarkingHistoricoTab() {
             </div>
 
             <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="default"
+                onClick={() => {
+                  try {
+                    setGerandoPdf(true)
+                    gerarPdfHistoricoBenchmarking({
+                      nomeFazenda: 'Fazenda F3 — Pecuária Inteligente',
+                      safras,
+                      indicadorFiltroNome: infoIndicadorAtual?.indicador,
+                      unidadeIndicador: infoIndicadorAtual?.unidade,
+                      dadosGrafico,
+                      registros: registrosDetalhados,
+                    })
+                    toast({
+                      title: 'PDF gerado com sucesso!',
+                      description: 'O relatório de evolução de benchmarking foi baixado.',
+                    })
+                  } catch (err) {
+                    console.error('Erro ao gerar PDF:', err)
+                    toast({
+                      title: 'Erro ao gerar PDF',
+                      description: 'Não foi possível compilar o documento PDF.',
+                      variant: 'destructive',
+                    })
+                  } finally {
+                    setGerandoPdf(false)
+                  }
+                }}
+                disabled={loading || gerandoPdf || registrosDetalhados.length === 0}
+                className="h-8 text-xs gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs font-medium"
+              >
+                <Download className={`w-3.5 h-3.5 ${gerandoPdf ? 'animate-bounce' : ''}`} />
+                {gerandoPdf ? 'Gerando PDF...' : 'Exportar PDF'}
+              </Button>
+
               <Button
                 size="sm"
                 variant="outline"

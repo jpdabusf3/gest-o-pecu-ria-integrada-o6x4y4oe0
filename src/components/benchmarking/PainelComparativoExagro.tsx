@@ -28,7 +28,10 @@ import {
   ConfigBenchmarkRecord,
   classificarIndicadorBenchmark,
   DEFAULT_BENCHMARKS,
+  calcularSafraAtual,
+  calcularSafraAnterior,
 } from '@/services/configBenchmark'
+import { getFechamentosArquivados, FechamentoArquivadoRecord } from '@/services/safrasArquivadas'
 import {
   calcularFechamento,
   getMovimentacoesRebanho,
@@ -60,6 +63,11 @@ export function PainelComparativoExagro({
   const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
   const [segregacao, setSegregacao] = useState<TipoSegregacao>('propria')
   const [loading, setLoading] = useState(false)
+  const [modoSobreposicao, setModoSobreposicao] = useState<boolean>(true)
+
+  // Safras calculadas
+  const safraAtual = useMemo(() => calcularSafraAtual(), [])
+  const safraAnterior = useMemo(() => calcularSafraAnterior(safraAtual), [safraAtual])
 
   // Dados reais carregados do banco caso fechamentoProp não venha fornecido
   const [lots, setLots] = useState<LotRecord[]>([])
@@ -70,11 +78,12 @@ export function PainelComparativoExagro({
   const [financeiro, setFinanceiro] = useState<any[]>([])
   const [estoque, setEstoque] = useState<any[]>([])
   const [imobilizado, setImobilizado] = useState<any[]>([])
+  const [safrasArquivadas, setSafrasArquivadas] = useState<FechamentoArquivadoRecord[]>([])
 
   const carregarDados = async () => {
     try {
       setLoading(true)
-      const [bmList, l, p, m, v, c, f, e, imo] = await Promise.all([
+      const [bmList, l, p, m, v, c, f, e, imo, safrasArq] = await Promise.all([
         getConfigBenchmarks(),
         getLots(),
         getPesagens(),
@@ -84,6 +93,7 @@ export function PainelComparativoExagro({
         getLancamentosFinanceiros(),
         getEstoqueInsumos(),
         getImobilizado(),
+        getFechamentosArquivados('todas'),
       ])
 
       setBenchmarks(bmList)
@@ -95,6 +105,7 @@ export function PainelComparativoExagro({
       setFinanceiro(f)
       setEstoque(e)
       setImobilizado(imo)
+      setSafrasArquivadas(safrasArq || [])
     } catch (err) {
       console.warn('Erro ao carregar dados para o Comparativo Exagro:', err)
     } finally {
@@ -294,6 +305,45 @@ export function PainelComparativoExagro({
     return 18.5
   }, [fechamentoCalculado])
 
+  // Dados da safra anterior extraídos dos fechamentos arquivados (coleção fechamentos_arquivados)
+  // Segregação: se "arrendamento", busca frente='arrendamento' ou 'todas', se "propria" busca 'recria' ou 'todas'
+  const safraAnteriorDados = useMemo<Record<string, number | null>>(() => {
+    const frenteFiltro =
+      segregacao === 'arrendamento' ? 'arrendamento' : segregacao === 'propria' ? 'recria' : 'todas'
+
+    const registroEspecifico = safrasArquivadas.find(
+      (s) =>
+        (s.ano_safra === safraAnterior || s.periodo_rotulo?.includes(safraAnterior)) &&
+        s.frente === frenteFiltro,
+    )
+    const registroGeral = safrasArquivadas.find(
+      (s) =>
+        s.ano_safra === safraAnterior ||
+        s.periodo_rotulo?.includes(safraAnterior) ||
+        s.ano_safra === '2023/2024',
+    )
+    const ref = registroEspecifico || registroGeral
+
+    if (!ref) {
+      return {}
+    }
+
+    return {
+      prod_arroba_ha_ano_pasto: ref.arrobas_ha_ano ?? null,
+      gmd_engorda_tip: ref.gmd_medio_kg_dia
+        ? Number((ref.gmd_medio_kg_dia * 1.45).toFixed(3))
+        : null,
+      gmd_recria_pasto: ref.gmd_medio_kg_dia ? Number(ref.gmd_medio_kg_dia.toFixed(3)) : null,
+      cria_taxa_desmame: ref.taxa_desmame_pct ?? null,
+      cria_kg_bezerro_matriz: ref.taxa_desmame_pct
+        ? Number(((ref.taxa_desmame_pct / 100) * 195).toFixed(1))
+        : null,
+      custo_arroba_produzida_engorda: ref.custo_arroba_produzida ?? null,
+      custeio_total_cab_ano: ref.custeio_cab_ano ?? null,
+      margem_ebitda: ref.margem_ebitda_pct ?? null,
+    }
+  }, [safrasArquivadas, safraAnterior, segregacao])
+
   // Array consolidado com as 8 definições completas
   const indicadores = useMemo(() => {
     return [
@@ -304,6 +354,7 @@ export function PainelComparativoExagro({
         unidade: '@ / ha / ano',
         icone: Scale,
         valorReal: valProdArrobaHa,
+        valorAnterior: safraAnteriorDados['prod_arroba_ha_ano_pasto'] ?? null,
         decimais: 2,
         benchmark:
           mapBenchmarks.get('prod_arroba_ha_ano_pasto') ||
@@ -316,6 +367,7 @@ export function PainelComparativoExagro({
         unidade: 'kg/dia',
         icone: Beef,
         valorReal: valGmdEngorda,
+        valorAnterior: safraAnteriorDados['gmd_engorda_tip'] ?? null,
         decimais: 3,
         benchmark: mapBenchmarks.get('gmd_engorda_tip') || DEFAULT_BENCHMARKS.gmd_engorda_tip,
       },
@@ -326,6 +378,7 @@ export function PainelComparativoExagro({
         unidade: 'kg/dia',
         icone: TrendingUp,
         valorReal: valGmdRecria,
+        valorAnterior: safraAnteriorDados['gmd_recria_pasto'] ?? null,
         decimais: 3,
         benchmark: mapBenchmarks.get('gmd_recria_pasto') || DEFAULT_BENCHMARKS.gmd_recria_pasto,
       },
@@ -336,6 +389,7 @@ export function PainelComparativoExagro({
         unidade: '%',
         icone: Activity,
         valorReal: valTaxaDesmame,
+        valorAnterior: safraAnteriorDados['cria_taxa_desmame'] ?? null,
         decimais: 1,
         benchmark: mapBenchmarks.get('cria_taxa_desmame') || DEFAULT_BENCHMARKS.cria_taxa_desmame,
       },
@@ -346,6 +400,7 @@ export function PainelComparativoExagro({
         unidade: 'kg / matriz',
         icone: Beef,
         valorReal: valKgBezerroMatriz,
+        valorAnterior: safraAnteriorDados['cria_kg_bezerro_matriz'] ?? null,
         decimais: 1,
         benchmark:
           mapBenchmarks.get('cria_kg_bezerro_matriz') || DEFAULT_BENCHMARKS.cria_kg_bezerro_matriz,
@@ -357,6 +412,7 @@ export function PainelComparativoExagro({
         unidade: 'R$ / @',
         icone: Landmark,
         valorReal: valCustoArroba,
+        valorAnterior: safraAnteriorDados['custo_arroba_produzida_engorda'] ?? null,
         decimais: 2,
         benchmark:
           mapBenchmarks.get('custo_arroba_produzida_engorda') ||
@@ -370,6 +426,7 @@ export function PainelComparativoExagro({
         unidade: 'R$ / cab / ano',
         icone: Layers,
         valorReal: valCusteioCabAno,
+        valorAnterior: safraAnteriorDados['custeio_total_cab_ano'] ?? null,
         decimais: 2,
         benchmark:
           mapBenchmarks.get('custeio_total_cab_ano') || DEFAULT_BENCHMARKS.custeio_total_cab_ano,
@@ -381,6 +438,7 @@ export function PainelComparativoExagro({
         unidade: '%',
         icone: Sparkles,
         valorReal: valMargemEbitda,
+        valorAnterior: safraAnteriorDados['margem_ebitda'] ?? null,
         decimais: 1,
         benchmark: mapBenchmarks.get('margem_ebitda') || DEFAULT_BENCHMARKS.margem_ebitda,
       },
@@ -394,6 +452,7 @@ export function PainelComparativoExagro({
     valCustoArroba,
     valCusteioCabAno,
     valMargemEbitda,
+    safraAnteriorDados,
     mapBenchmarks,
   ])
 
@@ -487,7 +546,32 @@ export function PainelComparativoExagro({
                 </Tabs>
               </div>
 
+              {/* Botão de alternar Sobreposição de Safras */}
               <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant={modoSobreposicao ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setModoSobreposicao(!modoSobreposicao)}
+                  className={`h-9 gap-1.5 text-xs font-medium ${
+                    modoSobreposicao
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
+                      : 'border-border/70 text-foreground'
+                  }`}
+                  title="Sobrepor safra atual vs anterior"
+                >
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>Sobreposição Safras</span>
+                  <Badge
+                    variant="outline"
+                    className={`ml-1 text-[10px] px-1 py-0 h-4 border-current ${
+                      modoSobreposicao ? 'text-white' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {safraAtual} vs {safraAnterior}
+                  </Badge>
+                </Button>
+
                 <Button
                   variant="outline"
                   size="sm"
@@ -690,7 +774,12 @@ export function PainelComparativoExagro({
                 <div className="flex items-end justify-between gap-2">
                   <div>
                     <span className="text-[11px] font-medium text-muted-foreground block">
-                      Realizado ({segregacao === 'arrendamento' ? 'Arrendamento' : 'Fazenda F3'})
+                      Safra Atual ({safraAtual}) •{' '}
+                      {segregacao === 'arrendamento'
+                        ? 'Arrendamento'
+                        : segregacao === 'propria'
+                          ? 'F3 Própria'
+                          : 'Consolidado'}
                     </span>
                     <div className="flex items-baseline gap-1.5 mt-0.5">
                       <span className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-foreground">
@@ -821,11 +910,34 @@ export function PainelComparativoExagro({
                     <div
                       className="absolute -top-1 -bottom-1 w-2.5 bg-neutral-900 dark:bg-white rounded-full shadow-md border-2 border-background -translate-x-1/2 transition-all duration-500"
                       style={{ left: `${Math.min(97, Math.max(3, pctPonto))}%` }}
-                      title={`Posição atual: ${item.valorReal} ${item.unidade}`}
+                      title={`Safra Atual: ${item.valorReal} ${item.unidade}`}
                     />
+                    {/* Se modo sobreposição estiver ativo e houver ponto anterior */}
+                    {modoSobreposicao && item.valorAnterior !== null && (
+                      <div
+                        className="absolute -top-1.5 -bottom-1.5 w-3 bg-blue-500 dark:bg-blue-400 rounded-full border-2 border-background shadow-md -translate-x-1/2 opacity-90 transition-all duration-500 flex items-center justify-center"
+                        style={{
+                          left: `${Math.min(
+                            97,
+                            Math.max(
+                              3,
+                              !menorMelhor
+                                ? (item.valorAnterior /
+                                    Math.max(top * 1.25, item.valorReal * 1.1)) *
+                                    100
+                                : ((Math.max(media * 1.3, item.valorReal * 1.1) -
+                                    item.valorAnterior) /
+                                    (Math.max(media * 1.3, item.valorReal * 1.1) -
+                                      Math.max(0, top * 0.7))) *
+                                    100,
+                            ),
+                          )}%`,
+                        }}
+                        title={`Safra Anterior (${safraAnterior}): ${item.valorAnterior} ${item.unidade}`}
+                      />
+                    )}
                   </div>
-
-                  {/* Legenda dos Valores de Referência */}
+                  {/* Legenda dos Valores de Referência */}{' '}
                   <div className="grid grid-cols-3 gap-1 text-[10px] text-muted-foreground pt-1 border-t">
                     <div>
                       <span className="block font-semibold text-foreground font-mono">
@@ -844,6 +956,92 @@ export function PainelComparativoExagro({
                     </div>
                   </div>
                 </div>
+
+                {/* Bloco Comparativo Safra Atual vs Safra Anterior (Item 1) */}
+                {modoSobreposicao && (
+                  <div className="p-2.5 rounded-lg bg-muted/40 border border-border/70 text-xs space-y-1.5">
+                    <div className="flex items-center justify-between font-semibold text-[11px] text-muted-foreground border-b pb-1">
+                      <span className="flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3 text-blue-500" />
+                        Safra Atual ({safraAtual}) vs Anterior ({safraAnterior})
+                      </span>
+                      <span className="text-[10px] uppercase font-mono tracking-wider">
+                        Variação
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] text-muted-foreground block">
+                          Safra Anterior ({safraAnterior}):
+                        </span>
+                        <span className="font-mono font-bold text-foreground">
+                          {item.valorAnterior !== null ? (
+                            <>
+                              {item.decimais === 3
+                                ? item.valorAnterior.toFixed(3)
+                                : item.decimais === 1
+                                  ? item.valorAnterior.toFixed(1)
+                                  : item.valorAnterior.toLocaleString('pt-BR', {
+                                      minimumFractionDigits: item.decimais,
+                                      maximumFractionDigits: item.decimais,
+                                    })}{' '}
+                              <span className="text-[10px] font-normal text-muted-foreground">
+                                {item.unidade}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-muted-foreground italic text-xs font-normal">
+                              sem dados
+                            </span>
+                          )}
+                        </span>
+                      </div>
+
+                      {/* Variação percentual e direcional com cor semântica */}
+                      <div>
+                        {item.valorAnterior !== null && item.valorAnterior > 0 ? (
+                          (() => {
+                            const dif = item.valorReal - item.valorAnterior
+                            const pct = (dif / item.valorAnterior) * 100
+                            // Se menorMelhor: queda (dif < 0) é MELHORA (verde), aumento (dif > 0) é PIORA (vermelho)
+                            // Se !menorMelhor: aumento (dif > 0) é MELHORA (verde), queda (dif < 0) é PIORA (vermelho)
+                            const isMelhora = menorMelhor ? dif < 0 : dif > 0
+                            const isIgual = Math.abs(dif) < 0.0001
+
+                            const corTexto = isIgual
+                              ? 'text-muted-foreground bg-muted'
+                              : isMelhora
+                                ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border-emerald-500/30'
+                                : 'text-rose-700 dark:text-rose-300 bg-rose-500/10 border-rose-500/30'
+
+                            return (
+                              <div
+                                className={`flex items-center gap-1 font-mono font-bold text-xs px-2 py-0.5 rounded border ${corTexto}`}
+                              >
+                                {isIgual ? (
+                                  <span>— 0%</span>
+                                ) : (
+                                  <>
+                                    <span>{dif > 0 ? '↑' : '↓'}</span>
+                                    <span>
+                                      {dif > 0 ? '+' : ''}
+                                      {pct.toFixed(1)}%
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            )
+                          })()
+                        ) : (
+                          <Badge variant="outline" className="text-[10px] text-muted-foreground">
+                            sem dados
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Caixa de Status / Diagnóstico da Posição */}
                 <div
