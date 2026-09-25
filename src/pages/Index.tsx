@@ -44,6 +44,7 @@ import {
 import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
+import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
@@ -349,6 +350,9 @@ export default function Index() {
           </Card>
         )}
       </div>
+
+      {/* Painel de GMD Estimado vs. Real & Semáforo de Desvio */}
+      <TopDesvioGmdCard />
 
       {/* Resumo do Rebanho (Herd Statement) */}
       <Card className="col-span-full bg-gradient-to-br from-card to-card/50">

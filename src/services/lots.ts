@@ -1,5 +1,8 @@
 import pb from '@/lib/pocketbase/client'
 
+export type FaseLote = 'cria' | 'recria' | 'engorda' | 'tip_rip' | 'confinamento'
+export type FrenteLote = 'cria' | 'recria' | 'engorda' | 'arrendamento'
+
 export interface LotRecord {
   id: string
   name: string
@@ -21,6 +24,12 @@ export interface LotRecord {
   rendimento_carcaca_pct?: number
   peso_medio_atual?: number
   pasto_atual?: string
+  // GMD Alvo & Gestão Pecuária Exagro
+  gmd_alvo_g_dia?: number
+  data_inicio_lote?: string
+  fase_atual?: FaseLote
+  frente?: FrenteLote
+  is_arrendamento?: boolean
   created: string
   updated: string
 }

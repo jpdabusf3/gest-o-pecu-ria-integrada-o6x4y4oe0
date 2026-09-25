@@ -46,6 +46,10 @@ import {
 } from '@/services/pesagens'
 import { ScaleIntegrationModal, BatchWeightItem } from '@/components/ScaleIntegrationModal'
 import { ScannerModal } from '@/components/ScannerModal'
+import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
+import { EditarMetaLoteModal } from '@/components/gmd/EditarMetaLoteModal'
+import { SemaforoGmdBadge } from '@/components/gmd/SemaforoGmdBadge'
+import { calcularDesvioGMD, calcularSemaforoGMD, analisarLoteGMD } from '@/services/gmdAlertas'
 import { formatWeight, formatNumber } from '@/lib/utils'
 import { format, parseISO, differenceInDays } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -90,6 +94,12 @@ export default function Pesagens() {
   const [filtroCategoria, setFiltroCategoria] = useState<string>('all')
   const [filtroTipo, setFiltroTipo] = useState<string>('all')
   const [buscaTermo, setBuscaTermo] = useState<string>('')
+
+  // Drawer de Desempenho e Modal de Meta
+  const [drawerLoteId, setDrawerLoteId] = useState<string | null>(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [loteParaMeta, setLoteParaMeta] = useState<LotRecord | null>(null)
+  const [modalMetaOpen, setModalMetaOpen] = useState(false)
 
   // Estado do Modal de Nova Pesagem
   const [modalOpen, setModalOpen] = useState(false)
@@ -660,10 +670,12 @@ export default function Pesagens() {
                         </span>
                       </div>
                       <div className="bg-muted/40 p-2 rounded col-span-2 sm:col-span-1">
-                        <span className="text-muted-foreground block">GMD Estimado:</span>
-                        <span className="font-semibold text-emerald-600 text-sm">
+                        <span className="text-muted-foreground block">
+                          GMD Real vs Meta ({activeModalLot?.gmd_alvo_g_dia || 900} g/d):
+                        </span>
+                        <span className="font-semibold text-emerald-600 text-sm flex items-center gap-1.5">
                           {gmdPreview?.gmd !== null && gmdPreview?.gmd !== undefined
-                            ? `${gmdPreview.gmd} kg/d`
+                            ? `${gmdPreview.gmd} kg/d (${calcularDesvioGMD(gmdPreview.gmd, (activeModalLot?.gmd_alvo_g_dia || 900) / 1000)}%)`
                             : 'Primeira pesagem'}
                         </span>
                       </div>
@@ -917,14 +929,28 @@ export default function Pesagens() {
                   <TableHead className="text-right">Var. (kg / @)</TableHead>
                   <TableHead className="text-right">Dias Interv.</TableHead>
                   <TableHead className="text-right">GMD Interv.</TableHead>
+                  <TableHead className="text-right">GDC Carcaça</TableHead>
+                  <TableHead className="text-right">Desvio vs Meta</TableHead>
+                  <TableHead>Semáforo</TableHead>
                   <TableHead>Origem</TableHead>
-                  <TableHead>Responsável</TableHead>
-                  <TableHead className="w-10"></TableHead>
+                  <TableHead className="w-16"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {pesagensFiltradas.map((pesagem) => {
                   const lote = pesagem.expand?.lote_id || lots.find((l) => l.id === pesagem.lote_id)
+                  const metaG = lote?.gmd_alvo_g_dia || 900
+                  const metaKg = metaG / 1000
+                  const gmd = pesagem.gmd_intervalo
+                  const desvio =
+                    typeof gmd === 'number' && gmd > 0 ? calcularDesvioGMD(gmd, metaKg) : null
+                  const semaforo = calcularSemaforoGMD(desvio, null)
+                  const rendimento = lote?.rendimento_carcaca_pct || 0
+                  const gdc =
+                    typeof gmd === 'number' && gmd > 0 && rendimento > 0
+                      ? Number((gmd * (rendimento / 100)).toFixed(3))
+                      : null
+
                   const variacaoKg =
                     pesagem.peso_anterior_kg !== undefined && pesagem.peso_anterior_kg !== null
                       ? Number((pesagem.peso_medio_kg - pesagem.peso_anterior_kg).toFixed(1))
@@ -940,11 +966,20 @@ export default function Pesagens() {
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
-                          <span className="font-semibold text-primary">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (lote) {
+                                setDrawerLoteId(lote.id)
+                                setDrawerOpen(true)
+                              }
+                            }}
+                            className="font-semibold text-primary hover:underline text-left"
+                          >
                             {lote?.name || 'Lote Não Identificado'}
-                          </span>
+                          </button>
                           <span className="text-xs text-muted-foreground">
-                            {lote?.category || lote?.sector || ''}
+                            {lote?.category || lote?.sector || ''} • Meta: {metaG} g/d
                           </span>
                         </div>
                       </TableCell>
@@ -995,6 +1030,35 @@ export default function Pesagens() {
                           <span className="text-muted-foreground text-xs">Inicial</span>
                         )}
                       </TableCell>
+                      <TableCell className="text-right whitespace-nowrap font-mono text-xs">
+                        {gdc ? (
+                          <span className="text-purple-600 font-semibold">
+                            {Math.round(gdc * 1000)} g/d
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right whitespace-nowrap font-mono text-xs font-semibold">
+                        {desvio !== null ? (
+                          <span
+                            className={
+                              desvio >= -10
+                                ? 'text-emerald-600'
+                                : desvio >= -20
+                                  ? 'text-amber-600'
+                                  : 'text-destructive'
+                            }
+                          >
+                            {desvio > 0 ? `+${desvio}%` : `${desvio}%`}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <SemaforoGmdBadge status={semaforo} desvioPct={desvio} />
+                      </TableCell>
                       <TableCell>
                         <Badge
                           variant="outline"
@@ -1007,19 +1071,32 @@ export default function Pesagens() {
                           {pesagem.origem === 'balanca' ? 'Balança' : 'Manual'}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                        {pesagem.responsavel_id || 'Operador'}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                          onClick={() => handleDelete(pesagem.id)}
-                          title="Excluir pesagem"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-primary"
+                            onClick={() => {
+                              if (lote) {
+                                setDrawerLoteId(lote.id)
+                                setDrawerOpen(true)
+                              }
+                            }}
+                            title="Ver Desempenho / Gráfico"
+                          >
+                            <TrendingUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                            onClick={() => handleDelete(pesagem.id)}
+                            title="Excluir pesagem"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   )
@@ -1037,6 +1114,17 @@ export default function Pesagens() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Drawer de Desempenho do Lote */}
+      <LotPerformanceDrawer loteId={drawerLoteId} open={drawerOpen} onOpenChange={setDrawerOpen} />
+
+      {/* Modal de Configuração de Meta do Lote */}
+      <EditarMetaLoteModal
+        lote={loteParaMeta}
+        open={modalMetaOpen}
+        onOpenChange={setModalMetaOpen}
+        onSuccess={loadData}
+      />
     </div>
   )
 }

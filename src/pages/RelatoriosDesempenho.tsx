@@ -15,6 +15,7 @@ import { performanceByCategory } from '@/data/mock'
 import { LineChart as LineChartIcon, Activity } from 'lucide-react'
 import { SupplierPerformanceTab } from '@/components/reports/SupplierPerformanceTab'
 import { BenchmarkingTab } from '@/components/reports/BenchmarkingTab'
+import { RelatorioMensalGMD } from '@/components/gmd/RelatorioMensalGMD'
 
 export default function RelatoriosDesempenho() {
   const [categoria, setCategoria] = useState('Vacas de corte')
@@ -43,7 +44,10 @@ export default function RelatoriosDesempenho() {
       </div>
 
       <Tabs defaultValue="categoria" className="space-y-6">
-        <TabsList className="grid w-full sm:flex sm:w-auto grid-cols-1 sm:grid-cols-3 h-auto">
+        <TabsList className="grid w-full sm:flex sm:w-auto grid-cols-2 sm:grid-cols-4 h-auto">
+          <TabsTrigger value="mensal_gmd" className="py-2 font-semibold">
+            Fechamento GMD (Exagro)
+          </TabsTrigger>
           <TabsTrigger value="categoria" className="py-2">
             Evolução por Categoria
           </TabsTrigger>
@@ -54,6 +58,10 @@ export default function RelatoriosDesempenho() {
             Performance de Fornecedores
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="mensal_gmd" className="mt-0">
+          <RelatorioMensalGMD />
+        </TabsContent>
 
         <TabsContent value="categoria" className="mt-0">
           <Card className="border shadow-sm">

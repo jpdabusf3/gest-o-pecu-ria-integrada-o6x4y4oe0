@@ -19,6 +19,8 @@ import { DateRange } from 'react-day-picker'
 import { FilterBar } from '@/components/reports/FilterBar'
 import { InterventionModal } from '@/components/reports/InterventionModal'
 import { PerformanceDashboard } from '@/components/reports/PerformanceDashboard'
+import { RelatorioMensalGMD } from '@/components/gmd/RelatorioMensalGMD'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 type HistoryItem = (typeof managementHistory)[0]
 
@@ -109,99 +111,116 @@ export default function Relatorios() {
         </Link>
       </div>
 
-      <FilterBar
-        dateRange={dateRange}
-        setDateRange={setDateRange}
-        typeFilter={typeFilter}
-        setTypeFilter={setTypeFilter}
-        selectedLot={selectedLot}
-        setSelectedLot={setSelectedLot}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        uniqueTypes={uniqueTypes}
-        uniqueLots={uniqueLots}
-      />
+      <Tabs defaultValue="gmd_mensal" className="space-y-6">
+        <TabsList className="grid grid-cols-1 sm:grid-cols-2 w-full sm:w-[480px]">
+          <TabsTrigger value="gmd_mensal" className="font-semibold">
+            Fechamento Mensal GMD (Exagro)
+          </TabsTrigger>
+          <TabsTrigger value="intervencoes">Log de Intervenções & Manejo</TabsTrigger>
+        </TabsList>
 
-      <Card>
-        <CardHeader className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b pb-4">
-          <div>
-            <CardTitle>Log de Intervenções e Atividades</CardTitle>
-            <CardDescription>Clique em um registro para ver os detalhes completos</CardDescription>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExportPDF}
-              className="gap-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
-            >
-              <FileText className="h-4 w-4" /> Exportar PDF
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExportExcel}
-              className="gap-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 border-emerald-200"
-            >
-              <FileSpreadsheet className="h-4 w-4" /> Exportar Excel
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="px-6 w-[180px]">Data</TableHead>
-                  <TableHead className="w-[150px]">Tipo</TableHead>
-                  <TableHead className="w-[180px]">Alvo / Lote</TableHead>
-                  <TableHead className="min-w-[250px]">Descrição</TableHead>
-                  <TableHead className="w-[180px]">Responsável</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredHistory.map((item) => (
-                  <TableRow
-                    key={item.id}
-                    className="cursor-pointer hover:bg-muted/50 transition-colors"
-                    onClick={() => setSelectedIntervention(item)}
-                  >
-                    <TableCell className="whitespace-nowrap font-medium px-6">
-                      {item.data}{' '}
-                      {item.hora && (
-                        <span className="text-xs text-muted-foreground ml-1">{item.hora}</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="whitespace-nowrap">
-                        {item.tipo}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-semibold text-primary whitespace-nowrap">
-                      {item.alvo}
-                    </TableCell>
-                    <TableCell className="min-w-[250px] max-w-sm whitespace-normal break-words">
-                      {item.descricao}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground whitespace-nowrap">
-                      {item.responsavel}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {filteredHistory.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                      Nenhum registro encontrado com os filtros atuais.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+        <TabsContent value="gmd_mensal" className="mt-0">
+          <RelatorioMensalGMD />
+        </TabsContent>
 
-      <PerformanceDashboard selectedLot={selectedLot} />
+        <TabsContent value="intervencoes" className="mt-0 space-y-6">
+          <FilterBar
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            typeFilter={typeFilter}
+            setTypeFilter={setTypeFilter}
+            selectedLot={selectedLot}
+            setSelectedLot={setSelectedLot}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            uniqueTypes={uniqueTypes}
+            uniqueLots={uniqueLots}
+          />
+
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b pb-4">
+              <div>
+                <CardTitle>Log de Intervenções e Atividades</CardTitle>
+                <CardDescription>
+                  Clique em um registro para ver os detalhes completos
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportPDF}
+                  className="gap-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
+                >
+                  <FileText className="h-4 w-4" /> Exportar PDF
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportExcel}
+                  className="gap-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 border-emerald-200"
+                >
+                  <FileSpreadsheet className="h-4 w-4" /> Exportar Excel
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="px-6 w-[180px]">Data</TableHead>
+                      <TableHead className="w-[150px]">Tipo</TableHead>
+                      <TableHead className="w-[180px]">Alvo / Lote</TableHead>
+                      <TableHead className="min-w-[250px]">Descrição</TableHead>
+                      <TableHead className="w-[180px]">Responsável</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredHistory.map((item) => (
+                      <TableRow
+                        key={item.id}
+                        className="cursor-pointer hover:bg-muted/50 transition-colors"
+                        onClick={() => setSelectedIntervention(item)}
+                      >
+                        <TableCell className="whitespace-nowrap font-medium px-6">
+                          {item.data}{' '}
+                          {item.hora && (
+                            <span className="text-xs text-muted-foreground ml-1">{item.hora}</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="whitespace-nowrap">
+                            {item.tipo}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-semibold text-primary whitespace-nowrap">
+                          {item.alvo}
+                        </TableCell>
+                        <TableCell className="min-w-[250px] max-w-sm whitespace-normal break-words">
+                          {item.descricao}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground whitespace-nowrap">
+                          {item.responsavel}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {filteredHistory.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                          Nenhum registro encontrado com os filtros atuais.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+
+          <PerformanceDashboard selectedLot={selectedLot} />
+        </TabsContent>
+      </Tabs>
 
       <InterventionModal
         intervention={selectedIntervention}

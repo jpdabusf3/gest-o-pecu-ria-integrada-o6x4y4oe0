@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T04:40:08.366Z",
+  "generatedAt": "2026-09-25T04:50:13.779Z",
   "collections": [
     {
       "name": "users",
@@ -211,6 +211,38 @@
         {
           "name": "pasto_atual",
           "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gmd_alvo_g_dia",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_inicio_lote",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "fase_atual",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "tip_rip", "confinamento"]
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "arrendamento"]
+        },
+        {
+          "name": "is_arrendamento",
+          "type": "bool",
           "required": false,
           "system": false
         }
@@ -494,6 +526,105 @@
         }
       ],
       "indexes": ["CREATE INDEX idx_pesagens_lote ON pesagens (lote_id, data_pesagem DESC)"]
+    },
+    {
+      "name": "alertas_gmd",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "desvio_pct",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["aberto", "resolvido"]
+        },
+        {
+          "name": "causa",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "contramedida",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gmd_real",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gmd_alvo",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ciclos_consecutivos",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resolvido_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resolvido_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_alertas_gmd_lote ON alertas_gmd (lote_id, status)",
+        "CREATE INDEX idx_alertas_gmd_data ON alertas_gmd (data DESC)"
+      ]
     }
   ]
 }

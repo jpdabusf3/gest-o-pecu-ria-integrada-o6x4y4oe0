@@ -1,6 +1,7 @@
 import pb from '@/lib/pocketbase/client'
-import { LotRecord, updateLot } from './lots'
+import { LotRecord, updateLot, getLot } from './lots'
 import { differenceInDays, parseISO } from 'date-fns'
+import { calcularDesvioGMD, criarAlertaGMD, getAlertasGMD } from './gmdAlertas'
 
 export interface PesagemRecord {
   id: string
@@ -194,7 +195,7 @@ export async function createPesagem(input: PesagemInput): Promise<PesagemRecord>
     expand: 'lote_id',
   })
 
-  // 2. Atualizar peso médio atual do lote
+  // 2. Atualizar peso médio atual do lote e verificar metas de GMD
   try {
     const lotUpdates: Partial<LotRecord> = {
       peso_medio_atual: input.peso_medio_kg,
@@ -211,9 +212,53 @@ export async function createPesagem(input: PesagemInput): Promise<PesagemRecord>
       }
     }
 
-    await updateLot(input.lote_id, lotUpdates)
+    const updatedLot = await updateLot(input.lote_id, lotUpdates)
+
+    // 3. Regra de Alerta Persistente:
+    // Se GMD foi calculado e o lote tem meta de GMD, verificar desvio.
+    // Desvio > 20% abaixo da meta (desvio_pct <= -20) por 2 ciclos consecutivos gera alerta_gmd aberto.
+    if (gmdCalc.gmd !== null && gmdCalc.gmd !== undefined) {
+      const gmdAlvoG = updatedLot.gmd_alvo_g_dia || 900
+      const gmdAlvoKg = gmdAlvoG / 1000
+      const desvioAtual = calcularDesvioGMD(gmdCalc.gmd, gmdAlvoKg)
+
+      if (desvioAtual <= -20) {
+        // Checar se a pesagem anterior válida também esteve abaixo de -20%
+        const sortedPrevious = previousRecords
+          .filter(
+            (p) =>
+              typeof p.gmd_intervalo === 'number' &&
+              p.gmd_intervalo !== null &&
+              p.gmd_intervalo > 0,
+          )
+          .sort((a, b) => new Date(b.data_pesagem).getTime() - new Date(a.data_pesagem).getTime())
+
+        const penultima = sortedPrevious[0] // anterior à atual
+        const desvioAnterior = penultima
+          ? calcularDesvioGMD(penultima.gmd_intervalo!, gmdAlvoKg)
+          : null
+
+        // Se tem 2 ciclos consecutivos com desvio <= -20%
+        if (desvioAnterior !== null && desvioAnterior <= -20) {
+          // Verificar se já não existe alerta aberto para esse lote
+          const alertasExistentes = await getAlertasGMD(
+            `lote_id = '${input.lote_id}' && status = 'aberto'`,
+          )
+          if (alertasExistentes.length === 0) {
+            await criarAlertaGMD({
+              lote_id: input.lote_id,
+              data: input.data_pesagem,
+              desvio_pct: desvioAtual,
+              gmd_real: Math.round(gmdCalc.gmd * 1000),
+              gmd_alvo: gmdAlvoG,
+              ciclos_consecutivos: 2,
+            })
+          }
+        }
+      }
+    }
   } catch (err) {
-    console.warn('Erro ao atualizar peso médio do lote:', err)
+    console.warn('Erro ao atualizar peso médio/alertas do lote:', err)
   }
 
   return created
