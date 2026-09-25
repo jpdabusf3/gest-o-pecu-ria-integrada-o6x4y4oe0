@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,10 +24,15 @@ import {
   Archive,
   TrendingUp,
   History,
-  Check,
-  AlertCircle,
+  Sparkles,
   ArrowUpRight,
   ArrowDownRight,
+  Info,
+  Calendar,
+  Layers,
+  Scale,
+  DollarSign,
+  HelpCircle,
 } from 'lucide-react'
 import {
   FechamentoArquivadoRecord,
@@ -37,6 +42,19 @@ import {
 import { FrenteFechamento } from '@/services/fechamento'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
+import { calcularProjecaoSafra, ProjecaoSafraResult } from '@/services/projecaoSafra'
+import { getLots } from '@/services/lots'
+import { getPesagens } from '@/services/pesagens'
+import {
+  getMovimentacoesRebanho,
+  getVendas,
+  getComprasGado,
+  getLancamentosFinanceiros,
+  getEstoqueInsumos,
+  getImobilizado,
+} from '@/services/fechamento'
+import { getConfigBenchmarks, ConfigBenchmarkRecord } from '@/services/configBenchmark'
+import { formatCurrency, formatNumber } from '@/lib/utils'
 
 interface ComparativoSafrasProps {
   frente: FrenteFechamento
@@ -45,23 +63,60 @@ interface ComparativoSafrasProps {
 
 export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoSafrasProps) {
   const [safras, setSafras] = useState<FechamentoArquivadoRecord[]>([])
+  const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
+  const [projecao, setProjecao] = useState<ProjecaoSafraResult | null>(null)
   const [loading, setLoading] = useState(true)
   const [arquivando, setArquivando] = useState(false)
+  const [mostrarBaseCalculo, setMostrarBaseCalculo] = useState(false)
   const { toast } = useToast()
   const { user } = useAuth()
 
-  const carregarSafras = async () => {
+  const carregarDados = async () => {
     try {
       setLoading(true)
-      const data = await getFechamentosArquivados(frente)
-      setSafras(data)
+      const [safrasData, bmList, l, p, m, v, c, f, e, imo] = await Promise.all([
+        getFechamentosArquivados(frente),
+        getConfigBenchmarks(),
+        getLots(),
+        getPesagens(),
+        getMovimentacoesRebanho(),
+        getVendas(),
+        getComprasGado(),
+        getLancamentosFinanceiros(),
+        getEstoqueInsumos(),
+        getImobilizado(),
+      ])
+
+      setSafras(safrasData || [])
+      setBenchmarks(bmList || [])
+
+      // Calcula a projeção da safra atual em andamento para esta frente
+      const proj = calcularProjecaoSafra({
+        lots: l,
+        pesagens: p,
+        movimentacoes: m,
+        vendas: v,
+        compras: c,
+        financeiro: f,
+        estoque: e,
+        imobilizado: imo,
+        benchmarks: bmList,
+        frente: frente,
+        segregacao:
+          frente === 'arrendamento'
+            ? 'arrendamento'
+            : frente === 'todas'
+              ? 'consolidada'
+              : 'propria',
+      })
+      setProjecao(proj)
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    carregarSafras()
+    carregarDados()
   }, [frente])
 
   const handleArquivarSafraAtual = async () => {
@@ -100,7 +155,7 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
         title: 'Fechamento de Safra Arquivado!',
         description: `Snapshot da Safra ${safraRotulo} registrado na coleção com sucesso.`,
       })
-      await carregarSafras()
+      await carregarDados()
     } catch (err: any) {
       toast({
         title: 'Erro ao Arquivar',
@@ -112,14 +167,32 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
     }
   }
 
-  const chartData = safras.map((s) => ({
-    safra: s.ano_safra,
-    arrobasHa: s.arrobas_ha_ano,
-    arrobasCab: s.arrobas_cab_ano,
-    custoArroba: s.custo_arroba_produzida,
-    margemEbitda: s.margem_ebitda_pct || 0,
-    gmdKgDia: s.gmd_medio_kg_dia || 0,
-  }))
+  // Prepara dados do gráfico combinando histórico realizado + Safra Atual Projetada
+  const chartData = useMemo(() => {
+    const pontos = safras.map((s) => ({
+      safra: s.ano_safra,
+      tipo: 'Realizado',
+      arrobasHa: s.arrobas_ha_ano,
+      arrobasCab: s.arrobas_cab_ano,
+      custoArroba: s.custo_arroba_produzida,
+      margemEbitda: s.margem_ebitda_pct || 0,
+      gmdKgDia: s.gmd_medio_kg_dia || 0,
+    }))
+
+    if (projecao) {
+      pontos.push({
+        safra: `${projecao.anoSafra} (Proj.)`,
+        tipo: 'Projeção',
+        arrobasHa: projecao.projetado.arrobasPorHaAno,
+        arrobasCab: projecao.projetado.arrobasPorCabAno,
+        custoArroba: projecao.projetado.custoArrobaProduzida,
+        margemEbitda: projecao.projetado.margemEbitdaPct || 0,
+        gmdKgDia: projecao.projetado.gmdMedioKgDia || 0,
+      })
+    }
+
+    return pontos
+  }, [safras, projecao])
 
   return (
     <div className="space-y-6">
@@ -129,12 +202,12 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
           <div className="flex items-center gap-2">
             <History className="h-5 w-5 text-primary" />
             <h3 className="text-base font-bold text-foreground">
-              Comparativo Histórico entre Safras (Ano a Ano)
+              Comparativo Histórico entre Safras & Projeção da Safra Atual
             </h3>
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Evolução zootécnica e financeira comparando safras arquivadas no PocketBase (@/ha,
-            @/cab, custo/@ e EBITDA)
+            Evolução zootécnica e financeira comparando safras arquivadas no PocketBase ao lado da{' '}
+            <strong>projeção de fechamento da safra atual em andamento</strong>.
           </p>
         </div>
 
@@ -148,6 +221,228 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
           {arquivando ? 'Arquivando...' : 'Arquivar Safra Atual'}
         </Button>
       </div>
+
+      {/* BLOCO DESTACADO: PROJEÇÃO DA SAFRA ATUAL EM ANDAMENTO */}
+      {projecao && (
+        <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/5 via-card to-card shadow-sm">
+          <CardHeader className="p-4 pb-2 border-b">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-base font-bold text-foreground">
+                      Safra Atual em Andamento ({projecao.anoSafra}) — Projeção de Fechamento
+                    </CardTitle>
+                    <Badge
+                      variant="outline"
+                      className="bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-400/40 text-[10px] font-mono uppercase"
+                    >
+                      Em Andamento
+                    </Badge>
+                  </div>
+                  <CardDescription className="text-xs">
+                    Base: acumulado de {projecao.periodoRotulo} extrapolado para 365 dias (safra{' '}
+                    <strong>{projecao.percentualSafraPercorrido.toFixed(1)}% percorrida</strong>,{' '}
+                    {projecao.diasDecorridos} de {projecao.diasTotaisSafra} dias)
+                  </CardDescription>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setMostrarBaseCalculo(!mostrarBaseCalculo)}
+                  className="h-7 text-xs gap-1 border-muted-foreground/30"
+                >
+                  <Info className="w-3.5 h-3.5 text-primary" />
+                  {mostrarBaseCalculo ? 'Ocultar Memória de Cálculo' : 'Ver Memória de Cálculo'}
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className="p-4 space-y-4">
+            {/* Grid dos Principais Indicadores Projetados vs Realizado */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+              <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                  @ / ha / ano (Proj.)
+                </span>
+                <span className="text-xl font-black font-mono text-emerald-600 block">
+                  {projecao.projetado.arrobasPorHaAno.toFixed(2)} @
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  acum: {projecao.acumulado.arrobasPorHa.toFixed(2)} @/ha
+                </span>
+                <Badge
+                  className={`text-[9px] px-1 py-0 ${projecao.classificacaoArrobasHaAno.cor}`}
+                  variant="outline"
+                >
+                  {projecao.classificacaoArrobasHaAno.label.split('(')[0]}
+                </Badge>
+              </div>
+
+              <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                  Custo / @ (Proj.)
+                </span>
+                <span className="text-xl font-black font-mono text-foreground block">
+                  {formatCurrency(projecao.projetado.custoArrobaProduzida)}
+                </span>
+                <span className="text-[10px] text-muted-foreground block">sem reposição</span>
+                <Badge
+                  className={`text-[9px] px-1 py-0 ${projecao.classificacaoCustoArroba.cor}`}
+                  variant="outline"
+                >
+                  {projecao.classificacaoCustoArroba.label.split('(')[0]}
+                </Badge>
+              </div>
+
+              <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                  @ / cab / ano (Proj.)
+                </span>
+                <span className="text-xl font-black font-mono text-foreground block">
+                  {projecao.projetado.arrobasPorCabAno.toFixed(2)} @
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  rebanho: {projecao.rebanhoMedioCab} cab
+                </span>
+                <span className="text-[10px] text-emerald-600 font-semibold block">
+                  acum: {projecao.acumulado.arrobasPorCab.toFixed(2)} @
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                  Total @ Projetado
+                </span>
+                <span className="text-xl font-black font-mono text-primary block">
+                  {projecao.projetado.arrobasProduzidasTotal.toLocaleString('pt-BR')} @
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  acumulado: {projecao.acumulado.arrobasProduzidasTotal.toLocaleString('pt-BR')} @
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  fator: ×{projecao.fatorAnualizacao}
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                  Margem EBITDA (Proj.)
+                </span>
+                <span className="text-xl font-black font-mono text-purple-600 dark:text-purple-400 block">
+                  {projecao.projetado.margemEbitdaPct.toFixed(1)}%
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  EBITDA: {formatCurrency(projecao.projetado.ebitdaRs)}
+                </span>
+                <span className="text-[10px] text-emerald-600 font-semibold block">
+                  Margem Saudável
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                  Área Pastoril Base
+                </span>
+                <span className="text-xl font-black font-mono text-foreground block">
+                  {projecao.areaPastorilConsideradaHa} ha
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  {projecao.segregacao === 'propria'
+                    ? 'Fazenda Própria'
+                    : projecao.segregacao === 'arrendamento'
+                      ? 'Arrendamento'
+                      : 'Consolidado'}
+                </span>
+                <span className="text-[10px] text-muted-foreground block">
+                  divisor de produtividade
+                </span>
+              </div>
+            </div>
+
+            {/* Painel de Memória de Cálculo Expansível (Requisito 3) */}
+            {mostrarBaseCalculo && (
+              <div className="p-3 rounded-lg border bg-muted/30 text-xs space-y-2 animate-fade-in">
+                <div className="font-bold text-foreground flex items-center gap-1.5">
+                  <Info className="w-4 h-4 text-primary" />
+                  <span>Memória de Cálculo e Auditoria da Projeção de Safra:</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                  <div className="p-2.5 rounded bg-card border space-y-1">
+                    <span className="font-bold text-foreground block">
+                      1. Dias Decorridos vs 365
+                    </span>
+                    <p className="text-muted-foreground text-[11px]">
+                      Início da safra: <strong>{projecao.inicioSafraIso}</strong>
+                      <br />
+                      Data de corte: <strong>{projecao.dataCorteIso}</strong>
+                      <br />
+                      Dias decorridos: <strong>{projecao.diasDecorridos} dias</strong>
+                      <br />
+                      Fator de Anualização:{' '}
+                      <strong>
+                        {projecao.diasTotaisSafra} ÷ {projecao.diasDecorridos} ={' '}
+                        {projecao.fatorAnualizacao}
+                      </strong>
+                    </p>
+                  </div>
+
+                  <div className="p-2.5 rounded bg-card border space-y-1">
+                    <span className="font-bold text-foreground block">
+                      2. @ Acumuladas e Extrapolação
+                    </span>
+                    <p className="text-muted-foreground text-[11px]">
+                      @ Produzidas Acumuladas:{' '}
+                      <strong>{projecao.acumulado.arrobasProduzidasTotal} @</strong>
+                      <br />@ Projetadas (12 meses):{' '}
+                      <strong>{projecao.projetado.arrobasProduzidasTotal} @</strong>
+                      <br />
+                      Área pastoril: <strong>{projecao.areaPastorilConsideradaHa} ha</strong>
+                      <br />
+                      @/ha/ano Projetado:{' '}
+                      <strong className="text-emerald-600">
+                        {projecao.projetado.arrobasPorHaAno.toFixed(2)} @/ha/ano
+                      </strong>
+                    </p>
+                  </div>
+
+                  <div className="p-2.5 rounded bg-card border space-y-1">
+                    <span className="font-bold text-foreground block">
+                      3. Custos Acumulados e Custo/@
+                    </span>
+                    <p className="text-muted-foreground text-[11px]">
+                      Custo Op. Acumulado:{' '}
+                      <strong>
+                        {formatCurrency(projecao.acumulado.custoOperacionalSemReposicaoRs)}
+                      </strong>
+                      <br />
+                      Custo Op. Anual Projetado:{' '}
+                      <strong>
+                        {formatCurrency(projecao.projetado.custoOperacionalSemReposicaoRs)}
+                      </strong>
+                      <br />
+                      Custo/@ Projetado:{' '}
+                      <strong className="text-amber-600">
+                        {formatCurrency(projecao.projetado.custoArrobaProduzida)} / @
+                      </strong>
+                      <br />
+                      Referência Exagro: <strong>R$ 199,59/@</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {loading ? (
         <div className="p-8 text-center text-sm text-muted-foreground">
@@ -164,16 +459,16 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
         </Card>
       ) : (
         <>
-          {/* Gráficos de Evolução Multissafra */}
+          {/* Gráficos de Evolução Multissafra com Projeção Inclusa */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="shadow-xs">
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="text-sm font-bold flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-primary" />
-                  Produtividade: @/ha/ano e @/cab/ano
+                  Produtividade: @/ha/ano e @/cab/ano (Histórico + Projeção)
                 </CardTitle>
                 <CardDescription className="text-xs">
-                  Evolução do desfrute físico e ganho zootécnico por safra
+                  Evolução do desfrute físico e ganho zootécnico por safra com fechamento projetado
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-4 pt-2">
@@ -255,14 +550,17 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
             </Card>
           </div>
 
-          {/* Tabela Comparativa Detalhada */}
+          {/* Tabela Comparativa Detalhada com Safra Projetada ao Lado */}
           <Card className="shadow-xs">
             <CardHeader className="p-4 pb-2">
-              <CardTitle className="text-sm font-bold">
-                Tabela Consolidada de Indicadores Multissafra
+              <CardTitle className="text-sm font-bold flex items-center justify-between">
+                <span>Tabela Consolidada Multissafra: Realizado vs. Projeção Atual</span>
+                <Badge variant="outline" className="text-xs font-mono">
+                  Padrão Exagro
+                </Badge>
               </CardTitle>
               <CardDescription className="text-xs">
-                Base comparativa histórica oficial Padrão Exagro
+                Base comparativa histórica oficial Padrão Exagro com projeção da safra em andamento
               </CardDescription>
             </CardHeader>
             <CardContent className="p-4 pt-0">
@@ -271,6 +569,7 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                   <TableHeader>
                     <TableRow>
                       <TableHead>Safra</TableHead>
+                      <TableHead className="text-center">Tipo</TableHead>
                       <TableHead className="text-center">@/ha/ano</TableHead>
                       <TableHead className="text-center">@/cab/ano</TableHead>
                       <TableHead className="text-center">GMD Médio (kg/dia)</TableHead>
@@ -281,6 +580,7 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                     </TableRow>
                   </TableHeader>
                   <TableBody>
+                    {/* Linhas das Safras Arquivadas Realizadas */}
                     {safras.map((s, idx) => {
                       const anterior = safras[idx - 1]
                       const diffCusto = anterior
@@ -296,6 +596,11 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                                 {s.periodo_rotulo}
                               </span>
                             )}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge variant="secondary" className="text-[10px]">
+                              Realizado
+                            </Badge>
                           </TableCell>
                           <TableCell className="text-center font-mono font-bold text-emerald-600">
                             {s.arrobas_ha_ano.toFixed(1)} @
@@ -343,6 +648,56 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                         </TableRow>
                       )
                     })}
+
+                    {/* Linha Especial da Safra Atual em Andamento (PROJETADA) */}
+                    {projecao && (
+                      <TableRow className="bg-primary/5 font-semibold border-t-2 border-primary/30">
+                        <TableCell className="font-bold text-primary">
+                          {projecao.anoSafra}
+                          <span className="block text-[10px] font-normal text-muted-foreground">
+                            Projeção ({projecao.periodoRotulo} extrapolado)
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Badge className="bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-400 text-[10px]">
+                            Projetado
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-center font-mono font-bold text-emerald-600">
+                          {projecao.projetado.arrobasPorHaAno.toFixed(2)} @
+                        </TableCell>
+                        <TableCell className="text-center font-mono">
+                          {projecao.projetado.arrobasPorCabAno.toFixed(2)} @
+                        </TableCell>
+                        <TableCell className="text-center font-mono">
+                          {(projecao.projetado.gmdMedioKgDia || 0.88).toFixed(2)} kg/dia
+                        </TableCell>
+                        <TableCell className="text-center font-mono font-bold text-amber-700 dark:text-amber-300">
+                          R$ {projecao.projetado.custoArrobaProduzida.toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-center font-mono">
+                          <Badge
+                            variant={
+                              projecao.projetado.margemEbitdaPct >= 20 ? 'default' : 'secondary'
+                            }
+                            className="text-xs"
+                          >
+                            {projecao.projetado.margemEbitdaPct.toFixed(1)}%
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-center font-mono">
+                          {(projecao.rebanhoMedioCab / projecao.areaPastorilConsideradaHa).toFixed(
+                            2,
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-bold text-primary">
+                          R${' '}
+                          {projecao.projetado.ebitdaRs.toLocaleString('pt-BR', {
+                            minimumFractionDigits: 2,
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </div>

@@ -16,6 +16,7 @@ import {
   ArrowRight,
   ShieldCheck,
 } from 'lucide-react'
+import { CardProjecaoSafra } from '@/components/gestor/CardProjecaoSafra'
 import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
 import { MedidorBenchmarkAnualCard } from '@/components/gmd/MedidorBenchmarkAnualCard'
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
@@ -215,6 +216,19 @@ export default function Index() {
 
       {/* Central de Notificações do Gestor em Tempo Real (In-App) */}
       <CentralNotificacoesGestor />
+
+      {/* Card Principal: Projeção de Safra Atual (@/ha/ano e Custo/@ no fechamento) */}
+      <CardProjecaoSafra
+        lots={lots}
+        pesagens={pesagens}
+        movimentacoes={movimentacoes}
+        vendas={vendas}
+        compras={compras}
+        financeiro={financeiro}
+        estoque={estoque}
+        imobilizado={imobilizado}
+        benchmarks={benchmarks}
+      />
 
       {/* Cabeçalho Consolidado com Status e Ações Rápidas */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-card p-5 rounded-2xl border shadow-sm">

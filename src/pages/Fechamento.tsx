@@ -378,8 +378,13 @@ export default function Fechamento() {
         {/* Card 2: @ / ha / ano */}
         <Card className="border-l-4 border-l-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20 shadow-sm relative overflow-hidden">
           <CardHeader className="pb-1 pt-4">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
-              Desfrute @ / Ha / Ano
+            <CardDescription className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+              <span>Desfrute @ / Ha / Ano</span>
+              {tipoPeriodo === 'safra' && (
+                <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-semibold lowercase">
+                  proj. fechamento
+                </span>
+              )}
             </CardDescription>
             <CardTitle className="text-3xl font-black text-foreground font-mono flex items-baseline gap-1">
               {resultado.arrobasPorHaAno.toLocaleString('pt-BR', { minimumFractionDigits: 1 })}
@@ -394,7 +399,7 @@ export default function Fechamento() {
               variant="outline"
               className="text-emerald-700 bg-emerald-50 border-emerald-200 text-[10px] font-bold"
             >
-              +5.2% desfrute
+              {tipoPeriodo === 'safra' ? 'Safra Atual' : '+5.2% desfrute'}
             </Badge>
           </CardContent>
         </Card>
