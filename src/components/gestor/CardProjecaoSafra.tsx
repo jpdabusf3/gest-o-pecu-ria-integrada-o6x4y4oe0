@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -19,12 +19,18 @@ import {
   Info,
   ChevronDown,
   ChevronUp,
+  LineChart,
+  Wallet,
+  RefreshCw,
+  Clock,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import {
   ProjecaoSafraResult,
   calcularProjecaoSafra,
   SegregacaoArrendamento,
+  TipoCenarioProjecao,
+  CenarioProjecaoItem,
 } from '@/services/projecaoSafra'
 import { ConfigBenchmarkRecord } from '@/services/configBenchmark'
 import { LotRecord } from '@/services/lots'
@@ -37,7 +43,8 @@ import {
   EstoqueInsumoRecord,
   ImobilizadoRecord,
 } from '@/services/fechamento'
-import { formatCurrency, formatNumber } from '@/lib/utils'
+import { getCotacaoB3BoiGordoVigente, type CotacaoB3BoiGordoVigente } from '@/services/market'
+import { formatCurrency, formatNumber, cn } from '@/lib/utils'
 
 interface CardProjecaoSafraProps {
   lots: LotRecord[]
@@ -66,9 +73,35 @@ export function CardProjecaoSafra({
 }: CardProjecaoSafraProps) {
   const [segregacao, setSegregacao] = useState<SegregacaoArrendamento>('consolidada')
   const [mostrarBaseCalculo, setMostrarBaseCalculo] = useState<boolean>(false)
+  const [cenarioAtivo, setCenarioAtivo] = useState<TipoCenarioProjecao>('realista')
+  const [cotacaoB3, setCotacaoB3] = useState<CotacaoB3BoiGordoVigente | null>(null)
 
-  // Executa o cálculo da projeção usando o acumulado real
+  // Cotação B3 vigente do Boi Gordo (serviço centralizado, mesma fonte usada no Hedge)
+  useEffect(() => {
+    let montado = true
+    getCotacaoB3BoiGordoVigente()
+      .then((c) => {
+        if (montado) setCotacaoB3(c)
+      })
+      .catch(() => {
+        if (montado)
+          setCotacaoB3({
+            preco: 245.0,
+            dataReferencia: new Date().toISOString(),
+            origem: 'fallback',
+            regiao: 'B3',
+            desatualizada: false,
+            diasAtraso: 0,
+          })
+      })
+    return () => {
+      montado = false
+    }
+  }, [])
+
+  // Executa o cálculo da projeção usando o acumulado real + cotação B3 vigente
   const projecao: ProjecaoSafraResult = useMemo(() => {
+    const preco = cotacaoB3?.preco ?? 245.0
     return calcularProjecaoSafra({
       lots,
       pesagens,
@@ -81,7 +114,11 @@ export function CardProjecaoSafra({
       benchmarks,
       segregacao,
       frente: 'todas',
-      cotacaoArroba: 245.0,
+      cotacaoArroba: preco,
+      cotacaoB3DataReferencia: cotacaoB3?.dataReferencia,
+      cotacaoB3Desatualizada: cotacaoB3?.desatualizada ?? false,
+      cotacaoB3DiasAtraso: cotacaoB3?.diasAtraso ?? 0,
+      cotacaoB3Origem: cotacaoB3?.origem ?? 'b3_real',
     })
   }, [
     lots,
@@ -94,8 +131,11 @@ export function CardProjecaoSafra({
     imobilizado,
     benchmarks,
     segregacao,
+    cotacaoB3,
   ])
 
+  // Cenário ativo exibido no bloco de simulações
+  const cenarioAtivoItem: CenarioProjecaoItem = projecao.cenarios[cenarioAtivo]
   const clProd = projecao.classificacaoArrobasHaAno
   const clCusto = projecao.classificacaoCustoArroba
   const faixasProd = clProd.faixas
@@ -560,6 +600,401 @@ export function CardProjecaoSafra({
           </div>
         </div>
 
+        {/* PROJEÇÃO DE RECEITA: @ projetado × Cotação B3 vigente do Boi Gordo */}
+        <div className="p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 space-y-3">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                <Wallet className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                  Projeção de Receita de Fechamento da Safra
+                </span>
+                <h4 className="text-sm font-bold text-foreground">
+                  @ projetada × Cotação B3 Boi Gordo vigente
+                </h4>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge
+                variant="outline"
+                className="bg-background text-blue-700 dark:text-blue-300 border-blue-400/40 font-mono text-[11px] px-2"
+              >
+                B3: {formatCurrency(projecao.cotacaoB3.preco)}/@
+              </Badge>
+              <Badge
+                variant="outline"
+                className={cn(
+                  'font-mono text-[10px] px-2',
+                  projecao.cotacaoB3.desatualizada
+                    ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-400/40'
+                    : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-400/40',
+                )}
+              >
+                <Clock className="w-3 h-3 mr-1" />
+                {projecao.cotacaoB3.desatualizada
+                  ? `Atualizada há ${projecao.cotacaoB3.diasAtraso} dia(s)`
+                  : 'Cotação vigente'}
+              </Badge>
+              {cotacaoB3?.dataReferencia && (
+                <span className="text-[10px] font-mono text-muted-foreground hidden md:inline">
+                  ref:{' '}
+                  {new Date(cotacaoB3.dataReferencia).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {projecao.cotacaoB3.desatualizada && (
+            <div className="p-2 rounded-lg border border-amber-400/40 bg-amber-500/10 text-[11px] text-amber-800 dark:text-amber-200 flex items-center gap-2">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              <span>
+                A cotação B3 disponível está desatualizada (última referência registrada{' '}
+                {cotacaoB3?.diasAtraso ?? 0} dia(s) atrás). A receita projetada usa o último preço
+                conhecido de {formatCurrency(projecao.cotacaoB3.preco)}/@.
+              </span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="p-3 rounded-lg border bg-card text-center space-y-1">
+              <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                @ Projetada
+              </span>
+              <span className="text-xl font-black font-mono text-foreground block">
+                {projecao.projetado.arrobasProduzidasTotal.toLocaleString('pt-BR')} @
+              </span>
+              <span className="text-[10px] text-muted-foreground block">
+                acumulado: {projecao.acumulado.arrobasProduzidasTotal.toLocaleString('pt-BR')} @
+              </span>
+            </div>
+
+            <div className="p-3 rounded-lg border bg-card text-center space-y-1">
+              <span className="text-[10px] font-bold uppercase text-muted-foreground block">
+                Cotação B3 Vigente
+              </span>
+              <span className="text-xl font-black font-mono text-blue-600 dark:text-blue-400 block">
+                {formatCurrency(projecao.cotacaoB3.preco)}
+              </span>
+              <span className="text-[10px] text-muted-foreground block">por arroba (@)</span>
+            </div>
+
+            <div className="p-3 rounded-lg border bg-blue-500/10 border-blue-500/40 text-center space-y-1">
+              <span className="text-[10px] font-bold uppercase text-blue-700 dark:text-blue-300 block">
+                Receita Projetada (B3)
+              </span>
+              <span className="text-xl font-black font-mono text-blue-700 dark:text-blue-300 block">
+                {formatCurrency(projecao.receitaProjetadaB3Rs)}
+              </span>
+              <span className="text-[10px] text-muted-foreground block">
+                Resultado operacional:{' '}
+                <strong
+                  className={
+                    projecao.resultadoOperacionalProjetadoRs >= 0
+                      ? 'text-emerald-600'
+                      : 'text-destructive'
+                  }
+                >
+                  {formatCurrency(projecao.resultadoOperacionalProjetadoRs)}
+                </strong>
+              </span>
+            </div>
+          </div>
+
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            <strong className="text-foreground">Fórmula:</strong> Receita Projetada = @ Projetada ×
+            Cotação B3 Vigente ({projecao.projetado.arrobasProduzidasTotal.toLocaleString('pt-BR')}{' '}
+            @ × {formatCurrency(projecao.cotacaoB3.preco)}/@ ={' '}
+            {formatCurrency(projecao.receitaProjetadaB3Rs)}). Resultado Operacional = Receita
+            Projetada − Custo Operacional Projetado (
+            {formatCurrency(projecao.projetado.custoOperacionalSemReposicaoRs)}).
+          </p>
+        </div>
+
+        {/* CENÁRIOS DE PROJEÇÃO: Otimista / Realista / Pessimista (GMD × Custo) */}
+        <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 space-y-3">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
+                <LineChart className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                  Cenários de Projeção de Safra
+                </span>
+                <h4 className="text-sm font-bold text-foreground">
+                  Simulação Otimista / Realista / Pessimista
+                </h4>
+              </div>
+            </div>
+
+            <div className="flex items-center bg-muted/70 p-0.5 rounded-lg border">
+              <Tabs
+                value={cenarioAtivo}
+                onValueChange={(v) => setCenarioAtivo(v as TipoCenarioProjecao)}
+              >
+                <TabsList className="h-7 bg-transparent p-0 gap-0.5">
+                  <TabsTrigger
+                    value="otimista"
+                    className="h-6 text-[11px] font-medium px-2.5 data-[state=active]:bg-background data-[state=active]:shadow-xs text-emerald-700 dark:text-emerald-400"
+                  >
+                    Otimista
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="realista"
+                    className="h-6 text-[11px] font-medium px-2.5 data-[state=active]:bg-background data-[state=active]:shadow-xs text-blue-600 dark:text-blue-400"
+                  >
+                    Realista
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="pessimista"
+                    className="h-6 text-[11px] font-medium px-2.5 data-[state=active]:bg-background data-[state=active]:shadow-xs text-rose-600 dark:text-rose-400"
+                  >
+                    Pessimista
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+          </div>
+
+          <Badge
+            variant="outline"
+            className="bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-400/40 text-[10px] font-mono uppercase"
+          >
+            Simulação — Projeção Estimada
+          </Badge>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {/* Card do Cenário Ativo (maior destaque) */}
+            <div className="p-3 rounded-lg border-2 border-primary/50 bg-card space-y-2 md:col-span-1 shadow-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-foreground uppercase tracking-wider">
+                  {cenarioAtivo === 'otimista'
+                    ? 'Otimista'
+                    : cenarioAtivo === 'realista'
+                      ? 'Realista (Base)'
+                      : 'Pessimista'}
+                </span>
+                <Badge variant="outline" className="text-[9px] font-mono px-1 py-0">
+                  {cenarioAtivoItem.variacaoGmdPct >= 0 ? '+' : ''}
+                  {cenarioAtivoItem.variacaoGmdPct.toFixed(0)}% GMD ·{' '}
+                  {cenarioAtivoItem.variacaoCustoPct >= 0 ? '+' : ''}
+                  {cenarioAtivoItem.variacaoCustoPct.toFixed(0)}% Custo
+                </Badge>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-center">
+                <div className="p-2 rounded bg-muted/30">
+                  <span className="text-[9px] text-muted-foreground uppercase block font-bold">
+                    GMD
+                  </span>
+                  <span className="text-base font-black font-mono text-foreground block">
+                    {cenarioAtivoItem.gmdMedioKgDia.toFixed(2)}
+                  </span>
+                  <span className="text-[9px] text-muted-foreground block">kg/dia</span>
+                </div>
+                <div className="p-2 rounded bg-muted/30">
+                  <span className="text-[9px] text-muted-foreground uppercase block font-bold">
+                    Custo/@
+                  </span>
+                  <span className="text-base font-black font-mono text-foreground block">
+                    {formatCurrency(cenarioAtivoItem.custoArrobaProduzida)}
+                  </span>
+                  <span className="text-[9px] text-muted-foreground block">por @</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-center">
+                <div className="p-2 rounded bg-muted/30">
+                  <span className="text-[9px] text-muted-foreground uppercase block font-bold">
+                    @/ha/ano
+                  </span>
+                  <span
+                    className={cn(
+                      'text-base font-black font-mono block',
+                      cenarioAtivoItem.classificacaoArrobasHaAno.status === 'verde'
+                        ? 'text-emerald-600'
+                        : cenarioAtivoItem.classificacaoArrobasHaAno.status === 'amarelo'
+                          ? 'text-amber-600'
+                          : 'text-rose-600',
+                    )}
+                  >
+                    {cenarioAtivoItem.arrobasPorHaAno.toFixed(2)}
+                  </span>
+                  <span className="text-[9px] text-muted-foreground block">projetado</span>
+                </div>
+                <div className="p-2 rounded bg-muted/30">
+                  <span className="text-[9px] text-muted-foreground uppercase block font-bold">
+                    Receita B3
+                  </span>
+                  <span className="text-base font-black font-mono text-blue-600 dark:text-blue-400 block">
+                    {formatCurrency(cenarioAtivoItem.receitaProjetadaB3Rs)}
+                  </span>
+                  <span className="text-[9px] text-muted-foreground block">
+                    {cenarioAtivoItem.arrobasProduzidasTotal.toLocaleString('pt-BR', {
+                      maximumFractionDigits: 0,
+                    })}{' '}
+                    @
+                  </span>
+                </div>
+              </div>
+
+              <div
+                className={cn(
+                  'p-2 rounded-lg border text-xs flex items-center justify-between',
+                  cenarioAtivoItem.classificacaoArrobasHaAno.cor,
+                )}
+              >
+                <span className="font-semibold">
+                  {cenarioAtivoItem.classificacaoArrobasHaAno.label.split('(')[0]}
+                </span>
+                <span className="font-mono text-[11px] font-bold">
+                  <span
+                    className={
+                      cenarioAtivoItem.resultadoLiquidoRs >= 0
+                        ? 'text-emerald-700 dark:text-emerald-300'
+                        : 'text-destructive'
+                    }
+                  >
+                    {formatCurrency(cenarioAtivoItem.resultadoLiquidoRs)}
+                  </span>
+                </span>
+              </div>
+
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                {cenarioAtivoItem.descricao}
+              </p>
+            </div>
+
+            {/* Resumo compacto dos três cenários */}
+            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {(['otimista', 'realista', 'pessimista'] as TipoCenarioProjecao[]).map((tipo) => {
+                const c = projecao.cenarios[tipo]
+                const ativo = tipo === cenarioAtivo
+                return (
+                  <button
+                    type="button"
+                    key={tipo}
+                    onClick={() => setCenarioAtivo(tipo)}
+                    className={cn(
+                      'p-3 rounded-lg border text-left space-y-1.5 transition-all hover:shadow-xs text-card-foreground',
+                      ativo
+                        ? 'border-primary/60 bg-primary/5 ring-1 ring-primary/30'
+                        : 'border-border bg-card',
+                    )}
+                  >
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                        {tipo === 'otimista'
+                          ? 'Otimista'
+                          : tipo === 'realista'
+                            ? 'Realista'
+                            : 'Pessimista'}
+                      </span>
+                      <Badge
+                        variant="outline"
+                        className={cn(
+                          'text-[9px] px-1 py-0 font-mono',
+                          c.classificacaoArrobasHaAno.cor,
+                        )}
+                      >
+                        {c.classificacaoArrobasHaAno.label.split('(')[0]}
+                      </Badge>
+                    </div>
+
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-sm font-black font-mono text-foreground">
+                        {c.arrobasPorHaAno.toFixed(2)} @/ha
+                      </span>
+                      <span
+                        className={cn(
+                          'text-[10px] font-mono font-bold',
+                          tipo === 'otimista'
+                            ? 'text-emerald-600'
+                            : tipo === 'realista'
+                              ? 'text-blue-600'
+                              : 'text-rose-600',
+                        )}
+                      >
+                        {c.variacaoGmdPct >= 0 ? '+' : ''}
+                        {c.variacaoGmdPct.toFixed(0)}% GMD
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline justify-between text-[10px]">
+                      <span className="text-muted-foreground">
+                        Custo/@:{' '}
+                        <strong className="text-foreground font-mono">
+                          {formatCurrency(c.custoArrobaProduzida)}
+                        </strong>
+                      </span>
+                      <span className="text-muted-foreground">
+                        {c.variacaoCustoPct >= 0 ? '+' : ''}
+                        {c.variacaoCustoPct.toFixed(0)}%
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline justify-between text-[10px] pt-1 border-t">
+                      <span className="text-muted-foreground">Receita B3:</span>
+                      <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                        {formatCurrency(c.receitaProjetadaB3Rs)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline justify-between text-[10px]">
+                      <span className="text-muted-foreground">Resultado:</span>
+                      <span
+                        className={cn(
+                          'font-mono font-bold',
+                          c.resultadoLiquidoRs >= 0 ? 'text-emerald-600' : 'text-destructive',
+                        )}
+                      >
+                        {formatCurrency(c.resultadoLiquidoRs)}
+                      </span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Planejamento de Venda Antecipada */}
+          <div className="p-3 rounded-lg border bg-card space-y-2">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-xs font-bold text-foreground">
+                Planejamento de Venda Antecipada (Insight de Cenários)
+              </span>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Comparando os cenários com a cotação B3 vigente (
+              {formatCurrency(projecao.cotacaoB3.preco)}/@):
+              <br />• No cenário <strong className="text-emerald-600">otimista</strong>, a safra
+              fecha com receita de{' '}
+              <strong className="text-emerald-600 font-mono">
+                {formatCurrency(projecao.cenarios.otimista.receitaProjetadaB3Rs)}
+              </strong>{' '}
+              (GMD {projecao.cenarios.otimista.gmdMedioKgDia.toFixed(2)} kg/dia). Vale antecipar
+              vendas com preço travado em B3 se o mercado oferece{' '}
+              {formatCurrency(projecao.cotacaoB3.preco)}/@ ou mais.
+              <br />• No cenário <strong className="text-blue-600">realista</strong>, a receita
+              projetada é{' '}
+              <strong className="font-mono">
+                {formatCurrency(projecao.cenarios.realista.receitaProjetadaB3Rs)}
+              </strong>
+              . Se o resultado do pessimista (
+              {formatCurrency(projecao.cenarios.pessimista.resultadoLiquidoRs)}) comprometer margem,
+              considerar antecipar parcela do desfrute.
+            </p>
+          </div>
+        </div>
+
         {/* Resumo de Indicadores Complementares da Projeção */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
           <div className="p-2.5 rounded-lg border bg-muted/20">
@@ -679,8 +1114,7 @@ export function CardProjecaoSafra({
                   </p>
                 </div>
               </div>
-
-              {/* Tabela Resumo das Variáveis Utilizadas */}
+              {/* Tabela Resumo das Variáveis Utilizadas */}{' '}
               <div className="border rounded-lg overflow-x-auto bg-card">
                 <table className="w-full text-[11px]">
                   <thead className="bg-muted/60 text-muted-foreground border-b font-semibold">
@@ -746,6 +1180,41 @@ export function CardProjecaoSafra({
                       <td className="py-1.5 px-3 text-center">—</td>
                       <td className="py-1.5 px-3 text-right font-bold">
                         {projecao.rebanhoMedioCab} cabeças
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1.5 px-3 font-sans font-medium text-foreground">
+                        Cotação B3 Vigente (Boi Gordo)
+                      </td>
+                      <td className="py-1.5 px-3 text-center">
+                        {formatCurrency(projecao.cotacaoB3.preco)} / @
+                      </td>
+                      <td className="py-1.5 px-3 text-center">
+                        ref:{' '}
+                        {cotacaoB3?.dataReferencia
+                          ? new Date(cotacaoB3.dataReferencia).toLocaleDateString('pt-BR', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                            })
+                          : '—'}
+                      </td>
+                      <td className="py-1.5 px-3 text-right font-bold text-blue-600">
+                        {formatCurrency(projecao.cotacaoB3.preco)} / @
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1.5 px-3 font-sans font-medium text-foreground">
+                        Receita Projetada (@ × B3)
+                      </td>
+                      <td className="py-1.5 px-3 text-center">
+                        {projecao.projetado.arrobasProduzidasTotal.toLocaleString('pt-BR')} @
+                      </td>
+                      <td className="py-1.5 px-3 text-center">
+                        × {formatCurrency(projecao.cotacaoB3.preco)} / @
+                      </td>
+                      <td className="py-1.5 px-3 text-right font-bold text-blue-600">
+                        {formatCurrency(projecao.receitaProjetadaB3Rs)}
                       </td>
                     </tr>
                   </tbody>

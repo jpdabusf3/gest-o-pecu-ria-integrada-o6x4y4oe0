@@ -42,7 +42,13 @@ import {
 import { FrenteFechamento } from '@/services/fechamento'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
-import { calcularProjecaoSafra, ProjecaoSafraResult } from '@/services/projecaoSafra'
+import {
+  calcularProjecaoSafra,
+  ProjecaoSafraResult,
+  TipoCenarioProjecao,
+} from '@/services/projecaoSafra'
+import { getCotacaoB3BoiGordoVigente, type CotacaoB3BoiGordoVigente } from '@/services/market'
+import { cn } from '@/lib/utils'
 import { getLots } from '@/services/lots'
 import { getPesagens } from '@/services/pesagens'
 import {
@@ -68,6 +74,8 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
   const [loading, setLoading] = useState(true)
   const [arquivando, setArquivando] = useState(false)
   const [mostrarBaseCalculo, setMostrarBaseCalculo] = useState(false)
+  const [cotacaoB3, setCotacaoB3] = useState<CotacaoB3BoiGordoVigente | null>(null)
+  const [cenarioAtivo, setCenarioAtivo] = useState<TipoCenarioProjecao>('realista')
   const { toast } = useToast()
   const { user } = useAuth()
 
@@ -108,6 +116,11 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
             : frente === 'todas'
               ? 'consolidada'
               : 'propria',
+        cotacaoArroba: cotacaoB3?.preco ?? 245.0,
+        cotacaoB3DataReferencia: cotacaoB3?.dataReferencia,
+        cotacaoB3Desatualizada: cotacaoB3?.desatualizada ?? false,
+        cotacaoB3DiasAtraso: cotacaoB3?.diasAtraso ?? 0,
+        cotacaoB3Origem: cotacaoB3?.origem ?? 'b3_real',
       })
       setProjecao(proj)
     } finally {
@@ -115,9 +128,32 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
     }
   }
 
+  // Cotação B3 vigente do Boi Gordo (mesmo serviço centralizado usado no dashboard)
+  useEffect(() => {
+    let montado = true
+    getCotacaoB3BoiGordoVigente()
+      .then((c) => {
+        if (montado) setCotacaoB3(c)
+      })
+      .catch(() => {
+        if (montado)
+          setCotacaoB3({
+            preco: 245.0,
+            dataReferencia: new Date().toISOString(),
+            origem: 'fallback',
+            regiao: 'B3',
+            desatualizada: false,
+            diasAtraso: 0,
+          })
+      })
+    return () => {
+      montado = false
+    }
+  }, [])
+
   useEffect(() => {
     carregarDados()
-  }, [frente])
+  }, [frente, cotacaoB3])
 
   const handleArquivarSafraAtual = async () => {
     if (!dadosFechamentoAtual) return
@@ -366,6 +402,125 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                   divisor de produtividade
                 </span>
               </div>
+            </div>
+
+            {/* CENÁRIOS + RECEITA B3 da safra atual (simulação, Projeção Estimada) */}
+            <div className="p-3 rounded-lg border border-primary/30 bg-primary/5 space-y-3">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-bold text-foreground">
+                    Cenários de Projeção & Receita B3 Vigente
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className="bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-400/40 text-[9px] font-mono uppercase"
+                  >
+                    Simulação — Projeção Estimada
+                  </Badge>
+                </div>
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge
+                    variant="outline"
+                    className="bg-background text-blue-700 dark:text-blue-300 border-blue-400/40 font-mono text-[10px]"
+                  >
+                    B3: {formatCurrency(projecao.cotacaoB3.preco)}/@
+                    {cotacaoB3?.dataReferencia &&
+                      ` · ref. ${new Date(cotacaoB3.dataReferencia).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                      })}`}
+                  </Badge>
+                  {projecao.cotacaoB3.desatualizada && (
+                    <Badge
+                      variant="outline"
+                      className="bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-400/40 text-[10px]"
+                    >
+                      cotação desatualizada ({projecao.cotacaoB3.diasAtraso}d)
+                    </Badge>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {(['otimista', 'realista', 'pessimista'] as TipoCenarioProjecao[]).map((tipo) => {
+                  const c = projecao.cenarios[tipo]
+                  return (
+                    <button
+                      type="button"
+                      key={tipo}
+                      onClick={() => setCenarioAtivo(tipo)}
+                      className={cn(
+                        'p-2.5 rounded-lg border text-left space-y-1 transition-all text-card-foreground',
+                        cenarioAtivo === tipo
+                          ? 'border-primary/60 bg-primary/5 ring-1 ring-primary/30'
+                          : 'border-border bg-card hover:shadow-xs',
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                          {tipo === 'otimista'
+                            ? 'Otimista'
+                            : tipo === 'realista'
+                              ? 'Realista'
+                              : 'Pessimista'}
+                        </span>
+                        <span className="text-[9px] font-mono text-muted-foreground">
+                          {c.variacaoGmdPct >= 0 ? '+' : ''}
+                          {c.variacaoGmdPct.toFixed(0)}% GMD · {c.variacaoCustoPct >= 0 ? '+' : ''}
+                          {c.variacaoCustoPct.toFixed(0)}% custo
+                        </span>
+                      </div>
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-sm font-black font-mono text-foreground">
+                          {c.arrobasPorHaAno.toFixed(2)} @/ha
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className={cn('text-[9px] px-1 py-0', c.classificacaoArrobasHaAno.cor)}
+                        >
+                          {c.classificacaoArrobasHaAno.label.split('(')[0]}
+                        </Badge>
+                      </div>
+                      <div className="flex items-baseline justify-between text-[10px]">
+                        <span className="text-muted-foreground">
+                          GMD {c.gmdMedioKgDia.toFixed(2)} kg/dia · Custo/@{' '}
+                          <strong className="text-foreground font-mono">
+                            {formatCurrency(c.custoArrobaProduzida)}
+                          </strong>
+                        </span>
+                      </div>
+                      <div className="flex items-baseline justify-between text-[10px] pt-1 border-t">
+                        <span className="text-muted-foreground">Receita B3:</span>
+                        <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                          {formatCurrency(c.receitaProjetadaB3Rs)}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline justify-between text-[10px]">
+                        <span className="text-muted-foreground">Resultado:</span>
+                        <span
+                          className={cn(
+                            'font-mono font-bold',
+                            c.resultadoLiquidoRs >= 0 ? 'text-emerald-600' : 'text-destructive',
+                          )}
+                        >
+                          {formatCurrency(c.resultadoLiquidoRs)}
+                        </span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Fórmula:</strong> Receita Projetada = @
+                Projetada do cenário × Cotação B3 vigente (
+                {projecao.cenarios[cenarioAtivo].arrobasProduzidasTotal.toLocaleString('pt-BR')} @ ×{' '}
+                {formatCurrency(projecao.cotacaoB3.preco)}/@ ={' '}
+                {formatCurrency(projecao.cenarios[cenarioAtivo].receitaProjetadaB3Rs)}).
+                {projecao.cotacaoB3.desatualizada &&
+                  ' Atenção: cotação desatualizada — use o preço mais recente como referência.'}
+              </p>
             </div>
 
             {/* Painel de Memória de Cálculo Expansível (Requisito 3) */}
@@ -698,6 +853,65 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                         </TableCell>
                       </TableRow>
                     )}
+
+                    {/* Linhas dos Cenários Simulados (Otimista / Pessimista) da Safra Atual */}
+                    {projecao &&
+                      (['otimista', 'pessimista'] as TipoCenarioProjecao[]).map((tipo) => {
+                        const c = projecao.cenarios[tipo]
+                        return (
+                          <TableRow
+                            key={`cenario-${tipo}`}
+                            className="bg-muted/30 text-muted-foreground"
+                          >
+                            <TableCell className="font-semibold">
+                              {tipo === 'otimista' ? 'Cenário Otimista' : 'Cenário Pessimista'}
+                              <span className="block text-[10px] font-normal">
+                                {c.variacaoGmdPct >= 0 ? '+' : ''}
+                                {c.variacaoGmdPct.toFixed(0)}% GMD ·{' '}
+                                {c.variacaoCustoPct >= 0 ? '+' : ''}
+                                {c.variacaoCustoPct.toFixed(0)}% custo
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Badge
+                                variant="outline"
+                                className={cn(
+                                  'text-[9px] font-mono',
+                                  tipo === 'otimista'
+                                    ? 'text-emerald-700 border-emerald-400'
+                                    : 'text-rose-700 border-rose-400',
+                                )}
+                              >
+                                Simulado
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-center font-mono">
+                              {c.arrobasPorHaAno.toFixed(2)} @
+                            </TableCell>
+                            <TableCell className="text-center font-mono">
+                              {c.arrobasPorCabAno.toFixed(2)} @
+                            </TableCell>
+                            <TableCell className="text-center font-mono">
+                              {c.gmdMedioKgDia.toFixed(2)} kg/dia
+                            </TableCell>
+                            <TableCell className="text-center font-mono">
+                              R$ {c.custoArrobaProduzida.toFixed(2)}
+                            </TableCell>
+                            <TableCell className="text-center font-mono">
+                              {c.margemEbitdaPct.toFixed(1)}%
+                            </TableCell>
+                            <TableCell className="text-center font-mono">—</TableCell>
+                            <TableCell
+                              className={cn(
+                                'text-right font-mono font-bold',
+                                c.resultadoLiquidoRs >= 0 ? 'text-emerald-700' : 'text-destructive',
+                              )}
+                            >
+                              R$ {c.resultadoLiquidoRs.toLocaleString('pt-BR')}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
                   </TableBody>
                 </Table>
               </div>

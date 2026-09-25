@@ -23,6 +23,27 @@ import {
 } from './configBenchmark'
 
 export type SegregacaoArrendamento = 'propria' | 'arrendamento' | 'consolidada'
+export type TipoCenarioProjecao = 'otimista' | 'realista' | 'pessimista'
+
+export interface CenarioProjecaoItem {
+  tipo: TipoCenarioProjecao
+  titulo: string
+  descricao: string
+  variacaoGmdPct: number // Ex: +10% para otimista, 0% para realista, -10% para pessimista
+  variacaoCustoPct: number // Ex: -6% no custo para otimista, 0% para realista, +8% para pessimista
+  gmdMedioKgDia: number
+  arrobasProduzidasTotal: number
+  arrobasPorHaAno: number
+  arrobasPorCabAno: number
+  custoOperacionalSemReposicaoRs: number
+  custoArrobaProduzida: number
+  receitaProjetadaB3Rs: number
+  ebitdaProjetadoRs: number
+  margemEbitdaPct: number
+  resultadoLiquidoRs: number
+  classificacaoArrobasHaAno: ClassificacaoCamada2
+  classificacaoCustoArroba: ReturnType<typeof classificarIndicadorBenchmark>
+}
 
 export interface ParametrosProjecaoSafra {
   lots: LotRecord[]
@@ -39,6 +60,14 @@ export interface ParametrosProjecaoSafra {
   dataReferencia?: Date
   safraAlvo?: string
   cotacaoArroba?: number
+  cotacaoB3DataReferencia?: string
+  cotacaoB3Desatualizada?: boolean
+  cotacaoB3DiasAtraso?: number
+  cotacaoB3Origem?: string
+  variacaoGmdOtimistaPct?: number // default +10% (+0.10)
+  variacaoGmdPessimistaPct?: number // default -10% (-0.10)
+  variacaoCustoOtimistaPct?: number // default -6% (-0.06)
+  variacaoCustoPessimistaPct?: number // default +8% (+0.08)
 }
 
 export interface DetalheFrenteProjecao {
@@ -102,7 +131,21 @@ export interface ProjecaoSafraResult {
   classificacaoArrobasHaAno: ClassificacaoCamada2
   classificacaoCustoArroba: ReturnType<typeof classificarIndicadorBenchmark>
 
-  // 4. Detalhamento por frente e segregação
+  // 4. Cotação B3 vigente e Projeção de Receita
+  cotacaoB3: {
+    preco: number
+    dataReferencia: string
+    origem: string
+    desatualizada: boolean
+    diasAtraso: number
+  }
+  receitaProjetadaB3Rs: number // @ projetada total * cotacaoB3.preco
+  resultadoOperacionalProjetadoRs: number // receitaProjetadaB3Rs - custoOperacionalAnualProjetado
+
+  // 5. Cenários de Simulação (Otimista, Realista, Pessimista) variando GMD e Custo
+  cenarios: Record<TipoCenarioProjecao, CenarioProjecaoItem>
+
+  // 6. Detalhamento por frente e segregação
   segregacao: SegregacaoArrendamento
   frenteSelecionada: FrenteFechamento
   porFrente: Record<string, DetalheFrenteProjecao>
@@ -241,6 +284,14 @@ export function calcularProjecaoSafra(params: ParametrosProjecaoSafra): Projecao
     dataReferencia = new Date(),
     safraAlvo,
     cotacaoArroba = COTACAO_PADRAO_ARROBA,
+    cotacaoB3DataReferencia,
+    cotacaoB3Desatualizada = false,
+    cotacaoB3DiasAtraso = 0,
+    cotacaoB3Origem = 'b3_real',
+    variacaoGmdOtimistaPct = 0.1, // +10%
+    variacaoGmdPessimistaPct = -0.1, // -10%
+    variacaoCustoOtimistaPct = -0.06, // -6% no custo operacional
+    variacaoCustoPessimistaPct = 0.08, // +8% no custo operacional
   } = params
 
   // 1. Identificar a safra alvo e os dias decorridos
@@ -578,6 +629,145 @@ export function calcularProjecaoSafra(params: ParametrosProjecaoSafra): Projecao
 
     classificacaoArrobasHaAno,
     classificacaoCustoArroba,
+
+    // Cotação e Receita Projetada B3
+    cotacaoB3: {
+      preco: cotacaoArroba,
+      dataReferencia: cotacaoB3DataReferencia || new Date().toISOString(),
+      origem: cotacaoB3Origem,
+      desatualizada: cotacaoB3Desatualizada,
+      diasAtraso: cotacaoB3DiasAtraso,
+    },
+    receitaProjetadaB3Rs: Number((arrobasProjetadasTotal * cotacaoArroba).toFixed(2)),
+    resultadoOperacionalProjetadoRs: Number(
+      (arrobasProjetadasTotal * cotacaoArroba - custoOperacionalAnualProjetado).toFixed(2),
+    ),
+
+    // Cenários de Projeção (Otimista, Realista, Pessimista)
+    cenarios: (() => {
+      // 1) REALISTA = projeção central extrapolada
+      const receitaRealista = Number((arrobasProjetadasTotal * cotacaoArroba).toFixed(2))
+      const cenarioRealista: CenarioProjecaoItem = {
+        tipo: 'realista',
+        titulo: 'Cenário Realista (Base Atual)',
+        descricao:
+          'Mantém o ritmo atual de GMD e de custos extrapolados proporcionalmente até o fim dos 12 meses da safra.',
+        variacaoGmdPct: 0,
+        variacaoCustoPct: 0,
+        gmdMedioKgDia: gmdMedio,
+        arrobasProduzidasTotal: arrobasProjetadasTotal,
+        arrobasPorHaAno: arrobasPorHaAnoProjetado,
+        arrobasPorCabAno: arrobasPorCabAnoProjetado,
+        custoOperacionalSemReposicaoRs: custoOperacionalAnualProjetado,
+        custoArrobaProduzida: custoArrobaProjetado,
+        receitaProjetadaB3Rs: receitaRealista,
+        ebitdaProjetadoRs: ebitdaProjetado,
+        margemEbitdaPct: margemEbitdaPctProjetada,
+        resultadoLiquidoRs: Number((receitaRealista - custoOperacionalAnualProjetado).toFixed(2)),
+        classificacaoArrobasHaAno,
+        classificacaoCustoArroba,
+      }
+
+      // 2) OTIMISTA = melhora de GMD (+10%) e redução/diluição de custos (-6%)
+      // Impacta o ganho restante da safra até o fechamento
+      const gmdOtimista = Number((gmdMedio * (1 + variacaoGmdOtimistaPct)).toFixed(3))
+      const arrobasOtimista = Number(
+        (arrobasProjetadasTotal * (1 + variacaoGmdOtimistaPct)).toFixed(2),
+      )
+      const arrobasHaOtimista = areaHa > 0 ? Number((arrobasOtimista / areaHa).toFixed(2)) : 0
+      const arrobasCabOtimista =
+        rebanhoMedioCab > 0 ? Number((arrobasOtimista / rebanhoMedioCab).toFixed(2)) : 0
+      const custoOtimistaTotal = Number(
+        (custoOperacionalAnualProjetado * (1 + variacaoCustoOtimistaPct)).toFixed(2),
+      )
+      const custoArrobaOtimista =
+        arrobasOtimista > 0
+          ? Number((custoOtimistaTotal / arrobasOtimista).toFixed(2))
+          : custoArrobaProjetado
+      const receitaOtimista = Number((arrobasOtimista * cotacaoArroba).toFixed(2))
+      const ebitdaOtimista = Number((receitaOtimista - custoOtimistaTotal).toFixed(2))
+      const margemOtimista =
+        receitaOtimista > 0
+          ? Number(((ebitdaOtimista / (receitaOtimista * 0.975)) * 100).toFixed(1))
+          : margemEbitdaPctProjetada
+
+      const cenarioOtimista: CenarioProjecaoItem = {
+        tipo: 'otimista',
+        titulo: 'Cenário Otimista (Alta Eficiência)',
+        descricao: `Ganho de peso +${(variacaoGmdOtimistaPct * 100).toFixed(0)}% no GMD e diluição/economia de ${Math.abs(variacaoCustoOtimistaPct * 100).toFixed(0)}% nos custos operacionais.`,
+        variacaoGmdPct: Number((variacaoGmdOtimistaPct * 100).toFixed(1)),
+        variacaoCustoPct: Number((variacaoCustoOtimistaPct * 100).toFixed(1)),
+        gmdMedioKgDia: gmdOtimista,
+        arrobasProduzidasTotal: arrobasOtimista,
+        arrobasPorHaAno: arrobasHaOtimista,
+        arrobasPorCabAno: arrobasCabOtimista,
+        custoOperacionalSemReposicaoRs: custoOtimistaTotal,
+        custoArrobaProduzida: custoArrobaOtimista,
+        receitaProjetadaB3Rs: receitaOtimista,
+        ebitdaProjetadoRs: ebitdaOtimista,
+        margemEbitdaPct: margemOtimista,
+        resultadoLiquidoRs: Number((receitaOtimista - custoOtimistaTotal).toFixed(2)),
+        classificacaoArrobasHaAno: classificarCamada2(arrobasHaOtimista, bmProdArroba),
+        classificacaoCustoArroba: classificarIndicadorBenchmark(
+          'custo_arroba_produzida_engorda',
+          custoArrobaOtimista,
+          bmCustoArroba,
+        ),
+      }
+
+      // 3) PESSIMISTA = frustração de GMD (-10%) e pressão de insumos/custos (+8%)
+      const gmdPessimista = Number((gmdMedio * (1 + variacaoGmdPessimistaPct)).toFixed(3))
+      const arrobasPessimista = Number(
+        (arrobasProjetadasTotal * (1 + variacaoGmdPessimistaPct)).toFixed(2),
+      )
+      const arrobasHaPessimista = areaHa > 0 ? Number((arrobasPessimista / areaHa).toFixed(2)) : 0
+      const arrobasCabPessimista =
+        rebanhoMedioCab > 0 ? Number((arrobasPessimista / rebanhoMedioCab).toFixed(2)) : 0
+      const custoPessimistaTotal = Number(
+        (custoOperacionalAnualProjetado * (1 + variacaoCustoPessimistaPct)).toFixed(2),
+      )
+      const custoArrobaPessimista =
+        arrobasPessimista > 0
+          ? Number((custoPessimistaTotal / arrobasPessimista).toFixed(2))
+          : custoArrobaProjetado
+      const receitaPessimista = Number((arrobasPessimista * cotacaoArroba).toFixed(2))
+      const ebitdaPessimista = Number((receitaPessimista - custoPessimistaTotal).toFixed(2))
+      const margemPessimista =
+        receitaPessimista > 0
+          ? Number(((ebitdaPessimista / (receitaPessimista * 0.975)) * 100).toFixed(1))
+          : margemEbitdaPctProjetada
+
+      const cenarioPessimista: CenarioProjecaoItem = {
+        tipo: 'pessimista',
+        titulo: 'Cenário Pessimista (Estresse Climático / Insumos)',
+        descricao: `Desvio de ${(variacaoGmdPessimistaPct * 100).toFixed(0)}% no GMD e elevação de +${(variacaoCustoPessimistaPct * 100).toFixed(0)}% nos custos operacionais.`,
+        variacaoGmdPct: Number((variacaoGmdPessimistaPct * 100).toFixed(1)),
+        variacaoCustoPct: Number((variacaoCustoPessimistaPct * 100).toFixed(1)),
+        gmdMedioKgDia: gmdPessimista,
+        arrobasProduzidasTotal: arrobasPessimista,
+        arrobasPorHaAno: arrobasHaPessimista,
+        arrobasPorCabAno: arrobasCabPessimista,
+        custoOperacionalSemReposicaoRs: custoPessimistaTotal,
+        custoArrobaProduzida: custoArrobaPessimista,
+        receitaProjetadaB3Rs: receitaPessimista,
+        ebitdaProjetadoRs: ebitdaPessimista,
+        margemEbitdaPct: margemPessimista,
+        resultadoLiquidoRs: Number((receitaPessimista - custoPessimistaTotal).toFixed(2)),
+        classificacaoArrobasHaAno: classificarCamada2(arrobasHaPessimista, bmProdArroba),
+        classificacaoCustoArroba: classificarIndicadorBenchmark(
+          'custo_arroba_produzida_engorda',
+          custoArrobaPessimista,
+          bmCustoArroba,
+        ),
+      }
+
+      return {
+        otimista: cenarioOtimista,
+        realista: cenarioRealista,
+        pessimista: cenarioPessimista,
+      }
+    })(),
+
     segregacao,
     frenteSelecionada: frente,
     porFrente,
