@@ -8,6 +8,7 @@ export type SyncAction = {
     | 'REGISTER_PESAGEM'
     | 'UPDATE_ATIVIDADE_STATUS'
     | 'DEDUCT_INVENTORY'
+    | 'REGISTRAR_OCORRENCIA'
   payload: any
   timestamp: number
 }

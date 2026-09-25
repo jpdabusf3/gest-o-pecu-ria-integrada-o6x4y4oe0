@@ -23,6 +23,7 @@ import {
   BarChart3,
   TrendingDown,
   ShieldAlert,
+  AlertTriangle,
   Users,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
@@ -549,23 +550,49 @@ export function AppSidebar() {
       {/* Footer Info & Configurações */}
       <div className="p-3 border-t border-sidebar-border space-y-1">
         {canManageEquipe && (
-          <Link
-            to="/colaboradores"
-            className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
-              isActive('/colaboradores')
-                ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
-                : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
-            }`}
-          >
-            <Users className="h-4 w-4 text-primary" />
-            <span className="flex-1">Equipe & Acessos</span>
-            <Badge
-              variant="outline"
-              className="text-[9px] bg-primary/10 text-primary border-primary/20"
+          <>
+            <Link
+              to="/colaboradores"
+              className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                isActive('/colaboradores')
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+              }`}
             >
-              RBAC
-            </Badge>
-          </Link>
+              <Users className="h-4 w-4 text-primary" />
+              <span className="flex-1">Equipe & Acessos</span>
+              <Badge
+                variant="outline"
+                className="text-[9px] bg-primary/10 text-primary border-primary/20"
+              >
+                RBAC
+              </Badge>
+            </Link>
+
+            <Link
+              to="/ocorrencias"
+              className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                isActive('/ocorrencias')
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+              }`}
+            >
+              <AlertTriangle className="h-4 w-4 text-amber-500" />
+              <span className="flex-1">Ocorrências</span>
+            </Link>
+
+            <Link
+              to="/auditoria"
+              className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                isActive('/auditoria')
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+              }`}
+            >
+              <ShieldAlert className="h-4 w-4 text-emerald-600" />
+              <span className="flex-1">Trilha Auditoria</span>
+            </Link>
+          </>
         )}
 
         <Link

@@ -53,6 +53,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/hooks/use-toast'
 import { useRealtime } from '@/hooks/use-realtime'
 import { ModalCadastroEquipe } from '@/components/equipe/ModalCadastroEquipe'
+import { ModalRedefinirSenha } from '@/components/equipe/ModalRedefinirSenha'
 
 export default function Colaboradores() {
   const { user, canManageEquipe, isProprietario, isGestor } = useAuth()
@@ -72,6 +73,10 @@ export default function Colaboradores() {
   const [membroSelecionado, setMembroSelecionado] = useState<MembroEquipeRecord | null>(null)
   const [modalInativarOpen, setModalInativarOpen] = useState(false)
   const [membroParaInativar, setMembroParaInativar] = useState<MembroEquipeRecord | null>(null)
+
+  // Modal Redefinir Senha
+  const [modalRedefinirOpen, setModalRedefinirOpen] = useState(false)
+  const [membroParaRedefinir, setMembroParaRedefinir] = useState<MembroEquipeRecord | null>(null)
   const [modalVisualizarOpen, setModalVisualizarOpen] = useState(false)
   const [membroVisualizar, setMembroVisualizar] = useState<MembroEquipeRecord | null>(null)
 
@@ -534,6 +539,22 @@ export default function Colaboradores() {
                             </Button>
                           )}
 
+                          {/* Redefinir Senha (Apenas Proprietário e Gestor) */}
+                          {canManageEquipe && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-amber-600 hover:text-amber-700 hover:bg-amber-50"
+                              onClick={() => {
+                                setMembroParaRedefinir(m)
+                                setModalRedefinirOpen(true)
+                              }}
+                              title="Redefinir senha de acesso"
+                            >
+                              <KeyRound className="h-4 w-4" />
+                            </Button>
+                          )}
+
                           {/* Inativar / Reativar (Nunca excluir para manter auditoria) */}
                           {canManageEquipe && (
                             <Button
@@ -569,6 +590,19 @@ export default function Colaboradores() {
         open={modalCadastroOpen}
         onOpenChange={setModalCadastroOpen}
         membroEditar={membroSelecionado}
+        onSuccess={carregarEquipe}
+      />
+
+      {/* Modal Redefinir Senha */}
+      <ModalRedefinirSenha
+        open={modalRedefinirOpen}
+        onOpenChange={setModalRedefinirOpen}
+        membro={membroParaRedefinir}
+        usuarioGestor={{
+          id: user.id,
+          name: user.name,
+          role: user.role,
+        }}
         onSuccess={carregarEquipe}
       />
 

@@ -458,3 +458,82 @@ export async function concluirPrimeiroAcesso(equipeId: string): Promise<void> {
     console.warn('Erro ao atualizar primeiro_acesso:', err)
   }
 }
+
+/**
+ * Redefine a senha de um colaborador pelo gestor/proprietário:
+ * - Define uma nova senha temporária no PocketBase Auth (se houver conta vinculada)
+ * - Atualiza equipe com primeiro_acesso: true e senha_temporaria_exibida
+ * - Retorna o texto formatado para envio via WhatsApp
+ */
+export async function redefinirSenhaColaborador(params: {
+  membroId: string
+  novaSenhaTemporaria?: string
+  gestorNome: string
+  gestorId: string
+  gestorPerfil: string
+}): Promise<{
+  membro: MembroEquipeRecord
+  senhaTemporaria: string
+  mensagemWhatsApp: string
+}> {
+  const membro = await pb.collection('equipe').getOne<MembroEquipeRecord>(params.membroId, {
+    expand: 'user_id',
+  })
+
+  const senha = params.novaSenhaTemporaria || gerarSenhaTemporaria()
+  let userId = membro.user_id
+
+  // Se não tinha user_id mas tem e-mail ou CPF, busca ou cria no Auth
+  if (!userId) {
+    const emailAcesso = (membro.email || `${limparCPF(membro.cpf)}@pecuariaf3.com.br`)
+      .toLowerCase()
+      .trim()
+    try {
+      const authUser = await pb.collection('users').getFirstListItem(`email = '${emailAcesso}'`)
+      userId = authUser.id
+    } catch {
+      try {
+        const novoUser = await pb.collection('users').create({
+          email: emailAcesso,
+          emailVisibility: false,
+          password: senha,
+          passwordConfirm: senha,
+          name: membro.nome,
+          role: membro.perfil,
+          verified: true,
+        })
+        userId = novoUser.id
+      } catch (err) {
+        console.warn('Falha ao provisionar user em redefinirSenha:', err)
+      }
+    }
+  }
+
+  // Atualizar senha no PocketBase Users se houver userId
+  if (userId) {
+    try {
+      await pb.collection('users').update(userId, {
+        password: senha,
+        passwordConfirm: senha,
+      })
+    } catch (err) {
+      console.warn('Erro ao atualizar senha no users auth:', err)
+    }
+  }
+
+  // Atualizar cadastro do membro na equipe: primeiro_acesso = true para forçar troca no próximo login
+  const atualizado = await pb.collection('equipe').update<MembroEquipeRecord>(membro.id, {
+    primeiro_acesso: true,
+    senha_temporaria_exibida: senha,
+    user_id: userId || membro.user_id,
+  })
+
+  const emailInfo = atualizado.email || `${limparCPF(atualizado.cpf)}@pecuariaf3.com.br`
+  const mensagemWhatsApp = `Olá ${atualizado.nome}, sua senha de acesso ao sistema Pecuária F3 foi redefinida pelo gestor!\n\nNome do usuário: ${atualizado.nome}\nNova Senha Temporária: ${senha}\n(Ou acesse com o e-mail: ${emailInfo})\n\n⚠️ Por motivo de segurança, a troca desta senha é OBRIGATÓRIA no próximo login.`
+
+  return {
+    membro: atualizado,
+    senhaTemporaria: senha,
+    mensagemWhatsApp,
+  }
+}

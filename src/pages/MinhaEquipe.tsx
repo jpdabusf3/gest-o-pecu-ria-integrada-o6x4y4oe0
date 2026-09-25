@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 import {
   Users,
   CheckCircle2,
@@ -16,6 +17,9 @@ import {
   Clock,
   Shield,
   Layers,
+  Trophy,
+  Medal,
+  Award,
 } from 'lucide-react'
 import { MembroEquipeRecord, PERFIS_LABELS, getEquipe } from '@/services/equipe'
 import {
@@ -57,10 +61,100 @@ export default function MinhaEquipe() {
   useRealtime('equipe', () => carregarDados())
   useRealtime('atividades', () => carregarDados())
 
+  // Identificar frentes e lotes sob supervisão do capataz logado
+  const capatazDados = useMemo(() => {
+    if (!user) return null
+    return equipe.find(
+      (m) =>
+        m.user_id === user.id ||
+        m.nome.toLowerCase().includes(user.name.toLowerCase()) ||
+        user.name.toLowerCase().includes(m.nome.toLowerCase()),
+    )
+  }, [equipe, user])
+
   // Filtrar apenas vaqueiros e serventes sob supervisão do capataz
   const subordinados = useMemo(() => {
     return equipe.filter((m) => m.perfil === 'vaqueiro' || m.perfil === 'servente')
   }, [equipe])
+
+  // Atividades da SEMANA (mesmo período do widget Atividades da Semana do Gestor)
+  // Considerar apenas atividades dos lotes/frentes sob supervisão do capataz logado
+  const atividadesSemanaSupervisao = useMemo(() => {
+    const now = new Date()
+    const startOfWeek = new Date(now)
+    startOfWeek.setDate(now.getDate() - 3)
+    startOfWeek.setHours(0, 0, 0, 0)
+
+    const endOfWeek = new Date(now)
+    endOfWeek.setDate(now.getDate() + 4)
+    endOfWeek.setHours(23, 59, 59, 999)
+
+    // Filtro temporal: semana de operação
+    const naSemana = atividades.filter((a) => {
+      const d = new Date(a.data)
+      return d >= startOfWeek && d <= endOfWeek
+    })
+
+    // Se o capataz possui frentes ou lotes de supervisão cadastrados, filtra estritamente por eles
+    const frentesCapataz = capatazDados?.frentes_supervisao || []
+    const lotesCapataz = capatazDados?.lotes_responsabilidade || []
+
+    if (frentesCapataz.length > 0 || lotesCapataz.length > 0) {
+      return naSemana.filter((a) => {
+        const matchFrente =
+          frentesCapataz.length > 0 && a.frente && frentesCapataz.includes(a.frente)
+        const matchLote =
+          lotesCapataz.length > 0 &&
+          a.lote_ids &&
+          a.lote_ids.some((lId) => lotesCapataz.includes(lId))
+        return matchFrente || matchLote
+      })
+    }
+
+    return naSemana
+  }, [atividades, capatazDados])
+
+  // RANKING DA EQUIPE: baseado no % de conclusão semanal das tarefas dos subordinados
+  // Ordenado do melhor (% mais alto) para o pior. Sem dados fictícios.
+  const rankingSemanal = useMemo(() => {
+    const ranking = subordinados.map((membro) => {
+      const nomeLower = membro.nome.toLowerCase()
+      const lotesMembro = membro.lotes_responsabilidade || []
+
+      // Tarefas atribuídas a este membro na semana sob supervisão
+      const tarefasMembro = atividadesSemanaSupervisao.filter((a) => {
+        const respLower = (a.responsavel_id || '').toLowerCase()
+        const matchNome =
+          respLower.includes(nomeLower) || nomeLower.split(' ')[0].toLowerCase().includes(respLower)
+        const matchLote = a.lote_ids && a.lote_ids.some((lId) => lotesMembro.includes(lId))
+        return matchNome || matchLote
+      })
+
+      const totalAtribuidas = tarefasMembro.length
+      const concluidas = tarefasMembro.filter(
+        (a) => a.status === 'realizada' || a.status === 'concluida',
+      ).length
+
+      const percentual = totalAtribuidas > 0 ? Math.round((concluidas / totalAtribuidas) * 100) : 0
+
+      return {
+        membro,
+        totalAtribuidas,
+        concluidas,
+        percentual,
+      }
+    })
+
+    // Ordenar do melhor para o pior: maior percentual primeiro, depois maior número de concluídas
+    ranking.sort((a, b) => {
+      if (b.percentual !== a.percentual) {
+        return b.percentual - a.percentual
+      }
+      return b.concluidas - a.concluidas
+    })
+
+    return ranking
+  }, [subordinados, atividadesSemanaSupervisao])
 
   // Atividades do dia de hoje
   const hoje = useMemo(() => new Date(), [])
@@ -154,6 +248,117 @@ export default function MinhaEquipe() {
             <Link to="/campo">Ir para Modo Campo</Link>
           </Button>
         </div>
+      </div>
+
+      {/* SEÇÃO: RANKING DA EQUIPE (% DE CONCLUSÃO SEMANAL) */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-amber-500" /> Ranking de Desempenho da Equipe (Semanal)
+          </h2>
+          <Badge variant="outline" className="text-xs">
+            {atividadesSemanaSupervisao.length} atividades avaliadas
+          </Badge>
+        </div>
+
+        {rankingSemanal.length === 0 || atividadesSemanaSupervisao.length === 0 ? (
+          <Card className="p-6 text-center border-dashed bg-muted/10">
+            <Trophy className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+            <h4 className="font-semibold text-sm text-foreground">
+              Sem dados de tarefas nesta semana
+            </h4>
+            <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1">
+              Nenhuma atividade agendada ou executada nos lotes sob supervisão nesta semana. O
+              ranking será exibido automaticamente assim que as tarefas semanais forem distribuídas.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {rankingSemanal.map(({ membro, concluidas, totalAtribuidas, percentual }, idx) => {
+              const posicao = idx + 1
+              const medalhaCor =
+                posicao === 1
+                  ? 'text-amber-500 bg-amber-500/10 border-amber-300'
+                  : posicao === 2
+                    ? 'text-slate-400 bg-slate-400/10 border-slate-300'
+                    : posicao === 3
+                      ? 'text-amber-700 bg-amber-700/10 border-amber-600/30'
+                      : 'text-muted-foreground bg-muted/40 border-border'
+
+              const statusCor =
+                percentual >= 80
+                  ? 'text-emerald-600'
+                  : percentual >= 50
+                    ? 'text-amber-600'
+                    : 'text-rose-600'
+
+              return (
+                <Card
+                  key={membro.id}
+                  className={`border shadow-xs transition-all ${
+                    posicao === 1 ? 'ring-1 ring-amber-500/30 bg-amber-500/[0.02]' : ''
+                  }`}
+                >
+                  <CardContent className="p-4 space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`h-7 w-7 rounded-full flex items-center justify-center font-black text-xs border ${medalhaCor}`}
+                        >
+                          {posicao === 1 ? <Medal className="h-4 w-4" /> : <span>#{posicao}</span>}
+                        </div>
+
+                        {membro.foto ? (
+                          <img
+                            src={`https://gestao-pecuaria-integrada-96d74.shrd00.internal.goskip.dev/api/files/equipe/${membro.id}/${membro.foto}`}
+                            alt={membro.nome}
+                            className="h-10 w-10 rounded-full object-cover border"
+                          />
+                        ) : (
+                          <div className="h-10 w-10 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs border">
+                            {membro.nome.charAt(0)}
+                          </div>
+                        )}
+
+                        <div className="min-w-0">
+                          <h4 className="font-bold text-sm text-foreground truncate">
+                            {membro.nome}
+                          </h4>
+                          <span className="text-[11px] text-muted-foreground capitalize block">
+                            {membro.perfil}
+                            {membro.funcao_especifica ? ` • ${membro.funcao_especifica}` : ''}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="text-right shrink-0">
+                        <span className={`text-xl font-black font-mono block ${statusCor}`}>
+                          {percentual}%
+                        </span>
+                        <span className="text-[10px] text-muted-foreground block font-mono">
+                          {concluidas}/{totalAtribuidas} tarefas
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <Progress
+                        value={percentual}
+                        className={`h-2 ${
+                          percentual >= 80
+                            ? '[&>div]:bg-emerald-600'
+                            : percentual >= 50
+                              ? '[&>div]:bg-amber-500'
+                              : '[&>div]:bg-rose-500'
+                        }`}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       {/* Cards de Resumo da Supervisão */}

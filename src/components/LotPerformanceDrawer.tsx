@@ -18,7 +18,9 @@ import {
   Layers,
   Target,
   ShieldAlert,
+  ClipboardList,
 } from 'lucide-react'
+import { OcorrenciaRecord, getOcorrencias } from '@/services/ocorrencias'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -64,6 +66,8 @@ export function LotPerformanceDrawer({
   // Modais de suporte
   const [modalMetaOpen, setModalMetaOpen] = useState(false)
   const [modalResolverOpen, setModalResolverOpen] = useState(false)
+  const [ocorrenciasLote, setOcorrenciasLote] = useState<OcorrenciaRecord[]>([])
+  const [loadingOcorrencias, setLoadingOcorrencias] = useState(false)
 
   const fetchDetails = async () => {
     if (!loteId) return
@@ -73,12 +77,14 @@ export function LotPerformanceDrawer({
       const target = allLots.find((l) => l.name === loteId || l.id === loteId)
       if (target) {
         setLotDetails(target)
-        const [records, alertasData] = await Promise.all([
+        const [records, alertasData, ocData] = await Promise.all([
           getPesagensByLote(target.id),
           getAlertasGMD(`lote_id = '${target.id}'`),
+          getOcorrencias({ lote_id: target.id }),
         ])
         setPesagens(records || [])
         setAlertas(alertasData || [])
+        setOcorrenciasLote(ocData || [])
       }
     } catch (err) {
       console.error('Erro ao carregar detalhes do lote:', err)
@@ -362,15 +368,18 @@ export function LotPerformanceDrawer({
           )}
 
           <Tabs defaultValue="gmd_comparativo" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="gmd_comparativo" className="text-xs">
-                GMD Estimado
+                GMD
               </TabsTrigger>
               <TabsTrigger value="custo_arroba_tab" className="text-xs">
                 Custo / @
               </TabsTrigger>
               <TabsTrigger value="intervalos" className="text-xs">
                 Intervalos
+              </TabsTrigger>
+              <TabsTrigger value="ocorrencias_lote" className="text-xs">
+                Ocorrências ({ocorrenciasLote.length})
               </TabsTrigger>
               <TabsTrigger value="monthly" className="text-xs">
                 Projeção IA
@@ -504,6 +513,69 @@ export function LotPerformanceDrawer({
                   </TableBody>
                 </Table>
               </div>
+            </TabsContent>
+
+            {/* Nova Aba: Ocorrências de Campo do Lote */}
+            <TabsContent
+              value="ocorrencias_lote"
+              className="mt-3 rounded-xl border bg-card p-4 shadow-sm space-y-3"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                  <ClipboardList className="h-4 w-4 text-primary" /> Histórico de Ocorrências do
+                  Lote
+                </h3>
+                <Badge variant="outline" className="text-xs font-mono">
+                  {ocorrenciasLote.length} registros
+                </Badge>
+              </div>
+
+              {loadingOcorrencias ? (
+                <div className="text-center py-6 text-xs text-muted-foreground">
+                  Carregando ocorrências do lote...
+                </div>
+              ) : ocorrenciasLote.length === 0 ? (
+                <div className="p-4 bg-muted/20 border border-dashed rounded-lg text-center text-xs text-muted-foreground">
+                  Nenhuma ocorrência registrada para este lote. Registros feitos no Modo Campo
+                  aparecerão aqui.
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                  {ocorrenciasLote.map((oc) => (
+                    <div
+                      key={oc.id}
+                      className="p-2.5 rounded-lg border text-xs bg-muted/10 space-y-1"
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold uppercase text-foreground">
+                          {oc.tipo.replace(/_/g, ' ')}
+                        </span>
+                        <Badge
+                          variant={oc.urgencia === 'requer_acao_hoje' ? 'destructive' : 'secondary'}
+                          className="text-[9px] px-1.5 py-0"
+                        >
+                          {oc.urgencia === 'requer_acao_hoje' ? 'Ação Hoje' : 'Info'}
+                        </Badge>
+                      </div>
+
+                      <div className="text-[11px] text-muted-foreground">
+                        {Object.entries(oc.campos_especificos || {})
+                          .map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`)
+                          .join(' • ')}
+                      </div>
+
+                      <div className="text-[10px] text-muted-foreground/70 flex justify-between pt-1 border-t">
+                        <span>Por: {oc.usuario_nome || 'Operador'}</span>
+                        <span>
+                          {new Date(oc.data_hora_servidor || oc.created).toLocaleDateString(
+                            'pt-BR',
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </TabsContent>
 
             {/* Aba 3: Projeções IA e Histórico de Peso */}

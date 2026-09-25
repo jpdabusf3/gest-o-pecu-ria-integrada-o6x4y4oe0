@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T17:02:55.947Z",
+  "generatedAt": "2026-09-25T17:43:53.009Z",
   "collections": [
     {
       "name": "users",
@@ -868,7 +868,7 @@
         {
           "name": "atividade_id",
           "type": "relation",
-          "required": true,
+          "required": false,
           "system": false,
           "collectionRef": "atividades"
         },
@@ -927,6 +927,12 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "registro_id",
+          "type": "text",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [
@@ -2270,6 +2276,450 @@
         "CREATE INDEX idx_equipe_perfil ON equipe (perfil)",
         "CREATE INDEX idx_equipe_status ON equipe (status)",
         "CREATE INDEX idx_equipe_user_id ON equipe (user_id)"
+      ]
+    },
+    {
+      "name": "tipos_ocorrencia",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "codigo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "icone",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "categoria",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "campos",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ativo",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "criado_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_tipos_ocorrencia_codigo ON tipos_ocorrencia (codigo)",
+        "CREATE INDEX idx_tipos_ocorrencia_ativo ON tipos_ocorrencia (ativo)"
+      ]
+    },
+    {
+      "name": "ocorrencias",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "uuid_dispositivo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "data_hora_dispositivo",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "data_hora_servidor",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "usuario_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "usuario_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perfil",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "proprietario",
+            "socio",
+            "gestor",
+            "capataz",
+            "vaqueiro",
+            "servente",
+            "operador",
+            "admin"
+          ]
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "lote_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "animal_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "campos_especificos",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "foto",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "geolocalizacao",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "urgencia",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["informativo", "requer_acao_hoje"]
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["registrada", "em_analise", "resolvida", "cancelada"]
+        },
+        {
+          "name": "cancelado_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cancelado_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "motivo_cancelamento",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resolvido_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resolvido_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resolucao_observacao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "aprovado_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "aprovado_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "evento_correcao_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "conflito_sinalizado",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "conflito_detalhes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sincronizado",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_ocorrencias_uuid ON ocorrencias (uuid_dispositivo)",
+        "CREATE INDEX idx_ocorrencias_tipo ON ocorrencias (tipo)",
+        "CREATE INDEX idx_ocorrencias_status ON ocorrencias (status)",
+        "CREATE INDEX idx_ocorrencias_urgencia ON ocorrencias (urgencia)",
+        "CREATE INDEX idx_ocorrencias_lote ON ocorrencias (lote_id)",
+        "CREATE INDEX idx_ocorrencias_data_srv ON ocorrencias (data_hora_servidor DESC)"
+      ]
+    },
+    {
+      "name": "audit_log",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": null,
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "evento_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo_evento",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "criacao",
+            "correcao",
+            "cancelamento",
+            "mudanca_status",
+            "redefinicao_senha"
+          ]
+        },
+        {
+          "name": "usuario_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "usuario_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perfil",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "proprietario",
+            "socio",
+            "gestor",
+            "capataz",
+            "vaqueiro",
+            "servente",
+            "operador",
+            "admin"
+          ]
+        },
+        {
+          "name": "payload_antes",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "payload_depois",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "timestamp_dispositivo",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "timestamp_servidor",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "origem",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["online", "offline"]
+        },
+        {
+          "name": "dispositivo_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "geolocalizacao",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencia_tipo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencia_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "lote_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "motivo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_audit_evento_id ON audit_log (evento_id)",
+        "CREATE INDEX idx_audit_tipo ON audit_log (tipo_evento)",
+        "CREATE INDEX idx_audit_timestamp_srv ON audit_log (timestamp_servidor DESC)",
+        "CREATE INDEX idx_audit_usuario ON audit_log (usuario_id)",
+        "CREATE INDEX idx_audit_referencia ON audit_log (referencia_id)",
+        "CREATE INDEX idx_audit_lote ON audit_log (lote_id)"
       ]
     }
   ]

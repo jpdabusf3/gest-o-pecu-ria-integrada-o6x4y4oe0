@@ -70,6 +70,7 @@ import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
 import { ModalJustificativaNaoRealizada } from '@/components/campo/ModalJustificativaNaoRealizada'
 import { ModalEmAndamento } from '@/components/campo/ModalEmAndamento'
 import { ModalReagendarAtividade } from '@/components/campo/ModalReagendarAtividade'
+import { ModalRegistrarOcorrencia } from '@/components/campo/ModalRegistrarOcorrencia'
 
 export default function Campo() {
   const { toast } = useToast()
@@ -88,7 +89,8 @@ export default function Campo() {
   const [atividadesReais, setAtividadesReais] = useState<AtividadeRecord[]>([])
   const [loadingAtividades, setLoadingAtividades] = useState(true)
 
-  // Modais de status
+  // Modais de status e ocorrências
+  const [modalOcorrenciaOpen, setModalOcorrenciaOpen] = useState(false)
   const [modalNaoRealizadaOpen, setModalNaoRealizadaOpen] = useState(false)
   const [modalEmAndamentoOpen, setModalEmAndamentoOpen] = useState(false)
   const [modalReagendarOpen, setModalReagendarOpen] = useState(false)
@@ -736,9 +738,9 @@ export default function Campo() {
       {/* Top Header Mobile com Conectividade */}
       <div className="bg-primary text-primary-foreground p-5 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-4 flex justify-between items-start">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Modo Campo</h2>
+          <h2 className="text-2xl font-black tracking-tight">Modo Campo</h2>
           <p className="text-primary-foreground/80 mt-0.5 text-xs">
-            Operador: <span className="font-semibold">{user.name}</span>
+            Operador: <span className="font-semibold">{user.name}</span> ({user.role})
           </p>
         </div>
         <div className="flex flex-col items-end gap-1.5">
@@ -777,6 +779,20 @@ export default function Campo() {
             </span>
           )}
         </div>
+      </div>
+
+      {/* BOTÃO "+ REGISTRAR OCORRÊNCIA" SEMPRE VISÍVEL NO MODO CAMPO (/campo)
+          Área de toque grande (≥48px), uso com uma mão, contraste imediato */}
+      <div className="px-1 mb-2">
+        <Button
+          type="button"
+          size="lg"
+          onClick={() => setModalOcorrenciaOpen(true)}
+          className="w-full min-h-[54px] h-14 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base shadow-lg rounded-2xl flex items-center justify-center gap-2 border-2 border-emerald-400/40 active:scale-[0.98] transition-all"
+        >
+          <Plus className="h-6 w-6 stroke-[3]" />
+          <span>+ Registrar Ocorrência</span>
+        </Button>
       </div>
 
       {/* Seção de Tarefas do Dia: Banco Real com os 3 Novos Estados */}
@@ -1337,6 +1353,17 @@ export default function Campo() {
         onOpenChange={setModalReagendarOpen}
         atividade={selectedAtividadeAction}
         onConfirm={handleConfirmarReagendar}
+      />
+
+      {/* Modal de Registro de Ocorrência com Grade de Ícones Grandes */}
+      <ModalRegistrarOcorrencia
+        open={modalOcorrenciaOpen}
+        onOpenChange={setModalOcorrenciaOpen}
+        lotes={realLots}
+        onSuccess={() => {
+          loadRealLots()
+          loadAtividadesHoje()
+        }}
       />
     </div>
   )

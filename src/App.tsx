@@ -25,7 +25,9 @@ import Relatorios from './pages/Relatorios'
 import RelatoriosDesempenho from './pages/RelatoriosDesempenho'
 import ProjecaoVendas from './pages/ProjecaoVendas'
 import Colaboradores from './pages/Colaboradores'
+import Auditoria from './pages/Auditoria'
 import MinhaEquipe from './pages/MinhaEquipe'
+import { PainelOcorrenciasGestor } from './components/gestor/PainelOcorrenciasGestor'
 import Configuracoes from './pages/Configuracoes'
 import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
@@ -59,11 +61,9 @@ const App = () => (
                     <Route element={<Layout />}>
                       {/* Rota Raiz: Operador vai para /campo via Index ou renderiza Dashboard para Gestor */}
                       <Route path="/" element={<Index />} />
-
                       {/* Modo Campo & Tarefas: Acessíveis a todos (Vaqueiro, Capataz, Gestor) */}
                       <Route path="/campo" element={<Campo />} />
                       <Route path="/tarefas" element={<Tarefas />} />
-
                       {/* Rotas de Campo Avançadas: Capataz e Gestor */}
                       <Route
                         path="/pastos"
@@ -105,7 +105,6 @@ const App = () => (
                           </RoleRoute>
                         }
                       />
-
                       {/* Rotas Estratégicas e Financeiras: Proprietário, Gestor e Sócio */}
                       <Route
                         path="/fechamento"
@@ -204,13 +203,29 @@ const App = () => (
                         }
                       />
                       <Route
-                        path="/colaboradores"
-                        element={
-                          <RoleRoute allowedRoles={['proprietario', 'gestor']}>
-                            <Colaboradores />
-                          </RoleRoute>
-                        }
-                      />
+  path="/colaboradores"
+  element={
+    <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
+      <Colaboradores />
+    </RoleRoute>
+  }
+/>
+<Route
+  path="/ocorrencias"
+  element={
+    <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio', 'capataz']}>
+      <PainelOcorrenciasGestor />
+    </RoleRoute>
+  }
+/>
+<Route
+  path="/auditoria"
+  element={
+    <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
+      <Auditoria />
+    </RoleRoute>
+  }
+/>{' '}
                       <Route
                         path="/minha-equipe"
                         element={

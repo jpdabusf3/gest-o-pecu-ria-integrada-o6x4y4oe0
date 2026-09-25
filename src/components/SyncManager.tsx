@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast'
 import { createPesagem } from '@/services/pesagens'
 import { transicionarStatusAtividade, updateAtividade } from '@/services/atividades'
 import { salvarItemEstoque, getEstoqueInsumos } from '@/services/fechamento'
+import { criarOcorrencia } from '@/services/ocorrencias'
 
 export function SyncManager() {
   const { isOnline, queue, clearQueue, isSyncing, setIsSyncing } = useOffline()
@@ -28,9 +29,20 @@ export function SyncManager() {
         let opsSynced = 0
         let pesagensSynced = 0
         let statusSynced = 0
+        let ocorrenciasSynced = 0
 
         for (const action of items) {
-          if (action.type === 'UPDATE_ATIVIDADE_STATUS') {
+          if (action.type === 'REGISTRAR_OCORRENCIA') {
+            try {
+              await criarOcorrencia({
+                ...action.payload,
+                origemOffline: true,
+              })
+              ocorrenciasSynced++
+            } catch (err) {
+              console.warn('Erro ao sincronizar ocorrencia SW:', err)
+            }
+          } else if (action.type === 'UPDATE_ATIVIDADE_STATUS') {
             try {
               await transicionarStatusAtividade({
                 atividadeId: action.payload.atividadeId,
@@ -114,7 +126,7 @@ export function SyncManager() {
 
         toast({
           title: 'Dados Sincronizados',
-          description: `Sincronização em background concluída (${tasksCompleted + opsSynced + pesagensSynced + statusSynced} registros).`,
+          description: `Sincronização em background concluída (${tasksCompleted + opsSynced + pesagensSynced + statusSynced + ocorrenciasSynced} registros).`,
           variant: 'default',
         })
 
@@ -140,9 +152,25 @@ export function SyncManager() {
     let opsSynced = 0
     let pesagensSynced = 0
     let statusSynced = 0
+    let ocorrenciasSynced = 0
 
     for (const action of queue) {
-      if (action.type === 'UPDATE_ATIVIDADE_STATUS') {
+      if (action.type === 'REGISTRAR_OCORRENCIA') {
+        try {
+          await criarOcorrencia({
+            ...action.payload,
+            origemOffline: true,
+          })
+          ocorrenciasSynced++
+          addNotification({
+            title: 'Ocorrência Sincronizada',
+            message: `Ocorrência (${action.payload.tipo}) sincronizada com carimbo de auditoria.`,
+            type: 'task',
+          })
+        } catch (err) {
+          console.warn('Erro ao sincronizar ocorrencia offline:', err)
+        }
+      } else if (action.type === 'UPDATE_ATIVIDADE_STATUS') {
         try {
           await transicionarStatusAtividade({
             atividadeId: action.payload.atividadeId,
@@ -234,7 +262,7 @@ export function SyncManager() {
 
     toast({
       title: 'Sincronização Concluída',
-      description: `${tasksCompleted + opsSynced + pesagensSynced + statusSynced} registros da fila offline foram processados no banco de dados.`,
+      description: `${tasksCompleted + opsSynced + pesagensSynced + statusSynced + ocorrenciasSynced} registros da fila offline foram processados no banco de dados.`,
       variant: 'default',
     })
   }
