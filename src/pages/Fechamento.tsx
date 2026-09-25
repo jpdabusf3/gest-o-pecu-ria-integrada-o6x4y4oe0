@@ -180,18 +180,18 @@ export default function Fechamento() {
     cotacaoArroba,
   ])
 
-  // Verificação de permissão de Gestor
-  const isGestor = user.role === 'admin' || user.role === 'gerente'
+  // Verificação de permissão de Gestor (gestor, admin ou gerente)
+  const isGestorRole = user.role === 'gestor' || user.role === 'admin' || user.role === 'gerente'
 
-  if (!isGestor) {
+  if (!isGestorRole) {
     return (
       <div className="p-8 text-center space-y-4 max-w-lg mx-auto">
         <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
         <h2 className="text-2xl font-bold">Acesso Restrito ao Gestor</h2>
         <p className="text-muted-foreground text-sm">
           O módulo de Fechamento e Resultado Consolidado é visível exclusivamente para perfis com
-          nível de Gestão (Administrador ou Gerente). Alterne seu usuário no menu inferior ou
-          contate a sede.
+          nível de Gestão (Gestor, Administrador ou Gerente). Alterne seu usuário no menu inferior
+          ou contate a sede.
         </p>
       </div>
     )

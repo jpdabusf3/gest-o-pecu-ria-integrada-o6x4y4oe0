@@ -11,7 +11,13 @@ interface RoleRouteProps {
 export function RoleRoute({ allowedRoles, children, fallbackPath = '/campo' }: RoleRouteProps) {
   const { user } = useAuth()
 
-  if (!allowedRoles.includes(user.role)) {
+  // 'admin' e 'gerente' possuem prerrogativas equivalentes a 'gestor'
+  const effectiveRole = user.role === 'admin' || user.role === 'gerente' ? 'gestor' : user.role
+  const hasAccess =
+    allowedRoles.includes(user.role) ||
+    (allowedRoles.includes('gestor') && effectiveRole === 'gestor')
+
+  if (!hasAccess) {
     return <Navigate to={fallbackPath} replace />
   }
 
