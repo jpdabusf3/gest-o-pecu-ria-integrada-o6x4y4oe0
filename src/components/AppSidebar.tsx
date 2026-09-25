@@ -22,6 +22,7 @@ import {
   Factory,
   Shield,
   FileText,
+  Layers,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -68,6 +69,7 @@ const navItems = {
     {
       title: 'Financeiro e Comercial',
       items: [
+        { title: 'Fechamento & Resultado', icon: Layers, url: '/fechamento' },
         { title: 'Controle Financeiro', icon: DollarSign, url: '/financeiro' },
         { title: 'Vendas & Desmame', icon: DollarSign, url: '/vendas' },
         { title: 'Inteligência de Vendas', icon: LineChart, url: '/projecoes' },
@@ -100,6 +102,7 @@ const navItems = {
     {
       title: 'Gestão de Produção',
       items: [
+        { title: 'Fechamento & Resultado', icon: Layers, url: '/fechamento' },
         { title: 'Pesagens & GMD', icon: BarChart3, url: '/pesagens' },
         { title: 'Manejo de Pastagens', icon: Sprout, url: '/pastos' },
         { title: 'Confinamento & Dietas', icon: Wheat, url: '/confinamento' },

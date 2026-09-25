@@ -35,6 +35,7 @@ import BI from './pages/BI'
 import Sustentabilidade from './pages/Sustentabilidade'
 import Abates from './pages/Abates'
 import Vendas from './pages/Vendas'
+import Fechamento from './pages/Fechamento'
 import Hedge from './pages/Hedge'
 import PdfStudio from './pages/PdfStudio'
 import NotFound from './pages/NotFound'
@@ -62,6 +63,7 @@ const App = () => (
                       <Route path="/estoque" element={<Estoque />} />
                       <Route path="/frota" element={<Frota />} />
                       <Route path="/financeiro" element={<Financeiro />} />
+                      <Route path="/fechamento" element={<Fechamento />} />
                       <Route path="/sanidade" element={<Sanidade />} />
                       <Route path="/calendario" element={<Calendario />} />
                       <Route path="/relatorios" element={<Relatorios />} />

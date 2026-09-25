@@ -45,8 +45,13 @@ import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOffline } from '@/contexts/OfflineContext'
 import { useFarm } from '@/contexts/FarmContext'
-import { getLots, LotRecord } from '@/services/lots'
+import { getLots, LotRecord, updateLot } from '@/services/lots'
 import { createPesagem, PesagemInput } from '@/services/pesagens'
+import {
+  registrarMovimentacaoRebanho,
+  registrarVendaGado,
+  salvarItemEstoque,
+} from '@/services/fechamento'
 import {
   AtividadeRecord,
   getAtividades,
@@ -94,6 +99,10 @@ export default function Campo() {
   // Campos de pesagem rápida
   const [pesoMedioInput, setPesoMedioInput] = useState('')
   const [qtdAnimaisInput, setQtdAnimaisInput] = useState('')
+  const [novaContagemInput, setNovaContagemInput] = useState('')
+  const [motivoContagem, setMotivoContagem] = useState<'ajuste' | 'morte' | 'nascimento'>('morte')
+  const [abateQtdInput, setAbateQtdInput] = useState('')
+  const [abateCompradorInput, setAbateCompradorInput] = useState('')
   const [isAbateSaida, setIsAbateSaida] = useState(false)
   const [rendimentoInput, setRendimentoInput] = useState('53.5')
   const [origemPesagem, setOrigemPesagem] = useState<'manual' | 'balanca'>('manual')
@@ -223,12 +232,26 @@ export default function Campo() {
       ),
     )
 
-    // Deduz estoque para os insumos vinculados via registerConsumption
+    // Deduz estoque para os insumos vinculados via registerConsumption e alimenta coleção real estoque_insumos
     if (record.insumos && record.insumos.length > 0) {
       const targetLote = (record.lote_ids && record.lote_ids[0]) || record.setor || 'GERAL'
-      record.insumos.forEach((ins) => {
+      record.insumos.forEach(async (ins) => {
         if (ins.inventoryId && ins.quantidade > 0) {
           registerConsumption(targetLote, ins.inventoryId, ins.quantidade)
+          try {
+            await salvarItemEstoque({
+              produto: ins.item,
+              codigo: ins.inventoryId,
+              unidade: ins.unidade || 'un',
+              estoque_inicial: 500,
+              entradas: 0,
+              saidas: ins.quantidade,
+              preco_unitario: 50.0,
+              periodo_mes: new Date().toISOString().slice(0, 7),
+            })
+          } catch {
+            /* intentionally ignored */
+          }
         }
       })
       toast({
@@ -558,6 +581,105 @@ export default function Campo() {
           description: `Pesagem de ${pesoNum} kg armazenada localmente. Será enviada assim que a conexão retornar.`,
         })
       }
+    } else if (actionType === 'contagem') {
+      const novaQtd = parseInt(novaContagemInput, 10)
+      const anterior = selectedLote.headcount || 0
+      const diff = anterior - novaQtd
+
+      try {
+        if (diff > 0 && motivoContagem === 'morte') {
+          await registrarMovimentacaoRebanho({
+            data: new Date().toISOString(),
+            frente:
+              (selectedLote.frente as any) ||
+              (selectedLote.is_arrendamento ? 'arrendamento' : 'recria'),
+            lote_id: selectedLote.id,
+            tipo: 'morte',
+            qtd_cabecas: diff,
+            peso_total_kg:
+              diff * (selectedLote.peso_medio_atual || selectedLote.final_weight || 350),
+            valor_total_rs: diff * 3200,
+            documento: `CAMPO-MORTE-${Date.now().toString().slice(-4)}`,
+            sexo: selectedLote.sex as any,
+            observacoes: `Mortalidade de ${diff} cab registradas no modo Campo por ${user.name}.`,
+          })
+        } else if (diff < 0 && motivoContagem === 'nascimento') {
+          const nascidos = Math.abs(diff)
+          await registrarMovimentacaoRebanho({
+            data: new Date().toISOString(),
+            frente: (selectedLote.frente as any) || 'cria',
+            lote_id: selectedLote.id,
+            tipo: 'nascimento',
+            qtd_cabecas: nascidos,
+            peso_total_kg: nascidos * 35,
+            valor_total_rs: nascidos * 2000,
+            documento: `CAMPO-NASC-${Date.now().toString().slice(-4)}`,
+            sexo: selectedLote.sex as any,
+            observacoes: `Nascimentos de ${nascidos} cab registradas no Campo por ${user.name}.`,
+          })
+        }
+        await updateLot(selectedLote.id, { headcount: isNaN(novaQtd) ? anterior : novaQtd })
+        toast({
+          title: 'Contagem Atualizada!',
+          description: `Lote ${selectedLote.name} atualizado para ${novaQtd} cab. Movimentação de rebanho registrada sem digitação dupla.`,
+        })
+        loadRealLots()
+      } catch (err) {
+        console.error('Erro ao atualizar contagem no banco:', err)
+      }
+    } else if (actionType === 'abate') {
+      const qtdAbate = parseInt(abateQtdInput, 10) || selectedLote.headcount || 1
+      const pesoMedio = selectedLote.peso_medio_atual || selectedLote.final_weight || 530
+      const pesoVivoTotal = qtdAbate * pesoMedio
+      const rendimento = 54.0
+      const pesoCarcacaTotal = (pesoVivoTotal * rendimento) / 100
+      const precoAt = 245.0
+      const receitaTotal = (pesoCarcacaTotal / 15) * precoAt
+
+      try {
+        await registrarVendaGado({
+          data: new Date().toISOString(),
+          lote_id: selectedLote.id,
+          frente:
+            (selectedLote.frente as any) ||
+            (selectedLote.is_arrendamento ? 'arrendamento' : 'engorda'),
+          sexo: selectedLote.sex as any,
+          qtd_cabecas: qtdAbate,
+          peso_vivo_total: pesoVivoTotal,
+          rendimento_carcaca_pct: rendimento,
+          peso_carcaca_total: pesoCarcacaTotal,
+          preco_rs_at: precoAt,
+          receita_total: Number(receitaTotal.toFixed(2)),
+          comprador: abateCompradorInput || 'Frigorífico Parceiro',
+        })
+
+        await registrarMovimentacaoRebanho({
+          data: new Date().toISOString(),
+          frente: (selectedLote.frente as any) || 'engorda',
+          lote_id: selectedLote.id,
+          tipo: 'venda',
+          qtd_cabecas: qtdAbate,
+          peso_total_kg: pesoVivoTotal,
+          valor_total_rs: Number(receitaTotal.toFixed(2)),
+          documento: `NF-CAMPO-${Date.now().toString().slice(-4)}`,
+          sexo: selectedLote.sex as any,
+          observacoes: `Saída para abate/venda via Campo (${abateCompradorInput || 'Frigorífico'}).`,
+        })
+
+        const restante = Math.max(0, (selectedLote.headcount || 0) - qtdAbate)
+        await updateLot(selectedLote.id, {
+          headcount: restante,
+          status: restante === 0 ? 'sold' : selectedLote.status,
+        })
+
+        toast({
+          title: 'Venda / Abate Registrado!',
+          description: `${qtdAbate} animais enviados para abate. Receita e movimentação alimentadas automaticamente.`,
+        })
+        loadRealLots()
+      } catch (err) {
+        console.error('Erro ao registrar abate no banco:', err)
+      }
     } else {
       addAction({
         type: 'FIELD_OPERATION',
@@ -586,6 +708,9 @@ export default function Campo() {
       lote.peso_medio_atual ? String(lote.peso_medio_atual) : String(lote.final_weight || ''),
     )
     setQtdAnimaisInput(String(lote.headcount || ''))
+    setNovaContagemInput(String(lote.headcount || ''))
+    setAbateQtdInput(String(lote.headcount || ''))
+    setAbateCompradorInput('')
     setIsAbateSaida(false)
     setActionType(defaultOperacao)
     setOrigemPesagem('manual')
@@ -1125,20 +1250,24 @@ export default function Campo() {
                     <Label>Nova Contagem</Label>
                     <Input
                       type="number"
-                      defaultValue={selectedLote?.headcount}
+                      value={novaContagemInput}
+                      onChange={(e) => setNovaContagemInput(e.target.value)}
                       className="h-12 text-lg font-mono"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>Motivo</Label>
-                    <Select defaultValue="morte">
+                    <Select
+                      value={motivoContagem}
+                      onValueChange={(val: any) => setMotivoContagem(val)}
+                    >
                       <SelectTrigger className="h-12">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ajuste">Ajuste / Erro</SelectItem>
-                        <SelectItem value="morte">Mortalidade</SelectItem>
-                        <SelectItem value="nascimento">Nascimento</SelectItem>
+                        <SelectItem value="morte">Mortalidade (Registra Morte)</SelectItem>
+                        <SelectItem value="nascimento">Nascimento (Registra Entrada)</SelectItem>
+                        <SelectItem value="ajuste">Ajuste / Erro Inventário</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -1150,12 +1279,23 @@ export default function Campo() {
               <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
                 <div className="space-y-2">
                   <Label>Qtd de Cabeças Desembarcadas</Label>
-                  <Input type="number" placeholder="Ex: 40" className="h-12 text-lg" />
+                  <Input
+                    type="number"
+                    placeholder="Ex: 40"
+                    value={abateQtdInput}
+                    onChange={(e) => setAbateQtdInput(e.target.value)}
+                    className="h-12 text-lg"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label>Comprador / Frigorífico</Label>
-                  <Input placeholder="Nome do destino..." className="h-12" />
-                </div>
+                  <Input
+                    placeholder="Nome do destino..."
+                    value={abateCompradorInput}
+                    onChange={(e) => setAbateCompradorInput(e.target.value)}
+                    className="h-12"
+                  />
+                </div>{' '}
               </div>
             )}
 

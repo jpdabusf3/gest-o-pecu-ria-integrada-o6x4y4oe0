@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T05:17:47.401Z",
+  "generatedAt": "2026-09-25T05:32:14.999Z",
   "collections": [
     {
       "name": "users",
@@ -916,6 +916,598 @@
         "CREATE INDEX idx_historico_atividade ON historico_status (atividade_id)",
         "CREATE INDEX idx_historico_timestamp ON historico_status (timestamp DESC)",
         "CREATE INDEX idx_historico_usuario ON historico_status (usuario_id)"
+      ]
+    },
+    {
+      "name": "movimentacoes_rebanho",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "confinamento", "arrendamento"]
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["compra", "nascimento", "venda", "morte", "transferencia"]
+        },
+        {
+          "name": "qtd_cabecas",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "peso_total_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "valor_total_rs",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "documento",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sexo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["macho", "femea"]
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_mov_data ON movimentacoes_rebanho (data DESC)",
+        "CREATE INDEX idx_mov_frente ON movimentacoes_rebanho (frente)",
+        "CREATE INDEX idx_mov_tipo ON movimentacoes_rebanho (tipo)",
+        "CREATE INDEX idx_mov_lote ON movimentacoes_rebanho (lote_id)"
+      ]
+    },
+    {
+      "name": "vendas",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "confinamento", "arrendamento"]
+        },
+        {
+          "name": "sexo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["macho", "femea"]
+        },
+        {
+          "name": "qtd_cabecas",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "peso_vivo_total",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "rendimento_carcaca_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_carcaca_total",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "preco_rs_at",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "receita_total",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "comprador",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_vendas_data ON vendas (data DESC)",
+        "CREATE INDEX idx_vendas_lote ON vendas (lote_id)"
+      ]
+    },
+    {
+      "name": "compras_gado",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "confinamento", "arrendamento"]
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "sexo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["macho", "femea"]
+        },
+        {
+          "name": "qtd_cabecas",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "peso_medio",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "preco_rs_cab",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "preco_rs_at",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "valor_total",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "agio_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "fornecedor",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_compras_data ON compras_gado (data DESC)",
+        "CREATE INDEX idx_compras_frente ON compras_gado (frente)"
+      ]
+    },
+    {
+      "name": "lancamentos_financeiros",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "centro_custo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "cria",
+            "recria",
+            "engorda",
+            "confinamento",
+            "arrendamento",
+            "fabrica_suplemento",
+            "frota",
+            "administrativo"
+          ]
+        },
+        {
+          "name": "plano_contas",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "classificacao",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "investimento",
+            "custo_variavel",
+            "custo_fixo",
+            "despesa",
+            "desembolso",
+            "perda"
+          ]
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["despesa", "receita"]
+        },
+        {
+          "name": "valor",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_lanc_data ON lancamentos_financeiros (data DESC)",
+        "CREATE INDEX idx_lanc_centro ON lancamentos_financeiros (centro_custo)",
+        "CREATE INDEX idx_lanc_classif ON lancamentos_financeiros (classificacao)"
+      ]
+    },
+    {
+      "name": "estoque_insumos",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "produto",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "codigo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "unidade",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "categoria",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["nutricao", "sanidade", "combustivel", "semen", "geral"]
+        },
+        {
+          "name": "estoque_inicial",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "entradas",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "saidas",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "estoque_final",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "preco_unitario",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "custo_periodo",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "periodo_mes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_estoque_produto ON estoque_insumos (produto)",
+        "CREATE INDEX idx_estoque_periodo ON estoque_insumos (periodo_mes)"
+      ]
+    },
+    {
+      "name": "imobilizado",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "edificacoes",
+            "maquinas",
+            "tratores",
+            "veiculos",
+            "benfeitorias",
+            "pastagens"
+          ]
+        },
+        {
+          "name": "vida_util_anos",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "valor_residual_pct",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "valor_imobilizado",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "depreciacao_anual",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "data_aquisicao",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "centro_custo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "cria",
+            "recria",
+            "engorda",
+            "confinamento",
+            "arrendamento",
+            "fabrica_suplemento",
+            "frota",
+            "administrativo"
+          ]
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_imobilizado_tipo ON imobilizado (tipo)",
+        "CREATE INDEX idx_imobilizado_centro ON imobilizado (centro_custo)"
       ]
     }
   ]
