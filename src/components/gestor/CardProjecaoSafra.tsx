@@ -23,8 +23,11 @@ import {
   Wallet,
   RefreshCw,
   Clock,
+  Target,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { ModalDefinirMetasSafra } from '@/components/gestor/ModalDefinirMetasSafra'
+import { getMetasSafra, calcularAtingimentoMeta, type MetasSafraMap } from '@/services/metasSafra'
 import {
   ProjecaoSafraResult,
   calcularProjecaoSafra,
@@ -75,6 +78,8 @@ export function CardProjecaoSafra({
   const [mostrarBaseCalculo, setMostrarBaseCalculo] = useState<boolean>(false)
   const [cenarioAtivo, setCenarioAtivo] = useState<TipoCenarioProjecao>('realista')
   const [cotacaoB3, setCotacaoB3] = useState<CotacaoB3BoiGordoVigente | null>(null)
+  const [modalMetasOpen, setModalMetasOpen] = useState(false)
+  const [metasSafraMap, setMetasSafraMap] = useState<MetasSafraMap>({})
 
   // Cotação B3 vigente do Boi Gordo (serviço centralizado, mesma fonte usada no Hedge)
   useEffect(() => {
@@ -97,6 +102,17 @@ export function CardProjecaoSafra({
     return () => {
       montado = false
     }
+  }, [])
+
+  // Carregar metas da safra vigente
+  const carregarMetasSafra = () => {
+    getMetasSafra().then((m) => {
+      setMetasSafraMap(m)
+    })
+  }
+
+  useEffect(() => {
+    carregarMetasSafra()
   }, [])
 
   // Executa o cálculo da projeção usando o acumulado real + cotação B3 vigente
@@ -140,6 +156,26 @@ export function CardProjecaoSafra({
   const clCusto = projecao.classificacaoCustoArroba
   const faixasProd = clProd.faixas
   const faixasCusto = clCusto.faixas
+
+  // Metas da safra vigentes para exibição e atingimento
+  const metaProdRecord = metasSafraMap.arroba_ha_ano
+  const metaCustoRecord = metasSafraMap.custo_arroba
+  const valorMetaProd = metaProdRecord?.valor_alvo ?? null
+  const valorMetaCusto = metaCustoRecord?.valor_alvo ?? null
+
+  const atingimentoProd =
+    valorMetaProd !== null
+      ? calcularAtingimentoMeta('arroba_ha_ano', projecao.projetado.arrobasPorHaAno, valorMetaProd)
+      : null
+
+  const atingimentoCusto =
+    valorMetaCusto !== null
+      ? calcularAtingimentoMeta(
+          'custo_arroba',
+          projecao.projetado.custoArrobaProduzida,
+          valorMetaCusto,
+        )
+      : null
 
   // Normalização visual para a barra do @/ha/ano (0 a 14 @/ha/ano)
   const maxProdEscala = 14
@@ -216,17 +252,30 @@ export function CardProjecaoSafra({
               </Tabs>
             </div>
 
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="h-7 text-xs gap-1 border-primary/30 text-primary hover:bg-primary/10"
-            >
-              <Link to="/fechamento?tab=safras-comparativo">
-                <span>Ver Fechamento</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setModalMetasOpen(true)}
+                className="h-7 text-xs gap-1 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
+              >
+                <Target className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Metas da Safra</span>
+              </Button>
+
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs gap-1 border-primary/30 text-primary hover:bg-primary/10"
+              >
+                <Link to="/fechamento?tab=safras-comparativo">
+                  <span>Ver Fechamento</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -278,14 +327,14 @@ export function CardProjecaoSafra({
                     <TooltipTrigger asChild>
                       <button
                         type="button"
-                        aria-label="Faixas Exagro Camada 2"
+                        aria-label="Faixas Camada 2 de Referência"
                         className="text-muted-foreground hover:text-foreground p-1"
                       >
                         <HelpCircle className="w-4 h-4" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="text-xs max-w-xs space-y-1">
-                      <p className="font-bold">Faixas Camada 2 Exagro (@/ha/ano):</p>
+                      <p className="font-bold">Faixas Camada 2 de Referência (@/ha/ano):</p>
                       <p>🔴 Abaixo da Média: &lt; {faixasProd.media.toFixed(1)}</p>
                       <p>
                         🟡 Na Média: {faixasProd.media.toFixed(1)} a{' '}
@@ -325,7 +374,7 @@ export function CardProjecaoSafra({
                   {clProd.seloTop ? (
                     <Badge className="bg-gradient-to-r from-amber-500 to-yellow-400 text-neutral-950 font-bold px-2.5 py-0.5 text-xs shadow-xs flex items-center gap-1 border-amber-300">
                       <Sparkles className="w-3.5 h-3.5 fill-neutral-950" />
-                      TOP EXAGRO
+                      TOP BRASIL
                     </Badge>
                   ) : clProd.status === 'verde' ? (
                     <Badge className="bg-emerald-600 text-white font-semibold px-2 py-0.5 text-xs flex items-center gap-1">
@@ -376,7 +425,7 @@ export function CardProjecaoSafra({
                     <div
                       style={{ width: `${100 - pctTopProd}%` }}
                       className="bg-purple-500/80 dark:bg-purple-500/70"
-                      title={`TOP Exagro (≥ ${faixasProd.top})`}
+                      title={`TOP Brasil (≥ ${faixasProd.top})`}
                     />
                   </div>
 
@@ -422,6 +471,50 @@ export function CardProjecaoSafra({
                 )}
               </span>
             </div>
+
+            {/* Metas da Safra & Barra de Atingimento */}
+            <div className="p-2.5 rounded-lg border bg-muted/40 space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
+                  <Target className="w-3.5 h-3.5 text-emerald-600" />
+                  Meta da Safra:{' '}
+                  {valorMetaProd !== null ? `${valorMetaProd.toFixed(1)} @/ha/ano` : 'Não definida'}
+                </span>
+                {atingimentoProd ? (
+                  <Badge
+                    variant="outline"
+                    className={`text-[10px] font-bold px-1.5 py-0 ${atingimentoProd.corBadge}`}
+                  >
+                    {atingimentoProd.mensagem}
+                  </Badge>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setModalMetasOpen(true)}
+                    className="h-5 text-[10px] text-emerald-700 dark:text-emerald-300 p-0 hover:underline"
+                  >
+                    Definir meta da safra
+                  </Button>
+                )}
+              </div>
+
+              {atingimentoProd && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[10px] text-muted-foreground">
+                    <span>
+                      Projeção atual:{' '}
+                      <strong>{projecao.projetado.arrobasPorHaAno.toFixed(1)} @/ha</strong>
+                    </span>
+                    <span className="font-mono font-bold">
+                      {atingimentoProd.percentual}% da meta
+                    </span>
+                  </div>
+                  <Progress value={Math.min(100, atingimentoProd.percentual)} className="h-1.5" />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Indicador 2: Custo/@ Projetado vs Referência (R$ 199,59) */}
@@ -447,14 +540,14 @@ export function CardProjecaoSafra({
                     <TooltipTrigger asChild>
                       <button
                         type="button"
-                        aria-label="Faixas de Custo Exagro"
+                        aria-label="Faixas de Custo de Referência"
                         className="text-muted-foreground hover:text-foreground p-1"
                       >
                         <HelpCircle className="w-4 h-4" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="text-xs max-w-xs space-y-1">
-                      <p className="font-bold">Faixas Exagro Custo/@ (sem reposição):</p>
+                      <p className="font-bold">Faixas de Custo de Referência (sem reposição):</p>{' '}
                       <p>⭐ TOP Menor Custo: ≤ R$ {faixasCusto.top.toFixed(2)}</p>
                       <p>🟢 Nível Referência: ≤ R$ {faixasCusto.referencia.toFixed(2)}</p>
                       <p>🟡 Na Média: ≤ R$ {faixasCusto.media.toFixed(2)}</p>
@@ -511,7 +604,7 @@ export function CardProjecaoSafra({
                   )}
 
                   <span className="text-[11px] font-mono text-muted-foreground">
-                    Ref Exagro:{' '}
+                    Ref. Mercado:{' '}
                     <strong className="text-foreground">
                       {formatCurrency(faixasCusto.referencia)}
                     </strong>
@@ -596,6 +689,55 @@ export function CardProjecaoSafra({
                   </span>
                 )}
               </span>
+            </div>
+
+            {/* Metas da Safra & Barra de Atingimento de Custo */}
+            <div className="p-2.5 rounded-lg border bg-muted/40 space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
+                  <Target className="w-3.5 h-3.5 text-amber-600" />
+                  Meta da Safra:{' '}
+                  {valorMetaCusto !== null ? formatCurrency(valorMetaCusto) + '/@' : 'Não definida'}
+                </span>
+                {atingimentoCusto ? (
+                  <Badge
+                    variant="outline"
+                    className={`text-[10px] font-bold px-1.5 py-0 ${atingimentoCusto.corBadge}`}
+                  >
+                    {atingimentoCusto.mensagem}
+                  </Badge>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setModalMetasOpen(true)}
+                    className="h-5 text-[10px] text-emerald-700 dark:text-emerald-300 p-0 hover:underline"
+                  >
+                    Definir meta da safra
+                  </Button>
+                )}
+              </div>
+
+              {atingimentoCusto && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[10px] text-muted-foreground">
+                    <span>
+                      Projeção atual:{' '}
+                      <strong>{formatCurrency(projecao.projetado.custoArrobaProduzida)}/@</strong>
+                    </span>
+                    <span className="font-mono font-bold">
+                      {projecao.projetado.custoArrobaProduzida <= (valorMetaCusto ?? 0)
+                        ? 'Dentro do teto'
+                        : 'Acima do teto'}
+                    </span>
+                  </div>
+                  <Progress
+                    value={Math.min(100, Math.max(0, atingimentoCusto.percentual))}
+                    className="h-1.5"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1093,7 +1235,8 @@ export function CardProjecaoSafra({
                     <span>2. Extrapolação de Custo por Arroba Produzida</span>
                   </h5>
                   <p className="text-muted-foreground text-[11px] leading-relaxed">
-                    Mesma metodologia de rateio do fechamento anual Exagro, sem valor de reposição:
+                    Mesma metodologia de rateio do fechamento anual de safra, sem valor de
+                    reposição:
                     <br />
                     <code className="text-foreground bg-muted px-1 rounded font-mono text-[10px]">
                       Custo Op. Anual = R${' '}
@@ -1224,6 +1367,14 @@ export function CardProjecaoSafra({
           )}
         </div>
       </CardContent>
+
+      {/* Modal de Configuração de Metas da Safra */}
+      <ModalDefinirMetasSafra
+        open={modalMetasOpen}
+        onOpenChange={setModalMetasOpen}
+        safra={projecao.anoSafra}
+        onMetasSalvas={carregarMetasSafra}
+      />
     </Card>
   )
 }

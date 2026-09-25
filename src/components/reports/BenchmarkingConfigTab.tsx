@@ -19,7 +19,8 @@ import {
   TableBody,
   TableCell,
 } from '@/components/ui/table'
-import { Sparkles, Trophy, Save, RotateCcw, AlertCircle } from 'lucide-react'
+import { Sparkles, Trophy, Save, RotateCcw, AlertCircle, Target } from 'lucide-react'
+import { ModalDefinirMetasSafra } from '@/components/gestor/ModalDefinirMetasSafra'
 import {
   getConfigBenchmarks,
   updateConfigBenchmark,
@@ -41,6 +42,7 @@ export function BenchmarkingConfigTab() {
   const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [savingId, setSavingId] = useState<string | null>(null)
+  const [modalMetasSafraOpen, setModalMetasSafraOpen] = useState(false)
   const [edits, setEdits] = useState<
     Record<
       string,
@@ -146,7 +148,7 @@ export function BenchmarkingConfigTab() {
 
   return (
     <div className="space-y-4">
-      {/* Sub-abas dentro da aba Benchmarking Exagro */}
+      {/* Sub-abas dentro da aba Benchmarking de Mercado */}
       <Tabs value={subAba} onValueChange={(v) => setSubAba(v as 'grade' | 'historico')}>
         <div className="flex items-center justify-between pb-2 border-b">
           <TabsList className="h-9 bg-muted/60 p-1">
@@ -171,8 +173,8 @@ export function BenchmarkingConfigTab() {
                   <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-emerald-600" />
                     <CardTitle className="text-xl">
-                      Benchmarking Exagro & Metas da Fazenda
-                    </CardTitle>
+                      Benchmarking de Mercado & Metas da Fazenda
+                    </CardTitle>{' '}
                   </div>
                   <CardDescription className="mt-1">
                     Coleção editável <code className="text-xs font-mono">config_benchmark</code>:
@@ -181,7 +183,17 @@ export function BenchmarkingConfigTab() {
                   </CardDescription>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setModalMetasSafraOpen(true)}
+                    className="h-8 text-xs gap-1.5 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10 font-semibold"
+                  >
+                    <Target className="w-3.5 h-3.5 text-emerald-600" />
+                    Metas da Safra
+                  </Button>
+
                   <Button
                     size="sm"
                     variant="outline"
@@ -214,7 +226,7 @@ export function BenchmarkingConfigTab() {
                     Registrar Recalibração de Toda a Grade
                   </Button>
                   <Badge variant="outline" className="text-xs uppercase font-mono tracking-wider">
-                    Metodologia Exagro MT / TIP
+                    Metodologia MT / TIP
                   </Badge>
                 </div>
               </div>
@@ -237,7 +249,7 @@ export function BenchmarkingConfigTab() {
                     <TableRow>
                       <TableHead className="min-w-[220px]">Indicador</TableHead>
                       <TableHead className="w-24">Unidade</TableHead>
-                      <TableHead className="w-28 text-right">Média Exagro</TableHead>
+                      <TableHead className="w-28 text-right">Média de Mercado</TableHead>
                       <TableHead className="w-28 text-right">Referência</TableHead>
                       <TableHead className="w-28 text-right">TOP Brasil</TableHead>
                       <TableHead className="w-32 text-right">Alvo da Fazenda</TableHead>
@@ -313,7 +325,7 @@ export function BenchmarkingConfigTab() {
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                                title="Restaurar padrão Exagro original"
+                                title="Restaurar padrão de referência original"
                                 onClick={() => handleRestaurarPadrao(b)}
                               >
                                 <RotateCcw className="w-3.5 h-3.5" />
@@ -351,6 +363,8 @@ export function BenchmarkingConfigTab() {
           <BenchmarkingHistoricoTab />
         </TabsContent>
       </Tabs>
+
+      <ModalDefinirMetasSafra open={modalMetasSafraOpen} onOpenChange={setModalMetasSafraOpen} />
     </div>
   )
 }

@@ -105,7 +105,7 @@ export function LotPerformanceDrawer({
   // Última pesagem registrada
   const ultimaPesagem = pesagens.length > 0 ? pesagens[0] : null
 
-  // Cálculo de dias de permanência Exagro
+  // Cálculo de dias de permanência de referência
   const dataEntrada = lotDetails?.data_entrada || lotDetails?.entry_date
   const dataSaida = lotDetails?.data_saida || lotDetails?.exit_date
   const diasPermanencia = dataEntrada
@@ -129,7 +129,8 @@ export function LotPerformanceDrawer({
             <TrendingUp className="h-6 w-6 text-primary" /> Desempenho: {lotDetails?.name || loteId}
           </SheetTitle>
           <SheetDescription>
-            Análise zootécnica Exagro, acompanhamento de pesagens reais e curva de ganho de peso.
+            Análise zootécnica de referência, acompanhamento de pesagens reais e curva de ganho de
+            peso.
           </SheetDescription>
         </SheetHeader>
 
@@ -167,7 +168,7 @@ export function LotPerformanceDrawer({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Target className="h-4 w-4 text-primary" />
-                  <span className="font-bold text-sm">Frente Cria — Metas Exagro</span>
+                  <span className="font-bold text-sm">Frente Cria — Metas de Referência</span>
                   <Badge variant="outline" className="text-xs font-normal">
                     Fase de Matrizes e Bezerros
                   </Badge>
@@ -193,7 +194,7 @@ export function LotPerformanceDrawer({
                       variant="outline"
                       className="text-[10px] bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
                     >
-                      Alvo Exagro
+                      Alvo de Referência
                     </Badge>
                   </div>
                   <span className="text-[10px] text-muted-foreground block mt-1">
@@ -213,7 +214,7 @@ export function LotPerformanceDrawer({
                       variant="outline"
                       className="text-[10px] bg-purple-500/10 text-purple-700 border-purple-500/20"
                     >
-                      Alvo TOP Exagro
+                      Alvo TOP Brasil
                     </Badge>
                   </div>
                   <span className="text-[10px] text-muted-foreground block mt-1">
@@ -284,7 +285,7 @@ export function LotPerformanceDrawer({
             </div>
           )}
 
-          {/* Card de Custo por Arroba Produzida Exagro */}
+          {/* Card de Custo por Arroba Produzida */}
           {custoArroba && (
             <div className="bg-muted/30 border rounded-xl p-4 shadow-sm space-y-3">
               <div className="flex items-center justify-between">

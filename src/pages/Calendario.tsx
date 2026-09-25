@@ -305,7 +305,7 @@ export default function Calendario() {
         year: 'numeric',
       })
     }
-    return `Fechamento Anual Exagro — ${currentDate.getFullYear()}`
+    return `Fechamento Anual de Safra — ${currentDate.getFullYear()}`
   }, [viewMode, currentDate, weekDays])
 
   return (
@@ -439,7 +439,7 @@ export default function Calendario() {
               className="h-8 text-xs px-3"
               onClick={() => setViewMode('trimestre')}
             >
-              <CalendarRange className="h-3.5 w-3.5 mr-1" /> Trimestral (Exagro)
+              <CalendarRange className="h-3.5 w-3.5 mr-1" /> Visão Trimestral
             </Button>
           </div>
         </div>
@@ -894,7 +894,7 @@ export default function Calendario() {
       )}
 
       {/* -------------------------------------------------------------
-          VISÃO 4: TRIMESTRAL (Alinhada ao fechamento Exagro)
+          VISÃO 4: TRIMESTRAL (Alinhada ao fechamento de safra)
       ------------------------------------------------------------- */}
       {viewMode === 'trimestre' && (
         <VisaoTrimestral atividades={atividadesFiltradas} ano={currentDate.getFullYear()} />

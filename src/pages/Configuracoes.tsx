@@ -118,7 +118,7 @@ export default function Configuracoes() {
           Configurações do Sistema
         </h2>
         <p className="text-muted-foreground mt-1">
-          Gerencie suas credenciais, calibração de benchmarking Exagro, contatos e preferências.
+          Gerencie suas credenciais, calibração de benchmarking de mercado, contatos e preferências.
         </p>
       </div>
 
@@ -138,7 +138,7 @@ export default function Configuracoes() {
             value="benchmark"
             className="py-2 gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300"
           >
-            <Trophy className="w-3.5 h-3.5 text-emerald-600" /> Benchmarking Exagro
+            <Trophy className="w-3.5 h-3.5 text-emerald-600" /> Benchmarking de Mercado
           </TabsTrigger>
           <TabsTrigger
             value="historico-benchmark"

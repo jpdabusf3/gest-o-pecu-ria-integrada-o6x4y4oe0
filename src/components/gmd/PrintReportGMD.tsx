@@ -78,7 +78,7 @@ export function PrintReportGMD({
       id="print-relatorio-gmd"
       className="hidden print:block print:p-6 print:text-black space-y-6 bg-white text-black font-sans leading-relaxed"
     >
-      {/* 1. CABEÇALHO EXECUTIVO PADRÃO EXAGRO */}
+      {/* 1. CABEÇALHO EXECUTIVO PADRÃO DE REFERÊNCIA */}
       <div className="border-b-2 border-primary pb-4 flex justify-between items-start">
         <div>
           <div className="flex items-center gap-2">
@@ -88,7 +88,8 @@ export function PrintReportGMD({
             </h1>
           </div>
           <p className="text-sm font-semibold text-gray-700 mt-1">
-            Fechamento de Desempenho Ponderado & Controle de Ganho Médio Diário (Metodologia Exagro)
+            Fechamento de Desempenho Ponderado & Controle de Ganho Médio Diário (Metodologia de
+            Referência)
           </p>
           <div className="flex items-center gap-4 text-xs text-gray-500 mt-1 font-mono">
             <span>📅 Emissão: {dataGeracao}</span>
@@ -165,10 +166,10 @@ export function PrintReportGMD({
         </div>
       </div>
 
-      {/* 3. RECORTE POR FAIXA DE PERMANÊNCIA (EXAGRO) */}
+      {/* 3. RECORTE POR FAIXA DE PERMANÊNCIA (PADRÃO DE REFERÊNCIA) */}
       <div className="space-y-2">
         <h2 className="text-sm font-black uppercase tracking-wider text-gray-800 border-b pb-1 flex items-center gap-1.5">
-          <span>1. Desempenho por Faixa de Permanência (Padrão Exagro)</span>
+          <span>1. Desempenho por Faixa de Permanência (Padrão de Referência)</span>
         </h2>
         <table className="w-full text-left text-xs border border-gray-300 border-collapse">
           <thead>

@@ -46,7 +46,7 @@ export default function RelatoriosDesempenho() {
       <Tabs defaultValue="categoria" className="space-y-6">
         <TabsList className="grid w-full sm:flex sm:w-auto grid-cols-2 sm:grid-cols-4 h-auto">
           <TabsTrigger value="mensal_gmd" className="py-2 font-semibold">
-            Fechamento GMD (Exagro)
+            Fechamento GMD
           </TabsTrigger>
           <TabsTrigger value="categoria" className="py-2">
             Evolução por Categoria

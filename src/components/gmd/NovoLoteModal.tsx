@@ -146,7 +146,7 @@ export function NovoLoteModal({ open, onOpenChange, onSuccess }: NovoLoteModalPr
       const created = await createLot(payload)
       toast({
         title: 'Lote cadastrado com sucesso!',
-        description: `Lote "${created.name}" cadastrado com GMD alvo calibrado pelo benchmarking Exagro.`,
+        description: `Lote "${created.name}" cadastrado com GMD alvo calibrado pelo benchmarking de mercado.`,
       })
       onSuccess(created)
       onOpenChange(false)
@@ -174,7 +174,7 @@ export function NovoLoteModal({ open, onOpenChange, onSuccess }: NovoLoteModalPr
             <DialogTitle>Novo Lote de Animais</DialogTitle>
           </div>
           <DialogDescription>
-            Cadastre um novo lote com GMD alvo calibrado pelo benchmarking Exagro.
+            Cadastre um novo lote com GMD alvo calibrado pelo benchmarking de mercado.
           </DialogDescription>
         </DialogHeader>
 
@@ -265,12 +265,12 @@ export function NovoLoteModal({ open, onOpenChange, onSuccess }: NovoLoteModalPr
             </div>
           </div>
 
-          {/* Seção Exagro: GMD Alvo / Metas de Cria */}
+          {/* Seção Benchmarking: GMD Alvo / Metas de Cria */}
           <div className="rounded-lg border p-3.5 bg-muted/40 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-sm font-semibold">
                 <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span>Calibração Benchmarking Exagro</span>
+                <span>Calibração de Benchmarking</span>
               </div>
               <Badge variant="outline" className="text-xs font-mono">
                 {isCria ? 'Cria: Sem GMD Alvo' : `${gmdAlvoKg || '--'} kg/dia`}
@@ -282,8 +282,8 @@ export function NovoLoteModal({ open, onOpenChange, onSuccess }: NovoLoteModalPr
                 <Alert className="py-2 text-xs border-blue-200 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-200">
                   <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   <AlertDescription>
-                    Pela metodologia Exagro, a fase de <strong>Cria</strong> não é avaliada por GMD,
-                    mas por <strong>taxa de desmame (%)</strong> e{' '}
+                    Pela metodologia de referência, a fase de <strong>Cria</strong> não é avaliada
+                    por GMD, mas por <strong>taxa de desmame (%)</strong> e{' '}
                     <strong>kg de bezerro desmamado por matriz exposta</strong>.
                   </AlertDescription>
                 </Alert>

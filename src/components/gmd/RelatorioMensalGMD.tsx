@@ -293,17 +293,17 @@ export function RelatorioMensalGMD() {
       'Dias sem Pesagem': item.diasSemPesagem !== null ? item.diasSemPesagem : '-',
     }))
 
-    downloadExcel(dadosExcel, 'relatorio_mensal_gmd_exagro')
+    downloadExcel(dadosExcel, 'relatorio_mensal_gmd_benchmarking')
     toast({
       title: 'Excel Exportado',
-      description: 'Relatório mensal de GMD gerado no padrão Exagro.',
+      description: 'Relatório mensal de GMD gerado no padrão de referência.',
     })
   }
 
   const handleExportPdf = () => {
     window.print()
     toast({
-      title: 'Gerando PDF Exagro',
+      title: 'Gerando PDF',
       description: 'Relatório zootécnico pronto para nutricionista e reunião de sócios.',
     })
   }
@@ -484,7 +484,7 @@ export function RelatorioMensalGMD() {
 
   return (
     <div className="space-y-6 animate-fade-in-up pb-10">
-      {/* Relatório Formatado Exclusivo para Impressão / Exportação PDF (Metodologia Exagro) */}
+      {/* Relatório Formatado Exclusivo para Impressão / Exportação PDF (Metodologia de Referência) */}
       <PrintReportGMD
         kpisGerais={kpisGerais}
         lotesMachos={lotesMachos}
@@ -500,7 +500,8 @@ export function RelatorioMensalGMD() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
-              <BarChart3 className="h-7 w-7 text-primary" /> Relatório Mensal de GMD (Padrão Exagro)
+              <BarChart3 className="h-7 w-7 text-primary" /> Relatório Mensal de GMD (Padrão de
+              Referência)
             </h2>
             <p className="text-muted-foreground mt-1 text-sm">
               Fechamento de desempenho ponderado, recortes por sexo, faixa de permanência, frente
@@ -523,12 +524,12 @@ export function RelatorioMensalGMD() {
               onClick={handleExportExcel}
               className="gap-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 border-emerald-200"
             >
-              <FileSpreadsheet className="h-4 w-4" /> Exportar Planilha Exagro
+              <FileSpreadsheet className="h-4 w-4" /> Exportar Planilha de Benchmarking
             </Button>
           </div>
         </div>
 
-        {/* Banner de Posição da Fazenda no Benchmarking Exagro (Camada 2) */}
+        {/* Banner de Posição da Fazenda no Benchmarking (Camada 2) */}
         {(() => {
           const benchProd = benchmarks.find((b) => b.codigo === 'prod_arroba_ha_ano_pasto')
           const posCamada2 = classificarCamada2(10.4, benchProd)
@@ -541,7 +542,7 @@ export function RelatorioMensalGMD() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs uppercase font-bold tracking-wider">
-                      Posição no Benchmarking Exagro (Camada 2)
+                      Posição no Benchmarking (Camada 2)
                     </span>
                     {posCamada2.seloTop && (
                       <Badge className="bg-amber-400 text-neutral-950 font-bold text-[10px]">
@@ -698,7 +699,7 @@ export function RelatorioMensalGMD() {
 
               <div>
                 <span className="text-xs text-muted-foreground block mb-1 font-semibold">
-                  Faixa de Permanência (Exagro)
+                  Faixa de Permanência
                 </span>
                 <Select value={filtroFaixa} onValueChange={setFiltroFaixa}>
                   <SelectTrigger className="h-10">
@@ -734,7 +735,7 @@ export function RelatorioMensalGMD() {
           </CardContent>
         </Card>
 
-        {/* Abas com os 4 Recortes Exagro Principais */}
+        {/* Abas com os 4 Recortes Principais */}
         <Tabs defaultValue="sexo" className="space-y-4">
           <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full h-auto p-1 bg-muted/60">
             <TabsTrigger value="sexo" className="py-2.5 text-xs sm:text-sm">
@@ -779,7 +780,7 @@ export function RelatorioMensalGMD() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg">GMD Médio por Faixa de Permanência</CardTitle>
                 <CardDescription>
-                  Padrão de fechamento Exagro: segregação entre lotes novos (&le;90d),
+                  Padrão de fechamento de referência: segregação entre lotes novos (&le;90d),
                   intermediários (91-120d) e de longa permanência (&gt;120d).
                 </CardDescription>
               </CardHeader>

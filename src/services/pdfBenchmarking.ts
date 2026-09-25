@@ -54,7 +54,7 @@ export function gerarPdfHistoricoBenchmarking({
 
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(9)
-  doc.text(`${nomeFazenda} | Metas & Faixas Estratégicas Exagro`, 14, 18)
+  doc.text(`${nomeFazenda} | Metas & Faixas Estratégicas de Benchmarking`, 14, 18)
 
   doc.setFontSize(8)
   const textoData = `Emissão: ${dataEmissao}`
@@ -115,7 +115,7 @@ export function gerarPdfHistoricoBenchmarking({
         [
           'Safra',
           'Data Calibração',
-          'Média Exagro',
+          'Média de Mercado',
           'Referência',
           'TOP Brasil',
           'Alvo Fazenda',

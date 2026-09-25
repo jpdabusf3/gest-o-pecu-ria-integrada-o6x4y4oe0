@@ -552,7 +552,7 @@ export default function Campo() {
           await createPesagem(pesagemPayload)
           toast({
             title: 'Pesagem Salva no Banco Real',
-            description: `Peso de ${pesoNum} kg gravado para o lote ${selectedLote.name}. GMD e indicadores Exagro calculados.`,
+            description: `Peso de ${pesoNum} kg gravado para o lote ${selectedLote.name}. GMD e indicadores zootécnicos calculados.`,
           })
           loadRealLots()
         } catch (err: any) {
@@ -1215,7 +1215,7 @@ export default function Campo() {
 
                 <p className="text-xs text-muted-foreground text-center">
                   Grava diretamente na coleção real de pesagens, atualiza o lote e recalibra GMD e
-                  diárias Exagro.
+                  diárias zootécnicas.
                 </p>
               </div>
             )}

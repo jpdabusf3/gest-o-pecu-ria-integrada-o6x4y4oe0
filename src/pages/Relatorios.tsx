@@ -118,7 +118,7 @@ export default function Relatorios() {
             Semanal de Atividades
           </TabsTrigger>
           <TabsTrigger value="gmd_mensal" className="font-semibold">
-            Fechamento Mensal GMD (Exagro)
+            Fechamento Mensal GMD
           </TabsTrigger>
           <TabsTrigger value="intervencoes">Log de Intervenções & Manejo</TabsTrigger>
         </TabsList>

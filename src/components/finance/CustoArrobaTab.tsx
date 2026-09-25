@@ -202,12 +202,13 @@ export function CustoArrobaTab() {
             <CardTitle className="text-base flex items-center justify-between">
               <span>Cruzamento Zootécnico: @ Produzidas x Custos do Período</span>
               <Badge variant="outline" className="font-mono text-xs">
-                Base Real Exagro
+                Base Real de Referência
               </Badge>
             </CardTitle>
             <CardDescription>
-              Conforme metodologia Exagro, o lote requer pesagem de entrada e saída registradas para
-              apurar o ganho total em arrobas (@) e o custo efetivo por arroba produzida.
+              Conforme metodologia de referência, o lote requer pesagem de entrada e saída
+              registradas para apurar o ganho total em arrobas (@) e o custo efetivo por arroba
+              produzida.
             </CardDescription>
           </CardHeader>
           <CardContent className="px-0 sm:px-6 overflow-x-auto">

@@ -409,7 +409,7 @@ export default function Pesagens() {
           </h2>
           <p className="text-muted-foreground mt-1">
             Gestão zootécnica de pesagens por lote e individuais, monitoramento de GMD e fechamento
-            de arrobas (@) padrão Exagro.
+            de arrobas (@) de referência.
           </p>
         </div>
 
@@ -419,7 +419,7 @@ export default function Pesagens() {
             className="gap-2 border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
             onClick={() => setModalNovoLoteOpen(true)}
           >
-            <Plus className="h-4 w-4" /> Novo Lote (Exagro)
+            <Plus className="h-4 w-4" /> Novo Lote
           </Button>
 
           <ScaleIntegrationModal

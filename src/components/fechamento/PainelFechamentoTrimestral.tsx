@@ -356,7 +356,7 @@ export function PainelFechamentoTrimestral({ ano, frente }: PainelFechamentoTrim
           </Card>
         )}
 
-        {/* Painel Zootécnico Exagro da Cria no Trimestre */}
+        {/* Painel Zootécnico de Referência da Cria no Trimestre */}
         {tAtual && (
           <Card className="shadow-xs border-blue-500/20 bg-blue-500/5">
             <CardHeader className="p-4 pb-2">
@@ -366,7 +366,7 @@ export function PainelFechamentoTrimestral({ ano, frente }: PainelFechamentoTrim
                   Metas Zootécnicas da Frente Cria — {tAtual.rotulo}
                 </span>
                 <Badge variant="outline" className="text-xs bg-background">
-                  Metodologia Exagro
+                  Metodologia de Referência
                 </Badge>
               </CardTitle>
               <CardDescription className="text-xs">

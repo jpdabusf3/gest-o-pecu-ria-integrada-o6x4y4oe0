@@ -629,7 +629,7 @@ export function DesempenhoPorFrenteCard({
                 Desempenho por Frente com Semáforo Zootécnico
               </CardTitle>
               <Badge variant="outline" className="text-[10px] font-mono uppercase bg-primary/5">
-                Camada 1 vs Alvos Exagro
+                Camada 1 vs Alvos de Referência
               </Badge>
             </div>
             <CardDescription className="text-xs mt-0.5">
@@ -775,10 +775,10 @@ export function DesempenhoPorFrenteCard({
               </div>
             </div>
 
-            {/* Posição no Benchmark Exagro & Botão Expansão */}
+            {/* Posição no Benchmark & Botão Expansão */}
             <div className="pt-2 border-t border-border/50 text-[11px] flex items-center justify-between text-muted-foreground">
               <span className="truncate">
-                Ref Exagro: {bmCriaDesmame.valor_referencia}% / {bmCriaKgBezerro.valor_referencia}{' '}
+                Ref. Mercado: {bmCriaDesmame.valor_referencia}% / {bmCriaKgBezerro.valor_referencia}{' '}
                 kg
               </span>
               <div className="flex items-center gap-1.5 shrink-0">
@@ -894,10 +894,10 @@ export function DesempenhoPorFrenteCard({
               </div>
             </div>
 
-            {/* Posição no Benchmark Exagro & Botão Expansão */}
+            {/* Posição no Benchmark & Botão Expansão */}
             <div className="pt-2 border-t border-border/50 text-[11px] flex items-center justify-between text-muted-foreground">
               <span className="truncate">
-                Ref Exagro: {bmGmdRecria.valor_referencia.toFixed(2)} kg/dia
+                Ref. Mercado: {bmGmdRecria.valor_referencia.toFixed(2)} kg/dia
               </span>
               <div className="flex items-center gap-1.5 shrink-0">
                 <Badge
@@ -1012,10 +1012,10 @@ export function DesempenhoPorFrenteCard({
               </div>
             </div>
 
-            {/* Posição no Benchmark Exagro & Botão Expansão */}
+            {/* Posição no Benchmark & Botão Expansão */}
             <div className="pt-2 border-t border-border/50 text-[11px] flex items-center justify-between text-muted-foreground">
               <span className="truncate">
-                Ref MT/TIP: {bmGmdEngorda.valor_referencia.toFixed(2)} kg/dia
+                Ref. Mercado (MT/TIP): {bmGmdEngorda.valor_referencia.toFixed(2)} kg/dia
               </span>
               <div className="flex items-center gap-1.5 shrink-0">
                 <Badge

@@ -61,6 +61,8 @@ import {
 } from '@/services/fechamento'
 import { getConfigBenchmarks, ConfigBenchmarkRecord } from '@/services/configBenchmark'
 import { formatCurrency, formatNumber } from '@/lib/utils'
+import { getMetasSafra, calcularAtingimentoMeta, type MetasSafraMap } from '@/services/metasSafra'
+import { Target } from 'lucide-react'
 
 interface ComparativoSafrasProps {
   frente: FrenteFechamento
@@ -76,13 +78,14 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
   const [mostrarBaseCalculo, setMostrarBaseCalculo] = useState(false)
   const [cotacaoB3, setCotacaoB3] = useState<CotacaoB3BoiGordoVigente | null>(null)
   const [cenarioAtivo, setCenarioAtivo] = useState<TipoCenarioProjecao>('realista')
+  const [metasSafraMap, setMetasSafraMap] = useState<MetasSafraMap>({})
   const { toast } = useToast()
   const { user } = useAuth()
 
   const carregarDados = async () => {
     try {
       setLoading(true)
-      const [safrasData, bmList, l, p, m, v, c, f, e, imo] = await Promise.all([
+      const [safrasData, bmList, l, p, m, v, c, f, e, imo, metas] = await Promise.all([
         getFechamentosArquivados(frente),
         getConfigBenchmarks(),
         getLots(),
@@ -93,10 +96,12 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
         getLancamentosFinanceiros(),
         getEstoqueInsumos(),
         getImobilizado(),
+        getMetasSafra(),
       ])
 
       setSafras(safrasData || [])
       setBenchmarks(bmList || [])
+      setMetasSafraMap(metas || {})
 
       // Calcula a projeção da safra atual em andamento para esta frente
       const proj = calcularProjecaoSafra({
@@ -268,7 +273,7 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                   <TrendingUp className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <CardTitle className="text-base font-bold text-foreground">
                       Safra Atual em Andamento ({projecao.anoSafra}) — Projeção de Fechamento
                     </CardTitle>
@@ -278,13 +283,33 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                     >
                       Em Andamento
                     </Badge>
+
+                    {/* Badge de Meta da Safra Atual e Atingimento */}
+                    {metasSafraMap.arroba_ha_ano?.valor_alvo &&
+                      (() => {
+                        const atg = calcularAtingimentoMeta(
+                          'arroba_ha_ano',
+                          projecao.projetado.arrobasPorHaAno,
+                          metasSafraMap.arroba_ha_ano.valor_alvo,
+                        )
+                        return (
+                          <Badge
+                            variant="outline"
+                            className={`text-[10px] font-bold px-2 py-0.5 gap-1 ${atg.corBadge}`}
+                          >
+                            <Target className="w-3 h-3" />
+                            Meta da safra: {metasSafraMap.arroba_ha_ano.valor_alvo.toFixed(1)} @/ha
+                            — atingimento {atg.percentual}%
+                          </Badge>
+                        )
+                      })()}
                   </div>
-                  <CardDescription className="text-xs">
+                  <CardDescription className="text-xs mt-1">
                     Base: acumulado de {projecao.periodoRotulo} extrapolado para 365 dias (safra{' '}
                     <strong>{projecao.percentualSafraPercorrido.toFixed(1)}% percorrida</strong>,{' '}
                     {projecao.diasDecorridos} de {projecao.diasTotaisSafra} dias)
                   </CardDescription>
-                </div>
+                </div>{' '}
               </div>
 
               <div className="flex items-center gap-2">
@@ -589,7 +614,7 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
                         {formatCurrency(projecao.projetado.custoArrobaProduzida)} / @
                       </strong>
                       <br />
-                      Referência Exagro: <strong>R$ 199,59/@</strong>
+                      Referência de Mercado: <strong>R$ 199,59/@</strong>
                     </p>
                   </div>
                 </div>
@@ -711,11 +736,11 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
               <CardTitle className="text-sm font-bold flex items-center justify-between">
                 <span>Tabela Consolidada Multissafra: Realizado vs. Projeção Atual</span>
                 <Badge variant="outline" className="text-xs font-mono">
-                  Padrão Exagro
+                  Padrão de Referência
                 </Badge>
               </CardTitle>
               <CardDescription className="text-xs">
-                Base comparativa histórica oficial Padrão Exagro com projeção da safra em andamento
+                Base comparativa histórica oficial de referência com projeção da safra em andamento
               </CardDescription>
             </CardHeader>
             <CardContent className="p-4 pt-0">

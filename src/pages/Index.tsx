@@ -267,7 +267,7 @@ export default function Index() {
             className="h-9 gap-1.5 text-xs shadow-xs border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
           >
             <Link to="/fechamento?tab=benchmarking">
-              <Scale className="h-3.5 w-3.5" /> Comparativo Exagro
+              <Scale className="h-3.5 w-3.5" /> Comparativo de Benchmarking
             </Link>
           </Button>
 
@@ -429,7 +429,9 @@ export default function Index() {
                 </Tooltip>
               </TooltipProvider>
             </CardTitle>
-            <span className="text-[10px] text-muted-foreground font-mono">Padrão Exagro</span>
+            <span className="text-[10px] text-muted-foreground font-mono">
+              Padrão de Referência
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary font-mono">

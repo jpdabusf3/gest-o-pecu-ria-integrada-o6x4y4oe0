@@ -153,7 +153,7 @@ export function BenchmarkingHistoricoTab() {
                 <CardTitle className="text-xl">Histórico de Benchmarking Safra a Safra</CardTitle>
               </div>
               <CardDescription className="mt-1">
-                Evolução histórica das metas da fazenda, médias Exagro e níveis TOP recalibrados
+                Evolução histórica das metas da fazenda, médias de mercado e níveis TOP recalibrados
                 anualmente.
               </CardDescription>
             </div>
@@ -333,7 +333,7 @@ export function BenchmarkingHistoricoTab() {
                     <Line
                       type="monotone"
                       dataKey="media"
-                      name="Média Exagro"
+                      name="Média de Mercado"
                       stroke="#f59e0b"
                       strokeWidth={2}
                       strokeDasharray="4 4"

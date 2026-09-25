@@ -107,7 +107,7 @@ export function PainelComparativoExagro({
       setImobilizado(imo)
       setSafrasArquivadas(safrasArq || [])
     } catch (err) {
-      console.warn('Erro ao carregar dados para o Comparativo Exagro:', err)
+      console.warn('Erro ao carregar dados para o Comparativo de Benchmarking:', err)
     } finally {
       setLoading(false)
     }
@@ -190,7 +190,7 @@ export function PainelComparativoExagro({
   }, [benchmarks])
 
   // --------------------------------------------------------------------------
-  // CÁLCULO DOS 8 INDICADORES MÍNIMOS OBRIGATÓRIOS DO BENCHMARK EXAGRO
+  // CÁLCULO DOS 8 INDICADORES MÍNIMOS OBRIGATÓRIOS DO BENCHMARK DE MERCADO
   // 1) Produção @/ha/ano em pasto
   // 2) GMD engorda/TIP (kg/dia)
   // 3) GMD recria/RIP (kg/dia)
@@ -408,7 +408,7 @@ export function PainelComparativoExagro({
       {
         codigo: 'custo_arroba_produzida_engorda',
         titulo: 'Custo da @ Produzida',
-        subtitulo: 'Custo total de engorda sem reposição (Ref Exagro: R$ 199,59/@)',
+        subtitulo: 'Custo total de engorda sem reposição (Ref. Mercado: R$ 199,59/@)',
         unidade: 'R$ / @',
         icone: Landmark,
         valorReal: valCustoArroba,
@@ -493,7 +493,7 @@ export function PainelComparativoExagro({
                 <div>
                   <div className="flex items-center gap-2">
                     <CardTitle className="text-xl sm:text-2xl font-black tracking-tight">
-                      Painel Comparativo Completo Exagro
+                      Painel Comparativo de Benchmarking
                     </CardTitle>
                     <Badge
                       variant="outline"
@@ -657,7 +657,7 @@ export function PainelComparativoExagro({
         </CardContent>
       </Card>
 
-      {/* Grid com os 8 Indicadores Comparativos em Estilo Medidor Exagro */}
+      {/* Grid com os 8 Indicadores Comparativos em Estilo Medidor de Benchmarking */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {indicadores.map((item) => {
           const Icone = item.icone
@@ -747,7 +747,7 @@ export function PainelComparativoExagro({
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs text-xs space-y-1 p-2.5">
                         <p className="font-semibold text-foreground">
-                          Faixas Exagro ({item.unidade}):
+                          Faixas de Referência ({item.unidade}):
                         </p>
                         <p>
                           📊 <strong>Média:</strong> {media.toLocaleString('pt-BR')} {item.unidade}
@@ -799,11 +799,11 @@ export function PainelComparativoExagro({
                   </div>
 
                   <div className="flex flex-col items-end gap-1">
-                    {/* Selos de Referência e TOP Exagro */}
+                    {/* Selos de Referência e TOP Brasil */}
                     {cl.seloTop ? (
                       <Badge className="bg-gradient-to-r from-amber-500 to-yellow-400 text-neutral-950 font-bold px-2.5 py-0.5 text-xs shadow-xs flex items-center gap-1 border-amber-300">
                         <Sparkles className="w-3.5 h-3.5 fill-neutral-950" />
-                        SELO TOP EXAGRO
+                        SELO TOP BRASIL
                       </Badge>
                     ) : cl.seloReferencia ? (
                       <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-2 py-0.5 text-xs flex items-center gap-1 shadow-xs">
@@ -833,7 +833,7 @@ export function PainelComparativoExagro({
                   </div>
                 </div>
 
-                {/* Barra Semafórica de Faixas Exagro (Vermelho / Amarelo / Verde / Roxo) */}
+                {/* Barra Semafórica de Faixas de Referência (Vermelho / Amarelo / Verde / Roxo) */}
                 <div className="space-y-1.5 pt-1">
                   <div className="relative w-full">
                     {/* Barra de Faixas de Fundo */}

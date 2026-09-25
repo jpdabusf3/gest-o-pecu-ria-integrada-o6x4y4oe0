@@ -252,7 +252,7 @@ export function AppSidebar() {
                   }`}
                 >
                   <Scale className="h-4 w-4 text-emerald-600" />
-                  <span className="flex-1">Comparativo Exagro</span>
+                  <span className="flex-1">Comparativo de Benchmarking</span>
                   <Badge
                     variant="outline"
                     className="text-[9px] uppercase font-mono tracking-wider border-emerald-500/30 text-emerald-700 dark:text-emerald-300"

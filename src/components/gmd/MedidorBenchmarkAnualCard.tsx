@@ -114,7 +114,7 @@ export function MedidorBenchmarkAnualCard({
                   Benchmarking Anual em Pastagem
                 </CardTitle>
                 <Badge variant="outline" className="text-[10px] uppercase font-mono tracking-wider">
-                  Camada 2 • Exagro
+                  Camada 2 • Referência de Mercado
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -128,14 +128,14 @@ export function MedidorBenchmarkAnualCard({
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  aria-label="Informações sobre faixas de benchmarking Exagro"
+                  aria-label="Informações sobre faixas de benchmarking"
                   className="text-muted-foreground hover:text-foreground transition-colors p-1"
                 >
                   <HelpCircle className="w-4 h-4" />
                 </button>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs text-xs space-y-1 p-2.5">
-                <p className="font-semibold text-foreground">Semáforo Camada 2 (Exagro):</p>
+                <p className="font-semibold text-foreground">Semáforo Camada 2 (Benchmarking):</p>
                 <p>
                   🔴 <strong>Abaixo de {media.toFixed(1)}:</strong> Abaixo da média nacional
                 </p>
@@ -151,7 +151,7 @@ export function MedidorBenchmarkAnualCard({
                   (Alvo: {alvo.toFixed(1)})
                 </p>
                 <p>
-                  ⭐ <strong>A partir de {top.toFixed(1)}:</strong> Selo TOP Fazendas Exagro
+                  ⭐ <strong>A partir de {top.toFixed(1)}:</strong> Selo TOP Brasil
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -178,7 +178,7 @@ export function MedidorBenchmarkAnualCard({
             {classificacao.seloTop ? (
               <Badge className="bg-gradient-to-r from-amber-500 to-yellow-400 text-neutral-950 font-bold px-3 py-1 text-xs shadow-sm flex items-center gap-1.5 border-amber-300">
                 <Sparkles className="w-3.5 h-3.5 fill-neutral-950" />
-                SELO TOP EXAGRO
+                SELO TOP BRASIL
               </Badge>
             ) : classificacao.status === 'verde' ? (
               <Badge className="bg-emerald-600 text-white font-semibold px-2.5 py-1 text-xs flex items-center gap-1">
@@ -210,7 +210,7 @@ export function MedidorBenchmarkAnualCard({
         {/* Barra Visual Gradiente com Marcadores de Referência */}
         <div className="space-y-2 pt-1">
           <div className="relative w-full">
-            {/* Barra de Fundo das Faixas Exagro */}
+            {/* Barra de Fundo das Faixas de Referência */}
             <div className="h-3 w-full rounded-full overflow-hidden flex bg-muted/60">
               {/* Faixa Vermelha: 0 até média (6,6) */}
               <div
@@ -234,7 +234,7 @@ export function MedidorBenchmarkAnualCard({
               <div
                 style={{ width: `${100 - pctTop}%` }}
                 className="bg-purple-500/80 dark:bg-purple-500/70"
-                title={`TOP Exagro (>= ${top})`}
+                title={`TOP Brasil (>= ${top})`}
               />
             </div>
 
@@ -252,7 +252,7 @@ export function MedidorBenchmarkAnualCard({
               <span className="block font-semibold text-red-600 dark:text-red-400">
                 &lt; {media.toFixed(1)}
               </span>
-              <span className="text-[10px]">Média Exagro</span>
+              <span className="text-[10px]">Média de Mercado</span>
             </div>
             <div className="text-center">
               <span className="block font-semibold text-amber-600 dark:text-amber-400">

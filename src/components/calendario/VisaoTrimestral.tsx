@@ -106,7 +106,7 @@ export function VisaoTrimestral({ atividades, ano }: VisaoTrimestralProps) {
         <div>
           <h3 className="text-base font-bold flex items-center gap-2">
             <CalendarCheck className="h-5 w-5 text-primary" />
-            Conferência Trimestral de Fechamento Exagro — Ano {ano}
+            Conferência Trimestral de Fechamento de Safra — Ano {ano}
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             Mapeamento gerencial de manejos planejados vs. realizados em ciclos trimestrais para
@@ -117,7 +117,9 @@ export function VisaoTrimestral({ atividades, ano }: VisaoTrimestralProps) {
           <Badge variant="outline" className="text-xs bg-background">
             Ano Fiscal: {ano}
           </Badge>
-          <Badge className="text-xs bg-emerald-600 text-white">Padrão Exagro / Gestão Ativa</Badge>
+          <Badge className="text-xs bg-emerald-600 text-white">
+            Padrão de Referência / Gestão Ativa
+          </Badge>
         </div>
       </div>
 

@@ -520,7 +520,7 @@ export default function Fechamento() {
             value="benchmarking"
             className="py-2 gap-1.5 font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 data-[state=active]:bg-emerald-600 data-[state=active]:text-white"
           >
-            <Scale className="h-4 w-4" /> Comparativo Exagro
+            <Scale className="h-4 w-4" /> Comparativo de Benchmarking
           </TabsTrigger>
           <TabsTrigger value="dinamica" className="py-2 gap-1.5 font-medium">
             <Beef className="h-4 w-4" /> 1. Dinâmica do Rebanho
@@ -558,7 +558,7 @@ export default function Fechamento() {
         </TabsList>
 
         {/* ------------------------------------------------------------- */}
-        {/* ABA: PAINEL COMPARATIVO COMPLETO EXAGRO */}
+        {/* ABA: PAINEL COMPARATIVO DE BENCHMARKING */}
         {/* ------------------------------------------------------------- */}
         <TabsContent value="benchmarking" className="space-y-4">
           <PainelComparativoExagro fechamentoProp={resultado} showRecalibrationBanner={false} />
@@ -667,8 +667,8 @@ export default function Fechamento() {
                 (@)
               </CardTitle>
               <CardDescription>
-                Fórmula padrão Exagro: Produção @ = Estoque Final @ − Estoque Inicial @ − Compras @
-                + Vendas @
+                Fórmula padrão de referência: Produção @ = Estoque Final @ − Estoque Inicial @ −
+                Compras @ + Vendas @
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

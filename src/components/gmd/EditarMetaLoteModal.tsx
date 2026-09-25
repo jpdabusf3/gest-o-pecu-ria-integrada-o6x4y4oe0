@@ -172,12 +172,12 @@ export function EditarMetaLoteModal({
             </Select>
           </div>
 
-          {/* Calibração Exagro */}
+          {/* Calibração de Benchmarking */}
           {isCria ? (
             <div className="p-3 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg text-xs text-blue-900 dark:text-blue-200 space-y-1">
               <div className="flex items-center gap-1.5 font-semibold">
                 <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>Metodologia Exagro — Fase de Cria</span>
+                <span>Metodologia de Referência — Fase de Cria</span>
               </div>
               <p>
                 Lotes de cria não utilizam GMD alvo. A avaliação é realizada por{' '}
@@ -191,7 +191,7 @@ export function EditarMetaLoteModal({
                 <div className="flex items-center justify-between rounded-lg border border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-950/20 p-2.5 text-xs">
                   <div className="flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-emerald-600" />
-                    <span>Referência Exagro ({faseAtual?.toUpperCase()}):</span>
+                    <span>Referência de Mercado ({faseAtual?.toUpperCase()}):</span>
                     <strong className="font-mono text-emerald-700 dark:text-emerald-300">
                       {benchmarkInfo.gmdKgDia.toFixed(2)} kg/dia
                     </strong>
@@ -207,7 +207,7 @@ export function EditarMetaLoteModal({
                       }
                     }}
                   >
-                    Usar Alvo Exagro
+                    Usar Alvo de Referência
                   </Button>
                 </div>
               )}
@@ -231,7 +231,7 @@ export function EditarMetaLoteModal({
                   placeholder="Ex: 1,30"
                 />
                 <p className="text-[11px] text-muted-foreground">
-                  GMD alvo em kg/dia calibrado pelo benchmarking Exagro (Engorda: 1,30 kg/dia;
+                  GMD alvo em kg/dia calibrado pelo benchmarking de mercado (Engorda: 1,30 kg/dia;
                   Recria RIP: 0,50 kg/dia).
                 </p>
               </div>
@@ -282,7 +282,7 @@ export function EditarMetaLoteModal({
                 Lote em Regime de Arrendamento
               </Label>
               <p className="text-[10px] text-muted-foreground">
-                Segrega o lote nos relatórios Exagro (nunca misturado à fazenda própria).
+                Segrega o lote nos relatórios de fechamento (nunca misturado à fazenda própria).
               </p>
             </div>
             <Switch

@@ -126,7 +126,7 @@ export const DEFAULT_BENCHMARKS: Record<string, ConfigBenchmarkRecord> = {
     valor_referencia: 199.59,
     valor_top: 185.0,
     alvo_fazenda: 199.59,
-    observacao: 'Referência Exagro R$ 199,59/@',
+    observacao: 'Referência de Mercado R$ 199,59/@',
   },
   custeio_total_cab_ano: {
     id: 'default_custeio_total_cab_ano',
@@ -436,7 +436,7 @@ export async function emitirNotificacaoRecalibracaoSeNecessario(
 
     if (existentes.length === 0) {
       await criarNotificacaoSistema({
-        titulo: 'Recalibração Anual do Benchmarking Exagro',
+        titulo: 'Recalibração Anual do Benchmarking de Mercado',
         mensagem:
           'Início de safra: revise os valores de Média, Referência e TOP no painel de benchmarking ou adie por 12 meses.',
         tipo: 'meta',
@@ -453,7 +453,7 @@ export async function emitirNotificacaoRecalibracaoSeNecessario(
 
 /**
  * Classifica a Camada 2 — benchmark anual @/ha/ano em pastagem:
- * - vermelho: abaixo de 6,6 (abaixo da média Exagro)
+ * - vermelho: abaixo de 6,6 (abaixo da média de mercado)
  * - amarelo: entre 6,6 e 9,9 (entre média e nível da fazenda de referência)
  * - verde: a partir de 10,0 (nível da fazenda de referência)
  * - selo TOP: quando >= 11,0
@@ -471,12 +471,12 @@ export function classificarCamada2(
   const seloReferencia = arrobasHaAno >= referencia
 
   let status: StatusCamada2 = 'vermelho'
-  let label = 'Abaixo da Média Exagro'
+  let label = 'Abaixo da Média de Mercado'
   let cor = 'text-destructive bg-destructive/10 border-destructive/30'
 
   if (seloTop) {
     status = 'top'
-    label = `Nível TOP Exagro (≥ ${top.toFixed(1)} @/ha/ano)`
+    label = `Nível TOP Brasil (≥ ${top.toFixed(1)} @/ha/ano)`
     cor = 'text-purple-700 dark:text-purple-300 bg-purple-500/15 border-purple-500/30'
   } else if (arrobasHaAno >= referencia) {
     status = 'verde'
@@ -484,11 +484,11 @@ export function classificarCamada2(
     cor = 'text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border-emerald-500/30'
   } else if (arrobasHaAno >= media) {
     status = 'amarelo'
-    label = `Na Média Exagro (${media.toFixed(1)} a ${(referencia - 0.1).toFixed(1)} @/ha/ano)`
+    label = `Na Média de Mercado (${media.toFixed(1)} a ${(referencia - 0.1).toFixed(1)} @/ha/ano)`
     cor = 'text-amber-700 dark:text-amber-300 bg-amber-500/15 border-amber-500/30'
   } else {
     status = 'vermelho'
-    label = `Abaixo da Média Exagro (< ${media.toFixed(1)} @/ha/ano)`
+    label = `Abaixo da Média de Mercado (< ${media.toFixed(1)} @/ha/ano)`
     cor = 'text-destructive bg-destructive/10 border-destructive/30'
   }
 
@@ -509,7 +509,7 @@ export function classificarCamada2(
 }
 
 /**
- * Classifica genericamente qualquer um dos indicadores do benchmarking Exagro contra as 3 faixas.
+ * Classifica genericamente qualquer um dos indicadores do benchmarking de mercado contra as 3 faixas.
  * Para custos (onde menor é melhor), a lógica inverte:
  * - valor <= top: TOP Brasil
  * - valor <= referencia: Nível Referência
@@ -633,7 +633,7 @@ export function classificarIndicadorBenchmark(
 }
 
 /**
- * Retorna o GMD alvo padrão por fase segundo o benchmarking Exagro configurado:
+ * Retorna o GMD alvo padrão por fase segundo o benchmarking de mercado configurado:
  * - engorda/tip_rip/confinamento: alvo engorda/TIP (padrão 1,30 kg/dia)
  * - recria: alvo RIP configurado pelo gestor (padrão 0,50 kg/dia)
  * - cria: sem GMD alvo obrigatório (retorna null ou meta de cria)
@@ -658,7 +658,7 @@ export function getGmdAlvoPadraoFase(
     return {
       gmdKgDia: Number(alvo.toFixed(2)),
       isCria: false,
-      observacao: `Benchmark Exagro TIP/Engorda: ${alvo.toFixed(2)} kg/dia`,
+      observacao: `Benchmark TIP/Engorda: ${alvo.toFixed(2)} kg/dia`,
     }
   }
 
@@ -667,6 +667,6 @@ export function getGmdAlvoPadraoFase(
   return {
     gmdKgDia: Number(alvo.toFixed(2)),
     isCria: false,
-    observacao: `Benchmark Exagro Recria/RIP: ${alvo.toFixed(2)} kg/dia`,
+    observacao: `Benchmark Recria/RIP: ${alvo.toFixed(2)} kg/dia`,
   }
 }

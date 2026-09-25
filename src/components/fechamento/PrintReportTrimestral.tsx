@@ -268,10 +268,10 @@ export function PrintReportTrimestral({
         </div>
       )}
 
-      {/* 5. METAS ZOOTÉCNICAS DA CRIA (EXAGRO) */}
+      {/* 5. METAS ZOOTÉCNICAS DA CRIA (PADRÃO DE REFERÊNCIA) */}
       <div className="space-y-2">
         <h2 className="text-sm font-black uppercase tracking-wider text-gray-800 border-b pb-1">
-          3. Metas Zootécnicas da Frente Cria (Metodologia Exagro)
+          3. Metas Zootécnicas da Frente Cria (Padrão de Referência)
         </h2>
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div className="border rounded p-2.5 bg-gray-50 flex justify-between items-center">
