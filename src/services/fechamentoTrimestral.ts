@@ -96,12 +96,54 @@ export async function consolidarAtividadesPorTrimestre(
         custoTotal: number
       }
     > = {
-      todas: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
-      cria: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
-      recria: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
-      engorda: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
-      confinamento: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
-      arrendamento: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
+      todas: {
+        planejadas: 0,
+        realizadas: 0,
+        naoRealizadas: 0,
+        custoInsumos: 0,
+        custoDiarias: 0,
+        custoTotal: 0,
+      },
+      cria: {
+        planejadas: 0,
+        realizadas: 0,
+        naoRealizadas: 0,
+        custoInsumos: 0,
+        custoDiarias: 0,
+        custoTotal: 0,
+      },
+      recria: {
+        planejadas: 0,
+        realizadas: 0,
+        naoRealizadas: 0,
+        custoInsumos: 0,
+        custoDiarias: 0,
+        custoTotal: 0,
+      },
+      engorda: {
+        planejadas: 0,
+        realizadas: 0,
+        naoRealizadas: 0,
+        custoInsumos: 0,
+        custoDiarias: 0,
+        custoTotal: 0,
+      },
+      confinamento: {
+        planejadas: 0,
+        realizadas: 0,
+        naoRealizadas: 0,
+        custoInsumos: 0,
+        custoDiarias: 0,
+        custoTotal: 0,
+      },
+      arrendamento: {
+        planejadas: 0,
+        realizadas: 0,
+        naoRealizadas: 0,
+        custoInsumos: 0,
+        custoDiarias: 0,
+        custoTotal: 0,
+      },
     }
 
     ativsTrimestre.forEach((a) => {

@@ -16,12 +16,14 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/hooks/use-toast'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useMarket } from '@/contexts/MarketContext'
+import { BenchmarkingConfigTab } from '@/components/reports/BenchmarkingConfigTab'
 import {
   Save,
   UserCog,
   MessageCircle,
   BellRing,
   TrendingUp,
+  Trophy,
   ShieldAlert,
   CheckCircle2,
 } from 'lucide-react'
@@ -96,14 +98,14 @@ export default function Configuracoes() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in-up pb-8">
+    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in-up pb-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
           <UserCog className="h-8 w-8 text-primary" />
-          Configurações
+          Configurações do Sistema
         </h2>
         <p className="text-muted-foreground mt-1">
-          Gerencie suas credenciais, contatos e preferências do sistema.
+          Gerencie suas credenciais, calibração de benchmarking Exagro, contatos e preferências.
         </p>
       </div>
 
@@ -112,6 +114,9 @@ export default function Configuracoes() {
           <TabsTrigger value="perfil" className="py-2">
             Perfil
           </TabsTrigger>
+          <TabsTrigger value="benchmark" className="py-2 gap-1.5">
+            <Trophy className="w-3.5 h-3.5 text-emerald-600" /> Benchmarking Exagro
+          </TabsTrigger>
           <TabsTrigger value="notificacoes" className="py-2">
             Notificações
           </TabsTrigger>
@@ -119,6 +124,10 @@ export default function Configuracoes() {
             Mercado
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="benchmark" className="mt-0">
+          <BenchmarkingConfigTab />
+        </TabsContent>
 
         <TabsContent value="perfil" className="mt-0">
           <Card>

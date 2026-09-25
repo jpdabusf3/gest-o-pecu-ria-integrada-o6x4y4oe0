@@ -17,6 +17,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
+import { MedidorBenchmarkAnualCard } from '@/components/gmd/MedidorBenchmarkAnualCard'
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
 import { CentralNotificacoesGestor } from '@/components/gestor/CentralNotificacoesGestor'
 import { useAuth } from '@/contexts/AuthContext'
@@ -552,10 +553,13 @@ export default function Index() {
         </CardContent>
       </Card>
 
+      {/* Benchmarking Exagro Camada 2: Medidor Anual @/ha/ano em Pastagem */}
+      <MedidorBenchmarkAnualCard />
+
       {/* Widget Atividades da Semana (Status e Pendências do Gestor) */}
       <WidgetAtividadesSemanaGestor />
 
-      {/* Top 5 Lotes com Maior Desvio de GMD & Semáforo Zootécnico */}
+      {/* Top 5 Lotes com Maior Desvio de GMD & Semáforo Zootécnico (Camada 1) */}
       <TopDesvioGmdCard />
     </div>
   )

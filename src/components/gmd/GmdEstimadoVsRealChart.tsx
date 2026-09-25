@@ -15,7 +15,8 @@ import { format, parseISO } from 'date-fns'
 
 interface GmdEstimadoVsRealChartProps {
   pesagens: PesagemRecord[]
-  gmdAlvoG: number
+  gmdAlvoG?: number
+  gmdAlvoKg?: number
   rendimentoCarcacaPct?: number
   height?: number
 }
@@ -23,10 +24,19 @@ interface GmdEstimadoVsRealChartProps {
 export function GmdEstimadoVsRealChart({
   pesagens,
   gmdAlvoG,
-  rendimentoCarcacaPct = 53.5,
+  gmdAlvoKg: gmdAlvoKgProp,
+  rendimentoCarcacaPct = 54.0,
   height = 280,
 }: GmdEstimadoVsRealChartProps) {
-  const gmdAlvoKg = gmdAlvoG / 1000
+  // Normalização: aceita gmdAlvoKg direto ou gmdAlvoG
+  const gmdAlvoKg =
+    gmdAlvoKgProp !== undefined
+      ? gmdAlvoKgProp
+      : gmdAlvoG !== undefined
+        ? gmdAlvoG > 15
+          ? gmdAlvoG / 1000
+          : gmdAlvoG
+        : 1.3
 
   const chartData = useMemo(() => {
     // Ordenar cronologicamente crescente
@@ -95,15 +105,17 @@ export function GmdEstimadoVsRealChart({
                       <div className="text-emerald-600 font-medium">
                         GMD Real:{' '}
                         <strong>
-                          {d.gmdReal !== null ? `${d.gmdReal.toFixed(3)} kg/d` : 'Pesagem Inicial'}
+                          {d.gmdReal !== null
+                            ? `${d.gmdReal.toFixed(2)} kg/dia`
+                            : 'Pesagem Inicial'}
                         </strong>
                       </div>
                       <div className="text-primary font-medium">
-                        GMD Estimado (Meta): <strong>{d.gmdAlvo.toFixed(3)} kg/d</strong>
+                        GMD Estimado (Meta): <strong>{d.gmdAlvo.toFixed(2)} kg/dia</strong>
                       </div>
                       {d.gdcReal !== null && (
                         <div className="text-purple-600 font-medium">
-                          GDC (Carcaça): <strong>{d.gdcReal.toFixed(3)} kg/d</strong> (
+                          GDC (Carcaça): <strong>{d.gdcReal.toFixed(2)} kg/dia</strong> (
                           {rendimentoCarcacaPct}%)
                         </div>
                       )}
@@ -129,7 +141,7 @@ export function GmdEstimadoVsRealChart({
               strokeDasharray="4 4"
               strokeWidth={2}
               label={{
-                value: `Meta: ${gmdAlvoG} g/d`,
+                value: `Meta: ${gmdAlvoKg.toFixed(2)} kg/dia`,
                 fill: 'hsl(var(--primary))',
                 fontSize: 11,
                 position: 'insideTopRight',
@@ -167,7 +179,8 @@ export function GmdEstimadoVsRealChart({
             <span className="h-2 w-2 rounded-full bg-emerald-600" /> GMD Real Medido
           </span>
           <span className="flex items-center gap-1">
-            <span className="h-2 w-2 rounded-full bg-primary" /> Meta Projetada ({gmdAlvoG} g/d)
+            <span className="h-2 w-2 rounded-full bg-primary" /> Meta Projetada (
+            {gmdAlvoKg.toFixed(2)} kg/dia)
           </span>
           {rendimentoCarcacaPct > 0 && (
             <span className="flex items-center gap-1">

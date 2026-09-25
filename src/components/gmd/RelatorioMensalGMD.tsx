@@ -39,6 +39,11 @@ import {
   LoteGMDAnalise,
   labelFaixaPermanencia,
 } from '@/services/gmdAlertas'
+import {
+  getConfigBenchmarks,
+  ConfigBenchmarkRecord,
+  classificarCamada2,
+} from '@/services/configBenchmark'
 import { SemaforoGmdBadge } from './SemaforoGmdBadge'
 import { ResolverAlertaModal } from './ResolverAlertaModal'
 import { EditarMetaLoteModal } from './EditarMetaLoteModal'
@@ -65,18 +70,21 @@ export function RelatorioMensalGMD() {
   const [loteParaEditarMeta, setLoteParaEditarMeta] = useState<LotRecord | null>(null)
   const [modalResolverOpen, setModalResolverOpen] = useState(false)
   const [modalMetaOpen, setModalMetaOpen] = useState(false)
+  const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
 
   const carregarDados = async () => {
     try {
       setLoading(true)
-      const [lotsData, pesagensData, alertasData] = await Promise.all([
+      const [lotsData, pesagensData, alertasData, benchData] = await Promise.all([
         getLots(),
         getPesagens(),
         getAlertasGMD(),
+        getConfigBenchmarks(),
       ])
       setLots(lotsData || [])
       setPesagens(pesagensData || [])
       setAlertas(alertasData || [])
+      setBenchmarks(benchData || [])
     } catch (err) {
       console.error('Erro ao carregar dados do relatório mensal:', err)
     } finally {
@@ -388,16 +396,20 @@ export function RelatorioMensalGMD() {
                       {lote.headcount || 0}
                     </TableCell>
                     <TableCell className="text-right font-mono font-medium text-xs">
-                      {item.gmdAlvoG} g/d
+                      {item.lote.fase_atual === 'cria'
+                        ? 'Desmame'
+                        : `${item.gmdAlvoKg.toFixed(2)} kg/d`}
                     </TableCell>
                     <TableCell className="text-right font-mono font-bold text-xs whitespace-nowrap">
                       {item.gmdRealKg !== null ? (
                         <span
                           className={
-                            item.gmdRealG! >= item.gmdAlvoG ? 'text-emerald-600' : 'text-foreground'
+                            item.gmdRealKg >= item.gmdAlvoKg
+                              ? 'text-emerald-600'
+                              : 'text-foreground'
                           }
                         >
-                          {item.gmdRealG} g/d
+                          {item.gmdRealKg.toFixed(2)} kg/d
                         </span>
                       ) : (
                         <span className="text-muted-foreground font-normal">-</span>
@@ -406,7 +418,7 @@ export function RelatorioMensalGMD() {
                     <TableCell className="text-right font-mono text-xs whitespace-nowrap">
                       {item.gdcRealKg !== null ? (
                         <span className="text-purple-600 font-semibold">
-                          {Math.round(item.gdcRealKg * 1000)} g/d
+                          {item.gdcRealKg.toFixed(2)} kg/d
                         </span>
                       ) : (
                         <span className="text-muted-foreground">-</span>
@@ -515,6 +527,43 @@ export function RelatorioMensalGMD() {
             </Button>
           </div>
         </div>
+
+        {/* Banner de Posição da Fazenda no Benchmarking Exagro (Camada 2) */}
+        {(() => {
+          const benchProd = benchmarks.find((b) => b.codigo === 'prod_arroba_ha_ano_pasto')
+          const posCamada2 = classificarCamada2(10.4, benchProd)
+          return (
+            <div
+              className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${posCamada2.cor}`}
+            >
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-5 h-5 shrink-0" />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase font-bold tracking-wider">
+                      Posição no Benchmarking Exagro (Camada 2)
+                    </span>
+                    {posCamada2.seloTop && (
+                      <Badge className="bg-amber-400 text-neutral-950 font-bold text-[10px]">
+                        SELO TOP
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="text-sm font-semibold mt-0.5">
+                    {posCamada2.label} • Produtividade anual realizada:{' '}
+                    <span className="font-mono">{posCamada2.valorAtual.toFixed(2)} @/ha/ano</span>{' '}
+                    vs. alvo{' '}
+                    <span className="font-mono">{posCamada2.faixas.alvo.toFixed(1)} @/ha/ano</span>
+                  </div>
+                </div>
+              </div>
+              <div className="text-xs font-mono self-end sm:self-center">
+                Média: {posCamada2.faixas.media.toFixed(1)} | Ref:{' '}
+                {posCamada2.faixas.referencia.toFixed(1)} | TOP: {posCamada2.faixas.top.toFixed(1)}
+              </div>
+            </div>
+          )
+        })()}
 
         {/* KPIs Gerais do Fechamento */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">

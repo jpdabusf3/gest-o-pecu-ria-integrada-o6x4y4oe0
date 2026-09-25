@@ -43,5 +43,11 @@ export const getLot = async (id: string): Promise<LotRecord> => {
 }
 
 export const updateLot = async (id: string, data: Partial<LotRecord>): Promise<LotRecord> => {
-  return pb.collection('lots').update(id, data)
+  return await pb.collection('lots').update<LotRecord>(id, data)
+}
+
+export const createLot = async (
+  data: Omit<LotRecord, 'id' | 'created' | 'updated'>,
+): Promise<LotRecord> => {
+  return await pb.collection('lots').create<LotRecord>(data)
 }

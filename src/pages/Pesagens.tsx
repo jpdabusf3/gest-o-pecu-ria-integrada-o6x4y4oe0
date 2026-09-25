@@ -48,6 +48,7 @@ import { ScaleIntegrationModal, BatchWeightItem } from '@/components/ScaleIntegr
 import { ScannerModal } from '@/components/ScannerModal'
 import { LotPerformanceDrawer } from '@/components/LotPerformanceDrawer'
 import { EditarMetaLoteModal } from '@/components/gmd/EditarMetaLoteModal'
+import { NovoLoteModal } from '@/components/gmd/NovoLoteModal'
 import { CurvaPesoComparativa } from '@/components/CurvaPesoComparativa'
 import { SemaforoGmdBadge } from '@/components/gmd/SemaforoGmdBadge'
 import { calcularDesvioGMD, calcularSemaforoGMD, analisarLoteGMD } from '@/services/gmdAlertas'
@@ -101,6 +102,7 @@ export default function Pesagens() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [loteParaMeta, setLoteParaMeta] = useState<LotRecord | null>(null)
   const [modalMetaOpen, setModalMetaOpen] = useState(false)
+  const [modalNovoLoteOpen, setModalNovoLoteOpen] = useState(false)
 
   // Estado do Modal de Nova Pesagem
   const [modalOpen, setModalOpen] = useState(false)
@@ -412,6 +414,14 @@ export default function Pesagens() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            className="gap-2 border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+            onClick={() => setModalNovoLoteOpen(true)}
+          >
+            <Plus className="h-4 w-4" /> Novo Lote (Exagro)
+          </Button>
+
           <ScaleIntegrationModal
             animalId={activeModalLot ? activeModalLot.name : 'Curral Principal'}
             onSaveBatchWeights={handleBatchImport}
@@ -420,6 +430,12 @@ export default function Pesagens() {
                 <Layers className="h-4 w-4 text-blue-600" /> Balança (Importar Lote)
               </Button>
             }
+          />
+
+          <NovoLoteModal
+            open={modalNovoLoteOpen}
+            onOpenChange={setModalNovoLoteOpen}
+            onSuccess={() => loadData()}
           />
 
           <Dialog open={modalOpen} onOpenChange={setModalOpen}>
@@ -673,15 +689,24 @@ export default function Pesagens() {
                       <div className="bg-muted/40 p-2 rounded col-span-2 sm:col-span-1">
                         <span className="text-muted-foreground block">
                           GMD Real vs Meta (
-                          {((activeModalLot?.gmd_alvo_g_dia || 900) > 10
-                            ? (activeModalLot?.gmd_alvo_g_dia || 900) / 1000
-                            : activeModalLot?.gmd_alvo_g_dia || 0.9
+                          {((activeModalLot?.gmd_alvo_g_dia ||
+                            (activeModalLot?.fase_atual === 'recria' ? 0.5 : 1.3)) > 15
+                            ? (activeModalLot?.gmd_alvo_g_dia || 1300) / 1000
+                            : activeModalLot?.gmd_alvo_g_dia ||
+                              (activeModalLot?.fase_atual === 'recria' ? 0.5 : 1.3)
                           ).toFixed(2)}{' '}
                           kg/dia):
                         </span>
                         <span className="font-semibold text-emerald-600 text-sm flex items-center gap-1.5">
                           {gmdPreview?.gmd !== null && gmdPreview?.gmd !== undefined
-                            ? `${gmdPreview.gmd.toFixed(2)} kg/dia (${calcularDesvioGMD(gmdPreview.gmd, (activeModalLot?.gmd_alvo_g_dia || 900) > 10 ? (activeModalLot?.gmd_alvo_g_dia || 900) / 1000 : activeModalLot?.gmd_alvo_g_dia || 0.9)}%)`
+                            ? `${gmdPreview.gmd.toFixed(2)} kg/dia (${calcularDesvioGMD(
+                                gmdPreview.gmd,
+                                (activeModalLot?.gmd_alvo_g_dia ||
+                                  (activeModalLot?.fase_atual === 'recria' ? 0.5 : 1.3)) > 15
+                                  ? (activeModalLot?.gmd_alvo_g_dia || 1300) / 1000
+                                  : activeModalLot?.gmd_alvo_g_dia ||
+                                      (activeModalLot?.fase_atual === 'recria' ? 0.5 : 1.3),
+                              )}%)`
                             : 'Primeira pesagem'}
                         </span>
                       </div>
@@ -977,16 +1002,20 @@ export default function Pesagens() {
                     {pesagensFiltradas.map((pesagem) => {
                       const lote =
                         pesagem.expand?.lote_id || lots.find((l) => l.id === pesagem.lote_id)
-                      const metaG = lote?.gmd_alvo_g_dia || 900
-                      const metaKg = metaG / 1000
+                      const rawMeta =
+                        lote?.gmd_alvo_g_dia || (lote?.fase_atual === 'recria' ? 0.5 : 1.3)
+                      const metaKg = rawMeta > 15 ? rawMeta / 1000 : rawMeta
                       const gmd = pesagem.gmd_intervalo
+                      const isLoteCria = lote?.fase_atual === 'cria'
                       const desvio =
-                        typeof gmd === 'number' && gmd > 0 ? calcularDesvioGMD(gmd, metaKg) : null
-                      const semaforo = calcularSemaforoGMD(desvio, null)
-                      const rendimento = lote?.rendimento_carcaca_pct || 0
+                        !isLoteCria && typeof gmd === 'number' && gmd > 0 && metaKg > 0
+                          ? calcularDesvioGMD(gmd, metaKg)
+                          : null
+                      const semaforo = isLoteCria ? 'cinza' : calcularSemaforoGMD(desvio, null)
+                      const rendimento = lote?.rendimento_carcaca_pct || 54.0
                       const gdc =
                         typeof gmd === 'number' && gmd > 0 && rendimento > 0
-                          ? Number((gmd * (rendimento / 100)).toFixed(3))
+                          ? Number((gmd * (rendimento / 100)).toFixed(2))
                           : null
 
                       const variacaoKg =
@@ -1018,7 +1047,10 @@ export default function Pesagens() {
                                 {lote?.name || 'Lote Não Identificado'}
                               </button>
                               <span className="text-xs text-muted-foreground">
-                                {lote?.category || lote?.sector || ''} • Meta: {metaG} g/d
+                                {lote?.category || lote?.sector || ''} •{' '}
+                                {isLoteCria
+                                  ? 'Cria: Avaliação por Desmame'
+                                  : `Meta: ${metaKg.toFixed(2)} kg/dia`}
                               </span>
                             </div>
                           </TableCell>
@@ -1075,7 +1107,7 @@ export default function Pesagens() {
                           <TableCell className="text-right whitespace-nowrap font-mono text-xs">
                             {gdc ? (
                               <span className="text-purple-600 font-semibold">
-                                {Math.round(gdc * 1000)} g/d
+                                {gdc.toFixed(2)} kg/dia
                               </span>
                             ) : (
                               <span className="text-muted-foreground">-</span>

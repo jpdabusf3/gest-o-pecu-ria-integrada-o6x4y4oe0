@@ -114,12 +114,18 @@ export function analisarLoteGMD(
   pesagensDoLote: PesagemRecord[],
   alertasDoLote: AlertaGMDRecord[] = [],
 ): LoteGMDAnalise {
-  // Regra técnica: Unidade padronizada de GMD é kg/dia.
-  // Valores já gravados no banco podem vir em g/dia (ex: 900, 1200) ou kg/dia (ex: 0.9, 1.2).
-  // Se gmd_alvo_g_dia for > 10, assume g/dia e converte para kg/dia dividindo por 1000.
-  const rawAlvo = lote.gmd_alvo_g_dia || 900
-  const gmdAlvoKg = rawAlvo > 10 ? Number((rawAlvo / 1000).toFixed(2)) : Number(rawAlvo.toFixed(2))
-  const gmdAlvoG = rawAlvo > 10 ? rawAlvo : Math.round(rawAlvo * 1000)
+  // Regra técnica: Unidade padronizada de GMD é kg/dia (alvo padrão Exagro: Engorda 1,30 kg/dia, Recria 0,50 kg/dia).
+  // Fase de cria não avalia por GMD.
+  let defaultAlvo = 1.3
+  if (lote.fase_atual === 'cria') {
+    defaultAlvo = 0
+  } else if (lote.fase_atual === 'recria') {
+    defaultAlvo = 0.5
+  }
+  const rawAlvo =
+    lote.gmd_alvo_g_dia != null && lote.gmd_alvo_g_dia > 0 ? lote.gmd_alvo_g_dia : defaultAlvo
+  const gmdAlvoKg = rawAlvo > 15 ? Number((rawAlvo / 1000).toFixed(2)) : Number(rawAlvo.toFixed(2))
+  const gmdAlvoG = rawAlvo > 15 ? rawAlvo : Math.round(rawAlvo * 1000)
 
   // Ordenar cronologicamente decrescente
   const pesagensOrdenadas = [...pesagensDoLote].sort(
@@ -157,7 +163,8 @@ export function analisarLoteGMD(
 
   // Desvio percentual
   const desvioPct = gmdRealKg !== null ? calcularDesvioGMD(gmdRealKg, gmdAlvoKg) : null
-  const statusSemaforo = calcularSemaforoGMD(desvioPct, diasSemPesagem)
+  const statusSemaforo =
+    lote.fase_atual === 'cria' ? 'cinza' : calcularSemaforoGMD(desvioPct, diasSemPesagem)
 
   // Contar ciclos consecutivos em vermelho (desvio <= -20%)
   // Os intervalos válidos ordenados do mais recente para o mais antigo:

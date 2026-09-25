@@ -201,14 +201,14 @@ export function LotPerformanceDrawer({
               </div>
               <div>
                 <span className="text-xs text-muted-foreground block">GMD Real Último:</span>
-                <span className="text-base font-bold text-emerald-600">
-                  {analise?.gmdRealG ? `${analise.gmdRealG} g/d` : '-'}
+                <span className="text-base font-bold text-emerald-600 font-mono">
+                  {analise?.gmdRealKg ? `${analise.gmdRealKg.toFixed(2)} kg/dia` : '-'}
                 </span>
               </div>
               <div>
                 <span className="text-xs text-muted-foreground block">GDC Carcaça:</span>
-                <span className="text-base font-bold text-purple-600">
-                  {analise?.gdcRealKg ? `${Math.round(analise.gdcRealKg * 1000)} g/d` : '-'}
+                <span className="text-base font-bold text-purple-600 font-mono">
+                  {analise?.gdcRealKg ? `${analise.gdcRealKg.toFixed(2)} kg/dia` : '-'}
                 </span>
               </div>
               <div>
@@ -368,8 +368,8 @@ export function LotPerformanceDrawer({
               </div>
               <GmdEstimadoVsRealChart
                 pesagens={pesagens}
-                gmdAlvoG={analise?.gmdAlvoG || 900}
-                rendimentoCarcacaPct={lotDetails?.rendimento_carcaca_pct || 53.5}
+                gmdAlvoKg={analise?.gmdAlvoKg || 1.3}
+                rendimentoCarcacaPct={lotDetails?.rendimento_carcaca_pct || 54.0}
               />
             </TabsContent>
 
