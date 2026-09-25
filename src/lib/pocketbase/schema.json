@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T15:19:37.910Z",
+  "generatedAt": "2026-09-25T16:51:41.151Z",
   "collections": [
     {
       "name": "users",
@@ -43,7 +43,17 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["gestor", "capataz", "operador", "admin", "gerente"]
+          "selectValues": [
+            "proprietario",
+            "socio",
+            "gestor",
+            "capataz",
+            "vaqueiro",
+            "servente",
+            "operador",
+            "admin",
+            "gerente"
+          ]
         }
       ],
       "indexes": [
@@ -2104,6 +2114,162 @@
       ],
       "indexes": [
         "CREATE INDEX idx_rec_traj_safras ON reconhecimentos_trajetoria (safra_atual, tipo_indicador)"
+      ]
+    },
+    {
+      "name": "equipe",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "user_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "cpf",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "telefone",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_nascimento",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perfil",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["proprietario", "socio", "gestor", "capataz", "vaqueiro", "servente"]
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["ativo", "inativo"]
+        },
+        {
+          "name": "foto",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "funcao_especifica",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "lotes_responsabilidade",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "setores_responsabilidade",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_admissao",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "registro_profissional",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "frentes_supervisao",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "percentual_participacao",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "socio_administrador",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "primeiro_acesso",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "senha_temporaria_exibida",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_equipe_cpf ON equipe (cpf)",
+        "CREATE INDEX idx_equipe_perfil ON equipe (perfil)",
+        "CREATE INDEX idx_equipe_status ON equipe (status)",
+        "CREATE INDEX idx_equipe_user_id ON equipe (user_id)"
       ]
     }
   ]

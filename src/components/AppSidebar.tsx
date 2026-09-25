@@ -23,6 +23,7 @@ import {
   BarChart3,
   TrendingDown,
   ShieldAlert,
+  Users,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
@@ -31,7 +32,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 export function AppSidebar() {
   const location = useLocation()
-  const { user, isGestor, isCapataz, isOperador } = useAuth()
+  const { user, isGestor, isCapataz, isOperador, isProprietario, isSocio, canManageEquipe } =
+    useAuth()
   const [gestaoAvancadaOpen, setGestaoAvancadaOpen] = useState(
     location.pathname === '/hedge' ||
       location.pathname === '/pdf-studio' ||
@@ -52,7 +54,17 @@ export function AppSidebar() {
           <div>
             <span className="font-bold text-base leading-none block">Pecuária F3</span>
             <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-              {isGestor ? 'Gestor Geral' : isCapataz ? 'Capataz' : 'Vaqueiro / Campo'}
+              {isProprietario
+                ? 'Proprietário'
+                : isSocio
+                  ? 'Sócio Executivo'
+                  : isGestor
+                    ? 'Gestor Técnico'
+                    : isCapataz
+                      ? 'Capataz'
+                      : user?.role === 'servente'
+                        ? 'Servente'
+                        : 'Vaqueiro / Campo'}
             </span>
           </div>
         </Link>
@@ -133,6 +145,24 @@ export function AppSidebar() {
                 </Link>
 
                 <Link
+                  to="/minha-equipe"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/minha-equipe')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Users className="h-4 w-4 text-purple-600" />
+                  <span className="flex-1">Minha Equipe</span>
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] border-purple-500/30 text-purple-600"
+                  >
+                    Vaqueiros
+                  </Badge>
+                </Link>
+
+                <Link
                   to="/tarefas"
                   className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     isActive('/tarefas')
@@ -203,8 +233,67 @@ export function AppSidebar() {
           </>
         )}
 
-        {/* PERFIL GESTOR: Tudo, incluindo Fechamento em destaque e submenu Gestão Avançada */}
-        {isGestor && (
+        {/* PERFIL SÓCIO: Acesso de Leitura aos Resultados (Dashboard, Fechamento, Relatórios) */}
+        {isSocio && !isGestor && (
+          <div>
+            <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Visão Executiva & Resultados
+            </div>
+            <div className="space-y-1">
+              <Link
+                to="/"
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  isActive('/')
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                    : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                }`}
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Dashboard Consolidado</span>
+              </Link>
+
+              <Link
+                to="/fechamento"
+                className={`flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-lg transition-all ${
+                  isActive('/fechamento')
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'bg-primary/10 text-primary hover:bg-primary/15'
+                }`}
+              >
+                <Layers className="h-4 w-4" />
+                <span className="flex-1">Fechamento & DRE</span>
+              </Link>
+
+              <Link
+                to="/fechamento?tab=benchmarking"
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  location.pathname === '/fechamento' &&
+                  location.search.includes('tab=benchmarking')
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                    : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                }`}
+              >
+                <Scale className="h-4 w-4 text-emerald-600" />
+                <span>Benchmarking TOP Brasil</span>
+              </Link>
+
+              <Link
+                to="/relatorios"
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  isActive('/relatorios')
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                    : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                }`}
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                <span>Relatórios Executivos</span>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* PERFIL GESTOR / PROPRIETÁRIO: Tudo, incluindo Fechamento em destaque e submenu Gestão Avançada */}
+        {(isGestor || isProprietario) && (
           <>
             <div>
               <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -459,6 +548,26 @@ export function AppSidebar() {
 
       {/* Footer Info & Configurações */}
       <div className="p-3 border-t border-sidebar-border space-y-1">
+        {canManageEquipe && (
+          <Link
+            to="/colaboradores"
+            className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+              isActive('/colaboradores')
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+            }`}
+          >
+            <Users className="h-4 w-4 text-primary" />
+            <span className="flex-1">Equipe & Acessos</span>
+            <Badge
+              variant="outline"
+              className="text-[9px] bg-primary/10 text-primary border-primary/20"
+            >
+              RBAC
+            </Badge>
+          </Link>
+        )}
+
         <Link
           to="/configuracoes"
           className="flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"

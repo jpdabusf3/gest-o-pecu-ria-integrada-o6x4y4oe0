@@ -98,35 +98,83 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
             <span className="font-semibold text-muted-foreground block">
               Contas de Acesso Cadastradas:
             </span>
-            <div className="flex flex-col gap-1.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
               <button
                 type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center"
+                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
+                onClick={() => handleQuickFill('proprietario@pecuariaf3.com.br')}
+              >
+                <span className="truncate">Dr. Carlos (Proprietário)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[9px] shrink-0 text-amber-600 border-amber-300"
+                >
+                  Proprietário
+                </Badge>
+              </button>
+              <button
+                type="button"
+                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
+                onClick={() => handleQuickFill('socio@pecuariaf3.com.br')}
+              >
+                <span className="truncate">Mariana (Sócia Adm)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[9px] shrink-0 text-blue-600 border-blue-300"
+                >
+                  Sócio
+                </Badge>
+              </button>
+              <button
+                type="button"
+                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
                 onClick={() => handleQuickFill('joaopedro_zoo@hotmail.com')}
               >
-                <span>João Pedro (Gestor - Acesso Total)</span>
-                <Badge variant="outline" className="text-[10px]">
+                <span className="truncate">João Pedro (Gestor RT)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[9px] shrink-0 text-emerald-600 border-emerald-300"
+                >
                   Gestor
                 </Badge>
               </button>
               <button
                 type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center"
+                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
                 onClick={() => handleQuickFill('antonio.capataz@pecuariaf3.com.br')}
               >
-                <span>Antônio Capataz (Campo + Aprovações)</span>
-                <Badge variant="outline" className="text-[10px]">
+                <span className="truncate">Antônio (Capataz)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[9px] shrink-0 text-purple-600 border-purple-300"
+                >
                   Capataz
                 </Badge>
               </button>
               <button
                 type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center"
+                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
                 onClick={() => handleQuickFill('joao.vaqueiro@pecuariaf3.com.br')}
               >
-                <span>João Vaqueiro (Modo Campo + Tarefas)</span>
-                <Badge variant="outline" className="text-[10px]">
+                <span className="truncate">João Vaqueiro (Campo)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[9px] shrink-0 text-sky-600 border-sky-300"
+                >
                   Vaqueiro
+                </Badge>
+              </button>
+              <button
+                type="button"
+                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
+                onClick={() => handleQuickFill('tiago.servente@pecuariaf3.com.br')}
+              >
+                <span className="truncate">Tiago (Servente Trato)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[9px] shrink-0 text-slate-600 border-slate-300"
+                >
+                  Servente
                 </Badge>
               </button>
             </div>

@@ -221,6 +221,15 @@ export function Header() {
             <DropdownMenuLabel className="text-[11px] text-muted-foreground uppercase font-semibold">
               Alternar Perfil Rápido
             </DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => handleUserSwitch('proprietario')}
+              className="cursor-pointer"
+            >
+              Dr. Carlos (Proprietário)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleUserSwitch('socio')} className="cursor-pointer">
+              Mariana (Sócia Executiva)
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleUserSwitch('gestor')} className="cursor-pointer">
               João Pedro (Gestor Geral)
             </DropdownMenuItem>
@@ -231,10 +240,16 @@ export function Header() {
               Antônio (Capataz)
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => handleUserSwitch('operador')}
+              onClick={() => handleUserSwitch('vaqueiro')}
               className="cursor-pointer"
             >
               João (Vaqueiro / Campo)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleUserSwitch('servente')}
+              className="cursor-pointer"
+            >
+              Tiago (Servente / Trato)
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem

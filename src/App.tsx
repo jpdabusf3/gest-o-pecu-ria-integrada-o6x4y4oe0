@@ -25,6 +25,7 @@ import Relatorios from './pages/Relatorios'
 import RelatoriosDesempenho from './pages/RelatoriosDesempenho'
 import ProjecaoVendas from './pages/ProjecaoVendas'
 import Colaboradores from './pages/Colaboradores'
+import MinhaEquipe from './pages/MinhaEquipe'
 import Configuracoes from './pages/Configuracoes'
 import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
@@ -105,11 +106,11 @@ const App = () => (
                         }
                       />
 
-                      {/* Rotas Estratégicas e Financeiras: Apenas Gestor */}
+                      {/* Rotas Estratégicas e Financeiras: Proprietário, Gestor e Sócio */}
                       <Route
                         path="/fechamento"
                         element={
-                          <RoleRoute allowedRoles={['gestor']}>
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <Fechamento />
                           </RoleRoute>
                         }
@@ -117,7 +118,7 @@ const App = () => (
                       <Route
                         path="/financeiro"
                         element={
-                          <RoleRoute allowedRoles={['gestor']}>
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <Financeiro />
                           </RoleRoute>
                         }
@@ -165,7 +166,7 @@ const App = () => (
                       <Route
                         path="/relatorios"
                         element={
-                          <RoleRoute allowedRoles={['gestor']}>
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <Relatorios />
                           </RoleRoute>
                         }
@@ -173,7 +174,7 @@ const App = () => (
                       <Route
                         path="/desempenho"
                         element={
-                          <RoleRoute allowedRoles={['gestor']}>
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <RelatoriosDesempenho />
                           </RoleRoute>
                         }
@@ -181,7 +182,7 @@ const App = () => (
                       <Route
                         path="/bi"
                         element={
-                          <RoleRoute allowedRoles={['gestor']}>
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <BI />
                           </RoleRoute>
                         }
@@ -205,8 +206,16 @@ const App = () => (
                       <Route
                         path="/colaboradores"
                         element={
-                          <RoleRoute allowedRoles={['gestor']}>
+                          <RoleRoute allowedRoles={['proprietario', 'gestor']}>
                             <Colaboradores />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/minha-equipe"
+                        element={
+                          <RoleRoute allowedRoles={['capataz', 'gestor', 'proprietario']}>
+                            <MinhaEquipe />
                           </RoleRoute>
                         }
                       />

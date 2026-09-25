@@ -1,7 +1,16 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react'
 import pb from '@/lib/pocketbase/client'
 
-export type Role = 'gestor' | 'capataz' | 'operador' | 'admin' | 'gerente'
+export type Role =
+  | 'proprietario'
+  | 'socio'
+  | 'gestor'
+  | 'capataz'
+  | 'vaqueiro'
+  | 'servente'
+  | 'operador'
+  | 'admin'
+  | 'gerente'
 
 export interface UserPreferences {
   theme: 'light' | 'dark' | 'system'
@@ -47,6 +56,22 @@ export const defaultPreferences: UserPreferences = {
 }
 
 export const fallbackUsers: Record<Role, User> = {
+  proprietario: {
+    id: 'usr-proprietario',
+    name: 'Dr. Carlos Eduardo',
+    email: 'proprietario@pecuariaf3.com.br',
+    role: 'proprietario',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=8',
+    preferences: defaultPreferences,
+  },
+  socio: {
+    id: 'usr-socio',
+    name: 'Mariana Castro',
+    email: 'socio@pecuariaf3.com.br',
+    role: 'socio',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=female&seed=9',
+    preferences: defaultPreferences,
+  },
   gestor: {
     id: 'usr-gestor',
     name: 'João Pedro (Gestor)',
@@ -61,6 +86,22 @@ export const fallbackUsers: Record<Role, User> = {
     email: 'antonio.capataz@pecuariaf3.com.br',
     role: 'capataz',
     avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=2',
+    preferences: { ...defaultPreferences, compactMode: true },
+  },
+  vaqueiro: {
+    id: 'usr-vaqueiro',
+    name: 'João Vaqueiro',
+    email: 'joao.vaqueiro@pecuariaf3.com.br',
+    role: 'vaqueiro',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=3',
+    preferences: { ...defaultPreferences, compactMode: true },
+  },
+  servente: {
+    id: 'usr-servente',
+    name: 'Tiago Servente',
+    email: 'tiago.servente@pecuariaf3.com.br',
+    role: 'servente',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=6',
     preferences: { ...defaultPreferences, compactMode: true },
   },
   operador: {
@@ -96,9 +137,17 @@ interface AuthContextType {
   logout: () => void
   switchRole: (role: Role) => void
   updatePreferences: (preferences: Partial<UserPreferences>) => void
+  isProprietario: boolean
+  isSocio: boolean
   isGestor: boolean
   isCapataz: boolean
+  isVaqueiro: boolean
+  isServente: boolean
   isOperador: boolean
+  canManageEquipe: boolean
+  canAccessFechamento: boolean
+  canAccessFinanceiro: boolean
+  defaultPathForRole: string
   isAuthenticated: boolean
   isLoadingAuth: boolean
 }
@@ -213,10 +262,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }))
   }, [])
 
+  // Mapeamento e flags dos 6 perfis em ordem hierárquica
+  const isProprietario = currentUser.role === 'proprietario' || currentUser.role === 'admin'
+  const isSocio = currentUser.role === 'socio'
   const isGestor =
-    currentUser.role === 'gestor' || currentUser.role === 'admin' || currentUser.role === 'gerente'
+    currentUser.role === 'gestor' ||
+    currentUser.role === 'admin' ||
+    currentUser.role === 'gerente' ||
+    currentUser.role === 'proprietario'
   const isCapataz = currentUser.role === 'capataz'
-  const isOperador = currentUser.role === 'operador'
+  const isVaqueiro = currentUser.role === 'vaqueiro' || currentUser.role === 'operador'
+  const isServente = currentUser.role === 'servente'
+  // isOperador cobre tanto vaqueiro quanto servente (trabalhadores diretos de campo)
+  const isOperador = isVaqueiro || isServente
+
+  // Permissões-chave
+  const canManageEquipe =
+    isProprietario || currentUser.role === 'gestor' || currentUser.role === 'admin'
+  const canAccessFechamento =
+    isProprietario || isSocio || currentUser.role === 'gestor' || currentUser.role === 'admin'
+  const canAccessFinanceiro =
+    isProprietario || isSocio || currentUser.role === 'gestor' || currentUser.role === 'admin'
+
+  // Rota padrão ao fazer login:
+  // - Vaqueiro e Servente: /campo
+  // - Capataz: /minha-equipe (ou visão de equipe)
+  // - Gestor, Sócio e Proprietário: / (Dashboard consolidado)
+  const defaultPathForRole = useMemo(() => {
+    if (isOperador) return '/campo'
+    if (isCapataz) return '/minha-equipe'
+    return '/'
+  }, [isOperador, isCapataz])
+
   const isAuthenticated = pb.authStore.isValid || Boolean(currentUser.id)
 
   return (
@@ -228,9 +305,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
         switchRole,
         updatePreferences,
+        isProprietario,
+        isSocio,
         isGestor,
         isCapataz,
+        isVaqueiro,
+        isServente,
         isOperador,
+        canManageEquipe,
+        canAccessFechamento,
+        canAccessFinanceiro,
+        defaultPathForRole,
         isAuthenticated,
         isLoadingAuth,
       }}
