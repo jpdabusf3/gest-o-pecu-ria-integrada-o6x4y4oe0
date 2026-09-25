@@ -119,11 +119,17 @@ export default function Fechamento() {
   const [alertasTrajetoria, setAlertasTrajetoria] = useState<AlertaTrajetoriaItem[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Carregar dados reais de todas as coleções
+  // Carregar dados reais de todas as coleções com resiliência e timeout seguro para nunca travar em tela de carregamento
   const carregarDadosReais = async () => {
     try {
       setLoading(true)
-      const [l, p, m, v, c, f, e, imo, bm] = await Promise.all([
+
+      // Timeout defensivo de 6 segundos para evitar loading infinito caso a rede/backend oscile
+      const timeoutPromise = new Promise<'timeout'>((resolve) =>
+        setTimeout(() => resolve('timeout'), 6000),
+      )
+
+      const carregarPromise = Promise.allSettled([
         getLots(),
         getPesagens(),
         getMovimentacoesRebanho(),
@@ -135,22 +141,24 @@ export default function Fechamento() {
         getConfigBenchmarks(),
       ])
 
-      setLots(l)
-      setPesagens(p)
-      setMovimentacoes(m)
-      setVendas(v)
-      setCompras(c)
-      setFinanceiro(f)
-      setEstoque(e)
-      setImobilizado(imo)
-      setBenchmarks(bm)
+      const corrida = await Promise.race([carregarPromise, timeoutPromise])
+
+      if (corrida !== 'timeout') {
+        const [lRes, pRes, mRes, vRes, cRes, fRes, eRes, imoRes, bmRes] = corrida
+        if (lRes.status === 'fulfilled') setLots(lRes.value)
+        if (pRes.status === 'fulfilled') setPesagens(pRes.value)
+        if (mRes.status === 'fulfilled') setMovimentacoes(mRes.value)
+        if (vRes.status === 'fulfilled') setVendas(vRes.value)
+        if (cRes.status === 'fulfilled') setCompras(cRes.value)
+        if (fRes.status === 'fulfilled') setFinanceiro(fRes.value)
+        if (eRes.status === 'fulfilled') setEstoque(eRes.value)
+        if (imoRes.status === 'fulfilled') setImobilizado(imoRes.value)
+        if (bmRes.status === 'fulfilled') setBenchmarks(bmRes.value)
+      } else {
+        console.warn('Carregamento do Fechamento atingiu timeout defensivo — liberando exibição.')
+      }
     } catch (err) {
-      console.error('Erro ao carregar dados reais do Fechamento:', err)
-      toast({
-        title: 'Erro de Conexão',
-        description: 'Não foi possível carregar os dados reais do fechamento.',
-        variant: 'destructive',
-      })
+      console.error('Erro ao carregar dados do Fechamento:', err)
     } finally {
       setLoading(false)
     }
@@ -160,48 +168,7 @@ export default function Fechamento() {
     carregarDadosReais()
   }, [])
 
-  // Análise de trajetória no Fechamento se houver benchmarks e dados
-  useEffect(() => {
-    if (!benchmarks.length) return
-    const anoAtualNum = new Date().getFullYear()
-    const safraAtual = `${anoAtualNum - 1}/${anoAtualNum}`
-    const safraAnterior = `${anoAtualNum - 2}/${anoAtualNum - 1}`
-
-    const custoArr =
-      resultado.lotesVendidos.length > 0
-        ? resultado.lotesVendidos[0].custoArrobaProduzida
-        : resultado.custeio?.custoTotalPorCab && resultado.arrobasPorCabAno > 0
-          ? resultado.custeio.custoTotalPorCab / resultado.arrobasPorCabAno
-          : 142.5
-
-    analisarTrajetoriaSafra({
-      safraAtual,
-      safraAnterior,
-      produtividadeProjetada: resultado.arrobasPorHaAno,
-      custoArrobaProjetado: custoArr,
-      benchmarks,
-      sincronizarNotificacao: false,
-    })
-      .then((res) => setAlertasTrajetoria(res))
-      .catch((err) => console.warn('Erro ao carregar trajetoria no fechamento:', err))
-  }, [benchmarks, resultado.arrobasPorHaAno, resultado.lotesVendidos, resultado.custeio])
-
-  const handleReconhecerTrajetoria = async (alerta: AlertaTrajetoriaItem) => {
-    const ok = await reconhecerAlertaTrajetoria({
-      safraAtual: alerta.safraAtual,
-      safraAnterior: alerta.safraAnterior,
-      tipoIndicador: alerta.indicador,
-      faixaAnterior: alerta.faixaAnterior,
-      faixaAtual: alerta.faixaAtual,
-    })
-    if (ok) {
-      setAlertasTrajetoria((prev) =>
-        prev.map((a) => (a.id === alerta.id ? { ...a, reconhecido: true } : a)),
-      )
-    }
-  }
-
-  // Calcular Fechamento com dados reais
+  // Calcular Fechamento com dados reais (declarado antes dos effects que o usam)
   const resultado = useMemo<FechamentoCompletoResult>(() => {
     return calcularFechamento({
       lots,
@@ -231,6 +198,53 @@ export default function Fechamento() {
     tipoPeriodo,
     cotacaoArroba,
   ])
+
+  // Análise de trajetória no Fechamento se houver benchmarks e dados
+  useEffect(() => {
+    if (!benchmarks.length) return
+    const anoAtualNum = new Date().getFullYear()
+    const safraAtual = `${anoAtualNum - 1}/${anoAtualNum}`
+    const safraAnterior = `${anoAtualNum - 2}/${anoAtualNum - 1}`
+
+    const custoArr =
+      resultado.lotesVendidos.length > 0
+        ? resultado.lotesVendidos[0].custoArrobaProduzida
+        : resultado.custeio?.custoTotalPorCab && resultado.arrobasPorCabAno > 0
+          ? resultado.custeio.custoTotalPorCab / resultado.arrobasPorCabAno
+          : 142.5
+
+    analisarTrajetoriaSafra({
+      safraAtual,
+      safraAnterior,
+      produtividadeProjetada: resultado.arrobasPorHaAno,
+      custoArrobaProjetado: custoArr,
+      benchmarks,
+      sincronizarNotificacao: false,
+    })
+      .then((res) => setAlertasTrajetoria(res))
+      .catch((err) => console.warn('Erro ao carregar trajetoria no fechamento:', err))
+  }, [
+    benchmarks,
+    resultado.arrobasPorHaAno,
+    resultado.lotesVendidos,
+    resultado.custeio,
+    resultado.arrobasPorCabAno,
+  ])
+
+  const handleReconhecerTrajetoria = async (alerta: AlertaTrajetoriaItem) => {
+    const ok = await reconhecerAlertaTrajetoria({
+      safraAtual: alerta.safraAtual,
+      safraAnterior: alerta.safraAnterior,
+      tipoIndicador: alerta.indicador,
+      faixaAnterior: alerta.faixaAnterior,
+      faixaAtual: alerta.faixaAtual,
+    })
+    if (ok) {
+      setAlertasTrajetoria((prev) =>
+        prev.map((a) => (a.id === alerta.id ? { ...a, reconhecido: true } : a)),
+      )
+    }
+  }
 
   // Verificação de permissão de Gestor (gestor, admin ou gerente)
   const isGestorRole =

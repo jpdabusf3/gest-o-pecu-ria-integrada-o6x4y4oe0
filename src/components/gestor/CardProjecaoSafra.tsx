@@ -122,44 +122,6 @@ export function CardProjecaoSafra({
     carregarMetasSafra()
   }, [])
 
-  // Avaliação da trajetória da safra vs safra anterior arquivada (idempotente)
-  const carregarAlertasTrajetoria = () => {
-    if (!projecao.anoSafra) return
-    const partes = projecao.anoSafra.split('/')
-    const anoAtualNum = partes.length === 2 ? parseInt(partes[0], 10) : new Date().getFullYear()
-    const safraAnterior = `${anoAtualNum - 1}/${anoAtualNum}`
-
-    analisarTrajetoriaSafra({
-      safraAtual: projecao.anoSafra,
-      safraAnterior,
-      produtividadeProjetada: projecao.projetado.arrobasPorHaAno,
-      custoArrobaProjetado: projecao.projetado.custoArrobaProduzida,
-      benchmarks,
-      sincronizarNotificacao: true,
-    })
-      .then((res) => setAlertasTrajetoria(res))
-      .catch((err) => console.warn('Erro ao calcular alerta de trajetória:', err))
-  }
-
-  useEffect(() => {
-    carregarAlertasTrajetoria()
-  }, [projecao.anoSafra, projecao.projetado.arrobasPorHaAno, projecao.projetado.custoArrobaProduzida, benchmarks])
-
-  const handleReconhecerTrajetoria = async (alerta: AlertaTrajetoriaItem) => {
-    const ok = await reconhecerAlertaTrajetoria({
-      safraAtual: alerta.safraAtual,
-      safraAnterior: alerta.safraAnterior,
-      tipoIndicador: alerta.indicador,
-      faixaAnterior: alerta.faixaAnterior,
-      faixaAtual: alerta.faixaAtual,
-    })
-    if (ok) {
-      setAlertasTrajetoria((prev) =>
-        prev.map((a) => (a.id === alerta.id ? { ...a, reconhecido: true } : a)),
-      )
-    }
-  }
-
   // Executa o cálculo da projeção usando o acumulado real + cotação B3 vigente
   const projecao: ProjecaoSafraResult = useMemo(() => {
     const preco = cotacaoB3?.preco ?? 245.0
@@ -194,6 +156,49 @@ export function CardProjecaoSafra({
     segregacao,
     cotacaoB3,
   ])
+
+  // Avaliação da trajetória da safra vs safra anterior arquivada (idempotente)
+  const carregarAlertasTrajetoria = () => {
+    if (!projecao.anoSafra) return
+    const partes = projecao.anoSafra.split('/')
+    const anoAtualNum = partes.length === 2 ? parseInt(partes[0], 10) : new Date().getFullYear()
+    const safraAnterior = `${anoAtualNum - 1}/${anoAtualNum}`
+
+    analisarTrajetoriaSafra({
+      safraAtual: projecao.anoSafra,
+      safraAnterior,
+      produtividadeProjetada: projecao.projetado.arrobasPorHaAno,
+      custoArrobaProjetado: projecao.projetado.custoArrobaProduzida,
+      benchmarks,
+      sincronizarNotificacao: true,
+    })
+      .then((res) => setAlertasTrajetoria(res))
+      .catch((err) => console.warn('Erro ao calcular alerta de trajetória:', err))
+  }
+
+  useEffect(() => {
+    carregarAlertasTrajetoria()
+  }, [
+    projecao.anoSafra,
+    projecao.projetado.arrobasPorHaAno,
+    projecao.projetado.custoArrobaProduzida,
+    benchmarks,
+  ])
+
+  const handleReconhecerTrajetoria = async (alerta: AlertaTrajetoriaItem) => {
+    const ok = await reconhecerAlertaTrajetoria({
+      safraAtual: alerta.safraAtual,
+      safraAnterior: alerta.safraAnterior,
+      tipoIndicador: alerta.indicador,
+      faixaAnterior: alerta.faixaAnterior,
+      faixaAtual: alerta.faixaAtual,
+    })
+    if (ok) {
+      setAlertasTrajetoria((prev) =>
+        prev.map((a) => (a.id === alerta.id ? { ...a, reconhecido: true } : a)),
+      )
+    }
+  }
 
   // Cenário ativo exibido no bloco de simulações
   const cenarioAtivoItem: CenarioProjecaoItem = projecao.cenarios[cenarioAtivo]

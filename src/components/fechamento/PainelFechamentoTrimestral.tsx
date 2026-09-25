@@ -54,8 +54,18 @@ export function PainelFechamentoTrimestral({ ano, frente }: PainelFechamentoTrim
     async function loadData() {
       setLoading(true)
       try {
-        const dados = await consolidarAtividadesPorTrimestre(ano, frente)
-        setTrimestres(dados)
+        const timeoutPromise = new Promise<'timeout'>((resolve) =>
+          setTimeout(() => resolve('timeout'), 4000),
+        )
+        const res = await Promise.race([
+          consolidarAtividadesPorTrimestre(ano, frente),
+          timeoutPromise,
+        ])
+        if (res !== 'timeout' && Array.isArray(res)) {
+          setTrimestres(res)
+        }
+      } catch (err) {
+        console.warn('Erro ao carregar dados trimestrais:', err)
       } finally {
         setLoading(false)
       }

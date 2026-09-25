@@ -229,11 +229,16 @@ export function analisarLoteGMD(
  * Operações CRUD com a coleção alertas_gmd
  */
 export async function getAlertasGMD(filter?: string): Promise<AlertaGMDRecord[]> {
-  return pb.collection('alertas_gmd').getFullList<AlertaGMDRecord>({
-    filter,
-    sort: '-created',
-    expand: 'lote_id',
-  })
+  try {
+    return await pb.collection('alertas_gmd').getFullList<AlertaGMDRecord>({
+      filter,
+      sort: '-created',
+      expand: 'lote_id',
+    })
+  } catch (e) {
+    console.warn('Erro ao carregar alertas_gmd:', e)
+    return []
+  }
 }
 
 export async function criarAlertaGMD(dados: {

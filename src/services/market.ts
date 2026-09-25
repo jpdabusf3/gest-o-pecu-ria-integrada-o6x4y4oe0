@@ -10,28 +10,45 @@ export interface MarketPrice {
   updated: string
 }
 
-export const getMarketPrices = () =>
-  pb.collection('market_prices').getFullList<MarketPrice>({
-    sort: '-reference_date',
-  })
-
-export const getLatestMarketPrices = async (): Promise<MarketPrice[]> => {
-  const all = await pb.collection('market_prices').getFullList<MarketPrice>({
-    sort: '-reference_date',
-  })
-  const latest = new Map<string, MarketPrice>()
-  all.forEach((p) => {
-    const key = `${p.indicator}|${p.region}`
-    if (!latest.has(key)) latest.set(key, p)
-  })
-  return Array.from(latest.values())
+export const getMarketPrices = async () => {
+  try {
+    return await pb.collection('market_prices').getFullList<MarketPrice>({
+      sort: '-reference_date',
+    })
+  } catch (e) {
+    console.warn('Erro ao carregar market_prices:', e)
+    return []
+  }
 }
 
-export const getMarketPricesByIndicator = (indicator: string) =>
-  pb.collection('market_prices').getFullList<MarketPrice>({
-    filter: `indicator = "${indicator}"`,
-    sort: 'reference_date',
-  })
+export const getLatestMarketPrices = async (): Promise<MarketPrice[]> => {
+  try {
+    const all = await pb.collection('market_prices').getFullList<MarketPrice>({
+      sort: '-reference_date',
+    })
+    const latest = new Map<string, MarketPrice>()
+    all.forEach((p) => {
+      const key = `${p.indicator}|${p.region}`
+      if (!latest.has(key)) latest.set(key, p)
+    })
+    return Array.from(latest.values())
+  } catch (e) {
+    console.warn('Erro ao carregar latest market_prices:', e)
+    return []
+  }
+}
+
+export const getMarketPricesByIndicator = async (indicator: string) => {
+  try {
+    return await pb.collection('market_prices').getFullList<MarketPrice>({
+      filter: `indicator = "${indicator}"`,
+      sort: 'reference_date',
+    })
+  } catch (e) {
+    console.warn('Erro ao carregar market_prices por indicador:', e)
+    return []
+  }
+}
 
 export interface CotacaoB3BoiGordoVigente {
   preco: number

@@ -85,7 +85,11 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
   const carregarDados = async () => {
     try {
       setLoading(true)
-      const [safrasData, bmList, l, p, m, v, c, f, e, imo, metas] = await Promise.all([
+      const timeoutPromise = new Promise<'timeout'>((resolve) =>
+        setTimeout(() => resolve('timeout'), 5000),
+      )
+
+      const carregarPromise = Promise.allSettled([
         getFechamentosArquivados(frente),
         getConfigBenchmarks(),
         getLots(),
@@ -98,6 +102,35 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
         getImobilizado(),
         getMetasSafra(),
       ])
+
+      const corrida = await Promise.race([carregarPromise, timeoutPromise])
+
+      let safrasData: any[] = []
+      let bmList: any[] = []
+      let l: any[] = []
+      let p: any[] = []
+      let m: any[] = []
+      let v: any[] = []
+      let c: any[] = []
+      let f: any[] = []
+      let e: any[] = []
+      let imo: any[] = []
+      let metas: any = {}
+
+      if (corrida !== 'timeout') {
+        const [sR, bmR, lR, pR, mR, vR, cR, fR, eR, imoR, metasR] = corrida
+        if (sR.status === 'fulfilled') safrasData = sR.value
+        if (bmR.status === 'fulfilled') bmList = bmR.value
+        if (lR.status === 'fulfilled') l = lR.value
+        if (pR.status === 'fulfilled') p = pR.value
+        if (mR.status === 'fulfilled') m = mR.value
+        if (vR.status === 'fulfilled') v = vR.value
+        if (cR.status === 'fulfilled') c = cR.value
+        if (fR.status === 'fulfilled') f = fR.value
+        if (eR.status === 'fulfilled') e = eR.value
+        if (imoR.status === 'fulfilled') imo = imoR.value
+        if (metasR.status === 'fulfilled') metas = metasR.value
+      }
 
       setSafras(safrasData || [])
       setBenchmarks(bmList || [])
@@ -128,6 +161,8 @@ export function ComparativoSafras({ frente, dadosFechamentoAtual }: ComparativoS
         cotacaoB3Origem: cotacaoB3?.origem ?? 'b3_real',
       })
       setProjecao(proj)
+    } catch (err) {
+      console.warn('Erro ao carregar dados do comparativo de safras:', err)
     } finally {
       setLoading(false)
     }

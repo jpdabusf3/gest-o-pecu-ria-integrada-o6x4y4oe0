@@ -157,22 +157,32 @@ export function calculateGDC(gmd: number, rendimentoCarcacaPct: number): number 
  * Busca pesagens com filtro e expand do lote
  */
 export async function getPesagens(filter?: string): Promise<PesagemRecord[]> {
-  return pb.collection('pesagens').getFullList<PesagemRecord>({
-    filter,
-    sort: '-data_pesagem',
-    expand: 'lote_id',
-  })
+  try {
+    return await pb.collection('pesagens').getFullList<PesagemRecord>({
+      filter,
+      sort: '-data_pesagem',
+      expand: 'lote_id',
+    })
+  } catch (e) {
+    console.warn('Erro ao carregar pesagens:', e)
+    return []
+  }
 }
 
 /**
  * Busca pesagens de um lote específico
  */
 export async function getPesagensByLote(loteId: string): Promise<PesagemRecord[]> {
-  return pb.collection('pesagens').getFullList<PesagemRecord>({
-    filter: `lote_id = '${loteId}'`,
-    sort: '-data_pesagem',
-    expand: 'lote_id',
-  })
+  try {
+    return await pb.collection('pesagens').getFullList<PesagemRecord>({
+      filter: `lote_id = '${loteId}'`,
+      sort: '-data_pesagem',
+      expand: 'lote_id',
+    })
+  } catch (e) {
+    console.warn('Erro ao carregar pesagens por lote:', e)
+    return []
+  }
 }
 
 /**

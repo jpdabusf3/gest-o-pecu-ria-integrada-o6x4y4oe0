@@ -35,7 +35,12 @@ export interface LotRecord {
 }
 
 export const getLots = async (filter?: string): Promise<LotRecord[]> => {
-  return pb.collection('lots').getFullList({ filter, sort: '-created' })
+  try {
+    return await pb.collection('lots').getFullList<LotRecord>({ filter, sort: '-created' })
+  } catch (e) {
+    console.warn('Erro ao carregar lots:', e)
+    return []
+  }
 }
 
 export const getLot = async (id: string): Promise<LotRecord> => {

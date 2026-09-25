@@ -343,17 +343,22 @@ export const getAllAtividades = async (filter?: string): Promise<AtividadeRecord
 }
 
 export const getAtividades = async (filter?: string): Promise<AtividadeRecord[]> => {
-  const res = await pb.collection('atividades').getFullList({
-    filter,
-    sort: 'data',
-  })
-  const normalized: AtividadeRecord[] = res.map((r: any) => ({
-    ...r,
-    lote_ids: Array.isArray(r.lote_ids) ? r.lote_ids : [],
-    insumos: Array.isArray(r.insumos) ? r.insumos : [],
-    is_arrendamento: !!r.is_arrendamento,
-  }))
-  return normalized
+  try {
+    const res = await pb.collection('atividades').getFullList({
+      filter,
+      sort: 'data',
+    })
+    const normalized: AtividadeRecord[] = res.map((r: any) => ({
+      ...r,
+      lote_ids: Array.isArray(r.lote_ids) ? r.lote_ids : [],
+      insumos: Array.isArray(r.insumos) ? r.insumos : [],
+      is_arrendamento: !!r.is_arrendamento,
+    }))
+    return normalized
+  } catch (e) {
+    console.warn('Erro ao carregar atividades:', e)
+    return []
+  }
 }
 
 export const getAtividade = async (id: string): Promise<AtividadeRecord> => {
