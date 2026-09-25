@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Card,
   CardHeader,
@@ -14,6 +14,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/hooks/use-toast'
+import { useSearchParams } from 'react-router-dom'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useMarket } from '@/contexts/MarketContext'
 import { BenchmarkingConfigTab } from '@/components/reports/BenchmarkingConfigTab'
@@ -31,8 +32,18 @@ import {
 export default function Configuracoes() {
   const { user, setUser } = useAuth()
   const { toast } = useToast()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tabFromUrl = searchParams.get('tab') || 'perfil'
+  const [abaAtiva, setAbaAtiva] = useState(tabFromUrl)
   const { addNotification } = useAppNotifications()
   const { isAutoUpdateEnabled, toggleAutoUpdate, marketData, setManualPrice } = useMarket()
+
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab && tab !== abaAtiva) {
+      setAbaAtiva(tab)
+    }
+  }, [searchParams, abaAtiva])
 
   const [email, setEmail] = useState(user.email)
   const [whatsapp, setWhatsapp] = useState(user.whatsapp || '')
@@ -109,12 +120,22 @@ export default function Configuracoes() {
         </p>
       </div>
 
-      <Tabs defaultValue="perfil" className="space-y-6">
+      <Tabs
+        value={abaAtiva}
+        onValueChange={(v) => {
+          setAbaAtiva(v)
+          setSearchParams({ tab: v })
+        }}
+        className="space-y-6"
+      >
         <TabsList className="w-full sm:w-auto flex flex-wrap sm:flex-nowrap justify-start h-auto p-1">
           <TabsTrigger value="perfil" className="py-2">
             Perfil
           </TabsTrigger>
-          <TabsTrigger value="benchmark" className="py-2 gap-1.5">
+          <TabsTrigger
+            value="benchmark"
+            className="py-2 gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300"
+          >
             <Trophy className="w-3.5 h-3.5 text-emerald-600" /> Benchmarking Exagro
           </TabsTrigger>
           <TabsTrigger value="notificacoes" className="py-2">

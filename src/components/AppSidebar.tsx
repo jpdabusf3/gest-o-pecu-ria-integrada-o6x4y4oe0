@@ -241,6 +241,25 @@ export function AppSidebar() {
                     DRE / Custo
                   </Badge>
                 </Link>
+
+                <Link
+                  to="/fechamento?tab=benchmarking"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    location.pathname === '/fechamento' &&
+                    location.search.includes('tab=benchmarking')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Scale className="h-4 w-4 text-emerald-600" />
+                  <span className="flex-1">Comparativo Exagro</span>
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] uppercase font-mono tracking-wider border-emerald-500/30 text-emerald-700 dark:text-emerald-300"
+                  >
+                    TOP Brasil
+                  </Badge>
+                </Link>
               </div>
             </div>
 

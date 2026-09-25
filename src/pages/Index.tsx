@@ -20,6 +20,7 @@ import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
 import { MedidorBenchmarkAnualCard } from '@/components/gmd/MedidorBenchmarkAnualCard'
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
 import { CentralNotificacoesGestor } from '@/components/gestor/CentralNotificacoesGestor'
+import { BannerRecalibracaoAnual } from '@/components/gestor/BannerRecalibracaoAnual'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
 import { Link } from 'react-router-dom'
@@ -203,6 +204,9 @@ export default function Index() {
 
   return (
     <div className="space-y-6 pb-20 sm:pb-8 animate-fade-in-up">
+      {/* Banner de Recalibração Anual do Benchmarking Exagro quando due */}
+      <BannerRecalibracaoAnual onRecalibracaoAtualizada={loadData} />
+
       {/* Central de Notificações do Gestor em Tempo Real (In-App) */}
       <CentralNotificacoesGestor />
 
@@ -234,6 +238,17 @@ export default function Index() {
             className="h-9 gap-1.5 text-xs shadow-xs"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> Atualizar
+          </Button>
+
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="h-9 gap-1.5 text-xs shadow-xs border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
+          >
+            <Link to="/fechamento?tab=benchmarking">
+              <Scale className="h-3.5 w-3.5" /> Comparativo Exagro
+            </Link>
           </Button>
 
           <Button

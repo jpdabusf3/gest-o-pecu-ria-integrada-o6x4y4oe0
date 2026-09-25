@@ -46,7 +46,10 @@ import {
 } from 'lucide-react'
 import { PainelFechamentoTrimestral } from '@/components/fechamento/PainelFechamentoTrimestral'
 import { ComparativoSafras } from '@/components/fechamento/ComparativoSafras'
+import { PainelComparativoExagro } from '@/components/benchmarking/PainelComparativoExagro'
+import { BannerRecalibracaoAnual } from '@/components/gestor/BannerRecalibracaoAnual'
 import { useToast } from '@/hooks/use-toast'
+import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { getLots, LotRecord } from '@/services/lots'
 import { getPesagens, PesagemRecord } from '@/services/pesagens'
@@ -76,7 +79,18 @@ import { triggerPDFPrint } from '@/lib/exportUtils'
 export default function Fechamento() {
   const { toast } = useToast()
   const { user } = useAuth()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const activeTabFromUrl = searchParams.get('tab') || 'dinamica'
+  const [abaAtiva, setAbaAtiva] = useState<string>(activeTabFromUrl)
   const printRef = useRef<HTMLDivElement>(null)
+
+  // Sincronizar aba ativa caso mude a query param
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab && tab !== abaAtiva) {
+      setAbaAtiva(tab)
+    }
+  }, [searchParams, abaAtiva])
 
   // Filtros
   const anoBase = new Date().getFullYear()
@@ -482,11 +496,27 @@ export default function Fechamento() {
         </Card>
       </div>
 
+      {/* Banner de Recalibração Anual do Benchmarking Exagro quando due */}
+      <BannerRecalibracaoAnual onRecalibracaoAtualizada={carregarDadosReais} />
+
       {/* ------------------------------------------------------------- */}
-      {/* ABAS DO FECHAMENTO: DINÂMICA, PRODUÇÃO @, ZOOTÉCNICO, LOTES, DRE, CUSTEIO, INSUMOS, IMOBILIZADO, RECORTES */}
+      {/* ABAS DO FECHAMENTO: DINÂMICA, PRODUÇÃO @, ZOOTÉCNICO, LOTES, DRE, CUSTEIO, INSUMOS, IMOBILIZADO, RECORTES, TRIMESTRAL, SAFRAS, BENCHMARKING */}
       {/* ------------------------------------------------------------- */}
-      <Tabs defaultValue="dinamica" className="space-y-6">
-        <TabsList className="w-full justify-start overflow-x-auto h-auto p-1.5 bg-muted/50 border flex-wrap sm:flex-nowrap print:hidden">
+      <Tabs
+        value={abaAtiva}
+        onValueChange={(val) => {
+          setAbaAtiva(val)
+          setSearchParams({ tab: val })
+        }}
+        className="space-y-6"
+      >
+        <TabsList className="w-full justify-start overflow-x-auto h-auto p-1.5 bg-muted/50 border flex-wrap print:hidden">
+          <TabsTrigger
+            value="benchmarking"
+            className="py-2 gap-1.5 font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 data-[state=active]:bg-emerald-600 data-[state=active]:text-white"
+          >
+            <Scale className="h-4 w-4" /> Comparativo Exagro
+          </TabsTrigger>
           <TabsTrigger value="dinamica" className="py-2 gap-1.5 font-medium">
             <Beef className="h-4 w-4" /> 1. Dinâmica do Rebanho
           </TabsTrigger>
@@ -515,12 +545,19 @@ export default function Fechamento() {
             <PieChart className="h-4 w-4" /> 9. Recortes (Sexo)
           </TabsTrigger>
           <TabsTrigger value="trimestral" className="py-2 gap-1.5 font-medium">
-            <Calendar className="h-4 w-4 text-emerald-600" /> 10. Fechamento Trimestral
+            <Calendar className="h-4 w-4 text-emerald-600" /> 10. Trimestral
           </TabsTrigger>
           <TabsTrigger value="safras-comparativo" className="py-2 gap-1.5 font-medium">
-            <HistoryIcon className="h-4 w-4 text-primary" /> 11. Comparativo entre Safras
+            <HistoryIcon className="h-4 w-4 text-primary" /> 11. Comparativo Safras
           </TabsTrigger>
         </TabsList>
+
+        {/* ------------------------------------------------------------- */}
+        {/* ABA: PAINEL COMPARATIVO COMPLETO EXAGRO */}
+        {/* ------------------------------------------------------------- */}
+        <TabsContent value="benchmarking" className="space-y-4">
+          <PainelComparativoExagro fechamentoProp={resultado} showRecalibrationBanner={false} />
+        </TabsContent>
 
         {/* ------------------------------------------------------------- */}
         {/* ABA 1: DINÂMICA MENSAL DO REBANHO (POR FRENTE) */}

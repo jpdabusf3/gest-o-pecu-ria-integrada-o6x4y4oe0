@@ -23,6 +23,7 @@ import { Sparkles, Trophy, Save, RotateCcw, AlertCircle } from 'lucide-react'
 import {
   getConfigBenchmarks,
   updateConfigBenchmark,
+  registrarRecalibracaoBenchmark,
   ConfigBenchmarkRecord,
   DEFAULT_BENCHMARKS,
 } from '@/services/configBenchmark'
@@ -92,10 +93,14 @@ export function BenchmarkingConfigTab() {
 
     try {
       setSavingId(b.id)
-      await updateConfigBenchmark(b.id, currentEdit)
+      await updateConfigBenchmark(b.id, {
+        ...currentEdit,
+        data_ultima_recalibracao: new Date().toISOString(),
+        recalibracao_adiada_ate: '',
+      })
       toast({
-        title: 'Benchmark Atualizado',
-        description: `Indicador "${b.indicador}" salvo com sucesso.`,
+        title: 'Benchmark e Calibração Atualizados',
+        description: `Indicador "${b.indicador}" salvo e recalibração registrada para a safra atual.`,
       })
       carregar()
     } catch (err: any) {
@@ -140,9 +145,38 @@ export function BenchmarkingConfigTab() {
             </CardDescription>
           </div>
 
-          <Badge variant="outline" className="text-xs uppercase font-mono tracking-wider">
-            Metodologia Exagro MT / TIP
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={async () => {
+                try {
+                  setLoading(true)
+                  await registrarRecalibracaoBenchmark(benchmarks)
+                  toast({
+                    title: 'Recalibração Anual Registrada',
+                    description: 'Todas as metas foram marcadas como recalibradas na data de hoje.',
+                  })
+                  await carregar()
+                } catch (e: any) {
+                  toast({
+                    title: 'Erro',
+                    description: e?.message || 'Falha ao registrar recalibração.',
+                    variant: 'destructive',
+                  })
+                } finally {
+                  setLoading(false)
+                }
+              }}
+              className="h-8 text-xs gap-1.5 border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
+            >
+              <Trophy className="w-3.5 h-3.5" />
+              Registrar Recalibração de Toda a Grade
+            </Button>
+            <Badge variant="outline" className="text-xs uppercase font-mono tracking-wider">
+              Metodologia Exagro MT / TIP
+            </Badge>
+          </div>
         </div>
       </CardHeader>
 

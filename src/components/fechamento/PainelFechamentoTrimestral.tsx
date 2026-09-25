@@ -362,7 +362,7 @@ export function PainelFechamentoTrimestral({ ano, frente }: PainelFechamentoTrim
             <CardHeader className="p-4 pb-2">
               <CardTitle className="text-sm font-bold flex items-center justify-between">
                 <span className="flex items-center gap-2 text-blue-900 dark:text-blue-200">
-                  <CheckCircle className="h-4 w-4 text-blue-600" />
+                  <CheckCircle2 className="h-4 w-4 text-blue-600" />
                   Metas Zootécnicas da Frente Cria — {tAtual.rotulo}
                 </span>
                 <Badge variant="outline" className="text-xs bg-background">
