@@ -203,29 +203,29 @@ const App = () => (
                         }
                       />
                       <Route
-  path="/colaboradores"
-  element={
-    <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
-      <Colaboradores />
-    </RoleRoute>
-  }
-/>
-<Route
-  path="/ocorrencias"
-  element={
-    <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio', 'capataz']}>
-      <PainelOcorrenciasGestor />
-    </RoleRoute>
-  }
-/>
-<Route
-  path="/auditoria"
-  element={
-    <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
-      <Auditoria />
-    </RoleRoute>
-  }
-/>{' '}
+                        path="/colaboradores"
+                        element={
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
+                            <Colaboradores />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/ocorrencias"
+                        element={
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio', 'capataz']}>
+                            <PainelOcorrenciasGestor />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/auditoria"
+                        element={
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
+                            <Auditoria />
+                          </RoleRoute>
+                        }
+                      />{' '}
                       <Route
                         path="/minha-equipe"
                         element={
