@@ -29,6 +29,7 @@ import Administrativo from './pages/Administrativo'
 import Tarefas from './pages/Tarefas'
 import Fazendas from './pages/Fazendas'
 import Animais from './pages/Animais'
+import Pesagens from './pages/Pesagens'
 import MapaPropriedade from './pages/MapaPropriedade'
 import BI from './pages/BI'
 import Sustentabilidade from './pages/Sustentabilidade'
@@ -46,7 +47,7 @@ const App = () => (
         <FarmProvider>
           <MarketProvider>
             <NotificationProvider>
-              <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
+              <BrowserRouter>
                 <TooltipProvider>
                   <Toaster />
                   <Sonner />
@@ -69,6 +70,7 @@ const App = () => (
                       <Route path="/sustentabilidade" element={<Sustentabilidade />} />
                       <Route path="/animal/:id" element={<AnimalProfile />} />
                       <Route path="/animais" element={<Animais />} />
+                      <Route path="/pesagens" element={<Pesagens />} />
                       <Route path="/projecoes" element={<ProjecaoVendas />} />
                       <Route path="/colaboradores" element={<Colaboradores />} />
                       <Route path="/configuracoes" element={<Configuracoes />} />

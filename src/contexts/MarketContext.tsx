@@ -214,7 +214,6 @@ export function MarketProvider({ children }: { children: React.ReactNode }) {
         toast({
           title: 'Modo Manual',
           description: 'A atualização automática foi desativada. Ajuste os valores manualmente.',
-          variant: 'secondary',
         })
       }
     },

@@ -217,7 +217,9 @@ export function CustoArrobaTab() {
                     </TableCell>
                     <TableCell className="text-center w-10">
                       {lot.id === bestLotId && (
-                        <Trophy className="h-4 w-4 text-primary" title="Mais Eficiente" />
+                        <span title="Mais Eficiente">
+                          <Trophy className="h-4 w-4 text-primary" />
+                        </span>
                       )}
                     </TableCell>
                   </TableRow>

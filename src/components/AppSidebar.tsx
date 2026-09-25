@@ -46,6 +46,7 @@ const navItems = {
       title: 'Gestão de Animais',
       items: [
         { title: 'Rebanho e Entradas', icon: Beef, url: '/animais' },
+        { title: 'Pesagens & GMD', icon: BarChart3, url: '/pesagens' },
         { title: 'Setor: Cria', icon: Activity, url: '/setor/cria' },
         { title: 'Setor: Recria', icon: Activity, url: '/setor/recria' },
         { title: 'Setor: Engorda', icon: Activity, url: '/setor/engorda' },
@@ -99,6 +100,7 @@ const navItems = {
     {
       title: 'Gestão de Produção',
       items: [
+        { title: 'Pesagens & GMD', icon: BarChart3, url: '/pesagens' },
         { title: 'Manejo de Pastagens', icon: Sprout, url: '/pastos' },
         { title: 'Confinamento & Dietas', icon: Wheat, url: '/confinamento' },
         { title: 'Sanidade & Protocolos', icon: Syringe, url: '/sanidade' },

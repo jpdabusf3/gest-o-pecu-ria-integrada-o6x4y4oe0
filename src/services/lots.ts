@@ -13,6 +13,14 @@ export interface LotRecord {
   value_per_animal: number
   status: 'active' | 'sold' | 'abated'
   headcount: number
+  data_entrada?: string
+  data_saida?: string
+  dias_permanencia?: number
+  peso_entrada_medio?: number
+  peso_saida_medio?: number
+  rendimento_carcaca_pct?: number
+  peso_medio_atual?: number
+  pasto_atual?: string
   created: string
   updated: string
 }

@@ -3,6 +3,7 @@ import { useOffline } from '@/contexts/OfflineContext'
 import { useTasks } from '@/contexts/TaskContext'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useToast } from '@/hooks/use-toast'
+import { createPesagem } from '@/services/pesagens'
 
 export function SyncManager() {
   const { isOnline, queue, clearQueue, isSyncing, setIsSyncing } = useOffline()
@@ -23,11 +24,19 @@ export function SyncManager() {
         const items = event.data.items || []
         let tasksCompleted = 0
         let opsSynced = 0
+        let pesagensSynced = 0
 
-        items.forEach((action: any) => {
+        for (const action of items) {
           if (action.type === 'COMPLETE_TASK') {
             completeTaskOnServer(action.payload.taskId)
             tasksCompleted++
+          } else if (action.type === 'REGISTER_PESAGEM') {
+            try {
+              await createPesagem(action.payload)
+              pesagensSynced++
+            } catch (err) {
+              console.error('Erro ao sincronizar pesagem da fila SW:', err)
+            }
           } else if (action.type === 'FIELD_OPERATION') {
             addNotification({
               title: 'Operação de Campo Sincronizada',
@@ -36,11 +45,11 @@ export function SyncManager() {
             })
             opsSynced++
           }
-        })
+        }
 
         toast({
-          title: 'Data Synced',
-          description: `Sincronização em background concluída (${tasksCompleted + opsSynced} registros).`,
+          title: 'Dados Sincronizados',
+          description: `Sincronização em background concluída (${tasksCompleted + opsSynced + pesagensSynced} registros).`,
           variant: 'default',
         })
 
@@ -62,16 +71,26 @@ export function SyncManager() {
   const performSync = async () => {
     setIsSyncing(true)
 
-    // Simulate network delay for UI feedback
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
     let tasksCompleted = 0
     let opsSynced = 0
+    let pesagensSynced = 0
 
-    queue.forEach((action) => {
+    for (const action of queue) {
       if (action.type === 'COMPLETE_TASK') {
         completeTaskOnServer(action.payload.taskId)
         tasksCompleted++
+      } else if (action.type === 'REGISTER_PESAGEM') {
+        try {
+          await createPesagem(action.payload)
+          pesagensSynced++
+          addNotification({
+            title: 'Pesagem Sincronizada',
+            message: `Pesagem de ${action.payload.peso_medio_kg} kg salva no lote com cálculo de GMD atualizado.`,
+            type: 'task',
+          })
+        } catch (err) {
+          console.error('Erro ao sincronizar pesagem offline:', err)
+        }
       } else if (action.type === 'FIELD_OPERATION') {
         addNotification({
           title: 'Operação de Campo Sincronizada',
@@ -80,14 +99,14 @@ export function SyncManager() {
         })
         opsSynced++
       }
-    })
+    }
 
     await clearQueue()
     setIsSyncing(false)
 
     toast({
-      title: 'Data Synced',
-      description: `${tasksCompleted + opsSynced} registros da fila offline foram enviados ao servidor.`,
+      title: 'Sincronização Concluída',
+      description: `${tasksCompleted + opsSynced + pesagensSynced} registros da fila offline foram processados no banco de dados.`,
       variant: 'default',
     })
   }

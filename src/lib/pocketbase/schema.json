@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T23:56:13.270Z",
+  "generatedAt": "2026-09-25T04:40:08.366Z",
   "collections": [
     {
       "name": "users",
@@ -76,11 +76,11 @@
       "name": "lots",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != ''",
-        "view": "@request.auth.id != ''",
-        "create": "@request.auth.id != ''",
-        "update": "@request.auth.id != ''",
-        "delete": "@request.auth.id != ''"
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
       },
       "fields": [
         {
@@ -163,6 +163,54 @@
         {
           "name": "headcount",
           "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_entrada",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_saida",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dias_permanencia",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_entrada_medio",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_saida_medio",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "rendimento_carcaca_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_medio_atual",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_atual",
+          "type": "text",
           "required": false,
           "system": false
         }
@@ -331,6 +379,121 @@
       "indexes": [
         "CREATE UNIQUE INDEX `idx_market_prices_unique` ON `market_prices` (indicator, region, reference_date)"
       ]
+    },
+    {
+      "name": "pesagens",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "data_pesagem",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["lote", "individual"]
+        },
+        {
+          "name": "animal_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "qtd_animais",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "peso_medio_kg",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "peso_total_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ecc",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "responsavel_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "origem",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["manual", "balanca"]
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gmd_intervalo",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dias_intervalo",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_anterior_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE INDEX idx_pesagens_lote ON pesagens (lote_id, data_pesagem DESC)"]
     }
   ]
 }

@@ -79,35 +79,37 @@ export function InterventionModal({ intervention, onOpenChange }: InterventionMo
               {(intervention.tipo.toLowerCase() === 'venda' ||
                 intervention.tipo.toLowerCase() === 'entrada') && (
                 <div className="bg-muted/30 p-4 rounded-lg border border-border/50 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {intervention.pesoEntrada !== undefined && (
+                  {(intervention as any).pesoEntrada !== undefined && (
                     <div className="space-y-1">
                       <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Scale className="w-3 h-3" /> Peso Ref.
                       </span>
                       <p className="font-semibold">
-                        {formatWeight(intervention.pesoEntrada, 'kg')}
+                        {formatWeight((intervention as any).pesoEntrada, 'kg')}
                       </p>
                     </div>
                   )}
-                  {intervention.valorCabeca !== undefined && (
+                  {(intervention as any).valorCabeca !== undefined && (
                     <div className="space-y-1">
                       <span className="text-xs text-muted-foreground">Valor/Cabeça</span>
                       <p className="font-semibold text-emerald-600">
-                        {formatCurrency(intervention.valorCabeca)}
+                        {formatCurrency((intervention as any).valorCabeca)}
                       </p>
                     </div>
                   )}
-                  {intervention.valorArroba !== undefined && (
+                  {(intervention as any).valorArroba !== undefined && (
                     <div className="space-y-1">
                       <span className="text-xs text-muted-foreground">Valor/@</span>
-                      <p className="font-semibold">{formatCurrency(intervention.valorArroba)}</p>
+                      <p className="font-semibold">
+                        {formatCurrency((intervention as any).valorArroba)}
+                      </p>
                     </div>
                   )}
-                  {intervention.rendimentoCarcaca !== undefined &&
-                    intervention.rendimentoCarcaca !== null && (
+                  {(intervention as any).rendimentoCarcaca !== undefined &&
+                    (intervention as any).rendimentoCarcaca !== null && (
                       <div className="space-y-1">
                         <span className="text-xs text-muted-foreground">Rend. Carcaça</span>
-                        <p className="font-semibold">{intervention.rendimentoCarcaca}%</p>
+                        <p className="font-semibold">{(intervention as any).rendimentoCarcaca}%</p>
                       </div>
                     )}
                 </div>

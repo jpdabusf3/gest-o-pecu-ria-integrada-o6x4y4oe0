@@ -101,9 +101,17 @@ export default function useFinanceStore() {
     localStorage.setItem(THRESHOLD_KEY, JSON.stringify(lotThresholds))
   }, [lotThresholds])
 
-  const addEntry = useCallback((entry: Omit<LedgerEntry, 'id'>) => {
-    setLedger((prev) => [{ ...entry, id: crypto.randomUUID() }, ...prev])
-  }, [])
+  const addEntry = useCallback(
+    (entry: Omit<LedgerEntry, 'id'> | (Omit<LedgerEntry, 'id' | 'date'> & { date?: string })) => {
+      const fullEntry: LedgerEntry = {
+        date: entry.date || new Date().toISOString().split('T')[0],
+        ...entry,
+        id: crypto.randomUUID(),
+      }
+      setLedger((prev) => [fullEntry, ...prev])
+    },
+    [],
+  )
 
   const setLotThreshold = useCallback((loteId: string, threshold: number) => {
     setLotThresholds((prev) => {

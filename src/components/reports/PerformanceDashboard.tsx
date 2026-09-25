@@ -29,7 +29,7 @@ export function PerformanceDashboard({ selectedLot }: PerformanceDashboardProps)
   const filteredData =
     selectedLot === 'todos'
       ? performanceCorrelationData
-      : performanceCorrelationData.filter((d) => d.lote === selectedLot)
+      : performanceCorrelationData.filter((d: any) => (d.lote || d.loteId) === selectedLot)
 
   return (
     <Card className="mt-8 shadow-sm">
@@ -51,7 +51,7 @@ export function PerformanceDashboard({ selectedLot }: PerformanceDashboardProps)
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-muted" />
               <XAxis
-                dataKey="lote"
+                dataKey="loteId"
                 tickLine={false}
                 axisLine={false}
                 className="text-xs text-muted-foreground"

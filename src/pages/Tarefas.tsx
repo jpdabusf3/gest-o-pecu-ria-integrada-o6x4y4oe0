@@ -149,7 +149,6 @@ export default function Tarefas() {
       toast({
         title: 'Salvo Offline',
         description: `A tarefa "${t.title}" foi marcada como concluída localmente. Sincronização ocorrerá quando houver conexão.`,
-        variant: 'secondary',
       })
     } else {
       toast({

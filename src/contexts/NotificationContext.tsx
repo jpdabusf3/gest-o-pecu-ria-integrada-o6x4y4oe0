@@ -99,9 +99,8 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
             body: notif.message,
             icon: '/icon-192x192.png',
             badge: '/icon-192x192.png',
-            vibrate: [200, 100, 200],
             tag: 'gpi-alert',
-          })
+          } as any)
         })
       }
 

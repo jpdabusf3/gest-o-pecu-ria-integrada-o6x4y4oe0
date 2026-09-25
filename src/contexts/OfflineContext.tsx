@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 export type SyncAction = {
   id: string
-  type: 'COMPLETE_TASK' | 'FIELD_OPERATION'
+  type: 'COMPLETE_TASK' | 'FIELD_OPERATION' | 'REGISTER_PESAGEM'
   payload: any
   timestamp: number
 }
