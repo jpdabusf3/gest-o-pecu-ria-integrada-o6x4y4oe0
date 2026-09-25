@@ -4,6 +4,7 @@ import { useTasks } from '@/contexts/TaskContext'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useToast } from '@/hooks/use-toast'
 import { createPesagem } from '@/services/pesagens'
+import { updateAtividade } from '@/services/atividades'
 
 export function SyncManager() {
   const { isOnline, queue, clearQueue, isSyncing, setIsSyncing } = useOffline()
@@ -29,6 +30,17 @@ export function SyncManager() {
         for (const action of items) {
           if (action.type === 'COMPLETE_TASK') {
             completeTaskOnServer(action.payload.taskId)
+            if (action.payload.atividadeId) {
+              try {
+                await updateAtividade(action.payload.atividadeId, {
+                  status: 'concluida',
+                  concluido_em: new Date().toISOString(),
+                  concluido_por: action.payload.operator,
+                } as any)
+              } catch (err) {
+                console.warn('Erro ao atualizar atividade no banco:', err)
+              }
+            }
             tasksCompleted++
           } else if (action.type === 'REGISTER_PESAGEM') {
             try {
@@ -78,6 +90,17 @@ export function SyncManager() {
     for (const action of queue) {
       if (action.type === 'COMPLETE_TASK') {
         completeTaskOnServer(action.payload.taskId)
+        if (action.payload.atividadeId) {
+          try {
+            await updateAtividade(action.payload.atividadeId, {
+              status: 'concluida',
+              concluido_em: new Date().toISOString(),
+              concluido_por: action.payload.operator,
+            } as any)
+          } catch (err) {
+            console.warn('Erro ao atualizar status da atividade:', err)
+          }
+        }
         tasksCompleted++
       } else if (action.type === 'REGISTER_PESAGEM') {
         try {

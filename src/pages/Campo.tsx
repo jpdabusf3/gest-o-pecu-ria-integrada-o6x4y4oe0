@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
@@ -33,6 +33,10 @@ import {
   Scale,
   Wifi,
   Radio,
+  AlertTriangle,
+  Calendar,
+  Layers,
+  Package,
 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
@@ -40,6 +44,15 @@ import { useOffline } from '@/contexts/OfflineContext'
 import { useFarm } from '@/contexts/FarmContext'
 import { getLots, LotRecord } from '@/services/lots'
 import { createPesagem, PesagemInput } from '@/services/pesagens'
+import {
+  AtividadeRecord,
+  getAtividades,
+  updateAtividade,
+  expandAtividades,
+  isAtividadeVencida,
+  tipoCores,
+  tipoLabel,
+} from '@/services/atividades'
 import { useRealtime } from '@/hooks/use-realtime'
 import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
 
@@ -55,6 +68,10 @@ export default function Campo() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [actionType, setActionType] = useState('pesagem')
   const [searchTerm, setSearchTerm] = useState('')
+
+  // Atividades reais do banco
+  const [atividadesReais, setAtividadesReais] = useState<AtividadeRecord[]>([])
+  const [loadingAtividades, setLoadingAtividades] = useState(true)
 
   // Campos de pesagem rápida
   const [pesoMedioInput, setPesoMedioInput] = useState('')
@@ -74,41 +91,88 @@ export default function Campo() {
     }
   }, [])
 
+  const loadAtividadesHoje = useCallback(async () => {
+    try {
+      setLoadingAtividades(true)
+      const data = await getAtividades()
+      setAtividadesReais(data)
+    } catch (err) {
+      console.warn('Erro ao carregar atividades reais para o Campo:', err)
+    } finally {
+      setLoadingAtividades(false)
+    }
+  }, [])
+
   useEffect(() => {
     loadRealLots()
-  }, [loadRealLots])
+    loadAtividadesHoje()
+  }, [loadRealLots, loadAtividadesHoje])
 
   useRealtime('lots', () => loadRealLots())
+  useRealtime('atividades', () => loadAtividadesHoje())
 
-  const [tasks, setTasks] = useState([
-    {
-      id: 'T1',
-      title: 'Fornecer Sal Mineral',
-      lote: 'Lote EN-01',
-      item: 'N1',
-      amount: 50,
-      done: false,
-      desc: 'Pasto 01',
-    },
-    {
-      id: 'T2',
-      title: 'Vacinação Aftosa',
-      lote: 'Lote RE-01',
-      item: 'F1',
-      amount: 85,
-      done: false,
-      desc: 'Pasto 03',
-    },
-    {
-      id: 'T3',
-      title: 'Ração Creep Feeding',
-      lote: 'Lote CR-01',
-      item: 'N2',
-      amount: 120,
-      done: false,
-      desc: 'Pasto 02',
-    },
-  ])
+  // -------------------------------------------------------------
+  // TAREFAS DO DIA DO RESPONSÁVEL (Alimentadas pela coleção "atividades" real)
+  // Regra:
+  // - Cada atividade do dia do responsável aparece automaticamente na lista dele
+  // - Vencida e não concluída sobe para o topo e fica destacada em vermelho
+  // - Sem dados mock
+  // -------------------------------------------------------------
+  const tarefasDoDia = useMemo(() => {
+    const today = new Date()
+    const startOfToday = new Date(today)
+    startOfToday.setHours(0, 0, 0, 0)
+    const endOfToday = new Date(today)
+    endOfToday.setHours(23, 59, 59, 999)
+
+    // Expande ocorrências do dia atual considerando recorrências
+    const occurrences = expandAtividades(atividadesReais, startOfToday, endOfToday)
+
+    // Também inclui atividades vencidas pendentes
+    const vencidasPendentes = atividadesReais.filter((a) => isAtividadeVencida(a, today))
+    for (const v of vencidasPendentes) {
+      if (!occurrences.some((occ) => occ.record.id === v.id)) {
+        occurrences.unshift({
+          record: v,
+          occurrenceDate: new Date(v.data),
+          virtualId: `vencida#${v.id}`,
+        })
+      }
+    }
+
+    // Filtrar pelo responsável (se o usuário for admin ou gerente, pode ver todas ou filtrar; operador vê as dele)
+    const normalizedUserName = (user.name || '').toLowerCase()
+    const filteredForUser = occurrences.filter((occ) => {
+      // Se for operador de campo, mostra as atribuídas a ele ou equipe geral
+      if (user.role === 'operador') {
+        const resp = (occ.record.responsavel_id || '').toLowerCase()
+        return (
+          resp.includes(normalizedUserName) ||
+          resp.includes('joão') ||
+          resp.includes('equipe') ||
+          resp.includes('campo')
+        )
+      }
+      // Administrador / Gerente vê tudo
+      return true
+    })
+
+    // Ordenação estrita: Vencidas e pendentes primeiro, depois horário
+    filteredForUser.sort((a, b) => {
+      const aVencida = isAtividadeVencida(a.record, today)
+      const bVencida = isAtividadeVencida(b.record, today)
+
+      if (aVencida && !bVencida) return -1
+      if (!aVencida && bVencida) return 1
+
+      if (a.record.status === 'concluida' && b.record.status !== 'concluida') return 1
+      if (a.record.status !== 'concluida' && b.record.status === 'concluida') return -1
+
+      return a.occurrenceDate.getTime() - b.occurrenceDate.getTime()
+    })
+
+    return filteredForUser
+  }, [atividadesReais, user])
 
   const filteredLotes = realLots.filter(
     (l) =>
@@ -203,35 +267,112 @@ export default function Campo() {
     setDrawerOpen(false)
   }
 
-  const openDrawer = (lote: LotRecord) => {
+  const openDrawer = (lote: LotRecord, defaultOperacao = 'pesagem') => {
     setSelectedLote(lote)
     setPesoMedioInput(
       lote.peso_medio_atual ? String(lote.peso_medio_atual) : String(lote.final_weight || ''),
     )
     setQtdAnimaisInput(String(lote.headcount || ''))
     setIsAbateSaida(false)
+    setActionType(defaultOperacao)
     setOrigemPesagem('manual')
     setDrawerOpen(true)
   }
 
-  const handleTaskToggle = (taskId: string, currentDone: boolean) => {
-    const task = tasks.find((t) => t.id === taskId)
-    if (!task) return
+  // Concluir tarefa do dia / Deduzir estoque
+  const handleToggleAtividadeReal = async (record: AtividadeRecord, currentConcluida: boolean) => {
+    const newStatus = currentConcluida ? 'planejada' : 'concluida'
 
-    if (!currentDone) {
-      // Mark as complete and deduct inventory
-      registerConsumption(task.lote, task.item, task.amount)
-      addAction({
-        type: 'COMPLETE_TASK',
-        payload: { taskId: task.id, operator: user.name },
-      })
-      toast({
-        title: 'Tarefa Concluída',
-        description: `Estoque deduzido (${task.amount} unid. de ${task.item}).`,
-      })
+    // Otimista
+    setAtividadesReais((prev) =>
+      prev.map((a) =>
+        a.id === record.id
+          ? {
+              ...a,
+              status: newStatus,
+              concluido_em: newStatus === 'concluida' ? new Date().toISOString() : undefined,
+              concluido_por: newStatus === 'concluida' ? user.name : undefined,
+            }
+          : a,
+      ),
+    )
+
+    if (!currentConcluida) {
+      // Deduz estoque para os insumos vinculados
+      if (record.insumos && record.insumos.length > 0) {
+        const targetLote = (record.lote_ids && record.lote_ids[0]) || record.setor || 'GERAL'
+        record.insumos.forEach((ins) => {
+          if (ins.inventoryId && ins.quantidade > 0) {
+            registerConsumption(targetLote, ins.inventoryId, ins.quantidade)
+          }
+        })
+        toast({
+          title: 'Estoque Deduzido!',
+          description: `${record.insumos.map((i) => `${i.quantidade} ${i.unidade || 'un'} de ${i.item}`).join(', ')}`,
+        })
+      }
+
+      if (isOnline) {
+        try {
+          await updateAtividade(record.id, {
+            status: 'concluida',
+            concluido_em: new Date().toISOString(),
+            concluido_por: user.name,
+          } as any)
+          toast({
+            title: 'Tarefa Realizada no Banco Real',
+            description: `"${record.titulo}" marcada como concluída.`,
+          })
+        } catch (err) {
+          console.warn('Erro ao atualizar online, enviando para fila:', err)
+          await addAction({
+            type: 'COMPLETE_TASK',
+            payload: { atividadeId: record.id, taskId: record.id, operator: user.name },
+          })
+        }
+      } else {
+        await addAction({
+          type: 'COMPLETE_TASK',
+          payload: { atividadeId: record.id, taskId: record.id, operator: user.name },
+        })
+        toast({
+          title: 'Conclusão Salva Offline',
+          description: 'Será sincronizada com o banco assim que a conexão retornar.',
+        })
+      }
+    } else {
+      // Reabrir tarefa
+      if (isOnline) {
+        try {
+          await updateAtividade(record.id, {
+            status: 'planejada',
+            concluido_em: undefined,
+            concluido_por: undefined,
+          } as any)
+        } catch (e) {
+          console.warn(e)
+        }
+      }
+    }
+  }
+
+  // Ao clicar em uma tarefa com lote vinculado, pode abrir a gaveta de operação correspondente
+  const handleOpenTaskOperation = (rec: AtividadeRecord) => {
+    let targetLote: LotRecord | undefined
+    if (rec.lote_ids && rec.lote_ids.length > 0) {
+      targetLote = realLots.find((l) => l.id === rec.lote_ids[0])
+    }
+    if (!targetLote && realLots.length > 0) {
+      targetLote = realLots[0]
     }
 
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, done: !t.done } : t)))
+    if (targetLote) {
+      let defaultOp = 'servico'
+      if (rec.tipo === 'pesagem') defaultOp = 'pesagem'
+      else if (rec.tipo === 'comercial') defaultOp = 'abate'
+      else if (rec.tipo === 'manejo') defaultOp = 'movimentar'
+      openDrawer(targetLote, defaultOp)
+    }
   }
 
   return (
@@ -281,47 +422,137 @@ export default function Campo() {
         </div>
       </div>
 
-      {/* Tasks Section */}
+      {/* Seção de Tarefas do Dia: Banco Real */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2 px-1">
-          <ListTodo className="h-4 w-4" /> Tarefas do Dia
-        </h3>
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+            <ListTodo className="h-4 w-4" /> Tarefas do Dia (Calendário Real)
+          </h3>
+          <Badge variant="outline" className="text-[10px] font-mono">
+            {tarefasDoDia.length} tarefa(s)
+          </Badge>
+        </div>
+
         <div className="grid gap-3">
-          {tasks.map((task) => (
-            <Card
-              key={task.id}
-              className={`transition-colors ${task.done ? 'bg-muted/50 border-muted' : 'border-border'}`}
-            >
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="flex-1 pr-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className={`font-semibold ${task.done ? 'text-muted-foreground line-through' : ''}`}
-                    >
-                      {task.title}
-                    </span>
-                    {task.done && <CheckCircle2 className="h-4 w-4 text-emerald-500" />}
-                  </div>
-                  <div className="text-xs text-muted-foreground flex gap-2">
-                    <Badge variant="secondary" className="text-[10px]">
-                      {task.lote}
-                    </Badge>
-                    <span>• {task.desc}</span>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-1">
-                  <Switch
-                    checked={task.done}
-                    onCheckedChange={() => handleTaskToggle(task.id, task.done)}
-                    className="data-[state=checked]:bg-emerald-500"
-                  />
-                  <span className="text-[10px] text-muted-foreground font-medium uppercase">
-                    {task.done ? 'Concluído' : 'Pendente'}
-                  </span>
-                </div>
-              </CardContent>
+          {loadingAtividades ? (
+            <div className="text-center py-6 text-xs text-muted-foreground">
+              <RefreshCw className="h-4 w-4 animate-spin mx-auto mb-1" />
+              Carregando tarefas do banco...
+            </div>
+          ) : tarefasDoDia.length === 0 ? (
+            <Card className="p-4 text-center border-dashed">
+              <p className="text-xs text-muted-foreground">
+                Nenhuma tarefa pendente agendada para hoje no calendário.
+              </p>
             </Card>
-          ))}
+          ) : (
+            tarefasDoDia.map((occ) => {
+              const rec = occ.record
+              const isVencida = isAtividadeVencida(rec)
+              const isDone = rec.status === 'concluida'
+              const lote = realLots.find((l) => rec.lote_ids && rec.lote_ids.includes(l.id))
+
+              return (
+                <Card
+                  key={occ.virtualId}
+                  className={`transition-all border-l-4 ${
+                    isVencida
+                      ? 'border-l-destructive bg-red-500/10 border-red-500/40'
+                      : isDone
+                        ? 'border-l-emerald-600 bg-muted/40 opacity-80'
+                        : 'border-l-primary border-border'
+                  }`}
+                >
+                  <CardContent className="p-4 flex items-center justify-between gap-3">
+                    <div className="flex-1 pr-2">
+                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                        <Badge
+                          style={{
+                            backgroundColor: tipoCores[rec.tipo],
+                            color: '#fff',
+                          }}
+                          className="text-[9px] px-1.5 py-0 h-4 font-normal"
+                        >
+                          {tipoLabel(rec.tipo)}
+                        </Badge>
+
+                        {rec.is_arrendamento && (
+                          <Badge
+                            variant="outline"
+                            className="text-[9px] px-1 py-0 h-4 border-amber-500 text-amber-600 bg-amber-500/10"
+                          >
+                            Arrendamento
+                          </Badge>
+                        )}
+
+                        {isVencida && (
+                          <Badge
+                            variant="destructive"
+                            className="text-[9px] px-1 py-0 h-4 animate-pulse gap-1"
+                          >
+                            <AlertTriangle className="h-2.5 w-2.5" /> VENCIDA
+                          </Badge>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 mb-1">
+                        <span
+                          className={`font-semibold text-sm cursor-pointer hover:underline ${
+                            isDone ? 'text-muted-foreground line-through' : ''
+                          } ${isVencida ? 'text-destructive font-bold' : ''}`}
+                          onClick={() => handleOpenTaskOperation(rec)}
+                        >
+                          {rec.titulo}
+                        </span>
+                        {isDone && <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />}
+                      </div>
+
+                      <div className="text-xs text-muted-foreground flex flex-wrap gap-x-2 gap-y-1">
+                        {lote ? (
+                          <Badge variant="secondary" className="text-[10px] font-mono">
+                            {lote.name}
+                          </Badge>
+                        ) : rec.setor ? (
+                          <span className="text-[11px] font-medium">{rec.setor}</span>
+                        ) : null}
+
+                        {rec.insumos && rec.insumos.length > 0 && (
+                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                            <Package className="h-3 w-3" />
+                            {rec.insumos
+                              .map((i) => `${i.quantidade} ${i.unidade || ''} ${i.item}`)
+                              .join(', ')}
+                          </span>
+                        )}
+                      </div>
+
+                      {lote && !isDone && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 text-[10px] px-1.5 mt-2 text-primary hover:bg-primary/10 -ml-1.5"
+                          onClick={() => handleOpenTaskOperation(rec)}
+                        >
+                          Abrir Lote ({lote.name}) no Manejo →
+                        </Button>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col items-center gap-1 shrink-0">
+                      <Switch
+                        checked={isDone}
+                        onCheckedChange={() => handleToggleAtividadeReal(rec, isDone)}
+                        className="data-[state=checked]:bg-emerald-500"
+                      />
+                      <span className="text-[9px] text-muted-foreground font-medium uppercase">
+                        {isDone ? 'Concluído' : 'Pendente'}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })
+          )}
         </div>
       </div>
 
@@ -359,6 +590,14 @@ export default function Campo() {
                       className="text-[10px] text-amber-600 border-amber-300"
                     >
                       Abatido
+                    </Badge>
+                  )}
+                  {lote.is_arrendamento && (
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] text-amber-700 border-amber-400 bg-amber-500/10"
+                    >
+                      Arrendamento
                     </Badge>
                   )}
                 </div>

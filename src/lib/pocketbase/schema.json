@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T04:58:30.474Z",
+  "generatedAt": "2026-09-25T05:10:02.869Z",
   "collections": [
     {
       "name": "users",
@@ -624,6 +624,166 @@
       "indexes": [
         "CREATE INDEX idx_alertas_gmd_lote ON alertas_gmd (lote_id, status)",
         "CREATE INDEX idx_alertas_gmd_data ON alertas_gmd (data DESC)"
+      ]
+    },
+    {
+      "name": "atividades",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "titulo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "sanidade",
+            "reproducao",
+            "manejo",
+            "pesagem",
+            "manutencao",
+            "comercial",
+            "nutricao"
+          ]
+        },
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "data_fim",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "confinamento", "arrendamento"]
+        },
+        {
+          "name": "lote_ids",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "setor",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "responsavel_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "recorrencia",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["unica", "diaria", "semanal", "anual"]
+        },
+        {
+          "name": "insumos",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["planejada", "em_andamento", "concluida", "cancelada"]
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "is_arrendamento",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "custo_previsto",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "concluido_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "concluido_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "alerta_dias_antes",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "parent_event_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created_by",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_atividades_data ON atividades (data DESC)",
+        "CREATE INDEX idx_atividades_status ON atividades (status)",
+        "CREATE INDEX idx_atividades_frente ON atividades (frente)",
+        "CREATE INDEX idx_atividades_responsavel ON atividades (responsavel_id)"
       ]
     }
   ]
