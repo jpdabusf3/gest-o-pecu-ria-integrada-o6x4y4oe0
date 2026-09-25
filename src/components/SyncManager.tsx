@@ -4,7 +4,7 @@ import { useTasks } from '@/contexts/TaskContext'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useToast } from '@/hooks/use-toast'
 import { createPesagem } from '@/services/pesagens'
-import { updateAtividade } from '@/services/atividades'
+import { transicionarStatusAtividade, updateAtividade } from '@/services/atividades'
 
 export function SyncManager() {
   const { isOnline, queue, clearQueue, isSyncing, setIsSyncing } = useOffline()
@@ -26,14 +26,32 @@ export function SyncManager() {
         let tasksCompleted = 0
         let opsSynced = 0
         let pesagensSynced = 0
+        let statusSynced = 0
 
         for (const action of items) {
-          if (action.type === 'COMPLETE_TASK') {
+          if (action.type === 'UPDATE_ATIVIDADE_STATUS') {
+            try {
+              await transicionarStatusAtividade({
+                atividadeId: action.payload.atividadeId,
+                statusNovo: action.payload.statusNovo,
+                statusAnterior: action.payload.statusAnterior,
+                usuarioNome: action.payload.usuarioNome,
+                motivo: action.payload.motivo,
+                detalhes: action.payload.detalhes,
+                progresso: action.payload.progresso,
+                offline: true, // Gravado originalmente offline
+                timestamp: action.payload.timestamp,
+              })
+              statusSynced++
+            } catch (err) {
+              console.warn('Erro ao sincronizar status da atividade:', err)
+            }
+          } else if (action.type === 'COMPLETE_TASK') {
             completeTaskOnServer(action.payload.taskId)
             if (action.payload.atividadeId) {
               try {
                 await updateAtividade(action.payload.atividadeId, {
-                  status: 'concluida',
+                  status: 'realizada',
                   concluido_em: new Date().toISOString(),
                   concluido_por: action.payload.operator,
                 } as any)
@@ -61,7 +79,7 @@ export function SyncManager() {
 
         toast({
           title: 'Dados Sincronizados',
-          description: `Sincronização em background concluída (${tasksCompleted + opsSynced + pesagensSynced} registros).`,
+          description: `Sincronização em background concluída (${tasksCompleted + opsSynced + pesagensSynced + statusSynced} registros).`,
           variant: 'default',
         })
 
@@ -86,14 +104,32 @@ export function SyncManager() {
     let tasksCompleted = 0
     let opsSynced = 0
     let pesagensSynced = 0
+    let statusSynced = 0
 
     for (const action of queue) {
-      if (action.type === 'COMPLETE_TASK') {
+      if (action.type === 'UPDATE_ATIVIDADE_STATUS') {
+        try {
+          await transicionarStatusAtividade({
+            atividadeId: action.payload.atividadeId,
+            statusNovo: action.payload.statusNovo,
+            statusAnterior: action.payload.statusAnterior,
+            usuarioNome: action.payload.usuarioNome,
+            motivo: action.payload.motivo,
+            detalhes: action.payload.detalhes,
+            progresso: action.payload.progresso,
+            offline: true, // Importante: mantém carimbo offline=true pois foi gravado na fila offline
+            timestamp: action.payload.timestamp,
+          })
+          statusSynced++
+        } catch (err) {
+          console.warn('Erro ao processar transição de status na fila:', err)
+        }
+      } else if (action.type === 'COMPLETE_TASK') {
         completeTaskOnServer(action.payload.taskId)
         if (action.payload.atividadeId) {
           try {
             await updateAtividade(action.payload.atividadeId, {
-              status: 'concluida',
+              status: 'realizada',
               concluido_em: new Date().toISOString(),
               concluido_por: action.payload.operator,
             } as any)
@@ -129,7 +165,7 @@ export function SyncManager() {
 
     toast({
       title: 'Sincronização Concluída',
-      description: `${tasksCompleted + opsSynced + pesagensSynced} registros da fila offline foram processados no banco de dados.`,
+      description: `${tasksCompleted + opsSynced + pesagensSynced + statusSynced} registros da fila offline foram processados no banco de dados.`,
       variant: 'default',
     })
   }

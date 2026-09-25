@@ -1,4 +1,5 @@
 import pb from '@/lib/pocketbase/client'
+import { createHistoricoStatus, HistoricoStatusInput } from './historicoStatus'
 
 export type TipoAtividade =
   | 'sanidade'
@@ -9,7 +10,15 @@ export type TipoAtividade =
   | 'comercial'
   | 'nutricao'
 
-export type StatusAtividade = 'planejada' | 'em_andamento' | 'concluida' | 'cancelada'
+export type StatusAtividade =
+  | 'agendada'
+  | 'em_andamento'
+  | 'realizada'
+  | 'nao_realizada'
+  | 'reagendada'
+  | 'planejada' // compatibilidade legada
+  | 'concluida' // compatibilidade legada
+  | 'cancelada' // compatibilidade legada
 
 export type Recorrencia = 'unica' | 'diaria' | 'semanal' | 'anual'
 
@@ -34,6 +43,13 @@ export interface AtividadeRecord {
   recorrencia: Recorrencia
   insumos: InsumoAtividade[]
   status: StatusAtividade
+  motivo_nao_realizada?: string
+  detalhes_motivo?: string
+  progresso_observacoes?: string
+  iniciado_em?: string
+  revisado_gestor?: boolean
+  revisado_em?: string
+  revisado_por?: string
   descricao?: string
   is_arrendamento: boolean
   custo_previsto?: number
@@ -58,9 +74,18 @@ export interface AtividadeInput {
   recorrencia: Recorrencia
   insumos: InsumoAtividade[]
   status: StatusAtividade
+  motivo_nao_realizada?: string
+  detalhes_motivo?: string
+  progresso_observacoes?: string
+  iniciado_em?: string
+  revisado_gestor?: boolean
+  revisado_em?: string
+  revisado_por?: string
   descricao?: string
   is_arrendamento: boolean
   custo_previsto?: number
+  concluido_em?: string
+  concluido_por?: string
   alerta_dias_antes?: number
   parent_event_id?: string
   created_by?: string
@@ -89,13 +114,17 @@ export const tipoCores: Record<TipoAtividade, string> = {
 }
 
 export const getStatusLabel = (status: StatusAtividade): string => {
-  const map: Record<StatusAtividade, string> = {
-    planejada: 'Planejada',
+  const map: Record<string, string> = {
+    agendada: 'Agendada',
     em_andamento: 'Em Andamento',
-    concluida: 'Concluída',
+    realizada: 'Realizada',
+    nao_realizada: 'Não Realizada',
+    reagendada: 'Reagendada',
+    planejada: 'Agendada',
+    concluida: 'Realizada',
     cancelada: 'Cancelada',
   }
-  return map[status]
+  return map[status] || status
 }
 
 export const getFrenteLabel = (frente: AtividadeRecord['frente']): string => {
@@ -106,7 +135,7 @@ export const getFrenteLabel = (frente: AtividadeRecord['frente']): string => {
     confinamento: 'Confinamento',
     arrendamento: 'Arrendamento de Fêmeas',
   }
-  return map[frente]
+  return map[frente] || frente
 }
 
 // ---------------------------------------------
@@ -145,7 +174,9 @@ export function expandAtividades(
     const base = new Date(rec.data)
     if (isNaN(base.getTime())) continue
 
-    if (rec.recorrencia === 'unica' || rec.status === 'concluida') {
+    const isFinalizada = rec.status === 'realizada' || rec.status === 'concluida'
+
+    if (rec.recorrencia === 'unica' || isFinalizada) {
       if (base >= s && base <= e) {
         out.push({ record: rec, occurrenceDate: base, virtualId: `${rec.id}#${rec.data}` })
       }
@@ -164,7 +195,6 @@ export function expandAtividades(
           out.push({ record: rec, occurrenceDate: occ, virtualId: `${rec.id}#${key}` })
         }
         cursor.setDate(cursor.getDate() + 1)
-        // segurança: limite de iterações
         if (out.length > 800) break
       }
       continue
@@ -207,7 +237,7 @@ export function expandAtividades(
 }
 
 // ---------------------------------------------
-// Utilidades de datas
+// Utilidades de datas & status
 // ---------------------------------------------
 
 export const isSameDay = (a: Date, b: Date): boolean => {
@@ -219,13 +249,55 @@ export const isSameDay = (a: Date, b: Date): boolean => {
 }
 
 export const isAtividadeVencida = (a: AtividadeRecord, now = new Date()): boolean => {
-  if (a.status === 'concluida' || a.status === 'cancelada') return false
+  if (
+    a.status === 'realizada' ||
+    a.status === 'concluida' ||
+    a.status === 'cancelada' ||
+    a.status === 'nao_realizada'
+  ) {
+    return false
+  }
   const d = new Date(a.data)
   return d < startOfDay(now)
 }
 
 export const isAtividadeHoje = (a: AtividadeRecord, now = new Date()): boolean => {
   return isSameDay(new Date(a.data), now)
+}
+
+/**
+ * Atividade "em_andamento" há mais de 3 dias gera alerta ao gestor
+ */
+export const isAlertaEmAndamentoExcessivo = (a: AtividadeRecord, now = new Date()): boolean => {
+  if (a.status !== 'em_andamento') return false
+  const refDate = a.iniciado_em ? new Date(a.iniciado_em) : new Date(a.updated || a.data)
+  const diffDays = (now.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24)
+  return diffDays > 3
+}
+
+/**
+ * Calcula próximo dia útil (+1 dia útil) a partir de uma data de referência
+ */
+export const calcularProximoDiaUtil = (fromDate: Date = new Date()): Date => {
+  const d = new Date(fromDate)
+  d.setDate(d.getDate() + 1)
+  // Se for sábado (6), pula para segunda (+2)
+  if (d.getDay() === 6) {
+    d.setDate(d.getDate() + 2)
+  } else if (d.getDay() === 0) {
+    // Se for domingo (0), pula para segunda (+1)
+    d.setDate(d.getDate() + 1)
+  }
+  return d
+}
+
+/**
+ * Verifica se "não realizada" tem impacto em estoque ou sanidade (aparece como pendência do gestor)
+ */
+export const temImpactoEstoqueOuSanidade = (a: AtividadeRecord): boolean => {
+  if (a.tipo === 'sanidade') return true
+  if (a.insumos && a.insumos.length > 0) return true
+  return false
 }
 
 // ---------------------------------------------
@@ -263,7 +335,7 @@ export function gerarGatilhosIatf(
 export const DIAS_IATF = [30, 35, 40, 45, 50, 55, 60]
 
 // ---------------------------------------------
-// CRUD PocketBase
+// CRUD PocketBase com Auditoria e Regras de Transição
 // ---------------------------------------------
 
 export const getAtividades = async (filter?: string): Promise<AtividadeRecord[]> => {
@@ -315,6 +387,79 @@ export const updateAtividade = async (
     insumos: Array.isArray(r.insumos) ? r.insumos : [],
     is_arrendamento: !!r.is_arrendamento,
   }
+}
+
+/**
+ * Transição de status estruturada com gravação automática de auditoria na coleção `historico_status`
+ */
+export interface TransicaoStatusParams {
+  atividadeId: string
+  statusNovo: StatusAtividade
+  statusAnterior?: string
+  usuarioNome: string
+  motivo?: string
+  detalhes?: string
+  progresso?: string
+  offline?: boolean
+  timestamp?: string
+}
+
+export const transicionarStatusAtividade = async (
+  params: TransicaoStatusParams,
+): Promise<AtividadeRecord> => {
+  const {
+    atividadeId,
+    statusNovo,
+    statusAnterior,
+    usuarioNome,
+    motivo,
+    detalhes,
+    progresso,
+    offline,
+    timestamp = new Date().toISOString(),
+  } = params
+
+  const updatePayload: Partial<AtividadeInput> = {
+    status: statusNovo,
+  }
+
+  if (statusNovo === 'realizada') {
+    updatePayload.concluido_em = timestamp
+    updatePayload.concluido_por = usuarioNome
+  } else if (statusNovo === 'em_andamento') {
+    updatePayload.iniciado_em = timestamp
+    if (progresso !== undefined) {
+      updatePayload.progresso_observacoes = progresso
+    }
+  } else if (statusNovo === 'nao_realizada') {
+    updatePayload.motivo_nao_realizada = motivo
+    updatePayload.detalhes_motivo = detalhes
+    updatePayload.revisado_gestor = false
+  } else if (statusNovo === 'reagendada') {
+    updatePayload.revisado_gestor = true
+  }
+
+  // 1. Atualiza registro na tabela de atividades
+  const updated = await updateAtividade(atividadeId, updatePayload)
+
+  // 2. Grava registro na tabela historico_status
+  try {
+    const auditInput: HistoricoStatusInput = {
+      atividade_id: atividadeId,
+      status_anterior: statusAnterior,
+      status_novo: statusNovo,
+      usuario_id: usuarioNome,
+      motivo: motivo,
+      detalhes: detalhes || progresso,
+      offline: !!offline,
+      timestamp,
+    }
+    await createHistoricoStatus(auditInput)
+  } catch (auditErr) {
+    console.warn('Erro ao salvar auditoria de historico_status:', auditErr)
+  }
+
+  return updated
 }
 
 export const deleteAtividade = async (id: string): Promise<void> => {

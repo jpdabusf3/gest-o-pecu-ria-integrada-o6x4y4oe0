@@ -20,6 +20,7 @@ import { FilterBar } from '@/components/reports/FilterBar'
 import { InterventionModal } from '@/components/reports/InterventionModal'
 import { PerformanceDashboard } from '@/components/reports/PerformanceDashboard'
 import { RelatorioMensalGMD } from '@/components/gmd/RelatorioMensalGMD'
+import { RelatorioSemanalAtividades } from '@/components/relatorios/RelatorioSemanalAtividades'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 type HistoryItem = (typeof managementHistory)[0]
@@ -112,12 +113,19 @@ export default function Relatorios() {
       </div>
 
       <Tabs defaultValue="gmd_mensal" className="space-y-6">
-        <TabsList className="grid grid-cols-1 sm:grid-cols-2 w-full sm:w-[480px]">
+        <TabsList className="grid grid-cols-1 sm:grid-cols-3 w-full sm:w-[680px]">
+          <TabsTrigger value="atividades_semanal" className="font-semibold">
+            Semanal de Atividades
+          </TabsTrigger>
           <TabsTrigger value="gmd_mensal" className="font-semibold">
             Fechamento Mensal GMD (Exagro)
           </TabsTrigger>
           <TabsTrigger value="intervencoes">Log de Intervenções & Manejo</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="atividades_semanal" className="mt-0">
+          <RelatorioSemanalAtividades />
+        </TabsContent>
 
         <TabsContent value="gmd_mensal" className="mt-0">
           <RelatorioMensalGMD />

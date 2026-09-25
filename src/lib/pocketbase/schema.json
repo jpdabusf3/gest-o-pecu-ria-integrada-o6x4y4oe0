@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T05:10:02.869Z",
+  "generatedAt": "2026-09-25T05:17:47.401Z",
   "collections": [
     {
       "name": "users",
@@ -714,7 +714,16 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["planejada", "em_andamento", "concluida", "cancelada"]
+          "selectValues": [
+            "agendada",
+            "em_andamento",
+            "realizada",
+            "nao_realizada",
+            "reagendada",
+            "planejada",
+            "concluida",
+            "cancelada"
+          ]
         },
         {
           "name": "descricao",
@@ -777,6 +786,48 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "motivo_nao_realizada",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "detalhes_motivo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "progresso_observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "iniciado_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "revisado_gestor",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "revisado_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "revisado_por",
+          "type": "text",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [
@@ -784,6 +835,87 @@
         "CREATE INDEX idx_atividades_status ON atividades (status)",
         "CREATE INDEX idx_atividades_frente ON atividades (frente)",
         "CREATE INDEX idx_atividades_responsavel ON atividades (responsavel_id)"
+      ]
+    },
+    {
+      "name": "historico_status",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "atividade_id",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "atividades"
+        },
+        {
+          "name": "status_anterior",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status_novo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "usuario_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "motivo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "detalhes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "offline",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "timestamp",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_historico_atividade ON historico_status (atividade_id)",
+        "CREATE INDEX idx_historico_timestamp ON historico_status (timestamp DESC)",
+        "CREATE INDEX idx_historico_usuario ON historico_status (usuario_id)"
       ]
     }
   ]

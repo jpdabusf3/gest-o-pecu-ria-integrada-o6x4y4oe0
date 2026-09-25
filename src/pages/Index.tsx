@@ -45,6 +45,7 @@ import { CashflowChart } from '@/components/charts/CashflowChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
 import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
 import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
+import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
@@ -350,6 +351,9 @@ export default function Index() {
           </Card>
         )}
       </div>
+
+      {/* Widget Atividades da Semana (Controle de Status e Pendências do Gestor) */}
+      <WidgetAtividadesSemanaGestor />
 
       {/* Painel de GMD Estimado vs. Real & Semáforo de Desvio */}
       <TopDesvioGmdCard />

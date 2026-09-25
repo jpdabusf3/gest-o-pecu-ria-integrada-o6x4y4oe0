@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 export type SyncAction = {
   id: string
-  type: 'COMPLETE_TASK' | 'FIELD_OPERATION' | 'REGISTER_PESAGEM'
+  type: 'COMPLETE_TASK' | 'FIELD_OPERATION' | 'REGISTER_PESAGEM' | 'UPDATE_ATIVIDADE_STATUS'
   payload: any
   timestamp: number
 }
@@ -58,8 +58,8 @@ interface OfflineContextType {
   simulatedOffline: boolean
   toggleSimulatedOffline: () => void
   queue: SyncAction[]
-  addAction: (action: Omit<SyncAction, 'id' | 'timestamp'>) => void
-  clearQueue: () => void
+  addAction: (action: Omit<SyncAction, 'id' | 'timestamp'>) => Promise<void>
+  clearQueue: () => Promise<void>
   isSyncing: boolean
   setIsSyncing: (val: boolean) => void
 }

@@ -34,9 +34,12 @@ import {
   Wifi,
   Radio,
   AlertTriangle,
-  Calendar,
-  Layers,
+  RotateCw,
   Package,
+  Hourglass,
+  XCircle,
+  Clock,
+  History,
 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
@@ -47,14 +50,21 @@ import { createPesagem, PesagemInput } from '@/services/pesagens'
 import {
   AtividadeRecord,
   getAtividades,
-  updateAtividade,
   expandAtividades,
   isAtividadeVencida,
   tipoCores,
   tipoLabel,
+  getStatusLabel,
+  transicionarStatusAtividade,
+  updateAtividade,
+  isAlertaEmAndamentoExcessivo,
 } from '@/services/atividades'
+import { getMotivoLabel } from '@/services/historicoStatus'
 import { useRealtime } from '@/hooks/use-realtime'
 import { ScaleIntegrationModal } from '@/components/ScaleIntegrationModal'
+import { ModalJustificativaNaoRealizada } from '@/components/campo/ModalJustificativaNaoRealizada'
+import { ModalEmAndamento } from '@/components/campo/ModalEmAndamento'
+import { ModalReagendarAtividade } from '@/components/campo/ModalReagendarAtividade'
 
 export default function Campo() {
   const { toast } = useToast()
@@ -72,6 +82,14 @@ export default function Campo() {
   // Atividades reais do banco
   const [atividadesReais, setAtividadesReais] = useState<AtividadeRecord[]>([])
   const [loadingAtividades, setLoadingAtividades] = useState(true)
+
+  // Modais de status
+  const [modalNaoRealizadaOpen, setModalNaoRealizadaOpen] = useState(false)
+  const [modalEmAndamentoOpen, setModalEmAndamentoOpen] = useState(false)
+  const [modalReagendarOpen, setModalReagendarOpen] = useState(false)
+  const [selectedAtividadeAction, setSelectedAtividadeAction] = useState<AtividadeRecord | null>(
+    null,
+  )
 
   // Campos de pesagem rápida
   const [pesoMedioInput, setPesoMedioInput] = useState('')
@@ -110,13 +128,14 @@ export default function Campo() {
 
   useRealtime('lots', () => loadRealLots())
   useRealtime('atividades', () => loadAtividadesHoje())
+  useRealtime('historico_status', () => loadAtividadesHoje())
 
   // -------------------------------------------------------------
   // TAREFAS DO DIA DO RESPONSÁVEL (Alimentadas pela coleção "atividades" real)
-  // Regra:
-  // - Cada atividade do dia do responsável aparece automaticamente na lista dele
+  // Regras:
   // - Vencida e não concluída sobe para o topo e fica destacada em vermelho
-  // - Sem dados mock
+  // - 3 estados diretos com botões grandes (área de toque >= 48px):
+  //   ✅ Realizado | ⏳ Em andamento | ❌ Não realizado
   // -------------------------------------------------------------
   const tarefasDoDia = useMemo(() => {
     const today = new Date()
@@ -143,7 +162,6 @@ export default function Campo() {
     // Filtrar pelo responsável (se o usuário for admin ou gerente, pode ver todas ou filtrar; operador vê as dele)
     const normalizedUserName = (user.name || '').toLowerCase()
     const filteredForUser = occurrences.filter((occ) => {
-      // Se for operador de campo, mostra as atribuídas a ele ou equipe geral
       if (user.role === 'operador') {
         const resp = (occ.record.responsavel_id || '').toLowerCase()
         return (
@@ -153,7 +171,6 @@ export default function Campo() {
           resp.includes('campo')
         )
       }
-      // Administrador / Gerente vê tudo
       return true
     })
 
@@ -165,8 +182,11 @@ export default function Campo() {
       if (aVencida && !bVencida) return -1
       if (!aVencida && bVencida) return 1
 
-      if (a.record.status === 'concluida' && b.record.status !== 'concluida') return 1
-      if (a.record.status !== 'concluida' && b.record.status === 'concluida') return -1
+      const isAFin = a.record.status === 'realizada' || a.record.status === 'concluida'
+      const isBFin = b.record.status === 'realizada' || b.record.status === 'concluida'
+
+      if (isAFin && !isBFin) return 1
+      if (!isAFin && isBFin) return -1
 
       return a.occurrenceDate.getTime() - b.occurrenceDate.getTime()
     })
@@ -181,6 +201,300 @@ export default function Campo() {
       (l.category || '').toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
+  // -------------------------------------------------------------
+  // TRANSIÇÕES DE STATUS COM SUPORTE OFFLINE & AUDITORIA
+  // -------------------------------------------------------------
+
+  // 1. Marcar como "REALIZADO"
+  const handleMarcarRealizado = async (record: AtividadeRecord) => {
+    const timestamp = new Date().toISOString()
+
+    // Otimista
+    setAtividadesReais((prev) =>
+      prev.map((a) =>
+        a.id === record.id
+          ? {
+              ...a,
+              status: 'realizada',
+              concluido_em: timestamp,
+              concluido_por: user.name,
+            }
+          : a,
+      ),
+    )
+
+    // Deduz estoque para os insumos vinculados via registerConsumption
+    if (record.insumos && record.insumos.length > 0) {
+      const targetLote = (record.lote_ids && record.lote_ids[0]) || record.setor || 'GERAL'
+      record.insumos.forEach((ins) => {
+        if (ins.inventoryId && ins.quantidade > 0) {
+          registerConsumption(targetLote, ins.inventoryId, ins.quantidade)
+        }
+      })
+      toast({
+        title: 'Estoque Deduzido!',
+        description: `${record.insumos.map((i) => `${i.quantidade} ${i.unidade || 'un'} de ${i.item}`).join(', ')}`,
+      })
+    }
+
+    if (isOnline) {
+      try {
+        await transicionarStatusAtividade({
+          atividadeId: record.id,
+          statusNovo: 'realizada',
+          statusAnterior: record.status,
+          usuarioNome: user.name,
+          offline: false,
+          timestamp,
+        })
+        toast({
+          title: 'Atividade Realizada!',
+          description: `"${record.titulo}" gravada no banco real com carimbo de auditoria.`,
+        })
+      } catch (err) {
+        console.warn('Falha online, enfileirando offline:', err)
+        await addAction({
+          type: 'UPDATE_ATIVIDADE_STATUS',
+          payload: {
+            atividadeId: record.id,
+            statusNovo: 'realizada',
+            statusAnterior: record.status,
+            usuarioNome: user.name,
+            timestamp,
+          },
+        })
+        toast({
+          title: 'Salvo Offline',
+          description: 'Ação salva na fila local. Será sincronizada com carimbo offline.',
+        })
+      }
+    } else {
+      await addAction({
+        type: 'UPDATE_ATIVIDADE_STATUS',
+        payload: {
+          atividadeId: record.id,
+          statusNovo: 'realizada',
+          statusAnterior: record.status,
+          usuarioNome: user.name,
+          timestamp,
+        },
+      })
+      toast({
+        title: 'Conclusão Salva Offline',
+        description: 'Gravado localmente com carimbo offline=true para sincronização.',
+      })
+    }
+  }
+
+  // 2. Abrir modal "EM ANDAMENTO"
+  const handleAbrirEmAndamento = (record: AtividadeRecord) => {
+    setSelectedAtividadeAction(record)
+    setModalEmAndamentoOpen(true)
+  }
+
+  // Confirmar "EM ANDAMENTO"
+  const handleConfirmarEmAndamento = async (progresso: string) => {
+    if (!selectedAtividadeAction) return
+    const rec = selectedAtividadeAction
+    const timestamp = new Date().toISOString()
+
+    // Otimista
+    setAtividadesReais((prev) =>
+      prev.map((a) =>
+        a.id === rec.id
+          ? {
+              ...a,
+              status: 'em_andamento',
+              iniciado_em: timestamp,
+              progresso_observacoes: progresso,
+            }
+          : a,
+      ),
+    )
+
+    if (isOnline) {
+      try {
+        await transicionarStatusAtividade({
+          atividadeId: rec.id,
+          statusNovo: 'em_andamento',
+          statusAnterior: rec.status,
+          usuarioNome: user.name,
+          progresso,
+          offline: false,
+          timestamp,
+        })
+        toast({
+          title: 'Atividade Em Andamento',
+          description: `"${rec.titulo}" atualizada para em andamento.`,
+        })
+      } catch (err) {
+        console.warn('Falha online, enfileirando offline:', err)
+        await addAction({
+          type: 'UPDATE_ATIVIDADE_STATUS',
+          payload: {
+            atividadeId: rec.id,
+            statusNovo: 'em_andamento',
+            statusAnterior: rec.status,
+            usuarioNome: user.name,
+            progresso,
+            timestamp,
+          },
+        })
+      }
+    } else {
+      await addAction({
+        type: 'UPDATE_ATIVIDADE_STATUS',
+        payload: {
+          atividadeId: rec.id,
+          statusNovo: 'em_andamento',
+          statusAnterior: rec.status,
+          usuarioNome: user.name,
+          progresso,
+          timestamp,
+        },
+      })
+      toast({
+        title: 'Salvo Offline (Em Andamento)',
+        description: 'Gravado na fila local para sincronização futura.',
+      })
+    }
+  }
+
+  // 3. Abrir modal "NÃO REALIZADO" (Justificativa obrigatória)
+  const handleAbrirNaoRealizada = (record: AtividadeRecord) => {
+    setSelectedAtividadeAction(record)
+    setModalNaoRealizadaOpen(true)
+  }
+
+  // Confirmar "NÃO REALIZADO"
+  const handleConfirmarNaoRealizada = async (motivo: string, detalhes: string) => {
+    if (!selectedAtividadeAction) return
+    const rec = selectedAtividadeAction
+    const timestamp = new Date().toISOString()
+
+    // Otimista
+    setAtividadesReais((prev) =>
+      prev.map((a) =>
+        a.id === rec.id
+          ? {
+              ...a,
+              status: 'nao_realizada',
+              motivo_nao_realizada: motivo,
+              detalhes_motivo: detalhes,
+              revisado_gestor: false,
+            }
+          : a,
+      ),
+    )
+
+    if (isOnline) {
+      try {
+        await transicionarStatusAtividade({
+          atividadeId: rec.id,
+          statusNovo: 'nao_realizada',
+          statusAnterior: rec.status,
+          usuarioNome: user.name,
+          motivo,
+          detalhes,
+          offline: false,
+          timestamp,
+        })
+        toast({
+          title: 'Não Realizado Registrado',
+          description: `Motivo: ${getMotivoLabel(motivo)}. Notificação de revisão gerada ao gestor.`,
+        })
+      } catch (err) {
+        console.warn('Falha online, enfileirando offline:', err)
+        await addAction({
+          type: 'UPDATE_ATIVIDADE_STATUS',
+          payload: {
+            atividadeId: rec.id,
+            statusNovo: 'nao_realizada',
+            statusAnterior: rec.status,
+            usuarioNome: user.name,
+            motivo,
+            detalhes,
+            timestamp,
+          },
+        })
+      }
+    } else {
+      await addAction({
+        type: 'UPDATE_ATIVIDADE_STATUS',
+        payload: {
+          atividadeId: rec.id,
+          statusNovo: 'nao_realizada',
+          statusAnterior: rec.status,
+          usuarioNome: user.name,
+          motivo,
+          detalhes,
+          timestamp,
+        },
+      })
+      toast({
+        title: 'Registrado Offline (Não Realizado)',
+        description: 'Gravado com carimbo offline=true com justificativa obrigatória salva.',
+      })
+    }
+  }
+
+  // 4. Abrir modal "REAGENDAR"
+  const handleAbrirReagendar = (record: AtividadeRecord) => {
+    setSelectedAtividadeAction(record)
+    setModalReagendarOpen(true)
+  }
+
+  // Confirmar Reagendamento
+  const handleConfirmarReagendar = async (novaData: string, observacao: string) => {
+    if (!selectedAtividadeAction) return
+    const rec = selectedAtividadeAction
+    const timestamp = new Date().toISOString()
+
+    const isoDate = `${novaData}T08:00:00.000Z`
+
+    // Otimista
+    setAtividadesReais((prev) =>
+      prev.map((a) =>
+        a.id === rec.id
+          ? {
+              ...a,
+              status: 'reagendada',
+              data: isoDate,
+              revisado_gestor: true,
+            }
+          : a,
+      ),
+    )
+
+    if (isOnline) {
+      try {
+        await updateAtividade(rec.id, {
+          data: isoDate,
+          status: 'reagendada',
+          revisado_gestor: true,
+        } as any)
+
+        await transicionarStatusAtividade({
+          atividadeId: rec.id,
+          statusNovo: 'reagendada',
+          statusAnterior: rec.status,
+          usuarioNome: user.name,
+          detalhes: `Reagendado para ${novaData}. ${observacao}`,
+          offline: false,
+          timestamp,
+        })
+
+        toast({
+          title: 'Atividade Reagendada!',
+          description: `Nova data: ${new Date(isoDate).toLocaleDateString('pt-BR')}. Histórico preservado.`,
+        })
+      } catch (err) {
+        console.warn('Erro ao reagendar:', err)
+      }
+    }
+  }
+
+  // Pesagem e outras ações da gaveta
   const handleAction = async () => {
     if (!selectedLote) return
 
@@ -245,7 +559,6 @@ export default function Campo() {
         })
       }
     } else {
-      // Outras ações de campo
       addAction({
         type: 'FIELD_OPERATION',
         payload: { operationType: actionType, lote: selectedLote?.name, operator: user.name },
@@ -279,84 +592,6 @@ export default function Campo() {
     setDrawerOpen(true)
   }
 
-  // Concluir tarefa do dia / Deduzir estoque
-  const handleToggleAtividadeReal = async (record: AtividadeRecord, currentConcluida: boolean) => {
-    const newStatus = currentConcluida ? 'planejada' : 'concluida'
-
-    // Otimista
-    setAtividadesReais((prev) =>
-      prev.map((a) =>
-        a.id === record.id
-          ? {
-              ...a,
-              status: newStatus,
-              concluido_em: newStatus === 'concluida' ? new Date().toISOString() : undefined,
-              concluido_por: newStatus === 'concluida' ? user.name : undefined,
-            }
-          : a,
-      ),
-    )
-
-    if (!currentConcluida) {
-      // Deduz estoque para os insumos vinculados
-      if (record.insumos && record.insumos.length > 0) {
-        const targetLote = (record.lote_ids && record.lote_ids[0]) || record.setor || 'GERAL'
-        record.insumos.forEach((ins) => {
-          if (ins.inventoryId && ins.quantidade > 0) {
-            registerConsumption(targetLote, ins.inventoryId, ins.quantidade)
-          }
-        })
-        toast({
-          title: 'Estoque Deduzido!',
-          description: `${record.insumos.map((i) => `${i.quantidade} ${i.unidade || 'un'} de ${i.item}`).join(', ')}`,
-        })
-      }
-
-      if (isOnline) {
-        try {
-          await updateAtividade(record.id, {
-            status: 'concluida',
-            concluido_em: new Date().toISOString(),
-            concluido_por: user.name,
-          } as any)
-          toast({
-            title: 'Tarefa Realizada no Banco Real',
-            description: `"${record.titulo}" marcada como concluída.`,
-          })
-        } catch (err) {
-          console.warn('Erro ao atualizar online, enviando para fila:', err)
-          await addAction({
-            type: 'COMPLETE_TASK',
-            payload: { atividadeId: record.id, taskId: record.id, operator: user.name },
-          })
-        }
-      } else {
-        await addAction({
-          type: 'COMPLETE_TASK',
-          payload: { atividadeId: record.id, taskId: record.id, operator: user.name },
-        })
-        toast({
-          title: 'Conclusão Salva Offline',
-          description: 'Será sincronizada com o banco assim que a conexão retornar.',
-        })
-      }
-    } else {
-      // Reabrir tarefa
-      if (isOnline) {
-        try {
-          await updateAtividade(record.id, {
-            status: 'planejada',
-            concluido_em: undefined,
-            concluido_por: undefined,
-          } as any)
-        } catch (e) {
-          console.warn(e)
-        }
-      }
-    }
-  }
-
-  // Ao clicar em uma tarefa com lote vinculado, pode abrir a gaveta de operação correspondente
   const handleOpenTaskOperation = (rec: AtividadeRecord) => {
     let targetLote: LotRecord | undefined
     if (rec.lote_ids && rec.lote_ids.length > 0) {
@@ -376,27 +611,28 @@ export default function Campo() {
   }
 
   return (
-    <div className="space-y-4 pb-20 sm:pb-6 max-w-md mx-auto">
-      <div className="bg-primary text-primary-foreground p-6 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-6 flex justify-between items-start">
+    <div className="space-y-4 pb-24 sm:pb-8 max-w-lg mx-auto">
+      {/* Top Header Mobile com Conectividade */}
+      <div className="bg-primary text-primary-foreground p-5 -mx-4 -mt-4 sm:rounded-b-2xl shadow-md mb-4 flex justify-between items-start">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Operações Mobile</h2>
-          <p className="text-primary-foreground/80 mt-1 text-sm">
+          <h2 className="text-2xl font-bold tracking-tight">Modo Campo</h2>
+          <p className="text-primary-foreground/80 mt-0.5 text-xs">
             Operador: <span className="font-semibold">{user.name}</span>
           </p>
         </div>
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex flex-col items-end gap-1.5">
           <div className="flex items-center gap-1.5">
             <Button
               variant="secondary"
               size="sm"
-              className="h-7 text-xs px-2 bg-white/20 hover:bg-white/30 text-white border-0"
+              className="h-8 text-xs px-2.5 bg-white/20 hover:bg-white/30 text-white border-0 font-medium"
               onClick={toggleSimulatedOffline}
               title="Alternar simulação de conectividade offline"
             >
               {simulatedOffline ? (
-                <Radio className="h-3 w-3 mr-1 text-amber-300" />
+                <Radio className="h-3.5 w-3.5 mr-1 text-amber-300" />
               ) : (
-                <Wifi className="h-3 w-3 mr-1" />
+                <Wifi className="h-3.5 w-3.5 mr-1" />
               )}
               {simulatedOffline ? 'Simular Online' : 'Simular Offline'}
             </Button>
@@ -404,43 +640,43 @@ export default function Campo() {
           {!isOnline && (
             <Badge
               variant="destructive"
-              className="bg-amber-600 text-white border-0 opacity-95 gap-1.5 py-1 text-xs"
+              className="bg-amber-600 text-white border-0 opacity-95 gap-1.5 py-0.5 text-[11px]"
             >
               <CloudOff className="h-3 w-3" /> Fila Offline Ativa
             </Badge>
           )}
           {isSyncing && (
-            <Badge variant="secondary" className="bg-white/20 text-white border-0 gap-1.5">
+            <Badge variant="secondary" className="bg-white/20 text-white border-0 gap-1.5 text-xs">
               <RefreshCw className="h-3 w-3 animate-spin" /> Sincronizando
             </Badge>
           )}
           {queue.length > 0 && (
-            <span className="text-xs bg-black/30 px-2 py-0.5 rounded-full text-white font-medium">
+            <span className="text-[11px] bg-black/40 px-2 py-0.5 rounded-full text-white font-medium">
               {queue.length} ação(ões) na fila
             </span>
           )}
         </div>
       </div>
 
-      {/* Seção de Tarefas do Dia: Banco Real */}
-      <div className="mb-8">
+      {/* Seção de Tarefas do Dia: Banco Real com os 3 Novos Estados */}
+      <div className="mb-6">
         <div className="flex items-center justify-between mb-3 px-1">
-          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-            <ListTodo className="h-4 w-4" /> Tarefas do Dia (Calendário Real)
+          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <ListTodo className="h-4 w-4 text-primary" /> Tarefas de Hoje (Calendário Real)
           </h3>
-          <Badge variant="outline" className="text-[10px] font-mono">
+          <Badge variant="outline" className="text-xs font-mono">
             {tarefasDoDia.length} tarefa(s)
           </Badge>
         </div>
 
-        <div className="grid gap-3">
+        <div className="grid gap-3.5">
           {loadingAtividades ? (
-            <div className="text-center py-6 text-xs text-muted-foreground">
-              <RefreshCw className="h-4 w-4 animate-spin mx-auto mb-1" />
-              Carregando tarefas do banco...
+            <div className="text-center py-8 text-xs text-muted-foreground">
+              <RefreshCw className="h-5 w-5 animate-spin mx-auto mb-2 text-primary" />
+              Carregando tarefas do banco real...
             </div>
           ) : tarefasDoDia.length === 0 ? (
-            <Card className="p-4 text-center border-dashed">
+            <Card className="p-6 text-center border-dashed">
               <p className="text-xs text-muted-foreground">
                 Nenhuma tarefa pendente agendada para hoje no calendário.
               </p>
@@ -449,29 +685,40 @@ export default function Campo() {
             tarefasDoDia.map((occ) => {
               const rec = occ.record
               const isVencida = isAtividadeVencida(rec)
-              const isDone = rec.status === 'concluida'
+              const isRealizada = rec.status === 'realizada' || rec.status === 'concluida'
+              const isEmAndamento = rec.status === 'em_andamento'
+              const isNaoRealizada = rec.status === 'nao_realizada'
+              const isReagendada = rec.status === 'reagendada'
+              const alerta3Dias = isAlertaEmAndamentoExcessivo(rec)
               const lote = realLots.find((l) => rec.lote_ids && rec.lote_ids.includes(l.id))
 
               return (
                 <Card
                   key={occ.virtualId}
-                  className={`transition-all border-l-4 ${
+                  className={`transition-all border-l-4 shadow-sm ${
                     isVencida
                       ? 'border-l-destructive bg-red-500/10 border-red-500/40'
-                      : isDone
-                        ? 'border-l-emerald-600 bg-muted/40 opacity-80'
-                        : 'border-l-primary border-border'
+                      : isRealizada
+                        ? 'border-l-emerald-600 bg-muted/30 opacity-90'
+                        : isEmAndamento
+                          ? 'border-l-amber-500 bg-amber-500/5'
+                          : isNaoRealizada
+                            ? 'border-l-rose-500 bg-rose-500/5'
+                            : isReagendada
+                              ? 'border-l-blue-500 bg-blue-500/5'
+                              : 'border-l-primary border-border'
                   }`}
                 >
-                  <CardContent className="p-4 flex items-center justify-between gap-3">
-                    <div className="flex-1 pr-2">
-                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                  <CardContent className="p-4 space-y-3">
+                    {/* Cabeçalho do Cartão da Tarefa */}
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
                         <Badge
                           style={{
                             backgroundColor: tipoCores[rec.tipo],
                             color: '#fff',
                           }}
-                          className="text-[9px] px-1.5 py-0 h-4 font-normal"
+                          className="text-[10px] px-2 py-0.5 font-medium"
                         >
                           {tipoLabel(rec.tipo)}
                         </Badge>
@@ -479,7 +726,7 @@ export default function Campo() {
                         {rec.is_arrendamento && (
                           <Badge
                             variant="outline"
-                            className="text-[9px] px-1 py-0 h-4 border-amber-500 text-amber-600 bg-amber-500/10"
+                            className="text-[10px] px-1.5 py-0.5 border-amber-500 text-amber-700 bg-amber-500/10"
                           >
                             Arrendamento
                           </Badge>
@@ -488,37 +735,63 @@ export default function Campo() {
                         {isVencida && (
                           <Badge
                             variant="destructive"
-                            className="text-[9px] px-1 py-0 h-4 animate-pulse gap-1"
+                            className="text-[10px] px-1.5 py-0.5 animate-pulse gap-1 font-bold"
                           >
-                            <AlertTriangle className="h-2.5 w-2.5" /> VENCIDA
+                            <AlertTriangle className="h-3 w-3" /> VENCIDA
                           </Badge>
                         )}
+
+                        {alerta3Dias && (
+                          <Badge
+                            variant="destructive"
+                            className="text-[10px] px-1.5 py-0.5 bg-amber-600 text-white gap-1"
+                          >
+                            <Clock className="h-3 w-3" /> Em andamento &gt; 3 dias
+                          </Badge>
+                        )}
+
+                        <Badge
+                          variant="secondary"
+                          className={`text-[10px] px-2 py-0.5 font-semibold ml-auto ${
+                            isRealizada
+                              ? 'bg-emerald-600 text-white'
+                              : isEmAndamento
+                                ? 'bg-amber-500 text-white'
+                                : isNaoRealizada
+                                  ? 'bg-rose-600 text-white'
+                                  : isReagendada
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-muted text-foreground'
+                          }`}
+                        >
+                          {getStatusLabel(rec.status)}
+                        </Badge>
                       </div>
 
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-start justify-between gap-2">
                         <span
-                          className={`font-semibold text-sm cursor-pointer hover:underline ${
-                            isDone ? 'text-muted-foreground line-through' : ''
-                          } ${isVencida ? 'text-destructive font-bold' : ''}`}
+                          className={`font-bold text-base cursor-pointer hover:underline leading-snug ${
+                            isRealizada ? 'text-muted-foreground line-through' : 'text-foreground'
+                          } ${isVencida ? 'text-destructive font-black' : ''}`}
                           onClick={() => handleOpenTaskOperation(rec)}
                         >
                           {rec.titulo}
                         </span>
-                        {isDone && <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />}
                       </div>
 
-                      <div className="text-xs text-muted-foreground flex flex-wrap gap-x-2 gap-y-1">
+                      {/* Informações de Local / Insumos / Lotes */}
+                      <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-1 mt-1.5">
                         {lote ? (
-                          <Badge variant="secondary" className="text-[10px] font-mono">
+                          <Badge variant="outline" className="text-[11px] font-mono">
                             {lote.name}
                           </Badge>
                         ) : rec.setor ? (
-                          <span className="text-[11px] font-medium">{rec.setor}</span>
+                          <span className="text-[11px] font-medium">📍 {rec.setor}</span>
                         ) : null}
 
                         {rec.insumos && rec.insumos.length > 0 && (
-                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                            <Package className="h-3 w-3" />
+                          <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1">
+                            <Package className="h-3.5 w-3.5" />
                             {rec.insumos
                               .map((i) => `${i.quantidade} ${i.unidade || ''} ${i.item}`)
                               .join(', ')}
@@ -526,27 +799,84 @@ export default function Campo() {
                         )}
                       </div>
 
-                      {lote && !isDone && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-6 text-[10px] px-1.5 mt-2 text-primary hover:bg-primary/10 -ml-1.5"
-                          onClick={() => handleOpenTaskOperation(rec)}
-                        >
-                          Abrir Lote ({lote.name}) no Manejo →
-                        </Button>
+                      {/* Informações de progresso ou motivo registrado */}
+                      {isEmAndamento && rec.progresso_observacoes && (
+                        <div className="mt-2 text-xs bg-amber-500/15 border border-amber-500/30 p-2 rounded-lg text-amber-900 dark:text-amber-200">
+                          <strong>Progresso salvo:</strong> {rec.progresso_observacoes}
+                        </div>
+                      )}
+
+                      {isNaoRealizada && rec.motivo_nao_realizada && (
+                        <div className="mt-2 text-xs bg-rose-500/10 border border-rose-500/30 p-2 rounded-lg text-rose-900 dark:text-rose-200">
+                          <strong>Justificativa:</strong> {getMotivoLabel(rec.motivo_nao_realizada)}
+                          {rec.detalhes_motivo && ` - ${rec.detalhes_motivo}`}
+                        </div>
                       )}
                     </div>
 
-                    <div className="flex flex-col items-center gap-1 shrink-0">
-                      <Switch
-                        checked={isDone}
-                        onCheckedChange={() => handleToggleAtividadeReal(rec, isDone)}
-                        className="data-[state=checked]:bg-emerald-500"
-                      />
-                      <span className="text-[9px] text-muted-foreground font-medium uppercase">
-                        {isDone ? 'Concluído' : 'Pendente'}
-                      </span>
+                    {/* BOTÕES GRANDES DE ESTADO (ÁREA DE TOQUE MÍNIMA 48PX) */}
+                    <div className="pt-2 border-t border-border/60">
+                      <div className="grid grid-cols-3 gap-2">
+                        {/* Botão 1: Realizado */}
+                        <Button
+                          type="button"
+                          variant={isRealizada ? 'default' : 'outline'}
+                          className={`min-h-[48px] h-12 text-xs font-bold transition-all flex flex-col justify-center items-center gap-1 active:scale-[0.98] ${
+                            isRealizada
+                              ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'
+                              : 'hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-500'
+                          }`}
+                          onClick={() => handleMarcarRealizado(rec)}
+                        >
+                          <CheckCircle2 className="h-4 w-4 shrink-0" />
+                          <span>✅ Realizado</span>
+                        </Button>
+
+                        {/* Botão 2: Em Andamento */}
+                        <Button
+                          type="button"
+                          variant={isEmAndamento ? 'default' : 'outline'}
+                          className={`min-h-[48px] h-12 text-xs font-bold transition-all flex flex-col justify-center items-center gap-1 active:scale-[0.98] ${
+                            isEmAndamento
+                              ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-sm'
+                              : 'hover:bg-amber-50 hover:text-amber-700 hover:border-amber-500'
+                          }`}
+                          onClick={() => handleAbrirEmAndamento(rec)}
+                        >
+                          <Hourglass className="h-4 w-4 shrink-0" />
+                          <span>⏳ Andamento</span>
+                        </Button>
+
+                        {/* Botão 3: Não Realizado */}
+                        <Button
+                          type="button"
+                          variant={isNaoRealizada ? 'default' : 'outline'}
+                          className={`min-h-[48px] h-12 text-xs font-bold transition-all flex flex-col justify-center items-center gap-1 active:scale-[0.98] ${
+                            isNaoRealizada
+                              ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm'
+                              : 'hover:bg-rose-50 hover:text-rose-700 hover:border-rose-500'
+                          }`}
+                          onClick={() => handleAbrirNaoRealizada(rec)}
+                        >
+                          <XCircle className="h-4 w-4 shrink-0" />
+                          <span>❌ Não Feito</span>
+                        </Button>
+                      </div>
+
+                      {/* Reabertura / Reagendamento com 1 Toque */}
+                      {isNaoRealizada && (
+                        <div className="mt-2.5 pt-2 border-t border-dashed flex justify-end">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            size="sm"
+                            className="h-10 text-xs font-semibold gap-1.5 w-full bg-blue-600 text-white hover:bg-blue-700"
+                            onClick={() => handleAbrirReagendar(rec)}
+                          >
+                            <RotateCw className="h-3.5 w-3.5" /> Reagendar com 1 Toque (+1 Dia Útil)
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -556,7 +886,7 @@ export default function Campo() {
         </div>
       </div>
 
-      <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-1">
+      <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-2 px-1">
         Lotes & Manejo Livre
       </h3>
 
@@ -622,6 +952,7 @@ export default function Campo() {
         ))}
       </div>
 
+      {/* Gaveta de Operação de Manejo / Balança */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent className="max-h-[95vh]">
           <DrawerHeader className="text-left pb-2">
@@ -849,6 +1180,28 @@ export default function Campo() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+
+      {/* Modais de Controle de Status */}
+      <ModalJustificativaNaoRealizada
+        open={modalNaoRealizadaOpen}
+        onOpenChange={setModalNaoRealizadaOpen}
+        atividade={selectedAtividadeAction}
+        onConfirm={handleConfirmarNaoRealizada}
+      />
+
+      <ModalEmAndamento
+        open={modalEmAndamentoOpen}
+        onOpenChange={setModalEmAndamentoOpen}
+        atividade={selectedAtividadeAction}
+        onConfirm={handleConfirmarEmAndamento}
+      />
+
+      <ModalReagendarAtividade
+        open={modalReagendarOpen}
+        onOpenChange={setModalReagendarOpen}
+        atividade={selectedAtividadeAction}
+        onConfirm={handleConfirmarReagendar}
+      />
     </div>
   )
 }

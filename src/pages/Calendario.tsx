@@ -257,9 +257,11 @@ export default function Calendario() {
       if (aVencida && !bVencida) return -1
       if (!aVencida && bVencida) return 1
 
-      // Concluídas vão para o final
-      if (a.record.status === 'concluida' && b.record.status !== 'concluida') return 1
-      if (a.record.status !== 'concluida' && b.record.status === 'concluida') return -1
+      // Concluídas/Realizadas vão para o final
+      const isAFin = a.record.status === 'realizada' || a.record.status === 'concluida'
+      const isBFin = b.record.status === 'realizada' || b.record.status === 'concluida'
+      if (isAFin && !isBFin) return 1
+      if (!isAFin && isBFin) return -1
 
       return a.occurrenceDate.getTime() - b.occurrenceDate.getTime()
     })
@@ -578,9 +580,13 @@ export default function Calendario() {
                             className={`p-1 rounded text-[11px] truncate flex items-center justify-between border cursor-pointer hover:shadow-xs transition-transform active:scale-[0.98] ${
                               isVenc
                                 ? 'bg-red-500/10 border-red-500/40 text-red-600 font-semibold'
-                                : rec.status === 'concluida'
+                                : rec.status === 'realizada' || rec.status === 'concluida'
                                   ? 'bg-muted/70 line-through text-muted-foreground border-transparent'
-                                  : 'bg-muted/40 border-border/60 hover:bg-muted/80'
+                                  : rec.status === 'em_andamento'
+                                    ? 'bg-amber-500/10 border-amber-500/40 text-amber-700 font-semibold'
+                                    : rec.status === 'nao_realizada'
+                                      ? 'bg-rose-500/10 border-rose-500/40 text-rose-700 font-semibold'
+                                      : 'bg-muted/40 border-border/60 hover:bg-muted/80'
                             }`}
                           >
                             <span className="truncate flex items-center gap-1">
@@ -669,9 +675,13 @@ export default function Calendario() {
                           className={`p-2.5 rounded-lg border-l-4 border text-xs shadow-xs cursor-pointer hover:bg-muted/40 transition-colors ${
                             isVenc
                               ? 'bg-red-500/10 border-red-500/30'
-                              : rec.status === 'concluida'
+                              : rec.status === 'realizada' || rec.status === 'concluida'
                                 ? 'bg-muted/40 opacity-75'
-                                : 'bg-background'
+                                : rec.status === 'em_andamento'
+                                  ? 'bg-amber-500/5 border-amber-500/40'
+                                  : rec.status === 'nao_realizada'
+                                    ? 'bg-rose-500/5 border-rose-500/40'
+                                    : 'bg-background'
                           }`}
                         >
                           <div className="flex items-start justify-between gap-1 mb-1">
@@ -761,7 +771,10 @@ export default function Calendario() {
               dayList.map((occ) => {
                 const rec = occ.record
                 const isVenc = isAtividadeVencida(rec)
-                const isConcl = rec.status === 'concluida'
+                const isRealiz = rec.status === 'realizada' || rec.status === 'concluida'
+                const isAndam = rec.status === 'em_andamento'
+                const isNaoReal = rec.status === 'nao_realizada'
+                const isReag = rec.status === 'reagendada'
 
                 return (
                   <Card
@@ -770,9 +783,15 @@ export default function Calendario() {
                     className={`cursor-pointer transition-all hover:shadow-md border-l-4 ${
                       isVenc
                         ? 'border-l-destructive bg-red-500/10 border-red-500/40'
-                        : isConcl
+                        : isRealiz
                           ? 'border-l-emerald-600 bg-muted/30 opacity-80'
-                          : 'border-l-primary'
+                          : isAndam
+                            ? 'border-l-amber-500 bg-amber-500/5'
+                            : isNaoReal
+                              ? 'border-l-rose-500 bg-rose-500/5'
+                              : isReag
+                                ? 'border-l-blue-500 bg-blue-500/5'
+                                : 'border-l-primary'
                     }`}
                   >
                     <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -800,9 +819,24 @@ export default function Calendario() {
                             </Badge>
                           )}
 
-                          {isConcl && (
+                          {isRealiz && (
                             <Badge className="bg-emerald-600 text-white gap-1 text-xs">
-                              <CheckCircle2 className="h-3 w-3" /> Concluída
+                              <CheckCircle2 className="h-3 w-3" /> Realizada
+                            </Badge>
+                          )}
+                          {isAndam && (
+                            <Badge className="bg-amber-500 text-white gap-1 text-xs">
+                              ⏳ Em Andamento
+                            </Badge>
+                          )}
+                          {isNaoReal && (
+                            <Badge className="bg-rose-600 text-white gap-1 text-xs">
+                              ❌ Não Realizada
+                            </Badge>
+                          )}
+                          {isReag && (
+                            <Badge className="bg-blue-600 text-white gap-1 text-xs">
+                              🔄 Reagendada
                             </Badge>
                           )}
                         </div>
