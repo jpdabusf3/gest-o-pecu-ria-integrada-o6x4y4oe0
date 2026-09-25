@@ -47,6 +47,12 @@ import {
   ImobilizadoRecord,
 } from '@/services/fechamento'
 import { getCotacaoB3BoiGordoVigente, type CotacaoB3BoiGordoVigente } from '@/services/market'
+import {
+  analisarTrajetoriaSafra,
+  reconhecerAlertaTrajetoria,
+  type AlertaTrajetoriaItem,
+} from '@/services/alertaTrajetoria'
+import { BannerAlertaTrajetoria } from '@/components/gestor/BannerAlertaTrajetoria'
 import { formatCurrency, formatNumber, cn } from '@/lib/utils'
 
 interface CardProjecaoSafraProps {
@@ -80,6 +86,7 @@ export function CardProjecaoSafra({
   const [cotacaoB3, setCotacaoB3] = useState<CotacaoB3BoiGordoVigente | null>(null)
   const [modalMetasOpen, setModalMetasOpen] = useState(false)
   const [metasSafraMap, setMetasSafraMap] = useState<MetasSafraMap>({})
+  const [alertasTrajetoria, setAlertasTrajetoria] = useState<AlertaTrajetoriaItem[]>([])
 
   // Cotação B3 vigente do Boi Gordo (serviço centralizado, mesma fonte usada no Hedge)
   useEffect(() => {
@@ -114,6 +121,44 @@ export function CardProjecaoSafra({
   useEffect(() => {
     carregarMetasSafra()
   }, [])
+
+  // Avaliação da trajetória da safra vs safra anterior arquivada (idempotente)
+  const carregarAlertasTrajetoria = () => {
+    if (!projecao.anoSafra) return
+    const partes = projecao.anoSafra.split('/')
+    const anoAtualNum = partes.length === 2 ? parseInt(partes[0], 10) : new Date().getFullYear()
+    const safraAnterior = `${anoAtualNum - 1}/${anoAtualNum}`
+
+    analisarTrajetoriaSafra({
+      safraAtual: projecao.anoSafra,
+      safraAnterior,
+      produtividadeProjetada: projecao.projetado.arrobasPorHaAno,
+      custoArrobaProjetado: projecao.projetado.custoArrobaProduzida,
+      benchmarks,
+      sincronizarNotificacao: true,
+    })
+      .then((res) => setAlertasTrajetoria(res))
+      .catch((err) => console.warn('Erro ao calcular alerta de trajetória:', err))
+  }
+
+  useEffect(() => {
+    carregarAlertasTrajetoria()
+  }, [projecao.anoSafra, projecao.projetado.arrobasPorHaAno, projecao.projetado.custoArrobaProduzida, benchmarks])
+
+  const handleReconhecerTrajetoria = async (alerta: AlertaTrajetoriaItem) => {
+    const ok = await reconhecerAlertaTrajetoria({
+      safraAtual: alerta.safraAtual,
+      safraAnterior: alerta.safraAnterior,
+      tipoIndicador: alerta.indicador,
+      faixaAnterior: alerta.faixaAnterior,
+      faixaAtual: alerta.faixaAtual,
+    })
+    if (ok) {
+      setAlertasTrajetoria((prev) =>
+        prev.map((a) => (a.id === alerta.id ? { ...a, reconhecido: true } : a)),
+      )
+    }
+  }
 
   // Executa o cálculo da projeção usando o acumulado real + cotação B3 vigente
   const projecao: ProjecaoSafraResult = useMemo(() => {
@@ -304,6 +349,14 @@ export function CardProjecaoSafra({
       </CardHeader>
 
       <CardContent className="p-4 sm:p-5 space-y-5">
+        {/* Banner de Alerta de Trajetória da Safra (Queda de Faixa vs. Safra Anterior) */}
+        {alertasTrajetoria.length > 0 && (
+          <BannerAlertaTrajetoria
+            alertas={alertasTrajetoria}
+            onReconhecer={handleReconhecerTrajetoria}
+          />
+        )}
+
         {/* Bloco com os Dois Indicadores Centrais: @/ha/ano e Custo/@ */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Indicador 1: @/ha/ano Projetado vs Faixas Camada 2 (6,6 / 10,0 / 11,0) */}

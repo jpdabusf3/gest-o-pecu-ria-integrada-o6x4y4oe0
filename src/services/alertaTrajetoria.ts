@@ -11,7 +11,8 @@ import {
   ConfigBenchmarkRecord,
   StatusCamada2,
   getConfigBenchmarks,
-  classificarMetricaCamada2,
+  classificarCamada2,
+  classificarIndicadorBenchmark,
 } from './configBenchmark'
 import { getFechamentosArquivados, FechamentoArquivadoRecord } from './safrasArquivadas'
 import { criarNotificacaoSistema } from './notificacoesSistema'
@@ -170,7 +171,9 @@ export async function analisarTrajetoriaSafra(
   const fechamentos = params.fechamentosArquivados || (await getFechamentosArquivados())
   const reconhecimentos = params.reconhecimentos || (await getReconhecimentosTrajetoria(safraAtual))
 
-  const fechamentoAnterior = fechamentos.find((f) => f.safra === safraAnterior)
+  const fechamentoAnterior = fechamentos.find(
+    (f) => f.ano_safra === safraAnterior || (f as any).safra === safraAnterior,
+  )
   if (!fechamentoAnterior) {
     // Sem safra anterior arquivada, não há como comparar trajetória
     return []
@@ -180,13 +183,19 @@ export async function analisarTrajetoriaSafra(
 
   // 1) Análise de Produtividade (@/ha/ano)
   const bmProd = benchmarks.find(
-    (b) => b.indicador === 'produtividade_ha_ano' || b.codigo === 'produtividade_ha_ano',
+    (b) =>
+      b.codigo === 'prod_arroba_ha_ano_pasto' ||
+      b.indicador === 'produtividade_ha_ano' ||
+      b.codigo === 'produtividade_ha_ano',
   )
-  const valorProdAnterior = fechamentoAnterior.produtividade_ha_ano || 0
+  const valorProdAnterior =
+    fechamentoAnterior.arrobas_ha_ano || (fechamentoAnterior as any).produtividade_ha_ano || 0
 
   if (bmProd && valorProdAnterior > 0 && produtividadeProjetada > 0) {
-    const faixaAnterior = classificarMetricaCamada2(valorProdAnterior, bmProd)
-    const faixaAtual = classificarMetricaCamada2(produtividadeProjetada, bmProd)
+    const resAnt = classificarCamada2(valorProdAnterior, bmProd)
+    const resAtu = classificarCamada2(produtividadeProjetada, bmProd)
+    const faixaAnterior = resAnt.status
+    const faixaAtual = resAtu.status
 
     const pesoAnterior = ORDEM_FAIXAS_PROD[faixaAnterior] || 0
     const pesoAtual = ORDEM_FAIXAS_PROD[faixaAtual] || 0
@@ -229,13 +238,27 @@ export async function analisarTrajetoriaSafra(
 
   // 2) Análise de Custo por Arroba (R$/@) — menor é melhor
   const bmCusto = benchmarks.find(
-    (b) => b.indicador === 'custo_operacional_arroba' || b.codigo === 'custo_operacional_arroba',
+    (b) =>
+      b.codigo === 'custo_arroba_produzida_engorda' ||
+      b.indicador === 'custo_operacional_arroba' ||
+      b.codigo === 'custo_operacional_arroba',
   )
-  const valorCustoAnterior = fechamentoAnterior.custo_arroba_total || 0
+  const valorCustoAnterior =
+    fechamentoAnterior.custo_arroba_produzida || (fechamentoAnterior as any).custo_arroba_total || 0
 
   if (bmCusto && valorCustoAnterior > 0 && custoArrobaProjetado && custoArrobaProjetado > 0) {
-    const faixaAnteriorCusto = classificarMetricaCamada2(valorCustoAnterior, bmCusto)
-    const faixaAtualCusto = classificarMetricaCamada2(custoArrobaProjetado, bmCusto)
+    const resAntCusto = classificarIndicadorBenchmark(
+      'custo_arroba_produzida_engorda',
+      valorCustoAnterior,
+      bmCusto,
+    )
+    const resAtuCusto = classificarIndicadorBenchmark(
+      'custo_arroba_produzida_engorda',
+      custoArrobaProjetado,
+      bmCusto,
+    )
+    const faixaAnteriorCusto = resAntCusto.status
+    const faixaAtualCusto = resAtuCusto.status
 
     const pesoAnteriorCusto = ORDEM_FAIXAS_PROD[faixaAnteriorCusto] || 0
     const pesoAtualCusto = ORDEM_FAIXAS_PROD[faixaAtualCusto] || 0
@@ -295,9 +318,10 @@ export async function analisarTrajetoriaSafra(
           await criarNotificacaoSistema({
             titulo: `⚠️ Trajetória em queda: ${alerta.labelIndicador} (${alerta.safraAtual})`,
             mensagem: alerta.mensagem,
-            tipo: 'projecao_safra',
-            severidade: alerta.faixaAtual === 'vermelho' ? 'critico' : 'alerta',
+            tipo: 'meta',
+            severidade: alerta.faixaAtual === 'vermelho' ? 'critica' : 'alta',
             link_destino: '/fechamento',
+            lido: false,
           })
         }
       }

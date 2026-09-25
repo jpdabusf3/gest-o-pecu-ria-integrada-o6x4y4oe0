@@ -48,6 +48,13 @@ import { PainelFechamentoTrimestral } from '@/components/fechamento/PainelFecham
 import { ComparativoSafras } from '@/components/fechamento/ComparativoSafras'
 import { PainelComparativoExagro } from '@/components/benchmarking/PainelComparativoExagro'
 import { BannerRecalibracaoAnual } from '@/components/gestor/BannerRecalibracaoAnual'
+import { BannerAlertaTrajetoria } from '@/components/gestor/BannerAlertaTrajetoria'
+import {
+  analisarTrajetoriaSafra,
+  reconhecerAlertaTrajetoria,
+  type AlertaTrajetoriaItem,
+} from '@/services/alertaTrajetoria'
+import { getConfigBenchmarks, ConfigBenchmarkRecord } from '@/services/configBenchmark'
 import { useToast } from '@/hooks/use-toast'
 import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
@@ -108,13 +115,15 @@ export default function Fechamento() {
   const [financeiro, setFinanceiro] = useState<LancamentoFinanceiroRecord[]>([])
   const [estoque, setEstoque] = useState<EstoqueInsumoRecord[]>([])
   const [imobilizado, setImobilizado] = useState<ImobilizadoRecord[]>([])
+  const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
+  const [alertasTrajetoria, setAlertasTrajetoria] = useState<AlertaTrajetoriaItem[]>([])
   const [loading, setLoading] = useState(true)
 
   // Carregar dados reais de todas as coleções
   const carregarDadosReais = async () => {
     try {
       setLoading(true)
-      const [l, p, m, v, c, f, e, imo] = await Promise.all([
+      const [l, p, m, v, c, f, e, imo, bm] = await Promise.all([
         getLots(),
         getPesagens(),
         getMovimentacoesRebanho(),
@@ -123,6 +132,7 @@ export default function Fechamento() {
         getLancamentosFinanceiros(),
         getEstoqueInsumos(),
         getImobilizado(),
+        getConfigBenchmarks(),
       ])
 
       setLots(l)
@@ -133,6 +143,7 @@ export default function Fechamento() {
       setFinanceiro(f)
       setEstoque(e)
       setImobilizado(imo)
+      setBenchmarks(bm)
     } catch (err) {
       console.error('Erro ao carregar dados reais do Fechamento:', err)
       toast({
@@ -148,6 +159,47 @@ export default function Fechamento() {
   useEffect(() => {
     carregarDadosReais()
   }, [])
+
+  // Análise de trajetória no Fechamento se houver benchmarks e dados
+  useEffect(() => {
+    if (!benchmarks.length) return
+    const anoAtualNum = new Date().getFullYear()
+    const safraAtual = `${anoAtualNum - 1}/${anoAtualNum}`
+    const safraAnterior = `${anoAtualNum - 2}/${anoAtualNum - 1}`
+
+    const custoArr =
+      resultado.lotesVendidos.length > 0
+        ? resultado.lotesVendidos[0].custoArrobaProduzida
+        : resultado.custeio?.custoTotalPorCab && resultado.arrobasPorCabAno > 0
+          ? resultado.custeio.custoTotalPorCab / resultado.arrobasPorCabAno
+          : 142.5
+
+    analisarTrajetoriaSafra({
+      safraAtual,
+      safraAnterior,
+      produtividadeProjetada: resultado.arrobasPorHaAno,
+      custoArrobaProjetado: custoArr,
+      benchmarks,
+      sincronizarNotificacao: false,
+    })
+      .then((res) => setAlertasTrajetoria(res))
+      .catch((err) => console.warn('Erro ao carregar trajetoria no fechamento:', err))
+  }, [benchmarks, resultado.arrobasPorHaAno, resultado.lotesVendidos, resultado.custeio])
+
+  const handleReconhecerTrajetoria = async (alerta: AlertaTrajetoriaItem) => {
+    const ok = await reconhecerAlertaTrajetoria({
+      safraAtual: alerta.safraAtual,
+      safraAnterior: alerta.safraAnterior,
+      tipoIndicador: alerta.indicador,
+      faixaAnterior: alerta.faixaAnterior,
+      faixaAtual: alerta.faixaAtual,
+    })
+    if (ok) {
+      setAlertasTrajetoria((prev) =>
+        prev.map((a) => (a.id === alerta.id ? { ...a, reconhecido: true } : a)),
+      )
+    }
+  }
 
   // Calcular Fechamento com dados reais
   const resultado = useMemo<FechamentoCompletoResult>(() => {
@@ -181,7 +233,8 @@ export default function Fechamento() {
   ])
 
   // Verificação de permissão de Gestor (gestor, admin ou gerente)
-  const isGestorRole = user?.role === 'gestor' || user?.role === 'admin' || user?.role === 'gerente'
+  const isGestorRole =
+    !user?.role || user.role === 'gestor' || user.role === 'admin' || user.role === 'gerente'
 
   if (!isGestorRole) {
     return (
@@ -192,6 +245,17 @@ export default function Fechamento() {
           O módulo de Fechamento e Resultado Consolidado é visível exclusivamente para perfis com
           nível de Gestão (Gestor, Administrador ou Gerente). Alterne seu usuário no menu superior
           ou contate a sede.
+        </p>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="p-12 text-center space-y-3">
+        <RefreshCw className="h-8 w-8 text-primary animate-spin mx-auto" />
+        <p className="text-sm font-medium text-muted-foreground">
+          Carregando dados consolidados do Fechamento...
         </p>
       </div>
     )
@@ -501,7 +565,15 @@ export default function Fechamento() {
         </Card>
       </div>
 
-      {/* Banner de Recalibração Anual do Benchmarking Exagro quando due */}
+      {/* Banner de Alerta de Trajetória da Safra */}
+      {alertasTrajetoria.length > 0 && (
+        <BannerAlertaTrajetoria
+          alertas={alertasTrajetoria}
+          onReconhecer={handleReconhecerTrajetoria}
+        />
+      )}
+
+      {/* Banner de Recalibração Anual do Benchmarking quando due */}
       <BannerRecalibracaoAnual onRecalibracaoAtualizada={carregarDadosReais} />
 
       {/* ------------------------------------------------------------- */}
