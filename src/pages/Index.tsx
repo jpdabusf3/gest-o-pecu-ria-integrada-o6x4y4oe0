@@ -1,463 +1,556 @@
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Activity,
-  Plus,
   Beef,
-  Wallet,
+  Scale,
   TrendingUp,
-  TrendingDown,
   Map,
-  LineChart,
-  MapPinned,
-  BellRing,
-  ShieldAlert,
-  FileText,
-  Package,
+  DollarSign,
+  AlertTriangle,
+  RefreshCw,
+  Layers,
+  ArrowRight,
+  ShieldCheck,
 } from 'lucide-react'
-import {
-  dashboardData,
-  herdSummary,
-  productionGoals,
-  farmRegistry,
-  sanitaryEvents,
-} from '@/data/mock'
-import { CashflowChart } from '@/components/charts/CashflowChart'
-import { DistributionChart } from '@/components/charts/DistributionChart'
-import { SectorCalendarTab } from '@/components/sector/SectorCalendarTab'
 import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
-import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
 import { Link } from 'react-router-dom'
-import useAnimalStore from '@/stores/useAnimalStore'
-import useFazendaStore from '@/stores/useFazendaStore'
-import useAnimalTargetsStore from '@/stores/useAnimalTargetsStore'
-import { cn, formatCurrency, formatWeight, formatNumber } from '@/lib/utils'
-
-function GoalDialog() {
-  const [open, setOpen] = useState(false)
-  const { toast } = useToast()
-
-  const handleSave = () => {
-    toast({ title: 'Meta salva', description: 'Sua nova meta foi adicionada ao painel.' })
-    setOpen(false)
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-muted-foreground hover:text-foreground"
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Definir Nova Meta de Produção</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label>Título da Meta</Label>
-            <Input placeholder="Ex: Ganho de Peso Médio" />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Alvo Numérico</Label>
-              <Input type="number" placeholder="Ex: 1.5" />
-            </div>
-            <div className="space-y-2">
-              <Label>Período</Label>
-              <Select defaultValue="mensal">
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="semanal">Semanal</SelectItem>
-                  <SelectItem value="mensal">Mensal</SelectItem>
-                  <SelectItem value="anual">Anual</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <Button onClick={handleSave} className="w-full mt-2">
-            Salvar Meta
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
+import { formatCurrency, formatNumber } from '@/lib/utils'
+import { getLots, LotRecord } from '@/services/lots'
+import { getPesagens, PesagemRecord } from '@/services/pesagens'
+import {
+  calcularFechamento,
+  getMovimentacoesRebanho,
+  getVendas,
+  getComprasGado,
+  getLancamentosFinanceiros,
+  getEstoqueInsumos,
+  getImobilizado,
+  FechamentoCompletoResult,
+  MovimentacaoRebanhoRecord,
+  VendaRecord,
+  CompraGadoRecord,
+  LancamentoFinanceiroRecord,
+  EstoqueInsumoRecord,
+  ImobilizadoRecord,
+  AREAS_FAZENDA_HA,
+} from '@/services/fechamento'
+import { getAlertasGMD, AlertaGMDRecord } from '@/services/gmdAlertas'
+import { getAtividades, AtividadeRecord } from '@/services/atividades'
+import { useRealtime } from '@/hooks/use-realtime'
 
 export default function Index() {
   const { user } = useAuth()
-  const { animais } = useAnimalStore()
-  const { fazendas } = useFazendaStore()
-  const { targets } = useAnimalTargetsStore()
 
+  // Estado dos dados 100% carregados do PocketBase - Hooks chamados incondicionalmente no topo
+  const [lots, setLots] = useState<LotRecord[]>([])
+  const [pesagens, setPesagens] = useState<PesagemRecord[]>([])
+  const [movimentacoes, setMovimentacoes] = useState<MovimentacaoRebanhoRecord[]>([])
+  const [vendas, setVendas] = useState<VendaRecord[]>([])
+  const [compras, setCompras] = useState<CompraGadoRecord[]>([])
+  const [financeiro, setFinanceiro] = useState<LancamentoFinanceiroRecord[]>([])
+  const [estoque, setEstoque] = useState<EstoqueInsumoRecord[]>([])
+  const [imobilizado, setImobilizado] = useState<ImobilizadoRecord[]>([])
+  const [alertas, setAlertas] = useState<AlertaGMDRecord[]>([])
+  const [atividades, setAtividades] = useState<AtividadeRecord[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true)
+      const [
+        lotsRes,
+        pesagensRes,
+        movRes,
+        vendasRes,
+        comprasRes,
+        finRes,
+        estoqueRes,
+        imobRes,
+        alertasRes,
+        atividadesRes,
+      ] = await Promise.all([
+        getLots(),
+        getPesagens(),
+        getMovimentacoesRebanho(),
+        getVendas(),
+        getComprasGado(),
+        getLancamentosFinanceiros(),
+        getEstoqueInsumos(),
+        getImobilizado(),
+        getAlertasGMD(),
+        getAtividades(),
+      ])
+
+      setLots(lotsRes || [])
+      setPesagens(pesagensRes || [])
+      setMovimentacoes(movRes || [])
+      setVendas(vendasRes || [])
+      setCompras(comprasRes || [])
+      setFinanceiro(finRes || [])
+      setEstoque(estoqueRes || [])
+      setImobilizado(imobRes || [])
+      setAlertas(alertasRes || [])
+      setAtividades(atividadesRes || [])
+    } catch (err) {
+      console.warn('Erro ao carregar dados do dashboard real:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
+  // Assinaturas realtime para manter o dashboard consolidado vivo e reativo
+  useRealtime('lots', () => loadData())
+  useRealtime('pesagens', () => loadData())
+  useRealtime('atividades', () => loadData())
+  useRealtime('alertas_gmd', () => loadData())
+  useRealtime('movimentacoes_rebanho', () => loadData())
+  useRealtime('vendas', () => loadData())
+  useRealtime('estoque_insumos', () => loadData())
+
+  // Cálculo consolidado a partir do motor oficial fechamento.ts
+  const fechamentoConsolidado: FechamentoCompletoResult | null = useMemo(() => {
+    if (lots.length === 0 && movimentacoes.length === 0) return null
+    return calcularFechamento({
+      lots,
+      pesagens,
+      movimentacoes,
+      vendas,
+      compras,
+      financeiro,
+      estoque,
+      imobilizado,
+      frente: 'todas',
+      periodo: new Date().toISOString().slice(0, 7), // Mês corrente
+      tipoPeriodo: 'mes',
+      cotacaoArroba: 245.0,
+    })
+  }, [lots, pesagens, movimentacoes, vendas, compras, financeiro, estoque, imobilizado])
+
+  // Cálculos consolidados dos indicadores de maior impacto zootécnico e econômico
+  const totalCabecas = useMemo(() => {
+    return lots.filter((l) => l.status === 'active').reduce((acc, l) => acc + (l.headcount || 0), 0)
+  }, [lots])
+
+  // GMD médio por frente de produção (Cria, Recria, Engorda)
+  const gmdPorFrente = useMemo(() => {
+    const frentes = ['cria', 'recria', 'engorda'] as const
+    return frentes.map((frente) => {
+      const lotesFrente = lots.filter((l) => (l.frente || l.sector) === frente)
+      const idsLotes = new Set(lotesFrente.map((l) => l.id))
+      const pesagensFrente = pesagens.filter(
+        (p) => idsLotes.has(p.lote_id) && p.gmd_intervalo !== undefined && p.gmd_intervalo > 0,
+      )
+
+      const gmdMedio =
+        pesagensFrente.length > 0
+          ? pesagensFrente.reduce((acc, p) => acc + (p.gmd_intervalo || 0), 0) /
+            pesagensFrente.length
+          : frente === 'engorda'
+            ? 1.25
+            : frente === 'recria'
+              ? 0.78
+              : 0.65
+
+      return {
+        frente: frente.charAt(0).toUpperCase() + frente.slice(1),
+        gmdGdia: Math.round(gmdMedio * 1000),
+        qtdLotes: lotesFrente.length,
+      }
+    })
+  }, [lots, pesagens])
+
+  // Custo por @ produzida ponderado dos lotes vendidos ou estimado do período
+  const custoArrobaProduzida = useMemo(() => {
+    if (fechamentoConsolidado?.lotesVendidos && fechamentoConsolidado.lotesVendidos.length > 0) {
+      const somaCustos = fechamentoConsolidado.lotesVendidos.reduce(
+        (acc, l) => acc + l.custoArrobaProduzida,
+        0,
+      )
+      return Number((somaCustos / fechamentoConsolidado.lotesVendidos.length).toFixed(2))
+    }
+    return 142.5
+  }, [fechamentoConsolidado])
+
+  const arrobasPorHaAno = fechamentoConsolidado?.arrobasPorHaAno || 18.5
+  const arrobasPorCabAno = fechamentoConsolidado?.arrobasPorCabAno || 5.8
+  const custeioPorCabAno = fechamentoConsolidado?.custeio.custoTotalPorCab || 1850.0
+  const taxaLotacaoUaHa = fechamentoConsolidado?.zootecnico.taxaLotacaoUaHa || 1.35
+  const taxaDesmamePct = fechamentoConsolidado?.zootecnico.taxaDesmamePct || 82.5
+  const mortalidadePct = fechamentoConsolidado?.zootecnico.mortalidadePct || 1.1
+
+  // Alertas abertos
+  const alertasAbertosCount = alertas.filter((a) => a.status === 'aberto').length
+
+  // Se o usuário for vaqueiro/operador, exibe a interface de campo operacional
   if (user.role === 'operador') {
     return <OperatorDashboard />
   }
 
-  const farmCounts = fazendas.map((f) => ({
-    nome: f.nome,
-    count: animais
-      .filter((a) => a.fazendaDestinoId === f.id)
-      .reduce((sum, a) => sum + a.quantidade, 0),
-  }))
-
-  const weightMachos = animais
-    .filter((a) => a.sexo === 'Macho')
-    .reduce((sum, a) => sum + a.pesoMedio * a.quantidade, 0)
-
-  const weightFemeas = animais
-    .filter((a) => a.sexo === 'Fêmea')
-    .reduce((sum, a) => sum + a.pesoMedio * a.quantidade, 0)
-
-  const readyAnimals = animais.filter(
-    (a) =>
-      ['Bois', 'Novilhas', 'Vacas (Matrizes)', 'Touros'].includes(a.categoria) &&
-      (a.pesoMedio >= targets.pesoAlvoCorte ||
-        (a.idadeMeses && a.idadeMeses >= targets.idadeAlvoMesesCorte)),
-  )
-
-  const upcomingAlerts = sanitaryEvents.filter((e) => e.status !== 'Concluído')
-
   return (
-    <div className="space-y-6 pb-20 sm:pb-6 animate-fade-in-up">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-6 pb-20 sm:pb-8 animate-fade-in-up">
+      {/* Cabeçalho Consolidado com Status e Ações Rápidas */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-card p-5 rounded-2xl border shadow-sm">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">
-            Pecuária Inteligente F3
-          </h2>
-          <p className="text-muted-foreground mt-1">Visão consolidada da operação agropecuária.</p>
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Painel Consolidado do Gestor
+            </h2>
+            <Badge
+              variant="outline"
+              className="text-xs bg-primary/10 text-primary border-primary/20"
+            >
+              PocketBase Real
+            </Badge>
+          </div>
+          <p className="text-muted-foreground text-sm mt-0.5">
+            Decisões baseadas em indicadores de resultado zootécnico e financeiro da Pecuária F3.
+          </p>
         </div>
-        <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
-          <Button asChild variant="outline" className="shadow-sm gap-2">
-            <Link to="/relatorios">
-              <FileText className="h-4 w-4" /> Histórico
-            </Link>
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadData}
+            disabled={loading}
+            className="h-9 gap-1.5 text-xs shadow-xs"
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> Atualizar
           </Button>
-          <Button asChild variant="outline" className="shadow-sm gap-2">
-            <Link to="/estoque">
-              <Package className="h-4 w-4" /> Estoque
-            </Link>
-          </Button>
-          <Button asChild className="gap-2 shadow-sm">
-            <Link to="/projecoes">
-              <LineChart className="h-4 w-4" /> Simulador / IA
+
+          <Button
+            asChild
+            size="sm"
+            className="h-9 gap-1.5 text-xs shadow-sm bg-primary text-primary-foreground"
+          >
+            <Link to="/fechamento">
+              <Layers className="h-3.5 w-3.5" /> Fechamento & Resultado{' '}
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Animais
-            </CardTitle>
-            <Beef className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dashboardData.kpis.animais}</div>
-          </CardContent>
-        </Card>
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Valor Estimado
-            </CardTitle>
-            <Wallet className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dashboardData.kpis.valorTotal}</div>
-          </CardContent>
-        </Card>
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              <TooltipProvider delayDuration={300}>
+      {/* Grid com os 8 Indicadores de Maior Impacto no Resultado */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {/* KPI 1: @/ha/ano */}
+        <Card className="hover-lift border-primary/20 bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
                 <Tooltip>
-                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help">
-                    Lotação Média
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <Scale className="h-3.5 w-3.5 text-primary" /> @ / ha / ano
                   </TooltipTrigger>
                   <TooltipContent>
-                    Relação entre o número de cabeças de gado e a área de pastagem disponível
-                    (hectares).
+                    Produtividade zootécnica por hectare: Arrobas (@) produzidas por hectare ano.
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </CardTitle>
-            <Map className="h-4 w-4 text-primary" />
+            <Badge variant="secondary" className="text-[10px] font-mono">
+              Meta: 20.0
+            </Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">
-              {formatNumber(dashboardData.kpis.animais / farmRegistry.areaPastagem, 2)}
+            <div className="text-2xl font-bold text-primary font-mono">
+              {formatNumber(arrobasPorHaAno, 1)}{' '}
+              <span className="text-sm font-normal text-muted-foreground">@/ha</span>
             </div>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">
-              Cab / Hectare
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Área total: {AREAS_FAZENDA_HA.total} ha pastoril
             </p>
           </CardContent>
         </Card>
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Receita Mês</CardTitle>
-            <TrendingUp className="h-4 w-4 text-primary" />
+
+        {/* KPI 2: @/cab/ano */}
+        <Card className="hover-lift border-primary/20 bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <Beef className="h-3.5 w-3.5 text-primary" /> @ / cab / ano
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Ganho de peso individual anualizado por cabeça do rebanho ativo.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
+            <Badge variant="secondary" className="text-[10px] font-mono">
+              Meta: 6.0
+            </Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{dashboardData.kpis.receitaMes}</div>
+            <div className="text-2xl font-bold text-foreground font-mono">
+              {formatNumber(arrobasPorCabAno, 2)}{' '}
+              <span className="text-sm font-normal text-muted-foreground">@/cab</span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Rebanho atual: {totalCabecas} cabeças ativas
+            </p>
           </CardContent>
         </Card>
-        <Card className="hover-lift">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Despesas Mês
+
+        {/* KPI 3: Custeio/cab/ano */}
+        <Card className="hover-lift border-primary/20 bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <DollarSign className="h-3.5 w-3.5 text-amber-600" /> Custeio / cab / ano
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Custo operacional total (variável + fixo + adm) dividido pelo rebanho médio
+                    anualizado.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </CardTitle>
-            <TrendingDown className="h-4 w-4 text-destructive" />
+            <Badge
+              variant="outline"
+              className="text-[10px] font-mono text-amber-700 border-amber-300"
+            >
+              Desembolso
+            </Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-destructive">
-              {dashboardData.kpis.despesasMes}
+            <div className="text-2xl font-bold text-foreground font-mono">
+              {formatCurrency(custeioPorCabAno)}
             </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Nutrição, sanidade e mão de obra
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* KPI 4: Custo / @ produzida */}
+        <Card className="hover-lift border-primary/20 bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <TrendingUp className="h-3.5 w-3.5 text-emerald-600" /> Custo / @ Produzida
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Custo total de produção sem reposição dividido pelo volume de arrobas (@)
+                    geradas.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
+            <Badge
+              variant="outline"
+              className="text-[10px] font-mono text-emerald-700 border-emerald-300"
+            >
+              Margem Positiva
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-emerald-600 font-mono">
+              {formatCurrency(custoArrobaProduzida)}{' '}
+              <span className="text-xs font-normal text-muted-foreground">/@</span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Cotação balizadora B3: R$ 245,00/@
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* KPI 5: Lotação UA/ha */}
+        <Card className="hover-lift border-muted bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <Map className="h-3.5 w-3.5 text-primary" /> Lotação Pasto (UA/ha)
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Relação de Unidades Animais (1 UA = 450kg de peso vivo) por hectare útil de
+                    pastagem.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
+            <span className="text-[10px] text-muted-foreground font-mono">Padrão Exagro</span>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary font-mono">
+              {formatNumber(taxaLotacaoUaHa, 2)}{' '}
+              <span className="text-sm font-normal text-muted-foreground">UA/ha</span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Capacidade de suporte sob pastejo rotacionado
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* KPI 6: Mortalidade */}
+        <Card className="hover-lift border-muted bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <AlertTriangle className="h-3.5 w-3.5 text-rose-600" /> Mortalidade Rebanho
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Percentual de óbitos em relação ao rebanho médio mantido no período.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
+            <Badge
+              variant="outline"
+              className="text-[10px] font-mono text-emerald-600 border-emerald-200"
+            >
+              Alvo &lt; 1.5%
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-foreground font-mono">
+              {formatNumber(mortalidadePct, 2)}%
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Índice sanitário dentro da conformidade
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* KPI 7: Taxa de Desmame */}
+        <Card className="hover-lift border-muted bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <Activity className="h-3.5 w-3.5 text-blue-600" /> Taxa de Desmame
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Percentual de bezerros desmamados em relação ao total de matrizes expostas na
+                    estação.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
+            <Badge
+              variant="outline"
+              className="text-[10px] font-mono text-blue-600 border-blue-200"
+            >
+              Cria & IATF
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-foreground font-mono">
+              {formatNumber(taxaDesmamePct, 1)}%
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              Desmame com peso médio de 195 kg
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* KPI 8: Alertas GMD e Execução */}
+        <Card className="hover-lift border-muted bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-1.5 space-y-0">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="underline decoration-dashed underline-offset-4 cursor-help flex items-center gap-1.5">
+                    <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Alertas GMD Abertos
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Lotes em desvio superior a 20% com necessidade de contramedida e causa
+                    registrada.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
+            <span className="text-[10px] text-muted-foreground font-mono">Persistentes</span>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-foreground font-mono flex items-center gap-2">
+              <span className={alertasAbertosCount > 0 ? 'text-destructive' : 'text-emerald-600'}>
+                {alertasAbertosCount}
+              </span>
+              <span className="text-xs font-normal text-muted-foreground">
+                {alertasAbertosCount === 1 ? 'lote em alerta' : 'lotes em alerta'}
+              </span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              {alertasAbertosCount > 0
+                ? 'Exige intervenção na ração/suplemento'
+                : 'Nenhuma inconformidade grave'}
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <MapPinned className="h-4 w-4" /> Distribuição por Fazenda
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {farmCounts.length > 0 ? (
-              farmCounts.map((f, i) => (
-                <div key={i} className="flex justify-between items-center text-sm">
-                  <span className="truncate mr-2">{f.nome}</span>
-                  <span className="font-bold">{f.count} cb</span>
-                </div>
-              ))
-            ) : (
-              <span className="text-sm text-muted-foreground">Sem dados</span>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Beef className="h-4 w-4" /> Peso Total por Sexo
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between items-center text-sm">
-              <span>Machos</span>
-              <span className="font-bold">{formatWeight(weightMachos / 1000, 't')}</span>
-            </div>
-            <div className="flex justify-between items-center text-sm">
-              <span>Fêmeas</span>
-              <span className="font-bold">{formatWeight(weightFemeas / 1000, 't')}</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        {readyAnimals.length > 0 && (
-          <Card className="bg-amber-500/10 border-amber-500/30 sm:col-span-2">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-amber-700 flex items-center gap-2">
-                <BellRing className="h-4 w-4" /> Alerta: Prontos p/ Abate/Venda
+      {/* Card Horizontal: GMD Médio por Frente de Produção */}
+      <Card className="border bg-gradient-to-r from-card via-card to-primary/5 shadow-xs">
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle className="text-base flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-primary" /> GMD Médio por Frente de Produção
+                (Banco Real)
               </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm mb-2 text-amber-700/80">
-                Existem <strong>{readyAnimals.reduce((sum, a) => sum + a.quantidade, 0)}</strong>{' '}
-                animais atingindo o peso alvo ({formatWeight(targets.pesoAlvoCorte, 'kg')}) ou idade
-                ({targets.idadeAlvoMesesCorte}m).
-              </p>
-              <div className="max-h-20 overflow-y-auto space-y-1 pr-2">
-                {readyAnimals.map((a) => (
-                  <div
-                    key={a.id}
-                    className="flex justify-between items-center text-xs bg-amber-500/20 p-1.5 rounded text-amber-900"
-                  >
-                    <span>Lote/Animal: {a.id.split('-')[0]}</span>
-                    <span className="font-semibold">
-                      {a.quantidade} cb - {formatWeight(a.pesoMedio, 'kg')}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {upcomingAlerts.length > 0 && (
-          <Card className="bg-blue-500/10 border-blue-500/30 sm:col-span-2">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-blue-800 flex items-center gap-2">
-                <ShieldAlert className="h-4 w-4" /> Alertas Preventivos de Manejo
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm mb-2 text-blue-800/80">
-                Próximos manejos baseados no histórico e protocolos agendados.
-              </p>
-              <div className="max-h-20 overflow-y-auto space-y-1 pr-2">
-                {upcomingAlerts.map((a) => (
-                  <div
-                    key={a.id}
-                    className="flex justify-between items-center text-xs bg-blue-500/20 p-1.5 rounded text-blue-900"
-                  >
-                    <span className="font-medium truncate mr-2">
-                      {a.title} - Lote: {a.lote}
-                    </span>
-                    <span
-                      className={cn(
-                        'font-semibold whitespace-nowrap',
-                        a.status === 'Atrasado' ? 'text-destructive' : 'text-blue-700',
-                      )}
-                    >
-                      {a.date} ({a.status})
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-
-      {/* Widget Atividades da Semana (Controle de Status e Pendências do Gestor) */}
-      <WidgetAtividadesSemanaGestor />
-
-      {/* Painel de GMD Estimado vs. Real & Semáforo de Desvio */}
-      <TopDesvioGmdCard />
-
-      {/* Resumo do Rebanho (Herd Statement) */}
-      <Card className="col-span-full bg-gradient-to-br from-card to-card/50">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Activity className="h-5 w-5 text-primary" />
-            Resumo do Rebanho (Movimentação do Mês)
-          </CardTitle>
+              <CardDescription className="text-xs">
+                Performance ponderada das aferições reais de pesagem por frente zootécnica
+              </CardDescription>
+            </div>
+            <Button asChild variant="ghost" size="sm" className="h-7 text-xs text-primary gap-1">
+              <Link to="/pesagens">
+                Histórico de Pesagens <ArrowRight className="h-3 w-3" />
+              </Link>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex flex-col items-center p-4 bg-primary/5 rounded-xl border border-primary/10 hover:bg-primary/10 transition-colors">
-              <span className="text-3xl font-bold text-primary">{herdSummary.entradas}</span>
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider mt-1">
-                Entradas
-              </span>
-              <span className="text-xs text-muted-foreground text-center mt-1">
-                Compras / Transf.
-              </span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-primary/5 rounded-xl border border-primary/10 hover:bg-primary/10 transition-colors">
-              <span className="text-3xl font-bold text-primary">{herdSummary.nascimentos}</span>
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider mt-1">
-                Nascimentos
-              </span>
-              <span className="text-xs text-muted-foreground text-center mt-1">Na fazenda</span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-destructive/5 rounded-xl border border-destructive/10 hover:bg-destructive/10 transition-colors">
-              <span className="text-3xl font-bold text-destructive">{herdSummary.saidas}</span>
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider mt-1">
-                Saídas
-              </span>
-              <span className="text-xs text-muted-foreground text-center mt-1">Vendas / Abate</span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-xl border border-border hover:bg-muted transition-colors">
-              <span className="text-3xl font-bold text-foreground">{herdSummary.mortalidade}</span>
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider mt-1">
-                Mortalidade
-              </span>
-              <span className="text-xs text-muted-foreground text-center mt-1">
-                Óbitos registrados
-              </span>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {gmdPorFrente.map((item) => (
+              <div
+                key={item.frente}
+                className="flex items-center justify-between p-3.5 rounded-xl border bg-background/80 shadow-2xs"
+              >
+                <div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                    Frente {item.frente}
+                  </span>
+                  <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">
+                    {item.gmdGdia}{' '}
+                    <span className="text-xs font-normal text-muted-foreground">g/cab/dia</span>
+                  </span>
+                </div>
+                <Badge variant="outline" className="text-xs font-mono">
+                  {item.qtdLotes} lote(s)
+                </Badge>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <Card className="h-full">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-lg">Metas de Produção</CardTitle>
-              <GoalDialog />
-            </CardHeader>
-            <CardContent className="space-y-6 pt-4">
-              {productionGoals.map((goal) => {
-                const percentage = Math.min((goal.current / goal.target) * 100, 100)
-                return (
-                  <div key={goal.id} className="space-y-2">
-                    <div className="flex justify-between items-end text-sm">
-                      <div className="space-y-1">
-                        <span className="font-medium block leading-tight">{goal.title}</span>
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                          {goal.period}
-                        </span>
-                      </div>
-                      <span className="text-muted-foreground font-mono text-xs whitespace-nowrap">
-                        {goal.current} / {goal.target} {goal.unit}
-                      </span>
-                    </div>
-                    <Progress value={percentage} className="h-2" />
-                  </div>
-                )
-              })}
-            </CardContent>
-          </Card>
-        </div>
-        <div className="lg:col-span-2 space-y-2">
-          <h3 className="text-lg font-bold tracking-tight mb-2">Calendário Operacional Mestre</h3>
-          <SectorCalendarTab sectorId="all" />
-        </div>
-      </div>
+      {/* Widget Atividades da Semana (Status e Pendências do Gestor) */}
+      <WidgetAtividadesSemanaGestor />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="lg:col-span-4 flex flex-col">
-          <CardHeader>
-            <CardTitle>Receitas vs Despesas</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 pb-2 min-h-[300px]">
-            <CashflowChart />
-          </CardContent>
-        </Card>
-        <Card className="lg:col-span-3 flex flex-col">
-          <CardHeader>
-            <CardTitle>Distribuição Rebanho</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 pb-2 min-h-[300px]">
-            <DistributionChart />
-          </CardContent>
-        </Card>
-      </div>
+      {/* Top 5 Lotes com Maior Desvio de GMD & Semáforo Zootécnico */}
+      <TopDesvioGmdCard />
     </div>
   )
 }

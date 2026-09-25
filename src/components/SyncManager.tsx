@@ -5,6 +5,7 @@ import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useToast } from '@/hooks/use-toast'
 import { createPesagem } from '@/services/pesagens'
 import { transicionarStatusAtividade, updateAtividade } from '@/services/atividades'
+import { salvarItemEstoque, getEstoqueInsumos } from '@/services/fechamento'
 
 export function SyncManager() {
   const { isOnline, queue, clearQueue, isSyncing, setIsSyncing } = useOffline()
@@ -66,6 +67,40 @@ export function SyncManager() {
               pesagensSynced++
             } catch (err) {
               console.error('Erro ao sincronizar pesagem da fila SW:', err)
+            }
+          } else if (action.type === 'DEDUCT_INVENTORY') {
+            try {
+              const { inventoryId, amount, item } = action.payload
+              const items = await getEstoqueInsumos()
+              const match = items.find((i) => i.codigo === inventoryId || i.id === inventoryId)
+              if (match) {
+                await salvarItemEstoque({
+                  id: match.id,
+                  produto: match.produto,
+                  codigo: match.codigo,
+                  unidade: match.unidade,
+                  categoria: match.categoria,
+                  estoque_inicial: match.estoque_inicial,
+                  entradas: match.entradas,
+                  saidas: (match.saidas || 0) + amount,
+                  preco_unitario: match.preco_unitario,
+                  periodo_mes: match.periodo_mes || new Date().toISOString().slice(0, 7),
+                })
+              } else {
+                await salvarItemEstoque({
+                  produto: item || 'Insumo de Campo',
+                  codigo: inventoryId,
+                  unidade: 'un',
+                  estoque_inicial: 500,
+                  entradas: 0,
+                  saidas: amount,
+                  preco_unitario: 50.0,
+                  periodo_mes: new Date().toISOString().slice(0, 7),
+                })
+              }
+              opsSynced++
+            } catch (err) {
+              console.error('Erro ao sincronizar dedução de estoque:', err)
             }
           } else if (action.type === 'FIELD_OPERATION') {
             addNotification({
@@ -149,6 +184,40 @@ export function SyncManager() {
           })
         } catch (err) {
           console.error('Erro ao sincronizar pesagem offline:', err)
+        }
+      } else if (action.type === 'DEDUCT_INVENTORY') {
+        try {
+          const { inventoryId, amount, item } = action.payload
+          const items = await getEstoqueInsumos()
+          const match = items.find((i) => i.codigo === inventoryId || i.id === inventoryId)
+          if (match) {
+            await salvarItemEstoque({
+              id: match.id,
+              produto: match.produto,
+              codigo: match.codigo,
+              unidade: match.unidade,
+              categoria: match.categoria,
+              estoque_inicial: match.estoque_inicial,
+              entradas: match.entradas,
+              saidas: (match.saidas || 0) + amount,
+              preco_unitario: match.preco_unitario,
+              periodo_mes: match.periodo_mes || new Date().toISOString().slice(0, 7),
+            })
+          } else {
+            await salvarItemEstoque({
+              produto: item || 'Insumo de Campo',
+              codigo: inventoryId,
+              unidade: 'un',
+              estoque_inicial: 500,
+              entradas: 0,
+              saidas: amount,
+              preco_unitario: 50.0,
+              periodo_mes: new Date().toISOString().slice(0, 7),
+            })
+          }
+          opsSynced++
+        } catch (err) {
+          console.error('Erro ao sincronizar dedução de estoque offline:', err)
         }
       } else if (action.type === 'FIELD_OPERATION') {
         addNotification({

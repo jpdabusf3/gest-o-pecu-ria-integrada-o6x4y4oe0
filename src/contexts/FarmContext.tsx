@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react'
-import { confinementData, inventoryData } from '@/data/mock'
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import { getEstoqueInsumos, salvarItemEstoque } from '@/services/fechamento'
 
 export type LotWeightRecord = { date: string; weight: number }
 
@@ -17,82 +17,52 @@ export type InventoryItem = {
 
 export type FarmContextType = {
   inventory: InventoryItem[]
-  lots: typeof confinementData.lotes
+  lots: any[]
   historicalWeights: Record<string, LotWeightRecord[]>
   addInventoryItem: (item: Omit<InventoryItem, 'id'>) => void
   updateInventoryItem: (id: string, data: Partial<InventoryItem>) => void
   removeInventoryItem: (id: string) => void
-  registerConsumption: (loteId: string, inventoryId: string, amount: number) => void
-  registerFeedConsumption: (loteId: string, inventoryId: string, amount: number) => void
+  registerConsumption: (loteId: string, inventoryId: string, amount: number) => Promise<void>
+  registerFeedConsumption: (loteId: string, inventoryId: string, amount: number) => Promise<void>
   registerPurchase: (inventoryId: string, amount: number, totalCost: number) => void
   updateMinThreshold: (inventoryId: string, newMin: number) => void
   addWeightRecord: (loteId: string, weight: number, date: string) => void
   getPredictedSlaughterDate: (loteId: string) => Date | null
   getPredictedGrowthCurve: (loteId: string) => any[]
+  reloadInventory: () => Promise<void>
 }
-
-const initialWeights: Record<string, LotWeightRecord[]> = {
-  'CONF-01': [
-    { date: '2025-12-01', weight: 350 },
-    { date: '2026-01-01', weight: 395 },
-    { date: '2026-02-01', weight: 440 },
-    { date: '2026-03-01', weight: 480 },
-  ],
-  'CONF-02': [
-    { date: '2026-01-15', weight: 300 },
-    { date: '2026-02-15', weight: 325 },
-    { date: '2026-03-01', weight: 350 },
-  ],
-  'CONF-03': [
-    { date: '2025-11-01', weight: 380 },
-    { date: '2026-01-01', weight: 400 },
-    { date: '2026-03-01', weight: 420 },
-  ],
-}
-
-const initialInventory: InventoryItem[] = [
-  ...inventoryData.farmacia.map((i: any) => ({ ...i, custoUnitario: i.custoUnitario || 1.5 })),
-  ...inventoryData.almoxarifado.map((i: any) => ({ ...i, custoUnitario: i.custoUnitario || 50.0 })),
-  ...inventoryData.nutricao.map((i: any) => ({ ...i, custoUnitario: i.custoUnitario || 2.5 })),
-  {
-    id: 'R-1',
-    item: 'Sêmen Touro Fajardo',
-    tipo: 'Sêmen',
-    qtd: 150,
-    minQtd: 50,
-    unidade: 'Doses',
-    status: 'Normal',
-    custoUnitario: 35.0,
-  },
-  {
-    id: 'R-2',
-    item: 'Protocolo Sincronização J-Synch',
-    tipo: 'Hormônio',
-    qtd: 200,
-    minQtd: 100,
-    unidade: 'Doses',
-    status: 'Normal',
-    custoUnitario: 15.0,
-  },
-  {
-    id: 'FL-1',
-    item: 'Diesel S10',
-    tipo: 'Combustível',
-    qtd: 5000,
-    minQtd: 1000,
-    unidade: 'L',
-    status: 'Normal',
-    custoUnitario: 5.5,
-  },
-]
 
 const FarmContext = createContext<FarmContextType | undefined>(undefined)
 
 export function FarmProvider({ children }: { children: React.ReactNode }) {
-  const [inventory, setInventory] = useState<InventoryItem[]>(initialInventory)
-  const [lots, setLots] = useState(confinementData.lotes)
-  const [historicalWeights, setHistoricalWeights] =
-    useState<Record<string, LotWeightRecord[]>>(initialWeights)
+  const [inventory, setInventory] = useState<InventoryItem[]>([])
+  const [lots, setLots] = useState<any[]>([])
+  const [historicalWeights, setHistoricalWeights] = useState<Record<string, LotWeightRecord[]>>({})
+
+  const reloadInventory = async () => {
+    try {
+      const items = await getEstoqueInsumos()
+      if (items && items.length > 0) {
+        const mapped: InventoryItem[] = items.map((i) => ({
+          id: i.codigo || i.id,
+          item: i.produto,
+          tipo: i.categoria || 'Geral',
+          qtd: i.estoque_final,
+          minQtd: 50,
+          unidade: i.unidade,
+          status: i.estoque_final <= 50 ? 'Baixo' : 'Normal',
+          custoUnitario: i.preco_unitario,
+        }))
+        setInventory(mapped)
+      }
+    } catch (e) {
+      console.warn('Erro ao carregar estoque PocketBase:', e)
+    }
+  }
+
+  useEffect(() => {
+    reloadInventory()
+  }, [])
 
   const addInventoryItem = (item: Omit<InventoryItem, 'id'>) => {
     setInventory((prev) => [{ ...item, id: `NEW-${crypto.randomUUID()}` }, ...prev])
@@ -106,12 +76,35 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
     setInventory((prev) => prev.filter((item) => item.id !== id))
   }
 
-  const registerConsumption = (loteId: string, inventoryId: string, amount: number) => {
+  const registerConsumption = async (_loteId: string, inventoryId: string, amount: number) => {
     setInventory((prev) =>
       prev.map((item) =>
         item.id === inventoryId ? { ...item, qtd: Math.max(0, item.qtd - amount) } : item,
       ),
     )
+
+    // Dedução persistente na coleção real estoque_insumos
+    try {
+      const items = await getEstoqueInsumos()
+      const match = items.find((i) => i.codigo === inventoryId || i.id === inventoryId)
+      if (match) {
+        const saidasNovas = (match.saidas || 0) + amount
+        await salvarItemEstoque({
+          id: match.id,
+          produto: match.produto,
+          codigo: match.codigo,
+          unidade: match.unidade,
+          categoria: match.categoria,
+          estoque_inicial: match.estoque_inicial,
+          entradas: match.entradas,
+          saidas: saidasNovas,
+          preco_unitario: match.preco_unitario,
+          periodo_mes: match.periodo_mes || new Date().toISOString().slice(0, 7),
+        })
+      }
+    } catch (err) {
+      console.warn('Erro ao registrar consumo persistente no estoque:', err)
+    }
   }
 
   const registerPurchase = (inventoryId: string, amount: number, totalCost: number) => {
@@ -147,20 +140,7 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
     setLots((prev) =>
       prev.map((lot) => {
         if (lot.id === loteId) {
-          const history = [...(historicalWeights[loteId] || []), { date, weight }].sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-          )
-          let gmd = lot.gmd
-          if (history.length >= 2) {
-            const first = history[0]
-            const last = history[history.length - 1]
-            const days =
-              (new Date(last.date).getTime() - new Date(first.date).getTime()) / (1000 * 3600 * 24)
-            if (days > 0) {
-              gmd = Number(((last.weight - first.weight) / days).toFixed(2))
-            }
-          }
-          return { ...lot, pesoMedio: weight, gmd }
+          return { ...lot, pesoMedio: weight }
         }
         return lot
       }),
@@ -239,6 +219,7 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
         registerPurchase,
         updateMinThreshold,
         addWeightRecord,
+        reloadInventory,
         getPredictedSlaughterDate,
         getPredictedGrowthCurve,
       }}

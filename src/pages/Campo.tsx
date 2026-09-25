@@ -235,27 +235,23 @@ export default function Campo() {
     // Deduz estoque para os insumos vinculados via registerConsumption e alimenta coleção real estoque_insumos
     if (record.insumos && record.insumos.length > 0) {
       const targetLote = (record.lote_ids && record.lote_ids[0]) || record.setor || 'GERAL'
-      record.insumos.forEach(async (ins) => {
+      for (const ins of record.insumos) {
         if (ins.inventoryId && ins.quantidade > 0) {
-          registerConsumption(targetLote, ins.inventoryId, ins.quantidade)
-          try {
-            await salvarItemEstoque({
-              produto: ins.item,
-              codigo: ins.inventoryId,
-              unidade: ins.unidade || 'un',
-              estoque_inicial: 500,
-              entradas: 0,
-              saidas: ins.quantidade,
-              preco_unitario: 50.0,
-              periodo_mes: new Date().toISOString().slice(0, 7),
+          await registerConsumption(targetLote, ins.inventoryId, ins.quantidade)
+          if (!isOnline) {
+            await addAction({
+              type: 'DEDUCT_INVENTORY',
+              payload: {
+                inventoryId: ins.inventoryId,
+                amount: ins.quantidade,
+                item: ins.item,
+              },
             })
-          } catch {
-            /* intentionally ignored */
           }
         }
-      })
+      }
       toast({
-        title: 'Estoque Deduzido!',
+        title: 'Estoque Deduzido & Sincronizado',
         description: `${record.insumos.map((i) => `${i.quantidade} ${i.unidade || 'un'} de ${i.item}`).join(', ')}`,
       })
     }

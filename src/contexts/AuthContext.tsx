@@ -1,85 +1,105 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
-export type Role = 'admin' | 'gerente' | 'operador'
+export type Role = 'gestor' | 'capataz' | 'operador' | 'admin' | 'gerente'
 
 export interface UserPreferences {
-  whatsappEnabled: boolean
+  theme: 'light' | 'dark' | 'system'
   pushEnabled: boolean
-  notifyHealth: boolean
-  notifyFinancial: boolean
-  notifyManagement: boolean
-  notifyVacasCorte: boolean
-  notifyNovilhasMatrizes: boolean
+  whatsappEnabled: boolean
   notifyCriticalInventory: boolean
   notifyTaskCompletion: boolean
+  notifyHealth: boolean
+  notifyManagement: boolean
+  notifyFinancial: boolean
+  notifyVacasCorte: boolean
+  notifyNovilhasMatrizes: boolean
+  compactMode?: boolean
+  offlineSyncFrequency?: 'instant' | '15min' | 'hourly' | 'manual'
+  dashboardLayout?: string[]
 }
 
 export interface User {
   id: string
   name: string
   role: Role
-  avatar: string
   email: string
+  avatar: string
+  avatarUrl?: string
   whatsapp?: string
   preferences: UserPreferences
 }
 
 export const mockUsers: User[] = [
   {
-    id: 'U1',
-    name: 'Administrador (Sede)',
-    role: 'admin',
-    avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=42',
-    email: 'admin@fazenda.com',
-    whatsapp: '(11) 99999-9999',
+    id: 'usr-1',
+    name: 'Carlos Fazendeiro',
+    email: 'carlos@pecuariaf3.com.br',
+    role: 'gestor',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=1',
+    avatarUrl: 'https://img.usecurling.com/ppl/medium?gender=male&seed=1',
+    whatsapp: '+55 67 99999-1111',
     preferences: {
-      whatsappEnabled: true,
+      theme: 'system',
       pushEnabled: true,
+      whatsappEnabled: true,
+      notifyCriticalInventory: true,
+      notifyTaskCompletion: true,
       notifyHealth: true,
-      notifyFinancial: true,
       notifyManagement: true,
+      notifyFinancial: true,
       notifyVacasCorte: true,
       notifyNovilhasMatrizes: true,
-      notifyCriticalInventory: true,
-      notifyTaskCompletion: true,
+      compactMode: false,
+      offlineSyncFrequency: 'instant',
+      dashboardLayout: ['kpis', 'gmd', 'alerts', 'activities'],
     },
   },
   {
-    id: 'U3',
-    name: 'Carlos (Gerente)',
-    role: 'gerente',
-    avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=22',
-    email: 'gerente@fazenda.com',
-    whatsapp: '(11) 97777-7777',
+    id: 'usr-2',
+    name: 'Antônio Capataz',
+    email: 'antonio@pecuariaf3.com.br',
+    role: 'capataz',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=2',
+    avatarUrl: 'https://img.usecurling.com/ppl/medium?gender=male&seed=2',
+    whatsapp: '+55 67 99999-2222',
     preferences: {
-      whatsappEnabled: true,
+      theme: 'system',
       pushEnabled: true,
-      notifyHealth: true,
-      notifyFinancial: false,
-      notifyManagement: true,
-      notifyVacasCorte: true,
-      notifyNovilhasMatrizes: false,
+      whatsappEnabled: true,
       notifyCriticalInventory: true,
       notifyTaskCompletion: true,
-    },
-  },
-  {
-    id: 'U2',
-    name: 'João (Operador Campo)',
-    role: 'operador',
-    avatar: 'https://img.usecurling.com/ppl/thumbnail?gender=male&seed=15',
-    email: 'joao@fazenda.com',
-    whatsapp: '(16) 98888-8888',
-    preferences: {
-      whatsappEnabled: false,
-      pushEnabled: false,
-      notifyHealth: false,
-      notifyFinancial: false,
+      notifyHealth: true,
       notifyManagement: false,
+      notifyFinancial: false,
       notifyVacasCorte: false,
       notifyNovilhasMatrizes: false,
+      compactMode: true,
+      offlineSyncFrequency: '15min',
+      dashboardLayout: ['tasks', 'pastures', 'health'],
+    },
+  },
+  {
+    id: 'usr-3',
+    name: 'João Vaqueiro',
+    email: 'joao@pecuariaf3.com.br',
+    role: 'operador',
+    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=3',
+    avatarUrl: 'https://img.usecurling.com/ppl/medium?gender=male&seed=3',
+    whatsapp: '+55 67 99999-3333',
+    preferences: {
+      theme: 'system',
+      pushEnabled: true,
+      whatsappEnabled: false,
       notifyCriticalInventory: false,
-      notifyTaskCompletion: false,
+      notifyTaskCompletion: true,
+      notifyHealth: false,
+      notifyManagement: false,
+      notifyFinancial: false,
+      notifyVacasCorte: false,
+      notifyNovilhasMatrizes: false,
+      compactMode: true,
+      offlineSyncFrequency: 'manual',
+      dashboardLayout: ['field-tasks'],
     },
   },
 ]
@@ -87,14 +107,76 @@ export const mockUsers: User[] = [
 interface AuthContextType {
   user: User
   setUser: (user: User) => void
+  switchRole: (role: Role) => void
+  updatePreferences: (preferences: Partial<UserPreferences>) => void
+  logout: () => void
+  isGestor: boolean
+  isCapataz: boolean
+  isOperador: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User>(mockUsers[0])
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [currentUser, setCurrentUser] = useState<User>(() => {
+    const saved = localStorage.getItem('gpi_auth_user')
+    if (saved) {
+      try {
+        return JSON.parse(saved)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    return mockUsers[0]
+  })
 
-  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>
+  useEffect(() => {
+    localStorage.setItem('gpi_auth_user', JSON.stringify(currentUser))
+  }, [currentUser])
+
+  const switchRole = (role: Role) => {
+    const userForRole = mockUsers.find((u) => u.role === role) || {
+      ...currentUser,
+      role,
+    }
+    setCurrentUser(userForRole)
+  }
+
+  const updatePreferences = (preferences: Partial<UserPreferences>) => {
+    setCurrentUser((prev) => ({
+      ...prev,
+      preferences: {
+        ...prev.preferences,
+        ...preferences,
+      },
+    }))
+  }
+
+  const logout = () => {
+    setCurrentUser(mockUsers[0])
+  }
+
+  const isGestor =
+    currentUser.role === 'gestor' || currentUser.role === 'admin' || currentUser.role === 'gerente'
+  const isCapataz = currentUser.role === 'capataz'
+  const isOperador = currentUser.role === 'operador'
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user: currentUser,
+        setUser: setCurrentUser,
+        switchRole,
+        updatePreferences,
+        logout,
+        isGestor,
+        isCapataz,
+        isOperador,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

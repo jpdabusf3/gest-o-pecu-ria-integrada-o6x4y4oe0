@@ -9,6 +9,7 @@ import { OfflineProvider } from './contexts/OfflineContext'
 import { TaskProvider } from './contexts/TaskContext'
 import { MarketProvider } from './contexts/MarketContext'
 import Layout from './components/Layout'
+import { RoleRoute } from './components/RoleRoute'
 import Index from './pages/Index'
 import Setor from './pages/Setor'
 import Pastos from './pages/Pastos'
@@ -55,35 +56,224 @@ const App = () => (
                   <InstallPWA />
                   <Routes>
                     <Route element={<Layout />}>
+                      {/* Rota Raiz: Operador vai para /campo via Index ou renderiza Dashboard para Gestor */}
                       <Route path="/" element={<Index />} />
+
+                      {/* Modo Campo & Tarefas: Acessíveis a todos (Vaqueiro, Capataz, Gestor) */}
                       <Route path="/campo" element={<Campo />} />
-                      <Route path="/setor/:id" element={<Setor />} />
-                      <Route path="/pastos" element={<Pastos />} />
-                      <Route path="/confinamento" element={<Confinamento />} />
-                      <Route path="/estoque" element={<Estoque />} />
-                      <Route path="/frota" element={<Frota />} />
-                      <Route path="/financeiro" element={<Financeiro />} />
-                      <Route path="/fechamento" element={<Fechamento />} />
-                      <Route path="/sanidade" element={<Sanidade />} />
-                      <Route path="/calendario" element={<Calendario />} />
-                      <Route path="/relatorios" element={<Relatorios />} />
-                      <Route path="/desempenho" element={<RelatoriosDesempenho />} />
-                      <Route path="/bi" element={<BI />} />
-                      <Route path="/sustentabilidade" element={<Sustentabilidade />} />
-                      <Route path="/animal/:id" element={<AnimalProfile />} />
-                      <Route path="/animais" element={<Animais />} />
-                      <Route path="/pesagens" element={<Pesagens />} />
-                      <Route path="/projecoes" element={<ProjecaoVendas />} />
-                      <Route path="/colaboradores" element={<Colaboradores />} />
-                      <Route path="/configuracoes" element={<Configuracoes />} />
                       <Route path="/tarefas" element={<Tarefas />} />
-                      <Route path="/administrativo" element={<Administrativo />} />
-                      <Route path="/fazendas" element={<Fazendas />} />
-                      <Route path="/mapa" element={<MapaPropriedade />} />
-                      <Route path="/abates" element={<Abates />} />
-                      <Route path="/vendas" element={<Vendas />} />
-                      <Route path="/hedge" element={<Hedge />} />
-                      <Route path="/pdf-studio" element={<PdfStudio />} />
+
+                      {/* Rotas de Campo Avançadas: Capataz e Gestor */}
+                      <Route
+                        path="/pastos"
+                        element={
+                          <RoleRoute allowedRoles={['capataz', 'gestor']}>
+                            <Pastos />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/sanidade"
+                        element={
+                          <RoleRoute allowedRoles={['capataz', 'gestor']}>
+                            <Sanidade />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/calendario"
+                        element={
+                          <RoleRoute allowedRoles={['capataz', 'gestor']}>
+                            <Calendario />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/pesagens"
+                        element={
+                          <RoleRoute allowedRoles={['capataz', 'gestor']}>
+                            <Pesagens />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/estoque"
+                        element={
+                          <RoleRoute allowedRoles={['capataz', 'gestor']}>
+                            <Estoque />
+                          </RoleRoute>
+                        }
+                      />
+
+                      {/* Rotas Estratégicas e Financeiras: Apenas Gestor */}
+                      <Route
+                        path="/fechamento"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Fechamento />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/financeiro"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Financeiro />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/animais"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz']}>
+                            <Animais />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/animal/:id"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz']}>
+                            <AnimalProfile />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/setor/:id"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz']}>
+                            <Setor />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/confinamento"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz']}>
+                            <Confinamento />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/frota"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz']}>
+                            <Frota />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/relatorios"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Relatorios />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/desempenho"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <RelatoriosDesempenho />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/bi"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <BI />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/sustentabilidade"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Sustentabilidade />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/projecoes"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <ProjecaoVendas />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/colaboradores"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Colaboradores />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/configuracoes"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz', 'operador']}>
+                            <Configuracoes />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/administrativo"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Administrativo />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/fazendas"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Fazendas />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/mapa"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'capataz']}>
+                            <MapaPropriedade />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/abates"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Abates />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/vendas"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Vendas />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/hedge"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <Hedge />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/pdf-studio"
+                        element={
+                          <RoleRoute allowedRoles={['gestor']}>
+                            <PdfStudio />
+                          </RoleRoute>
+                        }
+                      />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>

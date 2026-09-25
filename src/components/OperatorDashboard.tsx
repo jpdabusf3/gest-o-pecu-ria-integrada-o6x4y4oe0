@@ -51,15 +51,15 @@ export function OperatorDashboard() {
         <Card className="hover:border-border transition-colors shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Syringe className="h-5 w-5 text-emerald-500" /> Manejo Sanitário
+              <Smartphone className="h-5 w-5 text-emerald-500" /> Registro Rápido
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
-              Acompanhe as vacinações e protocolos programados.
+              Pesagens na balança e controle sanitário offline no pasto.
             </p>
             <Button asChild variant="outline" className="w-full">
-              <Link to="/sanidade">Ver Protocolos</Link>
+              <Link to="/campo">Ir para Campo</Link>
             </Button>
           </CardContent>
         </Card>

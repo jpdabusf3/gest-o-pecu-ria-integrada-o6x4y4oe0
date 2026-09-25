@@ -1,213 +1,453 @@
-import { Link, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import {
   LayoutDashboard,
-  Map as MapIcon,
-  Tractor,
-  Package,
-  Activity,
-  CalendarDays,
-  LineChart,
-  Users,
-  Settings,
-  Syringe,
-  BarChart3,
-  Wheat,
-  Beef,
-  Sprout,
-  DollarSign,
-  Building2,
+  Calendar,
+  Smartphone,
   CheckSquare,
-  MapPin,
-  Leaf,
-  Factory,
-  Shield,
-  FileText,
+  Beef,
+  Scale,
+  Activity,
   Layers,
+  MapPin,
+  Package,
+  Wrench,
+  DollarSign,
+  TrendingUp,
+  FileSpreadsheet,
+  Settings,
+  HelpCircle,
+  LogOut,
+  ChevronDown,
+  Sparkles,
+  Leaf,
+  BarChart3,
+  TrendingDown,
+  ShieldAlert,
 } from 'lucide-react'
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarRail,
-} from '@/components/ui/sidebar'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Badge } from '@/components/ui/badge'
-
-const navItems = {
-  admin: [
-    { title: 'Dashboard Geral', icon: LayoutDashboard, url: '/' },
-    {
-      title: 'Gestão de Animais',
-      items: [
-        { title: 'Rebanho e Entradas', icon: Beef, url: '/animais' },
-        { title: 'Pesagens & GMD', icon: BarChart3, url: '/pesagens' },
-        { title: 'Setor: Cria', icon: Activity, url: '/setor/cria' },
-        { title: 'Setor: Recria', icon: Activity, url: '/setor/recria' },
-        { title: 'Setor: Engorda', icon: Activity, url: '/setor/engorda' },
-        { title: 'Confinamento & Dietas', icon: Wheat, url: '/confinamento' },
-        { title: 'Sanidade & Protocolos', icon: Syringe, url: '/sanidade' },
-      ],
-    },
-    {
-      title: 'Operações e Logística',
-      items: [
-        { title: 'Manejo de Pastagens', icon: Sprout, url: '/pastos' },
-        { title: 'Mapa da Propriedade', icon: MapPin, url: '/mapa' },
-        { title: 'Tarefas e Pessoal', icon: CheckSquare, url: '/tarefas' },
-        { title: 'Frota e Maquinário', icon: Tractor, url: '/frota' },
-        { title: 'Estoque de Insumos', icon: Package, url: '/estoque' },
-        { title: 'Calendário Integrado', icon: CalendarDays, url: '/calendario' },
-      ],
-    },
-    {
-      title: 'Financeiro e Comercial',
-      items: [
-        { title: 'Fechamento & Resultado', icon: Layers, url: '/fechamento' },
-        { title: 'Controle Financeiro', icon: DollarSign, url: '/financeiro' },
-        { title: 'Vendas & Desmame', icon: DollarSign, url: '/vendas' },
-        { title: 'Inteligência de Vendas', icon: LineChart, url: '/projecoes' },
-        { title: 'Hedge & Mercado B3', icon: Shield, url: '/hedge' },
-        { title: 'Abates & Romaneios', icon: Factory, url: '/abates' },
-      ],
-    },
-    {
-      title: 'Inteligência e Relatórios',
-      items: [
-        { title: 'Relatórios Operacionais', icon: BarChart3, url: '/relatorios' },
-        { title: 'Relatórios de Desempenho', icon: Activity, url: '/desempenho' },
-        { title: 'BI e Cruzamento Dados', icon: MapIcon, url: '/bi' },
-        { title: 'Sustentabilidade (ESG)', icon: Leaf, url: '/sustentabilidade' },
-        { title: 'PDF Studio', icon: FileText, url: '/pdf-studio' },
-      ],
-    },
-    {
-      title: 'Configurações',
-      items: [
-        { title: 'Cadastro de Fazendas', icon: Building2, url: '/fazendas' },
-        { title: 'Dados Administrativos', icon: Building2, url: '/administrativo' },
-        { title: 'Colaboradores', icon: Users, url: '/colaboradores' },
-        { title: 'Minhas Configurações', icon: Settings, url: '/configuracoes' },
-      ],
-    },
-  ],
-  gerente: [
-    { title: 'Visão Geral', icon: LayoutDashboard, url: '/' },
-    {
-      title: 'Gestão de Produção',
-      items: [
-        { title: 'Fechamento & Resultado', icon: Layers, url: '/fechamento' },
-        { title: 'Pesagens & GMD', icon: BarChart3, url: '/pesagens' },
-        { title: 'Manejo de Pastagens', icon: Sprout, url: '/pastos' },
-        { title: 'Confinamento & Dietas', icon: Wheat, url: '/confinamento' },
-        { title: 'Sanidade & Protocolos', icon: Syringe, url: '/sanidade' },
-        { title: 'Tarefas Diárias', icon: CheckSquare, url: '/tarefas' },
-      ],
-    },
-    {
-      title: 'Relatórios',
-      items: [
-        { title: 'Relatórios Operacionais', icon: BarChart3, url: '/relatorios' },
-        { title: 'BI e Dados', icon: MapIcon, url: '/bi' },
-        { title: 'PDF Studio', icon: FileText, url: '/pdf-studio' },
-      ],
-    },
-  ],
-  operador: [
-    { title: 'Minhas Tarefas', icon: CheckSquare, url: '/tarefas' },
-    { title: 'Lançamentos de Campo', icon: Sprout, url: '/campo' },
-    { title: 'Minhas Configurações', icon: Settings, url: '/configuracoes' },
-  ],
-}
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export function AppSidebar() {
   const location = useLocation()
-  const { user } = useAuth()
+  const { user, isGestor, isCapataz, isOperador } = useAuth()
+  const [gestaoAvancadaOpen, setGestaoAvancadaOpen] = useState(
+    location.pathname === '/hedge' ||
+      location.pathname === '/pdf-studio' ||
+      location.pathname === '/sustentabilidade' ||
+      location.pathname === '/bi',
+  )
 
-  const itemsToRender = navItems[user.role as keyof typeof navItems] || navItems.operador
+  const isActive = (path: string) => location.pathname === path
 
   return (
-    <Sidebar className="print:hidden">
-      <SidebarHeader className="flex h-16 items-center justify-start px-4 border-b bg-primary">
-        <h1 className="text-xl font-bold tracking-tight flex items-center gap-2 text-primary-foreground">
-          <Beef className="h-6 w-6" /> F3 | GPI
-        </h1>
-      </SidebarHeader>
-
-      <SidebarContent className="bg-background pt-2 custom-scrollbar">
-        {itemsToRender.map((group, index) => {
-          if (group.items) {
-            return (
-              <SidebarGroup key={index}>
-                <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 mb-1">
-                  {group.title}
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {group.items.map((item) => (
-                      <SidebarMenuItem key={item.url}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={location.pathname === item.url}
-                          tooltip={item.title}
-                          className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-medium transition-colors"
-                        >
-                          <Link to={item.url} className="flex items-center gap-3">
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            )
-          }
-
-          return (
-            <SidebarGroup key={index}>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={location.pathname === group.url}
-                    tooltip={group.title}
-                    className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-medium transition-colors"
-                  >
-                    <Link to={group.url} className="flex items-center gap-3">
-                      {group.icon && <group.icon className="h-4 w-4" />}
-                      <span>{group.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroup>
-          )
-        })}
-      </SidebarContent>
-
-      <SidebarFooter className="border-t p-4 bg-muted/30">
-        <div className="flex items-center gap-3">
-          <img src={user.avatar} alt="Avatar" className="h-10 w-10 rounded-full border shadow-sm" />
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-sm font-semibold truncate">{user.name}</span>
-            <span className="text-xs text-muted-foreground capitalize flex items-center gap-1">
-              {user.role}
-              <Badge variant="outline" className="text-[9px] px-1 h-4 uppercase bg-background">
-                v0.0.59
-              </Badge>
+    <div className="flex flex-col h-full bg-sidebar border-r border-sidebar-border text-sidebar-foreground">
+      {/* Brand Header */}
+      <div className="p-4 flex items-center justify-between border-b border-sidebar-border">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="bg-primary text-primary-foreground p-1.5 rounded-lg flex items-center justify-center font-bold">
+            F3
+          </div>
+          <div>
+            <span className="font-bold text-base leading-none block">Pecuária F3</span>
+            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+              {isGestor ? 'Gestor Geral' : isCapataz ? 'Capataz' : 'Vaqueiro / Campo'}
             </span>
           </div>
-        </div>
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+        </Link>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-4">
+        {/* PERFIL VAQUEIRO (OPERADOR): Apenas Modo Campo e Tarefas do Dia */}
+        {isOperador && (
+          <div>
+            <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Operações de Campo
+            </div>
+            <div className="space-y-1">
+              <Link
+                to="/campo"
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  isActive('/campo')
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                    : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                }`}
+              >
+                <Smartphone className="h-4 w-4 text-primary" />
+                <span className="flex-1">Modo Campo (Offline)</span>
+                <Badge
+                  variant="outline"
+                  className="text-[10px] bg-primary/10 text-primary border-primary/20"
+                >
+                  Vaqueiro
+                </Badge>
+              </Link>
+
+              <Link
+                to="/tarefas"
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  isActive('/tarefas')
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                    : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                }`}
+              >
+                <CheckSquare className="h-4 w-4" />
+                <span>Tarefas do Dia</span>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* PERFIL CAPATAZ: Modo Campo, Tarefas, Pastos, Sanidade e Aprovações */}
+        {isCapataz && (
+          <>
+            <div>
+              <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Liderança de Campo
+              </div>
+              <div className="space-y-1">
+                <Link
+                  to="/campo"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/campo')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Smartphone className="h-4 w-4 text-primary" />
+                  <span>Modo Campo</span>
+                </Link>
+
+                <Link
+                  to="/calendario"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/calendario')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Calendar className="h-4 w-4" />
+                  <span>Calendário de Atividades</span>
+                </Link>
+
+                <Link
+                  to="/tarefas"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/tarefas')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <CheckSquare className="h-4 w-4" />
+                  <span>Tarefas & Aprovações</span>
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Manejo & Pastoreio
+              </div>
+              <div className="space-y-1">
+                <Link
+                  to="/pastos"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/pastos')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <MapPin className="h-4 w-4" />
+                  <span>Pastos & Rotação</span>
+                </Link>
+
+                <Link
+                  to="/sanidade"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/sanidade')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Activity className="h-4 w-4" />
+                  <span>Sanidade & Protocolos</span>
+                </Link>
+
+                <Link
+                  to="/pesagens"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/pesagens')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Scale className="h-4 w-4" />
+                  <span>Pesagens & Lotes</span>
+                </Link>
+
+                <Link
+                  to="/estoque"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/estoque')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Package className="h-4 w-4" />
+                  <span>Estoque & Insumos</span>
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* PERFIL GESTOR: Tudo, incluindo Fechamento em destaque e submenu Gestão Avançada */}
+        {isGestor && (
+          <>
+            <div>
+              <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Painel Estratégico
+              </div>
+              <div className="space-y-1">
+                <Link
+                  to="/"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  <span>Dashboard Consolidado</span>
+                </Link>
+
+                {/* DESTAQUE FECHAMENTO E RESULTADO */}
+                <Link
+                  to="/fechamento"
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-lg transition-all ${
+                    isActive('/fechamento')
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'bg-primary/10 text-primary hover:bg-primary/15'
+                  }`}
+                >
+                  <Layers className="h-4 w-4" />
+                  <span className="flex-1">Fechamento & Resultado</span>
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] uppercase font-bold tracking-wider"
+                  >
+                    DRE / Custo
+                  </Badge>
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Manejo & Produção
+              </div>
+              <div className="space-y-1">
+                <Link
+                  to="/calendario"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/calendario')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Calendar className="h-4 w-4" />
+                  <span>Calendário de Atividades</span>
+                </Link>
+
+                <Link
+                  to="/pesagens"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/pesagens')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Scale className="h-4 w-4" />
+                  <span>Pesagens & GMD</span>
+                </Link>
+
+                <Link
+                  to="/animais"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/animais')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Beef className="h-4 w-4" />
+                  <span>Rebanho & Lotes</span>
+                </Link>
+
+                <Link
+                  to="/pastos"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/pastos')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <MapPin className="h-4 w-4" />
+                  <span>Pastos & Lotação</span>
+                </Link>
+
+                <Link
+                  to="/sanidade"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/sanidade')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Activity className="h-4 w-4" />
+                  <span>Sanidade & IATF</span>
+                </Link>
+
+                <Link
+                  to="/estoque"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/estoque')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Package className="h-4 w-4" />
+                  <span>Estoque & Nutrição</span>
+                </Link>
+
+                <Link
+                  to="/campo"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/campo')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Smartphone className="h-4 w-4" />
+                  <span>Modo Campo (Offline)</span>
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Finanças & Operações
+              </div>
+              <div className="space-y-1">
+                <Link
+                  to="/financeiro"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/financeiro')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <DollarSign className="h-4 w-4" />
+                  <span>Financeiro & Fluxo</span>
+                </Link>
+
+                <Link
+                  to="/frota"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/frota')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Wrench className="h-4 w-4" />
+                  <span>Frota & Máquinas</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* SUBMENU: Gestão Avançada (Hedge, PdfStudio, Sustentabilidade, BI) */}
+            <div className="pt-1">
+              <Collapsible
+                open={gestaoAvancadaOpen}
+                onOpenChange={setGestaoAvancadaOpen}
+                className="space-y-1"
+              >
+                <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground rounded-lg transition-colors">
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" /> Gestão Avançada
+                  </span>
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                      gestaoAvancadaOpen ? 'transform rotate-180' : ''
+                    }`}
+                  />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-1 pl-2 border-l border-border/50 ml-3">
+                  <Link
+                    to="/hedge"
+                    className={`flex items-center gap-3 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                      isActive('/hedge')
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                    }`}
+                  >
+                    <TrendingUp className="h-3.5 w-3.5 text-amber-600" />
+                    <span>Hedge & Mercado B3</span>
+                  </Link>
+
+                  <Link
+                    to="/pdf-studio"
+                    className={`flex items-center gap-3 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                      isActive('/pdf-studio')
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                    }`}
+                  >
+                    <FileSpreadsheet className="h-3.5 w-3.5 text-blue-600" />
+                    <span>PdfStudio & Exportação</span>
+                  </Link>
+
+                  <Link
+                    to="/sustentabilidade"
+                    className={`flex items-center gap-3 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                      isActive('/sustentabilidade')
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                    }`}
+                  >
+                    <Leaf className="h-3.5 w-3.5 text-emerald-600" />
+                    <span>Sustentabilidade & ESG</span>
+                  </Link>
+
+                  <Link
+                    to="/bi"
+                    className={`flex items-center gap-3 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                      isActive('/bi')
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                    }`}
+                  >
+                    <BarChart3 className="h-3.5 w-3.5 text-purple-600" />
+                    <span>BI & Relatórios Dinâmicos</span>
+                  </Link>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Footer Info & Configurações */}
+      <div className="p-3 border-t border-sidebar-border space-y-1">
+        <Link
+          to="/configuracoes"
+          className="flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"
+        >
+          <Settings className="h-4 w-4" />
+          <span>Configurações</span>
+        </Link>
+      </div>
+    </div>
   )
 }

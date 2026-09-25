@@ -31,17 +31,17 @@ import { cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
 
 export function Header() {
-  const { user, setUser } = useAuth()
+  const { user, switchRole } = useAuth()
   const { toast } = useToast()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications()
   const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline()
   const navigate = useNavigate()
 
   const handleUserSwitch = (newUser: (typeof mockUsers)[0]) => {
-    setUser(newUser)
+    switchRole(newUser.role)
     toast({
       title: 'Perfil Alterado',
-      description: `Você agora está logado como ${newUser.name}.`,
+      description: `Você agora está logado como ${newUser.name} (${newUser.role === 'gestor' ? 'Gestor' : newUser.role === 'capataz' ? 'Capataz' : 'Vaqueiro'}).`,
     })
   }
 
@@ -103,7 +103,7 @@ export function Header() {
 
         <ScannerModal />
 
-        {(user.role === 'admin' || user.role === 'gerente') && (
+        {(user.role === 'admin' || user.role === 'gerente' || user.role === 'gestor') && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -172,7 +172,7 @@ export function Header() {
           </DropdownMenu>
         )}
 
-        {(user.role === 'admin' || user.role === 'gerente') && <QuickAddModal />}
+        {user.role === 'gestor' && <QuickAddModal />}
 
         <div className="h-8 w-px bg-border hidden sm:block"></div>
 
@@ -205,7 +205,8 @@ export function Header() {
                 onClick={() => handleUserSwitch(u)}
                 className={`cursor-pointer ${user.id === u.id ? 'bg-muted' : ''}`}
               >
-                {u.name} {u.role === 'admin' ? '(Admin)' : u.role === 'gerente' ? '(Gerente)' : ''}
+                {u.name} (
+                {u.role === 'gestor' ? 'Gestor' : u.role === 'capataz' ? 'Capataz' : 'Vaqueiro'})
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
