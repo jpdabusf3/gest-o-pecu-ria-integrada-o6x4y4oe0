@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
+import { CentralNotificacoesGestor } from '@/components/gestor/CentralNotificacoesGestor'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
 import { Link } from 'react-router-dom'
@@ -162,9 +163,11 @@ export default function Index() {
               ? 0.78
               : 0.65
 
+      // Converte se estiver em g/dia (>10) ou já em kg/dia
+      const gmdKgDia = gmdMedio > 10 ? gmdMedio / 1000 : gmdMedio
       return {
         frente: frente.charAt(0).toUpperCase() + frente.slice(1),
-        gmdGdia: Math.round(gmdMedio * 1000),
+        gmdKgDia: Number(gmdKgDia.toFixed(2)),
         qtdLotes: lotesFrente.length,
       }
     })
@@ -199,6 +202,9 @@ export default function Index() {
 
   return (
     <div className="space-y-6 pb-20 sm:pb-8 animate-fade-in-up">
+      {/* Central de Notificações do Gestor em Tempo Real (In-App) */}
+      <CentralNotificacoesGestor />
+
       {/* Cabeçalho Consolidado com Status e Ações Rápidas */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-card p-5 rounded-2xl border shadow-sm">
         <div>
@@ -533,8 +539,8 @@ export default function Index() {
                     Frente {item.frente}
                   </span>
                   <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">
-                    {item.gmdGdia}{' '}
-                    <span className="text-xs font-normal text-muted-foreground">g/cab/dia</span>
+                    {item.gmdKgDia.toFixed(2)}{' '}
+                    <span className="text-xs font-normal text-muted-foreground">kg/dia</span>
                   </span>
                 </div>
                 <Badge variant="outline" className="text-xs font-mono">

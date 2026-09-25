@@ -91,6 +91,16 @@ export function ModalNovaAtividade({
     const qtd = parseFloat(qtdInsumo)
     if (isNaN(qtd) || qtd <= 0) return
 
+    // Requisito B: Aviso de insumo insuficiente no agendamento/edição
+    const estoqueDisponivel = item.qtd ?? 0
+    if (qtd > estoqueDisponivel) {
+      toast({
+        title: '⚠️ Aviso: Insumo Insuficiente no Estoque!',
+        description: `A quantidade solicitada (${qtd} ${item.unidade}) excede o saldo disponível em estoque (${estoqueDisponivel} ${item.unidade} de ${item.item}). O agendamento foi incluído, mas providencie reposição com urgência.`,
+        variant: 'destructive',
+      })
+    }
+
     setInsumos((prev) => [
       ...prev,
       {

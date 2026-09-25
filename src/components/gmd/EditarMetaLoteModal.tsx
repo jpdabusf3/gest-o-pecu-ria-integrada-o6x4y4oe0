@@ -37,8 +37,10 @@ export function EditarMetaLoteModal({
   onSuccess,
 }: EditarMetaLoteModalProps) {
   const { toast } = useToast()
-  const [gmdAlvoG, setGmdAlvoG] = useState<string>(
-    lote?.gmd_alvo_g_dia ? String(lote.gmd_alvo_g_dia) : '900',
+  const [gmdAlvoKg, setGmdAlvoKg] = useState<string>(
+    lote?.gmd_alvo_g_dia
+      ? (lote.gmd_alvo_g_dia > 10 ? lote.gmd_alvo_g_dia / 1000 : lote.gmd_alvo_g_dia).toFixed(2)
+      : '0.90',
   )
   const [faseAtual, setFaseAtual] = useState<LotRecord['fase_atual']>(lote?.fase_atual || 'recria')
   const [frente, setFrente] = useState<LotRecord['frente']>(
@@ -53,7 +55,12 @@ export function EditarMetaLoteModal({
   // Quando abre com um novo lote, sincronizar
   const handleOpen = (val: boolean) => {
     if (val && lote) {
-      setGmdAlvoG(lote.gmd_alvo_g_dia ? String(lote.gmd_alvo_g_dia) : '900')
+      const valKg = lote.gmd_alvo_g_dia
+        ? lote.gmd_alvo_g_dia > 10
+          ? (lote.gmd_alvo_g_dia / 1000).toFixed(2)
+          : lote.gmd_alvo_g_dia.toFixed(2)
+        : '0.90'
+      setGmdAlvoKg(valKg)
       setFaseAtual(lote.fase_atual || 'recria')
       setFrente(lote.frente || (lote.sector as any) || 'recria')
       setIsArrendamento(lote.is_arrendamento || false)
@@ -68,11 +75,11 @@ export function EditarMetaLoteModal({
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    const targetNum = parseInt(gmdAlvoG, 10)
-    if (isNaN(targetNum) || targetNum <= 0) {
+    const targetKg = parseFloat(gmdAlvoKg)
+    if (isNaN(targetKg) || targetKg <= 0) {
       toast({
         title: 'Meta Inválida',
-        description: 'Informe um valor numérico em g/dia (ex: 850 para 0,85 kg/dia).',
+        description: 'Informe um valor numérico em kg/dia (ex: 0.90 ou 1.25 kg/dia).',
         variant: 'destructive',
       })
       return
@@ -80,8 +87,9 @@ export function EditarMetaLoteModal({
 
     try {
       setSaving(true)
+      // Mantém gmd_alvo_g_dia compatível no banco real gravando em g/dia (ex: 900 g/dia)
       await atualizarMetaLote(lote.id, {
-        gmd_alvo_g_dia: targetNum,
+        gmd_alvo_g_dia: Math.round(targetKg * 1000),
         fase_atual: faseAtual,
         frente: isArrendamento ? 'arrendamento' : frente,
         is_arrendamento: isArrendamento,
@@ -90,7 +98,7 @@ export function EditarMetaLoteModal({
 
       toast({
         title: 'Plano Alimentar Atualizado',
-        description: `Meta de GMD ajustada para ${targetNum} g/dia na fase ${faseAtual?.toUpperCase()}.`,
+        description: `Meta de GMD ajustada para ${targetKg.toFixed(2)} kg/dia na fase ${faseAtual?.toUpperCase()}.`,
       })
       onOpenChange(false)
       onSuccess()
@@ -127,11 +135,11 @@ export function EditarMetaLoteModal({
               onValueChange={(val: any) => {
                 setFaseAtual(val)
                 // Sugestão automática padrão de mercado / plano nutricional
-                if (val === 'cria') setGmdAlvoG('600')
-                else if (val === 'recria') setGmdAlvoG('750')
-                else if (val === 'engorda') setGmdAlvoG('1100')
-                else if (val === 'tip_rip') setGmdAlvoG('1250')
-                else if (val === 'confinamento') setGmdAlvoG('1500')
+                if (val === 'cria') setGmdAlvoKg('0.60')
+                else if (val === 'recria') setGmdAlvoKg('0.75')
+                else if (val === 'engorda') setGmdAlvoKg('1.10')
+                else if (val === 'tip_rip') setGmdAlvoKg('1.25')
+                else if (val === 'confinamento') setGmdAlvoKg('1.50')
               }}
             >
               <SelectTrigger>
@@ -149,24 +157,24 @@ export function EditarMetaLoteModal({
 
           <div className="space-y-1.5">
             <div className="flex justify-between items-center">
-              <Label className="font-semibold">GMD Alvo Projetado (g/dia) *</Label>
+              <Label className="font-semibold">GMD Alvo Projetado (kg/dia) *</Label>
               <span className="text-xs font-mono text-muted-foreground">
-                {(parseInt(gmdAlvoG, 10) || 0) / 1000} kg/cab/dia
+                Unidade oficial: kg/dia
               </span>
             </div>
             <Input
               type="number"
-              step="10"
-              min="100"
-              max="2500"
+              step="0.01"
+              min="0.1"
+              max="3.0"
               required
-              value={gmdAlvoG}
-              onChange={(e) => setGmdAlvoG(e.target.value)}
+              value={gmdAlvoKg}
+              onChange={(e) => setGmdAlvoKg(e.target.value)}
               className="h-11 font-mono text-lg font-bold"
-              placeholder="Ex: 900"
+              placeholder="Ex: 0.90 ou 1.25"
             />
             <p className="text-[11px] text-muted-foreground">
-              Define a linha de referência no gráfico de acompanhamento de pesagens.
+              Define a meta zootécnica de ganho médio diário em kg/dia.
             </p>
           </div>
 

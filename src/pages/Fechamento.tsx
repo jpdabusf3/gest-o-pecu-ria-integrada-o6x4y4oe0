@@ -41,7 +41,10 @@ import {
   ChevronRight,
   ArrowUpRight,
   ArrowDownRight,
+  AlertOctagon,
 } from 'lucide-react'
+import { PainelFechamentoTrimestral } from '@/components/fechamento/PainelFechamentoTrimestral'
+import { ComparativoSafras } from '@/components/fechamento/ComparativoSafras'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { getLots, LotRecord } from '@/services/lots'
@@ -75,6 +78,7 @@ export default function Fechamento() {
   const printRef = useRef<HTMLDivElement>(null)
 
   // Filtros
+  const anoBase = new Date().getFullYear()
   const [frente, setFrente] = useState<FrenteFechamento>('recria')
   const [periodo, setPeriodo] = useState<string>('2024-03')
   const [tipoPeriodo, setTipoPeriodo] = useState<TipoPeriodo>('mes')
@@ -380,25 +384,71 @@ export default function Fechamento() {
           </CardContent>
         </Card>
 
-        {/* Card 3: Custo da @ Produzida */}
-        <Card className="border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-950/20 shadow-sm relative overflow-hidden">
-          <CardHeader className="pb-1 pt-4">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
-              Custo da @ Produzida
-            </CardDescription>
-            <CardTitle className="text-3xl font-black text-foreground font-mono flex items-baseline gap-1">
-              R${' '}
-              {resultado.lotesVendidos.length > 0
-                ? resultado.lotesVendidos[0].custoArrobaProduzida.toFixed(2)
-                : '142.50'}
-              <span className="text-sm font-semibold text-muted-foreground">/@</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pb-4 pt-1 text-xs text-muted-foreground flex items-center justify-between">
-            <span>Sem valor de reposição</span>
-            <span className="text-emerald-600 font-semibold text-[11px]">-3.1% custo</span>
-          </CardContent>
-        </Card>
+        {/* Card 3: Custo da @ Produzida com Alerta de Margem Comprimida */}
+        {(() => {
+          const custoArr =
+            resultado.lotesVendidos.length > 0
+              ? resultado.lotesVendidos[0].custoArrobaProduzida
+              : resultado.custeio?.custoArrobaProduzida || 142.5
+          const margemComprimida = custoArr > cotacaoArroba
+          return (
+            <Card
+              className={`border-l-4 shadow-sm relative overflow-hidden ${
+                margemComprimida
+                  ? 'border-l-rose-600 bg-rose-50/40 dark:bg-rose-950/30'
+                  : 'border-l-amber-500 bg-amber-50/30 dark:bg-amber-950/20'
+              }`}
+            >
+              <CardHeader className="pb-1 pt-4">
+                <div className="flex justify-between items-start">
+                  <CardDescription
+                    className={`text-xs font-bold uppercase tracking-wider ${
+                      margemComprimida
+                        ? 'text-rose-800 dark:text-rose-300 flex items-center gap-1'
+                        : 'text-amber-800 dark:text-amber-300'
+                    }`}
+                  >
+                    {margemComprimida && <AlertOctagon className="h-3.5 w-3.5 text-rose-600" />}
+                    Custo da @ Produzida
+                  </CardDescription>
+                  {margemComprimida && (
+                    <Badge variant="destructive" className="text-[10px] px-1.5 py-0 font-bold">
+                      Margem Comprimida!
+                    </Badge>
+                  )}
+                </div>
+                <CardTitle
+                  className={`text-3xl font-black font-mono flex items-baseline gap-1 ${
+                    margemComprimida ? 'text-rose-600' : 'text-foreground'
+                  }`}
+                >
+                  R$ {custoArr.toFixed(2)}
+                  <span className="text-sm font-semibold text-muted-foreground">/@</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pb-4 pt-1 text-xs text-muted-foreground flex items-center justify-between">
+                <span>
+                  {margemComprimida ? (
+                    <strong className="text-rose-600">
+                      Custo &gt; Venda (R$ {cotacaoArroba.toFixed(2)})
+                    </strong>
+                  ) : (
+                    'Sem valor de reposição'
+                  )}
+                </span>
+                <span
+                  className={
+                    margemComprimida
+                      ? 'text-rose-600 font-bold text-[11px]'
+                      : 'text-emerald-600 font-semibold text-[11px]'
+                  }
+                >
+                  {margemComprimida ? 'Atenção Gestor' : '-3.1% custo'}
+                </span>
+              </CardContent>
+            </Card>
+          )
+        })()}
 
         {/* Card 4: Margem EBITDA (%) */}
         <Card className="border-l-4 border-l-blue-600 bg-blue-50/30 dark:bg-blue-950/20 shadow-sm relative overflow-hidden">
@@ -459,7 +509,13 @@ export default function Fechamento() {
             <Tractor className="h-4 w-4" /> 8. Imobilizado
           </TabsTrigger>
           <TabsTrigger value="recortes" className="py-2 gap-1.5 font-medium">
-            <PieChart className="h-4 w-4" /> 9. Recortes (Sexo/Trimestre)
+            <PieChart className="h-4 w-4" /> 9. Recortes (Sexo)
+          </TabsTrigger>
+          <TabsTrigger value="trimestral" className="py-2 gap-1.5 font-medium">
+            <Calendar className="h-4 w-4 text-emerald-600" /> 10. Fechamento Trimestral
+          </TabsTrigger>
+          <TabsTrigger value="safras-comparativo" className="py-2 gap-1.5 font-medium">
+            <History className="h-4 w-4 text-primary" /> 11. Comparativo entre Safras
           </TabsTrigger>
         </TabsList>
 
@@ -1311,6 +1367,20 @@ export default function Fechamento() {
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* ------------------------------------------------------------- */}
+        {/* ABA 10: FECHAMENTO TRIMESTRAL INTEGRADO (MANEJOS + CUSTOS) */}
+        {/* ------------------------------------------------------------- */}
+        <TabsContent value="trimestral" className="space-y-4">
+          <PainelFechamentoTrimestral ano={anoBase} frente={frente} />
+        </TabsContent>
+
+        {/* ------------------------------------------------------------- */}
+        {/* ABA 11: COMPARATIVO ENTRE SAFRAS ARQUIVADAS (ANO A ANO) */}
+        {/* ------------------------------------------------------------- */}
+        <TabsContent value="safras-comparativo" className="space-y-4">
+          <ComparativoSafras frente={frente} dadosFechamentoAtual={resultado} />
         </TabsContent>
 
         {/* ------------------------------------------------------------- */}

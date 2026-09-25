@@ -189,7 +189,8 @@ export function CurvaPesoComparativa({ lots, pesagens, onOpenLotDetails }: Curva
             pesoInicial: inicial,
             pesoFinal: final,
             ganhoTotalKg: ganho,
-            ganhoTotalArrobas: Number((ganho / 15).toFixed(2)),
+            // Arrobas de peso vivo = ganho / 30
+            ganhoTotalArrobas: Number((ganho / 30).toFixed(2)),
             gmdPonderado: gmd,
             dias: dias,
             color: lotColorMap.get(lotId) || PALETTE_COLORS[0],
@@ -278,7 +279,8 @@ export function CurvaPesoComparativa({ lots, pesagens, onOpenLotDetails }: Curva
           pesoInicial: inicial,
           pesoFinal: final,
           ganhoTotalKg: ganho,
-          ganhoTotalArrobas: Number((ganho / 15).toFixed(2)),
+          // Arrobas de peso vivo = ganho / 30
+          ganhoTotalArrobas: Number((ganho / 30).toFixed(2)),
           gmdPonderado: gmd,
           dias: totalDias,
           color: lotColorMap.get(lotId) || PALETTE_COLORS[0],

@@ -89,8 +89,16 @@ export function calcularCustoArrobaLote(
   const pesoEntradaTotalKg = pesoEntradaKg * headcount
   const pesoSaidaTotalKg = pesoSaidaKg * headcount
 
+  // Regra técnica:
+  // Peso em @ de carcaça = (peso vivo * % rendimento de carcaça) / 15
+  // Arrobas (@) de carcaça produzidas = ((peso vivo saída * rendimento) - (peso vivo entrada * 50%)) / 15
+  const rendimentoSaidaPct = lot.rendimento_carcaca_pct || 53.5
+  const rendimentoEntradaPct = 50.0 // Padrão bezerro/garrote de entrada
+  const carcacaSaidaTotalKg = pesoSaidaTotalKg * (rendimentoSaidaPct / 100)
+  const carcacaEntradaTotalKg = pesoEntradaTotalKg * (rendimentoEntradaPct / 100)
+
   const arrobasProduzidasTotal = temFechamentoValido
-    ? Number(((pesoSaidaTotalKg - pesoEntradaTotalKg) / 15).toFixed(2))
+    ? Number(((carcacaSaidaTotalKg - carcacaEntradaTotalKg) / 15).toFixed(2))
     : 0
 
   const arrobasProduzidasPorCabeca =

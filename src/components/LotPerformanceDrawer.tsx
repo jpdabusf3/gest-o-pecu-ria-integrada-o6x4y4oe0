@@ -167,7 +167,12 @@ export function LotPerformanceDrawer({
               <div className="flex items-center gap-2">
                 <Target className="h-4 w-4 text-primary" />
                 <span className="font-bold text-sm">
-                  Meta de GMD: {analise?.gmdAlvoG || 900} g/dia
+                  Meta de GMD:{' '}
+                  {((analise?.gmdAlvoG || 900) > 10
+                    ? (analise?.gmdAlvoG || 900) / 1000
+                    : analise?.gmdAlvoG || 0.9
+                  ).toFixed(2)}{' '}
+                  kg/dia
                 </span>
                 <span className="text-xs text-muted-foreground">
                   ({lotDetails?.fase_atual || 'recria'})

@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-09-25T05:40:36.490Z",
+  "generatedAt": "2026-09-25T05:55:04.192Z",
   "collections": [
     {
       "name": "users",
       "type": "auth",
       "apiRules": {
-        "list": "id = @request.auth.id",
-        "view": "id = @request.auth.id",
+        "list": "",
+        "view": "",
         "create": "",
-        "update": "id = @request.auth.id",
+        "update": "@request.auth.id != \"\"",
         "delete": "id = @request.auth.id"
       },
       "fields": [
@@ -37,6 +37,13 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "role",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["gestor", "capataz", "operador", "admin", "gerente"]
         }
       ],
       "indexes": [
@@ -1508,6 +1515,252 @@
       "indexes": [
         "CREATE INDEX idx_imobilizado_tipo ON imobilizado (tipo)",
         "CREATE INDEX idx_imobilizado_centro ON imobilizado (centro_custo)"
+      ]
+    },
+    {
+      "name": "fechamentos_arquivados",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "ano_safra",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "periodo_rotulo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["todas", "cria", "recria", "engorda", "confinamento", "arrendamento"]
+        },
+        {
+          "name": "arrobas_ha_ano",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "arrobas_cab_ano",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "custo_arroba_produzida",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "cotacao_arroba_media",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "margem_ebitda_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ebitda_total",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "lucro_liquido",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "receita_total",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "custeio_cab_ano",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_lotacao_ua_ha",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "mortalidade_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_desmame_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gmd_medio_kg_dia",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "rebanho_medio_cab",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "arrobas_totais_produzidas",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "snapshot_dados",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "arquivado_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "arquivado_em",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_arq_safra ON fechamentos_arquivados (ano_safra DESC)",
+        "CREATE INDEX idx_arq_frente ON fechamentos_arquivados (frente)"
+      ]
+    },
+    {
+      "name": "notificacoes_sistema",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": "",
+        "delete": ""
+      },
+      "fields": [
+        {
+          "name": "titulo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "mensagem",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "tipo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "gmd_critico",
+            "atividade_pendente",
+            "margem_comprimida",
+            "estoque_baixo",
+            "meta",
+            "geral"
+          ]
+        },
+        {
+          "name": "severidade",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["baixa", "media", "alta", "critica"]
+        },
+        {
+          "name": "lido",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "link_destino",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencia_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "destinatario_role",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_notif_created ON notificacoes_sistema (created DESC)",
+        "CREATE INDEX idx_notif_lido ON notificacoes_sistema (lido)"
       ]
     }
   ]

@@ -46,6 +46,7 @@ export default function useAbateStore() {
   const addRecord = useCallback(
     (rec: Omit<SlaughterRecord, 'id' | 'yieldPct' | 'pricePerArroba'>) => {
       const yieldPct = (rec.pesoCarcacaTotal / rec.pesoVivoTotal) * 100
+      // Arrobas de carcaça = peso carcaça / 15
       const arrobas = rec.pesoCarcacaTotal / 15
       const pricePerArroba = rec.valorTotal / arrobas
 

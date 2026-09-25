@@ -102,8 +102,24 @@ export function ResolverAlertaModal({
               <span className="text-destructive">Desvio: {alerta.desvio_pct.toFixed(1)}%</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
-              <span>GMD Real: {alerta.gmd_real || '-'} g/dia</span>
-              <span>GMD Meta: {alerta.gmd_alvo || '-'} g/dia</span>
+              <span>
+                GMD Real:{' '}
+                {alerta.gmd_real
+                  ? alerta.gmd_real > 10
+                    ? (alerta.gmd_real / 1000).toFixed(2)
+                    : alerta.gmd_real.toFixed(2)
+                  : '-'}{' '}
+                kg/dia
+              </span>
+              <span>
+                GMD Meta:{' '}
+                {alerta.gmd_alvo
+                  ? alerta.gmd_alvo > 10
+                    ? (alerta.gmd_alvo / 1000).toFixed(2)
+                    : alerta.gmd_alvo.toFixed(2)
+                  : '-'}{' '}
+                kg/dia
+              </span>
             </div>
             <div className="text-muted-foreground pt-1">
               Data da Ocorrência: {alerta.data ? format(parseISO(alerta.data), 'dd/MM/yyyy') : '-'}

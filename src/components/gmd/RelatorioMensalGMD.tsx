@@ -277,9 +277,9 @@ export function RelatorioMensalGMD() {
       'Permanência (dias)': item.permanenciaDias,
       'Faixa Permanência': labelFaixaPermanencia(item.faixaPermanencia),
       Cabeças: item.lote.headcount || 0,
-      'GMD Alvo (g/dia)': item.gmdAlvoG,
-      'GMD Real (g/dia)': item.gmdRealG || '-',
-      'GDC Carcaça (g/dia)': item.gdcRealKg ? Math.round(item.gdcRealKg * 1000) : '-',
+      'GMD Alvo (kg/dia)': item.gmdAlvoKg.toFixed(2),
+      'GMD Real (kg/dia)': item.gmdRealKg ? item.gmdRealKg.toFixed(2) : '-',
+      'GDC Carcaça (kg/dia)': item.gdcRealKg ? item.gdcRealKg.toFixed(2) : '-',
       'Desvio (%)': item.desvioPct !== null ? `${item.desvioPct}%` : '-',
       Semáforo: item.statusSemaforo.toUpperCase(),
       'Dias sem Pesagem': item.diasSemPesagem !== null ? item.diasSemPesagem : '-',
@@ -540,10 +540,10 @@ export function RelatorioMensalGMD() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
-                {kpisGerais.gmdMedioPonderadoG} g/dia
+                {(kpisGerais.gmdMedioPonderadoG / 1000).toFixed(2)} kg/dia
               </div>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Meta Média: {kpisGerais.gmdMetaMedioG} g/dia
+              <p className="text-xs text-muted-foreground mt-1">
+                Meta Média: {(kpisGerais.gmdMetaMedioG / 1000).toFixed(2)} kg/dia{' '}
               </p>
             </CardContent>
           </Card>
@@ -580,7 +580,9 @@ export function RelatorioMensalGMD() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-purple-600">
-                {kpisGerais.gdcMedioPonderadoG ? `${kpisGerais.gdcMedioPonderadoG} g/dia` : '-'}
+                {kpisGerais.gdcMedioPonderadoG
+                  ? `${(kpisGerais.gdcMedioPonderadoG / 1000).toFixed(2)} kg/dia`
+                  : '-'}
               </div>
               <p className="text-xs text-muted-foreground mt-0.5">Ganho diário de carcaça</p>
             </CardContent>
@@ -946,7 +948,18 @@ export function RelatorioMensalGMD() {
                           {alerta.desvio_pct.toFixed(1)}%
                         </TableCell>
                         <TableCell className="text-right font-mono text-xs whitespace-nowrap">
-                          {alerta.gmd_real || '-'} / {alerta.gmd_alvo || 900} g/d
+                          {alerta.gmd_real
+                            ? alerta.gmd_real > 10
+                              ? (alerta.gmd_real / 1000).toFixed(2)
+                              : alerta.gmd_real.toFixed(2)
+                            : '-'}{' '}
+                          /{' '}
+                          {alerta.gmd_alvo
+                            ? alerta.gmd_alvo > 10
+                              ? (alerta.gmd_alvo / 1000).toFixed(2)
+                              : alerta.gmd_alvo.toFixed(2)
+                            : '0.90'}{' '}
+                          kg/dia
                         </TableCell>
                         <TableCell>
                           {alerta.status === 'aberto' ? (

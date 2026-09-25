@@ -146,7 +146,21 @@ export function TopDesvioGmdCard() {
                           Desvio: {alerta.desvio_pct.toFixed(1)}%
                         </Badge>
                         <span className="text-muted-foreground">
-                          (Meta: {alerta.gmd_alvo || 900} g/d | Real: {alerta.gmd_real || '-'} g/d)
+                          (Meta:{' '}
+                          {(alerta.gmd_alvo
+                            ? alerta.gmd_alvo > 10
+                              ? alerta.gmd_alvo / 1000
+                              : alerta.gmd_alvo
+                            : 0.9
+                          ).toFixed(2)}{' '}
+                          kg/dia | Real:{' '}
+                          {(alerta.gmd_real
+                            ? alerta.gmd_real > 10
+                              ? alerta.gmd_real / 1000
+                              : alerta.gmd_real
+                            : 0
+                          ).toFixed(2)}{' '}
+                          kg/dia)
                         </span>
                       </div>
                       <p className="text-muted-foreground text-[11px]">

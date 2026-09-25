@@ -45,7 +45,8 @@ export function RegisterHedgeModal({ open, onOpenChange, prefillData }: Props) {
   // Calculate total projected arrobas for limits validation
   const totalProjectedArrobas = lots.reduce((acc, lot) => {
     const pesoSaida = lot.pesoMedio + lot.gmd * 90 // default 90 days
-    return acc + lot.cabecas * (pesoSaida / 15)
+    // Arrobas de carcaça protegidas = (pesoSaida * 54%) / 15
+    return acc + lot.cabecas * ((pesoSaida * 0.54) / 15)
   }, 0)
 
   useEffect(() => {

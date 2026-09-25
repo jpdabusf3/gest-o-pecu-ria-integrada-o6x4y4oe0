@@ -14,7 +14,8 @@ import {
   WifiOff,
 } from 'lucide-react'
 import { Button } from './ui/button'
-import { useAuth, mockUsers } from '@/contexts/AuthContext'
+import { useState } from 'react'
+import { useAuth, fallbackUsers } from '@/contexts/AuthContext'
 import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useOffline } from '@/contexts/OfflineContext'
 import { Badge } from '@/components/ui/badge'
@@ -29,19 +30,23 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
+import { LoginModal } from './LoginModal'
+import { LogIn, LogOut, UserCheck } from 'lucide-react'
 
 export function Header() {
-  const { user, switchRole } = useAuth()
+  const { user, switchRole, logout } = useAuth()
   const { toast } = useToast()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications()
   const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline()
   const navigate = useNavigate()
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
 
-  const handleUserSwitch = (newUser: (typeof mockUsers)[0]) => {
-    switchRole(newUser.role)
+  const handleUserSwitch = (roleKey: keyof typeof fallbackUsers) => {
+    switchRole(roleKey)
+    const target = fallbackUsers[roleKey]
     toast({
-      title: 'Perfil Alterado',
-      description: `Você agora está logado como ${newUser.name} (${newUser.role === 'gestor' ? 'Gestor' : newUser.role === 'capataz' ? 'Capataz' : 'Vaqueiro'}).`,
+      title: 'Perfil Selecionado',
+      description: `Você agora está operando como ${target.name} (${roleKey === 'gestor' ? 'Gestor' : roleKey === 'capataz' ? 'Capataz' : 'Vaqueiro'}).`,
     })
   }
 
@@ -176,41 +181,73 @@ export function Header() {
 
         <div className="h-8 w-px bg-border hidden sm:block"></div>
 
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setLoginModalOpen(true)}
+          className="h-9 gap-1.5 text-xs shadow-xs hidden sm:flex"
+        >
+          <LogIn className="h-3.5 w-3.5 text-primary" />
+          <span>Login de Usuário</span>
+        </Button>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105 hidden sm:flex">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{user.name?.charAt(0) || 'U'}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="w-64">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user.name}</p>
+                <p className="text-sm font-bold leading-none">{user.name}</p>
                 <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                <Badge variant="outline" className="mt-1 w-fit capitalize text-[10px]">
+                  Perfil: {user.role === 'operador' ? 'Vaqueiro' : user.role}
+                </Badge>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setLoginModalOpen(true)}>
+              <LogIn className="mr-2 h-4 w-4 text-primary" />
+              <span>Entrar com Outro Usuário</span>
+            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/configuracoes')}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Configurações</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Alternar Acesso (Demo RBAC)
+            <DropdownMenuLabel className="text-[11px] text-muted-foreground uppercase font-semibold">
+              Alternar Perfil Rápido
             </DropdownMenuLabel>
-            {mockUsers.map((u) => (
-              <DropdownMenuItem
-                key={u.id}
-                onClick={() => handleUserSwitch(u)}
-                className={`cursor-pointer ${user.id === u.id ? 'bg-muted' : ''}`}
-              >
-                {u.name} (
-                {u.role === 'gestor' ? 'Gestor' : u.role === 'capataz' ? 'Capataz' : 'Vaqueiro'})
-              </DropdownMenuItem>
-            ))}
+            <DropdownMenuItem onClick={() => handleUserSwitch('gestor')} className="cursor-pointer">
+              João Pedro (Gestor Geral)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleUserSwitch('capataz')}
+              className="cursor-pointer"
+            >
+              Antônio (Capataz)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleUserSwitch('operador')}
+              className="cursor-pointer"
+            >
+              João (Vaqueiro / Campo)
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="cursor-pointer text-destructive focus:text-destructive"
+              onClick={logout}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Sair da Sessão</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <LoginModal open={loginModalOpen} onOpenChange={setLoginModalOpen} />
       </div>
     </header>
   )

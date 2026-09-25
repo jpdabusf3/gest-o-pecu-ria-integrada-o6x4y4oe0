@@ -27,10 +27,10 @@ export type StatusSemaforo = 'verde' | 'amarelo' | 'vermelho' | 'cinza'
 
 export interface LoteGMDAnalise {
   lote: LotRecord
-  gmdAlvoG: number // em g/dia (ex: 1200)
-  gmdAlvoKg: number // em kg/dia (ex: 1.200)
-  gmdRealKg: number | null // em kg/dia do último intervalo válido
-  gmdRealG: number | null // em g/dia
+  gmdAlvoG: number // mantido para compatibilidade legado (ex: 1000)
+  gmdAlvoKg: number // em kg/dia (ex: 1.00 kg/dia)
+  gmdRealKg: number | null // em kg/dia do último intervalo válido (ex: 1.15 kg/dia)
+  gmdRealG: number | null // mantido para compatibilidade legado
   gdcRealKg: number | null // Ganho diário de carcaça
   desvioPct: number | null // (gmd_real - gmd_alvo) / gmd_alvo * 100
   statusSemaforo: StatusSemaforo
@@ -114,8 +114,12 @@ export function analisarLoteGMD(
   pesagensDoLote: PesagemRecord[],
   alertasDoLote: AlertaGMDRecord[] = [],
 ): LoteGMDAnalise {
-  const gmdAlvoG = lote.gmd_alvo_g_dia || 900
-  const gmdAlvoKg = gmdAlvoG / 1000
+  // Regra técnica: Unidade padronizada de GMD é kg/dia.
+  // Valores já gravados no banco podem vir em g/dia (ex: 900, 1200) ou kg/dia (ex: 0.9, 1.2).
+  // Se gmd_alvo_g_dia for > 10, assume g/dia e converte para kg/dia dividindo por 1000.
+  const rawAlvo = lote.gmd_alvo_g_dia || 900
+  const gmdAlvoKg = rawAlvo > 10 ? Number((rawAlvo / 1000).toFixed(2)) : Number(rawAlvo.toFixed(2))
+  const gmdAlvoG = rawAlvo > 10 ? rawAlvo : Math.round(rawAlvo * 1000)
 
   // Ordenar cronologicamente decrescente
   const pesagensOrdenadas = [...pesagensDoLote].sort(
@@ -132,7 +136,16 @@ export function analisarLoteGMD(
     (p) => typeof p.gmd_intervalo === 'number' && p.gmd_intervalo !== null && p.gmd_intervalo !== 0,
   )
 
-  const gmdRealKg = pesagemComGmd ? pesagemComGmd.gmd_intervalo! : null
+  // Se o gmd_intervalo já gravado for > 10, converte de g/dia para kg/dia
+  let gmdRealKg: number | null = null
+  if (
+    pesagemComGmd &&
+    pesagemComGmd.gmd_intervalo !== undefined &&
+    pesagemComGmd.gmd_intervalo !== null
+  ) {
+    const rawReal = pesagemComGmd.gmd_intervalo
+    gmdRealKg = rawReal > 10 ? Number((rawReal / 1000).toFixed(2)) : Number(rawReal.toFixed(2))
+  }
   const gmdRealG = gmdRealKg !== null ? Math.round(gmdRealKg * 1000) : null
 
   // Cálculo de GDC: GDC = GMD × rendimento_carcaca%

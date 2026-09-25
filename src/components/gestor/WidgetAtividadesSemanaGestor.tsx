@@ -102,8 +102,15 @@ export function WidgetAtividadesSemanaGestor() {
     }
   }, [atividades])
 
+  // Meta de conclusão semanal configurável por frente ou geral (Padrão 90%)
+  const [metaConclusaoPct, setMetaConclusaoPct] = useState<number>(() => {
+    const saved = localStorage.getItem('gpi_meta_conclusao_semanal')
+    return saved ? parseInt(saved, 10) : 90
+  })
+
   const totalSemana = atividadesSemana.length
   const pctConclusao = totalSemana > 0 ? Math.round((concluidasCount / totalSemana) * 100) : 0
+  const abaixoDaMeta = pctConclusao < metaConclusaoPct
 
   // Aprovar / Dar ciente na pendência de não realizada
   const handleAprovarRevisao = async (rec: AtividadeRecord) => {
@@ -185,15 +192,56 @@ export function WidgetAtividadesSemanaGestor() {
       </CardHeader>
 
       <CardContent className="p-4 sm:p-6 space-y-5">
-        {/* Barra de Progresso e Métricas Gerais */}
-        <div className="space-y-2 bg-muted/30 p-4 rounded-xl border">
+        {/* Barra de Progresso e Métricas Gerais com Semáforo de Meta */}
+        <div
+          className={`space-y-2.5 p-4 rounded-xl border transition-all ${
+            abaixoDaMeta
+              ? 'bg-rose-500/10 border-rose-500/30'
+              : 'bg-emerald-500/10 border-emerald-500/30'
+          }`}
+        >
           <div className="flex justify-between items-center text-sm">
-            <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">
-              Taxa de Conclusão Semanal
-            </span>
-            <span className="font-bold text-base text-primary">{pctConclusao}% Concluído</span>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                Taxa de Conclusão Semanal
+              </span>
+              <Badge
+                variant={abaixoDaMeta ? 'destructive' : 'default'}
+                className="text-[10px] font-bold"
+              >
+                {abaixoDaMeta
+                  ? `Abaixo da Meta (${metaConclusaoPct}%)`
+                  : `Meta Atingida (≥${metaConclusaoPct}%)`}
+              </Badge>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Meta:</span>
+              <input
+                type="number"
+                min="50"
+                max="100"
+                value={metaConclusaoPct}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10) || 90
+                  setMetaConclusaoPct(val)
+                  localStorage.setItem('gpi_meta_conclusao_semanal', String(val))
+                }}
+                className="w-14 h-7 text-xs font-mono font-bold bg-background border rounded px-1.5 text-center"
+              />
+              <span className="text-xs font-mono text-muted-foreground">%</span>
+              <span
+                className={`font-mono font-black text-lg ${
+                  abaixoDaMeta ? 'text-rose-600' : 'text-emerald-600'
+                }`}
+              >
+                {pctConclusao}%
+              </span>
+            </div>
           </div>
-          <Progress value={pctConclusao} className="h-2.5 bg-muted" />
+          <Progress
+            value={pctConclusao}
+            className={`h-2.5 ${abaixoDaMeta ? '[&>div]:bg-rose-600' : '[&>div]:bg-emerald-600'}`}
+          />
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
             <div className="flex items-center gap-1.5 text-muted-foreground">

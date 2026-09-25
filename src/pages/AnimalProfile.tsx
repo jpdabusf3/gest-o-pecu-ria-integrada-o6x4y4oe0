@@ -243,7 +243,8 @@ export default function AnimalProfile() {
   const totalExpenses = totalNutrition + totalSanity + totalOther
 
   const currentWeightNum = parseFloat(pesoAtual.replace('kg', '').trim()) || 0
-  const estimatedArrobas = currentWeightNum / 15 // Assuming /15 as per AC projection formula
+  // Regra técnica: Arroba (@) de peso vivo = 30 kg
+  const estimatedArrobas = currentWeightNum / 30
 
   const currentDatagroPrice = 265.5 // Mock sync to MT price
   const estimatedMarketValue = estimatedArrobas * currentDatagroPrice

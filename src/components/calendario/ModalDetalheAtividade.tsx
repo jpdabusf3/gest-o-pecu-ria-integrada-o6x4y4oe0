@@ -302,29 +302,51 @@ export function ModalDetalheAtividade({
             </div>
           )}
 
-          {/* Insumos necessários */}
+          {/* Insumos necessários e alerta de estoque em tempo real */}
           {atividade.insumos && atividade.insumos.length > 0 && (
             <div>
               <div className="text-xs text-muted-foreground font-semibold mb-1.5 flex items-center gap-1.5">
                 <Package className="h-3.5 w-3.5 text-primary" />
-                Insumos a Deduzir do Estoque:
+                Insumos Vinculados (Conferência de Saldo):
               </div>
               <div className="space-y-1.5">
-                {atividade.insumos.map((ins, idx) => (
-                  <div
-                    key={idx}
-                    className="flex justify-between items-center text-xs bg-muted/40 p-2 rounded border"
-                  >
-                    <span className="font-medium">{ins.item}</span>
-                    <Badge variant="secondary" className="font-mono">
-                      {ins.quantidade} {ins.unidade || 'un'}
-                    </Badge>
-                  </div>
-                ))}
+                {atividade.insumos.map((ins, idx) => {
+                  const itemReal = inventory.find(
+                    (i) => i.id === ins.inventoryId || i.item === ins.item,
+                  )
+                  const saldoAtual = itemReal?.qtd ?? 0
+                  const insuficiente = saldoAtual < ins.quantidade
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex justify-between items-center text-xs p-2 rounded border ${
+                        insuficiente
+                          ? 'bg-rose-500/10 border-rose-500/40 text-rose-900 dark:text-rose-200'
+                          : 'bg-muted/40'
+                      }`}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-medium">{ins.item}</span>
+                        <span className="text-[10px] text-muted-foreground">
+                          Saldo em estoque: {saldoAtual} {ins.unidade || itemReal?.unidade || 'un'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {insuficiente && (
+                          <Badge variant="destructive" className="text-[9px] h-4">
+                            Saldo Insuficiente!
+                          </Badge>
+                        )}
+                        <Badge variant="secondary" className="font-mono">
+                          {ins.quantidade} {ins.unidade || 'un'}
+                        </Badge>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}
-
           {/* Progresso em andamento */}
           {atividade.progresso_observacoes && (
             <div className="bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-lg text-xs">

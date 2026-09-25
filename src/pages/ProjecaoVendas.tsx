@@ -97,7 +97,9 @@ export default function ProjecaoVendas() {
       .map((lot) => {
         const gmdSimulado = lot.gmd * scenarioMult
         const pesoSaidaEstimado = lot.pesoMedio + gmdSimulado * confinementDays
-        const arrobasEstimadas = pesoSaidaEstimado / 15
+        // Regra técnica: peso vivo em arrobas = peso / 30; carcaça estimada = (peso * rendimento) / 15
+        const rendimentoPadrao = p.sex === 'Fêmea' ? 52 : 54
+        const arrobasEstimadas = (pesoSaidaEstimado * (rendimentoPadrao / 100)) / 15
         const receitaProjetadaCab = arrobasEstimadas * arrobaPrice
         const custoAcumuladoCab = lot.pesoMedio * 4.2 + confinementDays * 12 // Ex: custo base + diária
         const margemProjetadaCab = receitaProjetadaCab - custoAcumuladoCab
@@ -302,7 +304,7 @@ export default function ProjecaoVendas() {
                   </code>{' '}
                   e
                   <code className="mx-1 px-1.5 py-0.5 rounded bg-muted text-[10px] font-bold">
-                    Arrobas = Peso Est. / 15
+                    Arrobas Carcaça = (Peso Est. × Rend.%) / 15 | Arrobas PV = Peso / 30
                   </code>
                   .
                 </CardDescription>

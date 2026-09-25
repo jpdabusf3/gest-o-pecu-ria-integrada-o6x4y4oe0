@@ -643,9 +643,11 @@ export function calcularFechamento(params: {
       mortesCab -
       transfSaidaCab
 
-    // Conversão para @ (1 cab em pé estimada em peso vivo médio * 50% / 15 ou peso médio * 0.5 / 15)
+    // Regra técnica oficial:
+    // Arroba (@) de CARCAÇA = (peso vivo * % rendimento de carcaça) / 15
+    // Arroba (@) de PESO VIVO = peso vivo / 30
     const pesoMedioCabKg = frente === 'cria' ? 450 : frente === 'engorda' ? 510 : 320
-    const arrobasPorCab = (pesoMedioCabKg * 0.5) / 15 // Rendimento padrão 50% para equivalência em carcaça
+    const arrobasPorCab = (pesoMedioCabKg * 0.5) / 15 // Equivalência em carcaça padrão 50%
 
     const estoqueInicialAt = Number((estoqueInicial * arrobasPorCab).toFixed(1))
     const estoqueFinalAt = Number((estoqueFinal * arrobasPorCab).toFixed(1))
@@ -779,9 +781,12 @@ export function calcularFechamento(params: {
         ? Number((v.peso_vivo_total / cabecas).toFixed(1))
         : lotMatch?.peso_saida_medio || 550
 
-    // Arrobas produzidas = (peso saída carcaça total - peso entrada carcaça total) / 15
+    // Regra técnica:
+    // Rendimento de carcaça (%) = (peso de carcaça / peso vivo) * 100
+    // Peso em @ de carcaça = (peso vivo * % rendimento de carcaça) / 15
+    // Arroba de peso vivo = 30 kg
     const rendimento = v.rendimento_carcaca_pct || 53.5
-    const carcacaEntradaKg = pesoEntradaKg * 0.5
+    const carcacaEntradaKg = pesoEntradaKg * 0.5 // Rendimento de carcaça na entrada padrão 50%
     const carcacaSaidaKg = pesoSaidaKg * (rendimento / 100)
     const arrobasProduzidasPorCab = Number(((carcacaSaidaKg - carcacaEntradaKg) / 15).toFixed(2))
     const arrobasProduzidasTotal = Number((arrobasProduzidasPorCab * cabecas).toFixed(2))
@@ -809,6 +814,7 @@ export function calcularFechamento(params: {
         : 145.0
 
     const receitaTotal = v.receita_total
+    // Reposição avaliada em @ de carcaça (peso vivo * 50% / 15)
     const valorReposicaoTotal = cabecas * ((pesoEntradaKg * 0.5) / 15) * valorArrobaEntrada
     const lucroLote = Number(
       (receitaTotal - valorReposicaoTotal - custoTotalSemReposicao).toFixed(2),

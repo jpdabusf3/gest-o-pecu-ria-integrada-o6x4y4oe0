@@ -667,16 +667,21 @@ export default function Pesagens() {
                       <div className="bg-muted/40 p-2 rounded">
                         <span className="text-muted-foreground block">Em Arrobas (@):</span>
                         <span className="font-semibold text-primary text-sm">
-                          {(parseFloat(pesoMedio) / 15).toFixed(2)} @ / cab
+                          {(parseFloat(pesoMedio) / 30).toFixed(2)} @ (PV) / cab
                         </span>
                       </div>
                       <div className="bg-muted/40 p-2 rounded col-span-2 sm:col-span-1">
                         <span className="text-muted-foreground block">
-                          GMD Real vs Meta ({activeModalLot?.gmd_alvo_g_dia || 900} g/d):
+                          GMD Real vs Meta (
+                          {((activeModalLot?.gmd_alvo_g_dia || 900) > 10
+                            ? (activeModalLot?.gmd_alvo_g_dia || 900) / 1000
+                            : activeModalLot?.gmd_alvo_g_dia || 0.9
+                          ).toFixed(2)}{' '}
+                          kg/dia):
                         </span>
                         <span className="font-semibold text-emerald-600 text-sm flex items-center gap-1.5">
                           {gmdPreview?.gmd !== null && gmdPreview?.gmd !== undefined
-                            ? `${gmdPreview.gmd} kg/d (${calcularDesvioGMD(gmdPreview.gmd, (activeModalLot?.gmd_alvo_g_dia || 900) / 1000)}%)`
+                            ? `${gmdPreview.gmd.toFixed(2)} kg/dia (${calcularDesvioGMD(gmdPreview.gmd, (activeModalLot?.gmd_alvo_g_dia || 900) > 10 ? (activeModalLot?.gmd_alvo_g_dia || 900) / 1000 : activeModalLot?.gmd_alvo_g_dia || 0.9)}%)`
                             : 'Primeira pesagem'}
                         </span>
                       </div>
@@ -819,7 +824,7 @@ export default function Pesagens() {
                   {kpis.mediaPesoGeral > 0 ? `${kpis.mediaPesoGeral.toFixed(1)} kg` : '-'}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  ~{(kpis.mediaPesoGeral / 15).toFixed(1)} @ por cabeça
+                  ~{(kpis.mediaPesoGeral / 30).toFixed(1)} @ (PV) por cabeça
                 </p>
               </CardContent>
             </Card>
@@ -988,7 +993,8 @@ export default function Pesagens() {
                         pesagem.peso_anterior_kg !== undefined && pesagem.peso_anterior_kg !== null
                           ? Number((pesagem.peso_medio_kg - pesagem.peso_anterior_kg).toFixed(1))
                           : null
-                      const variacaoArr = variacaoKg !== null ? (variacaoKg / 15).toFixed(2) : null
+                      // Arroba de peso vivo = 30 kg
+                      const variacaoArr = variacaoKg !== null ? (variacaoKg / 30).toFixed(2) : null
 
                       return (
                         <TableRow key={pesagem.id} className="hover:bg-muted/50 transition-colors">

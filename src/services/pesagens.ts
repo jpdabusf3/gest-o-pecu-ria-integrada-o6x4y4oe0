@@ -97,13 +97,15 @@ export function calculateGMD(
   const diffDays = Math.max(0, differenceInDays(currentDate, prevDate))
   const pesoAnterior = anterior.peso_medio_kg || 0
   const variacaoKg = Number((pesoAtualKg - pesoAnterior).toFixed(2))
-  const variacaoArrobas = Number((variacaoKg / 15).toFixed(2))
+  // Regra técnica: Arroba (@) de peso vivo = 30 kg
+  const variacaoArrobas = Number((variacaoKg / 30).toFixed(2))
 
   let gmd: number | null = null
   let warning: string | undefined
 
   if (diffDays > 0) {
-    gmd = Number((variacaoKg / diffDays).toFixed(3))
+    // GMD em kg/dia com 2 casas decimais padronizadas
+    gmd = Number((variacaoKg / diffDays).toFixed(2))
     if (diffDays < 21) {
       warning = `Intervalo de pesagem curto (${diffDays} dias). Recomendado mínimo de 21 dias para aferição de GMD confiável.`
     } else if (diffDays > 120) {
@@ -122,15 +124,24 @@ export function calculateGMD(
 }
 
 /**
- * Calcula Arrobas (@) produzidas do lote (Padrão Exagro):
- * @ produzidas = (peso total saída - peso total entrada) / 15
+ * Calcula Arrobas (@) de carcaça produzidas do lote (Padrão Exagro corrigido):
+ * Arroba (@) de Peso Vivo = 30 kg; Arroba (@) de Carcaça = 15 kg.
+ * Com rendimento de carcaça:
+ * Peso @ carcaça = (peso vivo * % rendimento) / 15
+ * Se o peso passado for peso vivo direto:
+ * ganho @ carcaça = ((pesoSaidaKg * %rendSaida) - (pesoEntradaKg * %rendEntrada)) / 15
+ * Ou em peso vivo: (pesoTotalSaidaKg - pesoTotalEntradaKg) / 30
  */
 export function calculateArrobasProduzidas(
   pesoTotalEntradaKg: number,
   pesoTotalSaidaKg: number,
+  rendimentoCarcacaPct: number = 53.5,
 ): number {
   if (pesoTotalSaidaKg <= 0 || pesoTotalEntradaKg <= 0) return 0
-  return Number(((pesoTotalSaidaKg - pesoTotalEntradaKg) / 15).toFixed(2))
+  // @ de carcaça produzidas = (peso vivo ganho * rendimento) / 15
+  const ganhoVivo = pesoTotalSaidaKg - pesoTotalEntradaKg
+  const ganhoCarcaca = ganhoVivo * (rendimentoCarcacaPct / 100)
+  return Number((ganhoCarcaca / 15).toFixed(2))
 }
 
 /**
