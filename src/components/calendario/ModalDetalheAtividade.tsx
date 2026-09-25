@@ -51,6 +51,7 @@ import { LotRecord } from '@/services/lots'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOffline } from '@/contexts/OfflineContext'
 import { useToast } from '@/hooks/use-toast'
+import { useFarm } from '@/contexts/FarmContext'
 
 interface ModalDetalheAtividadeProps {
   open: boolean
@@ -70,6 +71,7 @@ export function ModalDetalheAtividade({
   const { user } = useAuth()
   const { isOnline, addAction } = useOffline()
   const { toast } = useToast()
+  const { inventory } = useFarm()
   const [loading, setLoading] = useState(false)
   const [historico, setHistorico] = useState<HistoricoStatusRecord[]>([])
   const [loadingHistorico, setLoadingHistorico] = useState(false)

@@ -338,6 +338,10 @@ export const DIAS_IATF = [30, 35, 40, 45, 50, 55, 60]
 // CRUD PocketBase com Auditoria e Regras de Transição
 // ---------------------------------------------
 
+export const getAllAtividades = async (filter?: string): Promise<AtividadeRecord[]> => {
+  return getAtividades(filter)
+}
+
 export const getAtividades = async (filter?: string): Promise<AtividadeRecord[]> => {
   const res = await pb.collection('atividades').getFullList({
     filter,

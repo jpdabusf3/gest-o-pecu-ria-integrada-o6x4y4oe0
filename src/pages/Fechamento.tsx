@@ -42,6 +42,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   AlertOctagon,
+  History as HistoryIcon,
 } from 'lucide-react'
 import { PainelFechamentoTrimestral } from '@/components/fechamento/PainelFechamentoTrimestral'
 import { ComparativoSafras } from '@/components/fechamento/ComparativoSafras'
@@ -389,7 +390,9 @@ export default function Fechamento() {
           const custoArr =
             resultado.lotesVendidos.length > 0
               ? resultado.lotesVendidos[0].custoArrobaProduzida
-              : resultado.custeio?.custoArrobaProduzida || 142.5
+              : resultado.custeio?.custoTotalPorCab && resultado.arrobasPorCabAno > 0
+                ? resultado.custeio.custoTotalPorCab / resultado.arrobasPorCabAno
+                : 142.5
           const margemComprimida = custoArr > cotacaoArroba
           return (
             <Card
@@ -515,7 +518,7 @@ export default function Fechamento() {
             <Calendar className="h-4 w-4 text-emerald-600" /> 10. Fechamento Trimestral
           </TabsTrigger>
           <TabsTrigger value="safras-comparativo" className="py-2 gap-1.5 font-medium">
-            <History className="h-4 w-4 text-primary" /> 11. Comparativo entre Safras
+            <HistoryIcon className="h-4 w-4 text-primary" /> 11. Comparativo entre Safras
           </TabsTrigger>
         </TabsList>
 

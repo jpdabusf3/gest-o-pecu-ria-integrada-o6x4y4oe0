@@ -98,7 +98,8 @@ export default function ProjecaoVendas() {
         const gmdSimulado = lot.gmd * scenarioMult
         const pesoSaidaEstimado = lot.pesoMedio + gmdSimulado * confinementDays
         // Regra técnica: peso vivo em arrobas = peso / 30; carcaça estimada = (peso * rendimento) / 15
-        const rendimentoPadrao = p.sex === 'Fêmea' ? 52 : 54
+        const rendimentoPadrao =
+          (lot as any).sex === 'Fêmea' || (lot as any).categoria?.includes('Vacas') ? 52 : 54
         const arrobasEstimadas = (pesoSaidaEstimado * (rendimentoPadrao / 100)) / 15
         const receitaProjetadaCab = arrobasEstimadas * arrobaPrice
         const custoAcumuladoCab = lot.pesoMedio * 4.2 + confinementDays * 12 // Ex: custo base + diária

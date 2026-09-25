@@ -1,4 +1,4 @@
-import { AtividadeRecord, getAllAtividades } from './atividades'
+import { AtividadeRecord, getAtividades } from './atividades'
 import { FrenteFechamento } from './fechamento'
 
 export interface TrimestreAtividadesResumo {
@@ -20,6 +20,8 @@ export interface TrimestreAtividadesResumo {
       planejadas: number
       realizadas: number
       naoRealizadas: number
+      custoInsumos: number
+      custoDiarias: number
       custoTotal: number
     }
   >
@@ -49,7 +51,7 @@ export async function consolidarAtividadesPorTrimestre(
   ano: number = new Date().getFullYear(),
   frenteFiltro: FrenteFechamento = 'todas',
 ): Promise<TrimestreAtividadesResumo[]> {
-  const atividades = await getAllAtividades()
+  const atividades = await getAtividades()
 
   // Filtra pelo ano selecionado
   const atividadesAno = atividades.filter((a) => {
@@ -85,14 +87,21 @@ export async function consolidarAtividadesPorTrimestre(
     const motivosNaoRealizadas: Record<string, number> = {}
     const porFrente: Record<
       FrenteFechamento,
-      { planejadas: number; realizadas: number; naoRealizadas: number; custoTotal: number }
+      {
+        planejadas: number
+        realizadas: number
+        naoRealizadas: number
+        custoInsumos: number
+        custoDiarias: number
+        custoTotal: number
+      }
     > = {
-      todas: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoTotal: 0 },
-      cria: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoTotal: 0 },
-      recria: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoTotal: 0 },
-      engorda: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoTotal: 0 },
-      confinamento: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoTotal: 0 },
-      arrendamento: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoTotal: 0 },
+      todas: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
+      cria: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
+      recria: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
+      engorda: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
+      confinamento: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
+      arrendamento: { planejadas: 0, realizadas: 0, naoRealizadas: 0, custoInsumos: 0, custoDiarias: 0, custoTotal: 0 },
     }
 
     ativsTrimestre.forEach((a) => {
@@ -123,6 +132,8 @@ export async function consolidarAtividadesPorTrimestre(
         custoDiariasRealizadas += custoDiariaAtiv
         if (porFrente[f]) {
           porFrente[f].realizadas++
+          porFrente[f].custoInsumos += custoInsumosAtiv
+          porFrente[f].custoDiarias += custoDiariaAtiv
           porFrente[f].custoTotal += custoInsumosAtiv + custoDiariaAtiv
         }
       } else if (a.status === 'nao_realizada') {
