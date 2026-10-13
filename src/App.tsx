@@ -42,6 +42,7 @@ import Vendas from './pages/Vendas'
 import Fechamento from './pages/Fechamento'
 import Hedge from './pages/Hedge'
 import PdfStudio from './pages/PdfStudio'
+import MaestroImport from './pages/MaestroImport'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -295,6 +296,14 @@ const App = () => (
                         element={
                           <RoleRoute allowedRoles={['gestor']}>
                             <PdfStudio />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/maestro"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'proprietario']}>
+                            <MaestroImport />
                           </RoleRoute>
                         }
                       />

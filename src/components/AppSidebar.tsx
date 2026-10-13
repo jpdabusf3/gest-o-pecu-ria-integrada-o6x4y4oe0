@@ -25,6 +25,7 @@ import {
   ShieldAlert,
   AlertTriangle,
   Users,
+  Bot,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
@@ -311,6 +312,25 @@ export function AppSidebar() {
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   <span>Dashboard Consolidado</span>
+                </Link>
+
+                {/* DESTAQUE ROBÔ MAESTRO - INGESTÃO DE DADOS */}
+                <Link
+                  to="/maestro"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-semibold rounded-lg transition-all ${
+                    isActive('/maestro')
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'bg-primary/10 text-primary hover:bg-primary/15'
+                  }`}
+                >
+                  <Bot className="h-4 w-4" />
+                  <span className="flex-1">Robô Maestro (Ingestão)</span>
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] uppercase font-bold tracking-wider border-primary/30 text-primary"
+                  >
+                    IA / Ingestão
+                  </Badge>
                 </Link>
 
                 {/* DESTAQUE FECHAMENTO E RESULTADO */}
