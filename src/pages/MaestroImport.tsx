@@ -38,6 +38,9 @@ import {
   HelpCircle,
   FileDown,
   Info,
+  Camera,
+  History,
+  Check,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import {
@@ -49,10 +52,14 @@ import {
   compilarRegistrosNormalizados,
   aplicarDadosConfirmados,
   gerarRelatorioImportacaoPDF,
+  buscarMapeamentoReconhecido,
+  salvarMapeamentoConfirmado,
+  baixarPlanilhaModeloOficial,
   ColumnMapping,
   RegistroNormalizado,
   CAMPOS_SISTEMA_DISPONIVEIS,
   AplicacaoResult,
+  MapeamentoSalvoRecord,
 } from '@/services/maestro'
 import { downloadCSV } from '@/lib/exportUtils'
 
@@ -71,12 +78,18 @@ export default function MaestroImport() {
   const [markdownExtraido, setMarkdownExtraido] = useState('')
   const [avisoExtracao, setAvisoExtracao] = useState('')
   const [requiresOCR, setRequiresOCR] = useState(false)
+  const [ocrUsado, setOcrUsado] = useState(false)
+  const [origemLeitura, setOrigemLeitura] = useState<'texto' | 'visao' | 'nenhuma'>('texto')
   const [headersIdentificados, setHeadersIdentificados] = useState<string[]>([])
   const [rawRows, setRawRows] = useState<Record<string, any>[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
 
-  // Etapa 2: Mapeamento de Colunas
+  // Etapa 2: Mapeamento de Colunas & Reconhecimento
   const [mappings, setMappings] = useState<ColumnMapping[]>([])
+  const [mapeamentoReconhecido, setMapeamentoReconhecido] = useState<MapeamentoSalvoRecord | null>(
+    null,
+  )
   const [tipoDocumento, setTipoDocumento] = useState<
     'pesagens' | 'lotes_animais' | 'estoque' | 'financeiro' | 'atividades' | 'generico'
   >('lotes_animais')
@@ -121,6 +134,9 @@ export default function MaestroImport() {
     setFile(selected)
     setAvisoExtracao('')
     setRequiresOCR(false)
+    setOcrUsado(false)
+    setOrigemLeitura('texto')
+    setMapeamentoReconhecido(null)
   }
 
   // Exemplos rápidos do usuário
@@ -169,6 +185,15 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
       setMarkdownExtraido(extracao.markdown)
       setAvisoExtracao(extracao.aviso)
       setRequiresOCR(extracao.requiresOCR)
+      setOcrUsado(Boolean(extracao.ocrUsado))
+      setOrigemLeitura(extracao.origem_leitura || 'texto')
+
+      // Se falhou leitura visual e documento precisa de OCR sem nenhum texto legível
+      if (!extracao.markdown.trim() && extracao.requiresOCR) {
+        toast.dismiss('leitura-toast')
+        toast.warning('Documento sem camada de texto legível. Verifique as orientações exibidas.')
+        return
+      }
 
       // 2. Parser tabular
       let parsed = parseMarkdownTable(extracao.markdown)
@@ -180,22 +205,66 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
       setHeadersIdentificados(parsed.headers)
       setRawRows(parsed.rows)
 
-      // 3. Consultar agente nativo Maestro no Skip Cloud
+      // Determinar tipo preliminar de documento
+      let docTipo:
+        | 'pesagens'
+        | 'lotes_animais'
+        | 'estoque'
+        | 'financeiro'
+        | 'atividades'
+        | 'generico' = file.name.toLowerCase().includes('pesagem') ? 'pesagens' : 'lotes_animais'
+
+      // 3. Reconhecimento automático de importação anterior (mesmas colunas)
+      const mapeamentoSalvo = await buscarMapeamentoReconhecido(docTipo, parsed.headers)
+      if (!mapeamentoSalvo && docTipo !== 'pesagens') {
+        // Tentar também como pesagens se houver brinco nas colunas
+        const salvoComoPesagens = await buscarMapeamentoReconhecido('pesagens', parsed.headers)
+        if (salvoComoPesagens) {
+          docTipo = 'pesagens'
+        }
+      }
+
+      setTipoDocumento(docTipo)
+
+      if (mapeamentoSalvo) {
+        setMapeamentoReconhecido(mapeamentoSalvo)
+        setMappings(mapeamentoSalvo.colunas)
+
+        // Pular direto para a Etapa 3 (Conferência), avisando a reaproveitação
+        toast.dismiss('leitura-toast')
+        const dataFmt = new Date(mapeamentoSalvo.ultima_utilizacao).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+        })
+        toast.success(`Mapeamento reaproveitado da importação de ${dataFmt}!`, {
+          description:
+            'Avançando direto para a conferência. Você pode revisar o mapeamento se desejar.',
+        })
+
+        // Já compila registros para etapa 3
+        const normalizados = await compilarRegistrosNormalizados(
+          parsed.rows,
+          mapeamentoSalvo.colunas,
+          docTipo,
+        )
+        setRegistros(normalizados)
+        setEtapa(3)
+        return
+      }
+
+      // 4. Se não há mapeamento anterior idêntico, consultar agente nativo Maestro no Skip Cloud
       const analiseAgente = await consultarAgenteMaestro(
         extracao.markdown || (await file.text()).slice(0, 5000),
         file.name,
         objetivo,
+        extracao.origem_leitura === 'visao' ? 'visao' : 'texto',
       )
 
       if (analiseAgente && analiseAgente.tipo_documento) {
         setTipoDocumento(analiseAgente.tipo_documento)
-      } else if (file.name.toLowerCase().includes('pesagem')) {
-        setTipoDocumento('pesagens')
-      } else {
-        setTipoDocumento('lotes_animais')
       }
 
-      // 4. Mapear colunas sugeridas pelo agente ou inferência pecuária
+      // 5. Mapear colunas sugeridas pelo agente ou inferência pecuária
       let mappingsIniciais: ColumnMapping[] = []
       if (analiseAgente?.mapeamentos_sugeridos?.length) {
         mappingsIniciais = analiseAgente.mapeamentos_sugeridos.map((m: any) => ({
@@ -210,8 +279,9 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
 
       setMappings(mappingsIniciais)
       toast.dismiss('leitura-toast')
+      const msgOcr = extracao.ocrUsado ? ' (leitura visual por IA de foto/escaneado)' : ''
       toast.success(
-        `Leitura concluída: ${parsed.headers.length} colunas e ${parsed.rows.length} linhas detectadas!`,
+        `Leitura concluída: ${parsed.headers.length} colunas e ${parsed.rows.length} linhas detectadas${msgOcr}!`,
       )
       setEtapa(2)
     } catch (err: any) {
@@ -279,6 +349,17 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
         },
       )
 
+      // Salvar mapeamento confirmado na coleção maestro_mapeamentos para auto-reconhecimento futuro
+      if (headersIdentificados.length > 0 && mappings.length > 0) {
+        await salvarMapeamentoConfirmado(
+          tipoDocumento,
+          headersIdentificados,
+          mappings,
+          file?.name,
+          { id: user.id, nome: user.name },
+        )
+      }
+
       setResultadoAplicacao(resultado)
       toast.dismiss('aplicando-toast')
       toast.success('Importação aplicada com sucesso e registrada na auditoria!')
@@ -315,6 +396,9 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
     setMappings([])
     setRegistros([])
     setResultadoAplicacao(null)
+    setMapeamentoReconhecido(null)
+    setOcrUsado(false)
+    setOrigemLeitura('texto')
   }
 
   // Registros filtrados na tela de conferência
@@ -412,74 +496,160 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Área de Upload */}
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-border hover:border-primary/60 rounded-xl p-8 text-center cursor-pointer transition-colors bg-muted/20 hover:bg-muted/40 space-y-3"
-              >
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  accept=".csv,.xlsx,.xls,.pdf,.docx,.doc,.pptx,.txt"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      handleFileChange(e.target.files[0])
-                    }
-                  }}
-                />
-                <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+              {/* Card de Modelos Oficiais de Planilha XLSX */}
+              <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <FileSpreadsheet className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
+                    <span className="font-semibold text-sm text-emerald-950 dark:text-emerald-100">
+                      Modelos Oficiais de Planilha XLSX (para campo)
+                    </span>
+                  </div>
+                  <p className="text-xs text-emerald-800/80 dark:text-emerald-300">
+                    Gere templates padrão para a equipe preencher no curral/pasto e importar com
+                    confiança 100% no Maestro sem ajustes manuais.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      baixarPlanilhaModeloOficial('lotes_animais')
+                      toast.success('Modelo de Animais/Lotes (.xlsx) baixado!')
+                    }}
+                    className="text-xs gap-1.5 border-emerald-600/40 text-emerald-900 dark:text-emerald-200 bg-background hover:bg-emerald-50"
+                  >
+                    <Download className="h-3.5 w-3.5 text-emerald-700" />
+                    Modelo Animais / Lotes (.xlsx)
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      baixarPlanilhaModeloOficial('pesagens')
+                      toast.success('Modelo de Pesagens/GMD (.xlsx) baixado!')
+                    }}
+                    className="text-xs gap-1.5 border-emerald-600/40 text-emerald-900 dark:text-emerald-200 bg-background hover:bg-emerald-50"
+                  >
+                    <Download className="h-3.5 w-3.5 text-blue-700" />
+                    Modelo Pesagens (.xlsx)
+                  </Button>
+                </div>
+              </div>
+
+              {/* Área de Upload (Arquivos + Fotos de Tabelas no Celular) */}
+              <div className="space-y-3">
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed border-border hover:border-primary/60 rounded-xl p-8 text-center cursor-pointer transition-colors bg-muted/20 hover:bg-muted/40 space-y-3"
+                >
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept=".csv,.xlsx,.xls,.pdf,.docx,.doc,.pptx,.txt,.jpg,.jpeg,.png,.webp,.heic,.heif,image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleFileChange(e.target.files[0])
+                      }
+                    }}
+                  />
+                  <input
+                    type="file"
+                    ref={cameraInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleFileChange(e.target.files[0])
+                      }
+                    }}
+                  />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                    {file ? (
+                      <FileSpreadsheet className="h-6 w-6" />
+                    ) : (
+                      <UploadCloud className="h-6 w-6" />
+                    )}
+                  </div>
+
                   {file ? (
-                    <FileSpreadsheet className="h-6 w-6" />
+                    <div>
+                      <p className="font-semibold text-base text-foreground">{file.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(file.size / 1024).toFixed(1)} KB — Clique para substituir o arquivo
+                      </p>
+                    </div>
                   ) : (
-                    <UploadCloud className="h-6 w-6" />
+                    <div>
+                      <p className="font-medium text-sm text-foreground">
+                        Clique para selecionar ou arraste o arquivo aqui
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Suporta: Excel (XLSX, XLS), CSV, PDF (digitalizados ou texto), Word (DOCX),
+                        TXT e <strong>Fotos de Tabelas (JPG, PNG, HEIC)</strong>
+                      </p>
+                    </div>
                   )}
                 </div>
 
-                {file ? (
-                  <div>
-                    <p className="font-semibold text-base text-foreground">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {(file.size / 1024).toFixed(1)} KB — Clique para substituir o arquivo
-                    </p>
+                {/* Ações de Upload Alternativas (Foto Celular) */}
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => cameraInputRef.current?.click()}
+                      className="text-xs gap-1.5"
+                    >
+                      <Camera className="h-3.5 w-3.5 text-primary" />
+                      Tirar foto de tabela com o celular
+                    </Button>
+                    <span className="text-muted-foreground hidden sm:inline">
+                      ou selecione PDF escaneado / planilha
+                    </span>
                   </div>
-                ) : (
-                  <div>
-                    <p className="font-medium text-sm text-foreground">
-                      Clique para selecionar ou arraste o arquivo aqui
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Suporta: Excel (XLSX, XLS), CSV, PDF (relatórios com tabelas), Word (DOCX) e
-                      TXT
-                    </p>
+
+                  {/* Exemplos Rápidos */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Exemplos:</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={carregarExemploPlanilha}
+                      className="text-xs h-7 px-2 text-emerald-700"
+                    >
+                      Rebanho (@)
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={carregarExemploPesagem}
+                      className="text-xs h-7 px-2 text-blue-700"
+                    >
+                      Pesagens (GMD)
+                    </Button>
                   </div>
-                )}
+                </div>
               </div>
 
-              {/* Botões de Exemplos Rápidos */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <span className="text-xs text-muted-foreground">Exemplos para teste:</span>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={carregarExemploPlanilha}
-                  className="text-xs gap-1.5"
-                >
-                  <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-600" />
-                  Planilha de Rebanho & Nutrição (com @)
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={carregarExemploPesagem}
-                  className="text-xs gap-1.5"
-                >
-                  <Scale className="h-3.5 w-3.5 text-blue-600" />
-                  Relatório de Pesagens Externas (GMD)
-                </Button>
-              </div>
+              {/* Aviso Honesto se o arquivo anterior não continha texto legível */}
+              {requiresOCR && !markdownExtraido && (
+                <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 rounded-lg space-y-2 text-xs text-amber-900 dark:text-amber-200">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    Aviso Honesto do Robô Maestro — Nenhum dado é inventado
+                  </div>
+                  <p className="leading-relaxed">{avisoExtracao}</p>
+                </div>
+              )}
 
               {/* Descrição do Objetivo */}
               <div className="space-y-2">
@@ -571,13 +741,39 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Alerta de OCR se necessário */}
-              {requiresOCR && (
-                <div className="p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 rounded-lg flex items-start gap-2.5 text-xs text-amber-800 dark:text-amber-300">
-                  <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
+              {/* Banner de Reconhecimento Automático de Importação Anterior se existir */}
+              {mapeamentoReconhecido && (
+                <div className="p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-400 rounded-lg flex items-center justify-between gap-3 text-xs text-emerald-900 dark:text-emerald-200">
+                  <div className="flex items-center gap-2">
+                    <History className="h-4 w-4 text-emerald-600 shrink-0" />
+                    <div>
+                      <strong>Relatório mensal reconhecido:</strong> Mapeamento reaproveitado da
+                      importação de{' '}
+                      {new Date(mapeamentoReconhecido.ultima_utilizacao).toLocaleDateString(
+                        'pt-BR',
+                        { day: '2-digit', month: '2-digit' },
+                      )}
+                      . As colunas foram pré-preenchidas automaticamente.
+                    </div>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className="border-emerald-600/40 text-emerald-700 bg-background shrink-0"
+                  >
+                    Reconhecido
+                  </Badge>
+                </div>
+              )}
+
+              {/* Informação sobre OCR / Leitura Visual se ativada */}
+              {ocrUsado && (
+                <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-300 rounded-lg flex items-start gap-2.5 text-xs text-blue-900 dark:text-blue-200">
+                  <Camera className="h-4 w-4 shrink-0 text-blue-600 mt-0.5" />
                   <div>
-                    <strong>Documento Digitalizado / Imagem:</strong> {avisoExtracao} O sistema não
-                    inventa dados e requer arquivos com texto selecionável para extração 100% fiel.
+                    <strong>Leitura Visual (OCR por IA) Ativada:</strong> Os dados foram lidos
+                    diretamente da imagem/foto da tabela. A confiança do mapeamento está indicada
+                    para cada coluna e a conferência registro a registro é obrigatória antes de
+                    qualquer gravação.
                   </div>
                 </div>
               )}
@@ -703,6 +899,37 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
       {/* ========================================================================= */}
       {etapa === 3 && (
         <div className="space-y-6">
+          {/* Banner de Auto-Reconhecimento quando saltou da leitura direto para conferência */}
+          {mapeamentoReconhecido && (
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/25 border border-emerald-400 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-emerald-950 dark:text-emerald-100">
+              <div className="flex items-center gap-2.5">
+                <Check className="h-5 w-5 text-emerald-600 shrink-0" />
+                <div>
+                  <p className="font-semibold text-sm">
+                    Mapeamento reaproveitado da importação de{' '}
+                    {new Date(mapeamentoReconhecido.ultima_utilizacao).toLocaleDateString('pt-BR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                    })}
+                  </p>
+                  <p className="text-emerald-800/80 dark:text-emerald-300">
+                    As colunas correspondem exatamente ao padrão da fazenda. Você pulou direto para
+                    a conferência obrigatória, mas pode voltar e ajustar manualmente se houver
+                    alguma alteração.
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setEtapa(2)}
+                className="self-start md:self-auto text-xs border-emerald-600/40 text-emerald-900 dark:text-emerald-200 bg-background"
+              >
+                Ajustar Mapeamento Manual
+              </Button>
+            </div>
+          )}
+
           {/* Painel com Métricas de Compilação */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="border-border">

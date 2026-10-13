@@ -136,6 +136,38 @@ export const CAMPOS_SISTEMA_DISPONIVEIS = [
   { id: 'observacoes', label: 'Observações / Notas', modulo: 'Geral' },
 ]
 
+export interface MapeamentoSalvoRecord {
+  id: string
+  tipo_documento:
+    | 'pesagens'
+    | 'lotes_animais'
+    | 'estoque'
+    | 'financeiro'
+    | 'atividades'
+    | 'generico'
+  assinatura: string
+  colunas: ColumnMapping[]
+  nome_arquivo?: string
+  usuario_id?: string
+  usuario_nome?: string
+  utilizacoes: number
+  ultima_utilizacao: string
+  created: string
+  updated: string
+}
+
+/**
+ * Gera uma assinatura canônica para o conjunto de cabeçalhos
+ * Ordena alfabeticamente os cabeçalhos normalizados
+ */
+export function gerarAssinaturaColunas(headers: string[]): string {
+  return headers
+    .map((h) => normalizeHeader(h))
+    .filter(Boolean)
+    .sort()
+    .join('||')
+}
+
 /**
  * Normaliza string para busca de sinônimos
  */
@@ -299,6 +331,8 @@ export async function extrairDocumentoMaestro(file: File): Promise<{
   markdown: string
   truncated: boolean
   requiresOCR: boolean
+  ocrUsado?: boolean
+  origem_leitura?: 'texto' | 'visao' | 'nenhuma'
   aviso: string
 }> {
   const formData = new FormData()
@@ -320,6 +354,8 @@ export async function extrairDocumentoMaestro(file: File): Promise<{
         markdown: data.markdown || '',
         truncated: Boolean(data.truncated),
         requiresOCR: Boolean(data.requiresOCR),
+        ocrUsado: Boolean(data.ocrUsado),
+        origem_leitura: data.origem_leitura || 'texto',
         aviso: data.aviso || '',
       }
     }
@@ -356,6 +392,7 @@ export async function consultarAgenteMaestro(
   content: string,
   filename: string,
   objetivo: string,
+  origemLeitura: 'texto' | 'visao' = 'texto',
 ): Promise<any | null> {
   try {
     const backendUrl = import.meta.env.VITE_POCKETBASE_URL
@@ -369,6 +406,7 @@ export async function consultarAgenteMaestro(
         content,
         filename,
         objetivo,
+        origem_leitura: origemLeitura,
       }),
     })
 
@@ -830,4 +868,281 @@ export function gerarRelatorioImportacaoPDF(
   })
 
   doc.save(`relatorio_maestro_${new Date().toISOString().slice(0, 10)}.pdf`)
+}
+
+/**
+ * Busca mapeamento salvo anterior pela assinatura dos cabeçalhos
+ */
+export async function buscarMapeamentoReconhecido(
+  tipoDocumento: string,
+  headers: string[],
+): Promise<MapeamentoSalvoRecord | null> {
+  if (!headers || headers.length === 0) return null
+  const assinatura = gerarAssinaturaColunas(headers)
+  if (!assinatura) return null
+
+  try {
+    const records = await pb.collection('maestro_mapeamentos').getList(1, 1, {
+      filter: `tipo_documento = "${tipoDocumento}" && assinatura = "${assinatura}"`,
+      sort: '-updated',
+    })
+    if (records.items && records.items.length > 0) {
+      const item = records.items[0]
+      let colunas: ColumnMapping[] = []
+      try {
+        colunas =
+          typeof item.colunas === 'string' ? JSON.parse(item.colunas) : (item.colunas as any) || []
+      } catch {
+        colunas = (item.colunas as any) || []
+      }
+      return {
+        id: item.id,
+        tipo_documento: item.tipo_documento,
+        assinatura: item.assinatura,
+        colunas,
+        nome_arquivo: item.nome_arquivo,
+        usuario_id: item.usuario_id,
+        usuario_nome: item.usuario_nome,
+        utilizacoes: item.utilizacoes || 1,
+        ultima_utilizacao: item.ultima_utilizacao || item.created,
+        created: item.created,
+        updated: item.updated,
+      }
+    }
+  } catch (err) {
+    console.warn('Nenhum mapeamento prévio encontrado ou erro de permissão:', err)
+  }
+  return null
+}
+
+/**
+ * Salva ou atualiza o mapeamento confirmado para que futuras importações
+ * reconheçam a mesma estrutura automaticamente.
+ */
+export async function salvarMapeamentoConfirmado(
+  tipoDocumento: string,
+  headers: string[],
+  mappings: ColumnMapping[],
+  nomeArquivo?: string,
+  usuario?: { id?: string; nome?: string },
+): Promise<void> {
+  if (!headers || headers.length === 0 || !mappings || mappings.length === 0) return
+  const assinatura = gerarAssinaturaColunas(headers)
+  if (!assinatura) return
+
+  try {
+    // Verificar se já existe registro com a mesma assinatura
+    const existente = await pb.collection('maestro_mapeamentos').getList(1, 1, {
+      filter: `tipo_documento = "${tipoDocumento}" && assinatura = "${assinatura}"`,
+    })
+
+    const hoje = new Date().toISOString().slice(0, 10)
+
+    if (existente.items && existente.items.length > 0) {
+      const recordId = existente.items[0].id
+      const usosAtuais = existente.items[0].utilizacoes || 1
+      await pb.collection('maestro_mapeamentos').update(recordId, {
+        colunas: mappings,
+        nome_arquivo: nomeArquivo || existente.items[0].nome_arquivo,
+        usuario_id: usuario?.id || existente.items[0].usuario_id,
+        usuario_nome: usuario?.nome || existente.items[0].usuario_nome,
+        utilizacoes: usosAtuais + 1,
+        ultima_utilizacao: hoje,
+      })
+    } else {
+      await pb.collection('maestro_mapeamentos').create({
+        tipo_documento: tipoDocumento,
+        assinatura,
+        colunas: mappings,
+        nome_arquivo: nomeArquivo || '',
+        usuario_id: usuario?.id || undefined,
+        usuario_nome: usuario?.nome || '',
+        utilizacoes: 1,
+        ultima_utilizacao: hoje,
+      })
+    }
+  } catch (err) {
+    console.warn('Falha ao salvar mapeamento aprendido do Maestro:', err)
+  }
+}
+
+/**
+ * Gera arquivo de planilha oficial XLSX/XLS formatado para a equipe de campo preencher
+ * Cabeçalhos mapeiam com 100% de confiança nas regras do Maestro
+ */
+export function baixarPlanilhaModeloOficial(tipo: 'lotes_animais' | 'pesagens') {
+  if (tipo === 'lotes_animais') {
+    // Template 1: Animais / Lotes
+    // Quantidade, Categoria, Sexo, Pasto, Peso Médio, Suplementação
+    const dados = [
+      {
+        Lote: 'Lote Recria 01',
+        Quantidade: 85,
+        Categoria: 'Garrote',
+        Sexo: 'Macho',
+        Pasto: 'Pasto 04 (Braquiarão)',
+        'Peso Médio': '340 kg',
+        Suplementação: 'Proteinado Seca',
+        Observações: 'Entrada após desmame',
+      },
+      {
+        Lote: 'Lote Matrizes A',
+        Quantidade: 60,
+        Categoria: 'Vaca Adulta',
+        Sexo: 'Fêmea',
+        Pasto: 'Pasto 07 (Mombaça)',
+        'Peso Médio': '450 kg',
+        Suplementação: 'Sal Mineral Adensado',
+        Observações: 'Estação de monta ativa',
+      },
+      {
+        Lote: 'Lote Engorda Tip',
+        Quantidade: 100,
+        Categoria: 'Boi Gordo',
+        Sexo: 'Macho',
+        Pasto: 'Confinamento Curral 02',
+        'Peso Médio': '15 @',
+        Suplementação: 'Ração Acabamento 80/20',
+        Observações: 'Peso em arroba viva (será convertido para 450 kg)',
+      },
+    ]
+
+    downloadExcelAsXlsx(dados, 'modelo_oficial_lotes_animais', 'Lotes e Rebanho F3')
+  } else {
+    // Template 2: Pesagens
+    // Brinco, Data, Peso (kg), Lote
+    const dados = [
+      {
+        Brinco: 'BR-1001',
+        Data: new Date().toISOString().slice(0, 10),
+        'Peso (kg)': 415.5,
+        Lote: 'Lote Recria 01',
+        Observações: 'Pesagem de rotina no curral',
+      },
+      {
+        Brinco: 'BR-1002',
+        Data: new Date().toISOString().slice(0, 10),
+        'Peso (kg)': 398.0,
+        Lote: 'Lote Recria 01',
+        Observações: 'Excelente desenvolvimento zootécnico',
+      },
+      {
+        Brinco: 'BR-1003',
+        Data: new Date().toISOString().slice(0, 10),
+        'Peso (kg)': 432.0,
+        Lote: 'Lote Recria 01',
+        Observações: 'Recalcular GMD pós 30 dias',
+      },
+    ]
+
+    downloadExcelAsXlsx(dados, 'modelo_oficial_pesagens', 'Pesagens e GMD F3')
+  }
+}
+
+/**
+ * Gera documento de planilha em XML Spreadsheet / HTML Excel compatível com MS Excel
+ * (.xlsx / .xls), aceito 100% pelo parser e pelo $documents.toMarkdown.
+ */
+function downloadExcelAsXlsx(
+  data: Record<string, any>[],
+  filename: string,
+  tituloPlanilha: string,
+) {
+  if (!data || data.length === 0) return
+
+  const headers = Object.keys(data[0])
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+  xml += '<?mso-application progid="Excel.Sheet"?>\n'
+  xml +=
+    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"\n' +
+    ' xmlns:o="urn:schemas-microsoft-com:office:office"\n' +
+    ' xmlns:x="urn:schemas-microsoft-com:office:excel"\n' +
+    ' xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"\n' +
+    ' xmlns:html="http://www.w3.org/TR/REC-html40">\n'
+  xml += ' <Styles>\n'
+  xml += '  <Style ss:ID="Default" ss:Name="Normal">\n'
+  xml += '   <Alignment ss:Vertical="Center"/>\n'
+  xml += '   <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#000000"/>\n'
+  xml += '  </Style>\n'
+  xml += '  <Style ss:ID="Header">\n'
+  xml += '   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>\n'
+  xml += '   <Borders>\n'
+  xml +=
+    '    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#1B4D2E"/>\n'
+  xml +=
+    '    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D1D5DB"/>\n'
+  xml +=
+    '    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D1D5DB"/>\n'
+  xml +=
+    '    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#1B4D2E"/>\n'
+  xml += '   </Borders>\n'
+  xml += '   <Font ss:FontName="Calibri" ss:Size="11" ss:Bold="1" ss:Color="#FFFFFF"/>\n'
+  xml += '   <Interior ss:Color="#1B4D2E" ss:Pattern="Solid"/>\n'
+  xml += '  </Style>\n'
+  xml += '  <Style ss:ID="Cell">\n'
+  xml += '   <Borders>\n'
+  xml +=
+    '    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E5E7EB"/>\n'
+  xml +=
+    '    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E5E7EB"/>\n'
+  xml +=
+    '    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E5E7EB"/>\n'
+  xml +=
+    '    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E5E7EB"/>\n'
+  xml += '   </Borders>\n'
+  xml += '  </Style>\n'
+  xml += ' </Styles>\n'
+
+  xml += ` <Worksheet ss:Name="${tituloPlanilha}">\n`
+  xml += '  <Table ss:DefaultRowHeight="20">\n'
+
+  // Colunas com largura confortável
+  headers.forEach(() => {
+    xml += '   <Column ss:Width="130"/>\n'
+  })
+
+  // Linha de cabeçalho
+  xml += '   <Row ss:Height="24">\n'
+  headers.forEach((h) => {
+    xml += `    <Cell ss:StyleID="Header"><Data ss:Type="String">${escapeXml(h)}</Data></Cell>\n`
+  })
+  xml += '   </Row>\n'
+
+  // Linhas de dados / exemplos
+  data.forEach((row) => {
+    xml += '   <Row>\n'
+    headers.forEach((h) => {
+      const val = row[h] !== null && row[h] !== undefined ? String(row[h]) : ''
+      const isNum = !isNaN(Number(val)) && val.trim() !== ''
+      const type = isNum ? 'Number' : 'String'
+      xml += `    <Cell ss:StyleID="Cell"><Data ss:Type="${type}">${escapeXml(val)}</Data></Cell>\n`
+    })
+    xml += '   </Row>\n'
+  })
+
+  xml += '  </Table>\n'
+  xml += ' </Worksheet>\n'
+  xml += '</Workbook>'
+
+  const blob = new Blob([xml], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;',
+  })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `${filename}.xlsx`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
+function escapeXml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
 }
