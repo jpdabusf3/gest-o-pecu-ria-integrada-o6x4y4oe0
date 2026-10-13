@@ -35,7 +35,7 @@ import { DiagnosticoLoteBadge } from './DiagnosticoLoteBadge'
 import { calcularDiagnosticoLote, DiagnosticoLoteResult } from '@/services/diagnosticoLote'
 import { Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
-import { pb } from '@/lib/pocketbase/client'
+import pb from '@/lib/pocketbase/client'
 
 export function TopDesvioGmdCard() {
   const [lots, setLots] = useState<LotRecord[]>([])

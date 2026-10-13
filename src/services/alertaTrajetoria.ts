@@ -6,7 +6,7 @@
  * Utiliza faixas dinâmicas de config_benchmark (nunca hardcoded).
  */
 
-import { pb } from '@/lib/pocketbase/client'
+import pb from '@/lib/pocketbase/client'
 import {
   ConfigBenchmarkRecord,
   StatusCamada2,

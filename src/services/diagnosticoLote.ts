@@ -11,7 +11,7 @@
  * no preenchimento do alerta GMD.
  */
 
-import { pb } from '@/lib/pocketbase/client'
+import pb from '@/lib/pocketbase/client'
 import { LotRecord } from './lots'
 import { PesagemRecord } from './pesagens'
 
