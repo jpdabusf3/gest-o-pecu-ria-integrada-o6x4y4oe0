@@ -14,7 +14,7 @@ export interface LotRecord {
   entry_date: string
   exit_date: string
   value_per_animal: number
-  status: 'active' | 'sold' | 'abated'
+  status: 'active' | 'sold' | 'abated' | 'inativo'
   headcount: number
   data_entrada?: string
   data_saida?: string
@@ -24,6 +24,7 @@ export interface LotRecord {
   rendimento_carcaca_pct?: number
   peso_medio_atual?: number
   pasto_atual?: string
+  pasto_atual_id?: string
   // GMD Alvo & Gestão Pecuária Exagro
   gmd_alvo_g_dia?: number
   data_inicio_lote?: string
