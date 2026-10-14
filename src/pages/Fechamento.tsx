@@ -45,6 +45,7 @@ import {
   History as HistoryIcon,
 } from 'lucide-react'
 import { PainelFechamentoTrimestral } from '@/components/fechamento/PainelFechamentoTrimestral'
+import { CardCustoSuplementoArroba } from '@/components/fechamento/CardCustoSuplementoArroba'
 import { ComparativoSafras } from '@/components/fechamento/ComparativoSafras'
 import { PainelComparativoExagro } from '@/components/benchmarking/PainelComparativoExagro'
 import { BannerRecalibracaoAnual } from '@/components/gestor/BannerRecalibracaoAnual'
@@ -862,6 +863,16 @@ export default function Fechamento() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* CUSTO DE SUPLEMENTO POR @ PRODUZIDA (fábrica de suplemento) */}
+              <CardCustoSuplementoArroba
+                estoque={estoque}
+                financeiro={financeiro}
+                benchmarks={benchmarks}
+                arrobasProduzidasTotal={resultado.totalProducaoArrobas}
+                anoSafra={`${anoBase - 1}/${anoBase}`}
+                periodo={periodo}
+              />
             </CardContent>
           </Card>
         </TabsContent>
@@ -1433,7 +1444,17 @@ export default function Fechamento() {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="px-0 sm:px-6 overflow-x-auto">
+            <CardContent className="pb-0 sm:pb-0 sm:px-6">
+              <CardCustoSuplementoArroba
+                estoque={estoque}
+                financeiro={financeiro}
+                benchmarks={benchmarks}
+                arrobasProduzidasTotal={resultado.totalProducaoArrobas}
+                anoSafra={`${anoBase - 1}/${anoBase}`}
+                periodo={periodo}
+              />
+            </CardContent>
+            <CardContent className="pt-2 px-0 sm:px-6 overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-muted/40 font-semibold text-xs">

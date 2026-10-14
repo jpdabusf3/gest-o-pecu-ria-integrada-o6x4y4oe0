@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T23:59:06.540Z",
+  "generatedAt": "2026-10-14T00:58:57.951Z",
   "collections": [
     {
       "name": "users",
@@ -2807,6 +2807,233 @@
       ],
       "indexes": [
         "CREATE UNIQUE INDEX idx_maestro_mapeamentos_assinatura ON maestro_mapeamentos (tipo_documento, assinatura)"
+      ]
+    },
+    {
+      "name": "conciliacoes_estoque",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "view": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "delete": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')"
+      },
+      "fields": [
+        {
+          "name": "data_conciliacao",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "periodo_mes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "responsavel_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "responsavel_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_itens",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_divergentes",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_divergencia_rs",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["pendente", "justificada", "ajustada", "concluida"]
+        },
+        {
+          "name": "observacoes_gerais",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "protocolo_audit_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ajuste_gerado",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_conciliacao_data ON conciliacoes_estoque (data_conciliacao DESC)",
+        "CREATE INDEX idx_conciliacao_periodo ON conciliacoes_estoque (periodo_mes)"
+      ]
+    },
+    {
+      "name": "itens_conciliacao_estoque",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "view": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "delete": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')"
+      },
+      "fields": [
+        {
+          "name": "conciliacao_id",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "conciliacoes_estoque"
+        },
+        {
+          "name": "insumo_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "produto",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "categoria",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "saldo_sistema",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "unidade_sistema",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "contagem_fisica",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "unidade_contada",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["kg", "saco", "l", "dose", "un"]
+        },
+        {
+          "name": "contagem_em_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "diferenca_qtd",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "diferenca_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "diferenca_rs",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "preco_unitario",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dentro_tolerancia",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "justificativa",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ajustado",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_item_conciliacao_parent ON itens_conciliacao_estoque (conciliacao_id)",
+        "CREATE INDEX idx_item_conciliacao_produto ON itens_conciliacao_estoque (produto)"
       ]
     }
   ]

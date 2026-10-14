@@ -14,18 +14,39 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { TriangleAlert, TrendingDown, CalendarClock, Trash2, ShieldPlus } from 'lucide-react'
+import {
+  TriangleAlert,
+  TrendingDown,
+  CalendarClock,
+  Trash2,
+  ShieldPlus,
+  ClipboardCheck,
+  PackageX,
+} from 'lucide-react'
 import { useFarm } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
 import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
 import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
 import { ManageInventoryItemModal } from '@/components/forms/ManageInventoryItemModal'
 import { FeedMillTab } from '@/components/estoque/FeedMillTab'
+import { ConciliacaoEstoqueTab } from '@/components/estoque/ConciliacaoEstoqueTab'
+import { AlertaRupturaCard } from '@/components/estoque/AlertaRupturaCard'
 import { formatCurrency, formatNumber, formatWeight } from '@/lib/utils'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Estoque() {
   const { inventory, removeInventoryItem } = useFarm()
   const { fazendas, updateFazenda } = useFazendaStore()
+  const { user } = useAuth()
+
+  // Módulos gerenciais/financeiros: apenas gestor e proprietário (sócio administrador
+  // herda gestor). Vaqueiro/servente/capataz não veem nada disso.
+  const isGestao =
+    user?.role === 'gestor' ||
+    user?.role === 'proprietario' ||
+    user?.role === 'admin' ||
+    user?.role === 'gerente' ||
+    (user?.role === 'socio' && true)
 
   const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd)
 
@@ -185,6 +206,16 @@ export default function Estoque() {
           <TabsTrigger value="custos" className="py-2">
             Custos por Fazenda
           </TabsTrigger>
+          {isGestao && (
+            <TabsTrigger value="conciliacao" className="py-2 gap-2 text-primary">
+              <ClipboardCheck className="h-4 w-4" /> Conciliação
+            </TabsTrigger>
+          )}
+          {isGestao && (
+            <TabsTrigger value="ruptura" className="py-2 gap-2 text-primary">
+              <PackageX className="h-4 w-4" /> Ruptura
+            </TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value="nutricao" className="space-y-6">
@@ -325,6 +356,18 @@ export default function Estoque() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {isGestao && (
+          <TabsContent value="conciliacao" className="space-y-6">
+            <ConciliacaoEstoqueTab />
+          </TabsContent>
+        )}
+
+        {isGestao && (
+          <TabsContent value="ruptura" className="space-y-6">
+            <AlertaRupturaCard />
+          </TabsContent>
+        )}
 
         <TabsContent value="custos">
           <Card>
