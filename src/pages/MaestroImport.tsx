@@ -72,6 +72,7 @@ import {
   DestinoSistemaFiscal,
 } from '@/services/maestroDocumentosFiscais'
 import { Receipt, FileCheck, Split, Link2, ShieldCheck, HelpCircle as HelpIcon } from 'lucide-react'
+import { getErrorMessage, extractFieldErrors } from '@/lib/pocketbase/errors'
 import {
   reconhecerColunasVendaGado,
   isDocumentoVendaGado,
@@ -728,13 +729,41 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
         setResultadoAplicacaoFiscal(resFiscal)
         toast.dismiss('aplicando-toast')
-        toast.success(
-          `${resFiscal.total_aplicados} documento(s) aplicados no estoque, rebanho e financeiro com sucesso!`,
-        )
+
+        if (resFiscal.total_aplicados > 0 && resFiscal.total_ignorados === 0) {
+          toast.success(
+            `${resFiscal.total_aplicados} documento(s) aplicados no estoque, rebanho e financeiro com sucesso!`,
+          )
+        } else if (resFiscal.total_aplicados > 0 && resFiscal.total_ignorados > 0) {
+          toast.warning(
+            `Aplicação parcial: ${resFiscal.total_aplicados} aplicado(s) e ${resFiscal.total_ignorados} ignorado(s)/com falha.`,
+            {
+              description:
+                resFiscal.mensagens.length > 0
+                  ? resFiscal.mensagens.slice(0, 3).join('; ')
+                  : undefined,
+            },
+          )
+        } else {
+          toast.error('Nenhum documento foi aplicado.', {
+            description:
+              resFiscal.mensagens.length > 0
+                ? resFiscal.mensagens.slice(0, 3).join('; ')
+                : 'Verifique os dados dos documentos aprovados.',
+          })
+        }
         setEtapa(5)
-      } catch (err: any) {
+      } catch (err: unknown) {
         toast.dismiss('aplicando-toast')
-        toast.error('Erro ao aplicar documentos fiscais: ' + (err.message || 'Falha'))
+        const fieldErrors = extractFieldErrors(err)
+        const fieldErrorsMsg = Object.entries(fieldErrors)
+          .map(([f, m]) => `${f}: ${m}`)
+          .join('; ')
+        const msg = getErrorMessage(err)
+        toast.error(
+          'Erro ao aplicar documentos fiscais: ' +
+            (fieldErrorsMsg ? `${msg} (${fieldErrorsMsg})` : msg),
+        )
       } finally {
         setAplicando(false)
       }
@@ -852,6 +881,11 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
     setLoteFiltroVenda('todos')
     setCotacaoManualVenda('')
     setUsarCotacaoManualVenda(false)
+    setIsDocumentoFiscal(false)
+    setProcessamentoFiscal(null)
+    setDocsFiscaisConferencia([])
+    setFiltroFiscalAba('todos')
+    setResultadoAplicacaoFiscal(null)
   }
 
   // ------------------ VENDA DE GADO: pipeline ------------------
@@ -2364,6 +2398,94 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
               {docsFiscaisConferencia.filter((d) => d.aprovado_para_aplicar).length})
             </Button>
           </div>
+
+          {/* Modal de Confirmação Obrigatória Dedicado ao Fluxo Fiscal */}
+          <Dialog open={confirmModalOpen} onOpenChange={setConfirmModalOpen}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <ShieldCheck className="h-5 w-5 text-primary" />
+                  Confirmar Aplicação de Documentos Fiscais
+                </DialogTitle>
+                <DialogDescription>
+                  Esta ação aplicará as Notas Fiscais e Recibos aprovados de forma definitiva no
+                  Estoque de Insumos, Rebanho e Financeiro com protocolo de auditoria (append-only).
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3 py-2 text-xs">
+                <div className="p-3 bg-muted rounded-lg space-y-1.5">
+                  <p>
+                    <strong>Responsável:</strong> {user.name} ({user.role})
+                  </p>
+                  <p>
+                    <strong>Arquivo:</strong> {file?.name || 'documento_fiscal.pdf'}
+                  </p>
+                  <div className="pt-1 border-t space-y-1">
+                    <p>
+                      <strong>Documentos Aprovados:</strong>{' '}
+                      {docsFiscaisConferencia.filter((d) => d.aprovado_para_aplicar).length} de{' '}
+                      {docsFiscaisConferencia.length}
+                    </p>
+                    <p>
+                      <strong>Notas Fiscais (NF-e):</strong>{' '}
+                      {
+                        docsFiscaisConferencia.filter(
+                          (d) => d.aprovado_para_aplicar && d.tipo_documento === 'nota_fiscal',
+                        ).length
+                      }
+                      {' · '}
+                      <strong>Recibos / Comprovantes:</strong>{' '}
+                      {
+                        docsFiscaisConferencia.filter(
+                          (d) => d.aprovado_para_aplicar && d.tipo_documento === 'recibo',
+                        ).length
+                      }
+                    </p>
+                    <p>
+                      <strong>Valor Total Aprovado:</strong> R${' '}
+                      {docsFiscaisConferencia
+                        .filter((d) => d.aprovado_para_aplicar)
+                        .reduce((acc, d) => acc + (d.valor_total || 0), 0)
+                        .toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                    <p>
+                      <strong>Conciliações Sugeridas (NF ↔ Recibo):</strong>{' '}
+                      {processamentoFiscal?.sugestoes_conciliacao.length || 0}
+                    </p>
+                  </div>
+                </div>
+
+                {docsFiscaisConferencia
+                  .filter((d) => d.aprovado_para_aplicar)
+                  .some((d) => d.alertas.some((a) => a.tipo === 'critico')) && (
+                  <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-lg text-red-800 dark:text-red-300 font-medium">
+                    ⚠️ Atenção: Há documento(s) com alertas críticos selecionados. Verifique se
+                    todas as informações obrigatórias foram preenchidas.
+                  </div>
+                )}
+
+                <p className="text-muted-foreground">
+                  A imutabilidade contábil é garantida: chave de 44 dígitos para NF-e e hash único
+                  para recibos impedem duplicidade. Um protocolo permanente será gravado na{' '}
+                  <strong>Trilha de Auditoria</strong> (append-only).
+                </p>
+              </div>
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setConfirmModalOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={executarAplicacao}
+                  disabled={aplicando}
+                  className="bg-emerald-700 hover:bg-emerald-800"
+                >
+                  {aplicando ? 'Aplicando...' : 'Sim, Aplicar com Trilha de Auditoria'}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       )}
 
