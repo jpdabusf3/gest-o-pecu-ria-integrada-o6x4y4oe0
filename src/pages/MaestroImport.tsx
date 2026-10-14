@@ -44,6 +44,22 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import {
+  reconhecerColunasCompraGado,
+  isDocumentoCompraGado,
+  compilarLinhasCompraGado,
+  aplicarCompraGadoConfirmada,
+  gerarRelatorioCompraGadoPDF,
+  exportarCompraGadoExcel,
+  baixarModeloCompraGadoXlsx,
+  gerarExemploRapidoCompraGado,
+  classificarAgioCompra,
+  ResultadoConferenciaCompra,
+  LinhaCompraNormalizada,
+  ResultadoAplicacaoCompra,
+  CotacaoReferencia,
+  FrenteCompra,
+} from '@/services/maestroCompraGado'
+import {
   extrairDocumentoMaestro,
   consultarAgenteMaestro,
   parseMarkdownTable,
@@ -62,6 +78,32 @@ import {
   MapeamentoSalvoRecord,
 } from '@/services/maestro'
 import { downloadCSV } from '@/lib/exportUtils'
+import type { ColunaCompraMapping } from '@/services/maestroCompraGado'
+type ColunaCompraMappingTipo = ColunaCompraMapping
+
+function filenameCompraGadoSignal(nome: string): boolean {
+  const n = nome
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+  return (
+    n.includes('compra') &&
+    (n.includes('gado') || n.includes('boi') || n.includes('boiada') || n.includes('ganado'))
+  )
+}
+
+function detectarFrenteSugerida(pastoTexto: string): FrenteCompra {
+  const t = String(pastoTexto || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+  if (t.includes('confin') || t.includes('curral')) return 'confinamento'
+  if (t.includes('arrend')) return 'arrendamento'
+  if (t.includes('engorda')) return 'engorda'
+  if (t.includes('recria') || t.includes('garrote') || t.includes('novilho')) return 'recria'
+  if (t.includes('cria') || t.includes('bezerro') || t.includes('matriz')) return 'cria'
+  return 'recria'
+}
 
 export default function MaestroImport() {
   const { user, isGestor, isProprietario } = useAuth()
@@ -93,6 +135,19 @@ export default function MaestroImport() {
   const [tipoDocumento, setTipoDocumento] = useState<
     'pesagens' | 'lotes_animais' | 'estoque' | 'financeiro' | 'atividades' | 'generico'
   >('lotes_animais')
+
+  // --- COMPRA DE GADO (nova capacidade do Maestro) ---
+  const [isCompraGado, setIsCompraGado] = useState(false)
+  const [conferenciaCompra, setConferenciaCompra] = useState<ResultadoConferenciaCompra | null>(
+    null,
+  )
+  const [cotacaoManualAtiva, setCotacaoManualAtiva] = useState('')
+  const [usarCotacaoManual, setUsarCotacaoManual] = useState(false)
+  const [frenteEscolhas, setFrenteEscolhas] = useState<Record<string, FrenteCompra>>({})
+  const [resultadoCompra, setResultadoCompra] = useState<ResultadoAplicacaoCompra | null>(null)
+  const [filtroCompra, setFiltroCompra] = useState<'todos' | 'alertas' | 'criar' | 'atualizar'>(
+    'todos',
+  )
 
   // Etapa 3: Conferência e Normalização
   const [registros, setRegistros] = useState<RegistroNormalizado[]>([])
@@ -137,6 +192,12 @@ export default function MaestroImport() {
     setOcrUsado(false)
     setOrigemLeitura('texto')
     setMapeamentoReconhecido(null)
+    setIsCompraGado(false)
+    setConferenciaCompra(null)
+    setResultadoCompra(null)
+    setUsarCotacaoManual(false)
+    setCotacaoManualAtiva('')
+    setFrenteEscolhas({})
   }
 
   // Exemplos rápidos do usuário
@@ -167,6 +228,16 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
       'Importar relatório de pesagens individuais para atualizar histórico e recalcular GMD.',
     )
     toast.info('Exemplo de pesagens externas carregado!')
+  }
+
+  const carregarExemploCompraGado = () => {
+    const fileExemplo = gerarExemploRapidoCompraGado()
+    setFile(fileExemplo)
+    setObjetivo(
+      'Importar nota de COMPRA DE GADO: quantidade, peso médio (@ ou kg), preço por cabeça ou por @, fornecedor e data — aplicando rebanho, financeiro e ágio vs cotação.',
+    )
+    setIsCompraGado(true)
+    toast.info('Exemplo rápido de COMPRA DE GADO carregado!')
   }
 
   const carregarExemploEstoque = () => {
@@ -220,6 +291,37 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
       setHeadersIdentificados(parsed.headers)
       setRawRows(parsed.rows)
+
+      // 2.b RECONHECIMENTO ESPECÍFICO: COMPRA DE GADO (planilha/PDF/DOCX com tabela)
+      const mapeamentoCompra = reconhecerColunasCompraGado(parsed.headers)
+      const ehCompraGado =
+        isDocumentoCompraGado(mapeamentoCompra) ||
+        filenameCompraGadoSignal(file.name) ||
+        Boolean(
+          parsed.headers.some((h) => {
+            const n = h
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+            return (
+              (n.includes('cabeca') || n.includes('fornecedor')) &&
+              (n.includes('preco') || n.includes('peso'))
+            )
+          }),
+        )
+
+      if (ehCompraGado && mapeamentoCompra.some((m) => m.campoDestino !== 'ignorar')) {
+        setIsCompraGado(true)
+        setMappings(mapeamentoCompra as any)
+        toast.dismiss('leitura-toast')
+        toast.success('Documento reconhecido como COMPRA DE GADO — fluxo dedicado ativado!', {
+          description:
+            'Mapeamento de quantidade, peso médio, preço por cabeça/@, fornecedor e data realizado. Revise o mapeamento e avance para a conferência com cálculo de ágio.',
+        })
+        setEtapa(2)
+        return
+      }
+      setIsCompraGado(false)
 
       // Determinar tipo preliminar de documento por nome do arquivo ou cabeçalhos
       const filenameLower = file.name.toLowerCase()
@@ -353,6 +455,12 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         id: 'compilando-toast',
       })
 
+      if (isCompraGado) {
+        await compilarConferenciaCompra()
+        setEtapa(3)
+        return
+      }
+
       const normalizados = await compilarRegistrosNormalizados(rawRows, mappings, tipoDocumento)
       setRegistros(normalizados)
 
@@ -378,6 +486,10 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
   // ETAPA 4: Aplicação integrada
   const executarAplicacao = async () => {
+    if (isCompraGado) {
+      await executarAplicacaoCompra()
+      return
+    }
     try {
       setAplicando(true)
       setConfirmModalOpen(false)
@@ -418,6 +530,13 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
   // Exportar dados compilados para CSV
   const exportarPlanilhaConferencia = () => {
+    if (isCompraGado && conferenciaCompra) {
+      exportarCompraGadoExcel(
+        conferenciaCompra.linhas,
+        `conferencia_compra_gado_${file?.name || 'dados'}`,
+      )
+      return
+    }
     const dados = registros.map((r) => ({
       Linha: r.linhaOrigem,
       Acao: r.acaoSugerida,
@@ -451,6 +570,94 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
     setMapeamentoReconhecido(null)
     setOcrUsado(false)
     setOrigemLeitura('texto')
+    setIsCompraGado(false)
+    setConferenciaCompra(null)
+    setCotacaoManualAtiva('')
+    setUsarCotacaoManual(false)
+    setFrenteEscolhas({})
+    setResultadoCompra(null)
+    setFiltroCompra('todos')
+  }
+
+  // ------------------ COMPRA DE GADO: pipeline ------------------
+  const compilarConferenciaCompra = async (
+    rowsOverride?: Record<string, any>[],
+    mappingsOverride?: ColunaCompraMappingTipo[],
+    manualOverride?: { preco: number } | null,
+  ) => {
+    try {
+      setCompilando(true)
+      const rows = rowsOverride || rawRows
+      const maps: ColunaCompraMappingTipo[] =
+        mappingsOverride || (mappings as ColunaCompraMappingTipo[])
+      const manual =
+        manualOverride !== undefined
+          ? manualOverride
+          : usarCotacaoManual && cotacaoManualAtiva
+            ? { preco: Number(cotacaoManualAtiva) }
+            : null
+      const resultado = await compilarLinhasCompraGado(
+        rows,
+        maps,
+        manual && manual.preco > 0 ? manual : null,
+      )
+      setConferenciaCompra(resultado)
+      const escolhas: Record<string, FrenteCompra> = {}
+      resultado.linhas.forEach((l) => {
+        const sugerida = detectarFrenteSugerida(l.dados.pasto_destino)
+        escolhas[l.idTemp] = sugerida
+      })
+      setFrenteEscolhas(escolhas)
+      toast.dismiss('compilando-toast')
+      toast.success(
+        `${resultado.linhas.length} linhas de COMPRA DE GADO preparadas para conferência!`,
+      )
+    } catch (err: any) {
+      toast.error('Erro ao compilar compra de gado: ' + (err.message || 'Falha'))
+    } finally {
+      setCompilando(false)
+    }
+  }
+
+  const executarAplicacaoCompra = async () => {
+    try {
+      setAplicando(true)
+      setConfirmModalOpen(false)
+      toast.loading('Aplicando compra de gado no rebanho, financeiro e fechamento...', {
+        id: 'aplicando-toast',
+      })
+
+      const linhasValidadas: LinhaCompraNormalizada[] = (conferenciaCompra?.linhas || []).map(
+        (l) => ({
+          ...l,
+          frenteEscolhida: frenteEscolhas[l.idTemp] || l.frenteEscolhida,
+        }),
+      )
+
+      const resultado = await aplicarCompraGadoConfirmada(
+        linhasValidadas,
+        {
+          nome: file?.name || 'documento',
+          formato: isCompraGado ? 'compra de gado' : 'planilha',
+        },
+        {
+          id: user.id,
+          nome: user.name || 'Gestor',
+          perfil: user.role,
+        },
+        conferenciaCompra?.cotacao || null,
+      )
+
+      setResultadoCompra(resultado)
+      toast.dismiss('aplicando-toast')
+      toast.success('Compra de gado aplicada e registrada na auditoria (append-only)!')
+      setEtapa(5)
+    } catch (err: any) {
+      toast.dismiss('aplicando-toast')
+      toast.error('Erro ao aplicar compra de gado: ' + (err.message || 'Falha'))
+    } finally {
+      setAplicando(false)
+    }
   }
 
   // Registros filtrados na tela de conferência
@@ -631,6 +838,19 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                     <Download className="h-3.5 w-3.5 text-amber-600" />
                     Modelo Estoque de Insumos (.xlsx)
                   </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      baixarModeloCompraGadoXlsx()
+                      toast.success('Modelo Compra de Gado (.xlsx) baixado!')
+                    }}
+                    className="text-xs gap-1.5 border-emerald-600/40 text-emerald-900 dark:text-emerald-200 bg-background hover:bg-emerald-50"
+                  >
+                    <Download className="h-3.5 w-3.5 text-emerald-700" />
+                    Modelo Compra de Gado (.xlsx)
+                  </Button>
                 </div>
               </div>
 
@@ -739,6 +959,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                     >
                       <Sparkles className="h-3 w-3 text-amber-600" />
                       Estoque Insumos (Fábrica)
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={carregarExemploCompraGado}
+                      className="text-xs h-7 px-2 text-emerald-900 dark:text-emerald-200 border-emerald-600/40 bg-emerald-500/10 hover:bg-emerald-500/20 gap-1"
+                    >
+                      <Scale className="h-3 w-3 text-emerald-700" />
+                      Compra de Gado
                     </Button>
                   </div>
                 </div>
@@ -908,8 +1138,19 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                     <TabsTrigger value="financeiro" className="text-xs">
                       Financeiro
                     </TabsTrigger>{' '}
+                    <TabsTrigger
+                      value="compra_gado"
+                      className="text-xs font-semibold text-emerald-800 dark:text-emerald-300"
+                    >
+                      Compra de Gado
+                    </TabsTrigger>
                   </TabsList>
                 </Tabs>
+                {isCompraGado && (
+                  <Badge className="bg-emerald-700 text-white text-[10px] shrink-0">
+                    Documento Reconhecido: COMPRA DE GADO
+                  </Badge>
+                )}
               </div>
 
               {/* Tabela de Mapeamento Coluna -> Campo */}
@@ -953,6 +1194,43 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                                     {c.label} ({c.modulo})
                                   </SelectItem>
                                 ))}
+                                {isCompraGado && (
+                                  <>
+                                    <SelectItem
+                                      value="qtd_cabecas"
+                                      className="text-xs text-emerald-800"
+                                    >
+                                      Quantidade de Cabeças da Compra (Compra de Gado)
+                                    </SelectItem>
+                                    <SelectItem
+                                      value="peso_medio_at"
+                                      className="text-xs text-emerald-800"
+                                    >
+                                      Peso Médio em @ — será × 30 kg (Compra de Gado)
+                                    </SelectItem>
+                                    <SelectItem
+                                      value="preco_rs_cab"
+                                      className="text-xs text-emerald-800"
+                                    >
+                                      Preço por Cabeça R$ (Compra de Gado)
+                                    </SelectItem>
+                                    <SelectItem
+                                      value="preco_rs_at"
+                                      className="text-xs text-emerald-800"
+                                    >
+                                      Preço por @ R$ (Compra de Gado)
+                                    </SelectItem>
+                                    <SelectItem
+                                      value="fornecedor"
+                                      className="text-xs text-emerald-800"
+                                    >
+                                      Fornecedor / Vendedor (Compra de Gado)
+                                    </SelectItem>
+                                    <SelectItem value="data" className="text-xs text-emerald-800">
+                                      Data da Compra (Compra de Gado)
+                                    </SelectItem>
+                                  </>
+                                )}{' '}
                               </SelectContent>
                             </Select>
                           </td>
@@ -1101,6 +1379,444 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
               </CardContent>
             </Card>
           </div>
+
+          {/* PAINEL ESPECIAL DE COMPRA DE GADO */}
+          {isCompraGado && conferenciaCompra && (
+            <div className="space-y-4">
+              {/* Aviso da cotação (sempre visível quando há problema) */}
+              {conferenciaCompra.avisoCotacao && (
+                <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 rounded-lg space-y-2 text-xs text-amber-900 dark:text-amber-200">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    Cotação B3 do Boi Gordo — Nenhum preço é inventado
+                  </div>
+                  <p className="leading-relaxed">{conferenciaCompra.avisoCotacao}</p>
+                  <div className="flex flex-wrap items-end gap-3 pt-1">
+                    <div className="space-y-1">
+                      <Label className="text-[11px] font-semibold text-amber-900 dark:text-amber-200">
+                        Informar preço de referência da @ manualmente (R$):
+                      </Label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={cotacaoManualAtiva}
+                        onChange={(e) => setCotacaoManualAtiva(e.target.value)}
+                        placeholder="ex: 274.50"
+                        className="h-8 w-44 bg-background"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-amber-600/50 text-amber-900 dark:text-amber-200"
+                      disabled={!cotacaoManualAtiva || compilando}
+                      onClick={() =>
+                        compilarConferenciaCompra(rawRows, mappings as ColunaCompraMappingTipo[], {
+                          preco: Number(cotacaoManualAtiva),
+                        })
+                      }
+                    >
+                      {compilando ? 'Recalculando...' : 'Recalcular Ágio com Cotação Manual'}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Painel de métricas da compra */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <span className="text-xs text-muted-foreground block">
+                      Total de Linhas Lidas
+                    </span>
+                    <span className="text-2xl font-bold">
+                      {conferenciaCompra.resumo.totalLidos}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground block mt-0.5">
+                      {conferenciaCompra.resumo.aCriar} a criar ·{' '}
+                      {conferenciaCompra.resumo.aAtualizar} a atualizar ·{' '}
+                      {conferenciaCompra.resumo.aIgnorar} a ignorar
+                    </span>
+                  </CardContent>
+                </Card>
+                <Card className="border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20">
+                  <CardContent className="p-4">
+                    <span className="text-xs text-emerald-700 dark:text-emerald-300 block">
+                      Cabeças Compradas
+                    </span>
+                    <span className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">
+                      {conferenciaCompra.resumo.cabecasTotais}
+                    </span>
+                    <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block mt-0.5">
+                      {conferenciaCompra.resumo.arrobasTotais.toLocaleString('pt-BR', {
+                        maximumFractionDigits: 2,
+                      })}{' '}
+                      @ vivo (
+                      {conferenciaCompra.resumo.pesoTotalKg.toLocaleString('pt-BR', {
+                        maximumFractionDigits: 1,
+                      })}{' '}
+                      kg ÷ 30)
+                    </span>
+                  </CardContent>
+                </Card>
+                <Card className="border-blue-500/30 bg-blue-50/40 dark:bg-blue-950/20">
+                  <CardContent className="p-4">
+                    <span className="text-xs text-blue-700 dark:text-blue-300 block">
+                      Investimento Total
+                    </span>
+                    <span className="text-2xl font-bold text-blue-800 dark:text-blue-200">
+                      R${' '}
+                      {conferenciaCompra.resumo.investimentoTotalRs.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                      })}
+                    </span>
+                    <span className="text-[11px] text-blue-600 dark:text-blue-400 block mt-0.5">
+                      preço médio pago: R$ {conferenciaCompra.resumo.precoMedioRsAt.toFixed(2)}/@
+                    </span>
+                  </CardContent>
+                </Card>
+                <Card
+                  className={
+                    conferenciaCompra.resumo.agioMedioPct === null
+                      ? 'border-amber-500/40 bg-amber-50/40 dark:bg-amber-950/20'
+                      : conferenciaCompra.resumo.agioMedioPct <= 0
+                        ? 'border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20'
+                        : conferenciaCompra.resumo.agioMedioPct <= 10
+                          ? 'border-amber-500/40 bg-amber-50/40 dark:bg-amber-950/20'
+                          : 'border-red-500/40 bg-red-50/40 dark:bg-red-950/20'
+                  }
+                >
+                  <CardContent className="p-4">
+                    <span className="text-xs text-muted-foreground block">
+                      Ágio Médio na Compra
+                    </span>
+                    <span
+                      className={`text-2xl font-bold ${
+                        conferenciaCompra.resumo.agioMedioPct === null
+                          ? 'text-amber-700'
+                          : conferenciaCompra.resumo.agioMedioPct <= 0
+                            ? 'text-emerald-700'
+                            : conferenciaCompra.resumo.agioMedioPct <= 10
+                              ? 'text-amber-700'
+                              : 'text-red-700'
+                      }`}
+                    >
+                      {conferenciaCompra.resumo.agioMedioPct === null
+                        ? 's/ cotação'
+                        : `${conferenciaCompra.resumo.agioMedioPct > 0 ? '+' : ''}${conferenciaCompra.resumo.agioMedioPct.toFixed(1)}%`}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground block mt-0.5">
+                      (preço @ compra ÷ cotação @ venda − 1) × 100
+                    </span>
+                    {conferenciaCompra.cotacao && (
+                      <span className="text-[10px] text-muted-foreground block">
+                        ref.: R$ {conferenciaCompra.cotacao.preco.toFixed(2)}/@ (
+                        {conferenciaCompra.cotacao.origem === 'b3_vigente'
+                          ? 'B3 vigente'
+                          : 'manual'}
+                        {conferenciaCompra.cotacao.desatualizada
+                          ? `, ${conferenciaCompra.cotacao.diasAtraso}d`
+                          : ''}
+                        )
+                      </span>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Conversões de unidade + alertas globais */}
+              {(conferenciaCompra.resumo.conversoes.length > 0 ||
+                conferenciaCompra.resumo.alertas.length > 0 ||
+                conferenciaCompra.linhas.some((l) => l.conversoes.length > 0)) && (
+                <Card className="border-primary/20">
+                  <CardContent className="p-4 space-y-2 text-xs">
+                    {conferenciaCompra.linhas
+                      .flatMap((l) => l.conversoes.map((c) => ({ linha: l.linhaOrigem, texto: c })))
+                      .concat(
+                        conferenciaCompra.resumo.conversoes.map((c) => ({ linha: 0, texto: c })),
+                      )
+                      .slice(0, 8)
+                      .map((c, i) => (
+                        <Badge
+                          key={i}
+                          variant="outline"
+                          className="text-[10px] bg-primary/5 text-primary border-primary/20 mr-1"
+                        >
+                          {c.linha > 0 ? `L${c.linha}: ` : ''}
+                          {c.texto}
+                        </Badge>
+                      ))}
+                    {conferenciaCompra.resumo.alertas.map((a, i) => (
+                      <p
+                        key={`alerta-${i}`}
+                        className="text-amber-700 dark:text-amber-300 flex items-center gap-1.5 font-medium"
+                      >
+                        <AlertTriangle className="h-3.5 w-3.5" /> {a}
+                      </p>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Tabela de conferência das linhas de compra */}
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Scale className="h-5 w-5 text-emerald-700" />
+                    Conferência da Compra de Gado — linha a linha (obrigatória)
+                  </CardTitle>
+                  <CardDescription>
+                    Cada linha vira uma ENTRADA no rebanho + lançamento financeiro no centro de
+                    custo da frente. Nada é aplicado sem a sua validação. Lotes existentes são
+                    INCREMENTADOS (nunca sobrescritos).
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex gap-2">
+                    <Button
+                      variant={filtroCompra === 'todos' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroCompra('todos')}
+                      className="text-xs h-7"
+                    >
+                      Todos ({conferenciaCompra.linhas.length})
+                    </Button>
+                    <Button
+                      variant={filtroCompra === 'criar' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroCompra('criar')}
+                      className="text-xs h-7"
+                    >
+                      A Criar ({conferenciaCompra.resumo.aCriar})
+                    </Button>
+                    <Button
+                      variant={filtroCompra === 'atualizar' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroCompra('atualizar')}
+                      className="text-xs h-7"
+                    >
+                      A Atualizar ({conferenciaCompra.resumo.aAtualizar})
+                    </Button>
+                    <Button
+                      variant={filtroCompra === 'alertas' ? 'destructive' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroCompra('alertas')}
+                      className="text-xs h-7 gap-1"
+                    >
+                      <AlertTriangle className="h-3 w-3" /> Com Alertas
+                    </Button>
+                  </div>
+
+                  <div className="border rounded-lg overflow-x-auto max-h-[520px]">
+                    <table className="w-full text-xs">
+                      <thead className="bg-muted sticky top-0 text-muted-foreground font-semibold">
+                        <tr>
+                          <th className="p-2.5 text-center w-14">Linha</th>
+                          <th className="p-2.5 text-center w-28">Ação</th>
+                          <th className="p-2.5 text-left">Lote / Categoria / Destino</th>
+                          <th className="p-2.5 text-right">Cabeças</th>
+                          <th className="p-2.5 text-right">Peso</th>
+                          <th className="p-2.5 text-right">Preços</th>
+                          <th className="p-2.5 text-right">Total R$</th>
+                          <th className="p-2.5 text-center w-24">Ágio</th>
+                          <th className="p-2.5 text-left">Fornecedor / Data</th>
+                          <th className="p-2.5 text-left">Frente (Centro de Custo)</th>
+                          <th className="p-2.5 text-left">Status / Motivo</th>
+                          <th className="p-2.5 text-center w-20">Aplicar?</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {conferenciaCompra.linhas
+                          .filter((l) => {
+                            if (filtroCompra === 'criar')
+                              return l.acao === 'criar' && !l.ignoradoPeloUsuario
+                            if (filtroCompra === 'atualizar')
+                              return l.acao === 'atualizar' && !l.ignoradoPeloUsuario
+                            if (filtroCompra === 'alertas') return l.alertas.length > 0
+                            return true
+                          })
+                          .map((l) => {
+                            const isIgnorado = l.acao === 'ignorar' || l.ignoradoPeloUsuario
+                            const agioClass =
+                              l.agioPct !== null
+                                ? classificarAgioCompra(l.agioPct, conferenciaCompra.benchmark)
+                                : null
+                            return (
+                              <tr
+                                key={l.idTemp}
+                                className={`hover:bg-muted/30 transition-colors ${
+                                  isIgnorado ? 'opacity-50 bg-muted/10' : ''
+                                }`}
+                              >
+                                <td className="p-2.5 text-center font-mono font-medium">
+                                  #{l.linhaOrigem}
+                                </td>
+                                <td className="p-2.5 text-center">
+                                  {l.acao === 'criar' && !isIgnorado ? (
+                                    <Badge className="bg-emerald-600 text-[10px]">NOVO LOTE</Badge>
+                                  ) : l.acao === 'atualizar' && !isIgnorado ? (
+                                    <Badge className="bg-blue-600 text-[10px]">INCREMENTO</Badge>
+                                  ) : (
+                                    <Badge variant="secondary" className="text-[10px]">
+                                      IGNORAR
+                                    </Badge>
+                                  )}
+                                </td>
+                                <td className="p-2.5">
+                                  <div className="font-semibold text-foreground">
+                                    {l.dados.lote_nome || '(nome gerado)'}
+                                  </div>
+                                  <div className="text-[10px] text-muted-foreground">
+                                    {l.dados.categoria || 'categoria não informada'} ·{' '}
+                                    {l.dados.sexo === 'femea' ? 'Fêmea' : 'Macho'}
+                                    {l.dados.pasto_destino ? ` · ${l.dados.pasto_destino}` : ''}
+                                  </div>
+                                  {l.pesoMedioCombinado !== undefined && (
+                                    <div className="text-[10px] text-blue-700 dark:text-blue-300 mt-0.5">
+                                      Novo peso médio combinado: {l.pesoMedioCombinado} kg (
+                                      {l.loteExistenteCabecas || 0} cab. @{' '}
+                                      {l.loteExistentePesoMedio || 0} kg + {l.dados.qtd_cabecas}{' '}
+                                      cab. @ {l.dados.peso_medio_kg} kg)
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="p-2.5 text-right font-mono font-semibold">
+                                  {l.dados.qtd_cabecas}
+                                </td>
+                                <td className="p-2.5 text-right font-mono">
+                                  {l.dados.peso_medio_kg} kg
+                                  <span className="text-[10px] text-muted-foreground block">
+                                    {l.dados.arrobas_totais} @ total
+                                  </span>
+                                </td>
+                                <td className="p-2.5 text-right font-mono">
+                                  {l.dados.preco_rs_at
+                                    ? `R$ ${l.dados.preco_rs_at.toFixed(2)}/@`
+                                    : '—'}
+                                  <span className="text-[10px] text-muted-foreground block">
+                                    {l.dados.preco_rs_cab
+                                      ? `R$ ${l.dados.preco_rs_cab.toFixed(2)}/cab`
+                                      : '—'}
+                                  </span>
+                                </td>
+                                <td className="p-2.5 text-right font-mono font-bold text-blue-800 dark:text-blue-300">
+                                  R${' '}
+                                  {l.dados.valor_total.toLocaleString('pt-BR', {
+                                    minimumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="p-2.5 text-center">
+                                  {l.agioPct === null ? (
+                                    <span className="text-[10px] text-muted-foreground">
+                                      s/ cotação
+                                    </span>
+                                  ) : (
+                                    <Badge
+                                      className={`text-[10px] ${
+                                        agioClass?.cor === 'verde'
+                                          ? 'bg-emerald-600'
+                                          : agioClass?.cor === 'amarelo'
+                                            ? 'bg-amber-500'
+                                            : 'bg-red-600'
+                                      }`}
+                                    >
+                                      {l.agioPct > 0 ? '+' : ''}
+                                      {l.agioPct.toFixed(1)}%
+                                    </Badge>
+                                  )}
+                                </td>
+                                <td className="p-2.5">
+                                  <span className="text-[11px] font-medium">
+                                    {l.dados.fornecedor || '—'}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground block">
+                                    {l.dados.data}
+                                  </span>
+                                </td>
+                                <td className="p-2.5">
+                                  <Select
+                                    value={frenteEscolhas[l.idTemp] || 'recria'}
+                                    onValueChange={(v: FrenteCompra) =>
+                                      setFrenteEscolhas((prev) => ({ ...prev, [l.idTemp]: v }))
+                                    }
+                                  >
+                                    <SelectTrigger className="h-7 text-[11px] w-full max-w-[150px]">
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="cria">Cria</SelectItem>
+                                      <SelectItem value="recria">Recria</SelectItem>
+                                      <SelectItem value="engorda">Engorda</SelectItem>
+                                      <SelectItem value="confinamento">Confinamento</SelectItem>
+                                      <SelectItem value="arrendamento">Arrendamento</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </td>
+                                <td className="p-2.5 max-w-[220px]">
+                                  {l.alertas.length > 0 ? (
+                                    <div className="space-y-0.5">
+                                      {l.alertas.map((a, i) => (
+                                        <span
+                                          key={i}
+                                          className="text-[10px] block font-medium text-amber-700 dark:text-amber-300"
+                                        >
+                                          ⚠ {a}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  ) : null}
+                                  <span className="text-[10px] text-muted-foreground italic block mt-0.5">
+                                    {l.motivoAcao}
+                                  </span>
+                                  {l.conversoes.map((c, i) => (
+                                    <span key={i} className="text-[9px] block text-primary mt-0.5">
+                                      ⇄ {c}
+                                    </span>
+                                  ))}
+                                </td>
+                                <td className="p-2.5 text-center">
+                                  <Button
+                                    type="button"
+                                    variant={isIgnorado ? 'outline' : 'secondary'}
+                                    size="sm"
+                                    onClick={() =>
+                                      setConferenciaCompra((prev) =>
+                                        prev
+                                          ? {
+                                              ...prev,
+                                              linhas: prev.linhas.map((x) =>
+                                                x.idTemp === l.idTemp
+                                                  ? {
+                                                      ...x,
+                                                      ignoradoPeloUsuario: !x.ignoradoPeloUsuario,
+                                                    }
+                                                  : x,
+                                              ),
+                                              resumo: {
+                                                ...prev.resumo,
+                                                aIgnorar:
+                                                  prev.resumo.aIgnorar + (isIgnorado ? -1 : 1),
+                                              },
+                                            }
+                                          : prev,
+                                      )
+                                    }
+                                    className="text-[10px] h-6 px-2"
+                                  >
+                                    {isIgnorado ? 'Restaurar' : 'Ignorar'}
+                                  </Button>
+                                </td>
+                              </tr>
+                            )
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           {/* PAINEL ESPECIAL DE ESTOQUE DE INSUMOS & FÁBRICA DE SUPLEMENTO */}
           {isEstoqueDoc && (
@@ -1472,12 +2188,23 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-muted-foreground">
-                    Serão aplicados <strong>{totalCriar + totalAtualizar}</strong> registros
-                    validados.
+                    Serão aplicados{' '}
+                    <strong>
+                      {isCompraGado && conferenciaCompra
+                        ? conferenciaCompra.resumo.aCriar + conferenciaCompra.resumo.aAtualizar
+                        : totalCriar + totalAtualizar}
+                    </strong>{' '}
+                    registros validados.
                   </span>
                   <Button
                     onClick={() => setConfirmModalOpen(true)}
-                    disabled={totalCriar + totalAtualizar === 0}
+                    disabled={
+                      isCompraGado
+                        ? !conferenciaCompra ||
+                          conferenciaCompra.resumo.aCriar + conferenciaCompra.resumo.aAtualizar ===
+                            0
+                        : totalCriar + totalAtualizar === 0
+                    }
                     className="gap-2 bg-emerald-700 hover:bg-emerald-800 font-semibold"
                   >
                     Confirmar e Aplicar no Sistema <ArrowRight className="h-4 w-4" />
@@ -1496,8 +2223,9 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   Confirmar Aplicação em Lote
                 </DialogTitle>
                 <DialogDescription>
-                  Esta ação aplicará as alterações de forma definitiva nas áreas selecionadas
-                  (Lotes, Pesagens, Estoque e Fechamento).
+                  {isCompraGado
+                    ? 'Esta ação aplicará a compra no Rebanho (lotes), Movimentações, Financeiro (centro de custo) e Fechamento — de forma definitiva.'
+                    : 'Esta ação aplicará as alterações de forma definitiva nas áreas selecionadas (Lotes, Pesagens, Estoque e Fechamento).'}
                 </DialogDescription>
               </DialogHeader>
 
@@ -1509,15 +2237,63 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   <p>
                     <strong>Arquivo:</strong> {file?.name}
                   </p>
-                  <p>
-                    <strong>Novos a Criar:</strong> {totalCriar}
-                  </p>
-                  <p>
-                    <strong>Existentes a Atualizar:</strong> {totalAtualizar}
-                  </p>
-                  <p>
-                    <strong>Ignorados:</strong> {totalIgnorar}
-                  </p>
+                  {isCompraGado && conferenciaCompra ? (
+                    <>
+                      <p>
+                        <strong>Linhas de Compra:</strong> {conferenciaCompra.resumo.totalLidos}{' '}
+                        lidas
+                      </p>
+                      <p>
+                        <strong>Lotes a Criar:</strong> {conferenciaCompra.resumo.aCriar}
+                      </p>
+                      <p>
+                        <strong>Lotes a Incrementar:</strong> {conferenciaCompra.resumo.aAtualizar}
+                      </p>
+                      <p>
+                        <strong>Ignorados:</strong> {conferenciaCompra.resumo.aIgnorar}
+                      </p>
+                      <p>
+                        <strong>Total:</strong> {conferenciaCompra.resumo.cabecasTotais} cabeças ·{' '}
+                        {conferenciaCompra.resumo.arrobasTotais.toFixed(2)} @ · R${' '}
+                        {conferenciaCompra.resumo.investimentoTotalRs.toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                        })}
+                      </p>
+                      <p>
+                        <strong>Preço médio pago:</strong> R${' '}
+                        {conferenciaCompra.resumo.precoMedioRsAt.toFixed(2)}/@ ·{' '}
+                        <strong>Ágio médio:</strong>{' '}
+                        {conferenciaCompra.resumo.agioMedioPct === null
+                          ? 's/ cotação'
+                          : `${conferenciaCompra.resumo.agioMedioPct > 0 ? '+' : ''}${conferenciaCompra.resumo.agioMedioPct.toFixed(1)}%`}
+                      </p>
+                      {conferenciaCompra.cotacao && (
+                        <p className="pt-1 border-t">
+                          <strong>Cotação usada no ágio:</strong> R${' '}
+                          {conferenciaCompra.cotacao.preco.toFixed(2)}/@ (
+                          {conferenciaCompra.cotacao.origem === 'b3_vigente'
+                            ? 'B3 vigente'
+                            : 'informada manualmente'}
+                          {conferenciaCompra.cotacao.desatualizada
+                            ? ` — DESATUALIZADA (${conferenciaCompra.cotacao.diasAtraso} dias)`
+                            : ''}
+                          )
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <p>
+                        <strong>Novos a Criar:</strong> {totalCriar}
+                      </p>
+                      <p>
+                        <strong>Existentes a Atualizar:</strong> {totalAtualizar}
+                      </p>
+                      <p>
+                        <strong>Ignorados:</strong> {totalIgnorar}
+                      </p>
+                    </>
+                  )}
                   {isEstoqueDoc && custoTotalPeriodoEstoque > 0 && (
                     <p className="pt-1 border-t text-amber-800 dark:text-amber-300 font-semibold">
                       <strong>Custo Fábrica de Suplemento:</strong> R${' '}
@@ -1562,7 +2338,133 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
       {/* ========================================================================= */}
       {/* ETAPA 5: RELATÓRIO OFICIAL E CONFIRMAÇÃO */}
       {/* ========================================================================= */}
-      {etapa === 5 && resultadoAplicacao && (
+      {etapa === 5 && resultadoCompra && (
+        <div className="space-y-6">
+          <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
+            <CardHeader className="text-center pb-2">
+              <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <CardTitle className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
+                Compra de Gado Aplicada com Sucesso!
+              </CardTitle>
+              <CardDescription>
+                O Robô Maestro atualizou Rebanho, Movimentações de Rebanho, Financeiro (centro de
+                custo da frente), Compras de Gado do Fechamento e gerou o comprovante oficial com
+                protocolo de auditoria.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Linhas Processadas</span>
+                  <span className="text-2xl font-bold">{resultadoCompra.totalLidos}</span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-emerald-600 block">Lotes Criados</span>
+                  <span className="text-2xl font-bold text-emerald-700">
+                    {resultadoCompra.criados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-blue-600 block">Lotes Incrementados</span>
+                  <span className="text-2xl font-bold text-blue-700">
+                    {resultadoCompra.atualizados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Ignorados</span>
+                  <span className="text-2xl font-bold text-muted-foreground">
+                    {resultadoCompra.ignorados}
+                  </span>
+                </div>
+              </div>
+
+              {/* Estoque de gado em R$ (peso @ × valor @) */}
+              {conferenciaCompra && (
+                <div className="p-4 bg-blue-50/50 dark:bg-blue-950/10 border border-blue-500/30 rounded-lg space-y-1.5 text-xs">
+                  <span className="font-semibold text-blue-900 dark:text-blue-200 flex items-center gap-1.5">
+                    <Scale className="h-4 w-4" /> Estoque de Gado em R$ (peso em @ × valor da @)
+                  </span>
+                  <p className="text-muted-foreground">
+                    Arrobas adquiridas nesta compra:{' '}
+                    <strong>{conferenciaCompra.resumo.arrobasTotais.toFixed(2)} @</strong> × preço
+                    pago <strong>R$ {conferenciaCompra.resumo.precoMedioRsAt.toFixed(2)}/@</strong>{' '}
+                    ={' '}
+                    <strong className="text-blue-800 dark:text-blue-300">
+                      R${' '}
+                      {(
+                        conferenciaCompra.resumo.arrobasTotais *
+                        conferenciaCompra.resumo.precoMedioRsAt
+                      ).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </strong>{' '}
+                    incorporados ao valuation do estoque de gado usado no fechamento.
+                  </p>
+                </div>
+              )}
+
+              {/* Protocolo de Auditoria */}
+              <div className="p-4 bg-muted/40 border rounded-lg space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+                    <Info className="h-4 w-4 text-primary" /> Protocolo de Auditoria (Append-Only):
+                  </span>
+                  <code className="bg-background px-2 py-0.5 rounded border font-mono">
+                    {resultadoCompra.protocoloAuditId || 'REGISTRADO_NA_TRILHA'}
+                  </code>
+                </div>
+                <p className="text-muted-foreground">
+                  Módulos afetados:{' '}
+                  <strong>
+                    {resultadoCompra.entidadesAfetadas.join(', ') || 'Rebanho & Financeiro'}
+                  </strong>
+                  .{' '}
+                  {resultadoCompra.detalhesIgnorados.length > 0 && (
+                    <>
+                      Motivos das linhas ignoradas:{' '}
+                      {resultadoCompra.detalhesIgnorados
+                        .map((d) => `L${d.linha}: ${d.motivo}`)
+                        .join('; ')}
+                      .
+                    </>
+                  )}{' '}
+                  Fornecedor, documento de origem, responsável e timestamps (dispositivo + servidor)
+                  gravados na trilha e não podem ser apagados.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Button
+                  onClick={() =>
+                    gerarRelatorioCompraGadoPDF(
+                      resultadoCompra,
+                      { nome: file?.name || 'documento', formato: 'compra de gado' },
+                      conferenciaCompra?.linhas || [],
+                      user.name || 'Gestor',
+                      conferenciaCompra?.cotacao || null,
+                    )
+                  }
+                  className="gap-2 bg-emerald-700 hover:bg-emerald-800 font-semibold"
+                >
+                  <FileDown className="h-4 w-4" /> Baixar Relatório de Compra (PDF)
+                </Button>
+
+                <Button variant="outline" onClick={exportarPlanilhaConferencia} className="gap-2">
+                  <FileSpreadsheet className="h-4 w-4 text-blue-600" /> Exportar Planilha de
+                  Resultado
+                </Button>
+
+                <Button variant="secondary" onClick={reiniciarFluxo} className="gap-2">
+                  <RotateCcw className="h-4 w-4" /> Importar Outro Documento
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {etapa === 5 && !isCompraGado && resultadoAplicacao && (
         <div className="space-y-6">
           <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
             <CardHeader className="text-center pb-2">
