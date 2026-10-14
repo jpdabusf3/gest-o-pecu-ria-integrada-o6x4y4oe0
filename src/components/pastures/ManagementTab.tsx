@@ -47,20 +47,37 @@ export function ManagementTab() {
 
   const pasto = pastos.find((p) => p.id === selectedPasto)
 
-  const handleAddPasto = () => {
-    if (!newPastoName) return
+  const handleAddPasto = async () => {
+    const nomeTrim = newPastoName.trim()
+    if (!nomeTrim) return
+    const areaNum = Number(newPastoArea) || 0
+    if (areaNum < 0.1) return
+
+    // Sincroniza também no PocketBase se possível
+    try {
+      const { criarPastoRebanho } = await import('@/services/rebanho')
+      await criarPastoRebanho({
+        nome: nomeTrim,
+        area_ha: areaNum,
+        capacidade_ua_ha: 1.5,
+        observacoes: newPastoCultivar ? `Cultivar: ${newPastoCultivar}` : undefined,
+      })
+    } catch (e) {
+      console.warn('Criação remota via ManagementTab em fallback:', e)
+    }
+
     const newId = crypto.randomUUID()
     const newPasto: Pasto = {
       id: newId,
-      nome: newPastoName,
-      area: Number(newPastoArea) || 0,
-      cultivar: newPastoCultivar,
+      nome: nomeTrim,
+      area: areaNum,
+      cultivar: newPastoCultivar || 'Braquiária',
       estacao: 'Águas',
-      lotacaoProjetada: 0,
+      lotacaoProjetada: 1.5,
       lotacaoExecutada: 0,
-      alturaEntradaAlvo: 0,
-      alturaSaidaAlvo: 0,
-      alturaAtual: 0,
+      alturaEntradaAlvo: 35,
+      alturaSaidaAlvo: 15,
+      alturaAtual: 28,
       pesoMedioAtual: 0,
       pesoMedioHistorico: 0,
       status: 'Bom',

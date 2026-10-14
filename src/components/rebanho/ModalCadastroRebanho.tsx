@@ -267,19 +267,65 @@ export function ModalCadastroRebanho({
 
   const handleCriarPastoRapido = async (data: { nome: string; area: string; cap: string }) => {
     try {
+      const areaNum = parseFloat(data.area)
+      const capNum = parseFloat(data.cap) || 1.5
+
+      if (!data.nome.trim()) {
+        toast({
+          title: 'Nome obrigatório',
+          description: 'Informe o nome do pasto.',
+          variant: 'destructive',
+        })
+        return
+      }
+      if (!Number.isFinite(areaNum) || areaNum < 0.1) {
+        toast({
+          title: 'Área inválida',
+          description: 'A área mínima do pasto é de 0,1 ha.',
+          variant: 'destructive',
+        })
+        return
+      }
+      if (!Number.isFinite(capNum) || capNum < 0.1 || capNum > 20) {
+        toast({
+          title: 'Capacidade inválida',
+          description: 'A capacidade de suporte deve ficar entre 0,1 e 20 UA/ha.',
+          variant: 'destructive',
+        })
+        return
+      }
+
       const novo = await criarPastoRebanho({
         nome: data.nome.trim(),
-        area_ha: parseFloat(data.area) || 0,
-        capacidade_ua_ha: parseFloat(data.cap) || 1,
-        criado_por: user.name,
+        area_ha: areaNum,
+        capacidade_ua_ha: capNum,
+        criado_por: user.name || user.email || 'Usuário',
       })
-      toast({ title: 'Pasto criado', description: `${novo.nome} disponível para seleção.` })
+      toast({
+        title: 'Pasto criado com sucesso',
+        description: `${novo.nome} disponível para seleção.`,
+      })
       onDataChanged()
       setPastoSelecionado(novo.id)
-    } catch {
+    } catch (err: unknown) {
+      let desc = 'Verifique o nome (já existente?) e os valores.'
+      if (err instanceof Error) {
+        desc = err.message
+      }
+      if (err && typeof err === 'object' && 'response' in err) {
+        const respData = (err as { response?: { data?: Record<string, { message?: string }> } })
+          .response?.data
+        if (respData?.nome?.message) {
+          desc = `Já existe um pasto cadastrado com este nome ("${data.nome.trim()}"). Escolha outro nome.`
+        } else if (respData?.area_ha?.message) {
+          desc = `Área inválida: ${respData.area_ha.message}`
+        } else if (respData?.capacidade_ua_ha?.message) {
+          desc = `Capacidade inválida: ${respData.capacidade_ua_ha.message}`
+        }
+      }
       toast({
         title: 'Erro ao criar pasto',
-        description: 'Verifique o nome (já existente?) e os valores.',
+        description: desc,
         variant: 'destructive',
       })
     }
@@ -738,25 +784,54 @@ function NovoPastoRapido({
   return (
     <div className="rounded-lg border bg-muted/30 p-3 grid grid-cols-4 gap-2 items-end">
       <div className="col-span-2 space-y-1">
-        <Label className="text-xs">Nome do pasto</Label>
-        <Input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Pasto 01" />
+        <Label className="text-xs">Nome do pasto *</Label>
+        <Input
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          placeholder="Ex.: Piquete 01"
+          autoFocus
+        />
       </div>
       <div className="space-y-1">
-        <Label className="text-xs">Área (ha)</Label>
-        <Input type="number" step="0.1" value={area} onChange={(e) => setArea(e.target.value)} />
+        <Label className="text-xs">Área (ha) *</Label>
+        <Input
+          type="number"
+          step="0.1"
+          min="0.1"
+          placeholder="Ex.: 25"
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
+        />
       </div>
       <div className="space-y-1">
-        <Label className="text-xs">Cap. (UA/ha)</Label>
-        <Input type="number" step="0.1" value={cap} onChange={(e) => setCap(e.target.value)} />
+        <Label className="text-xs">Cap. (UA/ha) *</Label>
+        <Input
+          type="number"
+          step="0.1"
+          min="0.1"
+          max="20"
+          value={cap}
+          onChange={(e) => setCap(e.target.value)}
+        />
       </div>
       <div className="col-span-4 flex gap-2 justify-end">
-        <Button type="button" variant="ghost" size="sm" onClick={() => setAberto(false)}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            setAberto(false)
+            setNome('')
+            setArea('')
+            setCap('1.5')
+          }}
+        >
           Cancelar
         </Button>
         <Button
           type="button"
           size="sm"
-          disabled={!nome.trim() || !(parseFloat(area) > 0)}
+          disabled={!nome.trim() || !(parseFloat(area) >= 0.1)}
           onClick={() => {
             onCreate({ nome, area, cap })
             setAberto(false)

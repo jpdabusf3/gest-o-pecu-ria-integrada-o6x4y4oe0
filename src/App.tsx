@@ -67,11 +67,11 @@ const App = () => (
                       {/* Modo Campo & Tarefas: Acessíveis a todos (Vaqueiro, Capataz, Gestor) */}
                       <Route path="/campo" element={<Campo />} />
                       <Route path="/tarefas" element={<Tarefas />} />
-                      {/* Rotas de Campo Avançadas: Capataz e Gestor */}
+                      {/* Rotas de Campo Avançadas: Capataz, Gestor e Proprietário */}
                       <Route
                         path="/pastos"
                         element={
-                          <RoleRoute allowedRoles={['capataz', 'gestor']}>
+                          <RoleRoute allowedRoles={['capataz', 'gestor', 'proprietario']}>
                             <Pastos />
                           </RoleRoute>
                         }

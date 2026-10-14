@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
   DialogFooter,
 } from '@/components/ui/dialog'
@@ -24,26 +25,195 @@ import { Label } from '@/components/ui/label'
 import { rotationalSchedule } from '@/data/mock'
 import { NotificationPreferences } from '@/components/NotificationPreferences'
 import { useToast } from '@/hooks/use-toast'
-import { RefreshCw, Map as MapIcon, RotateCw, Beef } from 'lucide-react'
+import { RefreshCw, Map as MapIcon, RotateCw, Beef, Plus, AlertCircle } from 'lucide-react'
 import { ManagementTab } from '@/components/pastures/ManagementTab'
 import { EfficiencyTab } from '@/components/pastures/EfficiencyTab'
 import usePastoStore from '@/stores/usePastoStore'
 import useAnimalStore from '@/stores/useAnimalStore'
 import { cn } from '@/lib/utils'
+import {
+  getPastosRebanho,
+  getLotesRebanho,
+  getAnimaisIndividuais,
+  criarPastoRebanho,
+  PastoRebanhoRecord,
+  LoteRebanhoRecord,
+  AnimalIndividualRecord,
+} from '@/services/rebanho'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Pastos() {
   const { toast } = useToast()
-  const { pastos, updatePasto } = usePastoStore()
-  const { animais } = useAnimalStore()
+  const { user } = useAuth()
+  const { pastos: localPastos, updatePasto } = usePastoStore()
+  const { animais: localAnimais } = useAnimalStore()
   const [selectedPaddock, setSelectedPaddock] = useState<number | string | null>(null)
+
+  // Dados reais sincronizados do PocketBase (pastos_rebanho, lots, animais_individuais)
+  const [pbPastos, setPbPastos] = useState<PastoRebanhoRecord[]>([])
+  const [pbLotes, setPbLotes] = useState<LoteRebanhoRecord[]>([])
+  const [pbAnimais, setPbAnimais] = useState<AnimalIndividualRecord[]>([])
+  const [carregandoPb, setCarregandoPb] = useState(false)
+
+  // Modal de Criação de Novo Pasto (direto no PocketBase)
+  const [isNovoPastoOpen, setIsNovoPastoOpen] = useState(false)
+  const [novoNome, setNovoNome] = useState('')
+  const [novaArea, setNovaArea] = useState('')
+  const [novaCapacidade, setNovaCapacidade] = useState('1.5')
+  const [novoCultivar, setNovoCultivar] = useState('')
+  const [criandoPasto, setCriandoPasto] = useState(false)
 
   const [isHeightDialogOpen, setIsHeightDialogOpen] = useState(false)
   const [heightData, setHeightData] = useState({ atual: 0, entrada: 0, saida: 0 })
 
-  // Dynamically attach animal allocations to pastures
+  const carregarDadosPb = useCallback(async () => {
+    try {
+      setCarregandoPb(true)
+      const [pastosData, lotesData, animaisData] = await Promise.all([
+        getPastosRebanho(),
+        getLotesRebanho(),
+        getAnimaisIndividuais(),
+      ])
+      setPbPastos(pastosData)
+      setPbLotes(lotesData)
+      setPbAnimais(animaisData)
+    } catch (e) {
+      console.warn('Erro ao carregar dados do PocketBase em Pastos:', e)
+    } finally {
+      setCarregandoPb(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    carregarDadosPb()
+  }, [carregarDadosPb])
+
+  const handleCriarNovoPasto = async () => {
+    const nomeTrim = novoNome.trim()
+    if (!nomeTrim) {
+      toast({
+        title: 'Nome obrigatório',
+        description: 'Informe o nome do novo pasto.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    const areaNum = parseFloat(novaArea)
+    if (!Number.isFinite(areaNum) || areaNum < 0.1) {
+      toast({
+        title: 'Área inválida',
+        description: 'A área do pasto deve ser de pelo menos 0,1 ha.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    const capNum = parseFloat(novaCapacidade) || 1.5
+    if (!Number.isFinite(capNum) || capNum < 0.1 || capNum > 20) {
+      toast({
+        title: 'Capacidade inválida',
+        description: 'A capacidade de suporte deve ficar entre 0,1 e 20 UA/ha.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    setCriandoPasto(true)
+    try {
+      const criado = await criarPastoRebanho({
+        nome: nomeTrim,
+        area_ha: areaNum,
+        capacidade_ua_ha: capNum,
+        observacoes: novoCultivar.trim() ? `Cultivar: ${novoCultivar.trim()}` : undefined,
+        criado_por: user.name || user.email || 'Usuário',
+      })
+
+      toast({
+        title: 'Pasto criado com sucesso',
+        description: `O pasto "${criado.nome}" (${criado.area_ha} ha, ${criado.capacidade_ua_ha} UA/ha) foi cadastrado no banco de dados.`,
+      })
+
+      setIsNovoPastoOpen(false)
+      setNovoNome('')
+      setNovaArea('')
+      setNovaCapacidade('1.5')
+      setNovoCultivar('')
+
+      // Recarrega lista do backend e seleciona o recém-criado
+      await carregarDadosPb()
+      setSelectedPaddock(criado.id)
+    } catch (err: unknown) {
+      let desc = 'Verifique o nome (já existente?) e os valores informados.'
+      if (err instanceof Error) {
+        desc = err.message
+      }
+      if (err && typeof err === 'object' && 'response' in err) {
+        const respData = (err as { response?: { data?: Record<string, { message?: string }> } })
+          .response?.data
+        if (respData?.nome?.message) {
+          desc = `Já existe um pasto cadastrado com o nome "${nomeTrim}". Escolha outro nome.`
+        } else if (respData?.area_ha?.message) {
+          desc = `Área inválida: ${respData.area_ha.message}`
+        } else if (respData?.capacidade_ua_ha?.message) {
+          desc = `Capacidade inválida: ${respData.capacidade_ua_ha.message}`
+        }
+      }
+      toast({
+        title: 'Erro ao criar pasto',
+        description: desc,
+        variant: 'destructive',
+      })
+    } finally {
+      setCriandoPasto(false)
+    }
+  }
+
+  // Lista unificada: exibe os pastos reais de pastos_rebanho com prioridade.
+  // Se ainda não houver nenhum pasto no banco, exibe os do store local para demonstração.
   const dynamicPastures = useMemo(() => {
-    return pastos.map((pasto) => {
-      const pastoAnimais = animais.filter((a) => a.pastoId === pasto.id.toString())
+    if (pbPastos.length > 0) {
+      return pbPastos.map((pastoPb) => {
+        // Cabeças alocadas nos lotes e animais individuais vinculados a este pasto
+        const lotesNoPasto = pbLotes.filter(
+          (l) => l.pasto_atual_id === pastoPb.id && l.status === 'active',
+        )
+        const cabecasLotes = lotesNoPasto.reduce((sum, l) => sum + (l.headcount || 0), 0)
+
+        const animaisNoPasto = pbAnimais.filter(
+          (a) => a.pasto_atual_id === pastoPb.id && a.status === 'ativo',
+        )
+        const cabecasAnimais = animaisNoPasto.length
+
+        const headCount = cabecasLotes + cabecasAnimais
+        const computedLotacao = pastoPb.area_ha > 0 ? headCount / pastoPb.area_ha : 0
+        const isStockingAlert = computedLotacao > pastoPb.capacidade_ua_ha * 1.1
+
+        return {
+          id: pastoPb.id,
+          nome: pastoPb.nome,
+          area: pastoPb.area_ha,
+          cultivar: pastoPb.observacoes?.includes('Cultivar:')
+            ? pastoPb.observacoes.replace('Cultivar:', '').trim()
+            : pastoPb.fazenda || 'Braquiária',
+          lotacaoProjetada: pastoPb.capacidade_ua_ha,
+          lotacaoExecutada: computedLotacao,
+          alturaAtual: 28,
+          alturaEntradaAlvo: 35,
+          alturaSaidaAlvo: 15,
+          status: isStockingAlert ? 'Alerta' : 'Bom',
+          daysOfRest: 12,
+          headCount,
+          computedLotacao,
+          isStockingAlert,
+          isRealDb: true,
+        }
+      })
+    }
+
+    // Fallback: pastos locais
+    return localPastos.map((pasto) => {
+      const pastoAnimais = localAnimais.filter((a) => a.pastoId === pasto.id.toString())
       const headCount = pastoAnimais.reduce((sum, a) => sum + a.quantidade, 0)
       const computedLotacao = pasto.area > 0 ? headCount / pasto.area : 0
       const isStockingAlert = computedLotacao > pasto.lotacaoProjetada * 1.1
@@ -53,9 +223,10 @@ export default function Pastos() {
         headCount,
         computedLotacao,
         isStockingAlert,
+        isRealDb: false,
       }
     })
-  }, [pastos, animais])
+  }, [pbPastos, pbLotes, pbAnimais, localPastos, localAnimais])
 
   const handleSync = () => {
     const alerts = dynamicPastures.filter(
@@ -109,8 +280,98 @@ export default function Pastos() {
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap">
-          <Button variant="outline" size="sm" onClick={handleSync} className="gap-2">
-            <RefreshCw className="h-4 w-4" /> Sincronizar
+          <Dialog open={isNovoPastoOpen} onOpenChange={setIsNovoPastoOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm" className="gap-2">
+                <Plus className="h-4 w-4" /> Novo Pasto
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Cadastrar Novo Pasto</DialogTitle>
+                <DialogDescription>
+                  Adiciona uma área real de pastagem à fazenda (PocketBase).
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="nomePasto">Nome do Pasto *</Label>
+                  <Input
+                    id="nomePasto"
+                    placeholder="Ex.: Piquete 01, Pasto da Sede"
+                    value={novoNome}
+                    onChange={(e) => setNovoNome(e.target.value)}
+                    autoFocus
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="areaPasto">Área (ha) *</Label>
+                    <Input
+                      id="areaPasto"
+                      type="number"
+                      step="0.1"
+                      min="0.1"
+                      placeholder="Ex.: 45"
+                      value={novaArea}
+                      onChange={(e) => setNovaArea(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="capPasto">Capacidade (UA/ha) *</Label>
+                    <Input
+                      id="capPasto"
+                      type="number"
+                      step="0.1"
+                      min="0.1"
+                      max="20"
+                      placeholder="Ex.: 1.5"
+                      value={novaCapacidade}
+                      onChange={(e) => setNovaCapacidade(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="cultivarPasto">Cultivar / Forrageira (opcional)</Label>
+                  <Input
+                    id="cultivarPasto"
+                    placeholder="Ex.: Brachiaria brizantha cv. Marandu"
+                    value={novoCultivar}
+                    onChange={(e) => setNovoCultivar(e.target.value)}
+                  />
+                </div>
+              </div>
+              <DialogFooter className="gap-2 sm:gap-0">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsNovoPastoOpen(false)}
+                  disabled={criandoPasto}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleCriarNovoPasto}
+                  disabled={criandoPasto || !novoNome.trim() || !(parseFloat(novaArea) >= 0.1)}
+                >
+                  {criandoPasto ? 'Salvando...' : 'Salvar Pasto'}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              carregarDadosPb()
+              handleSync()
+            }}
+            disabled={carregandoPb}
+            className="gap-2"
+          >
+            <RefreshCw className={cn('h-4 w-4', carregandoPb && 'animate-spin')} /> Atualizar
           </Button>
           <NotificationPreferences />
         </div>

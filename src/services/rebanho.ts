@@ -152,7 +152,56 @@ export async function criarPastoRebanho(data: {
   observacoes?: string
   criado_por?: string
 }): Promise<PastoRebanhoRecord> {
-  return await pb.collection('pastos_rebanho').create<PastoRebanhoRecord>(data)
+  const nomeTrim = data.nome?.trim()
+  if (!nomeTrim) {
+    throw new Error('O nome do pasto é obrigatório.')
+  }
+  const area = Number(data.area_ha)
+  if (!Number.isFinite(area) || area < 0.1) {
+    throw new Error('A área deve ser de pelo menos 0,1 ha.')
+  }
+  const cap = Number(data.capacidade_ua_ha)
+  if (!Number.isFinite(cap) || cap < 0.1) {
+    throw new Error('A capacidade de suporte deve ser de pelo menos 0,1 UA/ha.')
+  }
+  if (cap > 20) {
+    throw new Error('A capacidade de suporte não pode exceder 20 UA/ha.')
+  }
+
+  const payload: Record<string, unknown> = {
+    nome: nomeTrim,
+    area_ha: area,
+    capacidade_ua_ha: cap,
+  }
+  if (data.fazenda?.trim()) payload.fazenda = data.fazenda.trim()
+  if (data.observacoes?.trim()) payload.observacoes = data.observacoes.trim()
+  if (data.criado_por?.trim()) payload.criado_por = data.criado_por.trim()
+
+  return await pb.collection('pastos_rebanho').create<PastoRebanhoRecord>(payload)
+}
+
+export async function excluirPastoRebanho(id: string): Promise<boolean> {
+  return await pb.collection('pastos_rebanho').delete(id)
+}
+
+export async function atualizarPastoRebanho(
+  id: string,
+  data: Partial<{
+    nome: string
+    area_ha: number
+    capacidade_ua_ha: number
+    fazenda: string
+    observacoes: string
+  }>,
+): Promise<PastoRebanhoRecord> {
+  const payload: Record<string, unknown> = {}
+  if (data.nome !== undefined) payload.nome = data.nome.trim()
+  if (data.area_ha !== undefined) payload.area_ha = Number(data.area_ha)
+  if (data.capacidade_ua_ha !== undefined) payload.capacidade_ua_ha = Number(data.capacidade_ua_ha)
+  if (data.fazenda !== undefined) payload.fazenda = data.fazenda.trim()
+  if (data.observacoes !== undefined) payload.observacoes = data.observacoes.trim()
+
+  return await pb.collection('pastos_rebanho').update<PastoRebanhoRecord>(id, payload)
 }
 
 export async function getLotesRebanho(): Promise<LoteRebanhoRecord[]> {
