@@ -61,6 +61,18 @@ import {
   ColunaCompraMapping,
 } from '@/services/maestroCompraGado'
 import {
+  processarDocumentosFiscais,
+  aplicarDocumentosFiscaisConfirmados,
+  gerarRelatorioFiscalPDF,
+  formatarCNPJouCPF,
+  DocumentoFiscalExtraido,
+  ResultadoProcessamentoFiscal,
+  ResultadoAplicacaoFiscal,
+  TipoDocumentoFiscal,
+  DestinoSistemaFiscal,
+} from '@/services/maestroDocumentosFiscais'
+import { Receipt, FileCheck, Split, Link2, ShieldCheck, HelpCircle as HelpIcon } from 'lucide-react'
+import {
   reconhecerColunasVendaGado,
   isDocumentoVendaGado,
   compilarLinhasVendaGado,
@@ -161,6 +173,19 @@ export default function MaestroImport() {
     'pesagens' | 'lotes_animais' | 'estoque' | 'financeiro' | 'atividades' | 'generico'
   >('lotes_animais')
 
+  // --- NOTAS FISCAIS E RECIBOS (ROBÔ CHICÃO FISCAL) ---
+  const [isDocumentoFiscal, setIsDocumentoFiscal] = useState(false)
+  const [processamentoFiscal, setProcessamentoFiscal] =
+    useState<ResultadoProcessamentoFiscal | null>(null)
+  const [docsFiscaisConferencia, setDocsFiscaisConferencia] = useState<DocumentoFiscalExtraido[]>(
+    [],
+  )
+  const [filtroFiscalAba, setFiltroFiscalAba] = useState<
+    'todos' | 'notas' | 'recibos' | 'desconhecidos' | 'alertas'
+  >('todos')
+  const [resultadoAplicacaoFiscal, setResultadoAplicacaoFiscal] =
+    useState<ResultadoAplicacaoFiscal | null>(null)
+
   // --- COMPRA DE GADO (nova capacidade do Maestro) ---
   const [isCompraGado, setIsCompraGado] = useState(false)
   const [conferenciaCompra, setConferenciaCompra] = useState<ResultadoConferenciaCompra | null>(
@@ -246,9 +271,69 @@ export default function MaestroImport() {
     setLoteFiltroVenda('todos')
     setCotacaoManualVenda('')
     setUsarCotacaoManualVenda(false)
+    setIsDocumentoFiscal(false)
+    setProcessamentoFiscal(null)
+    setDocsFiscaisConferencia([])
+    setFiltroFiscalAba('todos')
+    setResultadoAplicacaoFiscal(null)
   }
 
   // Exemplos rápidos do usuário
+  const carregarExemploFiscal = () => {
+    // Simula PDF de pacote fiscal com NF de Compra de Insumos, NF de Venda de Gado e Recibo de Pagamento escaneado
+    const exemploTexto = `
+================= DOCUMENTO 1: DANFE NF-e (COMPRA DE INSUMOS) =================
+CHAVE DE ACESSO: 3524 0512 3456 7800 0195 5500 1000 0128 4710 0345 6789
+NÚMERO: 12847  SÉRIE: 1  DATA EMISSÃO: 2025-05-12  NATUREZA DA OPERAÇÃO: COMPRA PARA COMERCIALIZACAO OU INDUSTRIALIZACAO
+CFOP: 1102 / 1101
+EMITENTE: NUTRIPEC AGROPECUARIA LTDA - CNPJ: 12.345.678/0001-95
+DESTINATÁRIO: FAZENDA MODELO PECUARIA F3 - CNPJ: 45.678.901/0001-22
+ITENS DA NOTA FISCAL:
+- PRODUTO: Milho em Grão Seco | QTD: 15.000 | UN: kg | VL UNIT: 0,85 | VL TOTAL: 12.750,00 | CFOP: 1102
+- PRODUTO: Nucleo Mineral Reproducao | QTD: 40 | UN: saco | VL UNIT: 135,00 | VL TOTAL: 5.400,00 | CFOP: 1102
+- PRODUTO: Ureia Pecuaria Protegida | QTD: 20 | UN: saco | VL UNIT: 98,00 | VL TOTAL: 1.960,00 | CFOP: 1102
+IMPOSTOS: BASE ICMS: 20.110,00 | VALOR ICMS: 2.413,20
+VALOR TOTAL DA NOTA: R$ 20.110,00 (Vinte mil cento e dez reais)
+FORMA DE PAGAMENTO: Boleto Bancario 30 dias
+
+--- DOCUMENTO_SEPARADOR ---
+================= DOCUMENTO 2: DANFE NF-e (VENDA DE GADO) =================
+CHAVE DE ACESSO: 3524 0598 7654 3200 0140 5500 2000 0084 1910 0987 6543
+NÚMERO: 8419  SÉRIE: 2  DATA EMISSÃO: 2025-05-14  NATUREZA DA OPERAÇÃO: SAIDA DE GADO BOVINO PARA ABATE
+CFOP: 5102 / 5152
+EMITENTE: FAZENDA MODELO PECUARIA F3 - CNPJ: 45.678.901/0001-22
+DESTINATÁRIO: FRIGORIFICO VALE DO BOI LTDA - CNPJ: 98.765.432/0001-40
+ITENS DA NOTA FISCAL:
+- PRODUTO: Bovinos Machos Adultos (Boi Gordo) | QTD: 45 | UN: cab | PESO: 24.300 kg (810 @ vivo) | VL UNIT: 5.400,00 | VL TOTAL: 243.000,00
+IMPOSTOS: ISENTO / SUSPENSAO ICMS
+VALOR TOTAL DA NOTA: R$ 243.000,00 (Duzentos e quarenta e tres mil reais)
+FORMA DE PAGAMENTO: Deposito em conta 15 dias
+
+--- DOCUMENTO_SEPARADOR ---
+================= DOCUMENTO 3: RECIBO DE PAGAMENTO / COMPROVANTE PIX (ESCANEADO) =================
+[COMPROVANTE DE TRANSFERENCIA PIX BANCO DO BRASIL]
+DATA DO PAGAMENTO: 2025-05-15
+VALOR PAGO: R$ 20.110,00 (Vinte mil cento e dez reais)
+FORMA DE PAGAMENTO: PIX
+BENEFICIÁRIO: NUTRIPEC AGROPECUARIA LTDA - CNPJ: 12.345.678/0001-95
+PAGADOR: FAZENDA MODELO PECUARIA F3 - CPF/CNPJ: 45.678.901/0001-22
+REFERÊNCIA: NF-e 12847 Fornecimento de insumos nutricao
+AUTENTICAÇÃO BANCÁRIA: PIX-E2E-9948271649102847592
+CONTA DE DESTINO: BANCO DO BRASIL - AG: 1234 - CC: 56789-0
+`
+    const blob = new Blob([exemploTexto], { type: 'application/pdf' })
+    const fileExemplo = new File([blob], 'pacote_notas_fiscais_e_recibos_maio.pdf', {
+      type: 'application/pdf',
+    })
+    setFile(fileExemplo)
+    setObjetivo(
+      'Processar pacote PDF contendo Nota Fiscal de Insumos, NF de Venda de Gado e Recibo de Pagamento escaneado, alimentando estoque, fluxo de caixa e rebanho com conciliação automática.',
+    )
+    setIsDocumentoFiscal(true)
+    setIsCompraGado(false)
+    setIsVendaGado(false)
+    toast.info('Pacote exemplo de Notas Fiscais e Recibos carregado!')
+  }
   const carregarExemploPlanilha = () => {
     const csvExemplo = `Lote;Pasto;Quantidade;Peso Vivo;Categoria;Genero;Suplemento
 Lote Recria 01;Pasto 04 (Braquiarão);85;11 @;Novilho;Macho;Proteinado Seca
@@ -332,6 +417,55 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
       setRequiresOCR(extracao.requiresOCR)
       setOcrUsado(Boolean(extracao.ocrUsado))
       setOrigemLeitura(extracao.origem_leitura || 'texto')
+
+      // 1.b VERIFICAÇÃO AUTOMÁTICA OU EXPLÍCITA: NOTA FISCAL / RECIBO DE PAGAMENTO (PDF / OCR)
+      const nomeLower = file.name.toLowerCase()
+      const textoLower = (extracao.markdown || '').toLowerCase()
+      const ehSinalFiscal =
+        isDocumentoFiscal ||
+        nomeLower.includes('danfe') ||
+        nomeLower.includes('nf-e') ||
+        nomeLower.includes('nfe') ||
+        nomeLower.includes('recibo') ||
+        nomeLower.includes('comprovante') ||
+        nomeLower.includes('fiscal') ||
+        textoLower.includes('danfe') ||
+        textoLower.includes('chave de acesso') ||
+        textoLower.includes('natureza da operação') ||
+        textoLower.includes('comprovante de transferência') ||
+        textoLower.includes('comprovante pix') ||
+        textoLower.includes('recibo de pagamento')
+
+      if (ehSinalFiscal && extracao.markdown.trim()) {
+        setIsDocumentoFiscal(true)
+        setIsCompraGado(false)
+        setIsVendaGado(false)
+
+        toast.loading('Separando e estruturando notas fiscais e recibos...', {
+          id: 'leitura-toast',
+        })
+        const resultadoFiscal = await processarDocumentosFiscais(
+          extracao.markdown,
+          file.name,
+          extracao.ocrUsado ? 'visao' : 'texto',
+        )
+
+        setProcessamentoFiscal(resultadoFiscal)
+        setDocsFiscaisConferencia(resultadoFiscal.documentos)
+
+        toast.dismiss('leitura-toast')
+        toast.success(
+          `Chicão identificou ${resultadoFiscal.total_documentos} documento(s) (${resultadoFiscal.notas_fiscais.length} NF-e e ${resultadoFiscal.recibos.length} recibo/comprovante)!`,
+          {
+            description:
+              resultadoFiscal.sugestoes_conciliacao.length > 0
+                ? `${resultadoFiscal.sugestoes_conciliacao.length} conciliação(ões) nota ↔ pagamento sugerida(s)! Avançando para a conferência.`
+                : 'Avançando direto para a conferência obrigatória.',
+          },
+        )
+        setEtapa(3)
+        return
+      }
 
       // Se falhou leitura visual e documento precisa de OCR sem nenhum texto legível
       if (!extracao.markdown.trim() && extracao.requiresOCR) {
@@ -576,6 +710,37 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
   // ETAPA 4: Aplicação integrada
   const executarAplicacao = async () => {
+    if (isDocumentoFiscal) {
+      try {
+        setAplicando(true)
+        setConfirmModalOpen(false)
+        toast.loading('Robô Chicão aplicando notas fiscais e recibos...', { id: 'aplicando-toast' })
+
+        const resFiscal = await aplicarDocumentosFiscaisConfirmados(
+          docsFiscaisConferencia,
+          file?.name || 'documento_fiscal.pdf',
+          {
+            id: user.id,
+            nome: user.name || 'Gestor',
+            perfil: user.role,
+          },
+        )
+
+        setResultadoAplicacaoFiscal(resFiscal)
+        toast.dismiss('aplicando-toast')
+        toast.success(
+          `${resFiscal.total_aplicados} documento(s) aplicados no estoque, rebanho e financeiro com sucesso!`,
+        )
+        setEtapa(5)
+      } catch (err: any) {
+        toast.dismiss('aplicando-toast')
+        toast.error('Erro ao aplicar documentos fiscais: ' + (err.message || 'Falha'))
+      } finally {
+        setAplicando(false)
+      }
+      return
+    }
+
     if (isVendaGado) {
       await executarAplicacaoVenda()
       return
@@ -1183,6 +1348,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                       <Scale className="h-3 w-3 text-rose-700" />
                       Venda de Gado
                     </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={carregarExemploFiscal}
+                      className="text-xs h-7 px-2 text-blue-900 dark:text-blue-200 border-blue-600/40 bg-blue-500/10 hover:bg-blue-500/20 gap-1 font-semibold"
+                    >
+                      <Receipt className="h-3 w-3 text-blue-700" />
+                      Nota Fiscal / Recibo (PDF)
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -1495,7 +1670,707 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
       {/* ========================================================================= */}
       {/* ETAPA 3: CONFERÊNCIA OBRIGATÓRIA (PAINEL CENTRAL) */}
       {/* ========================================================================= */}
-      {etapa === 3 && (
+      {etapa === 3 && isDocumentoFiscal && (
+        <div className="space-y-6">
+          {/* Header e Métricas dos Documentos Fiscais Reconhecidos */}
+          <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-400 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-blue-950 dark:text-blue-100">
+            <div className="flex items-center gap-2.5">
+              <Receipt className="h-6 w-6 text-blue-600 shrink-0" />
+              <div>
+                <p className="font-semibold text-sm">
+                  Conferência Obrigatória: Notas Fiscais e Recibos de Pagamento
+                </p>
+                <p className="text-blue-800/80 dark:text-blue-300">
+                  O Chicão separou {docsFiscaisConferencia.length} documento(s) individualmente do
+                  arquivo. Nenhum registro é lançado no estoque, rebanho ou financeiro sem a sua
+                  revisão e aprovação campo a campo.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Badge
+                variant="outline"
+                className="border-blue-500 text-blue-800 dark:text-blue-200 bg-background font-mono"
+              >
+                {docsFiscaisConferencia.filter((d) => d.tipo_documento === 'nota_fiscal').length}{' '}
+                NF-e / DANFE
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-blue-500 text-blue-800 dark:text-blue-200 bg-background font-mono"
+              >
+                {docsFiscaisConferencia.filter((d) => d.tipo_documento === 'recibo').length}{' '}
+                Recibo(s)
+              </Badge>
+            </div>
+          </div>
+
+          {/* Cards de Métricas e Totais */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card className="border-border">
+              <CardContent className="p-4">
+                <span className="text-xs text-muted-foreground block">Total de Documentos</span>
+                <span className="text-2xl font-bold">{docsFiscaisConferencia.length}</span>
+                <span className="text-[11px] text-muted-foreground block mt-0.5">
+                  extraídos e estruturados
+                </span>
+              </CardContent>
+            </Card>
+
+            <Card className="border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20">
+              <CardContent className="p-4">
+                <span className="text-xs text-emerald-700 dark:text-emerald-300 block">
+                  Total Aprovado
+                </span>
+                <span className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">
+                  R${' '}
+                  {docsFiscaisConferencia
+                    .filter((d) => d.aprovado_para_aplicar)
+                    .reduce((acc, d) => acc + d.valor_total, 0)
+                    .toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </span>
+                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block mt-0.5">
+                  {docsFiscaisConferencia.filter((d) => d.aprovado_para_aplicar).length} docs
+                  selecionados
+                </span>
+              </CardContent>
+            </Card>
+
+            <Card className="border-blue-500/30 bg-blue-50/40 dark:bg-blue-950/20">
+              <CardContent className="p-4">
+                <span className="text-xs text-blue-700 dark:text-blue-300 block">
+                  Conciliações Sugeridas
+                </span>
+                <span className="text-2xl font-bold text-blue-800 dark:text-blue-200">
+                  {processamentoFiscal?.sugestoes_conciliacao.length || 0}
+                </span>
+                <span className="text-[11px] text-blue-600 dark:text-blue-400 block mt-0.5">
+                  vínculo Nota ↔ Recibo
+                </span>
+              </CardContent>
+            </Card>
+
+            <Card
+              className={
+                docsFiscaisConferencia.some((d) => d.alertas.some((a) => a.tipo === 'critico'))
+                  ? 'border-red-500/40 bg-red-50/40 dark:bg-red-950/20'
+                  : 'border-amber-500/30 bg-amber-50/40 dark:bg-amber-950/20'
+              }
+            >
+              <CardContent className="p-4">
+                <span className="text-xs text-amber-700 dark:text-amber-300 block">
+                  Alertas / Ambiguidade
+                </span>
+                <span className="text-2xl font-bold text-amber-800 dark:text-amber-200">
+                  {docsFiscaisConferencia.reduce((acc, d) => acc + d.alertas.length, 0)}
+                </span>
+                <span className="text-[11px] text-amber-600 dark:text-amber-400 block mt-0.5">
+                  requerem conferência atenta
+                </span>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Banner de Conciliação Automática quando houver par NF ↔ Recibo */}
+          {processamentoFiscal?.sugestoes_conciliacao &&
+            processamentoFiscal.sugestoes_conciliacao.length > 0 && (
+              <Card className="border-emerald-500/50 bg-emerald-50/30 dark:bg-emerald-950/15">
+                <CardHeader className="py-3 px-4">
+                  <CardTitle className="text-sm font-semibold flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
+                    <Link2 className="h-4 w-4 text-emerald-600" />
+                    Sugestão de Conciliação Automática: NF de Compra ↔ Recibo de Pagamento
+                  </CardTitle>
+                  <CardDescription className="text-xs text-emerald-800/80 dark:text-emerald-300">
+                    O Chicão cruzou os documentos deste lote e identificou pagamentos
+                    correspondentes às notas fiscais emitidas:
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="px-4 pb-3 space-y-2 text-xs">
+                  {processamentoFiscal.sugestoes_conciliacao.map((c, i) => {
+                    const nf = docsFiscaisConferencia.find((d) => d.id_temp === c.nf_id)
+                    const rc = docsFiscaisConferencia.find((d) => d.id_temp === c.recibo_id)
+                    return (
+                      <div
+                        key={i}
+                        className="p-2.5 bg-background border border-emerald-400/40 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-emerald-600 text-white text-[10px]">
+                            PAR ENCONTRADO
+                          </Badge>
+                          <span className="font-semibold">
+                            NF {nf?.numero_documento || 'S/N'} (R$ {nf?.valor_total.toFixed(2)}) ↔
+                            Recibo ({rc?.forma_pagamento || 'PIX'} - R$ {rc?.valor_total.toFixed(2)}
+                            )
+                          </span>
+                        </div>
+                        <span className="text-muted-foreground italic text-[11px]">{c.motivo}</span>
+                      </div>
+                    )
+                  })}
+                </CardContent>
+              </Card>
+            )}
+
+          {/* Filtros de Visualização por Categoria */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={filtroFiscalAba === 'todos' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFiltroFiscalAba('todos')}
+                className="text-xs h-7"
+              >
+                Todos ({docsFiscaisConferencia.length})
+              </Button>
+              <Button
+                variant={filtroFiscalAba === 'notas' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFiltroFiscalAba('notas')}
+                className="text-xs h-7 font-semibold text-blue-700 dark:text-blue-300"
+              >
+                Notas Fiscais (
+                {docsFiscaisConferencia.filter((d) => d.tipo_documento === 'nota_fiscal').length})
+              </Button>
+              <Button
+                variant={filtroFiscalAba === 'recibos' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFiltroFiscalAba('recibos')}
+                className="text-xs h-7 font-semibold text-emerald-700 dark:text-emerald-300"
+              >
+                Recibos de Pagamento (
+                {docsFiscaisConferencia.filter((d) => d.tipo_documento === 'recibo').length})
+              </Button>
+              <Button
+                variant={filtroFiscalAba === 'desconhecidos' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFiltroFiscalAba('desconhecidos')}
+                className="text-xs h-7 text-amber-700"
+              >
+                Desconhecidos (
+                {docsFiscaisConferencia.filter((d) => d.tipo_documento === 'desconhecido').length})
+              </Button>
+              <Button
+                variant={filtroFiscalAba === 'alertas' ? 'destructive' : 'outline'}
+                size="sm"
+                onClick={() => setFiltroFiscalAba('alertas')}
+                className="text-xs h-7"
+              >
+                Com Alertas ({docsFiscaisConferencia.filter((d) => d.alertas.length > 0).length})
+              </Button>
+            </div>
+
+            <div className="text-xs text-muted-foreground">
+              {docsFiscaisConferencia.filter((d) => d.aprovado_para_aplicar).length} selecionado(s)
+              para aplicação
+            </div>
+          </div>
+
+          {/* LISTA DE DOCUMENTOS FISCAIS / RECIBOS COM CONFERÊNCIA DETALHADA */}
+          <div className="space-y-4">
+            {docsFiscaisConferencia
+              .filter((d) => {
+                if (filtroFiscalAba === 'notas') return d.tipo_documento === 'nota_fiscal'
+                if (filtroFiscalAba === 'recibos') return d.tipo_documento === 'recibo'
+                if (filtroFiscalAba === 'desconhecidos') return d.tipo_documento === 'desconhecido'
+                if (filtroFiscalAba === 'alertas') return d.alertas.length > 0
+                return true
+              })
+              .map((doc, idx) => {
+                const isNota = doc.tipo_documento === 'nota_fiscal'
+                const isRecibo = doc.tipo_documento === 'recibo'
+                const hasCritico = doc.alertas.some((a) => a.tipo === 'critico')
+
+                return (
+                  <Card
+                    key={doc.id_temp}
+                    className={`transition-all border ${
+                      !doc.aprovado_para_aplicar
+                        ? 'opacity-60 bg-muted/10 border-border'
+                        : hasCritico
+                          ? 'border-red-500/60 bg-red-50/10'
+                          : isNota
+                            ? 'border-blue-500/30'
+                            : 'border-emerald-500/30'
+                    }`}
+                  >
+                    <CardHeader className="py-3 px-4 bg-muted/20 border-b">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={doc.aprovado_para_aplicar}
+                            onChange={(e) => {
+                              const checked = e.target.checked
+                              setDocsFiscaisConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.id_temp === doc.id_temp
+                                    ? { ...item, aprovado_para_aplicar: checked }
+                                    : item,
+                                ),
+                              )
+                            }}
+                            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                          />
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <Badge
+                                className={
+                                  isNota
+                                    ? 'bg-blue-600 text-white text-[11px]'
+                                    : isRecibo
+                                      ? 'bg-emerald-600 text-white text-[11px]'
+                                      : 'bg-amber-600 text-white text-[11px]'
+                                }
+                              >
+                                {isNota
+                                  ? `NOTA FISCAL (${doc.subtipo.toUpperCase()})`
+                                  : isRecibo
+                                    ? `RECIBO (${doc.subtipo.toUpperCase()})`
+                                    : 'DOCUMENTO DESCONHECIDO'}
+                              </Badge>
+                              <span className="font-bold text-sm">
+                                {doc.numero_documento
+                                  ? `Nº ${doc.numero_documento}${doc.serie ? ` (Série ${doc.serie})` : ''}`
+                                  : 'Documento Sem Número'}
+                              </span>
+                              {doc.ja_importado && (
+                                <Badge variant="destructive" className="text-[10px]">
+                                  JÁ IMPORTADO (BLOQUEADO)
+                                </Badge>
+                              )}
+                              {doc.vinculo_sugerido_id && (
+                                <Badge className="bg-emerald-700 text-white text-[10px]">
+                                  CONCILIADO COM {isNota ? 'RECIBO' : 'NF'}
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {isNota
+                                ? `Emitente: ${doc.emitente.razao_social || 'Não informado'} | CNPJ/CPF: ${formatarCNPJouCPF(doc.emitente.cnpj_cpf)}`
+                                : `Favorecido: ${doc.beneficiario.nome || 'Não informado'} | CNPJ/CPF: ${formatarCNPJouCPF(doc.beneficiario.cnpj_cpf)}`}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 self-end md:self-auto">
+                          <div className="text-right">
+                            <span className="text-xs text-muted-foreground block">Valor Total</span>
+                            <span className="text-lg font-bold font-mono text-foreground">
+                              R${' '}
+                              <Input
+                                type="number"
+                                step="0.01"
+                                value={doc.valor_total}
+                                onChange={(e) => {
+                                  const novoVal = parseFloat(e.target.value) || 0
+                                  setDocsFiscaisConferencia((prev) =>
+                                    prev.map((item) =>
+                                      item.id_temp === doc.id_temp
+                                        ? { ...item, valor_total: novoVal }
+                                        : item,
+                                    ),
+                                  )
+                                }}
+                                className="h-7 w-32 inline-block font-mono font-bold text-right ml-1"
+                              />
+                            </span>
+                          </div>
+                          <Badge
+                            variant={
+                              doc.confianca_geral === 'alta'
+                                ? 'outline'
+                                : doc.confianca_geral === 'media'
+                                  ? 'secondary'
+                                  : 'destructive'
+                            }
+                            className="text-[10px]"
+                          >
+                            Confiança {doc.confianca_geral}
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent className="p-4 space-y-4">
+                      {/* Alertas e Ambiguidades específicas deste documento */}
+                      {doc.alertas.length > 0 && (
+                        <div className="space-y-1.5">
+                          {doc.alertas.map((alerta, aIdx) => (
+                            <div
+                              key={aIdx}
+                              className={`p-2.5 rounded-lg border text-xs flex items-start gap-2 ${
+                                alerta.tipo === 'critico'
+                                  ? 'bg-red-50 dark:bg-red-950/20 border-red-300 text-red-900 dark:text-red-200'
+                                  : 'bg-amber-50 dark:bg-amber-950/20 border-amber-300 text-amber-900 dark:text-amber-200'
+                              }`}
+                            >
+                              <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" />
+                              <div className="flex-1">
+                                <span className="font-semibold">{alerta.mensagem}</span>
+                                {alerta.sugestao && (
+                                  <p className="text-[11px] opacity-90 mt-0.5">
+                                    Sugestão: {alerta.sugestao}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Grade de Campos e Metadados */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        {/* Campo Chave de Acesso (NF-e) */}
+                        {isNota && (
+                          <div className="p-2.5 bg-muted/20 border rounded-lg md:col-span-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-semibold text-muted-foreground">
+                                Chave de Acesso (44 dígitos - Deduplicação):
+                              </span>
+                              <Badge
+                                variant={
+                                  doc.campos_status['chave_acesso']?.status === 'OK'
+                                    ? 'outline'
+                                    : 'destructive'
+                                }
+                                className="text-[9px]"
+                              >
+                                {doc.campos_status['chave_acesso']?.status || 'AMBÍGUO'}
+                              </Badge>
+                            </div>
+                            <Input
+                              value={doc.chave_acesso || ''}
+                              onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '')
+                                setDocsFiscaisConferencia((prev) =>
+                                  prev.map((item) =>
+                                    item.id_temp === doc.id_temp
+                                      ? {
+                                          ...item,
+                                          chave_acesso: val,
+                                          campos_status: {
+                                            ...item.campos_status,
+                                            chave_acesso: {
+                                              status: val.length === 44 ? 'OK' : 'ILEGIVEL',
+                                              confianca: val.length === 44 ? 'alta' : 'baixa',
+                                            },
+                                          },
+                                        }
+                                      : item,
+                                  ),
+                                )
+                              }}
+                              placeholder="44 dígitos numéricos da DANFE"
+                              className="font-mono text-xs h-7"
+                              maxLength={44}
+                            />
+                          </div>
+                        )}
+
+                        {/* Campo Data */}
+                        <div className="p-2.5 bg-muted/20 border rounded-lg">
+                          <span className="font-semibold text-muted-foreground block mb-1">
+                            {isNota ? 'Data de Emissão' : 'Data do Pagamento'}:
+                          </span>
+                          <Input
+                            type="date"
+                            value={isNota ? doc.data_emissao || '' : doc.data_pagamento || ''}
+                            onChange={(e) => {
+                              const v = e.target.value
+                              setDocsFiscaisConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.id_temp === doc.id_temp
+                                    ? isNota
+                                      ? { ...item, data_emissao: v }
+                                      : { ...item, data_pagamento: v }
+                                    : item,
+                                ),
+                              )
+                            }}
+                            className="text-xs h-7"
+                          />
+                        </div>
+
+                        {/* Natureza da Operação / CFOP para NF */}
+                        {isNota && (
+                          <div className="p-2.5 bg-muted/20 border rounded-lg">
+                            <span className="font-semibold text-muted-foreground block mb-1">
+                              CFOP / Natureza da Operação:
+                            </span>
+                            <div className="flex gap-2">
+                              <Input
+                                value={doc.cfop_principal || ''}
+                                onChange={(e) => {
+                                  const v = e.target.value
+                                  setDocsFiscaisConferencia((prev) =>
+                                    prev.map((item) =>
+                                      item.id_temp === doc.id_temp
+                                        ? { ...item, cfop_principal: v }
+                                        : item,
+                                    ),
+                                  )
+                                }}
+                                placeholder="ex: 1102"
+                                className="text-xs h-7 w-20 font-mono"
+                              />
+                              <Input
+                                value={doc.natureza_operacao || ''}
+                                onChange={(e) => {
+                                  const v = e.target.value
+                                  setDocsFiscaisConferencia((prev) =>
+                                    prev.map((item) =>
+                                      item.id_temp === doc.id_temp
+                                        ? { ...item, natureza_operacao: v }
+                                        : item,
+                                    ),
+                                  )
+                                }}
+                                placeholder="Natureza da operação"
+                                className="text-xs h-7 flex-1"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Forma de Pagamento e Dados Bancários */}
+                        <div className="p-2.5 bg-muted/20 border rounded-lg">
+                          <span className="font-semibold text-muted-foreground block mb-1">
+                            Forma de Pagamento:
+                          </span>
+                          <Input
+                            value={doc.forma_pagamento || ''}
+                            onChange={(e) => {
+                              const v = e.target.value
+                              setDocsFiscaisConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.id_temp === doc.id_temp
+                                    ? { ...item, forma_pagamento: v }
+                                    : item,
+                                ),
+                              )
+                            }}
+                            placeholder="PIX, TED, Boleto, Dinheiro..."
+                            className="text-xs h-7"
+                          />
+                        </div>
+
+                        {/* Mapeamento Zootécnico / Contábil Sugerido */}
+                        <div className="p-2.5 bg-muted/20 border rounded-lg md:col-span-1">
+                          <span className="font-semibold text-muted-foreground block mb-1">
+                            Destino no Sistema (Efeito Automático):
+                          </span>
+                          <Select
+                            value={doc.destino_sistema}
+                            onValueChange={(val: any) => {
+                              setDocsFiscaisConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.id_temp === doc.id_temp
+                                    ? { ...item, destino_sistema: val }
+                                    : item,
+                                ),
+                              )
+                            }}
+                          >
+                            <SelectTrigger className="h-7 text-xs">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="estoque_insumos" className="text-xs">
+                                Estoque de Insumos (Fábrica / Nutrição) + Financeiro
+                              </SelectItem>
+                              <SelectItem value="rebanho_venda" className="text-xs">
+                                Venda de Gado (Saída Rebanho + Receita Caixa)
+                              </SelectItem>
+                              <SelectItem value="rebanho_compra" className="text-xs">
+                                Compra de Gado (Entrada Rebanho + Desembolso)
+                              </SelectItem>
+                              <SelectItem value="financeiro_servico" className="text-xs">
+                                Lançamento Financeiro / Serviço (Sem estoque)
+                              </SelectItem>
+                              <SelectItem value="baixa_desembolso" className="text-xs">
+                                Baixa de Pagamento / Desembolso no Fluxo de Caixa
+                              </SelectItem>
+                              <SelectItem value="ignorar" className="text-xs text-muted-foreground">
+                                Ignorar Documento (Não aplicar)
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      {/* Tabela de Itens da Nota Fiscal */}
+                      {isNota && doc.itens.length > 0 && (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-semibold text-muted-foreground">
+                              Itens da Nota Fiscal ({doc.itens.length}):
+                            </span>
+                            <span className="font-mono text-[11px]">
+                              Soma dos itens: R$ {doc.soma_itens.toFixed(2)}{' '}
+                              {doc.divergencia_soma > 0.05 && (
+                                <span className="text-red-600 font-bold">
+                                  (Divergência: R$ {doc.divergencia_soma.toFixed(2)})
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                          <div className="border rounded-lg overflow-x-auto">
+                            <table className="w-full text-xs">
+                              <thead className="bg-muted text-muted-foreground font-semibold">
+                                <tr>
+                                  <th className="p-2 text-left">Produto / Serviço</th>
+                                  <th className="p-2 text-right">Qtd</th>
+                                  <th className="p-2 text-center w-14">Un</th>
+                                  <th className="p-2 text-right">Valor Unit. (R$)</th>
+                                  <th className="p-2 text-right">Valor Total (R$)</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y">
+                                {doc.itens.map((it, itIdx) => (
+                                  <tr key={itIdx} className="hover:bg-muted/20">
+                                    <td className="p-2 font-medium">{it.produto}</td>
+                                    <td className="p-2 text-right font-mono">{it.quantidade}</td>
+                                    <td className="p-2 text-center font-mono">{it.unidade}</td>
+                                    <td className="p-2 text-right font-mono">
+                                      {it.valor_unitario.toFixed(2)}
+                                    </td>
+                                    <td className="p-2 text-right font-mono font-semibold">
+                                      {it.valor_total.toFixed(2)}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Detalhes de Gado quando destino for compra ou venda de bovinos */}
+                      {(doc.destino_sistema === 'rebanho_compra' ||
+                        doc.destino_sistema === 'rebanho_venda') && (
+                        <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg space-y-2 text-xs">
+                          <div className="flex items-center justify-between font-semibold text-amber-900 dark:text-amber-200">
+                            <span className="flex items-center gap-1.5">
+                              <Scale className="h-4 w-4" /> Parâmetros Zootécnicos do Rebanho (@
+                              viva = 30 kg):
+                            </span>
+                            <span>
+                              {doc.gado_peso_arrobas
+                                ? `${doc.gado_peso_arrobas.toFixed(1)} @ vivo total`
+                                : '—'}
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Cabeças:
+                              </span>
+                              <Input
+                                type="number"
+                                value={doc.gado_cabecas || 1}
+                                onChange={(e) => {
+                                  const c = parseInt(e.target.value) || 1
+                                  setDocsFiscaisConferencia((prev) =>
+                                    prev.map((item) =>
+                                      item.id_temp === doc.id_temp
+                                        ? { ...item, gado_cabecas: c }
+                                        : item,
+                                    ),
+                                  )
+                                }}
+                                className="h-7 text-xs font-mono"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Peso Total (kg):
+                              </span>
+                              <Input
+                                type="number"
+                                value={doc.gado_peso_kg || ''}
+                                onChange={(e) => {
+                                  const p = parseFloat(e.target.value) || 0
+                                  const arrobas = p / 30
+                                  const prAt = arrobas > 0 ? doc.valor_total / arrobas : undefined
+                                  setDocsFiscaisConferencia((prev) =>
+                                    prev.map((item) =>
+                                      item.id_temp === doc.id_temp
+                                        ? {
+                                            ...item,
+                                            gado_peso_kg: p,
+                                            gado_peso_arrobas: Number(arrobas.toFixed(2)),
+                                            gado_preco_rs_at: prAt
+                                              ? Number(prAt.toFixed(2))
+                                              : undefined,
+                                          }
+                                        : item,
+                                    ),
+                                  )
+                                }}
+                                className="h-7 text-xs font-mono"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Preço por @ (R$):
+                              </span>
+                              <div className="font-mono font-semibold pt-1">
+                                {doc.gado_preco_rs_at
+                                  ? `R$ ${doc.gado_preco_rs_at.toFixed(2)}`
+                                  : '—'}
+                              </div>
+                            </div>
+                            <div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Ágio vs B3:
+                              </span>
+                              <div className="pt-1">
+                                {doc.gado_agio_pct !== null && doc.gado_agio_pct !== undefined ? (
+                                  <Badge
+                                    className={
+                                      doc.gado_agio_pct >= 0 ? 'bg-emerald-600' : 'bg-amber-600'
+                                    }
+                                  >
+                                    {doc.gado_agio_pct > 0 ? '+' : ''}
+                                    {doc.gado_agio_pct}%
+                                  </Badge>
+                                ) : (
+                                  <span className="text-muted-foreground italic">s/ cotação</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              })}
+          </div>
+
+          {/* Botões de Ação na Conferência */}
+          <div className="flex justify-between items-center pt-2">
+            <Button variant="outline" size="sm" onClick={() => setEtapa(1)}>
+              Voltar para Upload
+            </Button>
+            <Button
+              onClick={() => setConfirmModalOpen(true)}
+              disabled={docsFiscaisConferencia.filter((d) => d.aprovado_para_aplicar).length === 0}
+              className="gap-2 font-semibold bg-emerald-700 hover:bg-emerald-800"
+            >
+              <FileCheck className="h-4 w-4" />
+              Confirmar e Aplicar Documentos Aprovados (
+              {docsFiscaisConferencia.filter((d) => d.aprovado_para_aplicar).length})
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ETAPA 3: CONFERÊNCIA OBRIGATÓRIA (PLANILHAS E DEMAIS DOCUMENTOS) */}
+      {/* ========================================================================= */}
+      {etapa === 3 && !isDocumentoFiscal && (
         <div className="space-y-6">
           {/* Banner de Auto-Reconhecimento quando saltou da leitura direto para conferência */}
           {mapeamentoReconhecido && (
@@ -3299,7 +4174,120 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         </div>
       )}
 
-      {etapa === 5 && !isCompraGado && !isVendaGado && resultadoAplicacao && (
+      {/* ========================================================================= */}
+      {/* ETAPA 5: RELATÓRIO OFICIAL DE NOTAS FISCAIS E RECIBOS */}
+      {/* ========================================================================= */}
+      {etapa === 5 && isDocumentoFiscal && resultadoAplicacaoFiscal && (
+        <div className="space-y-6">
+          <Card className="border-blue-500/40 bg-blue-50/20 dark:bg-blue-950/10">
+            <CardHeader className="text-center pb-2">
+              <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/40 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                <ShieldCheck className="h-8 w-8" />
+              </div>
+              <CardTitle className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                Notas Fiscais e Recibos Aplicados com Sucesso!
+              </CardTitle>
+              <CardDescription>
+                O Robô Chicão atualizou o Estoque de Insumos, Rebanho, Vendas, Compras e Fluxo de
+                Caixa conforme o tipo de cada documento fiscal, com protocolo de auditoria e
+                conciliação automática.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              {/* Resumo de Aplicação */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Total Analisado</span>
+                  <span className="text-2xl font-bold">
+                    {resultadoAplicacaoFiscal.total_processados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-emerald-600 block">Lançamentos Aplicados</span>
+                  <span className="text-2xl font-bold text-emerald-700">
+                    {resultadoAplicacaoFiscal.total_aplicados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">
+                    Ignorados / Bloqueados
+                  </span>
+                  <span className="text-2xl font-bold text-muted-foreground">
+                    {resultadoAplicacaoFiscal.total_ignorados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-blue-600 block">Conciliações Efetivadas</span>
+                  <span className="text-2xl font-bold text-blue-700">
+                    {processamentoFiscal?.sugestoes_conciliacao.length || 0}
+                  </span>
+                </div>
+              </div>
+
+              {/* Detalhamento dos Módulos Afetados */}
+              <div className="space-y-2">
+                <span className="text-xs font-semibold text-foreground block">
+                  Documentos Gravados na Trilha Contábil e Zootécnica:
+                </span>
+                <div className="border rounded-lg divide-y bg-background text-xs">
+                  {resultadoAplicacaoFiscal.detalhes_aplicados.map((item, idx) => (
+                    <div key={idx} className="p-3 flex items-center justify-between gap-3">
+                      <div>
+                        <span className="font-semibold">{item.descricao}</span>
+                        <p className="text-[11px] text-muted-foreground">
+                          Módulos alimentados: {item.entidades_afetadas.join(', ')}
+                        </p>
+                      </div>
+                      <Badge className="bg-emerald-600 text-white text-[10px]">APLICADO</Badge>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Protocolo de Auditoria Append-Only */}
+              <div className="p-4 bg-muted/40 border rounded-lg space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+                    <Info className="h-4 w-4 text-primary" /> Protocolo de Auditoria (Append-Only):
+                  </span>
+                  <code className="bg-background px-2 py-0.5 rounded border font-mono">
+                    {resultadoAplicacaoFiscal.protocolo_audit_id || 'REGISTRADO_NA_TRILHA_AUDIT'}
+                  </code>
+                </div>
+                <p className="text-muted-foreground">
+                  A imutabilidade contábil é garantida: chave de acesso de 44 dígitos para notas
+                  fiscais e hash único para recibos impedem reimportações duplicadas. Todos os
+                  eventos ficam encadeados na trilha de auditoria da fazenda.
+                </p>
+              </div>
+
+              {/* Ações de Download e Encerramento */}
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Button
+                  onClick={() =>
+                    gerarRelatorioFiscalPDF(
+                      resultadoAplicacaoFiscal,
+                      docsFiscaisConferencia,
+                      file?.name || 'documento_fiscal.pdf',
+                      user.name || 'Gestor',
+                    )
+                  }
+                  className="gap-2 bg-blue-700 hover:bg-blue-800 font-semibold"
+                >
+                  <FileDown className="h-4 w-4" /> Baixar Relatório Fiscal Oficial (PDF)
+                </Button>
+
+                <Button variant="secondary" onClick={reiniciarFluxo} className="gap-2">
+                  <RotateCcw className="h-4 w-4" /> Importar Outro Pacote
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {etapa === 5 && !isCompraGado && !isVendaGado && !isDocumentoFiscal && resultadoAplicacao && (
         <div className="space-y-6">
           <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
             <CardHeader className="text-center pb-2">

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T02:40:22.400Z",
+  "generatedAt": "2026-10-14T03:00:39.448Z",
   "collections": [
     {
       "name": "users",
@@ -3708,6 +3708,248 @@
         "CREATE INDEX idx_mvpasto_lote ON movimentacoes_pasto (lote_id)",
         "CREATE INDEX idx_mvpasto_origem ON movimentacoes_pasto (pasto_origem_id)",
         "CREATE INDEX idx_mvpasto_destino ON movimentacoes_pasto (pasto_destino_id)"
+      ]
+    },
+    {
+      "name": "maestro_documentos_fiscais",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": null,
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "tipo_documento",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["nota_fiscal", "recibo", "desconhecido"]
+        },
+        {
+          "name": "subtipo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "origem_arquivo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "chave_acesso",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "numero_documento",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "serie",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cfop_principal",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "natureza_operacao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_emissao",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_pagamento",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "emitente_razao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "emitente_cnpj_cpf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "destinatario_razao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "destinatario_cnpj_cpf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "beneficiario_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "beneficiario_cnpj_cpf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pagador_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pagador_cnpj_cpf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "valor_total",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "valor_extenso",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "forma_pagamento",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dados_bancarios",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencia_nf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "documento_vinculado_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "conciliado",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "destino_sistema",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "itens",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "impostos",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "campos_status",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "alertas",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "protocolo_audit_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "usuario_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "usuario_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dedup_hash",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_mdf_tipo ON maestro_documentos_fiscais (tipo_documento)",
+        "CREATE INDEX idx_mdf_chave ON maestro_documentos_fiscais (chave_acesso)",
+        "CREATE INDEX idx_mdf_dedup ON maestro_documentos_fiscais (dedup_hash)",
+        "CREATE INDEX idx_mdf_emitente ON maestro_documentos_fiscais (emitente_cnpj_cpf)",
+        "CREATE INDEX idx_mdf_beneficiario ON maestro_documentos_fiscais (beneficiario_cnpj_cpf)",
+        "CREATE INDEX idx_mdf_data_emissao ON maestro_documentos_fiscais (data_emissao DESC)",
+        "CREATE INDEX idx_mdf_data_pagto ON maestro_documentos_fiscais (data_pagamento DESC)",
+        "CREATE INDEX idx_mdf_audit ON maestro_documentos_fiscais (protocolo_audit_id)"
       ]
     }
   ]

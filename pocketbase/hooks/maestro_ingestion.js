@@ -1,14 +1,19 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 /**
- * Hook de Ingestão do Robô Maestro
+ * Hook de Ingestão do Robô Chicão (antigo Maestro)
  * 1. POST /backend/v1/maestro/extract: extrai markdown estruturado de arquivos enviados
  *    (PDF, DOCX, XLSX, XLS, PPTX, TXT, CSV) via $documents.toMarkdown.
  *    - PDFs digitalizados (422) e FOTOS de tabelas (JPG/PNG/WEBP/HEIC) tentam leitura
- *      visual por IA ($ai.chat multimodal). Sem transcrição confiável, devolve aviso
- *      honesto — o Maestro NUNCA inventa dados.
- * 2. POST /backend/v1/maestro/analyze: aciona o agente Maestro ($ai.agent('maestro').chat)
+ *      visual por IA ($ai.chat multimodal com pre-processamento). Sem transcrição confiável, devolve aviso
+ *      honesto — o Chicão NUNCA inventa dados.
+ * 2. POST /backend/v1/maestro/analyze: aciona o agente Chicão ($ai.agent('maestro').chat)
  *    para mapear colunas, interpretar unidades e normalizar dados.
+ * 3. POST /backend/v1/maestro/process-fiscal: rota especializada para NOTAS FISCAIS e RECIBOS DE PAGAMENTO (PDF/imagens).
+ *    Classifica automaticamente (nota_fiscal vs recibo vs desconhecido),
+ *    detecta múltiplos documentos em um único PDF/arquivo e separa individualmente,
+ *    extrai todos os campos exigidos (chave 44 dígitos, CFOP, impostos, itens, beneficiário, dados bancários...),
+ *    com status por campo (OK, AUSENTE, ILEGIVEL, AMBIGUO), conferência de soma dos itens vs total e valor por extenso vs numérico.
  *
  * REGRA DO POCKETBASE JSVM: nenhuma função ou constante auxiliar no top-level pode ser
  * referenciada dentro de callbacks, pois o pool de VMs executa isolado. Todo helper
@@ -17,21 +22,20 @@
 
 routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
   const VISION_SYSTEM_PROMPT =
-    'Você é o módulo de leitura visual (OCR) do Robô Maestro do sistema Gestão Pecuária Integrada. ' +
+    'Você é o módulo de leitura visual (OCR) do Robô Chicão do sistema Gestão Pecuária Integrada. ' +
     'Sua única função é TRANSCREVER fielmente o que está visível na imagem/documento enviado: ' +
-    'tabelas em Markdown GFM (| coluna | coluna |), títulos e rótulos, exatamente como aparecem. ' +
-    'Regras absolutas: (1) NUNCA invente, estime, complete ou corrija valores; transcreva o que lê, mesmo com ruído; ' +
-    '(2) se um valor/célula estiver ilegível, escreva "?" na célula correspondente; ' +
-    '(3) se a imagem estiver ilegível, cortada, girada, desfocada ou você NÃO conseguir enxergar um documento/tabela, ' +
+    'documentos fiscais (DANFE / NF-e / NFS-e), recibos de pagamento, comprovantes bancários (PIX/TED/boleto) ou tabelas em Markdown GFM (| coluna | coluna |), títulos e rótulos, exatamente como aparecem. ' +
+    'Regras absolutas: (1) NUNCA invente, estime, complete ou corrija valores; transcreva o que lê, mesmo com ruído ou inclinação; ' +
+    '(2) se um valor ou campo estiver ilegível, escreva "[ILEGIVEL]" no campo correspondente; ' +
+    '(3) se a imagem estiver completamente ilegível, cortada, desfocada ou você NÃO conseguir enxergar documento legível, ' +
     'responda EXATAMENTE {"erro":"sem_visao"} e nada mais; ' +
-    '(4) não comente, não resuma, não explique: devolva apenas a transcrição em Markdown.'
+    '(4) não comente, não resuma, não dê saudações: devolva apenas a transcrição fiel em Markdown.'
 
   const AVISO_SEM_LEITURA =
-    'Arquivo digitalizado/foto sem camada de texto selecionável. O Maestro tentou a leitura visual por IA e não obteve ' +
+    'Arquivo digitalizado/foto sem camada de texto selecionável. O Robô Chicão tentou a leitura visual por IA e não obteve ' +
     'uma transcrição confiável — nenhum dado foi inventado. Sugestões: 1) envie o PDF original com texto selecionável ou a ' +
-    'planilha (XLSX/CSV); 2) se for foto de tabela, fotografe novamente com boa luz, página inteira no quadro e foco nítido ' +
-    '(JPG/PNG); 3) baixe um dos modelos oficiais de planilha na própria página do Maestro e preencha em campo. Em qualquer ' +
-    'caminho, a conferência obrigatória antes de aplicar continua valendo.'
+    'planilha (XLSX/CSV); 2) se for foto/escaneado de nota ou recibo, capture novamente com boa luz, página inteira no quadro e foco nítido ' +
+    '(JPG/PNG/PDF); 3) preencha os dados na conferência obrigatória antes de qualquer lançamento.'
 
   function bytesToBase64(bytes) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -62,7 +66,7 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
     try {
       const bytes = fileObj.bytes()
       if (!bytes || bytes.length === 0) return { ok: false, motivo: 'arquivo vazio' }
-      if (bytes.length > 8 * 1024 * 1024) return { ok: false, motivo: 'arquivo maior que 8 MB' }
+      if (bytes.length > 10 * 1024 * 1024) return { ok: false, motivo: 'arquivo maior que 10 MB' }
 
       const mime = mimePorExtensao(lowerName)
       if (!mime) return { ok: false, motivo: 'formato sem leitura visual' }
@@ -78,7 +82,8 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
               {
                 type: 'text',
                 text:
-                  'Transcreva fielmente o documento/tabela visível (títulos, cabeçalhos de coluna e todas as linhas). ' +
+                  'Transcreva fielmente o documento visível (Notas Fiscais, DANFE, Recibos de Pagamento, Comprovantes ou Tabelas). ' +
+                  'Se houver múltiplos documentos na página ou páginas diferentes, separe-os com "--- DOCUMENTO_SEPARADOR ---". ' +
                   'Se não conseguir enxergar com nitidez, responda {"erro":"sem_visao"}.',
               },
               { type: 'image_url', image_url: { url: dataUri } },
@@ -106,7 +111,7 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
       }
       return { ok: true, markdown: txt }
     } catch (err) {
-      console.log('maestro: leitura visual indisponível:', (err && err.message) || err)
+      console.log('chicao: leitura visual indisponível:', (err && err.message) || err)
       return { ok: false, motivo: (err && err.message) || 'erro na leitura visual' }
     }
   }
@@ -117,8 +122,8 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
         ok: true,
         markdown: resultado.markdown,
         aviso:
-          'Documento sem camada de texto: tabela lida por leitura visual (IA). Os valores transcritos passam ' +
-          'obrigatoriamente pela conferência antes de qualquer aplicação — confira valor a valor.',
+          'Documento sem camada de texto: lido por leitura visual (OCR com IA do Robô Chicão). Os dados transcritos passam ' +
+          'obrigatoriamente pela conferência antes de qualquer aplicação — confira campo a campo.',
       }
     }
     return { ok: false, aviso: AVISO_SEM_LEITURA }
@@ -146,7 +151,7 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
     const isTexto = /\.(csv|txt|tsv)$/.test(lowerName)
 
     if (isImagem) {
-      // Foto de tabela tirada no celular: entra pelo mesmo fluxo, via leitura visual
+      // Foto de nota/recibo ou tabela tirada no celular
       const resultado = aplicarLeituraVisual(tentarLeituraVisual(file, lowerName))
       if (resultado.ok) {
         markdown = resultado.markdown
@@ -165,7 +170,7 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
         origemLeitura = 'texto'
       } catch (err) {
         if (err && err.status === 422) {
-          // Documento digitalizado sem camada de texto — tenta leitura visual por IA
+          // Documento digitalizado sem camada de texto (escaneado) — tenta leitura visual por IA
           const resultado = aplicarLeituraVisual(tentarLeituraVisual(file, lowerName))
           if (resultado.ok) {
             markdown = resultado.markdown
@@ -183,7 +188,6 @@ routerAdd('POST', '/backend/v1/maestro/extract', (e) => {
         }
       }
     } else if (isTexto) {
-      // Arquivos de texto ou CSV simples podem ser lidos diretamente
       try {
         const bytes = file.bytes()
         markdown = String.fromCharCode.apply(null, Array.from(bytes))
@@ -220,10 +224,9 @@ routerAdd('POST', '/backend/v1/maestro/analyze', (e) => {
     const origemLeitura = body.origem_leitura || 'texto'
 
     if (!content.trim()) {
-      return e.json(400, { error: 'Conteúdo vazio para análise do Maestro' })
+      return e.json(400, { error: 'Conteúdo vazio para análise do Robô Chicão' })
     }
 
-    // Prompt enriquecido para o agente Maestro
     const notaOcr =
       origemLeitura === 'visao'
         ? ' ATENÇÃO: este conteúdo foi transcrito por leitura visual (OCR por IA) de documento escaneado/foto. ' +
@@ -245,14 +248,13 @@ routerAdd('POST', '/backend/v1/maestro/analyze', (e) => {
       })
       agentResponse = result.content
     } catch (agentErr) {
-      // Fallback gracioso com $ai.chat se o agente encontrar erro de contexto de usuário
       const fallbackChat = $ai.chat({
         model: 'fast',
         messages: [
           {
             role: 'system',
             content:
-              'Você é o Robô Maestro do Gestão Pecuária Integrada. Analise o documento pecuário (lotes_animais, pesagens ou estoque) e retorne estritamente um JSON com tipo_documento ("pesagens" | "lotes_animais" | "estoque" | "financeiro" | "atividades" | "generico"), colunas_identificadas, mapeamentos_sugeridos, registros_normalizados (com conversão explícita: 1 @ viva = 30kg, 1 @ carcaça = 15kg, GMD em kg/dia; para estoque: produto, unidade kg/saco, estoque inicial, entradas, saídas, estoque final, preco_unitario e custo_periodo) e ambiguidades.',
+              'Você é o Robô Chicão do Gestão Pecuária Integrada. Analise o documento pecuário (lotes_animais, pesagens ou estoque) e retorne estritamente um JSON com tipo_documento ("pesagens" | "lotes_animais" | "estoque" | "financeiro" | "atividades" | "generico"), colunas_identificadas, mapeamentos_sugeridos, registros_normalizados (com conversão explícita: 1 @ viva = 30kg, 1 @ carcaça = 15kg, GMD em kg/dia; para estoque: produto, unidade kg/saco, estoque inicial, entradas, saídas, estoque final, preco_unitario e custo_periodo) e ambiguidades.',
           },
           { role: 'user', content: prompt },
         ],
@@ -260,7 +262,6 @@ routerAdd('POST', '/backend/v1/maestro/analyze', (e) => {
       agentResponse = fallbackChat.choices[0].message.content
     }
 
-    // Tentar extrair bloco JSON da resposta
     let parsedJson = null
     try {
       const jsonMatch = agentResponse.match(/\{[\s\S]*\}/)
@@ -274,6 +275,152 @@ routerAdd('POST', '/backend/v1/maestro/analyze', (e) => {
       analysis: parsedJson,
     })
   } catch (err) {
-    return e.json(500, { error: err.message || 'Falha na análise do Maestro' })
+    return e.json(500, { error: err.message || 'Falha na análise do Robô Chicão' })
+  }
+})
+
+/**
+ * 3. POST /backend/v1/maestro/process-fiscal
+ * Rota dedicada para extração e separação multidocumento de NOTAS FISCAIS e RECIBOS DE PAGAMENTO.
+ */
+routerAdd('POST', '/backend/v1/maestro/process-fiscal', (e) => {
+  const PROMPT_FISCAL =
+    'Você é o módulo especialista em Documentos Fiscais e Recibos do Robô Chicão do sistema Gestão Pecuária Integrada. ' +
+    'Sua missão é ler o conteúdo extraído de PDF ou imagem (digital ou escaneado com OCR) e estruturar rigorosamente cada documento encontrado.\n\n' +
+    'INSTRUÇÕES OBRIGATÓRIAS:\n' +
+    '1. MULTIDOCUMENTO: Um único arquivo pode conter VÁRIOS documentos escaneados juntos (ex: várias NFs ou NF + Recibo/Comprovante PIX). ' +
+    'Identifique e separe cada um na lista `documentos` individualmente.\n' +
+    '2. CLASSIFICAÇÃO: classifique cada documento em:\n' +
+    '   - "nota_fiscal": DANFE/NF-e (modelo 55), NF avulsa estadual, NF de produtor rural, Nota de Serviço (NFS-e).\n' +
+    '   - "recibo": recibo simples, comprovante PIX, comprovante TED/DOC, boleto bancário quitado/pago, recibo de fornecedor.\n' +
+    '   - "desconhecido": caso não seja nenhum dos anteriores ou esteja truncado demais para determinar.\n' +
+    '3. EXTRAÇÃO DE NOTA FISCAL:\n' +
+    '   - tipo_documento: "nota_fiscal"\n' +
+    '   - subtipo: "nfe_danfe" | "nf_avulsa" | "nf_servico"\n' +
+    '   - chave_acesso: 44 dígitos numéricos da NF-e (sem espaços ou traços). CRÍTICO para deduplicação. Se não encontrar, deixe vazio.\n' +
+    '   - numero_documento: número da NF\n' +
+    '   - serie: série da NF\n' +
+    '   - natureza_operacao: texto da natureza (ex: "Compra para comercializacao", "Venda de gado bovino", "Prestacao de servicos")\n' +
+    '   - cfop: CFOP numérico principal (ex: 5102, 1102, 5101, 1101, 5152...).\n' +
+    '   - data_emissao: data no formato AAAA-MM-DD\n' +
+    '   - emitente: { razao_social, cnpj_cpf }\n' +
+    '   - destinatario: { razao_social, cnpj_cpf }\n' +
+    '   - itens: lista de [{ produto, quantidade, unidade, valor_unitario, valor_total, ncm, cfop }]\n' +
+    '   - impostos: { base_icms, valor_icms, outros_tributos }\n' +
+    '   - valor_total: número decimal\n' +
+    '   - valor_extenso: texto do valor por extenso se presente\n' +
+    '   - forma_pagamento: dinheiro, boleto, pix, prazo, transferência, etc.\n' +
+    '4. EXTRAÇÃO DE RECIBO DE PAGAMENTO:\n' +
+    '   - tipo_documento: "recibo"\n' +
+    '   - subtipo: "recibo_simples" | "pix" | "ted" | "boleto" | "recibo_fornecedor"\n' +
+    '   - data_pagamento: data no formato AAAA-MM-DD\n' +
+    '   - valor_total: número decimal\n' +
+    '   - valor_extenso: texto por extenso\n' +
+    '   - forma_pagamento: "PIX" | "TED" | "boleto" | "dinheiro" | "cheque" | "cartao"\n' +
+    '   - beneficiario: { nome, cnpj_cpf }\n' +
+    '   - pagador: { nome, cnpj_cpf }\n' +
+    '   - referencia_nf: número da NF, contrato ou código do serviço referenciado se informado\n' +
+    '   - numero_documento: número do recibo ou ID de autenticação bancária / código e2e do PIX\n' +
+    '   - dados_bancarios: banco, agência, conta quando visíveis\n' +
+    '5. DESTINO SISTEMA (Mapeamento Zootécnico / Financeiro Sugerido):\n' +
+    '   - "estoque_insumos": NF de compra de insumos (nutrição, grãos, farelos, sal, vacinas...)\n' +
+    '   - "rebanho_venda": NF de venda de gado bovino\n' +
+    '   - "rebanho_compra": NF de compra de gado bovino\n' +
+    '   - "financeiro_servico": NF de serviço (frete, veterinário, manutenção...)\n' +
+    '   - "baixa_desembolso": Recibo de pagamento / comprovante bancário\n' +
+    '6. STATUS E CONFIANÇA POR CAMPO:\n' +
+    '   Para cada campo crítico, classifique status em "OK", "AUSENTE" (não encontrado), "ILEGIVEL" (borrado/ruído) ou "AMBIGUO" (divergência ou múltiplas opções), com confianca "alta", "media" ou "baixa".\n' +
+    '   - REGRA DA SOMA DOS ITENS: Some valor_total de todos os itens. Se divergir do valor_total da nota em mais de R$ 0,01, aponte um alerta explícito com a diferença.\n' +
+    '   - REGRA DO VALOR POR EXTENSO: Se o valor numérico divergir do valor por extenso, marque o campo valor_total como "AMBIGUO" e adicione alerta de confirmação.\n' +
+    '   - NUNCA invente dados ilegíveis ou ausentes — aponte honestamente com status AUSENTE ou ILEGIVEL.\n\n' +
+    'Devolva EXCLUSIVAMENTE um objeto JSON válido no seguinte formato:\n' +
+    '{\n' +
+    '  "documentos": [\n' +
+    '    {\n' +
+    '      "id_temp": "doc_1",\n' +
+    '      "tipo_documento": "nota_fiscal" | "recibo" | "desconhecido",\n' +
+    '      "subtipo": "nfe_danfe" | "pix" | ...,\n' +
+    '      "confianca_geral": "alta" | "media" | "baixa",\n' +
+    '      "destino_sistema": "estoque_insumos" | "rebanho_venda" | "rebanho_compra" | "financeiro_servico" | "baixa_desembolso",\n' +
+    '      "chave_acesso": "...",\n' +
+    '      "numero_documento": "...",\n' +
+    '      "serie": "...",\n' +
+    '      "cfop_principal": "...",\n' +
+    '      "natureza_operacao": "...",\n' +
+    '      "data_emissao": "AAAA-MM-DD",\n' +
+    '      "data_pagamento": "AAAA-MM-DD",\n' +
+    '      "emitente": { "razao_social": "...", "cnpj_cpf": "..." },\n' +
+    '      "destinatario": { "razao_social": "...", "cnpj_cpf": "..." },\n' +
+    '      "beneficiario": { "nome": "...", "cnpj_cpf": "..." },\n' +
+    '      "pagador": { "nome": "...", "cnpj_cpf": "..." },\n' +
+    '      "itens": [\n' +
+    '        { "produto": "...", "quantidade": 0, "unidade": "...", "valor_unitario": 0, "valor_total": 0, "cfop": "..." }\n' +
+    '      ],\n' +
+    '      "impostos": { "base_icms": 0, "valor_icms": 0, "outros_tributos": 0 },\n' +
+    '      "valor_total": 0,\n' +
+    '      "valor_extenso": "...",\n' +
+    '      "forma_pagamento": "...",\n' +
+    '      "dados_bancarios": "...",\n' +
+    '      "referencia_nf": "...",\n' +
+    '      "soma_itens": 0,\n' +
+    '      "divergencia_soma": 0,\n' +
+    '      "campos_status": {\n' +
+    '        "chave_acesso": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
+    '        "valor_total": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
+    '        "data": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
+    '        "emitente_beneficiario": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
+    '        "itens": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" }\n' +
+    '      },\n' +
+    '      "alertas": [\n' +
+    '        { "tipo": "critico"|"atencao"|"info", "campo": "...", "mensagem": "...", "sugestao": "..." }\n' +
+    '      ]\n' +
+    '    }\n' +
+    '  ]\n' +
+    '}'
+
+  try {
+    const body = e.requestInfo().body || {}
+    const content = body.content || ''
+    const filename = body.filename || 'documento_fiscal'
+    const origemLeitura = body.origem_leitura || 'texto'
+
+    if (!content.trim()) {
+      return e.json(400, { error: 'Conteúdo vazio para processamento de documento fiscal' })
+    }
+
+    const promptUser =
+      `ARQUIVO: "${filename}"\n` +
+      `ORIGEM DA LEITURA: "${origemLeitura}"\n\n` +
+      `CONTEÚDO EXTRAÍDO:\n` +
+      `\`\`\`\n${content.slice(0, 24000)}\n\`\`\`\n\n` +
+      `Separe os documentos se houver múltiplos, classifique e extraia todas as notas fiscais e recibos em formato JSON conforme as instruções.`
+
+    const resposta = $ai.chat({
+      model: 'fast',
+      messages: [
+        { role: 'system', content: PROMPT_FISCAL },
+        { role: 'user', content: promptUser },
+      ],
+    })
+
+    const rawContent =
+      resposta && resposta.choices && resposta.choices[0] && resposta.choices[0].message
+        ? resposta.choices[0].message.content
+        : ''
+
+    let parsedJson = null
+    try {
+      const jsonMatch = rawContent.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        parsedJson = JSON.parse(jsonMatch[0])
+      }
+    } catch (_) {}
+
+    return e.json(200, {
+      raw: rawContent,
+      resultado: parsedJson,
+    })
+  } catch (err) {
+    return e.json(500, { error: err.message || 'Falha ao processar documentos fiscais e recibos' })
   }
 })
