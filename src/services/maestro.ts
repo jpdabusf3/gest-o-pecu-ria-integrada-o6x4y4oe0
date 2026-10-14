@@ -13,7 +13,12 @@
 import pb from '@/lib/pocketbase/client'
 import { getLots, updateLot, createLot, LotRecord } from './lots'
 import { createPesagem } from './pesagens'
-import { getEstoqueInsumos, salvarItemEstoque } from './fechamento'
+import {
+  getEstoqueInsumos,
+  salvarItemEstoque,
+  registrarLancamentoFinanceiro,
+  EstoqueInsumoRecord,
+} from './fechamento'
 import { registrarAuditLog } from './auditoria'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -109,6 +114,76 @@ export const SINONIMOS_PECUARIOS: Record<string, { campo: string; label: string;
     suplemento: { campo: 'suplemento', label: 'Suplemento / Sal', padrao: 'nutricao' },
     racao: { campo: 'suplemento', label: 'Ração / Trato', padrao: 'nutricao' },
 
+    // Estoque de Insumos (Sinônimos Oficiais)
+    // "Produto/Insumo/Item", "Unidade/UM", "Estoque Inicial/Saldo Inicial",
+    // "Entradas/Compras", "Saídas/Consumo", "Estoque Final/Saldo Final",
+    // "Preço Unitário/Valor Unit./R$/un"
+    produto: { campo: 'insumo_produto', label: 'Nome do Produto / Insumo', padrao: 'estoque' },
+    insumo: { campo: 'insumo_produto', label: 'Insumo', padrao: 'estoque' },
+    item: { campo: 'insumo_produto', label: 'Item de Estoque', padrao: 'estoque' },
+    'nome do produto': { campo: 'insumo_produto', label: 'Nome do Produto', padrao: 'estoque' },
+    'nome do insumo': { campo: 'insumo_produto', label: 'Nome do Insumo', padrao: 'estoque' },
+    descricao: { campo: 'insumo_produto', label: 'Descrição / Insumo', padrao: 'estoque' },
+
+    unidade: { campo: 'insumo_unidade', label: 'Unidade (kg / saco)', padrao: 'estoque' },
+    um: { campo: 'insumo_unidade', label: 'Unidade de Medida (UM)', padrao: 'estoque' },
+    und: { campo: 'insumo_unidade', label: 'Unidade', padrao: 'estoque' },
+    un: { campo: 'insumo_unidade', label: 'Unidade', padrao: 'estoque' },
+
+    'estoque inicial': {
+      campo: 'insumo_estoque_inicial',
+      label: 'Estoque Inicial',
+      padrao: 'estoque',
+    },
+    'saldo inicial': { campo: 'insumo_estoque_inicial', label: 'Saldo Inicial', padrao: 'estoque' },
+    'est. inicial': { campo: 'insumo_estoque_inicial', label: 'Est. Inicial', padrao: 'estoque' },
+    'saldo ant': { campo: 'insumo_estoque_inicial', label: 'Saldo Anterior', padrao: 'estoque' },
+    'saldo anterior': {
+      campo: 'insumo_estoque_inicial',
+      label: 'Saldo Anterior',
+      padrao: 'estoque',
+    },
+
+    entradas: { campo: 'insumo_entradas', label: 'Entradas / Compras', padrao: 'estoque' },
+    compras: { campo: 'insumo_entradas', label: 'Compras / Entradas', padrao: 'estoque' },
+    entrada: { campo: 'insumo_entradas', label: 'Entrada', padrao: 'estoque' },
+    compra: { campo: 'insumo_entradas', label: 'Compra', padrao: 'estoque' },
+    aquisicoes: { campo: 'insumo_entradas', label: 'Aquisições', padrao: 'estoque' },
+
+    saidas: { campo: 'insumo_saidas', label: 'Saídas / Consumo', padrao: 'estoque' },
+    consumo: { campo: 'insumo_saidas', label: 'Consumo / Saídas', padrao: 'estoque' },
+    saida: { campo: 'insumo_saidas', label: 'Saída', padrao: 'estoque' },
+    baixas: { campo: 'insumo_saidas', label: 'Baixas', padrao: 'estoque' },
+    baixa: { campo: 'insumo_saidas', label: 'Baixa de Estoque', padrao: 'estoque' },
+
+    'estoque final': { campo: 'insumo_estoque_final', label: 'Estoque Final', padrao: 'estoque' },
+    'saldo final': { campo: 'insumo_estoque_final', label: 'Saldo Final', padrao: 'estoque' },
+    'est. final': { campo: 'insumo_estoque_final', label: 'Est. Final', padrao: 'estoque' },
+    'saldo atual': { campo: 'insumo_estoque_final', label: 'Saldo Atual', padrao: 'estoque' },
+    'estoque atual': { campo: 'insumo_estoque_final', label: 'Estoque Atual', padrao: 'estoque' },
+
+    'preco unitario': {
+      campo: 'insumo_preco_unitario',
+      label: 'Preço Unitário (R$)',
+      padrao: 'estoque',
+    },
+    'valor unitario': {
+      campo: 'insumo_preco_unitario',
+      label: 'Valor Unitário (R$)',
+      padrao: 'estoque',
+    },
+    'valor unit.': { campo: 'insumo_preco_unitario', label: 'Valor Unit.', padrao: 'estoque' },
+    'preco unit.': { campo: 'insumo_preco_unitario', label: 'Preço Unit.', padrao: 'estoque' },
+    'r$/un': { campo: 'insumo_preco_unitario', label: 'R$/un', padrao: 'estoque' },
+    'r$/kg': { campo: 'insumo_preco_unitario', label: 'R$/kg', padrao: 'estoque' },
+    'r$/saco': { campo: 'insumo_preco_unitario', label: 'R$/saco', padrao: 'estoque' },
+    'custo unitario': {
+      campo: 'insumo_preco_unitario',
+      label: 'Custo Unitário',
+      padrao: 'estoque',
+    },
+    'custo unit': { campo: 'insumo_preco_unitario', label: 'Custo Unit.', padrao: 'estoque' },
+
     // Data
     data: { campo: 'data', label: 'Data do Registro', padrao: 'geral' },
     'data pesagem': { campo: 'data', label: 'Data da Pesagem', padrao: 'pesagens' },
@@ -130,8 +205,14 @@ export const CAMPOS_SISTEMA_DISPONIVEIS = [
   { id: 'fase', label: 'Fase (Cria, Recria, Engorda, Confinamento)', modulo: 'Lotes' },
   { id: 'suplemento', label: 'Suplemento / Nutrição', modulo: 'Estoque / Nutrição' },
   { id: 'gmd_kg_dia', label: 'GMD Meta/Real (kg/dia)', modulo: 'GMD' },
-  { id: 'insumo_produto', label: 'Nome do Insumo', modulo: 'Estoque' },
-  { id: 'insumo_qtd', label: 'Quantidade de Insumo', modulo: 'Estoque' },
+  { id: 'insumo_produto', label: 'Nome do Produto / Insumo', modulo: 'Estoque' },
+  { id: 'insumo_unidade', label: 'Unidade (kg / saco / ton)', modulo: 'Estoque' },
+  { id: 'insumo_estoque_inicial', label: 'Estoque Inicial', modulo: 'Estoque' },
+  { id: 'insumo_entradas', label: 'Entradas / Compras', modulo: 'Estoque' },
+  { id: 'insumo_saidas', label: 'Saídas / Consumo', modulo: 'Estoque' },
+  { id: 'insumo_estoque_final', label: 'Estoque Final / Saldo Final', modulo: 'Estoque' },
+  { id: 'insumo_preco_unitario', label: 'Preço Unitário (R$)', modulo: 'Estoque' },
+  { id: 'insumo_qtd', label: 'Quantidade de Insumo (Genérico)', modulo: 'Estoque' },
   { id: 'valor_rs', label: 'Valor / Custo (R$)', modulo: 'Financeiro' },
   { id: 'observacoes', label: 'Observações / Notas', modulo: 'Geral' },
 ]
@@ -431,13 +512,21 @@ export async function compilarRegistrosNormalizados(
 ): Promise<RegistroNormalizado[]> {
   // Carregar lotes e estoque existentes para correspondência
   let lotesExistentes: LotRecord[] = []
+  let estoqueExistente: EstoqueInsumoRecord[] = []
   try {
     lotesExistentes = await getLots()
   } catch {
     /* intentionally ignored */
   }
+  try {
+    estoqueExistente = await getEstoqueInsumos()
+  } catch {
+    /* intentionally ignored */
+  }
 
   const registros: RegistroNormalizado[] = []
+  // Mapa de produtos já vistos nesta importação para evitar duplicatas internas
+  const produtosVistosNestaImportacao = new Set<string>()
 
   rows.forEach((row, idx) => {
     const dadosMapeados: Record<string, any> = {}
@@ -551,6 +640,51 @@ export async function compilarRegistrosNormalizados(
           break
         }
 
+        case 'insumo_produto': {
+          dadosMapeados['insumo_produto'] = strVal.trim()
+          break
+        }
+
+        case 'insumo_unidade': {
+          const u = normalizeHeader(strVal)
+          if (u.includes('saco') || u === 'sc' || u === 'scs') {
+            dadosMapeados['insumo_unidade'] = 'saco'
+          } else if (u.includes('kg') || u === 'kilo' || u === 'quilo') {
+            dadosMapeados['insumo_unidade'] = 'kg'
+          } else if (u.includes('ton') || u === 't') {
+            dadosMapeados['insumo_unidade'] = 'ton'
+          } else {
+            dadosMapeados['insumo_unidade'] = strVal.trim()
+          }
+          break
+        }
+
+        case 'insumo_estoque_inicial':
+        case 'insumo_entradas':
+        case 'insumo_saidas':
+        case 'insumo_estoque_final': {
+          const parsedNum = parseFloat(strVal.replace(/[^\d.,-]/g, '').replace(',', '.'))
+          if (!isNaN(parsedNum)) {
+            dadosMapeados[m.campoDestino] = parsedNum
+          } else {
+            alertas.push(`Valor numérico inválido para ${m.colunaOrigem}: "${strVal}"`)
+          }
+          break
+        }
+
+        case 'insumo_preco_unitario': {
+          const parsedPreco = parseFloat(strVal.replace(/[^\d.,-]/g, '').replace(',', '.'))
+          if (!isNaN(parsedPreco)) {
+            if (parsedPreco < 0) {
+              alertas.push(`Preço unitário negativo (${parsedPreco}) na linha ${idx + 1}`)
+            }
+            dadosMapeados['insumo_preco_unitario'] = parsedPreco
+          } else {
+            alertas.push(`Preço unitário inválido: "${strVal}"`)
+          }
+          break
+        }
+
         default:
           dadosMapeados[m.campoDestino] = strVal
       }
@@ -564,8 +698,152 @@ export async function compilarRegistrosNormalizados(
     const loteNome = dadosMapeados['lote_nome']
     const pastoNome = dadosMapeados['pasto_nome']
     const brinco = dadosMapeados['animal_id']
+    const insumoProduto = dadosMapeados['insumo_produto']
 
-    if (tipoDocumento === 'lotes_animais' || (!brinco && (loteNome || pastoNome))) {
+    // -------------------------------------------------------------
+    // FLUXO ESPECÍFICO: ESTOQUE DE INSUMOS
+    // -------------------------------------------------------------
+    if (tipoDocumento === 'estoque' || insumoProduto) {
+      if (!insumoProduto || String(insumoProduto).trim() === '') {
+        acao = 'ignorar'
+        motivoAcao = 'Linha sem nome de produto especificado'
+      } else {
+        const prodNorm = normalizeHeader(String(insumoProduto))
+
+        // Checar se já foi visto nesta mesma planilha para evitar duplicatas internas
+        if (produtosVistosNestaImportacao.has(prodNorm)) {
+          alertas.push(
+            `Produto "${insumoProduto}" duplicado na mesma planilha. Atualizará o registro prévio.`,
+          )
+        }
+        produtosVistosNestaImportacao.add(prodNorm)
+
+        // Correspondência na coleção estoque_insumos existente
+        const matchEstoque = estoqueExistente.find(
+          (e) =>
+            normalizeHeader(e.produto) === prodNorm ||
+            (e.codigo && normalizeHeader(e.codigo) === prodNorm),
+        )
+
+        if (matchEstoque) {
+          acao = 'atualizar'
+          existingId = matchEstoque.id
+          motivoAcao = `Produto existente "${matchEstoque.produto}" (ID ${matchEstoque.id.slice(0, 6)}) será atualizado — sem duplicação`
+        } else {
+          acao = 'criar'
+          motivoAcao = `Novo produto "${insumoProduto}" será cadastrado no estoque`
+        }
+
+        // Recuperar valores numéricos
+        const estInicial =
+          dadosMapeados['insumo_estoque_inicial'] !== undefined
+            ? Number(dadosMapeados['insumo_estoque_inicial'])
+            : matchEstoque?.estoque_inicial || 0
+
+        const entradas =
+          dadosMapeados['insumo_entradas'] !== undefined
+            ? Number(dadosMapeados['insumo_entradas'])
+            : 0
+
+        let saidas =
+          dadosMapeados['insumo_saidas'] !== undefined
+            ? Number(dadosMapeados['insumo_saidas'])
+            : undefined
+
+        let estFinal =
+          dadosMapeados['insumo_estoque_final'] !== undefined
+            ? Number(dadosMapeados['insumo_estoque_final'])
+            : undefined
+
+        // Cálculo coerente: se tiver estFinal mas não tiver saídas: saidas = estInicial + entradas - estFinal
+        // Se tiver saídas mas não tiver estFinal: estFinal = estInicial + entradas - saidas
+        // Se ambos foram dados, validar se estFinal calculado bate com informado
+        if (estFinal !== undefined && saidas === undefined) {
+          saidas = estInicial + entradas - estFinal
+          dadosMapeados['insumo_saidas'] = Number(saidas.toFixed(2))
+        } else if (saidas !== undefined && estFinal === undefined) {
+          estFinal = estInicial + entradas - saidas
+          dadosMapeados['insumo_estoque_final'] = Number(estFinal.toFixed(2))
+        } else if (estFinal !== undefined && saidas !== undefined) {
+          const estFinalEsperado = estInicial + entradas - saidas
+          if (Math.abs(estFinalEsperado - estFinal) > 0.05) {
+            conversoes.push(
+              `Ajuste de fechamento: Saldo inicial (${estInicial}) + Entradas (${entradas}) − Saídas (${saidas}) = ${estFinalEsperado.toFixed(1)} (Planilha informava ${estFinal})`,
+            )
+          }
+        } else {
+          // Nenhum dos dois: mantém saldo inicial
+          estFinal = estInicial + entradas
+          saidas = 0
+          dadosMapeados['insumo_estoque_final'] = estFinal
+          dadosMapeados['insumo_saidas'] = 0
+        }
+
+        const unidade = dadosMapeados['insumo_unidade'] || matchEstoque?.unidade || 'kg'
+        dadosMapeados['insumo_unidade'] = unidade
+
+        // Conversões de sacos / kg (1 saco = 30 kg ou 40 kg, padrão 30 kg na pecuária F3)
+        const isSaco = normalizeHeader(unidade).includes('saco')
+        let fatorConversaoSacoKg = 30
+        if (isSaco) {
+          const inicialKg = estInicial * fatorConversaoSacoKg
+          const entradasKg = entradas * fatorConversaoSacoKg
+          const saidasKg = saidas * fatorConversaoSacoKg
+          const finalKg = estFinal * fatorConversaoSacoKg
+          dadosMapeados['insumo_qtd_kg'] = {
+            estoque_inicial_kg: inicialKg,
+            entradas_kg: entradasKg,
+            saidas_kg: saidasKg,
+            estoque_final_kg: finalKg,
+          }
+          conversoes.push(
+            `Unidade em sacos: convertido para kg (${estFinal} sacos = ${finalKg.toLocaleString('pt-BR')} kg a 30 kg/saco)`,
+          )
+        }
+
+        // Cálculo do Custo do Período:
+        // Custo do período = estoque inicial + compras − estoque final = saídas
+        // em unidades e em R$ (saídas * preço_unitário)
+        const precoUnitario =
+          dadosMapeados['insumo_preco_unitario'] !== undefined
+            ? Number(dadosMapeados['insumo_preco_unitario'])
+            : matchEstoque?.preco_unitario || 0
+        dadosMapeados['insumo_preco_unitario'] = precoUnitario
+
+        const custoPeriodoRs = Number((saidas * precoUnitario).toFixed(2))
+        dadosMapeados['insumo_custo_periodo_rs'] = custoPeriodoRs
+        dadosMapeados['insumo_consumo_periodo_qtd'] = saidas
+
+        conversoes.push(
+          `Custo do Período calculado: ${saidas.toFixed(1)} ${unidade} consumidos × R$ ${precoUnitario.toFixed(2)}/${unidade} = R$ ${custoPeriodoRs.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+        )
+
+        // ---------------------------------------------------------
+        // VALIDAÇÕES OBRIGATÓRIAS DO PEDIDO DO USUÁRIO
+        // 1. Estoque final NÃO seja negativo (bloqueia com erro)
+        // 2. Preço unitário coerente com histórico (aviso amarelo)
+        // ---------------------------------------------------------
+        if (estFinal < 0) {
+          alertas.push(
+            `BLOQUEIO: Estoque final negativo (${estFinal} ${unidade}). Saldo insuficiente (Inicial ${estInicial} + Entradas ${entradas} < Saídas ${saidas}).`,
+          )
+        }
+
+        if (precoUnitario <= 0) {
+          alertas.push(
+            `Preço unitário zerado ou não informado (R$ 0,00). O custo do período em R$ ficará nulo.`,
+          )
+        } else if (matchEstoque && matchEstoque.preco_unitario > 0) {
+          const precoHistorico = matchEstoque.preco_unitario
+          const variacaoPct = Math.abs((precoUnitario - precoHistorico) / precoHistorico) * 100
+          if (variacaoPct > 35) {
+            alertas.push(
+              `ALERTA DE PREÇO: Preço unitário (R$ ${precoUnitario.toFixed(2)}) diverge ${variacaoPct.toFixed(0)}% do histórico cadastrado (R$ ${precoHistorico.toFixed(2)}). Requer confirmação.`,
+            )
+          }
+        }
+      }
+    } else if (tipoDocumento === 'lotes_animais' || (!brinco && (loteNome || pastoNome))) {
       // Correspondência por lote_nome e pasto_nome
       const match = lotesExistentes.find(
         (l) =>
@@ -635,6 +913,10 @@ export async function aplicarDadosConfirmados(
   let lotes = await getLots()
   const estoque = await getEstoqueInsumos()
 
+  // Acumuladores de fechamento financeiro para fábrica de suplemento
+  let custoTotalFabricaSuplemento = 0
+  const produtosFabricaDetalhes: string[] = []
+
   for (const reg of registrosValidados) {
     if (reg.ignoradoPeloUsuario || reg.acaoSugerida === 'ignorar') {
       result.ignorados++
@@ -647,7 +929,105 @@ export async function aplicarDadosConfirmados(
 
     const { dadosMapeados, acaoSugerida, registroExistenteId } = reg
 
+    // Checar se há erro bloqueante (ex: estoque final negativo)
+    const hasBloqueio = reg.alertas.some((a) => a.includes('BLOQUEIO') || a.includes('negativo'))
+    if (hasBloqueio) {
+      result.ignorados++
+      result.detalhesIgnorados.push({
+        linha: reg.linhaOrigem,
+        motivo: `Bloqueado por validação: ${reg.alertas.join('; ')}`,
+      })
+      continue
+    }
+
     try {
+      // 0. FLUXO ESPECÍFICO DE PLANILHA DE ESTOQUE DE INSUMOS
+      if (origemArquivo.tipo === 'estoque' || dadosMapeados['insumo_produto']) {
+        const nomeProduto = String(dadosMapeados['insumo_produto']).trim()
+        const unidade = String(dadosMapeados['insumo_unidade'] || 'kg')
+        const precoUnit = Number(dadosMapeados['insumo_preco_unitario'] || 0)
+        const ini = Number(dadosMapeados['insumo_estoque_inicial'] || 0)
+        const ent = Number(dadosMapeados['insumo_entradas'] || 0)
+        const sai = Number(dadosMapeados['insumo_saidas'] || 0)
+        const fim = Number(dadosMapeados['insumo_estoque_final'] || ini + ent - sai)
+        const custoPeriodo = Number(
+          (dadosMapeados['insumo_custo_periodo_rs'] !== undefined
+            ? dadosMapeados['insumo_custo_periodo_rs']
+            : sai * precoUnit
+          ).toFixed(2),
+        )
+
+        const mesAtual = new Date().toISOString().slice(0, 7)
+
+        // Encontrar ou preparar item na coleção estoque_insumos
+        let savedEstoqueItem: EstoqueInsumoRecord
+
+        if (acaoSugerida === 'atualizar' && registroExistenteId) {
+          savedEstoqueItem = await salvarItemEstoque({
+            id: registroExistenteId,
+            produto: nomeProduto,
+            unidade: unidade,
+            estoque_inicial: ini,
+            entradas: ent,
+            saidas: sai,
+            estoque_final: fim,
+            preco_unitario: precoUnit,
+            custo_periodo: custoPeriodo,
+            periodo_mes: mesAtual,
+          })
+          result.atualizados++
+          itemsAuditAtualizados.push({
+            tipo: 'estoque_insumos',
+            id: registroExistenteId,
+            produto: nomeProduto,
+            unidade,
+            saidas: sai,
+            estoque_final: fim,
+            custo_periodo: custoPeriodo,
+          })
+        } else {
+          // Criar novo produto garantindo ausência de duplicação
+          const codigoSugerido = `INS-${Date.now().toString().slice(-4)}`
+          savedEstoqueItem = await salvarItemEstoque({
+            produto: nomeProduto,
+            codigo: codigoSugerido,
+            unidade: unidade,
+            categoria: 'nutricao',
+            estoque_inicial: ini,
+            entradas: ent,
+            saidas: sai,
+            estoque_final: fim,
+            preco_unitario: precoUnit,
+            custo_periodo: custoPeriodo,
+            periodo_mes: mesAtual,
+          })
+          result.criados++
+          itemsAuditCriados.push({
+            tipo: 'estoque_insumos',
+            id: savedEstoqueItem.id,
+            produto: nomeProduto,
+            unidade,
+            saidas: sai,
+            estoque_final: fim,
+            custo_periodo: custoPeriodo,
+          })
+        }
+
+        if (!result.entidadesAfetadas.includes('Estoque de Insumos')) {
+          result.entidadesAfetadas.push('Estoque de Insumos')
+        }
+
+        // Acumular custo do período para o fechamento financeiro do centro de custo "fábrica de suplemento"
+        if (custoPeriodo > 0) {
+          custoTotalFabricaSuplemento += custoPeriodo
+          produtosFabricaDetalhes.push(
+            `${nomeProduto} (${sai} ${unidade} consumidos = R$ ${custoPeriodo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })})`,
+          )
+        }
+
+        continue
+      }
+
       // 1. FLUXO DE LOTES / REBANHO
       if (dadosMapeados['lote_nome'] || dadosMapeados['headcount'] || dadosMapeados['pasto_nome']) {
         const nomeLote =
@@ -771,6 +1151,33 @@ export async function aplicarDadosConfirmados(
     }
   }
 
+  // 2. LANÇAMENTO NO FECHAMENTO FINANCEIRO DO CENTRO DE CUSTO "FÁBRICA DE SUPLEMENTO"
+  // Quando importada planilha de estoque com consumo/custo do período calculado
+  if (custoTotalFabricaSuplemento > 0) {
+    try {
+      const lancamento = await registrarLancamentoFinanceiro({
+        data: new Date().toISOString().slice(0, 10),
+        centro_custo: 'fabrica_suplemento',
+        plano_contas: 'Insumos e Matérias-Primas (Fábrica de Suplemento)',
+        classificacao: 'custo_variavel',
+        tipo: 'despesa',
+        valor: custoTotalFabricaSuplemento,
+        descricao: `Consumo apurado via Robô Maestro (${origemArquivo.nome}): ${produtosFabricaDetalhes.join('; ').slice(0, 400)}`,
+      })
+      if (!result.entidadesAfetadas.includes('Fechamento Financeiro (Fábrica de Suplemento)')) {
+        result.entidadesAfetadas.push('Fechamento Financeiro (Fábrica de Suplemento)')
+      }
+      itemsAuditCriados.push({
+        tipo: 'lancamento_financeiro',
+        id: lancamento.id,
+        centro_custo: 'fabrica_suplemento',
+        valor: custoTotalFabricaSuplemento,
+      })
+    } catch (finErr) {
+      console.warn('Erro ao registrar lançamento financeiro para fábrica de suplemento:', finErr)
+    }
+  }
+
   // 3. REGISTRAR TRILHA DE AUDITORIA (APPEND-ONLY)
   const auditRecord = await registrarAuditLog({
     tipo_evento: 'criacao',
@@ -779,7 +1186,7 @@ export async function aplicarDadosConfirmados(
     perfil: usuarioAtual.perfil,
     origem: 'online',
     referencia_tipo: 'maestro_importacao',
-    motivo: `Robô Maestro importou ${result.totalLidos} linhas do arquivo "${origemArquivo.nome}". Criados: ${result.criados}, Atualizados: ${result.atualizados}, Ignorados: ${result.ignorados}.`,
+    motivo: `Robô Maestro importou ${result.totalLidos} linhas do arquivo "${origemArquivo.nome}". Criados: ${result.criados}, Atualizados: ${result.atualizados}, Ignorados: ${result.ignorados}.${custoTotalFabricaSuplemento > 0 ? ` Custo do período fábrica de suplemento: R$ ${custoTotalFabricaSuplemento.toFixed(2)}.` : ''}`,
     payload_antes: {
       arquivo_nome: origemArquivo.nome,
       arquivo_tipo: origemArquivo.tipo,
@@ -789,6 +1196,7 @@ export async function aplicarDadosConfirmados(
       atualizados: itemsAuditAtualizados,
       ignorados: result.detalhesIgnorados,
       entidadesAfetadas: result.entidadesAfetadas,
+      custoTotalFabricaSuplemento,
     },
   })
 
@@ -847,25 +1255,83 @@ export function gerarRelatorioImportacaoPDF(
     headStyles: { fillColor: [40, 90, 50] },
   })
 
-  // Detalhamento de Registros Aplicados
-  const tableData = registros.map((r) => [
-    String(r.linhaOrigem),
-    r.acaoSugerida.toUpperCase(),
-    Object.entries(r.dadosMapeados)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join(', '),
-    r.conversoesExplicitas.join(' | ') || '-',
-    r.alertas.join('; ') || (r.ignoradoPeloUsuario ? 'Ignorado manual' : 'OK'),
-  ])
+  // Se for importação de estoque de insumos, gerar tabela detalhada com colunas do fechamento
+  if (
+    origemArquivo.tipo === 'estoque' ||
+    registros.some((r) => r.dadosMapeados['insumo_produto'])
+  ) {
+    const tableEstoque = registros.map((r) => {
+      const dm = r.dadosMapeados
+      const prod = dm['insumo_produto'] || dm['produto'] || '-'
+      const und = dm['insumo_unidade'] || 'kg'
+      const ini = dm['insumo_estoque_inicial'] !== undefined ? dm['insumo_estoque_inicial'] : '-'
+      const ent = dm['insumo_entradas'] !== undefined ? dm['insumo_entradas'] : '-'
+      const sai = dm['insumo_saidas'] !== undefined ? dm['insumo_saidas'] : '-'
+      const fim = dm['insumo_estoque_final'] !== undefined ? dm['insumo_estoque_final'] : '-'
+      const preco =
+        dm['insumo_preco_unitario'] !== undefined
+          ? `R$ ${Number(dm['insumo_preco_unitario']).toFixed(2)}`
+          : '-'
+      const custo =
+        dm['insumo_custo_periodo_rs'] !== undefined
+          ? `R$ ${Number(dm['insumo_custo_periodo_rs']).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+          : '-'
+      return [
+        String(r.linhaOrigem),
+        r.acaoSugerida.toUpperCase(),
+        String(prod),
+        String(und),
+        String(ini),
+        String(ent),
+        String(sai),
+        String(fim),
+        String(preco),
+        String(custo),
+      ]
+    })
 
-  autoTable(doc, {
-    startY: (doc as any).lastAutoTable.finalY + 8,
-    head: [['Linha', 'Ação', 'Dados Normalizados', 'Conversões Aplicadas', 'Alertas / Motivo']],
-    body: tableData.slice(0, 100), // Limite de 100 linhas no PDF
-    theme: 'striped',
-    styles: { fontSize: 8 },
-    headStyles: { fillColor: [70, 80, 90] },
-  })
+    autoTable(doc, {
+      startY: (doc as any).lastAutoTable.finalY + 8,
+      head: [
+        [
+          'Linha',
+          'Ação',
+          'Produto / Insumo',
+          'Unid.',
+          'Inicial',
+          'Entradas',
+          'Saídas',
+          'Final',
+          'Preço Unit.',
+          'Custo Período',
+        ],
+      ],
+      body: tableEstoque.slice(0, 100),
+      theme: 'striped',
+      styles: { fontSize: 7, cellPadding: 1.5 },
+      headStyles: { fillColor: [24, 76, 44] },
+    })
+  } else {
+    // Detalhamento Padrão de Registros Aplicados (Lotes / Pesagens)
+    const tableData = registros.map((r) => [
+      String(r.linhaOrigem),
+      r.acaoSugerida.toUpperCase(),
+      Object.entries(r.dadosMapeados)
+        .map(([k, v]) => `${k}: ${v}`)
+        .join(', '),
+      r.conversoesExplicitas.join(' | ') || '-',
+      r.alertas.join('; ') || (r.ignoradoPeloUsuario ? 'Ignorado manual' : 'OK'),
+    ])
+
+    autoTable(doc, {
+      startY: (doc as any).lastAutoTable.finalY + 8,
+      head: [['Linha', 'Ação', 'Dados Normalizados', 'Conversões Aplicadas', 'Alertas / Motivo']],
+      body: tableData.slice(0, 100),
+      theme: 'striped',
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [70, 80, 90] },
+    })
+  }
 
   doc.save(`relatorio_maestro_${new Date().toISOString().slice(0, 10)}.pdf`)
 }
@@ -970,8 +1436,65 @@ export async function salvarMapeamentoConfirmado(
  * Gera arquivo de planilha oficial XLSX/XLS formatado para a equipe de campo preencher
  * Cabeçalhos mapeiam com 100% de confiança nas regras do Maestro
  */
-export function baixarPlanilhaModeloOficial(tipo: 'lotes_animais' | 'pesagens') {
-  if (tipo === 'lotes_animais') {
+export function baixarPlanilhaModeloOficial(tipo: 'lotes_animais' | 'pesagens' | 'estoque') {
+  if (tipo === 'estoque') {
+    // Template 3: Planilha Oficial de Estoque de Insumos
+    // Produto, Unidade (kg/saco), Estoque Inicial, Entradas, Saídas, Estoque Final, Preço Unitário
+    const dados = [
+      {
+        Produto: 'Milho em Grão',
+        Unidade: 'kg',
+        'Estoque Inicial': 50000,
+        Entradas: 15000,
+        Saídas: 12500,
+        'Estoque Final': 52500,
+        'Preço Unitário': 0.85,
+        Observações: 'Custo período = (50000 + 15000 - 52500) * 0.85 = R$ 10.625,00',
+      },
+      {
+        Produto: 'Farelo de Soja 46%',
+        Unidade: 'kg',
+        'Estoque Inicial': 12000,
+        Entradas: 8000,
+        Saídas: 6200,
+        'Estoque Final': 13800,
+        'Preço Unitário': 2.15,
+        Observações: 'Consumo para formulação na fábrica de suplemento',
+      },
+      {
+        Produto: 'Sal Mineral Reprodução',
+        Unidade: 'saco',
+        'Estoque Inicial': 120,
+        Entradas: 50,
+        Saídas: 45,
+        'Estoque Final': 125,
+        'Preço Unitário': 105.0,
+        Observações: '1 saco = 30 kg. 45 sacos consumidos = 1.350 kg (R$ 4.725,00)',
+      },
+      {
+        Produto: 'Núcleo Mineral Confinamento',
+        Unidade: 'saco',
+        'Estoque Inicial': 80,
+        Entradas: 40,
+        Saídas: 30,
+        'Estoque Final': 90,
+        'Preço Unitário': 135.0,
+        Observações: 'Ração de terminação e fábrica',
+      },
+      {
+        Produto: 'Ureia Pecuária',
+        Unidade: 'saco',
+        'Estoque Inicial': 60,
+        Entradas: 20,
+        Saídas: 15,
+        'Estoque Final': 65,
+        'Preço Unitário': 98.0,
+        Observações: 'Suplemento proteico seca',
+      },
+    ]
+
+    downloadExcelAsXlsx(dados, 'modelo_oficial_estoque_insumos', 'Estoque Insumos F3')
+  } else if (tipo === 'lotes_animais') {
     // Template 1: Animais / Lotes
     // Quantidade, Categoria, Sexo, Pasto, Peso Médio, Suplementação
     const dados = [

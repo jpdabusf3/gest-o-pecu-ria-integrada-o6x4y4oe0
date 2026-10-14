@@ -169,6 +169,22 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
     toast.info('Exemplo de pesagens externas carregado!')
   }
 
+  const carregarExemploEstoque = () => {
+    const csvExemplo = `Produto;Unidade;Estoque Inicial;Entradas;Saídas;Estoque Final;Preço Unitário
+Milho em Grão;kg;50000;15000;12500;52500;0.85
+Farelo de Soja 46%;kg;12000;8000;6200;13800;2.15
+Sal Mineral Reprodução;saco;120;50;45;125;105.00
+Núcleo Mineral Confinamento;saco;80;40;30;90;135.00
+Ureia Pecuária;saco;60;20;15;65;98.00`
+    const blob = new Blob([csvExemplo], { type: 'text/csv' })
+    const fileExemplo = new File([blob], 'planilha_estoque_insumos_safra.csv', { type: 'text/csv' })
+    setFile(fileExemplo)
+    setObjetivo(
+      'Importar planilha de estoque de insumos com cálculo automático de custo do período e alimentação da fábrica de suplemento.',
+    )
+    toast.info('Exemplo de planilha de estoque de insumos carregado!')
+  }
+
   // ETAPA 1 -> ETAPA 2: Ler arquivo e disparar Maestro
   const processarLeitura = async () => {
     if (!file) {
@@ -205,22 +221,50 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
       setHeadersIdentificados(parsed.headers)
       setRawRows(parsed.rows)
 
-      // Determinar tipo preliminar de documento
+      // Determinar tipo preliminar de documento por nome do arquivo ou cabeçalhos
+      const filenameLower = file.name.toLowerCase()
+      const headersJoined = parsed.headers.map((h) => h.toLowerCase()).join(' ')
       let docTipo:
         | 'pesagens'
         | 'lotes_animais'
         | 'estoque'
         | 'financeiro'
         | 'atividades'
-        | 'generico' = file.name.toLowerCase().includes('pesagem') ? 'pesagens' : 'lotes_animais'
+        | 'generico' = 'lotes_animais'
+
+      if (
+        filenameLower.includes('estoque') ||
+        filenameLower.includes('insumo') ||
+        headersJoined.includes('estoque') ||
+        headersJoined.includes('insumo') ||
+        headersJoined.includes('entradas') ||
+        headersJoined.includes('saídas') ||
+        headersJoined.includes('saidas') ||
+        headersJoined.includes('saldo final')
+      ) {
+        docTipo = 'estoque'
+      } else if (
+        filenameLower.includes('pesagem') ||
+        headersJoined.includes('pesagem') ||
+        headersJoined.includes('brinco')
+      ) {
+        docTipo = 'pesagens'
+      }
 
       // 3. Reconhecimento automático de importação anterior (mesmas colunas)
-      const mapeamentoSalvo = await buscarMapeamentoReconhecido(docTipo, parsed.headers)
-      if (!mapeamentoSalvo && docTipo !== 'pesagens') {
-        // Tentar também como pesagens se houver brinco nas colunas
-        const salvoComoPesagens = await buscarMapeamentoReconhecido('pesagens', parsed.headers)
-        if (salvoComoPesagens) {
-          docTipo = 'pesagens'
+      let mapeamentoSalvo = await buscarMapeamentoReconhecido(docTipo, parsed.headers)
+      if (!mapeamentoSalvo && docTipo !== 'pesagens' && docTipo !== 'estoque') {
+        // Tentar também como estoque se houver insumo/produto nas colunas
+        const salvoComoEstoque = await buscarMapeamentoReconhecido('estoque', parsed.headers)
+        if (salvoComoEstoque) {
+          docTipo = 'estoque'
+          mapeamentoSalvo = salvoComoEstoque
+        } else {
+          const salvoComoPesagens = await buscarMapeamentoReconhecido('pesagens', parsed.headers)
+          if (salvoComoPesagens) {
+            docTipo = 'pesagens'
+            mapeamentoSalvo = salvoComoPesagens
+          }
         }
       }
 
@@ -385,6 +429,14 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
     downloadCSV(dados, `conferencia_maestro_${file?.name || 'dados'}`)
   }
 
+  // Verificar se há produtos bloqueados para exibir aviso no modal
+  const temProdutosBloqueados = registros.some(
+    (r) =>
+      !r.ignoradoPeloUsuario &&
+      r.acaoSugerida !== 'ignorar' &&
+      r.alertas.some((a) => a.includes('BLOQUEIO') || a.includes('negativo')),
+  )
+
   // Reiniciar processo
   const reiniciarFluxo = () => {
     setEtapa(1)
@@ -419,6 +471,35 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
     (r) => r.ignoradoPeloUsuario || r.acaoSugerida === 'ignorar',
   ).length
   const totalAlertas = registros.filter((r) => r.alertas.length > 0).length
+
+  // Métricas agregadas de Estoque de Insumos
+  const isEstoqueDoc =
+    tipoDocumento === 'estoque' || registros.some((r) => r.dadosMapeados['insumo_produto'])
+
+  const custoTotalPeriodoEstoque = registros
+    .filter((r) => !r.ignoradoPeloUsuario && r.acaoSugerida !== 'ignorar')
+    .reduce((acc, r) => acc + (Number(r.dadosMapeados['insumo_custo_periodo_rs']) || 0), 0)
+
+  const consumoTotalKgEstoque = registros
+    .filter((r) => !r.ignoradoPeloUsuario && r.acaoSugerida !== 'ignorar')
+    .reduce((acc, r) => {
+      const dm = r.dadosMapeados
+      const und = String(dm['insumo_unidade'] || '').toLowerCase()
+      const saidas = Number(dm['insumo_saidas']) || 0
+      if (und.includes('saco')) return acc + saidas * 30
+      if (und.includes('ton')) return acc + saidas * 1000
+      return acc + saidas
+    }, 0)
+
+  const consumoTotalSacosEstoque = registros
+    .filter((r) => !r.ignoradoPeloUsuario && r.acaoSugerida !== 'ignorar')
+    .reduce((acc, r) => {
+      const dm = r.dadosMapeados
+      const und = String(dm['insumo_unidade'] || '').toLowerCase()
+      const saidas = Number(dm['insumo_saidas']) || 0
+      if (und.includes('saco')) return acc + saidas
+      return acc + saidas / 30
+    }, 0)
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
@@ -537,6 +618,19 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
                     <Download className="h-3.5 w-3.5 text-blue-700" />
                     Modelo Pesagens (.xlsx)
                   </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      baixarPlanilhaModeloOficial('estoque')
+                      toast.success('Modelo Oficial de Estoque de Insumos (.xlsx) baixado!')
+                    }}
+                    className="text-xs gap-1.5 border-emerald-600/40 text-emerald-900 dark:text-emerald-200 bg-background hover:bg-emerald-50"
+                  >
+                    <Download className="h-3.5 w-3.5 text-amber-600" />
+                    Modelo Estoque de Insumos (.xlsx)
+                  </Button>
                 </div>
               </div>
 
@@ -635,6 +729,16 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
                       className="text-xs h-7 px-2 text-blue-700"
                     >
                       Pesagens (GMD)
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={carregarExemploEstoque}
+                      className="text-xs h-7 px-2 text-amber-800 dark:text-amber-200 border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 gap-1"
+                    >
+                      <Sparkles className="h-3 w-3 text-amber-600" />
+                      Estoque Insumos (Fábrica)
                     </Button>
                   </div>
                 </div>
@@ -790,17 +894,20 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
                 >
                   <TabsList className="h-8">
                     <TabsTrigger value="lotes_animais" className="text-xs">
-                      Lotes & Rebanho
+                      Lotes e Rebanho
                     </TabsTrigger>
                     <TabsTrigger value="pesagens" className="text-xs">
-                      Pesagens & GMD
+                      Pesagens e GMD
                     </TabsTrigger>
-                    <TabsTrigger value="estoque" className="text-xs">
-                      Estoque & Insumos
+                    <TabsTrigger
+                      value="estoque"
+                      className="text-xs font-semibold text-amber-800 dark:text-amber-300"
+                    >
+                      Estoque Insumos & Fábrica
                     </TabsTrigger>
                     <TabsTrigger value="financeiro" className="text-xs">
                       Financeiro
-                    </TabsTrigger>
+                    </TabsTrigger>{' '}
                   </TabsList>
                 </Tabs>
               </div>
@@ -934,10 +1041,12 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="border-border">
               <CardContent className="p-4">
-                <span className="text-xs text-muted-foreground block">Total Lido</span>
+                <span className="text-xs text-muted-foreground block">
+                  {isEstoqueDoc ? 'Produtos Identificados' : 'Total Lido'}
+                </span>
                 <span className="text-2xl font-bold">{registros.length}</span>
                 <span className="text-[11px] text-muted-foreground block mt-0.5">
-                  linhas identificadas
+                  {isEstoqueDoc ? 'itens na planilha' : 'linhas identificadas'}
                 </span>
               </CardContent>
             </Card>
@@ -945,13 +1054,13 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
             <Card className="border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20">
               <CardContent className="p-4">
                 <span className="text-xs text-emerald-700 dark:text-emerald-300 block">
-                  A Criar (Novos)
+                  {isEstoqueDoc ? 'Novos Produtos (A Criar)' : 'A Criar (Novos)'}
                 </span>
                 <span className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">
                   {totalCriar}
                 </span>
                 <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block mt-0.5">
-                  sem duplicidade
+                  sem duplicidade por nome
                 </span>
               </CardContent>
             </Card>
@@ -959,13 +1068,15 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
             <Card className="border-blue-500/30 bg-blue-50/40 dark:bg-blue-950/20">
               <CardContent className="p-4">
                 <span className="text-xs text-blue-700 dark:text-blue-300 block">
-                  A Atualizar (Correspondência)
+                  {isEstoqueDoc
+                    ? 'Produtos Existentes (A Atualizar)'
+                    : 'A Atualizar (Correspondência)'}
                 </span>
                 <span className="text-2xl font-bold text-blue-800 dark:text-blue-200">
                   {totalAtualizar}
                 </span>
                 <span className="text-[11px] text-blue-600 dark:text-blue-400 block mt-0.5">
-                  lotes/pastos existentes
+                  {isEstoqueDoc ? 'mesmo nome normalizado' : 'lotes/pastos existentes'}
                 </span>
               </CardContent>
             </Card>
@@ -985,11 +1096,65 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
                   {totalAlertas} / {totalIgnorar}
                 </span>
                 <span className="text-[11px] text-amber-600 dark:text-amber-400 block mt-0.5">
-                  requerem atenção
+                  {totalAlertas > 0 ? 'preço/saldo a conferir' : 'validados com sucesso'}
                 </span>
               </CardContent>
             </Card>
           </div>
+
+          {/* PAINEL ESPECIAL DE ESTOQUE DE INSUMOS & FÁBRICA DE SUPLEMENTO */}
+          {isEstoqueDoc && (
+            <Card className="border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent">
+              <CardContent className="p-4 md:p-5">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-amber-700 text-white text-xs">
+                        Fábrica de Suplemento
+                      </Badge>
+                      <h3 className="font-semibold text-sm text-foreground">
+                        Custo do Período Calculado & Impacto no Fechamento Financeiro
+                      </h3>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Fórmula automática:{' '}
+                      <em>Custo do período = Saldo Inicial + Entradas − Saldo Final</em>. Alimenta o
+                      centro de custo "fábrica de suplemento" no fechamento e na DRE.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <div className="bg-background/80 border rounded-lg px-3 py-1.5 text-right">
+                      <span className="text-[10px] text-muted-foreground block uppercase font-bold tracking-wider">
+                        Consumo Total Equivalente
+                      </span>
+                      <span className="text-sm font-bold text-foreground">
+                        {consumoTotalKgEstoque.toLocaleString('pt-BR', {
+                          maximumFractionDigits: 1,
+                        })}{' '}
+                        kg
+                        <span className="text-xs text-muted-foreground font-normal ml-1">
+                          (~{consumoTotalSacosEstoque.toFixed(1)} sacos)
+                        </span>
+                      </span>
+                    </div>
+
+                    <div className="bg-amber-600/10 border border-amber-600/30 rounded-lg px-4 py-1.5 text-right">
+                      <span className="text-[10px] text-amber-900 dark:text-amber-300 block uppercase font-bold tracking-wider">
+                        Custo Total do Período
+                      </span>
+                      <span className="text-lg font-extrabold text-amber-800 dark:text-amber-200">
+                        R${' '}
+                        {custoTotalPeriodoEstoque.toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Tabela de Conferência Registro a Registro */}
           <Card>
@@ -1061,18 +1226,157 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
               <div className="border rounded-lg overflow-x-auto max-h-[500px]">
                 <table className="w-full text-xs">
                   <thead className="bg-muted sticky top-0 text-muted-foreground font-semibold">
-                    <tr>
-                      <th className="p-2.5 text-center w-16">Linha</th>
-                      <th className="p-2.5 text-center w-28">Ação Prevista</th>
-                      <th className="p-2.5 text-left">Dados Mapeados & Normalizados</th>
-                      <th className="p-2.5 text-left">Conversões Explícitas</th>
-                      <th className="p-2.5 text-left">Alertas / Validações</th>
-                      <th className="p-2.5 text-center w-24">Aplicar?</th>
-                    </tr>
+                    {isEstoqueDoc ? (
+                      <tr>
+                        <th className="p-2.5 text-center w-12">Linha</th>
+                        <th className="p-2.5 text-center w-24">Ação</th>
+                        <th className="p-2.5 text-left">Produto / Insumo</th>
+                        <th className="p-2.5 text-center w-16">UM</th>
+                        <th className="p-2.5 text-right">Inicial</th>
+                        <th className="p-2.5 text-right">Entradas</th>
+                        <th className="p-2.5 text-right">Saídas</th>
+                        <th className="p-2.5 text-right">Final</th>
+                        <th className="p-2.5 text-right">Preço Unit.</th>
+                        <th className="p-2.5 text-right">Custo Período</th>
+                        <th className="p-2.5 text-left">Alertas / Status</th>
+                        <th className="p-2.5 text-center w-20">Aplicar?</th>
+                      </tr>
+                    ) : (
+                      <tr>
+                        <th className="p-2.5 text-center w-16">Linha</th>
+                        <th className="p-2.5 text-center w-28">Ação Prevista</th>
+                        <th className="p-2.5 text-left">Dados Mapeados & Normalizados</th>
+                        <th className="p-2.5 text-left">Conversões Explícitas</th>
+                        <th className="p-2.5 text-left">Alertas / Validações</th>
+                        <th className="p-2.5 text-center w-24">Aplicar?</th>
+                      </tr>
+                    )}
                   </thead>
                   <tbody className="divide-y">
                     {registrosFiltrados.map((reg) => {
                       const isIgnorado = reg.ignoradoPeloUsuario || reg.acaoSugerida === 'ignorar'
+                      const dm = reg.dadosMapeados
+                      const hasBloqueio = reg.alertas.some(
+                        (a) => a.includes('BLOQUEIO') || a.includes('negativo'),
+                      )
+
+                      if (isEstoqueDoc) {
+                        const prod = dm['insumo_produto'] || 'Sem Nome'
+                        const und = dm['insumo_unidade'] || 'kg'
+                        const ini =
+                          dm['insumo_estoque_inicial'] !== undefined
+                            ? Number(dm['insumo_estoque_inicial'])
+                            : '-'
+                        const ent =
+                          dm['insumo_entradas'] !== undefined ? Number(dm['insumo_entradas']) : '-'
+                        const sai =
+                          dm['insumo_saidas'] !== undefined ? Number(dm['insumo_saidas']) : '-'
+                        const fim =
+                          dm['insumo_estoque_final'] !== undefined
+                            ? Number(dm['insumo_estoque_final'])
+                            : '-'
+                        const preco =
+                          dm['insumo_preco_unitario'] !== undefined
+                            ? Number(dm['insumo_preco_unitario'])
+                            : 0
+                        const custo =
+                          dm['insumo_custo_periodo_rs'] !== undefined
+                            ? Number(dm['insumo_custo_periodo_rs'])
+                            : 0
+
+                        return (
+                          <tr
+                            key={reg.idTemp}
+                            className={`hover:bg-muted/30 transition-colors ${
+                              isIgnorado
+                                ? 'opacity-50 bg-muted/10'
+                                : hasBloqueio
+                                  ? 'bg-red-50/50 dark:bg-red-950/20'
+                                  : ''
+                            }`}
+                          >
+                            <td className="p-2.5 text-center font-mono font-medium">
+                              #{reg.linhaOrigem}
+                            </td>
+                            <td className="p-2.5 text-center">
+                              {reg.acaoSugerida === 'criar' ? (
+                                <Badge className="bg-emerald-600 text-[10px]">NOVO</Badge>
+                              ) : reg.acaoSugerida === 'atualizar' ? (
+                                <Badge className="bg-blue-600 text-[10px]">ATUALIZAR</Badge>
+                              ) : (
+                                <Badge variant="secondary" className="text-[10px]">
+                                  IGNORAR
+                                </Badge>
+                              )}
+                            </td>
+                            <td className="p-2.5 font-medium text-foreground">
+                              <div>{String(prod)}</div>
+                              {reg.motivoAcao && (
+                                <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">
+                                  {reg.motivoAcao}
+                                </span>
+                              )}
+                            </td>
+                            <td className="p-2.5 text-center">
+                              <Badge variant="outline" className="text-[10px]">
+                                {String(und)}
+                              </Badge>
+                            </td>
+                            <td className="p-2.5 text-right font-mono">
+                              {typeof ini === 'number' ? ini.toLocaleString('pt-BR') : ini}
+                            </td>
+                            <td className="p-2.5 text-right font-mono text-emerald-700 dark:text-emerald-400">
+                              {typeof ent === 'number' ? `+${ent.toLocaleString('pt-BR')}` : ent}
+                            </td>
+                            <td className="p-2.5 text-right font-mono text-amber-700 dark:text-amber-400">
+                              {typeof sai === 'number' ? `-${sai.toLocaleString('pt-BR')}` : sai}
+                            </td>
+                            <td
+                              className={`p-2.5 text-right font-mono font-bold ${typeof fim === 'number' && fim < 0 ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}
+                            >
+                              {typeof fim === 'number' ? fim.toLocaleString('pt-BR') : fim}
+                            </td>
+                            <td className="p-2.5 text-right font-mono">R$ {preco.toFixed(2)}</td>
+                            <td className="p-2.5 text-right font-mono font-bold text-amber-800 dark:text-amber-300">
+                              R$ {custo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            </td>
+                            <td className="p-2.5">
+                              {reg.alertas.length > 0 ? (
+                                <div className="space-y-0.5">
+                                  {reg.alertas.map((a, i) => (
+                                    <span
+                                      key={i}
+                                      className={`text-[10px] block font-medium flex items-center gap-1 ${
+                                        a.includes('BLOQUEIO') || a.includes('negativo')
+                                          ? 'text-red-600 dark:text-red-400'
+                                          : 'text-amber-700 dark:text-amber-300'
+                                      }`}
+                                    >
+                                      <AlertTriangle className="h-3 w-3 shrink-0" /> {a}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-emerald-600 text-[10px] flex items-center gap-1">
+                                  <Check className="h-3 w-3" /> Válido
+                                </span>
+                              )}
+                            </td>
+                            <td className="p-2.5 text-center">
+                              <Button
+                                type="button"
+                                variant={isIgnorado ? 'outline' : 'secondary'}
+                                size="sm"
+                                onClick={() => toggleIgnorarRegistro(reg.idTemp)}
+                                className="text-[10px] h-6 px-2"
+                              >
+                                {isIgnorado ? 'Restaurar' : 'Ignorar'}
+                              </Button>
+                            </td>
+                          </tr>
+                        )
+                      }
+
                       return (
                         <tr
                           key={reg.idTemp}
@@ -1214,7 +1518,24 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
                   <p>
                     <strong>Ignorados:</strong> {totalIgnorar}
                   </p>
+                  {isEstoqueDoc && custoTotalPeriodoEstoque > 0 && (
+                    <p className="pt-1 border-t text-amber-800 dark:text-amber-300 font-semibold">
+                      <strong>Custo Fábrica de Suplemento:</strong> R${' '}
+                      {custoTotalPeriodoEstoque.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                      })}
+                    </p>
+                  )}
                 </div>
+
+                {temProdutosBloqueados && (
+                  <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-lg text-red-800 dark:text-red-300 font-medium">
+                    ⚠️ Atenção: Itens com estoque final negativo estão marcados como{' '}
+                    <strong>BLOQUEIO</strong> e serão automaticamente ignorados para evitar
+                    distorções no estoque e fechamento.
+                  </div>
+                )}
+
                 <p className="text-muted-foreground">
                   Um protocolo permanente será registrado na <strong>Trilha de Auditoria</strong>{' '}
                   (append-only), garantindo conformidade e governança.

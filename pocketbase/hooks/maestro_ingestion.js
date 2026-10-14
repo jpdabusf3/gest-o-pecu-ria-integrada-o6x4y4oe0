@@ -235,7 +235,7 @@ routerAdd('POST', '/backend/v1/maestro/analyze', (e) => {
       `ORIGEM DA LEITURA: "${origemLeitura}".${notaOcr}\n\n` +
       `CONTEÚDO EXTRAÍDO DO DOCUMENTO:\n` +
       `\`\`\`\n${content.slice(0, 16000)}\n\`\`\`\n\n` +
-      `Analise o conteúdo acima e devolva o JSON de mapeamento, conversões para unidades padrão internas (1 @ viva = 30 kg, 1 @ carcaça = 15 kg, GMD em kg/dia), chaves de correspondência e registros normalizados conforme suas instruções de sistema.`
+      `Analise o conteúdo acima e devolva o JSON de mapeamento, conversões para unidades padrão internas (1 @ viva = 30 kg, 1 @ carcaça = 15 kg, GMD em kg/dia; para estoque de insumos: produto, unidade kg/sacos com 1 saco padrão = 30kg, estoque inicial, entradas, saídas, estoque final e preço unitário, com cálculo do custo do período = inicial + compras - final), chaves de correspondência e registros normalizados conforme suas instruções de sistema.`
 
     let agentResponse = null
     try {
@@ -252,7 +252,7 @@ routerAdd('POST', '/backend/v1/maestro/analyze', (e) => {
           {
             role: 'system',
             content:
-              'Você é o Robô Maestro. Analise o documento pecuário e retorne estritamente um JSON com tipo_documento, colunas_identificadas, mapeamentos_sugeridos, registros_normalizados (com conversão explícita: 1 @ viva = 30kg, 1 @ carcaça = 15kg, GMD em kg/dia) e ambiguidades.',
+              'Você é o Robô Maestro do Gestão Pecuária Integrada. Analise o documento pecuário (lotes_animais, pesagens ou estoque) e retorne estritamente um JSON com tipo_documento ("pesagens" | "lotes_animais" | "estoque" | "financeiro" | "atividades" | "generico"), colunas_identificadas, mapeamentos_sugeridos, registros_normalizados (com conversão explícita: 1 @ viva = 30kg, 1 @ carcaça = 15kg, GMD em kg/dia; para estoque: produto, unidade kg/saco, estoque inicial, entradas, saídas, estoque final, preco_unitario e custo_periodo) e ambiguidades.',
           },
           { role: 'user', content: prompt },
         ],
