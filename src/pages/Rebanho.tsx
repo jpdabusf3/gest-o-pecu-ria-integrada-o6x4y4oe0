@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/table'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
+import { useFarm } from '@/contexts/FarmContext'
 import { ModalCadastroRebanho } from '@/components/rebanho/ModalCadastroRebanho'
 import {
   getPastosRebanho,
@@ -57,6 +58,7 @@ import {
   ContagemPorPasto,
   ConsistenciaRebanho,
 } from '@/services/rebanho'
+import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import {
@@ -71,6 +73,7 @@ import {
   TriangleAlert,
   TrendingUp,
   Users,
+  FileSpreadsheet,
 } from 'lucide-react'
 
 const KG_POR_ARROBA_VIVA = 30
@@ -78,6 +81,8 @@ const KG_POR_ARROBA_VIVA = 30
 export default function Rebanho() {
   const { toast } = useToast()
   const { user } = useAuth()
+  const navigate = useNavigate()
+  const { reloadLots } = useFarm()
 
   const [pastos, setPastos] = useState<PastoRebanhoRecord[]>([])
   const [lotes, setLotes] = useState<LoteRebanhoRecord[]>([])
@@ -326,11 +331,35 @@ export default function Rebanho() {
           fase: undefined,
         })
       } else {
+        const antesAnimal = antes as AnimalIndividualRecord | undefined
+        const mudouPastoAnimal =
+          novoPasto && antesAnimal && antesAnimal.pasto_atual_id !== novoPasto.id
+
+        if (mudouPastoAnimal && novoPasto && antesAnimal) {
+          // Mudança de pasto pela edição vai pelo caminho oficial (movimentação + auditoria)
+          await transferirParaPasto({
+            tipo: 'animal',
+            registroId: editId,
+            nomeRegistro: antesAnimal.brinco,
+            qtdCabecas: 1,
+            pastoOrigemId: antesAnimal.pasto_atual_id || '',
+            pastoOrigemNome: pastos.find((p) => p.id === antesAnimal.pasto_atual_id)?.nome || '',
+            pastoDestinoId: novoPasto.id,
+            pastoDestinoNome: novoPasto.nome,
+            data: new Date().toISOString(),
+            motivo: 'Correção de cadastro',
+            usuarioId: user.id,
+            usuarioNome: user.name,
+            perfil: user.role,
+          })
+        }
         await atualizarAnimalIndividual(editId, {
           peso_kg: editCampos.peso ? parseFloat(editCampos.peso) : undefined,
           ecc: editCampos.ecc ? parseFloat(editCampos.ecc) : undefined,
           observacoes: editCampos.obs,
-          pasto_atual_id: editCampos.pasto || undefined,
+          // quando a mudança de pasto passou pela transferência oficial,
+          // a localização já foi gravada por ela
+          pasto_atual_id: mudouPastoAnimal ? undefined : editCampos.pasto || undefined,
         })
       }
 
@@ -361,6 +390,8 @@ export default function Rebanho() {
         }),
       )
 
+      // Os lotes alimentam o dashboard/pesagens/fechamento — recarrega o contexto
+      reloadLots().catch(() => {})
       toast({
         title: 'Registro corrigido',
         description: 'A correção foi gravada na trilha de auditoria.',
@@ -375,7 +406,6 @@ export default function Rebanho() {
       })
     }
   }
-
   const confirmarMudancaStatus = async () => {
     if (!statusTipo || !statusId) return
     try {
@@ -460,9 +490,16 @@ export default function Rebanho() {
           >
             <ClipboardList className="h-4 w-4" /> Registrar rebanho atual
           </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => navigate('/maestro')}
+          >
+            <FileSpreadsheet className="h-4 w-4" /> Importar planilha (Chicão)
+          </Button>
         </div>
       </div>
-
       {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -650,7 +687,15 @@ export default function Rebanho() {
                   <div className="space-y-1">
                     <Progress value={Math.min(100, cont.pctOcupacao)} className="h-2" />
                     <p className="text-[11px] text-muted-foreground">
-                      {cont.pctOcupacao.toFixed(0)}% da capacidade estimada
+                      {cont.pctOcupacao.toFixed(0)}% da capacidade estimada •{' '}
+                      {
+                        movimentacoes.filter(
+                          (m) =>
+                            m.pasto_origem_id === cont.pastoId ||
+                            m.pasto_destino_id === cont.pastoId,
+                        ).length
+                      }{' '}
+                      movimentação(ões) no histórico
                     </p>
                   </div>
                   <div className="space-y-1.5">
@@ -1381,9 +1426,10 @@ export default function Rebanho() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="ativo">Ativo</SelectItem>
+                <SelectItem value="transferido">Transferido</SelectItem>
                 <SelectItem value="vendido">Vendido</SelectItem>
                 <SelectItem value="morto">Morto</SelectItem>
-                <SelectItem value="inativo">Inativo</SelectItem>
+                <SelectItem value="inativo">Inativo</SelectItem>{' '}
               </SelectContent>
             </Select>
           </div>

@@ -157,8 +157,9 @@ export async function criarPastoRebanho(data: {
 
 export async function getLotesRebanho(): Promise<LoteRebanhoRecord[]> {
   try {
+    // Carrega TODOS os lotes (inclusive inativos): o filtro de status da tela
+    // é quem decide o que aparece — inativos saem da contagem, mas ficam no histórico.
     return await pb.collection('lots').getFullList<LoteRebanhoRecord>({
-      filter: "status != 'inativo'",
       sort: '-created',
     })
   } catch (e) {

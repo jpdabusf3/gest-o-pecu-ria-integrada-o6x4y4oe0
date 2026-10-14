@@ -390,8 +390,9 @@ export function ModalCadastroRebanho({
                           <p className="font-medium text-sm">{p.nome}</p>
                           <p className="text-xs text-muted-foreground">
                             {p.area_ha} ha • capacidade {p.capacidade_ua_ha} UA/ha
+                            {cont ? ` • lotação atual ${cont.lotacaoUaHa.toFixed(2)} UA/ha` : ''}
                             {p.fazenda ? ` • ${p.fazenda}` : ''}
-                          </p>
+                          </p>{' '}
                         </div>
                       </div>
                       <div className="text-right">

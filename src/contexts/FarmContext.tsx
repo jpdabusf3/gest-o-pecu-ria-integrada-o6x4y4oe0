@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { getEstoqueInsumos, salvarItemEstoque } from '@/services/fechamento'
+import { getLotesRebanho } from '@/services/rebanho'
 
 export type LotWeightRecord = { date: string; weight: number }
 
@@ -30,6 +31,7 @@ export type FarmContextType = {
   getPredictedSlaughterDate: (loteId: string) => Date | null
   getPredictedGrowthCurve: (loteId: string) => any[]
   reloadInventory: () => Promise<void>
+  reloadLots: () => Promise<void>
 }
 
 const FarmContext = createContext<FarmContextType | undefined>(undefined)
@@ -60,8 +62,20 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  // Recarrega os lotes reais (coleção `lots`) para alimentar o dashboard,
+  // pesagens e fechamento — agora incluindo os lotes do módulo Rebanho.
+  const reloadLots = async () => {
+    try {
+      const lotsPb = await getLotesRebanho()
+      setLots(lotsPb)
+    } catch (e) {
+      console.warn('Erro ao carregar lotes do rebanho:', e)
+    }
+  }
+
   useEffect(() => {
     reloadInventory()
+    reloadLots()
   }, [])
 
   const addInventoryItem = (item: Omit<InventoryItem, 'id'>) => {
@@ -220,6 +234,7 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
         updateMinThreshold,
         addWeightRecord,
         reloadInventory,
+        reloadLots,
         getPredictedSlaughterDate,
         getPredictedGrowthCurve,
       }}
