@@ -440,6 +440,18 @@ export function AppSidebar() {
                 </Link>
 
                 <Link
+                  to="/rebanho"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/rebanho')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Beef className="h-4 w-4" />
+                  <span>Rebanho Atual (Cadastro)</span>
+                </Link>
+
+                <Link
                   to="/pastos"
                   className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     isActive('/pastos')

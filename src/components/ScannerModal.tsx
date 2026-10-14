@@ -13,12 +13,30 @@ import { Input } from '@/components/ui/input'
 import { QrCode, ScanLine, Search } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
-export function ScannerModal() {
-  const [open, setOpen] = useState(false)
+interface ScannerModalProps {
+  /** Quando informado, a leitura devolve o brinco ao chamador em vez de navegar para o perfil */
+  onBrincoLido?: (brinco: string) => void
+  /** Controle externo do Dialog (usado quando onBrincoLido é informado) */
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+export function ScannerModal({
+  onBrincoLido,
+  open: openExterno,
+  onOpenChange,
+}: ScannerModalProps = {}) {
+  const [openInterno, setOpenInterno] = useState(false)
   const [scanning, setScanning] = useState(false)
   const [tag, setTag] = useState('')
   const navigate = useNavigate()
   const { toast } = useToast()
+
+  const open = openExterno !== undefined ? openExterno : openInterno
+  const setOpen = (v: boolean) => {
+    setOpenInterno(v)
+    onOpenChange?.(v)
+  }
 
   const handleSimulateScan = () => {
     setScanning(true)
@@ -26,27 +44,37 @@ export function ScannerModal() {
       setScanning(false)
       toast({ title: 'Leitura concluída', description: 'Brinco TAG-1234 detectado com sucesso.' })
       setOpen(false)
-      navigate('/animal/TAG-1234')
+      if (onBrincoLido) {
+        onBrincoLido('TAG-1234')
+      } else {
+        navigate('/animal/TAG-1234')
+      }
     }, 1500)
   }
 
   const handleManualSearch = () => {
     if (!tag) return
     setOpen(false)
-    navigate(`/animal/${tag}`)
+    if (onBrincoLido) {
+      onBrincoLido(tag)
+    } else {
+      navigate(`/animal/${tag}`)
+    }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="relative text-muted-foreground hover:text-foreground"
-        >
-          <QrCode className="h-5 w-5" />
-        </Button>
-      </DialogTrigger>
+      {!onBrincoLido && (
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="relative text-muted-foreground hover:text-foreground"
+          >
+            <QrCode className="h-5 w-5" />
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Escanear Brinco / RFID</DialogTitle>

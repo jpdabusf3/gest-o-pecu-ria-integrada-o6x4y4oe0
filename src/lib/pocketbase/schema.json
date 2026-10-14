@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T01:50:05.014Z",
+  "generatedAt": "2026-10-14T02:10:36.011Z",
   "collections": [
     {
       "name": "users",
@@ -175,7 +175,7 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["active", "sold", "abated"]
+          "selectValues": ["active", "sold", "abated", "inativo"]
         },
         {
           "name": "headcount",
@@ -262,9 +262,16 @@
           "type": "bool",
           "required": false,
           "system": false
+        },
+        {
+          "name": "pasto_atual_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "pastos_rebanho"
         }
       ],
-      "indexes": []
+      "indexes": ["CREATE INDEX `idx_lots_pasto_atual` ON `lots` (pasto_atual_id)"]
     },
     {
       "name": "hedge_operations",
@@ -3417,6 +3424,290 @@
       "indexes": [
         "CREATE INDEX idx_mvendas_data ON maestro_vendas_gado (data_venda DESC)",
         "CREATE INDEX idx_mvendas_comprador ON maestro_vendas_gado (comprador)"
+      ]
+    },
+    {
+      "name": "pastos_rebanho",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "view": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')",
+        "delete": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')"
+      },
+      "fields": [
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "fazenda",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "area_ha",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "capacidade_ua_ha",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "criado_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_pastos_rebanho_nome ON pastos_rebanho (nome)",
+        "CREATE INDEX idx_pastos_rebanho_area ON pastos_rebanho (area_ha)"
+      ]
+    },
+    {
+      "name": "animais_individuais",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "view": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "brinco",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "categoria",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["bezerro", "garrote", "novilho", "boi", "novilha", "vaca", "touro"]
+        },
+        {
+          "name": "sexo",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["macho", "femea"]
+        },
+        {
+          "name": "peso_kg",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "ecc",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_entrada",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["ativo", "transferido", "vendido", "morto", "inativo"]
+        },
+        {
+          "name": "pasto_atual_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "pastos_rebanho"
+        },
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "registrado_por",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "registrado_por_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_animais_ind_brinco ON animais_individuais (brinco)",
+        "CREATE INDEX idx_animais_ind_pasto ON animais_individuais (pasto_atual_id)",
+        "CREATE INDEX idx_animais_ind_lote ON animais_individuais (lote_id)",
+        "CREATE INDEX idx_animais_ind_status ON animais_individuais (status)"
+      ]
+    },
+    {
+      "name": "movimentacoes_pasto",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "view": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'socio' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'capataz')",
+        "update": null,
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "lote_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "lots"
+        },
+        {
+          "name": "lote_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "animal_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "animais_individuais"
+        },
+        {
+          "name": "qtd_cabecas",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_origem_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_destino_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_origem_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_destino_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "responsavel_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "responsavel_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "motivo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_mvpasto_data ON movimentacoes_pasto (data DESC)",
+        "CREATE INDEX idx_mvpasto_lote ON movimentacoes_pasto (lote_id)",
+        "CREATE INDEX idx_mvpasto_origem ON movimentacoes_pasto (pasto_origem_id)",
+        "CREATE INDEX idx_mvpasto_destino ON movimentacoes_pasto (pasto_destino_id)"
       ]
     }
   ]

@@ -44,6 +44,7 @@ import Hedge from './pages/Hedge'
 import PdfStudio from './pages/PdfStudio'
 import MaestroImport from './pages/MaestroImport'
 import ComparativoFornecedores from './pages/ComparativoFornecedores'
+import Rebanho from './pages/Rebanho'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -316,6 +317,15 @@ const App = () => (
                           </RoleRoute>
                         }
                       />
+                      {/* Módulo de Atualização Manual do Rebanho (gestor e proprietário) */}
+                      <Route
+                        path="/rebanho"
+                        element={
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
+                            <Rebanho />
+                          </RoleRoute>
+                        }
+                      />{' '}
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>
