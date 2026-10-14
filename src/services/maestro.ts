@@ -1127,7 +1127,7 @@ export async function aplicarDadosConfirmados(
             peso_medio_kg: dadosMapeados['peso_kg'],
             peso_total_kg: dadosMapeados['peso_kg'] * (dadosMapeados['headcount'] || 1),
             origem: 'manual',
-            observacoes: `Importado via Robô Maestro (${origemArquivo.nome})`,
+            observacoes: `Importado via Robô Chicão (${origemArquivo.nome})`,
           })
           result.criados++
           itemsAuditCriados.push({
@@ -1162,7 +1162,7 @@ export async function aplicarDadosConfirmados(
         classificacao: 'custo_variavel',
         tipo: 'despesa',
         valor: custoTotalFabricaSuplemento,
-        descricao: `Consumo apurado via Robô Maestro (${origemArquivo.nome}): ${produtosFabricaDetalhes.join('; ').slice(0, 400)}`,
+        descricao: `Consumo apurado via Robô Chicão (${origemArquivo.nome}): ${produtosFabricaDetalhes.join('; ').slice(0, 400)}`,
       })
       if (!result.entidadesAfetadas.includes('Fechamento Financeiro (Fábrica de Suplemento)')) {
         result.entidadesAfetadas.push('Fechamento Financeiro (Fábrica de Suplemento)')
@@ -1186,7 +1186,7 @@ export async function aplicarDadosConfirmados(
     perfil: usuarioAtual.perfil,
     origem: 'online',
     referencia_tipo: 'maestro_importacao',
-    motivo: `Robô Maestro importou ${result.totalLidos} linhas do arquivo "${origemArquivo.nome}". Criados: ${result.criados}, Atualizados: ${result.atualizados}, Ignorados: ${result.ignorados}.${custoTotalFabricaSuplemento > 0 ? ` Custo do período fábrica de suplemento: R$ ${custoTotalFabricaSuplemento.toFixed(2)}.` : ''}`,
+    motivo: `Robô Chicão importou ${result.totalLidos} linhas do arquivo "${origemArquivo.nome}". Criados: ${result.criados}, Atualizados: ${result.atualizados}, Ignorados: ${result.ignorados}.${custoTotalFabricaSuplemento > 0 ? ` Custo do período fábrica de suplemento: R$ ${custoTotalFabricaSuplemento.toFixed(2)}.` : ''}`,
     payload_antes: {
       arquivo_nome: origemArquivo.nome,
       arquivo_tipo: origemArquivo.tipo,

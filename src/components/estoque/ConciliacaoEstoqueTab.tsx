@@ -226,8 +226,8 @@ export function ConciliacaoEstoqueTab() {
           </CardTitle>
           <CardDescription>
             Lance a contagem física de cada insumo para confrontar com o estoque do sistema
-            (planilha importada pelo Maestro ou saldo atual de estoque_insumos). Divergências fora
-            da tolerância exigem justificativa do gestor — nunca corrigem o estoque silenciosamente.
+            (planilha importada pelo Chicão ou saldo atual de estoque_insumos). Divergências fora da
+            tolerância exigem justificativa do gestor — nunca corrigem o estoque silenciosamente.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -290,7 +290,7 @@ export function ConciliacaoEstoqueTab() {
               </p>
               <p>
                 <strong>Saldo do sistema =</strong> estoque_final da coleção estoque_insumos (último
-                saldo registrado/importado pelo Maestro ou movimentações do fluxo único).
+                saldo registrado/importado pelo Chicão ou movimentações do fluxo único).
               </p>
               <p>
                 <strong>Tolerância configurável:</strong> {formatNumber(tolerancia, 2)}% — dentro

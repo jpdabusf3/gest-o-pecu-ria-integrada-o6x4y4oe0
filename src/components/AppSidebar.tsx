@@ -324,7 +324,13 @@ export function AppSidebar() {
                   }`}
                 >
                   <Bot className="h-4 w-4" />
-                  <span className="flex-1">Robô Maestro (Ingestão)</span>
+                  <span className="flex-1">Robô Chicão (Ingestão)</span>
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] uppercase font-bold tracking-wider border-rose-500/40 text-rose-600"
+                  >
+                    Venda
+                  </Badge>
                   <Badge
                     variant="outline"
                     className="text-[9px] uppercase font-bold tracking-wider border-primary/30 text-primary"

@@ -1,5 +1,5 @@
 /**
- * Serviço do Robô Maestro — Ingestão de COMPRA DE GADO
+ * Serviço do Robô Chicão — Ingestão de COMPRA DE GADO
  *
  * Regras Pecuárias Integradas (invioláveis):
  * - 1 @ de peso vivo = 30 kg; 1 @ de carcaça = 15 kg
@@ -919,7 +919,7 @@ export async function aplicarCompraGadoConfirmada(
         valor_total_rs: dados.valor_total,
         documento: origemArquivo.nome,
         sexo: dados.sexo,
-        observacoes: `Importado via Robô Maestro (${origemArquivo.nome}) — fornecedor: ${dados.fornecedor || 'não informado'}; preço R$ ${dados.preco_rs_at.toFixed(2)}/@; ágio ${linha.agioPct !== null ? `${linha.agioPct.toFixed(1)}%` : 's/ cotação'}`,
+        observacoes: `Importado via Robô Chicão (${origemArquivo.nome}) — fornecedor: ${dados.fornecedor || 'não informado'}; preço R$ ${dados.preco_rs_at.toFixed(2)}/@; ágio ${linha.agioPct !== null ? `${linha.agioPct.toFixed(1)}%` : 's/ cotação'}`,
       })
       if (!result.entidadesAfetadas.includes('Movimentações de Rebanho'))
         result.entidadesAfetadas.push('Movimentações de Rebanho')
@@ -1013,7 +1013,7 @@ export async function aplicarCompraGadoConfirmada(
     origem: 'online',
     referencia_tipo: 'maestro_compra_gado',
     motivo:
-      `Robô Maestro importou ${linhasValidadas.length} linhas de COMPRA DE GADO do arquivo "${origemArquivo.nome}". ` +
+      `Robô Chicão importou ${linhasValidadas.length} linhas de COMPRA DE GADO do arquivo "${origemArquivo.nome}". ` +
       `Criados: ${result.criados}, Atualizados: ${result.atualizados}, Ignorados: ${result.ignorados}. ` +
       `Fornecedor(es): ${Array.from(fornecedores).join(', ') || 'não informado'}. ` +
       `Total: ${cabecasTotais} cabeças / ${arrobasTotais.toFixed(2)} @ / R$ ${investimentoTotal.toFixed(2)}. ` +
@@ -1163,7 +1163,7 @@ export function gerarRelatorioCompraGadoPDF(
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
-  doc.text('PECUÁRIA F3 - ROBÔ MAESTRO', 14, 12)
+  doc.text('PECUÁRIA F3 - ROBÔ CHICÃO', 14, 12)
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
   doc.text('Relatório Oficial de Ingestão — COMPRA DE GADO', 14, 18)
@@ -1238,7 +1238,7 @@ export function gerarRelatorioCompraGadoPDF(
     headStyles: { fillColor: [24, 76, 44] },
   })
 
-  doc.save(`relatorio_maestro_compra_gado_${new Date().toISOString().slice(0, 10)}.pdf`)
+  doc.save(`relatorio_chicao_compra_gado_${new Date().toISOString().slice(0, 10)}.pdf`)
 }
 
 export function exportarCompraGadoExcel(linhas: LinhaCompraNormalizada[], filename: string) {

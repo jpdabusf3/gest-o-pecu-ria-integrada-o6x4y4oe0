@@ -302,7 +302,7 @@ const App = () => (
                       <Route
                         path="/maestro"
                         element={
-                          <RoleRoute allowedRoles={['gestor', 'proprietario']}>
+                          <RoleRoute allowedRoles={['gestor', 'proprietario', 'socio']}>
                             <MaestroImport />
                           </RoleRoute>
                         }

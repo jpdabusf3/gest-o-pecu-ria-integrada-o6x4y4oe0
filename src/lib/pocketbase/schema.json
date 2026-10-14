@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T01:22:45.887Z",
+  "generatedAt": "2026-10-14T01:35:25.859Z",
   "collections": [
     {
       "name": "users",
@@ -3235,6 +3235,188 @@
         "CREATE INDEX idx_mcgc_frente ON maestro_compras_gado (frente)",
         "CREATE INDEX idx_mcgc_usuario ON maestro_compras_gado (usuario_id)",
         "CREATE INDEX idx_mcgc_audit ON maestro_compras_gado (protocolo_audit_id)"
+      ]
+    },
+    {
+      "name": "maestro_vendas_gado",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "",
+        "update": null,
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "arquivo_nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "formato",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "comprador",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_venda",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "frente",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["cria", "recria", "engorda", "confinamento", "arrendamento"]
+        },
+        {
+          "name": "total_registros_lidos",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_criados",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_atualizados",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_ignorados",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_cabecas",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_total_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "arrobas_totais",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "receita_total_rs",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "preco_medio_rs_at",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "agio_medio_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cotacao_origem",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cotacao_preco_rs",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cotacao_data_referencia",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cotacao_desatualizada",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "linhas",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "protocolo_audit_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "usuario_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "usuario_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perfil",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "timestamp_dispositivo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_mvendas_data ON maestro_vendas_gado (data_venda DESC)",
+        "CREATE INDEX idx_mvendas_comprador ON maestro_vendas_gado (comprador)"
       ]
     }
   ]

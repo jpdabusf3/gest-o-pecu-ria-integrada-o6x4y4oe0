@@ -53,6 +53,18 @@ import {
   baixarModeloCompraGadoXlsx,
   gerarExemploRapidoCompraGado,
   classificarAgioCompra,
+  reconhecerColunasVendaGado,
+  isDocumentoVendaGado,
+  compilarLinhasVendaGado,
+  aplicarVendaGadoConfirmada,
+  gerarRelatorioVendaGadoPDF,
+  exportarVendaGadoExcel,
+  baixarModeloVendaGadoXlsx,
+  gerarExemploRapidoVendaGado,
+  ResultadoConferenciaVenda,
+  LinhaVendaNormalizada,
+  ResultadoAplicacaoVenda,
+  FrenteVenda as FrenteVendaTipo,
   ResultadoConferenciaCompra,
   LinhaCompraNormalizada,
   ResultadoAplicacaoCompra,
@@ -80,6 +92,17 @@ import {
 import { downloadCSV } from '@/lib/exportUtils'
 import type { ColunaCompraMapping } from '@/services/maestroCompraGado'
 type ColunaCompraMappingTipo = ColunaCompraMapping
+
+function filenameVendaGadoSignal(nome: string): boolean {
+  const n = nome
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+  return (
+    n.includes('venda') &&
+    (n.includes('gado') || n.includes('boi') || n.includes('boiada') || n.includes('ganado'))
+  )
+}
 
 function filenameCompraGadoSignal(nome: string): boolean {
   const n = nome
@@ -145,6 +168,20 @@ export default function MaestroImport() {
   const [usarCotacaoManual, setUsarCotacaoManual] = useState(false)
   const [frenteEscolhas, setFrenteEscolhas] = useState<Record<string, FrenteCompra>>({})
   const [resultadoCompra, setResultadoCompra] = useState<ResultadoAplicacaoCompra | null>(null)
+  // Venda de Gado (Robô Chicão)
+  const [isVendaGado, setIsVendaGado] = useState(false)
+  const [conferenciaVenda, setConferenciaVenda] = useState<ResultadoConferenciaVenda | null>(null)
+  const [frenteVendaEscolhas, setFrenteVendaEscolhas] = useState<Record<string, FrenteVendaTipo>>(
+    {},
+  )
+  const [resultVenda, setResultVenda] = useState<ResultadoAplicacaoVenda | null>(null)
+  const [filtroVenda, setFiltroVenda] = useState<'todos' | 'bloqueadas' | 'alertas' | 'ok'>('todos')
+  const [margemLoteFiltro, setMargemLoteFiltro] = useState<'todas' | 'positiva' | 'negativa'>(
+    'todas',
+  )
+  const [loteFiltroVenda, setLoteFiltroVenda] = useState<string>('todos')
+  const [cotacaoManualVenda, setCotacaoManualVenda] = useState('')
+  const [usarCotacaoManualVenda, setUsarCotacaoManualVenda] = useState(false)
   const [filtroCompra, setFiltroCompra] = useState<'todos' | 'alertas' | 'criar' | 'atualizar'>(
     'todos',
   )
@@ -171,7 +208,7 @@ export default function MaestroImport() {
           <CardContent className="pt-6 text-center space-y-4">
             <AlertTriangle className="h-12 w-12 text-amber-600 mx-auto" />
             <h2 className="text-xl font-bold text-amber-900 dark:text-amber-200">
-              Acesso Restrito ao Robô Maestro
+              Acesso Restrito ao Robô Chicão
             </h2>
             <p className="text-sm text-amber-800 dark:text-amber-300 max-w-md mx-auto">
               A ingestão automatizada e aplicação de dados em lote afeta o rebanho, pesagens,
@@ -193,11 +230,20 @@ export default function MaestroImport() {
     setOrigemLeitura('texto')
     setMapeamentoReconhecido(null)
     setIsCompraGado(false)
+    setIsVendaGado(false)
+    setConferenciaVenda(null)
+    setResultVenda(null)
     setConferenciaCompra(null)
     setResultadoCompra(null)
     setUsarCotacaoManual(false)
     setCotacaoManualAtiva('')
     setFrenteEscolhas({})
+    setFrenteVendaEscolhas({})
+    setFiltroVenda('todos')
+    setMargemLoteFiltro('todas')
+    setLoteFiltroVenda('todos')
+    setCotacaoManualVenda('')
+    setUsarCotacaoManualVenda(false)
   }
 
   // Exemplos rápidos do usuário
@@ -240,6 +286,16 @@ BR-1005;2025-05-10;385.2;Lote Recria 01;Normal`
     toast.info('Exemplo rápido de COMPRA DE GADO carregado!')
   }
 
+  const carregarExemploVendaGado = () => {
+    const fileExemplo = gerarExemploRapidoVendaGado()
+    setFile(fileExemplo)
+    setObjetivo(
+      'Importar nota de VENDA DE GADO: quantidade, peso médio (@ vivo ou carcaça), preço por cabeça ou por @, comprador e data — com margem real por lote e ágio vs cotação.',
+    )
+    setIsVendaGado(true)
+    setIsCompraGado(false)
+    toast.info('Exemplo rápido de VENDA DE GADO carregado!')
+  }
   const carregarExemploEstoque = () => {
     const csvExemplo = `Produto;Unidade;Estoque Inicial;Entradas;Saídas;Estoque Final;Preço Unitário
 Milho em Grão;kg;50000;15000;12500;52500;0.85
@@ -256,7 +312,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
     toast.info('Exemplo de planilha de estoque de insumos carregado!')
   }
 
-  // ETAPA 1 -> ETAPA 2: Ler arquivo e disparar Maestro
+  // ETAPA 1 -> ETAPA 2: Ler arquivo e disparar Chicão
   const processarLeitura = async () => {
     if (!file) {
       toast.error('Selecione um arquivo para leitura.')
@@ -265,7 +321,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
     try {
       setLendoArquivo(true)
-      toast.loading('Robô Maestro inspecionando documento...', { id: 'leitura-toast' })
+      toast.loading('Robô Chicão inspecionando documento...', { id: 'leitura-toast' })
 
       // 1. Extração bruta de markdown/tabelas
       const extracao = await extrairDocumentoMaestro(file)
@@ -282,17 +338,34 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         return
       }
 
-      // 2. Parser tabular
-      let parsed = parseMarkdownTable(extracao.markdown)
-      if (parsed.headers.length === 0 && file.name.endsWith('.csv')) {
-        const text = await file.text()
-        parsed = parseCSVClientSide(text)
+      // 2.b RECONHECIMENTO ESPECÍFICO: VENDA DE GADO (planilha/PDF/DOCX com tabela)
+      const mapeamentoVenda = reconhecerColunasVendaGado(parsed.headers)
+      const ehVendaGado =
+        isDocumentoVendaGado(mapeamentoVenda) &&
+        (filenameVendaGadoSignal(file.name) ||
+          mapeamentoVenda.some((m) => m.campoDestino === 'comprador') ||
+          parsed.headers.some((h) => {
+            const n = h
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+            return n.includes('comprador')
+          }))
+
+      if (ehVendaGado && mapeamentoVenda.some((m) => m.campoDestino !== 'ignorar')) {
+        setIsVendaGado(true)
+        setIsCompraGado(false)
+        setMappings(mapeamentoVenda as any)
+        toast.dismiss('leitura-toast')
+        toast.success('Documento reconhecido como VENDA DE GADO — fluxo dedicado ativado!', {
+          description:
+            'Mapeamento de quantidade, peso médio, preço por cabeça/@, comprador, documento e data realizado. Revise o mapeamento e avance para a conferência com margem real por lote.',
+        })
+        setEtapa(2)
+        return
       }
 
-      setHeadersIdentificados(parsed.headers)
-      setRawRows(parsed.rows)
-
-      // 2.b RECONHECIMENTO ESPECÍFICO: COMPRA DE GADO (planilha/PDF/DOCX com tabela)
+      // 2.c RECONHECIMENTO ESPECÍFICO: COMPRA DE GADO (planilha/PDF/DOCX com tabela)
       const mapeamentoCompra = reconhecerColunasCompraGado(parsed.headers)
       const ehCompraGado =
         isDocumentoCompraGado(mapeamentoCompra) ||
@@ -455,6 +528,12 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         id: 'compilando-toast',
       })
 
+      if (isVendaGado) {
+        await compilarConferenciaVenda()
+        setEtapa(3)
+        return
+      }
+
       if (isCompraGado) {
         await compilarConferenciaCompra()
         setEtapa(3)
@@ -486,6 +565,10 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
   // ETAPA 4: Aplicação integrada
   const executarAplicacao = async () => {
+    if (isVendaGado) {
+      await executarAplicacaoVenda()
+      return
+    }
     if (isCompraGado) {
       await executarAplicacaoCompra()
       return
@@ -530,6 +613,13 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
   // Exportar dados compilados para CSV
   const exportarPlanilhaConferencia = () => {
+    if (isVendaGado && conferenciaVenda) {
+      exportarVendaGadoExcel(
+        conferenciaVenda.linhas,
+        `conferencia_venda_gado_${file?.name || 'dados'}`,
+      )
+      return
+    }
     if (isCompraGado && conferenciaCompra) {
       exportarCompraGadoExcel(
         conferenciaCompra.linhas,
@@ -571,12 +661,101 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
     setOcrUsado(false)
     setOrigemLeitura('texto')
     setIsCompraGado(false)
+    setIsVendaGado(false)
     setConferenciaCompra(null)
+    setConferenciaVenda(null)
+    setResultVenda(null)
     setCotacaoManualAtiva('')
     setUsarCotacaoManual(false)
     setFrenteEscolhas({})
     setResultadoCompra(null)
     setFiltroCompra('todos')
+    setFrenteVendaEscolhas({})
+    setFiltroVenda('todos')
+    setMargemLoteFiltro('todas')
+    setLoteFiltroVenda('todos')
+    setCotacaoManualVenda('')
+    setUsarCotacaoManualVenda(false)
+  }
+
+  // ------------------ VENDA DE GADO: pipeline ------------------
+  const compilarConferenciaVenda = async (
+    rowsOverride?: Record<string, any>[],
+    mappingsOverride?: ColunaCompraMappingTipo[],
+    manualOverride?: { preco: number } | null,
+  ) => {
+    try {
+      setCompilando(true)
+      const rows = rowsOverride || rawRows
+      const maps: ColunaCompraMappingTipo[] =
+        mappingsOverride || (mappings as ColunaCompraMappingTipo[])
+      const manual =
+        manualOverride !== undefined
+          ? manualOverride
+          : usarCotacaoManual && cotacaoManualAtiva
+            ? { preco: Number(cotacaoManualAtiva) }
+            : null
+      const resultado = await compilarLinhasVendaGado(
+        rows,
+        maps,
+        manual && manual.preco > 0 ? manual : null,
+      )
+      setConferenciaVenda(resultado)
+      const escolhas: Record<string, FrenteVendaTipo> = {}
+      resultado.linhas.forEach((l) => {
+        escolhas[l.idTemp] = l.frenteEscolhida || 'engorda'
+      })
+      setFrenteVendaEscolhas(escolhas)
+      toast.dismiss('compilando-toast')
+      toast.success(
+        `${resultado.linhas.length} linhas de VENDA DE GADO preparadas para conferência!`,
+      )
+    } catch (err: any) {
+      toast.error('Erro ao compilar venda de gado: ' + (err.message || 'Falha'))
+    } finally {
+      setCompilando(false)
+    }
+  }
+
+  const executarAplicacaoVenda = async () => {
+    try {
+      setAplicando(true)
+      setConfirmModalOpen(false)
+      toast.loading('Aplicando venda de gado no rebanho, financeiro e fechamento...', {
+        id: 'aplicando-toast',
+      })
+
+      const linhasValidadas: LinhaVendaNormalizada[] = (conferenciaVenda?.linhas || []).map(
+        (l) => ({
+          ...l,
+          frenteEscolhida: frenteVendaEscolhas[l.idTemp] || l.frenteEscolhida,
+        }),
+      )
+
+      const resultado = await aplicarVendaGadoConfirmada(
+        linhasValidadas,
+        {
+          nome: file?.name || 'documento',
+          formato: 'venda de gado',
+        },
+        {
+          id: user.id,
+          nome: user.name || 'Gestor',
+          perfil: user.role,
+        },
+        conferenciaVenda?.cotacao || null,
+      )
+
+      setResultVenda(resultado)
+      toast.dismiss('aplicando-toast')
+      toast.success('Venda de gado aplicada e registrada na auditoria (append-only)!')
+      setEtapa(5)
+    } catch (err: any) {
+      toast.dismiss('aplicando-toast')
+      toast.error('Erro ao aplicar venda de gado: ' + (err.message || 'Falha'))
+    } finally {
+      setAplicando(false)
+    }
   }
 
   // ------------------ COMPRA DE GADO: pipeline ------------------
@@ -719,7 +898,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-                Robô de Ingestão e Gestão "Maestro"
+                Robô de Ingestão e Gestão "Chicão"
                 <Badge variant="outline" className="border-primary/40 text-primary text-xs">
                   Agente Nativo Skip Cloud
                 </Badge>
@@ -779,8 +958,8 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                 Ingestão Multiformato
               </CardTitle>
               <CardDescription>
-                Envie documentos em PDF, DOCX/Word, XLSX/XLS/CSV, PPTX ou texto. O Maestro
-                identifica automaticamente cabeçalhos e colunas em qualquer linha ou layout.
+                Envie documentos em PDF, DOCX/Word, XLSX/XLS/CSV, PPTX ou texto. O Chicão identifica
+                automaticamente cabeçalhos e colunas em qualquer linha ou layout.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -795,10 +974,23 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   </div>
                   <p className="text-xs text-emerald-800/80 dark:text-emerald-300">
                     Gere templates padrão para a equipe preencher no curral/pasto e importar com
-                    confiança 100% no Maestro sem ajustes manuais.
+                    confiança 100% no Chicão sem ajustes manuais.
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      baixarModeloVendaGadoXlsx()
+                      toast.success('Modelo Venda de Gado (.xlsx) baixado!')
+                    }}
+                    className="text-xs gap-1.5 border-emerald-600/40 text-emerald-900 dark:text-emerald-200 bg-background hover:bg-emerald-50"
+                  >
+                    <Download className="h-3.5 w-3.5 text-rose-700" />
+                    Modelo Venda de Gado (.xlsx)
+                  </Button>
                   <Button
                     type="button"
                     variant="outline"
@@ -970,6 +1162,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                       <Scale className="h-3 w-3 text-emerald-700" />
                       Compra de Gado
                     </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={carregarExemploVendaGado}
+                      className="text-xs h-7 px-2 text-rose-900 dark:text-rose-200 border-rose-600/40 bg-rose-500/10 hover:bg-rose-500/20 gap-1"
+                    >
+                      <Scale className="h-3 w-3 text-rose-700" />
+                      Venda de Gado
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -979,7 +1181,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                 <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 rounded-lg space-y-2 text-xs text-amber-900 dark:text-amber-200">
                   <div className="flex items-center gap-2 font-semibold">
                     <AlertTriangle className="h-4 w-4 text-amber-600" />
-                    Aviso Honesto do Robô Maestro — Nenhum dado é inventado
+                    Aviso Honesto do Robô Chicão — Nenhum dado é inventado
                   </div>
                   <p className="leading-relaxed">{avisoExtracao}</p>
                 </div>
@@ -988,7 +1190,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
               {/* Descrição do Objetivo */}
               <div className="space-y-2">
                 <Label htmlFor="objetivo" className="text-sm font-semibold">
-                  Objetivo ou Instruções para o Maestro (opcional)
+                  Objetivo ou Instruções para o Chicão (opcional)
                 </Label>
                 <Textarea
                   id="objetivo"
@@ -1010,10 +1212,10 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   className="gap-2 font-semibold"
                 >
                   {lendoArquivo ? (
-                    <>Robô Maestro Lendo Documento...</>
+                    <>Robô Chicão Lendo Documento...</>
                   ) : (
                     <>
-                      Iniciar Leitura com Maestro <ArrowRight className="h-4 w-4" />
+                      Iniciar Leitura com Chicão <ArrowRight className="h-4 w-4" />
                     </>
                   )}
                 </Button>
@@ -1025,13 +1227,13 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
           <Card className="border-border/60 bg-muted/10">
             <CardHeader className="py-4">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Info className="h-4 w-4 text-primary" /> Regras Técnicas Garantidas pelo Maestro
+                <Info className="h-4 w-4 text-primary" /> Regras Técnicas Garantidas pelo Chicão
               </CardTitle>
             </CardHeader>
             <CardContent className="text-xs text-muted-foreground grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <strong className="text-foreground block mb-0.5">Conversão de Arrobas:</strong>1 @
-                de peso vivo = 30 kg; 1 @ de carcaça = 15 kg. O Maestro detecta a unidade e converte
+                de peso vivo = 30 kg; 1 @ de carcaça = 15 kg. O Chicão detecta a unidade e converte
                 explicitamente.
               </div>
               <div>
@@ -1063,7 +1265,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                     Mapeamento Inteligente: Colunas → Campos do Sistema
                   </CardTitle>
                   <CardDescription>
-                    O Robô Maestro identificou as colunas e sugeriu a correspondência zootécnica.
+                    O Robô Chicão identificou as colunas e sugeriu a correspondência zootécnica.
                     Ajuste manualmente caso deseje alterar algum campo.
                   </CardDescription>
                 </div>
@@ -1379,6 +1581,423 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
               </CardContent>
             </Card>
           </div>
+
+          {/* PAINEL ESPECIAL DE VENDA DE GADO (Robô Chicão) */}
+          {isVendaGado && conferenciaVenda && (
+            <div className="space-y-4">
+              {conferenciaVenda.avisoCotacao && (
+                <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-300 rounded-lg space-y-2 text-xs text-amber-900 dark:text-amber-200">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    Cotação B3 do Boi Gordo — Nenhum preço é inventado
+                  </div>
+                  <p className="leading-relaxed">{conferenciaVenda.avisoCotacao}</p>
+                  <div className="flex flex-wrap items-end gap-3 pt-1">
+                    <div className="space-y-1">
+                      <Label className="text-[11px] font-semibold text-amber-900 dark:text-amber-200">
+                        Informar preço de referência da @ manualmente (R$):
+                      </Label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={cotacaoManualVenda}
+                        onChange={(e) => setCotacaoManualVenda(e.target.value)}
+                        placeholder="ex: 274.50"
+                        className="h-8 w-44 bg-background"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-amber-600/50 text-amber-900 dark:text-amber-200"
+                      disabled={!cotacaoManualVenda || compilando}
+                      onClick={() =>
+                        compilarConferenciaVenda(rawRows, mappings as ColunaCompraMappingTipo[], {
+                          preco: Number(cotacaoManualVenda),
+                        })
+                      }
+                    >
+                      {compilando ? 'Recalculando...' : 'Recalcular Ágio com Cotação Manual'}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <span className="text-xs text-muted-foreground block">
+                      Total de Linhas Lidas
+                    </span>
+                    <span className="text-2xl font-bold">{conferenciaVenda.resumo.totalLidos}</span>
+                    <span className="text-[11px] text-muted-foreground block mt-0.5">
+                      {conferenciaVenda.resumo.aAtualizar} saídas ·{' '}
+                      {conferenciaVenda.resumo.bloqueadas} bloqueadas ·{' '}
+                      {conferenciaVenda.resumo.aIgnorar} a ignorar
+                    </span>
+                  </CardContent>
+                </Card>
+                <Card className="border-rose-500/30 bg-rose-50/40 dark:bg-rose-950/20">
+                  <CardContent className="p-4">
+                    <span className="text-xs text-rose-700 dark:text-rose-300 block">
+                      Cabeças Vendidas
+                    </span>
+                    <span className="text-2xl font-bold text-rose-800 dark:text-rose-200">
+                      {conferenciaVenda.resumo.cabecasTotais}
+                    </span>
+                    <span className="text-[11px] text-rose-600 dark:text-rose-400 block mt-0.5">
+                      {conferenciaVenda.resumo.arrobasTotais.toLocaleString('pt-BR', {
+                        maximumFractionDigits: 2,
+                      })}{' '}
+                      @ vivo (
+                      {conferenciaVenda.resumo.pesoTotalKg.toLocaleString('pt-BR', {
+                        maximumFractionDigits: 1,
+                      })}{' '}
+                      kg ÷ 30)
+                    </span>
+                  </CardContent>
+                </Card>
+                <Card className="border-blue-500/30 bg-blue-50/40 dark:bg-blue-950/20">
+                  <CardContent className="p-4">
+                    <span className="text-xs text-blue-700 dark:text-blue-300 block">
+                      Receita Total
+                    </span>
+                    <span className="text-2xl font-bold text-blue-800 dark:text-blue-200">
+                      R${' '}
+                      {conferenciaVenda.resumo.receitaTotalRs.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                      })}
+                    </span>
+                    <span className="text-[11px] text-blue-600 dark:text-blue-400 block mt-0.5">
+                      preço médio de venda: R$ {conferenciaVenda.resumo.precoMedioRsAt.toFixed(2)}/@
+                    </span>
+                  </CardContent>
+                </Card>
+                <Card
+                  className={
+                    conferenciaVenda.resumo.margemTotalRs === null
+                      ? 'border-amber-500/40 bg-amber-50/40 dark:bg-amber-950/20'
+                      : conferenciaVenda.resumo.margemTotalRs >= 0
+                        ? 'border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20'
+                        : 'border-red-500/40 bg-red-50/40 dark:bg-red-950/20'
+                  }
+                >
+                  <CardContent className="p-4">
+                    <span className="text-xs text-muted-foreground block">
+                      Margem Real (Venda − Custo de Origem)
+                    </span>
+                    <span
+                      className={`text-2xl font-bold ${
+                        conferenciaVenda.resumo.margemTotalRs === null
+                          ? 'text-amber-700'
+                          : conferenciaVenda.resumo.margemTotalRs >= 0
+                            ? 'text-emerald-700'
+                            : 'text-red-700'
+                      }`}
+                    >
+                      {conferenciaVenda.resumo.margemTotalRs === null
+                        ? 's/ custo de origem'
+                        : `R$ ${conferenciaVenda.resumo.margemTotalRs.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground block mt-0.5">
+                      {conferenciaVenda.resumo.margemPct === null
+                        ? 'margem % indisponível (sem custo de compra registrado)'
+                        : `${conferenciaVenda.resumo.margemPct > 0 ? '+' : ''}${conferenciaVenda.resumo.margemPct.toFixed(1)}% sobre o custo de origem`}
+                    </span>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {conferenciaVenda.resumo.alertas.length > 0 && (
+                <Card className="border-amber-500/30">
+                  <CardContent className="p-3 space-y-1.5 text-xs">
+                    {conferenciaVenda.resumo.alertas.map((a, i) => (
+                      <p
+                        key={i}
+                        className="text-amber-700 dark:text-amber-300 flex items-center gap-1.5 font-medium"
+                      >
+                        <AlertTriangle className="h-3.5 w-3.5" /> {a}
+                      </p>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Scale className="h-5 w-5 text-rose-700" />
+                    Conferência da Venda de Gado — linha a linha (obrigatória)
+                  </CardTitle>
+                  <CardDescription>
+                    Cada linha vira uma SAÍDA no rebanho + receita "Venda de Gado" no centro de
+                    custo da frente. Lotes são DECREMENTADOS e nunca ficam negativos. A margem real
+                    compara o preço de @ da venda contra o preço de @ PAGO na compra do lote (ou o
+                    custo médio de reposição, sinalizado).
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant={filtroVenda === 'todos' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroVenda('todos')}
+                      className="text-xs h-7"
+                    >
+                      Todos ({conferenciaVenda.linhas.length})
+                    </Button>
+                    <Button
+                      variant={filtroVenda === 'bloqueadas' ? 'destructive' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroVenda('bloqueadas')}
+                      className="text-xs h-7"
+                    >
+                      Bloqueadas ({conferenciaVenda.resumo.bloqueadas})
+                    </Button>
+                    <Button
+                      variant={filtroVenda === 'alertas' ? 'outline' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroVenda('alertas')}
+                      className="text-xs h-7"
+                    >
+                      Com Alertas (
+                      {conferenciaVenda.linhas.filter((l) => l.alertas.length > 0).length})
+                    </Button>
+                    <Button
+                      variant={filtroVenda === 'ok' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFiltroVenda('ok')}
+                      className="text-xs h-7"
+                    >
+                      Válidas ({conferenciaVenda.resumo.aAtualizar})
+                    </Button>
+                  </div>
+
+                  <div className="border rounded-lg overflow-x-auto max-h-[520px]">
+                    <table className="w-full text-xs">
+                      <thead className="bg-muted sticky top-0 text-muted-foreground font-semibold">
+                        <tr>
+                          <th className="p-2.5 text-center w-14">Linha</th>
+                          <th className="p-2.5 text-center w-28">Ação</th>
+                          <th className="p-2.5 text-left">Lote de Origem / Categoria</th>
+                          <th className="p-2.5 text-right">Cabeças</th>
+                          <th className="p-2.5 text-right">Peso</th>
+                          <th className="p-2.5 text-right">Preços</th>
+                          <th className="p-2.5 text-right">Receita R$</th>
+                          <th className="p-2.5 text-center w-24">Ágio</th>
+                          <th className="p-2.5 text-right">Custo R$/@ (Origem)</th>
+                          <th className="p-2.5 text-right">Margem</th>
+                          <th className="p-2.5 text-left">Comprador / Doc / Data</th>
+                          <th className="p-2.5 text-left">Frente (Centro de Custo)</th>
+                          <th className="p-2.5 text-left">Status / Motivo</th>
+                          <th className="p-2.5 text-center w-20">Aplicar?</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {conferenciaVenda.linhas
+                          .filter((l) => {
+                            if (filtroVenda === 'bloqueadas') return l.bloqueada
+                            if (filtroVenda === 'alertas') return l.alertas.length > 0
+                            if (filtroVenda === 'ok')
+                              return l.acao === 'atualizar' && !l.ignoradoPeloUsuario
+                            return true
+                          })
+                          .map((l) => {
+                            const isIgnorado = l.acao === 'ignorar' || l.ignoradoPeloUsuario
+                            return (
+                              <tr
+                                key={l.idTemp}
+                                className={`hover:bg-muted/30 transition-colors ${
+                                  isIgnorado ? 'opacity-50 bg-muted/10' : ''
+                                }`}
+                              >
+                                <td className="p-2.5 text-center font-mono font-medium">
+                                  #{l.linhaOrigem}
+                                </td>
+                                <td className="p-2.5 text-center">
+                                  {l.bloqueada && !isIgnorado ? (
+                                    <Badge className="bg-red-600 text-[10px]">BLOQUEADA</Badge>
+                                  ) : l.acao === 'atualizar' && !isIgnorado ? (
+                                    <Badge className="bg-rose-600 text-[10px]">SAÍDA</Badge>
+                                  ) : (
+                                    <Badge variant="secondary" className="text-[10px]">
+                                      IGNORAR
+                                    </Badge>
+                                  )}
+                                </td>
+                                <td className="p-2.5">
+                                  <div className="font-semibold text-foreground">
+                                    {l.dados.lote_nome || '(sem lote)'}
+                                  </div>
+                                  <div className="text-[10px] text-muted-foreground">
+                                    {l.dados.categoria || 'categoria não informada'} ·{' '}
+                                    {l.dados.sexo === 'femea' ? 'Fêmea' : 'Macho'}
+                                    {l.loteCabecasExistentes !== undefined
+                                      ? ` · ${l.loteCabecasExistentes} cab. disponíveis`
+                                      : ''}
+                                  </div>
+                                </td>
+                                <td className="p-2.5 text-right font-mono font-semibold">
+                                  {l.dados.qtd_cabecas}
+                                </td>
+                                <td className="p-2.5 text-right font-mono">
+                                  {l.dados.peso_medio_kg} kg
+                                  <span className="text-[10px] text-muted-foreground block">
+                                    {l.dados.arrobas_totais} @ total
+                                  </span>
+                                </td>
+                                <td className="p-2.5 text-right font-mono">
+                                  {l.dados.preco_rs_at
+                                    ? `R$ ${l.dados.preco_rs_at.toFixed(2)}/@`
+                                    : '—'}
+                                  <span className="text-[10px] text-muted-foreground block">
+                                    {l.dados.preco_rs_cab
+                                      ? `R$ ${l.dados.preco_rs_cab.toFixed(2)}/cab`
+                                      : '—'}
+                                  </span>
+                                </td>
+                                <td className="p-2.5 text-right font-mono font-bold text-rose-800 dark:text-rose-300">
+                                  R${' '}
+                                  {l.dados.valor_total.toLocaleString('pt-BR', {
+                                    minimumFractionDigits: 2,
+                                  })}
+                                </td>
+                                <td className="p-2.5 text-center">
+                                  {l.agioPct === null ? (
+                                    <span className="text-[10px] text-muted-foreground">
+                                      s/ cotação
+                                    </span>
+                                  ) : (
+                                    <Badge
+                                      className={`text-[10px] ${
+                                        l.agioPct >= 0 ? 'bg-emerald-600' : 'bg-amber-500'
+                                      }`}
+                                    >
+                                      {l.agioPct > 0 ? '+' : ''}
+                                      {l.agioPct.toFixed(1)}%
+                                    </Badge>
+                                  )}
+                                </td>
+                                <td className="p-2.5 text-right font-mono">
+                                  {l.custoRsAt !== null ? `R$ ${l.custoRsAt.toFixed(2)}` : '—'}
+                                  <span className="text-[10px] block text-muted-foreground">
+                                    {l.origemCusto === 'compra_registrada'
+                                      ? 'compra Chicão'
+                                      : l.origemCusto === 'custo_medio'
+                                        ? 'custo médio'
+                                        : 's/ custo'}
+                                  </span>
+                                </td>
+                                <td
+                                  className={`p-2.5 text-right font-mono font-semibold ${
+                                    l.margemRs === null
+                                      ? 'text-muted-foreground'
+                                      : l.margemRs >= 0
+                                        ? 'text-emerald-700'
+                                        : 'text-red-700'
+                                  }`}
+                                >
+                                  {l.margemRs === null
+                                    ? '—'
+                                    : `R$ ${l.margemRs.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                                  <span className="text-[10px] block">
+                                    {l.margemPct === null
+                                      ? ''
+                                      : `${l.margemPct > 0 ? '+' : ''}${l.margemPct.toFixed(1)}%`}
+                                  </span>
+                                </td>
+                                <td className="p-2.5">
+                                  <span className="text-[11px] font-medium">
+                                    {l.dados.comprador || '—'}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground block">
+                                    {l.dados.documento || 's/ doc'} · {l.dados.data}
+                                  </span>
+                                </td>
+                                <td className="p-2.5">
+                                  <Select
+                                    value={frenteVendaEscolhas[l.idTemp] || 'engorda'}
+                                    onValueChange={(v: FrenteVendaTipo) =>
+                                      setFrenteVendaEscolhas((prev) => ({ ...prev, [l.idTemp]: v }))
+                                    }
+                                  >
+                                    <SelectTrigger className="h-7 text-[11px] w-full max-w-[150px]">
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="cria">Cria</SelectItem>
+                                      <SelectItem value="recria">Recria</SelectItem>
+                                      <SelectItem value="engorda">Engorda</SelectItem>
+                                      <SelectItem value="confinamento">Confinamento</SelectItem>
+                                      <SelectItem value="arrendamento">Arrendamento</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </td>
+                                <td className="p-2.5 max-w-[220px]">
+                                  {l.alertas.length > 0 ? (
+                                    <div className="space-y-0.5">
+                                      {l.alertas.map((a, i) => (
+                                        <span
+                                          key={i}
+                                          className="text-[10px] block font-medium text-amber-700 dark:text-amber-300"
+                                        >
+                                          ⚠ {a}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  ) : null}
+                                  <span className="text-[10px] text-muted-foreground italic block mt-0.5">
+                                    {l.motivoAcao}
+                                  </span>
+                                  {l.conversoes.map((c, i) => (
+                                    <span key={i} className="text-[9px] block text-primary mt-0.5">
+                                      ⇄ {c}
+                                    </span>
+                                  ))}
+                                </td>
+                                <td className="p-2.5 text-center">
+                                  <Button
+                                    type="button"
+                                    variant={isIgnorado ? 'outline' : 'secondary'}
+                                    size="sm"
+                                    onClick={() =>
+                                      setConferenciaVenda((prev) =>
+                                        prev
+                                          ? {
+                                              ...prev,
+                                              linhas: prev.linhas.map((x) =>
+                                                x.idTemp === l.idTemp
+                                                  ? {
+                                                      ...x,
+                                                      ignoradoPeloUsuario: !x.ignoradoPeloUsuario,
+                                                    }
+                                                  : x,
+                                              ),
+                                              resumo: {
+                                                ...prev.resumo,
+                                                aIgnorar:
+                                                  prev.resumo.aIgnorar + (isIgnorado ? -1 : 1),
+                                              },
+                                            }
+                                          : prev,
+                                      )
+                                    }
+                                    className="text-[10px] h-6 px-2"
+                                  >
+                                    {isIgnorado ? 'Restaurar' : 'Ignorar'}
+                                  </Button>
+                                </td>
+                              </tr>
+                            )
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           {/* PAINEL ESPECIAL DE COMPRA DE GADO */}
           {isCompraGado && conferenciaCompra && (
@@ -1883,7 +2502,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   </CardTitle>
                   <CardDescription>
                     Nenhum dado é aplicado sem a confirmação explícita. Verifique as conversões de
-                    unidades e correspondências calculadas pelo Maestro.
+                    unidades e correspondências calculadas pelo Chicão.
                   </CardDescription>
                 </div>
 
@@ -2190,20 +2809,25 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   <span className="text-xs text-muted-foreground">
                     Serão aplicados{' '}
                     <strong>
-                      {isCompraGado && conferenciaCompra
-                        ? conferenciaCompra.resumo.aCriar + conferenciaCompra.resumo.aAtualizar
-                        : totalCriar + totalAtualizar}
+                      {isVendaGado && conferenciaVenda
+                        ? conferenciaVenda.resumo.aAtualizar
+                        : isCompraGado && conferenciaCompra
+                          ? conferenciaCompra.resumo.aCriar + conferenciaCompra.resumo.aAtualizar
+                          : totalCriar + totalAtualizar}
                     </strong>{' '}
                     registros validados.
                   </span>
                   <Button
                     onClick={() => setConfirmModalOpen(true)}
                     disabled={
-                      isCompraGado
-                        ? !conferenciaCompra ||
-                          conferenciaCompra.resumo.aCriar + conferenciaCompra.resumo.aAtualizar ===
-                            0
-                        : totalCriar + totalAtualizar === 0
+                      isVendaGado
+                        ? !conferenciaVenda || conferenciaVenda.resumo.aAtualizar === 0
+                        : isCompraGado
+                          ? !conferenciaCompra ||
+                            conferenciaCompra.resumo.aCriar +
+                              conferenciaCompra.resumo.aAtualizar ===
+                              0
+                          : totalCriar + totalAtualizar === 0
                     }
                     className="gap-2 bg-emerald-700 hover:bg-emerald-800 font-semibold"
                   >
@@ -2223,9 +2847,11 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   Confirmar Aplicação em Lote
                 </DialogTitle>
                 <DialogDescription>
-                  {isCompraGado
-                    ? 'Esta ação aplicará a compra no Rebanho (lotes), Movimentações, Financeiro (centro de custo) e Fechamento — de forma definitiva.'
-                    : 'Esta ação aplicará as alterações de forma definitiva nas áreas selecionadas (Lotes, Pesagens, Estoque e Fechamento).'}
+                  {isVendaGado
+                    ? 'Esta ação aplicará a venda no Rebanho (lotes decrementados), Movimentações, Financeiro (receita por centro de custo) e Fechamento — de forma definitiva.'
+                    : isCompraGado
+                      ? 'Esta ação aplicará a compra no Rebanho (lotes), Movimentações, Financeiro (centro de custo) e Fechamento — de forma definitiva.'
+                      : 'Esta ação aplicará as alterações de forma definitiva nas áreas selecionadas (Lotes, Pesagens, Estoque e Fechamento).'}
                 </DialogDescription>
               </DialogHeader>
 
@@ -2237,7 +2863,55 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   <p>
                     <strong>Arquivo:</strong> {file?.name}
                   </p>
-                  {isCompraGado && conferenciaCompra ? (
+                  {isVendaGado && conferenciaVenda ? (
+                    <>
+                      <p>
+                        <strong>Linhas de Venda:</strong> {conferenciaVenda.resumo.totalLidos} lidas
+                      </p>
+                      <p>
+                        <strong>Saídas a aplicar:</strong> {conferenciaVenda.resumo.aAtualizar} ·{' '}
+                        <strong>Bloqueadas:</strong> {conferenciaVenda.resumo.bloqueadas} ·{' '}
+                        <strong>Ignorados:</strong> {conferenciaVenda.resumo.aIgnorar}
+                      </p>
+                      <p>
+                        <strong>Total:</strong> {conferenciaVenda.resumo.cabecasTotais} cabeças ·{' '}
+                        {conferenciaVenda.resumo.arrobasTotais.toFixed(2)} @ · R${' '}
+                        {conferenciaVenda.resumo.receitaTotalRs.toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                        })}
+                      </p>
+                      <p>
+                        <strong>Preço médio de venda:</strong> R${' '}
+                        {conferenciaVenda.resumo.precoMedioRsAt.toFixed(2)}/@ ·{' '}
+                        <strong>Ágio médio:</strong>{' '}
+                        {conferenciaVenda.resumo.agioMedioPct === null
+                          ? 's/ cotação'
+                          : `${conferenciaVenda.resumo.agioMedioPct > 0 ? '+' : ''}${conferenciaVenda.resumo.agioMedioPct.toFixed(1)}%`}
+                      </p>
+                      <p>
+                        <strong>Margem real (venda − custo de origem):</strong>{' '}
+                        {conferenciaVenda.resumo.margemTotalRs === null
+                          ? 's/ custo de origem registrado'
+                          : `R$ ${conferenciaVenda.resumo.margemTotalRs.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                        {conferenciaVenda.resumo.margemPct !== null
+                          ? ` (${conferenciaVenda.resumo.margemPct > 0 ? '+' : ''}${conferenciaVenda.resumo.margemPct.toFixed(1)}%)`
+                          : ''}
+                      </p>
+                      {conferenciaVenda.cotacao && (
+                        <p className="pt-1 border-t">
+                          <strong>Cotação usada no ágio:</strong> R${' '}
+                          {conferenciaVenda.cotacao.preco.toFixed(2)}/@ (
+                          {conferenciaVenda.cotacao.origem === 'b3_vigente'
+                            ? 'B3 vigente'
+                            : 'informada manualmente'}
+                          {conferenciaVenda.cotacao.desatualizada
+                            ? ` — DESATUALIZADA (${conferenciaVenda.cotacao.diasAtraso} dias)`
+                            : ''}
+                          )
+                        </p>
+                      )}
+                    </>
+                  ) : isCompraGado && conferenciaCompra ? (
                     <>
                       <p>
                         <strong>Linhas de Compra:</strong> {conferenciaCompra.resumo.totalLidos}{' '}
@@ -2304,6 +2978,14 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                   )}
                 </div>
 
+                {isVendaGado && conferenciaVenda && conferenciaVenda.resumo.bloqueadas > 0 && (
+                  <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-lg text-red-800 dark:text-red-300 font-medium">
+                    ⚠️ {conferenciaVenda.resumo.bloqueadas} linha(s) bloqueada(s): a quantidade
+                    vendida supera o lote de origem. Corrija a planilha ou ignore as linhas
+                    bloqueadas — lotes nunca ficam negativos.
+                  </div>
+                )}
+
                 {temProdutosBloqueados && (
                   <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-lg text-red-800 dark:text-red-300 font-medium">
                     ⚠️ Atenção: Itens com estoque final negativo estão marcados como{' '}
@@ -2338,6 +3020,148 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
       {/* ========================================================================= */}
       {/* ETAPA 5: RELATÓRIO OFICIAL E CONFIRMAÇÃO */}
       {/* ========================================================================= */}
+      {etapa === 5 && resultVenda && (
+        <div className="space-y-6">
+          <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
+            <CardHeader className="text-center pb-2">
+              <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <CardTitle className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
+                Venda de Gado Aplicada com Sucesso!
+              </CardTitle>
+              <CardDescription>
+                O Robô Chicão atualizou Rebanho (saídas), Movimentações de Rebanho, Financeiro
+                (receita por centro de custo), Vendas de Gado do Fechamento e gerou o comprovante
+                oficial com protocolo de auditoria. Margem real por lote calculada contra o custo de
+                @ da compra de origem.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Linhas Processadas</span>
+                  <span className="text-2xl font-bold">{resultVenda.totalLidos}</span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-rose-600 block">Saídas Aplicadas</span>
+                  <span className="text-2xl font-bold text-rose-700">
+                    {resultVenda.atualizados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Ignorados</span>
+                  <span className="text-2xl font-bold text-muted-foreground">
+                    {resultVenda.ignorados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-blue-600 block">Receita Total</span>
+                  <span className="text-2xl font-bold text-blue-700">
+                    R${' '}
+                    {conferenciaVenda?.resumo.receitaTotalRs.toLocaleString('pt-BR', {
+                      minimumFractionDigits: 2,
+                    }) ?? '—'}
+                  </span>
+                </div>
+              </div>
+
+              {conferenciaVenda && (
+                <div className="p-4 bg-rose-50/50 dark:bg-rose-950/10 border border-rose-500/30 rounded-lg space-y-1.5 text-xs">
+                  <span className="font-semibold text-rose-900 dark:text-rose-200 flex items-center gap-1.5">
+                    <Scale className="h-4 w-4" /> Estoque de Gado em R$ após a venda
+                  </span>
+                  <p className="text-muted-foreground">
+                    Arrobas vendidas:{' '}
+                    <strong>{conferenciaVenda.resumo.arrobasTotais.toFixed(2)} @</strong> × preço de
+                    venda <strong>R$ {conferenciaVenda.resumo.precoMedioRsAt.toFixed(2)}/@</strong>{' '}
+                    ={' '}
+                    <strong className="text-rose-800 dark:text-rose-300">
+                      R${' '}
+                      {(
+                        conferenciaVenda.resumo.arrobasTotais *
+                        conferenciaVenda.resumo.precoMedioRsAt
+                      ).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </strong>{' '}
+                    saíram do valuation do estoque de gado usado no fechamento. Margem real:{' '}
+                    <strong
+                      className={
+                        conferenciaVenda.resumo.margemTotalRs === null
+                          ? ''
+                          : conferenciaVenda.resumo.margemTotalRs >= 0
+                            ? 'text-emerald-700'
+                            : 'text-red-700'
+                      }
+                    >
+                      {conferenciaVenda.resumo.margemTotalRs === null
+                        ? 's/ custo de origem'
+                        : `R$ ${conferenciaVenda.resumo.margemTotalRs.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (${conferenciaVenda.resumo.margemPct !== null ? `${conferenciaVenda.resumo.margemPct > 0 ? '+' : ''}${conferenciaVenda.resumo.margemPct.toFixed(1)}%` : 's/ %'})`}
+                    </strong>
+                    .
+                  </p>
+                </div>
+              )}
+
+              <div className="p-4 bg-muted/40 border rounded-lg space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+                    <Info className="h-4 w-4 text-primary" /> Protocolo de Auditoria (Append-Only):
+                  </span>
+                  <code className="bg-background px-2 py-0.5 rounded border font-mono">
+                    {resultVenda.protocoloAuditId || 'REGISTRADO_NA_TRILHA'}
+                  </code>
+                </div>
+                <p className="text-muted-foreground">
+                  Módulos afetados:{' '}
+                  <strong>
+                    {resultVenda.entidadesAfetadas.join(', ') || 'Rebanho & Financeiro'}
+                  </strong>
+                  .{' '}
+                  {resultVenda.detalhesIgnorados.length > 0 && (
+                    <>
+                      Motivos das linhas ignoradas:{' '}
+                      {resultVenda.detalhesIgnorados
+                        .map((d) => `L${d.linha}: ${d.motivo}`)
+                        .join('; ')}
+                      .
+                    </>
+                  )}{' '}
+                  Comprador, documento de origem, responsável e timestamps (dispositivo + servidor)
+                  gravados na trilha e não podem ser apagados.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Button
+                  onClick={() =>
+                    gerarRelatorioVendaGadoPDF(
+                      resultVenda,
+                      { nome: file?.name || 'documento', formato: 'venda de gado' },
+                      conferenciaVenda?.linhas || [],
+                      user.name || 'Gestor',
+                      conferenciaVenda?.cotacao || null,
+                    )
+                  }
+                  className="gap-2 bg-emerald-700 hover:bg-emerald-800 font-semibold"
+                >
+                  <FileDown className="h-4 w-4" /> Baixar Relatório de Venda (PDF)
+                </Button>
+
+                <Button variant="outline" onClick={exportarPlanilhaConferencia} className="gap-2">
+                  <FileSpreadsheet className="h-4 w-4 text-blue-600" /> Exportar Planilha de
+                  Resultado
+                </Button>
+
+                <Button variant="secondary" onClick={reiniciarFluxo} className="gap-2">
+                  <RotateCcw className="h-4 w-4" /> Importar Outro Documento
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {etapa === 5 && resultadoCompra && (
         <div className="space-y-6">
           <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
@@ -2349,7 +3173,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                 Compra de Gado Aplicada com Sucesso!
               </CardTitle>
               <CardDescription>
-                O Robô Maestro atualizou Rebanho, Movimentações de Rebanho, Financeiro (centro de
+                O Robô Chicão atualizou Rebanho, Movimentações de Rebanho, Financeiro (centro de
                 custo da frente), Compras de Gado do Fechamento e gerou o comprovante oficial com
                 protocolo de auditoria.
               </CardDescription>
@@ -2464,7 +3288,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         </div>
       )}
 
-      {etapa === 5 && !isCompraGado && resultadoAplicacao && (
+      {etapa === 5 && !isCompraGado && !isVendaGado && resultadoAplicacao && (
         <div className="space-y-6">
           <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
             <CardHeader className="text-center pb-2">
@@ -2475,7 +3299,7 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                 Importação Concluída com Sucesso!
               </CardTitle>
               <CardDescription>
-                O Robô Maestro atualizou as bases de dados e gerou o comprovante oficial com
+                O Robô Chicão atualizou as bases de dados e gerou o comprovante oficial com
                 protocolo de auditoria.
               </CardDescription>
             </CardHeader>
