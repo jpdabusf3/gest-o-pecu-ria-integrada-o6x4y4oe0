@@ -723,6 +723,109 @@ export async function aplicarDocumentosFiscaisConfirmados(
           const qtdEntrada = item.quantidade || 0
           const precoUnit = item.valor_unitario || item.valor_total / (qtdEntrada || 1)
 
+          // Classificação dinâmica do insumo pelo nome do produto
+          const nomeLower = nomeProd
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+
+          let tipoClassificado = 'Suplemento'
+          let categoriaPb: 'nutricao' | 'sanidade' | 'combustivel' | 'semen' | 'geral' = 'nutricao'
+          let codigoPrefixo = 'N'
+
+          // Palavras-chave de Matérias-Primas (grãos, farelos, volumosos)
+          if (
+            nomeLower.includes('milho') ||
+            nomeLower.includes('soja') ||
+            nomeLower.includes('farelo') ||
+            nomeLower.includes('bagaco') ||
+            nomeLower.includes('silagem') ||
+            nomeLower.includes('polpa') ||
+            nomeLower.includes('caroco') ||
+            nomeLower.includes('ddg') ||
+            nomeLower.includes('sorgo') ||
+            nomeLower.includes('trigo') ||
+            nomeLower.includes('materia prima') ||
+            nomeLower.includes('ingrediente')
+          ) {
+            tipoClassificado = 'Materia Prima'
+            categoriaPb = 'nutricao'
+            codigoPrefixo = 'M'
+          }
+          // Farmácia e Saúde Animal
+          else if (
+            nomeLower.includes('vacina') ||
+            nomeLower.includes('vermifugo') ||
+            nomeLower.includes('antibiotico') ||
+            nomeLower.includes('anti-inflamatorio') ||
+            nomeLower.includes('medicamento') ||
+            nomeLower.includes('biologico') ||
+            nomeLower.includes('parasiticida') ||
+            nomeLower.includes('antiparasitario') ||
+            nomeLower.includes('ivermectina') ||
+            nomeLower.includes('soro') ||
+            nomeLower.includes('farmacia')
+          ) {
+            tipoClassificado = 'Biológico'
+            categoriaPb = 'sanidade'
+            codigoPrefixo = 'F'
+          }
+          // Reprodução
+          else if (
+            nomeLower.includes('semen') ||
+            nomeLower.includes('hormonio') ||
+            nomeLower.includes('iatf') ||
+            nomeLower.includes('progesterona') ||
+            nomeLower.includes('gonadotrofina') ||
+            nomeLower.includes('farmaco reprodutivo')
+          ) {
+            tipoClassificado = 'Sêmen'
+            categoriaPb = 'semen'
+            codigoPrefixo = 'R'
+          }
+          // Almoxarifado / Cerca / Ferramentas / Geral
+          else if (
+            nomeLower.includes('arame') ||
+            nomeLower.includes('cerca') ||
+            nomeLower.includes('lasca') ||
+            nomeLower.includes('mouro') ||
+            nomeLower.includes('ferramenta') ||
+            nomeLower.includes('combustivel') ||
+            nomeLower.includes('diesel') ||
+            nomeLower.includes('almoxarifado') ||
+            nomeLower.includes('peca') ||
+            nomeLower.includes('oleo')
+          ) {
+            tipoClassificado = 'Material Cerca'
+            categoriaPb =
+              nomeLower.includes('diesel') || nomeLower.includes('combustivel')
+                ? 'combustivel'
+                : 'geral'
+            codigoPrefixo = 'A'
+          }
+          // Suplementos, concentrados, núcleos, ração, sal mineral, ureia
+          else if (
+            nomeLower.includes('nucleo') ||
+            nomeLower.includes('suplemento') ||
+            nomeLower.includes('concentrado') ||
+            nomeLower.includes('racao') ||
+            nomeLower.includes('sal') ||
+            nomeLower.includes('ureia') ||
+            nomeLower.includes('mineral') ||
+            nomeLower.includes('proteico') ||
+            nomeLower.includes('proteinado') ||
+            nomeLower.includes('adensado')
+          ) {
+            tipoClassificado = 'Suplemento'
+            categoriaPb = 'nutricao'
+            codigoPrefixo = 'N'
+          } else {
+            // Fallback seguro: nutrição / Suplemento para compras do robô
+            tipoClassificado = 'Suplemento'
+            categoriaPb = 'nutricao'
+            codigoPrefixo = 'N'
+          }
+
           // Match no estoque existente
           const match = estoqueExistente.find(
             (e) =>
@@ -745,9 +848,9 @@ export async function aplicarDocumentosFiscaisConfirmados(
           } else {
             const novoItem = await salvarItemEstoque({
               produto: nomeProd,
-              codigo: `INS-${Date.now().toString().slice(-4)}`,
+              codigo: `${codigoPrefixo}-${Date.now().toString().slice(-4)}`,
               unidade: item.unidade || 'kg',
-              categoria: 'nutricao',
+              categoria: categoriaPb,
               estoque_inicial: 0,
               entradas: qtdEntrada,
               saidas: 0,

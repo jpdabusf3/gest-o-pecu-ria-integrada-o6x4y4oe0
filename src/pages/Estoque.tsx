@@ -24,7 +24,7 @@ import {
   PackageX,
   Factory,
 } from 'lucide-react'
-import { useFarm } from '@/contexts/FarmContext'
+import { useFarm, type InventoryItem } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
 import { RegisterPurchaseModal } from '@/components/forms/RegisterPurchaseModal'
 import { RegisterConsumptionModal } from '@/components/forms/RegisterConsumptionModal'
@@ -75,21 +75,122 @@ export default function Estoque() {
 
   const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd)
 
-  const nutricaoItems = inventory.filter(
-    (i) => ['Suplemento', 'Concentrado'].includes(i.tipo) || i.id.startsWith('N'),
-  )
-  const farmaciaItems = inventory.filter(
-    (i) => ['Biológico', 'Antiparasitário'].includes(i.tipo) || i.id.startsWith('F'),
-  )
-  const almoxarifadoItems = inventory.filter(
-    (i) => i.tipo === 'Material Cerca' || i.id.startsWith('A'),
-  )
-  const materiaPrimaItems = inventory.filter(
-    (i) => i.tipo === 'Materia Prima' || i.id.startsWith('M'),
-  )
-  const reproducaoItems = inventory.filter(
-    (i) => ['Sêmen', 'Hormônio'].includes(i.tipo) || i.id.startsWith('R-'),
-  )
+  // Normalizador dinâmico de strings (case-insensitive, sem acento)
+  const normalizar = (txt?: string) =>
+    (txt || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+
+  // 1. Matérias-Primas (grãos, farelos, bagaço, silagem, soja, milho)
+  const isMateriaPrima = (i: InventoryItem) => {
+    const t = normalizar(i.tipo)
+    const nome = normalizar(i.item)
+    const id = normalizar(i.id)
+    return (
+      t.includes('materia prima') ||
+      t.includes('ingrediente') ||
+      id.startsWith('m') ||
+      nome.includes('milho') ||
+      nome.includes('soja') ||
+      nome.includes('farelo') ||
+      nome.includes('bagaco') ||
+      nome.includes('silagem') ||
+      nome.includes('polpa') ||
+      nome.includes('ddg') ||
+      nome.includes('sorgo')
+    )
+  }
+
+  // 2. Nutrição / Suplementação (núcleos, suplementos, concentrados, ração, sal, ureia)
+  const isNutricao = (i: InventoryItem) => {
+    if (isMateriaPrima(i)) return false
+    const t = normalizar(i.tipo)
+    const nome = normalizar(i.item)
+    const id = normalizar(i.id)
+    return (
+      t.includes('suplemento') ||
+      t.includes('concentrado') ||
+      t.includes('nutricao') ||
+      t.includes('racao') ||
+      t.includes('insumo') ||
+      id.startsWith('n') ||
+      id.startsWith('ins-') ||
+      nome.includes('nucleo') ||
+      nome.includes('suplemento') ||
+      nome.includes('concentrado') ||
+      nome.includes('racao') ||
+      nome.includes('sal') ||
+      nome.includes('ureia') ||
+      nome.includes('proteinado') ||
+      nome.includes('mineral')
+    )
+  }
+
+  // 3. Farmácia e Saúde Animal
+  const isFarmacia = (i: InventoryItem) => {
+    const t = normalizar(i.tipo)
+    const nome = normalizar(i.item)
+    const id = normalizar(i.id)
+    return (
+      t.includes('biologico') ||
+      t.includes('antiparasitario') ||
+      t.includes('farmacia') ||
+      t.includes('sanidade') ||
+      t.includes('medicamento') ||
+      id.startsWith('f') ||
+      nome.includes('vacina') ||
+      nome.includes('vermifugo') ||
+      nome.includes('antibiotico') ||
+      nome.includes('anti-inflamatorio') ||
+      nome.includes('parasiticida') ||
+      nome.includes('soro')
+    )
+  }
+
+  // 4. Reprodução (Sêmen, Hormônios, Fármacos Reprodutivos)
+  const isReproducao = (i: InventoryItem) => {
+    const t = normalizar(i.tipo)
+    const nome = normalizar(i.item)
+    const id = normalizar(i.id)
+    return (
+      t.includes('semen') ||
+      t.includes('hormonio') ||
+      t.includes('reproducao') ||
+      t.includes('reprodutivo') ||
+      id.startsWith('r') ||
+      nome.includes('semen') ||
+      nome.includes('hormonio') ||
+      nome.includes('iatf') ||
+      nome.includes('progesterona')
+    )
+  }
+
+  const materiaPrimaItems = inventory.filter((i) => isMateriaPrima(i))
+  const nutricaoItems = inventory.filter((i) => isNutricao(i))
+  const farmaciaItems = inventory.filter((i) => isFarmacia(i))
+  const reproducaoItems = inventory.filter((i) => isReproducao(i))
+
+  // 5. Almoxarifado / Geral — inclui materiais de cerca, combustíveis, peças E FALLBACK SEGURO para qualquer item não categorizado
+  const almoxarifadoItems = inventory.filter((i) => {
+    const t = normalizar(i.tipo)
+    const id = normalizar(i.id)
+    const nome = normalizar(i.item)
+    const ehCercaAlmox =
+      t.includes('cerca') ||
+      t.includes('almoxarifado') ||
+      t.includes('combustivel') ||
+      t.includes('geral') ||
+      id.startsWith('a') ||
+      nome.includes('arame') ||
+      nome.includes('diesel') ||
+      nome.includes('oleo')
+
+    // Fallback seguro: se não caiu em nenhuma outra categoria conhecida, NUNCA fica invisível
+    const caiuEmOutra = isMateriaPrima(i) || isNutricao(i) || isFarmacia(i) || isReproducao(i)
+    return ehCercaAlmox || !caiuEmOutra
+  })
 
   const forecastedItems = useMemo(() => {
     return inventory

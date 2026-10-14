@@ -101,9 +101,14 @@ export default function Fechamento() {
   }, [searchParams, abaAtiva])
 
   // Filtros
-  const anoBase = new Date().getFullYear()
+  const dataHoje = new Date()
+  const anoAtualNum = dataHoje.getFullYear()
+  const mesAtualNum = dataHoje.getMonth() + 1
+  const periodoPadraoMes = `${anoAtualNum}-${String(mesAtualNum).padStart(2, '0')}`
+
+  const anoBase = anoAtualNum
   const [frente, setFrente] = useState<FrenteFechamento>('recria')
-  const [periodo, setPeriodo] = useState<string>('2024-03')
+  const [periodo, setPeriodo] = useState<string>(periodoPadraoMes)
   const [tipoPeriodo, setTipoPeriodo] = useState<TipoPeriodo>('mes')
   const [cotacaoArroba, setCotacaoArroba] = useState<number>(COTACAO_PADRAO_ARROBA)
 
@@ -167,6 +172,15 @@ export default function Fechamento() {
 
   useEffect(() => {
     carregarDadosReais()
+
+    // Ouve evento global de importação concluída no robô Chicão
+    const handleDadosAtualizados = () => {
+      carregarDadosReais()
+    }
+    window.addEventListener('gpi:dados-atualizados', handleDadosAtualizados)
+    return () => {
+      window.removeEventListener('gpi:dados-atualizados', handleDadosAtualizados)
+    }
   }, [])
 
   // Calcular Fechamento com dados reais (declarado antes dos effects que o usam)
@@ -356,7 +370,25 @@ export default function Fechamento() {
             <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Tipo de Período
             </Label>
-            <Select value={tipoPeriodo} onValueChange={(val: any) => setTipoPeriodo(val)}>
+            <Select
+              value={tipoPeriodo}
+              onValueChange={(val: any) => {
+                setTipoPeriodo(val)
+                // Ajusta o valor padrão de `periodo` para o formato correspondente ao tipo
+                if (val === 'mes') {
+                  setPeriodo(periodoPadraoMes)
+                } else if (val === 'trimestre') {
+                  const tAtual = Math.ceil(mesAtualNum / 3)
+                  setPeriodo(`${anoAtualNum}-T${tAtual}`)
+                } else if (val === 'ano') {
+                  setPeriodo(String(anoAtualNum))
+                } else if (val === 'safra') {
+                  setPeriodo(
+                    `safra-${String(anoAtualNum - 1).slice(-2)}-${String(anoAtualNum).slice(-2)}`,
+                  )
+                }
+              }}
+            >
               <SelectTrigger className="h-10 bg-background">
                 <SelectValue />
               </SelectTrigger>
@@ -373,19 +405,104 @@ export default function Fechamento() {
             <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Competência / Safra
             </Label>
-            <Select value={periodo} onValueChange={setPeriodo}>
-              <SelectTrigger className="h-10 bg-background font-mono">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2024-03">Março / 2024</SelectItem>
-                <SelectItem value="2024-02">Fevereiro / 2024</SelectItem>
-                <SelectItem value="2024-01">Janeiro / 2024</SelectItem>
-                <SelectItem value="2024-T1">1º Trimestre (Jan-Mar 2024)</SelectItem>
-                <SelectItem value="2024">Ano 2024</SelectItem>
-                <SelectItem value="safra-23-24">Safra 2023/2024</SelectItem>
-              </SelectContent>
-            </Select>
+            {(() => {
+              // Geração DINÂMICA de opções de período com base nas datas reais existentes e data atual
+              const anosSet = new Set<number>([anoAtualNum, anoAtualNum - 1, 2024])
+              movimentacoes.forEach((m) => {
+                if (m.data) anosSet.add(new Date(m.data).getUTCFullYear())
+              })
+              vendas.forEach((v) => {
+                if (v.data) anosSet.add(new Date(v.data).getUTCFullYear())
+              })
+              compras.forEach((c) => {
+                if (c.data) anosSet.add(new Date(c.data).getUTCFullYear())
+              })
+              financeiro.forEach((f) => {
+                if (f.data) anosSet.add(new Date(f.data).getUTCFullYear())
+              })
+
+              const anosOrdenados = Array.from(anosSet)
+                .filter((a) => !isNaN(a) && a > 2000)
+                .sort((a, b) => b - a)
+
+              const mesesNomesCompletos = [
+                'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro',
+              ]
+
+              return (
+                <Select value={periodo} onValueChange={setPeriodo}>
+                  <SelectTrigger className="h-10 bg-background font-mono">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-72">
+                    {tipoPeriodo === 'mes' && (
+                      <>
+                        {anosOrdenados.flatMap((ano) =>
+                          Array.from({ length: 12 }, (_, i) => 12 - i).map((m) => {
+                            const val = `${ano}-${String(m).padStart(2, '0')}`
+                            return (
+                              <SelectItem key={val} value={val}>
+                                {mesesNomesCompletos[m - 1]} / {ano}
+                              </SelectItem>
+                            )
+                          }),
+                        )}
+                      </>
+                    )}
+                    {tipoPeriodo === 'trimestre' && (
+                      <>
+                        {anosOrdenados.flatMap((ano) => [
+                          <SelectItem key={`${ano}-T4`} value={`${ano}-T4`}>
+                            4º Trimestre (Out-Dez {ano})
+                          </SelectItem>,
+                          <SelectItem key={`${ano}-T3`} value={`${ano}-T3`}>
+                            3º Trimestre (Jul-Set {ano})
+                          </SelectItem>,
+                          <SelectItem key={`${ano}-T2`} value={`${ano}-T2`}>
+                            2º Trimestre (Abr-Jun {ano})
+                          </SelectItem>,
+                          <SelectItem key={`${ano}-T1`} value={`${ano}-T1`}>
+                            1º Trimestre (Jan-Mar {ano})
+                          </SelectItem>,
+                        ])}
+                      </>
+                    )}
+                    {tipoPeriodo === 'ano' && (
+                      <>
+                        {anosOrdenados.map((ano) => (
+                          <SelectItem key={String(ano)} value={String(ano)}>
+                            Ano {ano}
+                          </SelectItem>
+                        ))}
+                      </>
+                    )}
+                    {tipoPeriodo === 'safra' && (
+                      <>
+                        {anosOrdenados.map((ano) => {
+                          const safraKey = `safra-${String(ano - 1).slice(-2)}-${String(ano).slice(-2)}`
+                          return (
+                            <SelectItem key={safraKey} value={safraKey}>
+                              Safra {ano - 1}/{ano}
+                            </SelectItem>
+                          )
+                        })}
+                      </>
+                    )}
+                  </SelectContent>
+                </Select>
+              )
+            })()}
           </div>
 
           <div className="space-y-1.5">

@@ -571,9 +571,15 @@ export function calcularFechamento(params: {
   const vendasFiltradas = vendas.filter((v) => matchFrente(v.frente) && matchData(v.data))
   const comprasFiltradas = compras.filter((c) => matchFrente(c.frente) && matchData(c.data))
   const finFiltrados = financeiro.filter((f) => {
-    if (frente === 'todas') return matchData(f.data)
-    // mapear centros de custo para frentes
-    return f.centro_custo === frente && matchData(f.data)
+    if (!matchData(f.data)) return false
+    if (frente === 'todas') return true
+    // Centros comuns ou da própria frente:
+    // 'fabrica_suplemento', 'frota' e 'administrativo' rateiam ou pertencem ao custeio produtivo das frentes
+    // Na frente selecionada, os custos específicos da frente entram, e despesas da fábrica de suplemento
+    // integram a nutrição da frente (recria, engorda, confinamento, cria).
+    if (f.centro_custo === frente) return true
+    if (f.centro_custo === 'fabrica_suplemento') return true
+    return false
   })
 
   // Determinar área correspondente
@@ -587,12 +593,63 @@ export function calcularFechamento(params: {
   // -------------------------------------------------------------
   // 1. DINÂMICA MENSAL DO REBANHO
   // -------------------------------------------------------------
-  // Agrupar movimentações por mês para gerar tabela histórica mês a mês
-  const mesesChave = ['2024-01', '2024-02', '2024-03']
-  const mesesNomes: Record<string, string> = {
-    '2024-01': 'Jan/24',
-    '2024-02': 'Fev/24',
-    '2024-03': 'Mar/24',
+  // Agrupar movimentações por mês de forma dinâmica a partir das datas reais existentes
+  const mesesSet = new Set<string>()
+
+  // Extrai meses das movimentações, vendas, compras e lançamentos
+  movimentacoes.forEach((m) => {
+    if (m.data) mesesSet.add(m.data.slice(0, 7))
+  })
+  vendas.forEach((v) => {
+    if (v.data) mesesSet.add(v.data.slice(0, 7))
+  })
+  compras.forEach((c) => {
+    if (c.data) mesesSet.add(c.data.slice(0, 7))
+  })
+  financeiro.forEach((f) => {
+    if (f.data) mesesSet.add(f.data.slice(0, 7))
+  })
+
+  // Se o período selecionado for mensal ou trimestral ou anual, inclui
+  if (periodo && periodo.length === 7 && periodo.includes('-')) {
+    mesesSet.add(periodo)
+  }
+
+  // Garante ao menos os últimos 3 meses da data atual caso banco esteja vazio
+  const agora = new Date()
+  for (let offset = 2; offset >= 0; offset--) {
+    const d = new Date(agora.getFullYear(), agora.getMonth() - offset, 1)
+    const mStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    mesesSet.add(mStr)
+  }
+
+  // Ordena cronologicamente e filtra pelo período se aplicável
+  const mesesOrdenados = Array.from(mesesSet).sort()
+  const mesesChave = mesesOrdenados
+    .filter((chave) => {
+      if (tipoPeriodo === 'mes') {
+        return chave === periodo
+      }
+      if (tipoPeriodo === 'trimestre') {
+        const [y, m] = chave.split('-').map(Number)
+        const trim = Math.ceil(m / 3)
+        return `${y}-T${trim}` === periodo
+      }
+      if (tipoPeriodo === 'ano') {
+        return chave.startsWith(periodo)
+      }
+      // Safra ou visão ampla: exibe os últimos 6 meses existentes
+      return true
+    })
+    .slice(-12) // limita aos 12 meses mais recentes da consulta
+
+  const formatarMesLabel = (chave: string) => {
+    const [ano, mes] = chave.split('-').map(Number)
+    if (!ano || !mes) return chave
+    const date = new Date(ano, mes - 1, 1)
+    const nomeMes = date.toLocaleDateString('pt-BR', { month: 'short' })
+    const ano2 = String(ano).slice(-2)
+    return `${nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1)}/${ano2}`
   }
 
   let estoqueCorrenteCab = 390 // Base real inicial total da fazenda
@@ -662,7 +719,7 @@ export function calcularFechamento(params: {
     const valorEstoqueFinalRs = Number((estoqueFinalAt * cotacaoArroba).toFixed(2))
 
     dinamicaMensal.push({
-      mesAno: mesesNomes[chave] || chave,
+      mesAno: formatarMesLabel(chave),
       chaveMes: chave,
       frente: frente,
       sexo: 'Misto',

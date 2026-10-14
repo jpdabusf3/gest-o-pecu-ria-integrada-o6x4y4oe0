@@ -45,16 +45,84 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
     try {
       const items = await getEstoqueInsumos()
       if (items && items.length > 0) {
-        const mapped: InventoryItem[] = items.map((i) => ({
-          id: i.codigo || i.id,
-          item: i.produto,
-          tipo: i.categoria || 'Geral',
-          qtd: i.estoque_final,
-          minQtd: 50,
-          unidade: i.unidade,
-          status: i.estoque_final <= 50 ? 'Baixo' : 'Normal',
-          custoUnitario: i.preco_unitario,
-        }))
+        const mapped: InventoryItem[] = items.map((i) => {
+          const nomeLower = (i.produto || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+          const catLower = (i.categoria || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+
+          // Derivação dinâmica do tipo de item para compatibilidade total com as abas de estoque
+          let tipoDerivado = 'Almoxarifado'
+
+          if (
+            nomeLower.includes('milho') ||
+            nomeLower.includes('soja') ||
+            nomeLower.includes('farelo') ||
+            nomeLower.includes('bagaco') ||
+            nomeLower.includes('silagem') ||
+            nomeLower.includes('polpa') ||
+            nomeLower.includes('ddg') ||
+            nomeLower.includes('sorgo') ||
+            nomeLower.includes('materia prima')
+          ) {
+            tipoDerivado = 'Materia Prima'
+          } else if (
+            catLower === 'sanidade' ||
+            catLower.includes('farmacia') ||
+            nomeLower.includes('vacina') ||
+            nomeLower.includes('vermifugo') ||
+            nomeLower.includes('antibiotico') ||
+            nomeLower.includes('medicamento') ||
+            nomeLower.includes('biologico') ||
+            nomeLower.includes('antiparasitario')
+          ) {
+            tipoDerivado = 'Biológico'
+          } else if (
+            catLower === 'semen' ||
+            nomeLower.includes('semen') ||
+            nomeLower.includes('hormonio') ||
+            nomeLower.includes('iatf')
+          ) {
+            tipoDerivado = 'Sêmen'
+          } else if (
+            catLower === 'nutricao' ||
+            catLower.includes('suplemento') ||
+            nomeLower.includes('nucleo') ||
+            nomeLower.includes('suplemento') ||
+            nomeLower.includes('concentrado') ||
+            nomeLower.includes('racao') ||
+            nomeLower.includes('sal') ||
+            nomeLower.includes('ureia') ||
+            nomeLower.includes('mineral')
+          ) {
+            tipoDerivado = 'Suplemento'
+          } else if (
+            catLower === 'combustivel' ||
+            nomeLower.includes('diesel') ||
+            nomeLower.includes('gasolina') ||
+            nomeLower.includes('cerca') ||
+            nomeLower.includes('arame')
+          ) {
+            tipoDerivado = 'Material Cerca'
+          } else if (i.categoria) {
+            tipoDerivado = i.categoria
+          }
+
+          return {
+            id: i.codigo || i.id,
+            item: i.produto,
+            tipo: tipoDerivado,
+            qtd: i.estoque_final,
+            minQtd: 50,
+            unidade: i.unidade,
+            status: i.estoque_final <= 50 ? 'Baixo' : 'Normal',
+            custoUnitario: i.preco_unitario,
+          }
+        })
         setInventory(mapped)
       }
     } catch (e) {

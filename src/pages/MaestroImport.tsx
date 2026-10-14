@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useFarm } from '@/contexts/FarmContext'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -145,6 +146,7 @@ function detectarFrenteSugerida(pastoTexto: string): FrenteCompra {
 
 export default function MaestroImport() {
   const { user, isGestor, isProprietario } = useAuth()
+  const { reloadInventory, reloadLots } = useFarm()
 
   // Etapa atual (1 a 5)
   const [etapa, setEtapa] = useState<1 | 2 | 3 | 4 | 5>(1)
@@ -730,20 +732,39 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         setResultadoAplicacaoFiscal(resFiscal)
         toast.dismiss('aplicando-toast')
 
-        if (resFiscal.total_aplicados > 0 && resFiscal.total_ignorados === 0) {
-          toast.success(
-            `${resFiscal.total_aplicados} documento(s) aplicados no estoque, rebanho e financeiro com sucesso!`,
-          )
-        } else if (resFiscal.total_aplicados > 0 && resFiscal.total_ignorados > 0) {
-          toast.warning(
-            `Aplicação parcial: ${resFiscal.total_aplicados} aplicado(s) e ${resFiscal.total_ignorados} ignorado(s)/com falha.`,
-            {
-              description:
-                resFiscal.mensagens.length > 0
-                  ? resFiscal.mensagens.slice(0, 3).join('; ')
-                  : undefined,
-            },
-          )
+        if (resFiscal.total_aplicados > 0) {
+          // Recarregar os contextos que alimentam as telas (Estoque, Rebanho, Financeiro)
+          try {
+            await Promise.allSettled([reloadInventory(), reloadLots()])
+            // Invalida caches do browser/localStorage de finanças ou fechamento caso existam
+            try {
+              localStorage.removeItem('GPI_FECHAMENTO_CACHE')
+              localStorage.removeItem('f3_fechamento_cache')
+              window.dispatchEvent(
+                new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'maestro_fiscal' } }),
+              )
+            } catch {
+              /* intentionally ignored */
+            }
+          } catch (eRel) {
+            console.warn('Aviso ao sincronizar contextos pós-importação fiscal:', eRel)
+          }
+
+          if (resFiscal.total_ignorados === 0) {
+            toast.success(
+              `${resFiscal.total_aplicados} documento(s) aplicados no estoque, rebanho e financeiro com sucesso! Telas atualizadas.`,
+            )
+          } else {
+            toast.warning(
+              `Aplicação parcial: ${resFiscal.total_aplicados} aplicado(s) e ${resFiscal.total_ignorados} ignorado(s)/com falha.`,
+              {
+                description:
+                  resFiscal.mensagens.length > 0
+                    ? resFiscal.mensagens.slice(0, 3).join('; ')
+                    : undefined,
+              },
+            )
+          }
         } else {
           toast.error('Nenhum documento foi aplicado.', {
             description:
@@ -802,6 +823,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
           file?.name,
           { id: user.id, nome: user.name },
         )
+      }
+
+      // Sincroniza contextos pós-aplicação geral
+      try {
+        await Promise.allSettled([reloadInventory(), reloadLots()])
+        window.dispatchEvent(
+          new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'maestro_geral' } }),
+        )
+      } catch (eRel) {
+        console.warn('Aviso ao recarregar contextos:', eRel)
       }
 
       setResultadoAplicacao(resultado)
@@ -956,6 +987,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         conferenciaVenda?.cotacao || null,
       )
 
+      // Sincroniza contextos pós-venda
+      try {
+        await Promise.allSettled([reloadInventory(), reloadLots()])
+        window.dispatchEvent(
+          new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'maestro_venda' } }),
+        )
+      } catch (eRel) {
+        console.warn('Aviso ao recarregar contextos pós-venda:', eRel)
+      }
+
       setResultVenda(resultado)
       toast.dismiss('aplicando-toast')
       toast.success('Venda de gado aplicada e registrada na auditoria (append-only)!')
@@ -1036,6 +1077,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         },
         conferenciaCompra?.cotacao || null,
       )
+
+      // Sincroniza contextos pós-compra
+      try {
+        await Promise.allSettled([reloadInventory(), reloadLots()])
+        window.dispatchEvent(
+          new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'maestro_compra' } }),
+        )
+      } catch (eRel) {
+        console.warn('Aviso ao recarregar contextos pós-compra:', eRel)
+      }
 
       setResultadoCompra(resultado)
       toast.dismiss('aplicando-toast')
