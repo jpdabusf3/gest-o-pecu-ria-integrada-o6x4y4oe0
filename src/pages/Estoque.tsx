@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Table,
@@ -22,6 +22,7 @@ import {
   ShieldPlus,
   ClipboardCheck,
   PackageX,
+  Factory,
 } from 'lucide-react'
 import { useFarm } from '@/contexts/FarmContext'
 import useFazendaStore from '@/stores/useFazendaStore'
@@ -33,6 +34,8 @@ import { ConciliacaoEstoqueTab } from '@/components/estoque/ConciliacaoEstoqueTa
 import { AlertaRupturaCard } from '@/components/estoque/AlertaRupturaCard'
 import { formatCurrency, formatNumber, formatWeight } from '@/lib/utils'
 import { useAuth } from '@/contexts/AuthContext'
+import { CardCustoSuplementoArroba } from '@/components/fechamento/CardCustoSuplementoArroba'
+import { getEstoqueInsumos, getLancamentosFinanceiros } from '@/services/fechamento'
 
 export default function Estoque() {
   const { inventory, removeInventoryItem } = useFarm()
@@ -47,6 +50,28 @@ export default function Estoque() {
     user?.role === 'admin' ||
     user?.role === 'gerente' ||
     (user?.role === 'socio' && true)
+
+  const [estoqueEstoqueInsumos, setEstoquesEstoqueInsumos] = useState<
+    Awaited<ReturnType<typeof getEstoqueInsumos>>
+  >([])
+  const [lancamentosFabrica, setLancamentosFabrica] = useState<
+    Awaited<ReturnType<typeof getLancamentosFinanceiros>>
+  >([])
+
+  useEffect(() => {
+    if (!isGestao) return
+    let ativo = true
+    Promise.all([getEstoqueInsumos(), getLancamentosFinanceiros()])
+      .then(([estoque, financeiro]) => {
+        if (!ativo) return
+        setEstoquesEstoqueInsumos(estoque)
+        setLancamentosFabrica(financeiro.filter((l) => l.centro_custo === 'fabrica_suplemento'))
+      })
+      .catch((e) => console.warn('Erro ao carregar base da Ficha de Custo:', e))
+    return () => {
+      ativo = false
+    }
+  }, [isGestao])
 
   const criticalItems = inventory.filter((i) => i.qtd <= i.minQtd)
 
@@ -214,6 +239,11 @@ export default function Estoque() {
           {isGestao && (
             <TabsTrigger value="ruptura" className="py-2 gap-2 text-primary">
               <PackageX className="h-4 w-4" /> Ruptura
+            </TabsTrigger>
+          )}
+          {isGestao && (
+            <TabsTrigger value="custos-ficha" className="py-2 gap-2 text-primary">
+              <Factory className="h-4 w-4" /> Ficha de Custo
             </TabsTrigger>
           )}
         </TabsList>
@@ -436,6 +466,32 @@ export default function Estoque() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {isGestao && (
+          <TabsContent value="custos-ficha" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Factory className="h-5 w-5 text-primary" /> Ficha de Custo do Suplemento
+                </CardTitle>
+                <CardDescription>
+                  Decomposição do custo por @ produzida em ingredientes (ração, núcleo, sal, milho,
+                  farelo, minerais etc.) — a partir do consumo de insumos de nutrição registrado no
+                  período. 1 @ = 30 kg · 1 saco = 30 kg.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <CardCustoSuplementoArroba
+                  estoque={estoqueEstoqueInsumos}
+                  financeiro={lancamentosFabrica}
+                  benchmarks={[]}
+                  arrobasProduzidasTotal={0}
+                  periodo={new Date().toISOString().slice(0, 7)}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   )

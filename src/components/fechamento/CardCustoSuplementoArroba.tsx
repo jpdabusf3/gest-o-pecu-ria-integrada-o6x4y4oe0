@@ -8,6 +8,11 @@ import {
   calcularCustoSuplementoPorArroba,
   CustoSuplementoArrobaResult,
 } from '@/services/custoSuplementoArroba'
+import {
+  montarFichaCustoSuplemento,
+  FichaCustoSuplementoResult,
+} from '@/services/fichaCustoSuplemento'
+import { FichaCustoSuplementoSection } from './FichaCustoSuplementoSection'
 import { EstoqueInsumoRecord, LancamentoFinanceiroRecord } from '@/services/fechamento'
 import { ConfigBenchmarkRecord } from '@/services/configBenchmark'
 
@@ -54,6 +59,23 @@ export function CardCustoSuplementoArroba({
       ativo = false
     }
   }, [estoque, financeiro, benchmarks, arrobasProduzidasTotal, kgGanhoAcumulado, anoSafra, periodo])
+
+  // Ficha de Custo do Suplemento: decomposição do custo por @ em ingredientes.
+  // Aditiva — não altera o cálculo do custo por @ já existente acima.
+  const ficha = useMemo<FichaCustoSuplementoResult | null>(() => {
+    try {
+      return montarFichaCustoSuplemento({
+        periodo: periodo || new Date().toISOString().slice(0, 7),
+        lancamentosFinanceiros: financeiro,
+        estoqueInsumos: estoque,
+        arrobasProduzidasTotal,
+        kgGanhoAcumulado,
+      })
+    } catch (e) {
+      console.warn('Erro ao montar ficha de custo do suplemento:', e)
+      return null
+    }
+  }, [estoque, financeiro, arrobasProduzidasTotal, kgGanhoAcumulado, periodo])
 
   const badgeStatus = useMemo(() => {
     if (!resultado) return null
@@ -155,6 +177,9 @@ export function CardCustoSuplementoArroba({
           </p>
         )}
 
+        {/* FICHA DE CUSTO DO SUPLEMENTO — decomposição por ingrediente (aditiva) */}
+        <FichaCustoSuplementoSection ficha={ficha} />
+
         {/* Base de Cálculo Transparente (padrão do card de Projeção de Safra) */}
         <Button
           variant="ghost"
@@ -231,6 +256,35 @@ export function CardCustoSuplementoArroba({
                       ))}
                     </tbody>
                   </table>
+                </div>
+              )}
+              {ficha && (
+                <div className="mt-2 space-y-1.5">
+                  <p className="text-muted-foreground text-[11px]">
+                    <strong>Decomposição (Ficha de Custo do Suplemento):</strong>{' '}
+                    {ficha.fonteComposicaoLabel}
+                    {ficha.disponivel
+                      ? ` — maior peso: ${ficha.maiorPeso?.produto} (${ficha.maiorPeso?.participacaoPct.toFixed(1)}% do custo).`
+                      : ' — sem consumo de insumos de nutrição registrado no período.'}
+                  </p>
+                  {ficha.disponivel && (
+                    <ul className="list-disc list-inside text-[11px] text-muted-foreground font-mono">
+                      {ficha.itens.map((it) => (
+                        <li key={it.produto}>
+                          {it.produto}: {it.quantidadeKg.toFixed(2)} kg · R$
+                          {it.custoTotalRs.toFixed(2)} ·{' '}
+                          {it.custoPorArroba !== null
+                            ? `R$ ${it.custoPorArroba.toFixed(2)}/@ · `
+                            : ''}
+                          {it.participacaoPct.toFixed(1)}%
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <p className="text-muted-foreground text-[11px] italic">
+                    Premissas: 1 @ = 30 kg · 1 saco = 30 kg · custo do ingrediente = consumo × preço
+                    unitário.
+                  </p>
                 </div>
               )}
             </div>
