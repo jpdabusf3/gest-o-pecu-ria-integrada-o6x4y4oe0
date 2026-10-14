@@ -43,6 +43,7 @@ import Fechamento from './pages/Fechamento'
 import Hedge from './pages/Hedge'
 import PdfStudio from './pages/PdfStudio'
 import MaestroImport from './pages/MaestroImport'
+import ComparativoFornecedores from './pages/ComparativoFornecedores'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -304,6 +305,14 @@ const App = () => (
                         element={
                           <RoleRoute allowedRoles={['gestor', 'proprietario', 'socio']}>
                             <MaestroImport />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/comparativo-fornecedores"
+                        element={
+                          <RoleRoute allowedRoles={['gestor', 'proprietario']}>
+                            <ComparativoFornecedores />
                           </RoleRoute>
                         }
                       />

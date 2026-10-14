@@ -376,6 +376,25 @@ export function AppSidebar() {
                     TOP Brasil
                   </Badge>
                 </Link>
+
+                {/* COMPARATIVO DE FORNECEDORES (ágio por fornecedor na safra) */}
+                <Link
+                  to="/comparativo-fornecedores"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive('/comparativo-fornecedores')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <Users className="h-4 w-4 text-amber-600" />
+                  <span className="flex-1">Comparativo de Fornecedores</span>
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] uppercase font-mono tracking-wider border-amber-500/30 text-amber-700 dark:text-amber-300"
+                  >
+                    Ágio
+                  </Badge>
+                </Link>
               </div>
             </div>
 

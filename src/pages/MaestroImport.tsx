@@ -53,6 +53,14 @@ import {
   baixarModeloCompraGadoXlsx,
   gerarExemploRapidoCompraGado,
   classificarAgioCompra,
+  ResultadoConferenciaCompra,
+  LinhaCompraNormalizada,
+  ResultadoAplicacaoCompra,
+  CotacaoReferencia,
+  FrenteCompra,
+  ColunaCompraMapping,
+} from '@/services/maestroCompraGado'
+import {
   reconhecerColunasVendaGado,
   isDocumentoVendaGado,
   compilarLinhasVendaGado,
@@ -65,12 +73,7 @@ import {
   LinhaVendaNormalizada,
   ResultadoAplicacaoVenda,
   FrenteVenda as FrenteVendaTipo,
-  ResultadoConferenciaCompra,
-  LinhaCompraNormalizada,
-  ResultadoAplicacaoCompra,
-  CotacaoReferencia,
-  FrenteCompra,
-} from '@/services/maestroCompraGado'
+} from '@/services/maestroVendaGado'
 import {
   extrairDocumentoMaestro,
   consultarAgenteMaestro,
@@ -90,7 +93,6 @@ import {
   MapeamentoSalvoRecord,
 } from '@/services/maestro'
 import { downloadCSV } from '@/lib/exportUtils'
-import type { ColunaCompraMapping } from '@/services/maestroCompraGado'
 type ColunaCompraMappingTipo = ColunaCompraMapping
 
 function filenameVendaGadoSignal(nome: string): boolean {
@@ -337,6 +339,15 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         toast.warning('Documento sem camada de texto legível. Verifique as orientações exibidas.')
         return
       }
+
+      // 2. Parsing estruturado: deriva headers/rows do arquivo lido
+      // CSV/TSV plano usa o parser de linhas; PDF/DOCX (tabela markdown) usa o parser de markdown
+      const ehCSVTexto = /\.(csv|tsv|txt)$/i.test(file.name)
+      const parsed = ehCSVTexto
+        ? parseCSVClientSide(extracao.markdown)
+        : parseMarkdownTable(extracao.markdown)
+      setHeadersIdentificados(parsed.headers)
+      setRawRows(parsed.rows as Record<string, any>[])
 
       // 2.b RECONHECIMENTO ESPECÍFICO: VENDA DE GADO (planilha/PDF/DOCX com tabela)
       const mapeamentoVenda = reconhecerColunasVendaGado(parsed.headers)

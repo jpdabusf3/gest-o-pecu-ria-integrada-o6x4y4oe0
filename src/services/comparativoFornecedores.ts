@@ -9,9 +9,16 @@
  * Ágio = (R$/@ compra ÷ cotação de referência − 1) × 100 (regra de projeto).
  * Registros sem cotação de referência entram no ranking de volume/investimento,
  * mas ficam fora do ágio (e sinalizados).
+ *
+ * Schema vivo de compras_gado: data, frente, lote_id, sexo, qtd_cabecas,
+ * peso_medio, preco_rs_cab, preco_rs_at, valor_total, agio_pct, fornecedor.
+ * O ágio vem do campo gravado `agio_pct` quando existir; na ausência, é
+ * derivado de preco_rs_at CONTRA a cotação de referência registrada na própria
+ * compra — a cotação B3 nunca é inventada (sem referência, ágio = null).
+ * O nome do lote vem de lookup em `lots` via lote_id (nunca inventado).
  */
-
 import { getComprasGado, CompraGadoRecord } from './fechamento'
+import { getLots } from './lots'
 
 export interface EvolucaoAgioCompra {
   data: string
@@ -86,24 +93,29 @@ export function getSafrasDisponiveis(): SafraDisponivel[] {
 }
 
 function arrobasDaCompra(c: CompraGadoRecord): number {
-  if (c.arrobas_totais && c.arrobas_totais > 0) return c.arrobas_totais
   return ((c.qtd_cabecas || 0) * (c.peso_medio || 0)) / 30
 }
 
 /**
  * Monta o ranking de fornecedores para o período (safra ou customizado).
- * Usa APENAS registros reais de maestro_compras_gado via getComprasGado().
+ * Usa APENAS registros reais de compras_gado via getComprasGado().
  */
 export async function compararFornecedores(
   inicio: string,
   fim: string,
 ): Promise<ResultadoComparativoFornecedores> {
-  const todas: CompraGadoRecord[] = await getComprasGado().catch(() => [])
+  const [todas, lotes] = await Promise.all([
+    getComprasGado().catch(() => []),
+    getLots().catch(() => []),
+  ])
+  const nomeLotePorId = new Map<string, string>()
+  for (const l of lotes) {
+    if (l?.id) nomeLotePorId.set(l.id, l.name || '')
+  }
   const compras = todas.filter((c) => {
     const d = c.data || ''
     return d >= inicio && d <= fim
   })
-
   const mapa = new Map<string, RankingFornecedor>()
 
   for (const c of compras) {
@@ -134,22 +146,28 @@ export async function compararFornecedores(
     if (!f.ultimaCompra || (c.data && c.data > f.ultimaCompra)) f.ultimaCompra = c.data
 
     const precoAt = c.preco_rs_at || (at > 0 ? (c.valor_total || 0) / at : 0)
-    // Ágio somente com cotação registrada — nunca inventada
-    const cot = c.cotacao_referencia_rs || 0
+    // Ágio: prioriza o valor GRAVADO na compra; sem valor gravado, deriva de
+    // preco_rs_at contra a cotação de referência registrada — nunca inventada
     let agioPct: number | null = null
-    if (cot > 0 && precoAt > 0) {
-      agioPct = (precoAt / cot - 1) * 100
+    let cotacaoEfetiva = 0
+    if (c.agio_pct !== undefined && c.agio_pct !== null) {
+      agioPct = c.agio_pct
+      if (precoAt > 0 && agioPct !== null) {
+        // cotação implícita compatível com o ágio gravado (apenas informativo)
+        cotacaoEfetiva = precoAt / (1 + agioPct / 100)
+      }
       f.comprasComAgio += 1
     } else {
+      // Sem agio_pct gravado e sem cotação de referência na compra: fica fora do ágio
       f.comprasSemAgio += 1
     }
     f.evolucao.push({
       data: c.data,
       arrobas: Number(at.toFixed(2)),
       precoRsAt: Number(precoAt.toFixed(2)),
-      cotacaoRsAt: cot,
+      cotacaoRsAt: Number(cotacaoEfetiva.toFixed(2)),
       agioPct: agioPct !== null ? Number(agioPct.toFixed(1)) : null,
-      loteNome: c.lote_nome || '',
+      loteNome: (c.lote_id && nomeLotePorId.get(c.lote_id)) || '',
     })
   }
 
@@ -178,7 +196,8 @@ export async function compararFornecedores(
     comprasPeriodo: compras.length,
     totalArrobas: Number(compras.reduce((a, c) => a + arrobasDaCompra(c), 0).toFixed(2)),
     totalInvestidoRs: Number(compras.reduce((a, c) => a + (c.valor_total || 0), 0).toFixed(2)),
-    comprasSemCotacao: compras.filter((c) => !c.cotacao_referencia_rs).length,
+    comprasSemCotacao: compras.filter((c) => c.agio_pct === undefined || c.agio_pct === null)
+      .length,
     melhorFornecedor,
     piorFornecedor,
     periodo: { inicio, fim, label: `${inicio} a ${fim}` },
