@@ -1,0 +1,62 @@
+{
+  "parto2526Count": 7208,
+  "caderno2425Count": 7774,
+  "rows2526Count": 756,
+  "rows2425Count": 827,
+  "sample2526_1": [
+    "1",
+    "NEL",
+    "4168",
+    "Nulípara",
+    "Gestante",
+    "REPASSE",
+    "01/10/2025",
+    "18/07/2026",
+    "2",
+    "NEL",
+    "4146",
+    "Nulípara"
+  ],
+  "sample2526_2": [
+    "2",
+    "NEL",
+    "4146",
+    "Nulípara",
+    "Gestante",
+    "REPASSE",
+    "01/10/2025",
+    "18/07/2026",
+    "3",
+    "NEL",
+    "4154",
+    "Nulípara"
+  ],
+  "sample2425_1": [
+    "1",
+    "NEL BRINCO",
+    "81",
+    "Primípara",
+    "Gestante",
+    "Heringer Missil    ",
+    "\\(FHGM A1981\\",
+    "08/10/2024",
+    "25/07/2025",
+    "2",
+    "NEL BRINCO",
+    "85"
+  ],
+  "sample2425_2": [
+    "2",
+    "NEL BRINCO",
+    "85",
+    "Primípara",
+    "Gestante",
+    "Heringer Missil    ",
+    "\\(FHGM A1981\\",
+    "08/10/2024",
+    "25/07/2025",
+    "3",
+    "NEL BRINCO",
+    "87"
+  ]
+}
