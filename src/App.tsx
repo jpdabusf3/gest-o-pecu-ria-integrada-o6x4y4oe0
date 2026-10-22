@@ -45,6 +45,7 @@ import PdfStudio from './pages/PdfStudio'
 import MaestroImport from './pages/MaestroImport'
 import ComparativoFornecedores from './pages/ComparativoFornecedores'
 import Rebanho from './pages/Rebanho'
+import Reproducao from './pages/Reproducao'
 import NotFound from './pages/NotFound'
 import { InstallPWA } from './components/InstallPWA'
 
@@ -323,6 +324,15 @@ const App = () => (
                         element={
                           <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <Rebanho />
+                          </RoleRoute>
+                        }
+                      />
+                      {/* Módulo Reprodutivo & Ingestão de Relatórios (gestor e proprietário) */}
+                      <Route
+                        path="/reproducao"
+                        element={
+                          <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
+                            <Reproducao />
                           </RoleRoute>
                         }
                       />{' '}

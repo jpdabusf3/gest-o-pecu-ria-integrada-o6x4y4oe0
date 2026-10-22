@@ -424,3 +424,123 @@ routerAdd('POST', '/backend/v1/maestro/process-fiscal', (e) => {
     return e.json(500, { error: err.message || 'Falha ao processar documentos fiscais e recibos' })
   }
 })
+
+/**
+ * 4. POST /backend/v1/maestro/process-reproducao
+ * Rota dedicada para extração de RELATÓRIOS REPRODUTIVOS (Diagnósticos de Gestação, IATF, Parição e Desmame em PDF/DOCX/imagens).
+ */
+routerAdd('POST', '/backend/v1/maestro/process-reproducao', (e) => {
+  const PROMPT_REPRODUCAO =
+    'Você é o módulo zootécnico especialista em Reprodução Bovina e Diagnóstico de Gestação do Robô Chicão do Gestão Pecuária Integrada. ' +
+    'Sua missão é analisar laudos veterinários em PDF, relatórios de IATF, fichas de toque/ultrassonografia e planilhas de parição/desmama.\n\n' +
+    'INSTRUÇÕES OBRIGATÓRIAS:\n' +
+    '1. DADOS DA ESTAÇÃO/SAFRA:\n' +
+    '   - Identifique ou sugira o nome da estação/safra (ex: "Estação 2024/2025", "IATF 1º Giro 2024").\n' +
+    '   - ano_safra no formato "AAAA/AAAA" (ex: "2024/2025") ou ano base.\n' +
+    '   - veterinario_responsavel e lote_ou_pasto se identificados no cabeçalho.\n' +
+    '2. EXTRAÇÃO POR ANIMAL (lista `animais`):\n' +
+    '   - brinco: identificador único da matriz (string limpa, ex: "BR-1020", "0452", "VACA-12"). OBRIGATÓRIO.\n' +
+    '   - resultado: "prenhe" | "vazia" | "perda_embrionaria" | "perda_fetal" | "duvidoso". OBRIGATÓRIO.\n' +
+    '   - dias_gestacao: número estimado de dias de gestação informado no laudo (se ausente, 0 ou null).\n' +
+    '   - terco_gestacao: "primeiro" (até 90d), "segundo" (91-180d), "terceiro" (>180d) ou deduzido dos dias.\n' +
+    '   - touro_ou_lote_iatf: touro utilizado, protocolo IATF ou lote de monta (se houver).\n' +
+    '   - tipo_manejo: "iatf" | "monta_natural" | "repasses" | "revisite".\n' +
+    '   - data_exame: data do toque/DG no formato AAAA-MM-DD. Se ausente no animal, herda a data geral do documento.\n' +
+    '   - data_parto: data de parição quando o documento for histórico de parição/desmama (AAAA-MM-DD).\n' +
+    '   - peso_bezerro_nascimento_kg: peso ao nascer em kg (se houver, padrão ~32-35kg).\n' +
+    '   - peso_bezerro_desmama_kg: peso do bezerro na desmama em kg (se houver).\n' +
+    '   - dias_ate_desmama: idade em dias do bezerro na desmama (padrão ~205 dias).\n' +
+    '   - lote_origem: lote da matriz no documento.\n' +
+    '3. CONFERÊNCIA DE STATUS POR CAMPO & CONFIANÇA:\n' +
+    '   - Para cada campo ("brinco", "resultado", "data_exame", "dias_gestacao"), defina status ("OK", "AUSENTE", "ILEGIVEL", "AMBIGUO") e confianca ("alta", "media", "baixa").\n' +
+    '   - Se o brinco estiver manchado ou ambíguo, aponte status "AMBIGUO" ou "ILEGIVEL".\n' +
+    '   - NUNCA invente brinco ou resultado de diagnóstico: aponte ausência com clareza.\n' +
+    '4. CONSOLIDAÇÃO PRELIMINAR:\n' +
+    '   - total_expostas: contagem total de matrizes avaliadas no laudo.\n' +
+    '   - total_prenhes: quantidade diagnosticadas prenhes.\n' +
+    '   - total_vazias: quantidade diagnosticadas vazias.\n' +
+    '   - taxa_prenhez_pct: (total_prenhes / total_expostas) * 100.\n' +
+    '   - alertas: lista de inconsistências encontradas (ex: mesmo brinco duplicado no laudo, dias de gestação incompatíveis, etc).\n\n' +
+    'Devolva EXCLUSIVAMENTE um objeto JSON válido no formato:\n' +
+    '{\n' +
+    '  "nome_estacao": "...",\n' +
+    '  "ano_safra": "2024/2025",\n' +
+    '  "data_padrao_exame": "AAAA-MM-DD",\n' +
+    '  "veterinario_responsavel": "...",\n' +
+    '  "lote_ou_pasto": "...",\n' +
+    '  "total_expostas": 0,\n' +
+    '  "total_prenhes": 0,\n' +
+    '  "total_vazias": 0,\n' +
+    '  "taxa_prenhez_pct": 0,\n' +
+    '  "animais": [\n' +
+    '    {\n' +
+    '      "id_temp": "dg_1",\n' +
+    '      "brinco": "...",\n' +
+    '      "resultado": "prenhe"|"vazia"|"perda_embrionaria"|"perda_fetal"|"duvidoso",\n' +
+    '      "dias_gestacao": 0,\n' +
+    '      "terco_gestacao": "primeiro"|"segundo"|"terceiro",\n' +
+    '      "touro_ou_lote_iatf": "...",\n' +
+    '      "tipo_manejo": "iatf"|"monta_natural"|"repasses",\n' +
+    '      "data_exame": "AAAA-MM-DD",\n' +
+    '      "data_parto": "AAAA-MM-DD",\n' +
+    '      "peso_bezerro_nascimento_kg": 0,\n' +
+    '      "peso_bezerro_desmama_kg": 0,\n' +
+    '      "dias_ate_desmama": 0,\n' +
+    '      "lote_origem": "...",\n' +
+    '      "campos_status": {\n' +
+    '        "brinco": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
+    '        "resultado": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
+    '        "data_exame": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" }\n' +
+    '      },\n' +
+    '      "alertas": []\n' +
+    '    }\n' +
+    '  ],\n' +
+    '  "alertas_gerais": []\n' +
+    '}'
+
+  try {
+    const body = e.requestInfo().body || {}
+    const content = body.content || ''
+    const filename = body.filename || 'relatorio_reprodutivo'
+    const origemLeitura = body.origem_leitura || 'texto'
+
+    if (!content.trim()) {
+      return e.json(400, { error: 'Conteúdo vazio para processamento de relatório reprodutivo' })
+    }
+
+    const promptUser =
+      `ARQUIVO: "${filename}"\n` +
+      `ORIGEM DA LEITURA: "${origemLeitura}"\n\n` +
+      `CONTEÚDO DO DOCUMENTO REPRODUTIVO / LAUDO DE GESTAÇÃO:\n` +
+      `\`\`\`\n${content.slice(0, 24000)}\n\`\`\`\n\n` +
+      `Estruture o relatório reprodutivo conforme as regras do Robô Chicão, gerando a lista de animais examinados, conferência de campo e consolidação da estação.`
+
+    const resposta = $ai.chat({
+      model: 'fast',
+      messages: [
+        { role: 'system', content: PROMPT_REPRODUCAO },
+        { role: 'user', content: promptUser },
+      ],
+    })
+
+    const rawContent =
+      resposta && resposta.choices && resposta.choices[0] && resposta.choices[0].message
+        ? resposta.choices[0].message.content
+        : ''
+
+    let parsedJson = null
+    try {
+      const jsonMatch = rawContent.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        parsedJson = JSON.parse(jsonMatch[0])
+      }
+    } catch (_) {}
+
+    return e.json(200, {
+      raw: rawContent,
+      resultado: parsedJson,
+    })
+  } catch (err) {
+    return e.json(500, { error: err.message || 'Falha ao processar relatório reprodutivo' })
+  }
+})

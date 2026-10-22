@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T03:09:02.710Z",
+  "generatedAt": "2026-10-22T03:17:38.567Z",
   "collections": [
     {
       "name": "users",
@@ -3950,6 +3950,495 @@
         "CREATE INDEX idx_mdf_data_emissao ON maestro_documentos_fiscais (data_emissao DESC)",
         "CREATE INDEX idx_mdf_data_pagto ON maestro_documentos_fiscais (data_pagamento DESC)",
         "CREATE INDEX idx_mdf_audit ON maestro_documentos_fiscais (protocolo_audit_id)"
+      ]
+    },
+    {
+      "name": "estacoes_monta",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != ''",
+        "view": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'socio')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'socio')",
+        "delete": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin')"
+      },
+      "fields": [
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "ano_safra",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "data_inicio",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_fim",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_expostas",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_prenhes",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_vazias",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_paridas",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_desmamados",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_prenhez_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_paricao_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_desmame_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "iep_medio_meses",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perda_gestacional_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perda_primeiro_terco_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perda_segundo_terco_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "perda_terceiro_terco_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "kg_desmamado_matriz",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["planejada", "em_andamento", "encerrada"]
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_estacoes_safra_nome ON estacoes_monta (ano_safra, nome)",
+        "CREATE INDEX idx_estacoes_safra ON estacoes_monta (ano_safra)",
+        "CREATE INDEX idx_estacoes_status ON estacoes_monta (status)"
+      ]
+    },
+    {
+      "name": "exames_gestacao",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != ''",
+        "view": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'socio' || @request.auth.role = 'capataz')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'socio')",
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "brinco",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "estacao_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "estacoes_monta"
+        },
+        {
+          "name": "ano_safra",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "data_exame",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "resultado",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["prenhe", "vazia", "perda_embrionaria", "perda_fetal", "duvidoso"]
+        },
+        {
+          "name": "dias_gestacao",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "terco_gestacao",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["primeiro", "segundo", "terceiro"]
+        },
+        {
+          "name": "touro_ou_lote_iatf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tipo_manejo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["iatf", "monta_natural", "repasses", "revisite"]
+        },
+        {
+          "name": "data_parto",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_bezerro_nascimento_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_desmama",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_bezerro_desmama_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dias_ate_desmama",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_ajustado_205d_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "lote_origem",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "veterinario_responsavel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "arquivo_origem",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dedup_hash",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "protocolo_audit_id",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "observacoes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_exames_brinco ON exames_gestacao (brinco)",
+        "CREATE INDEX idx_exames_estacao ON exames_gestacao (estacao_id)",
+        "CREATE INDEX idx_exames_safra ON exames_gestacao (ano_safra)",
+        "CREATE INDEX idx_exames_data ON exames_gestacao (data_exame DESC)",
+        "CREATE INDEX idx_exames_dedup ON exames_gestacao (dedup_hash)"
+      ]
+    },
+    {
+      "name": "historico_matrizes",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != ''",
+        "view": "@request.auth.id != ''",
+        "create": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'socio')",
+        "update": "@request.auth.id != '' && (@request.auth.role = 'proprietario' || @request.auth.role = 'gestor' || @request.auth.role = 'admin' || @request.auth.role = 'socio')",
+        "delete": null
+      },
+      "fields": [
+        {
+          "name": "brinco",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "nome_ou_registro",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_nascimento",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "idade_meses",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "idade_primeiro_parto_meses",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_partos",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "total_exames_registrados",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "iep_medio_meses",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ultimo_iep_meses",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ultimo_resultado_diagnostico",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_ultimo_diagnostico",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_ultimo_parto",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_ultimo_bezerro_desmama_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "peso_ajustado_205d_kg",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "partos_por_ano_vida",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "eficiencia_acumulada_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status_reprodutivo",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "apta",
+            "candidata_descarte",
+            "descartada",
+            "em_lactacao",
+            "prenhe",
+            "vazia"
+          ]
+        },
+        {
+          "name": "motivo_descarte_sugerido",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "impacto_economico_estimado_rs",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pasto_atual",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "lote_atual",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ciclos_reprodutivos",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_matrizes_brinco ON historico_matrizes (brinco)",
+        "CREATE INDEX idx_matrizes_status ON historico_matrizes (status_reprodutivo)",
+        "CREATE INDEX idx_matrizes_iep ON historico_matrizes (iep_medio_meses)"
       ]
     }
   ]

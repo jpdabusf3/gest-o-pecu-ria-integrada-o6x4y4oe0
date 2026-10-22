@@ -26,6 +26,7 @@ import {
   AlertTriangle,
   Users,
   Bot,
+  HeartHandshake,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
@@ -449,6 +450,24 @@ export function AppSidebar() {
                 >
                   <Beef className="h-4 w-4" />
                   <span>Rebanho Atual (Cadastro)</span>
+                </Link>
+
+                <Link
+                  to="/reproducao"
+                  className={`flex items-center gap-3 px-3 py-2 text-sm font-semibold rounded-lg transition-colors ${
+                    isActive('/reproducao')
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-bold shadow-2xs'
+                      : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  }`}
+                >
+                  <HeartHandshake className="h-4 w-4 text-emerald-600" />
+                  <span className="flex-1">Reprodução & Cria</span>
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] uppercase font-mono tracking-wider border-emerald-500/30 text-emerald-700 dark:text-emerald-300"
+                  >
+                    DG / Safra
+                  </Badge>
                 </Link>
 
                 <Link

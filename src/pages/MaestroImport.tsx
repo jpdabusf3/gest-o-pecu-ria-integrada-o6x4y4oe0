@@ -72,8 +72,25 @@ import {
   TipoDocumentoFiscal,
   DestinoSistemaFiscal,
 } from '@/services/maestroDocumentosFiscais'
-import { Receipt, FileCheck, Split, Link2, ShieldCheck, HelpCircle as HelpIcon } from 'lucide-react'
+import {
+  Receipt,
+  FileCheck,
+  Split,
+  Link2,
+  ShieldCheck,
+  HelpCircle as HelpIcon,
+  HeartHandshake,
+  Baby,
+} from 'lucide-react'
 import { getErrorMessage, extractFieldErrors } from '@/lib/pocketbase/errors'
+import {
+  processarRelatorioReprodutivo,
+  aplicarRelatorioReprodutivoConfirmado,
+  gerarRelatorioReprodutivoPDF,
+  ResultadoProcessamentoReprodutivo,
+  ResultadoAplicacaoReprodutiva,
+  LinhaExameExtraida,
+} from '@/services/maestroReproducao'
 import {
   reconhecerColunasVendaGado,
   isDocumentoVendaGado,
@@ -175,6 +192,19 @@ export default function MaestroImport() {
   const [tipoDocumento, setTipoDocumento] = useState<
     'pesagens' | 'lotes_animais' | 'estoque' | 'financeiro' | 'atividades' | 'generico'
   >('lotes_animais')
+
+  // --- RELATÓRIO REPRODUTIVO / DG / IATF (ROBÔ CHICÃO) ---
+  const [isDocumentoReprodutivo, setIsDocumentoReprodutivo] = useState(false)
+  const [processamentoReprodutivo, setProcessamentoReprodutivo] =
+    useState<ResultadoProcessamentoReprodutivo | null>(null)
+  const [linhasReprodutivasConferencia, setLinhasReprodutivasConferencia] = useState<
+    LinhaExameExtraida[]
+  >([])
+  const [filtroReprodutivoAba, setFiltroReprodutivoAba] = useState<
+    'todos' | 'prenhes' | 'vazias' | 'alertas'
+  >('todos')
+  const [resultadoAplicacaoReprodutiva, setResultadoAplicacaoReprodutiva] =
+    useState<ResultadoAplicacaoReprodutiva | null>(null)
 
   // --- NOTAS FISCAIS E RECIBOS (ROBÔ CHICÃO FISCAL) ---
   const [isDocumentoFiscal, setIsDocumentoFiscal] = useState(false)
@@ -279,9 +309,60 @@ export default function MaestroImport() {
     setDocsFiscaisConferencia([])
     setFiltroFiscalAba('todos')
     setResultadoAplicacaoFiscal(null)
+    setIsDocumentoReprodutivo(false)
+    setProcessamentoReprodutivo(null)
+    setLinhasReprodutivasConferencia([])
+    setFiltroReprodutivoAba('todos')
+    setResultadoAplicacaoReprodutiva(null)
   }
 
   // Exemplos rápidos do usuário
+  const carregarExemploReprodutivo = () => {
+    const laudoExemplo = `
+================================================================================
+CLÍNICA VETERINÁRIA & CONSULTORIA PECUÁRIA
+LAUDO DE DIAGNÓSTICO DE GESTAÇÃO (ULTRASSONOGRAFIA / TOQUE RETAL)
+ESTAÇÃO DE MONTA: 2024/2025 - 1º GIRO IATF
+PROPRIEDADE: FAZENDA MODELO PECUÁRIA F3 | PASTAGEM: PASTO 11 (PIATÃ) - LOTE MATRIZES
+VETERINÁRIO RESPONSÁVEL: DR. MARCELO TAVARES - CRMV/MS 4892
+DATA DO EXAME: 2025-01-20
+================================================================================
+
+RESULTADO DO DIAGNÓSTICO INDIVIDUAL POR MATRIZ:
+- MATRIZ BR-1010 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 45 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+- MATRIZ BR-1011 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 42 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+- MATRIZ BR-1012 | RESULTADO: VAZIA  | DIAS GESTAÇÃO: 0 dias  | TOURO/IATF: — | MANEJO: IATF | OBS: Folículo 12mm no ovário direito, liberar para repasse
+- MATRIZ BR-1013 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 60 dias | TOURO/IATF: TOURO ANGUS BISMARCK | MANEJO: IATF
+- MATRIZ BR-1014 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 45 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+- MATRIZ BR-1015 | RESULTADO: VAZIA  | DIAS GESTAÇÃO: 0 dias  | TOURO/IATF: — | MANEJO: IATF | OBS: Vazia final de estação (candidata a descarte)
+- MATRIZ BR-1016 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 45 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+- MATRIZ BR-1017 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 45 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+- MATRIZ BR-1018 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 50 dias | TOURO/IATF: TOURO ANGUS BISMARCK | MANEJO: IATF
+- MATRIZ BR-1019 | RESULTADO: PERDA_EMBRIONARIA | DIAS GESTAÇÃO: 35 dias | TOURO/IATF: TOURO NELORE | MANEJO: IATF | OBS: Restos embrionários sem batimento
+- MATRIZ BR-1020 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 45 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+- MATRIZ BR-1021 | RESULTADO: PRENHE | DIAS GESTAÇÃO: 45 dias | TOURO/IATF: TOURO NELORE REM USP | MANEJO: IATF
+
+RESUMO DO LOTE CONSOLIDADO:
+Total Matrizes Inspecionadas: 12 cab.
+Prenhes Confirmadas: 9 cab. (Taxa de Concepção/Prenhez: 75,0%)
+Vazias: 2 cab.
+Perdas Embrionárias: 1 cab.
+`
+    const blob = new Blob([laudoExemplo], { type: 'application/pdf' })
+    const fileExemplo = new File([blob], 'laudo_diagnostico_gestacao_iatf_2025.pdf', {
+      type: 'application/pdf',
+    })
+    setFile(fileExemplo)
+    setObjetivo(
+      'Analisar laudo veterinário de diagnóstico de gestação e IATF em PDF, extrair status individual das matrizes, consolidar a estação de monta e alimentar a aba de Reprodução e descarte.',
+    )
+    setIsDocumentoReprodutivo(true)
+    setIsDocumentoFiscal(false)
+    setIsCompraGado(false)
+    setIsVendaGado(false)
+    toast.info('Exemplo de Laudo Reprodutivo / Diagnóstico de Gestação (PDF) carregado!')
+  }
+
   const carregarExemploFiscal = () => {
     // Simula PDF de pacote fiscal com NF de Compra de Insumos, NF de Venda de Gado e Recibo de Pagamento escaneado
     const exemploTexto = `
@@ -421,9 +502,60 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
       setOcrUsado(Boolean(extracao.ocrUsado))
       setOrigemLeitura(extracao.origem_leitura || 'texto')
 
-      // 1.b VERIFICAÇÃO AUTOMÁTICA OU EXPLÍCITA: NOTA FISCAL / RECIBO DE PAGAMENTO (PDF / OCR)
+      // 1.a VERIFICAÇÃO AUTOMÁTICA OU EXPLÍCITA: RELATÓRIO REPRODUTIVO / DG / IATF (PDF / OCR)
       const nomeLower = file.name.toLowerCase()
       const textoLower = (extracao.markdown || '').toLowerCase()
+      const ehSinalReprodutivo =
+        isDocumentoReprodutivo ||
+        nomeLower.includes('reproducao') ||
+        nomeLower.includes('reprodutivo') ||
+        nomeLower.includes('gestacao') ||
+        nomeLower.includes('diagnostico') ||
+        nomeLower.includes('laudo') ||
+        nomeLower.includes('iatf') ||
+        nomeLower.includes('toque') ||
+        textoLower.includes('diagnóstico de gestação') ||
+        textoLower.includes('diagnostico de gestacao') ||
+        textoLower.includes('estação de monta') ||
+        textoLower.includes('estacao de monta') ||
+        textoLower.includes('taxa de prenhez') ||
+        textoLower.includes('perda embrionária') ||
+        textoLower.includes('perda embrionaria') ||
+        textoLower.includes('prenhe') ||
+        textoLower.includes('dias de gestação') ||
+        textoLower.includes('dias de gestacao')
+
+      if (ehSinalReprodutivo && extracao.markdown.trim()) {
+        setIsDocumentoReprodutivo(true)
+        setIsDocumentoFiscal(false)
+        setIsCompraGado(false)
+        setIsVendaGado(false)
+
+        toast.loading('Robô Chicão processando laudo de diagnóstico de gestação...', {
+          id: 'leitura-toast',
+        })
+        const resultadoRepro = await processarRelatorioReprodutivo(
+          extracao.markdown,
+          file.name,
+          extracao.ocrUsado ? 'visao' : 'texto',
+        )
+
+        setProcessamentoReprodutivo(resultadoRepro)
+        setLinhasReprodutivasConferencia(resultadoRepro.linhas)
+
+        toast.dismiss('leitura-toast')
+        toast.success(
+          `Chicão analisou o laudo reprodutivo: ${resultadoRepro.totalExpostas} matrizes avaliadas (${resultadoRepro.totalPrenhes} prenhes — ${resultadoRepro.taxaPrenhezPct}%)!`,
+          {
+            description:
+              'Revise os diagnósticos e status por campo antes da consolidação definitiva.',
+          },
+        )
+        setEtapa(3)
+        return
+      }
+
+      // 1.b VERIFICAÇÃO AUTOMÁTICA OU EXPLÍCITA: NOTA FISCAL / RECIBO DE PAGAMENTO (PDF / OCR)
       const ehSinalFiscal =
         isDocumentoFiscal ||
         nomeLower.includes('danfe') ||
@@ -713,6 +845,64 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
   // ETAPA 4: Aplicação integrada
   const executarAplicacao = async () => {
+    if (isDocumentoReprodutivo) {
+      try {
+        setAplicando(true)
+        setConfirmModalOpen(false)
+        toast.loading('Robô Chicão gravando laudo reprodutivo e consolidando estação...', {
+          id: 'aplicando-toast',
+        })
+
+        if (!processamentoReprodutivo) throw new Error('Dados reprodutivos ausentes')
+
+        const resRepro = await aplicarRelatorioReprodutivoConfirmado(
+          {
+            ...processamentoReprodutivo,
+            linhas: linhasReprodutivasConferencia,
+          },
+          file?.name || 'laudo_reprodutivo.pdf',
+          {
+            id: user.id,
+            nome: user.name || 'Gestor',
+            perfil: user.role,
+          },
+        )
+
+        setResultadoAplicacaoReprodutiva(resRepro)
+        toast.dismiss('aplicando-toast')
+
+        if (resRepro.totalGravados > 0) {
+          try {
+            await Promise.allSettled([reloadLots(), reloadInventory()])
+            window.dispatchEvent(
+              new CustomEvent('gpi:dados-atualizados', {
+                detail: { origem: 'maestro_reproducao' },
+              }),
+            )
+          } catch (eRel) {
+            console.warn('Aviso ao sincronizar contextos pós-importação reprodutiva:', eRel)
+          }
+
+          toast.success(
+            `${resRepro.totalGravados} exames gravados! Estação "${resRepro.estacaoConsolidada?.nome}" consolidada com sucesso.`,
+          )
+        } else {
+          toast.error('Nenhum exame pôde ser gravado.', {
+            description:
+              resRepro.mensagens.join('; ') || 'Verifique se os animais foram aprovados.',
+          })
+        }
+        setEtapa(5)
+      } catch (err: unknown) {
+        toast.dismiss('aplicando-toast')
+        const msg = getErrorMessage(err)
+        toast.error('Erro ao aplicar laudo reprodutivo: ' + msg)
+      } finally {
+        setAplicando(false)
+      }
+      return
+    }
+
     if (isDocumentoFiscal) {
       try {
         setAplicando(true)
@@ -1437,6 +1627,16 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
                       type="button"
                       variant="outline"
                       size="sm"
+                      onClick={carregarExemploReprodutivo}
+                      className="text-xs h-7 px-2 text-emerald-900 dark:text-emerald-100 border-emerald-600/50 bg-emerald-600/10 hover:bg-emerald-600/20 gap-1 font-semibold"
+                    >
+                      <HeartHandshake className="h-3 w-3 text-emerald-700" />
+                      Laudo Reprodutivo / DG (PDF)
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
                       onClick={carregarExemploFiscal}
                       className="text-xs h-7 px-2 text-blue-900 dark:text-blue-200 border-blue-600/40 bg-blue-500/10 hover:bg-blue-500/20 gap-1 font-semibold"
                     >
@@ -1749,6 +1949,388 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
               </div>
             </CardContent>
           </Card>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ETAPA 3: CONFERÊNCIA OBRIGATÓRIA — RELATÓRIO REPRODUTIVO / DG */}
+      {/* ========================================================================= */}
+      {etapa === 3 && isDocumentoReprodutivo && processamentoReprodutivo && (
+        <div className="space-y-6">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-400 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-emerald-950 dark:text-emerald-100">
+            <div className="flex items-center gap-2.5">
+              <HeartHandshake className="h-6 w-6 text-emerald-700 shrink-0" />
+              <div>
+                <p className="font-semibold text-sm">
+                  Conferência Obrigatória: Laudo Reprodutivo & Diagnóstico de Gestação
+                </p>
+                <p className="text-emerald-800/80 dark:text-emerald-300">
+                  O Chicão extraiu {linhasReprodutivasConferencia.length} diagnóstico(s) de gestação
+                  com conferência campo a campo e confiança por IA. Ao confirmar, a estação/safra
+                  será consolidada automaticamente e o histórico individual das matrizes será
+                  alimentado.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Badge
+                variant="outline"
+                className="border-emerald-500 text-emerald-800 dark:text-emerald-200 bg-background font-mono"
+              >
+                {processamentoReprodutivo.nomeEstacao} ({processamentoReprodutivo.anoSafra})
+              </Badge>
+            </div>
+          </div>
+
+          {/* Cards de Métricas e Consolidação da Estação */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card className="border-border">
+              <CardContent className="p-4">
+                <span className="text-xs text-muted-foreground block">Matrizes Inspecionadas</span>
+                <span className="text-2xl font-bold">{linhasReprodutivasConferencia.length}</span>
+                <span className="text-[11px] text-muted-foreground block mt-0.5">
+                  matrizes no laudo
+                </span>
+              </CardContent>
+            </Card>
+
+            <Card className="border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20">
+              <CardContent className="p-4">
+                <span className="text-xs text-emerald-700 dark:text-emerald-300 block">
+                  Prenhes Confirmadas
+                </span>
+                <span className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">
+                  {linhasReprodutivasConferencia.filter((l) => l.resultado === 'prenhe').length}{' '}
+                  cab.
+                </span>
+                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block mt-0.5">
+                  Taxa:{' '}
+                  {linhasReprodutivasConferencia.length > 0
+                    ? (
+                        (linhasReprodutivasConferencia.filter((l) => l.resultado === 'prenhe')
+                          .length /
+                          linhasReprodutivasConferencia.length) *
+                        100
+                      ).toFixed(1)
+                    : 0}
+                  %
+                </span>
+              </CardContent>
+            </Card>
+
+            <Card className="border-amber-500/30 bg-amber-50/40 dark:bg-amber-950/20">
+              <CardContent className="p-4">
+                <span className="text-xs text-amber-700 dark:text-amber-300 block">
+                  Vazias Diagnosticadas
+                </span>
+                <span className="text-2xl font-bold text-amber-800 dark:text-amber-200">
+                  {linhasReprodutivasConferencia.filter((l) => l.resultado === 'vazia').length} cab.
+                </span>
+                <span className="text-[11px] text-amber-600 dark:text-amber-400 block mt-0.5">
+                  alimentarão descarte dirigido
+                </span>
+              </CardContent>
+            </Card>
+
+            <Card className="border-rose-500/30 bg-rose-50/40 dark:bg-rose-950/20">
+              <CardContent className="p-4">
+                <span className="text-xs text-rose-700 dark:text-rose-300 block">
+                  Perdas / Inconsistências
+                </span>
+                <span className="text-2xl font-bold text-rose-800 dark:text-rose-200">
+                  {
+                    linhasReprodutivasConferencia.filter(
+                      (l) => l.resultado.includes('perda') || l.alertas.length > 0,
+                    ).length
+                  }
+                </span>
+                <span className="text-[11px] text-rose-600 dark:text-rose-400 block mt-0.5">
+                  atenção veterinária
+                </span>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Abas de Filtro da Conferência */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <Tabs
+              value={filtroReprodutivoAba}
+              onValueChange={(v: any) => setFiltroReprodutivoAba(v)}
+              className="w-auto"
+            >
+              <TabsList className="h-8">
+                <TabsTrigger value="todos" className="text-xs">
+                  Todos ({linhasReprodutivasConferencia.length})
+                </TabsTrigger>
+                <TabsTrigger value="prenhes" className="text-xs text-emerald-700 font-semibold">
+                  Prenhes (
+                  {linhasReprodutivasConferencia.filter((l) => l.resultado === 'prenhe').length})
+                </TabsTrigger>
+                <TabsTrigger value="vazias" className="text-xs text-amber-700 font-semibold">
+                  Vazias (
+                  {linhasReprodutivasConferencia.filter((l) => l.resultado === 'vazia').length})
+                </TabsTrigger>
+                <TabsTrigger value="alertas" className="text-xs text-rose-700 font-semibold">
+                  Com Alertas (
+                  {linhasReprodutivasConferencia.filter((l) => l.alertas.length > 0).length})
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setLinhasReprodutivasConferencia((prev) =>
+                    prev.map((l) => ({ ...l, aprovado: true })),
+                  )
+                  toast.success('Todas as matrizes foram marcadas como aprovadas!')
+                }}
+                className="text-xs h-8"
+              >
+                Aprovar Todos
+              </Button>
+            </div>
+          </div>
+
+          {/* Tabela de Conferência Individual por Matriz */}
+          <Card>
+            <CardHeader className="py-3 px-4">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Baby className="h-4 w-4 text-emerald-700" /> Matrizes Inspecionadas no Laudo
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead className="bg-muted text-muted-foreground font-semibold">
+                  <tr>
+                    <th className="p-3 text-center w-12">Aprovar</th>
+                    <th className="p-3 text-left">Brinco</th>
+                    <th className="p-3 text-left">Diagnóstico</th>
+                    <th className="p-3 text-left">Dias Gestação</th>
+                    <th className="p-3 text-left">Touro / IATF</th>
+                    <th className="p-3 text-left">Data Exame</th>
+                    <th className="p-3 text-center">Confiança</th>
+                    <th className="p-3 text-left">Alertas / Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {linhasReprodutivasConferencia
+                    .filter((l) => {
+                      if (filtroReprodutivoAba === 'prenhes') return l.resultado === 'prenhe'
+                      if (filtroReprodutivoAba === 'vazias') return l.resultado === 'vazia'
+                      if (filtroReprodutivoAba === 'alertas') return l.alertas.length > 0
+                      return true
+                    })
+                    .map((linha, idx) => (
+                      <tr
+                        key={linha.idTemp || idx}
+                        className={`hover:bg-muted/30 ${!linha.aprovado ? 'opacity-50 bg-muted/10' : ''}`}
+                      >
+                        <td className="p-3 text-center">
+                          <input
+                            type="checkbox"
+                            checked={linha.aprovado}
+                            onChange={(e) => {
+                              const checked = e.target.checked
+                              setLinhasReprodutivasConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.idTemp === linha.idTemp
+                                    ? { ...item, aprovado: checked }
+                                    : item,
+                                ),
+                              )
+                            }}
+                            className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 h-4 w-4"
+                          />
+                        </td>
+                        <td className="p-3 font-semibold font-mono">
+                          <Input
+                            value={linha.brinco}
+                            onChange={(e) => {
+                              const val = e.target.value.toUpperCase()
+                              setLinhasReprodutivasConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.idTemp === linha.idTemp ? { ...item, brinco: val } : item,
+                                ),
+                              )
+                            }}
+                            className="h-7 text-xs font-mono w-28 uppercase"
+                          />
+                        </td>
+                        <td className="p-3">
+                          <Select
+                            value={linha.resultado}
+                            onValueChange={(val: any) => {
+                              setLinhasReprodutivasConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.idTemp === linha.idTemp ? { ...item, resultado: val } : item,
+                                ),
+                              )
+                            }}
+                          >
+                            <SelectTrigger className="h-7 text-xs w-36">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="prenhe" className="text-emerald-700 font-semibold">
+                                PRENHE
+                              </SelectItem>
+                              <SelectItem value="vazia" className="text-amber-700 font-semibold">
+                                VAZIA
+                              </SelectItem>
+                              <SelectItem value="perda_embrionaria" className="text-rose-700">
+                                Perda Embrionária
+                              </SelectItem>
+                              <SelectItem value="perda_fetal" className="text-rose-700">
+                                Perda Fetal
+                              </SelectItem>
+                              <SelectItem value="duvidoso" className="text-muted-foreground">
+                                Duvidoso
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </td>
+                        <td className="p-3 font-mono">
+                          <Input
+                            type="number"
+                            value={linha.diasGestacao || ''}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value, 10) || 0
+                              setLinhasReprodutivasConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.idTemp === linha.idTemp
+                                    ? { ...item, diasGestacao: val }
+                                    : item,
+                                ),
+                              )
+                            }}
+                            placeholder="0"
+                            className="h-7 text-xs font-mono w-20"
+                          />
+                        </td>
+                        <td className="p-3">
+                          <Input
+                            value={linha.touroOuLoteIatf || ''}
+                            onChange={(e) => {
+                              const val = e.target.value
+                              setLinhasReprodutivasConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.idTemp === linha.idTemp
+                                    ? { ...item, touroOuLoteIatf: val }
+                                    : item,
+                                ),
+                              )
+                            }}
+                            placeholder="Touro / Protocolo"
+                            className="h-7 text-xs w-36"
+                          />
+                        </td>
+                        <td className="p-3 font-mono">
+                          <Input
+                            type="date"
+                            value={linha.dataExame}
+                            onChange={(e) => {
+                              const val = e.target.value
+                              setLinhasReprodutivasConferencia((prev) =>
+                                prev.map((item) =>
+                                  item.idTemp === linha.idTemp ? { ...item, dataExame: val } : item,
+                                ),
+                              )
+                            }}
+                            className="h-7 text-xs font-mono w-32"
+                          />
+                        </td>
+                        <td className="p-3 text-center">
+                          <Badge
+                            variant={
+                              linha.camposStatus.brinco?.confianca === 'alta'
+                                ? 'outline'
+                                : 'secondary'
+                            }
+                            className="text-[10px]"
+                          >
+                            {linha.camposStatus.brinco?.confianca === 'alta'
+                              ? 'Alta 98%'
+                              : 'Média 80%'}
+                          </Badge>
+                        </td>
+                        <td className="p-3">
+                          {linha.jaImportado ? (
+                            <Badge
+                              variant="outline"
+                              className="border-amber-500 text-amber-700 text-[10px]"
+                            >
+                              Já Registrado (Não Duplicará)
+                            </Badge>
+                          ) : linha.alertas.length > 0 ? (
+                            <div className="space-y-0.5">
+                              {linha.alertas.map((a, i) => (
+                                <span
+                                  key={i}
+                                  className="text-[10px] text-rose-600 block leading-tight"
+                                >
+                                  • {a}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <Badge className="bg-emerald-600 text-white text-[10px]">OK</Badge>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+
+          {/* Rodapé de Ações */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+            <Button variant="outline" size="sm" onClick={() => setEtapa(1)}>
+              Voltar ao Upload
+            </Button>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const dadosCSV = linhasReprodutivasConferencia.map((l) => ({
+                    Brinco: l.brinco,
+                    Resultado: l.resultado,
+                    DiasGestacao: l.diasGestacao || 0,
+                    TouroOuIATF: l.touroOuLoteIatf || '',
+                    DataExame: l.dataExame,
+                    Aprovado: l.aprovado ? 'SIM' : 'NÃO',
+                  }))
+                  downloadCSV(dadosCSV, `conferencia_reproducao_${file?.name || 'laudo'}`)
+                }}
+                className="gap-1.5 text-xs"
+              >
+                <FileSpreadsheet className="h-4 w-4 text-emerald-700" /> Exportar Conferência
+              </Button>
+
+              <Button
+                onClick={() => setConfirmModalOpen(true)}
+                disabled={
+                  aplicando || linhasReprodutivasConferencia.filter((l) => l.aprovado).length === 0
+                }
+                className="gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
+              >
+                {aplicando ? (
+                  'Gravando...'
+                ) : (
+                  <>
+                    Confirmar e Aplicar Documentos Aprovados (
+                    {linhasReprodutivasConferencia.filter((l) => l.aprovado).length})
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -4340,6 +4922,97 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
 
                 <Button variant="secondary" onClick={reiniciarFluxo} className="gap-2">
                   <RotateCcw className="h-4 w-4" /> Importar Outro Documento
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ETAPA 5: RELATÓRIO OFICIAL DE REPRODUÇÃO & LAUDOS */}
+      {/* ========================================================================= */}
+      {etapa === 5 && isDocumentoReprodutivo && resultadoAplicacaoReprodutiva && (
+        <div className="space-y-6">
+          <Card className="border-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/10">
+            <CardHeader className="text-center pb-2">
+              <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <CardTitle className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
+                Laudo Reprodutivo Aplicado com Sucesso!
+              </CardTitle>
+              <CardDescription>
+                O Robô Chicão atualizou o histórico individual de cada matriz, consolidou a estação
+                de monta e alimentou os módulos de Reprodução, Descarte Dirigido e Custo da Cria.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Matrizes no Laudo</span>
+                  <span className="text-2xl font-bold">
+                    {resultadoAplicacaoReprodutiva.totalProcessados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-emerald-600 block">Exames Gravados</span>
+                  <span className="text-2xl font-bold text-emerald-700">
+                    {resultadoAplicacaoReprodutiva.totalGravados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-muted-foreground block">Ignorados / Repetidos</span>
+                  <span className="text-2xl font-bold text-muted-foreground">
+                    {resultadoAplicacaoReprodutiva.totalIgnorados}
+                  </span>
+                </div>
+                <div className="p-3 bg-card border rounded-lg">
+                  <span className="text-xs text-emerald-700 block">Taxa de Prenhez</span>
+                  <span className="text-2xl font-bold text-emerald-800">
+                    {resultadoAplicacaoReprodutiva.estacaoConsolidada?.taxa_prenhez_pct ?? 0}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Protocolo de Auditoria Append-Only */}
+              <div className="p-4 bg-muted/40 border rounded-lg space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+                    <Info className="h-4 w-4 text-primary" /> Protocolo de Auditoria (Append-Only):
+                  </span>
+                  <code className="bg-background px-2 py-0.5 rounded border font-mono">
+                    {resultadoAplicacaoReprodutiva.protocoloAuditId}
+                  </code>
+                </div>
+                <p className="text-muted-foreground">
+                  Módulos alimentados:{' '}
+                  <strong>
+                    Estações de Monta, Exames de Gestação, Histórico de Matrizes e Descarte Dirigido
+                  </strong>
+                  . Arquivo de origem gravado com hash de integridade na coleção audit_log.
+                </p>
+              </div>
+
+              {/* Ações de Download e Encerramento */}
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Button
+                  onClick={() => {
+                    if (processamentoReprodutivo) {
+                      gerarRelatorioReprodutivoPDF(
+                        processamentoReprodutivo,
+                        resultadoAplicacaoReprodutiva,
+                      )
+                    }
+                  }}
+                  className="gap-2 bg-emerald-700 hover:bg-emerald-800 font-semibold text-white"
+                >
+                  <FileDown className="h-4 w-4" /> Baixar Protocolo Reprodutivo Oficial (PDF)
+                </Button>
+
+                <Button variant="secondary" onClick={reiniciarFluxo} className="gap-2">
+                  <RotateCcw className="h-4 w-4" /> Importar Outro Laudo
                 </Button>
               </div>
             </CardContent>
