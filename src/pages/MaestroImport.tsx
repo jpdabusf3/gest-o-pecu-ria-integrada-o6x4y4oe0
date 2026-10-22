@@ -514,11 +514,30 @@ Ureia Pecuária;saco;60;20;15;65;98.00`
         nomeLower.includes('laudo') ||
         nomeLower.includes('iatf') ||
         nomeLower.includes('toque') ||
+        nomeLower.includes('paricao') ||
+        nomeLower.includes('parto') ||
+        nomeLower.includes('caderno') ||
         textoLower.includes('diagnóstico de gestação') ||
         textoLower.includes('diagnostico de gestacao') ||
         textoLower.includes('estação de monta') ||
         textoLower.includes('estacao de monta') ||
         textoLower.includes('taxa de prenhez') ||
+        textoLower.includes('animais trabalhados') ||
+        textoLower.includes('dados gerais da estação') ||
+        textoLower.includes('dados gerais da estacao') ||
+        textoLower.includes('dados gerais da iatf') ||
+        textoLower.includes('taxa de concepção') ||
+        textoLower.includes('taxa de concepcao') ||
+        textoLower.includes('mapa de parição') ||
+        textoLower.includes('mapa de paricao') ||
+        textoLower.includes('qtd de prenhez por touro') ||
+        textoLower.includes('taxa de cio') ||
+        textoLower.includes('relatório de previsão de parto') ||
+        textoLower.includes('relatorio de previsao de parto') ||
+        textoLower.includes('previsão de parto (290)') ||
+        textoLower.includes('previsao de parto (290)') ||
+        textoLower.includes('caderno de parição') ||
+        textoLower.includes('caderno de paricao') ||
         textoLower.includes('perda embrionária') ||
         textoLower.includes('perda embrionaria') ||
         textoLower.includes('prenhe') ||

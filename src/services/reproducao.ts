@@ -69,6 +69,28 @@ export interface EstacaoMontaRecord {
   kg_desmamado_matriz: number
   observacoes?: string
   status: 'planejada' | 'em_andamento' | 'encerrada'
+  duracao_dias?: number
+  data_inicio_parto?: string
+  data_fim_parto?: string
+  gestantes_iatf?: number
+  gestantes_touro?: number
+  taxa_cio_pct?: number
+  taxa_aborto_dg_inicial_pct?: number
+  dados_iatf?: any
+  categorias_agregado?: any
+  mapa_paricao_mensal?: Array<{ mes: string; qtd: number }>
+  concepcao_por_rodada?: Record<string, number>
+  prenhez_por_touro?: Array<{
+    touro: string
+    registro?: string
+    qtd_prenhez: number
+    media_prenhez_pct?: number
+    qtd_utilizada?: number
+  }>
+  prenhez_por_lote?: any[]
+  formato_origem?: string
+  conciliacao_status?: string
+  conciliacao_detalhes?: any
   created: string
   updated: string
 }
@@ -96,6 +118,15 @@ export interface ExameGestacaoRecord {
   dedup_hash?: string
   protocolo_audit_id?: string
   observacoes?: string
+  serie?: string
+  numero?: string
+  categoria_matriz?: string
+  touro_nome?: string
+  touro_registro?: string
+  data_cobertura?: string
+  data_prevista_parto?: string
+  divergencia_previsao_dias?: number
+  status_previsao?: 'OK' | 'AMBIGUO' | 'AUSENTE'
   created: string
   updated: string
 }
@@ -304,6 +335,22 @@ export async function salvarOuAtualizarEstacao(
       perda_segundo_terco_pct: dados.perda_segundo_terco_pct ?? 0,
       perda_terceiro_terco_pct: dados.perda_terceiro_terco_pct ?? 0,
       kg_desmamado_matriz: dados.kg_desmamado_matriz ?? 0,
+      duracao_dias: dados.duracao_dias ?? 0,
+      data_inicio_parto: dados.data_inicio_parto || undefined,
+      data_fim_parto: dados.data_fim_parto || undefined,
+      gestantes_iatf: dados.gestantes_iatf ?? 0,
+      gestantes_touro: dados.gestantes_touro ?? 0,
+      taxa_cio_pct: dados.taxa_cio_pct ?? 0,
+      taxa_aborto_dg_inicial_pct: dados.taxa_aborto_dg_inicial_pct ?? 0,
+      dados_iatf: dados.dados_iatf || undefined,
+      categorias_agregado: dados.categorias_agregado || undefined,
+      mapa_paricao_mensal: dados.mapa_paricao_mensal || undefined,
+      concepcao_por_rodada: dados.concepcao_por_rodada || undefined,
+      prenhez_por_touro: dados.prenhez_por_touro || undefined,
+      prenhez_por_lote: dados.prenhez_por_lote || undefined,
+      formato_origem: dados.formato_origem || undefined,
+      conciliacao_status: dados.conciliacao_status || undefined,
+      conciliacao_detalhes: dados.conciliacao_detalhes || undefined,
       observacoes: dados.observacoes || '',
       status: dados.status || 'em_andamento',
     }
@@ -340,6 +387,34 @@ export async function recalcularConsolidacaoEstacao(
   const taxaParicao = totalExpostas > 0 ? (totalParidas / totalExpostas) * 100 : 0
   const taxaDesmame = totalExpostas > 0 ? (totalDesmamados / totalExpostas) * 100 : 0
   const perdaGestacional = totalPrenhes > 0 ? (perdasEmbrionarias / totalPrenhes) * 100 : 0
+
+  // Se a estação já tiver agregados do relatório final de IATF, preservar
+  let estacaoExistente: EstacaoMontaRecord | null = null
+  try {
+    estacaoExistente = await pb.collection('estacoes_monta').getOne<EstacaoMontaRecord>(estacaoId)
+  } catch {
+    /* ok */
+  }
+
+  // Conciliação de gestantes linha a linha vs resumo da estação
+  let conciliacaoStatus = estacaoExistente?.conciliacao_status || 'pendente'
+  let conciliacaoDetalhes = estacaoExistente?.conciliacao_detalhes || null
+  if (estacaoExistente?.total_prenhes && estacaoExistente.total_prenhes > 0) {
+    const gestantesResumo = estacaoExistente.total_prenhes
+    const gestantesLinhas = totalPrenhes
+    const diferenca = gestantesLinhas - gestantesResumo
+    conciliacaoStatus = diferenca === 0 ? 'conciliado' : 'divergente'
+    conciliacaoDetalhes = {
+      gestantes_resumo: gestantesResumo,
+      gestantes_linhas: gestantesLinhas,
+      diferenca,
+      data_conciliacao: new Date().toISOString(),
+      mensagem:
+        diferenca === 0
+          ? `Perfeito: ${gestantesLinhas} gestantes linha a linha conferem exatamente com as ${gestantesResumo} gestantes do relatório final.`
+          : `Atenção: ${gestantesLinhas} gestantes nas linhas vs ${gestantesResumo} no resumo da estação (diferença de ${diferenca} animais).`,
+    }
+  }
 
   const perdas1 = exames.filter(
     (e) =>
@@ -381,6 +456,30 @@ export async function recalcularConsolidacaoEstacao(
     perda_terceiro_terco_pct:
       perdasEmbrionarias > 0 ? Number(((perdas3 / perdasEmbrionarias) * 100).toFixed(1)) : 0,
     kg_desmamado_matriz: Number(kgDesmamadoMatriz.toFixed(1)),
+    gestantes_iatf:
+      estacaoExistente?.gestantes_iatf ||
+      exames.filter((e) => e.resultado === 'prenhe' && e.tipo_manejo === 'iatf').length,
+    gestantes_touro:
+      estacaoExistente?.gestantes_touro ||
+      exames.filter(
+        (e) =>
+          e.resultado === 'prenhe' &&
+          (e.tipo_manejo === 'repasses' || e.tipo_manejo === 'monta_natural'),
+      ).length,
+    conciliacao_status: conciliacaoStatus,
+    conciliacao_detalhes: conciliacaoDetalhes,
+    duracao_dias: estacaoExistente?.duracao_dias,
+    data_inicio_parto: estacaoExistente?.data_inicio_parto,
+    data_fim_parto: estacaoExistente?.data_fim_parto,
+    taxa_cio_pct: estacaoExistente?.taxa_cio_pct,
+    taxa_aborto_dg_inicial_pct: estacaoExistente?.taxa_aborto_dg_inicial_pct,
+    dados_iatf: estacaoExistente?.dados_iatf,
+    categorias_agregado: estacaoExistente?.categorias_agregado,
+    mapa_paricao_mensal: estacaoExistente?.mapa_paricao_mensal,
+    concepcao_por_rodada: estacaoExistente?.concepcao_por_rodada,
+    prenhez_por_touro: estacaoExistente?.prenhez_por_touro,
+    prenhez_por_lote: estacaoExistente?.prenhez_por_lote,
+    formato_origem: estacaoExistente?.formato_origem,
   })
 }
 

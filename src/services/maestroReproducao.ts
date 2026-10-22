@@ -65,6 +65,16 @@ export interface LinhaExameExtraida {
   loteOrigem?: string
   veterinario?: string
 
+  serie?: string
+  numero?: string
+  categoriaMatriz?: string
+  touroNome?: string
+  touroRegistro?: string
+  dataCobertura?: string
+  dataPrevistaParto?: string
+  divergenciaPrevisaoDias?: number
+  statusPrevisao?: 'OK' | 'AMBIGUO' | 'AUSENTE'
+
   camposStatus: Record<string, CampoStatusReprodutivo>
   alertas: string[]
   dedupHash: string
@@ -75,6 +85,7 @@ export interface LinhaExameExtraida {
 }
 
 export interface ResultadoProcessamentoReprodutivo {
+  tipoFormato: 'relatorio_final_estacao' | 'caderno_paricao_previsao' | 'laudo_dg_individual'
   nomeEstacao: string
   anoSafra: string
   veterinario: string
@@ -86,8 +97,36 @@ export interface ResultadoProcessamentoReprodutivo {
   totalVazias: number
   totalPerdas: number
   taxaPrenhezPct: number
+  duracaoDias?: number
+  dataInicio?: string
+  dataFim?: string
+  dataInicioParto?: string
+  dataFimParto?: string
+  gestantesIatf?: number
+  gestantesTouro?: number
+  taxaCioPct?: number
+  taxaAbortoDgInicialPct?: number
+  dadosIatf?: any
+  categoriasAgregado?: any
+  mapaParicaoMensal?: Array<{ mes: string; qtd: number }>
+  concepcaoPorRodada?: Record<string, number>
+  prenhezPorTouro?: Array<{
+    touro: string
+    registro?: string
+    qtd_prenhez: number
+    media_prenhez_pct?: number
+    qtd_utilizada?: number
+  }>
+  prenhezPorLote?: any[]
   linhas: LinhaExameExtraida[]
   alertasGerais: string[]
+  conciliacao?: {
+    status: 'conciliado' | 'divergente' | 'pendente'
+    totalResumo: number
+    totalLinhas: number
+    diferenca: number
+    mensagem: string
+  }
 }
 
 export interface ResultadoAplicacaoReprodutiva {
@@ -158,16 +197,35 @@ export async function processarRelatorioReprodutivo(
   let countVazias = 0
   let countPerdas = 0
 
+  // Detectar formato
+  const formatoDetectado = (raw.tipo_formato || 'laudo_dg_individual') as
+    | 'relatorio_final_estacao'
+    | 'caderno_paricao_previsao'
+    | 'laudo_dg_individual'
+
   for (let idx = 0; idx < rawAnimais.length; idx++) {
     const item = rawAnimais[idx]
     const idTemp = item.id_temp || `dg_${idx + 1}_${Date.now()}`
-    const brinco = String(item.brinco || '')
+
+    // Brinco normalizado: série + número se existir
+    let brinco = String(item.brinco || '')
       .trim()
       .toUpperCase()
+    const serie = item.serie ? String(item.serie).trim().toUpperCase() : undefined
+    const numero = item.numero ? String(item.numero).trim().toUpperCase() : undefined
+
+    if (!brinco && numero) {
+      brinco = serie ? `${serie} ${numero}` : numero
+    }
 
     let resultado: ResultadoGestacao = 'duvidoso'
     const rLower = String(item.resultado || '').toLowerCase()
-    if (rLower.includes('prenh') || rLower.includes('positi') || rLower === 'p') {
+    if (
+      rLower.includes('prenh') ||
+      rLower.includes('gestan') ||
+      rLower.includes('positi') ||
+      rLower === 'p'
+    ) {
       resultado = 'prenhe'
       countPrenhes++
     } else if (rLower.includes('vazi') || rLower.includes('negati') || rLower === 'v') {
@@ -181,7 +239,9 @@ export async function processarRelatorioReprodutivo(
       countPerdas++
     }
 
-    const dataExame = item.data_exame || dataPadrao
+    const dataCobertura = item.data_cobertura || undefined
+    const dataPrevistaParto = item.data_prevista_parto || undefined
+    const dataExame = item.data_exame || dataCobertura || dataPadrao
     const diasGest = Math.max(0, parseInt(String(item.dias_gestacao || 0), 10) || 0)
 
     let terco: TercoGestacao = 'primeiro'
@@ -196,9 +256,36 @@ export async function processarRelatorioReprodutivo(
     const pesoAjustado205 =
       pesoDesm > 0 ? calcularPesoAjustado205Dias(pesoDesm, diasDesm, pesoNasc) : undefined
 
-    const dedupHash = gerarHashExame(brinco, dataExame, item.tipo_manejo || 'iatf')
-    const jaImportado = mapDedup.has(dedupHash) || mapDedup.has(`${brinco}_${dataExame}`)
-    const registroExistenteId = mapDedup.get(dedupHash) || mapDedup.get(`${brinco}_${dataExame}`)
+    // Validação de Previsão de Parto (≈ data_cobertura + 290 dias)
+    let divergenciaPrevisaoDias = 0
+    let statusPrevisao: 'OK' | 'AMBIGUO' | 'AUSENTE' = 'AUSENTE'
+    if (dataCobertura && dataPrevistaParto) {
+      try {
+        const dCob = new Date(dataCobertura).getTime()
+        const dPrev = new Date(dataPrevistaParto).getTime()
+        const diffDias = Math.round((dPrev - dCob) / (1000 * 60 * 60 * 24))
+        divergenciaPrevisaoDias = diffDias - 290
+        if (Math.abs(divergenciaPrevisaoDias) <= 5) {
+          statusPrevisao = 'OK'
+        } else {
+          statusPrevisao = 'AMBIGUO'
+        }
+      } catch {
+        statusPrevisao = 'AMBIGUO'
+      }
+    } else if (dataPrevistaParto) {
+      statusPrevisao = 'OK'
+    }
+
+    const tipoManejoCalc =
+      item.tipo_manejo ||
+      (item.touro_ou_lote_iatf?.toUpperCase().includes('REPASSE') ? 'repasses' : 'iatf')
+
+    // Atenção: deduplicar por brinco + data_cobertura/data_exame + tipo_manejo, NUNCA só por brinco
+    const chaveData = dataCobertura || dataExame
+    const dedupHash = gerarHashExame(brinco, chaveData, tipoManejoCalc)
+    const jaImportado = mapDedup.has(dedupHash) || mapDedup.has(`${brinco}_${chaveData}`)
+    const registroExistenteId = mapDedup.get(dedupHash) || mapDedup.get(`${brinco}_${chaveData}`)
 
     const camposStatus: Record<string, CampoStatusReprodutivo> = item.campos_status || {}
     const alertas: string[] = Array.isArray(item.alertas) ? [...item.alertas] : []
@@ -232,9 +319,20 @@ export async function processarRelatorioReprodutivo(
       camposStatus['resultado'] = { status: 'OK', confianca: 'alta' }
     }
 
+    if (statusPrevisao === 'AMBIGUO') {
+      camposStatus['data_prevista_parto'] = {
+        status: 'AMBIGUO',
+        confianca: 'media',
+        motivo: `Previsão difere da gestação padrão de 290 dias em ${divergenciaPrevisaoDias} dias`,
+      }
+      alertas.push(
+        `Previsão de parto com desvio de ${divergenciaPrevisaoDias} dias em relação aos 290 dias padrão`,
+      )
+    }
+
     if (jaImportado) {
       alertas.push(
-        'Diagnóstico já registrado nesta data para esta matriz — reimportação não duplicará',
+        'Diagnóstico já registrado nesta data de cobertura para esta matriz — não será duplicado',
       )
     }
 
@@ -244,8 +342,8 @@ export async function processarRelatorioReprodutivo(
       resultado,
       diasGestacao: diasGest > 0 ? diasGest : undefined,
       tercoGestacao: terco,
-      touroOuLoteIatf: item.touro_ou_lote_iatf || undefined,
-      tipoManejo: item.tipo_manejo || 'iatf',
+      touroOuLoteIatf: item.touro_ou_lote_iatf || item.touro_nome || undefined,
+      tipoManejo: tipoManejoCalc,
       dataExame,
       dataParto: item.data_parto || undefined,
       pesoBezerroNascimentoKg: pesoNasc,
@@ -255,6 +353,15 @@ export async function processarRelatorioReprodutivo(
       pesoAjustado205dKg: pesoAjustado205,
       loteOrigem: item.lote_origem || raw.lote_ou_pasto || undefined,
       veterinario: item.veterinario || raw.veterinario_responsavel || undefined,
+      serie,
+      numero,
+      categoriaMatriz: item.categoria_matriz || item.categoria || undefined,
+      touroNome: item.touro_nome || undefined,
+      touroRegistro: item.touro_registro || undefined,
+      dataCobertura,
+      dataPrevistaParto,
+      divergenciaPrevisaoDias,
+      statusPrevisao,
       camposStatus,
       alertas,
       dedupHash,
@@ -264,10 +371,34 @@ export async function processarRelatorioReprodutivo(
     })
   }
 
-  const totalExpostas = linhas.length
-  const taxaPrenhez = totalExpostas > 0 ? (countPrenhes / totalExpostas) * 100 : 0
+  const totalExpostas = raw.total_expostas || linhas.length
+  const totalPrenhes = raw.total_prenhes !== undefined ? raw.total_prenhes : countPrenhes
+  const totalVazias = raw.total_vazias !== undefined ? raw.total_vazias : countVazias
+  const taxaPrenhez =
+    raw.taxa_prenhez_pct !== undefined
+      ? raw.taxa_prenhez_pct
+      : totalExpostas > 0
+        ? (totalPrenhes / totalExpostas) * 100
+        : 0
+
+  // Conciliação entre resumo e linhas
+  let conciliacao: ResultadoProcessamentoReprodutivo['conciliacao'] = undefined
+  if (raw.total_prenhes && linhas.length > 0) {
+    const dif = countPrenhes - raw.total_prenhes
+    conciliacao = {
+      status: dif === 0 ? 'conciliado' : 'divergente',
+      totalResumo: raw.total_prenhes,
+      totalLinhas: countPrenhes,
+      diferenca: dif,
+      mensagem:
+        dif === 0
+          ? `Perfeito: ${countPrenhes} linhas gestantes batem exatamente com o resumo de ${raw.total_prenhes} gestantes!`
+          : `Atenção: ${countPrenhes} gestantes identificadas nas linhas vs ${raw.total_prenhes} no resumo (diferença de ${dif}).`,
+    }
+  }
 
   return {
+    tipoFormato: formatoDetectado,
     nomeEstacao: raw.nome_estacao || `Estação ${anoSafraSugerido}`,
     anoSafra: anoSafraSugerido,
     veterinario: raw.veterinario_responsavel || 'Veterinário Responsável',
@@ -275,12 +406,28 @@ export async function processarRelatorioReprodutivo(
     dataPadraoExame: dataPadrao,
     totalLidos: rawAnimais.length,
     totalExpostas,
-    totalPrenhes: countPrenhes,
-    totalVazias: countVazias,
+    totalPrenhes,
+    totalVazias,
     totalPerdas: countPerdas,
     taxaPrenhezPct: Number(taxaPrenhez.toFixed(1)),
+    duracaoDias: raw.duracao_dias || undefined,
+    dataInicio: raw.data_inicio || undefined,
+    dataFim: raw.data_fim || undefined,
+    dataInicioParto: raw.data_inicio_parto || undefined,
+    dataFimParto: raw.data_fim_parto || undefined,
+    gestantesIatf: raw.gestantes_iatf || undefined,
+    gestantesTouro: raw.gestantes_touro || undefined,
+    taxaCioPct: raw.taxa_cio_pct || undefined,
+    taxaAbortoDgInicialPct: raw.taxa_aborto_dg_inicial_pct || undefined,
+    dadosIatf: raw.dados_iatf || undefined,
+    categoriasAgregado: raw.categorias_agregado || undefined,
+    mapaParicaoMensal: raw.mapa_paricao_mensal || undefined,
+    concepcaoPorRodada: raw.concepcao_por_rodada || undefined,
+    prenhezPorTouro: raw.prenhez_por_touro || undefined,
+    prenhezPorLote: raw.prenhez_por_lote || undefined,
     linhas,
     alertasGerais: raw.alertas_gerais || [],
+    conciliacao,
   }
 }
 
@@ -301,14 +448,32 @@ export async function aplicarRelatorioReprodutivoConfirmado(
   let gravados = 0
   let ignorados = 0
 
-  // 1. Criar ou atualizar a estação de monta
+  // 1. Criar ou atualizar a estação de monta com todos os agregados novos
   const estacao = await salvarOuAtualizarEstacao({
     nome: resultadoProc.nomeEstacao,
     ano_safra: resultadoProc.anoSafra,
+    data_inicio: resultadoProc.dataInicio,
+    data_fim: resultadoProc.dataFim,
+    duracao_dias: resultadoProc.duracaoDias,
+    data_inicio_parto: resultadoProc.dataInicioParto,
+    data_fim_parto: resultadoProc.dataFimParto,
     total_expostas: resultadoProc.totalExpostas,
     total_prenhes: resultadoProc.totalPrenhes,
     total_vazias: resultadoProc.totalVazias,
+    gestantes_iatf: resultadoProc.gestantesIatf,
+    gestantes_touro: resultadoProc.gestantesTouro,
     taxa_prenhez_pct: resultadoProc.taxaPrenhezPct,
+    taxa_cio_pct: resultadoProc.taxaCioPct,
+    taxa_aborto_dg_inicial_pct: resultadoProc.taxaAbortoDgInicialPct,
+    dados_iatf: resultadoProc.dadosIatf,
+    categorias_agregado: resultadoProc.categoriasAgregado,
+    mapa_paricao_mensal: resultadoProc.mapaParicaoMensal,
+    concepcao_por_rodada: resultadoProc.concepcaoPorRodada,
+    prenhez_por_touro: resultadoProc.prenhezPorTouro,
+    prenhez_por_lote: resultadoProc.prenhezPorLote,
+    formato_origem: resultadoProc.tipoFormato,
+    conciliacao_status: resultadoProc.conciliacao?.status || 'pendente',
+    conciliacao_detalhes: resultadoProc.conciliacao || undefined,
     status: 'em_andamento',
     observacoes: `Importado pelo Robô Chicão via arquivo ${nomeArquivo} em ${new Date().toLocaleDateString('pt-BR')}`,
   })
@@ -341,6 +506,15 @@ export async function aplicarRelatorioReprodutivoConfirmado(
         lote_origem: linha.loteOrigem || '',
         veterinario_responsavel: linha.veterinario || resultadoProc.veterinario,
         arquivo_origem: nomeArquivo,
+        serie: linha.serie || '',
+        numero: linha.numero || '',
+        categoria_matriz: linha.categoriaMatriz || '',
+        touro_nome: linha.touroNome || '',
+        touro_registro: linha.touroRegistro || '',
+        data_cobertura: linha.dataCobertura || undefined,
+        data_prevista_parto: linha.dataPrevistaParto || undefined,
+        divergencia_previsao_dias: linha.divergenciaPrevisaoDias || 0,
+        status_previsao: linha.statusPrevisao || 'AUSENTE',
         dedup_hash: linha.dedupHash,
         protocolo_audit_id: protocoloAuditId,
       })

@@ -427,70 +427,110 @@ routerAdd('POST', '/backend/v1/maestro/process-fiscal', (e) => {
 
 /**
  * 4. POST /backend/v1/maestro/process-reproducao
- * Rota dedicada para extração de RELATÓRIOS REPRODUTIVOS (Diagnósticos de Gestação, IATF, Parição e Desmame em PDF/DOCX/imagens).
+ * Rota dedicada para extração de RELATÓRIOS REPRODUTIVOS do Robô Chicão.
+ * Suporta 3 formatos principais:
+ * 1. "relatorio_final_estacao" (resumo agregado: ANIMAIS TRABALHADOS, TAXA DE PRENHEZ FINAL, DADOS GERAIS DA IATF,
+ *    TAXA DE CONCEPÇÃO, MAPA DE PARIÇÃO, QTD DE PRENHEZ POR TOURO, % PRENHEZ POR CATEGORIA, TAXA DE CIO)
+ * 2. "caderno_paricao_previsao" (tabela linha a linha: Série, Número, Categoria, DG, Touro, Data Cobertura, Previsão Parto)
+ * 3. "laudo_dg_individual" (laudo veterinário clássico por animal)
  */
+
 routerAdd('POST', '/backend/v1/maestro/process-reproducao', (e) => {
   const PROMPT_REPRODUCAO =
-    'Você é o módulo zootécnico especialista em Reprodução Bovina e Diagnóstico de Gestação do Robô Chicão do Gestão Pecuária Integrada. ' +
-    'Sua missão é analisar laudos veterinários em PDF, relatórios de IATF, fichas de toque/ultrassonografia e planilhas de parição/desmama.\n\n' +
-    'INSTRUÇÕES OBRIGATÓRIAS:\n' +
-    '1. DADOS DA ESTAÇÃO/SAFRA:\n' +
-    '   - Identifique ou sugira o nome da estação/safra (ex: "Estação 2024/2025", "IATF 1º Giro 2024").\n' +
-    '   - ano_safra no formato "AAAA/AAAA" (ex: "2024/2025") ou ano base.\n' +
-    '   - veterinario_responsavel e lote_ou_pasto se identificados no cabeçalho.\n' +
-    '2. EXTRAÇÃO POR ANIMAL (lista `animais`):\n' +
-    '   - brinco: identificador único da matriz (string limpa, ex: "BR-1020", "0452", "VACA-12"). OBRIGATÓRIO.\n' +
-    '   - resultado: "prenhe" | "vazia" | "perda_embrionaria" | "perda_fetal" | "duvidoso". OBRIGATÓRIO.\n' +
-    '   - dias_gestacao: número estimado de dias de gestação informado no laudo (se ausente, 0 ou null).\n' +
-    '   - terco_gestacao: "primeiro" (até 90d), "segundo" (91-180d), "terceiro" (>180d) ou deduzido dos dias.\n' +
-    '   - touro_ou_lote_iatf: touro utilizado, protocolo IATF ou lote de monta (se houver).\n' +
-    '   - tipo_manejo: "iatf" | "monta_natural" | "repasses" | "revisite".\n' +
-    '   - data_exame: data do toque/DG no formato AAAA-MM-DD. Se ausente no animal, herda a data geral do documento.\n' +
-    '   - data_parto: data de parição quando o documento for histórico de parição/desmama (AAAA-MM-DD).\n' +
-    '   - peso_bezerro_nascimento_kg: peso ao nascer em kg (se houver, padrão ~32-35kg).\n' +
-    '   - peso_bezerro_desmama_kg: peso do bezerro na desmama em kg (se houver).\n' +
-    '   - dias_ate_desmama: idade em dias do bezerro na desmama (padrão ~205 dias).\n' +
-    '   - lote_origem: lote da matriz no documento.\n' +
-    '3. CONFERÊNCIA DE STATUS POR CAMPO & CONFIANÇA:\n' +
-    '   - Para cada campo ("brinco", "resultado", "data_exame", "dias_gestacao"), defina status ("OK", "AUSENTE", "ILEGIVEL", "AMBIGUO") e confianca ("alta", "media", "baixa").\n' +
-    '   - Se o brinco estiver manchado ou ambíguo, aponte status "AMBIGUO" ou "ILEGIVEL".\n' +
-    '   - NUNCA invente brinco ou resultado de diagnóstico: aponte ausência com clareza.\n' +
-    '4. CONSOLIDAÇÃO PRELIMINAR:\n' +
-    '   - total_expostas: contagem total de matrizes avaliadas no laudo.\n' +
-    '   - total_prenhes: quantidade diagnosticadas prenhes.\n' +
-    '   - total_vazias: quantidade diagnosticadas vazias.\n' +
-    '   - taxa_prenhez_pct: (total_prenhes / total_expostas) * 100.\n' +
-    '   - alertas: lista de inconsistências encontradas (ex: mesmo brinco duplicado no laudo, dias de gestação incompatíveis, etc).\n\n' +
-    'Devolva EXCLUSIVAMENTE um objeto JSON válido no formato:\n' +
+    'Você é o módulo zootécnico especialista em Reprodução Bovina do Robô Chicão do Gestão Pecuária Integrada. ' +
+    'Sua missão é detectar o formato do documento pecuário enviado e extrair estritamente os dados conforme as regras:\n\n' +
+    'DETECTAR FORMATO:\n' +
+    'A) "relatorio_final_estacao": documento com resumos agregados contendo rótulos como "DADOS GERAIS DA ESTAÇÃO", ' +
+    '"ANIMAIS TRABALHADOS", "TAXA DE PRENHEZ FINAL", "DADOS GERAIS DA IATF", "TAXA DE CONCEPÇÃO", "MAPA DE PARIÇÃO", ' +
+    '"QTD DE PRENHEZ POR TOURO", "% DE PRENHEZ POR CATEGORIA", "TAXA DE CIO", "TAXA DE ABORTO DO DG INICIAL", "MÉDIA DE PRENHEZ POR TOURO".\n' +
+    'B) "caderno_paricao_previsao": tabela linha a linha de cobertura/parto com colunas: Série, Número (brinco), Categoria, DG, Touro, Data Cobertura, Previsão de Parto (290), Nascimento, Observações.\n' +
+    'C) "laudo_dg_individual": laudo veterinário de toque/DG com matrizes e diagnóstico.\n\n' +
+    'REGRAS PARA FORMATO "relatorio_final_estacao":\n' +
+    '- Extraia todos os agregados da estação:\n' +
+    '  * nome_estacao: nome identificado (ex: "Fazenda Sto Antonio - Estação de Monta 2025-2026")\n' +
+    '  * ano_safra: safra identificada (ex: "2025/2026" ou "2025-2026")\n' +
+    '  * data_inicio: YYYY-MM-DD\n' +
+    '  * data_fim: YYYY-MM-DD\n' +
+    '  * duracao_dias: número de dias (ex: 139)\n' +
+    '  * data_inicio_parto: YYYY-MM-DD\n' +
+    '  * data_fim_parto: YYYY-MM-DD\n' +
+    '  * total_expostas (animais trabalhados): número (ex: 883)\n' +
+    '  * total_prenhes (animais gestantes): número (ex: 756)\n' +
+    '  * total_vazias: trabalhadas - gestantes (ex: 127)\n' +
+    '  * gestantes_iatf: número (ex: 653)\n' +
+    '  * gestantes_touro: número (ex: 103)\n' +
+    '  * taxa_prenhez_pct: número (ex: 86)\n' +
+    '  * taxa_aborto_dg_inicial_pct: número (ex: 5)\n' +
+    '  * taxa_cio_pct: número (ex: 57)\n' +
+    '  * dados_iatf: { expostas, inseminacoes, total_gestantes, total_vazias, prenhez_parcial_pct, concepcao_pct, total_gestantes_por_categoria, inseminacoes_por_categoria, prenhez_final_por_categoria }\n' +
+    '  * categorias_agregado: { nuliparas: { trabalhadas, gestantes, taxa_prenhez_pct, taxa_aborto_pct }, primiparas: {...}, secundiparas: {...}, multiparas: {...}, solteiras: {...} }\n' +
+    '  * mapa_paricao_mensal: [{ mes: "JUL", qtd: 203 }, { mes: "AGO", qtd: 97 }, ...]\n' +
+    '  * concepcao_por_rodada: { iatf_1: 60, iatf_2: 54, iatf_3: 51, touro: 59 }\n' +
+    '  * prenhez_por_touro: [{ touro: "Rifle PHOC", registro: "PHOC 2163", qtd_prenhez: 106, media_prenhez_pct: 58, qtd_utilizada: 198 }, ...]\n' +
+    '  * prenhez_por_lote: [{ lote: "LOTE 01", expostas_1_iatf, expostas_2_iatf, prenhez_final_pct, ... }]\n\n' +
+    'REGRAS PARA FORMATO "caderno_paricao_previsao":\n' +
+    '- Para CADA linha da tabela, extraia um item em `animais`:\n' +
+    '  * serie: série informada na coluna Série (ex: "NEL BRINCO", "CRUZ BRINCO", "FIGO", "A", "NEL", "CRUZ", "EJ", "REMC")\n' +
+    '  * numero: número do brinco (ex: "81", "1068", "1347", "862")\n' +
+    '  * brinco: identificador unificado normalizado (ex: se Série for "NEL BRINCO" e Número "81" -> "NEL BRINCO 81"; se Série for "A" e Número "862" -> "A 862"; se Série estiver vazia, use apenas Número)\n' +
+    '  * categoria_matriz: "Nulípara" | "Primípara" | "Secundípara" | "Multípara" | "Solteira"\n' +
+    '  * resultado: "prenhe" se DG for "Gestante"; "vazia" se "Vazia"\n' +
+    '  * touro_nome: nome do touro sem o registro (ex: "Heringer Missil", "Astro Jacamin", "Rifle PHOC", "REPASSE")\n' +
+    '  * touro_registro: registro oficial entre parênteses se houver (ex: "FHGM A1981", "MMVA 3739", "PHOC 2163")\n' +
+    '  * touro_ou_lote_iatf: touro completo formatado (ex: "Heringer Missil (FHGM A1981)" ou "REPASSE")\n' +
+    '  * data_cobertura: YYYY-MM-DD\n' +
+    '  * data_prevista_parto: YYYY-MM-DD (coluna Previsão de Parto 290)\n' +
+    '  * tipo_manejo: se touro for "REPASSE", use "repasses"; senão "iatf"\n' +
+    '  * status_previsao: calcule data_cobertura + 290 dias. Se a data informada diferir em mais de 5 dias da esperada, sinalize "AMBIGUO"; se compatível, "OK"; se faltar data, "AUSENTE".\n\n' +
+    'CONCILIAÇÃO AUTOMÁTICA:\n' +
+    'Se o documento contiver tanto resumo geral quanto linhas ou for importado em sequência, reporte `total_gestantes_resumo` e `total_linhas_gestantes`. Se divergirem, inclua alerta de divergência.\n\n' +
+    'NADA É INVENTADO: se um dado estiver ausente no documento, preencha com null ou 0, status AUSENTE.\n\n' +
+    'Devolva EXCLUSIVAMENTE um objeto JSON válido:\n' +
     '{\n' +
+    '  "tipo_formato": "relatorio_final_estacao" | "caderno_paricao_previsao" | "laudo_dg_individual",\n' +
     '  "nome_estacao": "...",\n' +
-    '  "ano_safra": "2024/2025",\n' +
-    '  "data_padrao_exame": "AAAA-MM-DD",\n' +
-    '  "veterinario_responsavel": "...",\n' +
-    '  "lote_ou_pasto": "...",\n' +
+    '  "ano_safra": "2025/2026",\n' +
+    '  "data_inicio": "YYYY-MM-DD",\n' +
+    '  "data_fim": "YYYY-MM-DD",\n' +
+    '  "duracao_dias": 0,\n' +
+    '  "data_inicio_parto": "YYYY-MM-DD",\n' +
+    '  "data_fim_parto": "YYYY-MM-DD",\n' +
     '  "total_expostas": 0,\n' +
     '  "total_prenhes": 0,\n' +
     '  "total_vazias": 0,\n' +
+    '  "gestantes_iatf": 0,\n' +
+    '  "gestantes_touro": 0,\n' +
     '  "taxa_prenhez_pct": 0,\n' +
+    '  "taxa_aborto_dg_inicial_pct": 0,\n' +
+    '  "taxa_cio_pct": 0,\n' +
+    '  "dados_iatf": {},\n' +
+    '  "categorias_agregado": {},\n' +
+    '  "mapa_paricao_mensal": [],\n' +
+    '  "concepcao_por_rodada": {},\n' +
+    '  "prenhez_por_touro": [],\n' +
+    '  "prenhez_por_lote": [],\n' +
     '  "animais": [\n' +
     '    {\n' +
     '      "id_temp": "dg_1",\n' +
+    '      "serie": "...",\n' +
+    '      "numero": "...",\n' +
     '      "brinco": "...",\n' +
-    '      "resultado": "prenhe"|"vazia"|"perda_embrionaria"|"perda_fetal"|"duvidoso",\n' +
-    '      "dias_gestacao": 0,\n' +
-    '      "terco_gestacao": "primeiro"|"segundo"|"terceiro",\n' +
+    '      "categoria_matriz": "Multípara",\n' +
+    '      "resultado": "prenhe",\n' +
+    '      "touro_nome": "...",\n' +
+    '      "touro_registro": "...",\n' +
     '      "touro_ou_lote_iatf": "...",\n' +
-    '      "tipo_manejo": "iatf"|"monta_natural"|"repasses",\n' +
-    '      "data_exame": "AAAA-MM-DD",\n' +
-    '      "data_parto": "AAAA-MM-DD",\n' +
-    '      "peso_bezerro_nascimento_kg": 0,\n' +
-    '      "peso_bezerro_desmama_kg": 0,\n' +
-    '      "dias_ate_desmama": 0,\n' +
-    '      "lote_origem": "...",\n' +
+    '      "data_cobertura": "YYYY-MM-DD",\n' +
+    '      "data_prevista_parto": "YYYY-MM-DD",\n' +
+    '      "tipo_manejo": "iatf"|"repasses",\n' +
+    '      "data_exame": "YYYY-MM-DD",\n' +
+    '      "status_previsao": "OK"|"AMBIGUO"|"AUSENTE",\n' +
+    '      "divergencia_previsao_dias": 0,\n' +
     '      "campos_status": {\n' +
     '        "brinco": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
-    '        "resultado": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" },\n' +
-    '        "data_exame": { "status": "OK"|"AUSENTE"|"ILEGIVEL"|"AMBIGUO", "confianca": "alta"|"media"|"baixa" }\n' +
+    '        "resultado": { "status": "OK", "confianca": "alta" },\n' +
+    '        "data_cobertura": { "status": "OK", "confianca": "alta" },\n' +
+    '        "data_prevista_parto": { "status": "OK"|"AMBIGUO", "confianca": "alta" }\n' +
     '      },\n' +
     '      "alertas": []\n' +
     '    }\n' +

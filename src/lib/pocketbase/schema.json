@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T03:17:38.567Z",
+  "generatedAt": "2026-10-22T21:14:36.846Z",
   "collections": [
     {
       "name": "users",
@@ -4097,6 +4097,102 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "duracao_dias",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_inicio_parto",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_fim_parto",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gestantes_iatf",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "gestantes_touro",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_cio_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "taxa_aborto_dg_inicial_pct",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dados_iatf",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "categorias_agregado",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "mapa_paricao_mensal",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "concepcao_por_rodada",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "prenhez_por_touro",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "prenhez_por_lote",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "formato_origem",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "conciliacao_status",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "conciliacao_detalhes",
+          "type": "json",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [
@@ -4259,6 +4355,60 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "serie",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "numero",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "categoria_matriz",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "touro_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "touro_registro",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_cobertura",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_prevista_parto",
+          "type": "date",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "divergencia_previsao_dias",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status_previsao",
+          "type": "text",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [
