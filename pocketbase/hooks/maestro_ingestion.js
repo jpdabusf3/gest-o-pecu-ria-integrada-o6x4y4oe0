@@ -439,150 +439,202 @@ routerAdd('POST', '/backend/v1/maestro/run-reproducao-sync', (e) => {
   try {
     const rawData = e.requestInfo().body || {}
     const estacoesInput = rawData.estacoes || []
-    const itensInput = rawData.itens || []
+    const examesInput =
+      rawData.itens2526 ||
+      (rawData.itens
+        ? rawData.itens.filter(function (it) {
+            return it.ano_safra === '2025/2026'
+          })
+        : [])
+    const matrizesInput =
+      rawData.itens2425 ||
+      (rawData.itens
+        ? rawData.itens.filter(function (it) {
+            return it.ano_safra === '2024/2025'
+          })
+        : [])
 
     const colEstacoes = $app.findCollectionByNameOrId('estacoes_monta')
     const colExames = $app.findCollectionByNameOrId('exames_gestacao')
     const colMatrizes = $app.findCollectionByNameOrId('historico_matrizes')
 
-    const estacoesMap = {}
     let estacoesSalvas = 0
-
-    // 1. Gravar/Atualizar Estações de Monta
-    for (let i = 0; i < estacoesInput.length; i++) {
-      const ed = estacoesInput[i]
-      let recEstacao = null
-      try {
-        recEstacao = $app.findFirstRecordByFilter('estacoes_monta', 'ano_safra = {:safra}', {
-          safra: ed.ano_safra,
-        })
-      } catch (_) {}
-
-      if (!recEstacao) {
-        recEstacao = new Record(colEstacoes)
-      }
-
-      recEstacao.set('nome', ed.nome)
-      recEstacao.set('ano_safra', ed.ano_safra)
-      recEstacao.set('data_inicio', ed.data_inicio)
-      recEstacao.set('data_fim', ed.data_fim)
-      recEstacao.set('duracao_dias', ed.duracao_dias || 0)
-      recEstacao.set('data_inicio_parto', ed.data_inicio_parto || '')
-      recEstacao.set('data_fim_parto', ed.data_fim_parto || '')
-      recEstacao.set('total_expostas', ed.total_expostas || 0)
-      recEstacao.set('total_prenhes', ed.total_prenhes || 0)
-      recEstacao.set('total_vazias', ed.total_vazias || 0)
-      recEstacao.set('total_paridas', ed.total_paridas || 0)
-      recEstacao.set('total_desmamados', ed.total_desmamados || 0)
-      recEstacao.set('taxa_prenhez_pct', ed.taxa_prenhez_pct || 0)
-      recEstacao.set('taxa_paricao_pct', ed.taxa_paricao_pct || 0)
-      recEstacao.set('taxa_desmame_pct', ed.taxa_desmame_pct || 0)
-      recEstacao.set('gestantes_iatf', ed.gestantes_iatf || 0)
-      recEstacao.set('gestantes_touro', ed.gestantes_touro || 0)
-      recEstacao.set('taxa_cio_pct', ed.taxa_cio_pct || 0)
-      recEstacao.set('taxa_aborto_dg_inicial_pct', ed.taxa_aborto_dg_inicial_pct || 0)
-      recEstacao.set('iep_medio_meses', ed.iep_medio_meses || 12.6)
-      recEstacao.set('perda_gestacional_pct', ed.perda_gestacional_pct || 0)
-      recEstacao.set('perda_primeiro_terco_pct', ed.perda_primeiro_terco_pct || 0)
-      recEstacao.set('perda_segundo_terco_pct', ed.perda_segundo_terco_pct || 0)
-      recEstacao.set('perda_terceiro_terco_pct', ed.perda_terceiro_terco_pct || 0)
-      recEstacao.set('kg_desmamado_matriz', ed.kg_desmamado_matriz || 0)
-      recEstacao.set('status', ed.status || 'em_andamento')
-      recEstacao.set('formato_origem', ed.formato_origem || '')
-      recEstacao.set('conciliacao_status', ed.conciliacao_status || 'conciliado')
-      if (ed.conciliacao_detalhes)
-        recEstacao.set('conciliacao_detalhes', JSON.stringify(ed.conciliacao_detalhes))
-      if (ed.mapa_paricao_mensal)
-        recEstacao.set('mapa_paricao_mensal', JSON.stringify(ed.mapa_paricao_mensal))
-      if (ed.concepcao_por_rodada)
-        recEstacao.set('concepcao_por_rodada', JSON.stringify(ed.concepcao_por_rodada))
-      if (ed.prenhez_por_touro)
-        recEstacao.set('prenhez_por_touro', JSON.stringify(ed.prenhez_por_touro))
-      if (ed.categorias_agregado)
-        recEstacao.set('categorias_agregado', JSON.stringify(ed.categorias_agregado))
-      if (ed.dados_iatf) recEstacao.set('dados_iatf', JSON.stringify(ed.dados_iatf))
-
-      $app.save(recEstacao)
-      estacoesMap[ed.ano_safra] = recEstacao.id
-      estacoesSalvas++
-    }
-
-    // 2. Gravar Itens individuais
     let examesSalvos = 0
     let matrizesSalvas = 0
 
-    for (let j = 0; j < itensInput.length; j++) {
-      const it = itensInput[j]
-      const estacaoId = estacoesMap[it.ano_safra] || ''
-      const dedupHash =
-        'dg_' +
-        it.brinco.replace(/\s+/g, '') +
-        '_' +
-        (it.data_cobertura || 'sem_data') +
-        '_' +
-        it.ano_safra.replace(/\//g, '-')
+    $app.runInTransaction((txApp) => {
+      const estacoesMap = {}
 
-      let recExame = null
-      try {
-        recExame = $app.findFirstRecordByFilter('exames_gestacao', 'dedup_hash = {:h}', {
-          h: dedupHash,
-        })
-      } catch (_) {}
+      // 1. Gravar/Atualizar Estações de Monta (apenas se fornecido)
+      for (let i = 0; i < estacoesInput.length; i++) {
+        const ed = estacoesInput[i]
+        let recEstacao = null
+        try {
+          recEstacao = txApp.findFirstRecordByFilter('estacoes_monta', 'ano_safra = {:safra}', {
+            safra: ed.ano_safra,
+          })
+        } catch (_) {}
 
-      if (!recExame) {
-        recExame = new Record(colExames)
-        recExame.set('dedup_hash', dedupHash)
+        if (!recEstacao) {
+          recEstacao = new Record(colEstacoes)
+        }
+
+        recEstacao.set('nome', ed.nome)
+        recEstacao.set('ano_safra', ed.ano_safra)
+        recEstacao.set('data_inicio', ed.data_inicio)
+        recEstacao.set('data_fim', ed.data_fim)
+        recEstacao.set('duracao_dias', ed.duracao_dias || 0)
+        recEstacao.set('data_inicio_parto', ed.data_inicio_parto || '')
+        recEstacao.set('data_fim_parto', ed.data_fim_parto || '')
+        recEstacao.set('total_expostas', ed.total_expostas || 0)
+        recEstacao.set('total_prenhes', ed.total_prenhes || 0)
+        recEstacao.set('total_vazias', ed.total_vazias || 0)
+        recEstacao.set('total_paridas', ed.total_paridas || 0)
+        recEstacao.set('total_desmamados', ed.total_desmamados || 0)
+        recEstacao.set('taxa_prenhez_pct', ed.taxa_prenhez_pct || 0)
+        recEstacao.set('taxa_paricao_pct', ed.taxa_paricao_pct || 0)
+        recEstacao.set('taxa_desmame_pct', ed.taxa_desmame_pct || 0)
+        recEstacao.set('gestantes_iatf', ed.gestantes_iatf || 0)
+        recEstacao.set('gestantes_touro', ed.gestantes_touro || 0)
+        recEstacao.set('taxa_cio_pct', ed.taxa_cio_pct || 0)
+        recEstacao.set('taxa_aborto_dg_inicial_pct', ed.taxa_aborto_dg_inicial_pct || 0)
+        recEstacao.set('iep_medio_meses', ed.iep_medio_meses || 12.6)
+        recEstacao.set('perda_gestacional_pct', ed.perda_gestacional_pct || 0)
+        recEstacao.set('perda_primeiro_terco_pct', ed.perda_primeiro_terco_pct || 0)
+        recEstacao.set('perda_segundo_terco_pct', ed.perda_segundo_terco_pct || 0)
+        recEstacao.set('perda_terceiro_terco_pct', ed.perda_terceiro_terco_pct || 0)
+        recEstacao.set('kg_desmamado_matriz', ed.kg_desmamado_matriz || 0)
+        recEstacao.set('status', ed.status || 'em_andamento')
+        recEstacao.set('formato_origem', ed.formato_origem || '')
+        recEstacao.set('conciliacao_status', ed.conciliacao_status || 'conciliado')
+        if (ed.conciliacao_detalhes)
+          recEstacao.set('conciliacao_detalhes', JSON.stringify(ed.conciliacao_detalhes))
+        if (ed.mapa_paricao_mensal)
+          recEstacao.set('mapa_paricao_mensal', JSON.stringify(ed.mapa_paricao_mensal))
+        if (ed.concepcao_por_rodada)
+          recEstacao.set('concepcao_por_rodada', JSON.stringify(ed.concepcao_por_rodada))
+        if (ed.prenhez_por_touro)
+          recEstacao.set('prenhez_por_touro', JSON.stringify(ed.prenhez_por_touro))
+        if (ed.categorias_agregado)
+          recEstacao.set('categorias_agregado', JSON.stringify(ed.categorias_agregado))
+        if (ed.dados_iatf) recEstacao.set('dados_iatf', JSON.stringify(ed.dados_iatf))
+
+        txApp.save(recEstacao)
+        estacoesMap[ed.ano_safra] = recEstacao.id
+        estacoesSalvas++
       }
 
-      recExame.set('brinco', it.brinco)
-      recExame.set('estacao_id', estacaoId)
-      recExame.set('ano_safra', it.ano_safra)
-      recExame.set('data_exame', it.data_cobertura || '2025-10-11')
-      recExame.set('resultado', it.resultado || 'prenhe')
-      recExame.set('dias_gestacao', it.dias_gestacao || 290)
-      recExame.set('serie', it.serie || '')
-      recExame.set('numero', it.numero || '')
-      recExame.set('categoria_matriz', it.categoria_matriz || '')
-      recExame.set('touro_nome', it.touro_nome || '')
-      recExame.set('touro_registro', it.touro_registro || '')
-      recExame.set('touro_ou_lote_iatf', it.touro_ou_lote_iatf || it.touro_nome || '')
-      recExame.set('data_cobertura', it.data_cobertura || '')
-      recExame.set('data_prevista_parto', it.data_prevista_parto || '')
-      recExame.set('tipo_manejo', it.tipo_manejo || 'iatf')
-      recExame.set('status_previsao', it.status_previsao || 'OK')
-      recExame.set(
-        'arquivo_origem',
-        it.ano_safra === '2025/2026'
-          ? 'relatrio-parto-faz.sto-antonio-e.m.25-26.pdf'
-          : 'caderno-de-paricao-e.m.2024-25.pdf',
-      )
+      // Se estacoesMap não veio do input, busca IDs do banco
+      if (!estacoesMap['2025/2026']) {
+        try {
+          const e25 = txApp.findFirstRecordByFilter('estacoes_monta', "ano_safra = '2025/2026'")
+          if (e25) estacoesMap['2025/2026'] = e25.id
+        } catch (_) {}
+      }
+      if (!estacoesMap['2024/2025']) {
+        try {
+          const e24 = txApp.findFirstRecordByFilter('estacoes_monta', "ano_safra = '2024/2025'")
+          if (e24) estacoesMap['2024/2025'] = e24.id
+        } catch (_) {}
+      }
 
-      $app.save(recExame)
-      examesSalvos++
+      // 2. Gravar Exames de Gestação (Safra 2025/2026 ~756 registros individuais)
+      const estacao2526Id = estacoesMap['2025/2026'] || ''
+      for (let j = 0; j < examesInput.length; j++) {
+        const it = examesInput[j]
+        const cleanBrinco = (it.brinco || '').trim()
+        if (!cleanBrinco) continue
 
-      // Atualizar historico_matrizes
-      let recMatriz = null
-      try {
-        recMatriz = $app.findFirstRecordByFilter('historico_matrizes', 'brinco = {:b}', {
-          b: it.brinco,
-        })
-      } catch (_) {}
+        const dedupHash =
+          'dg_' +
+          cleanBrinco.replace(/\s+/g, '') +
+          '_' +
+          (it.data_cobertura || 'sem_data') +
+          '_2025-2026'
 
-      if (!recMatriz) {
-        recMatriz = new Record(colMatrizes)
-        recMatriz.set('brinco', it.brinco)
+        let recExame = null
+        try {
+          recExame = txApp.findFirstRecordByFilter('exames_gestacao', 'dedup_hash = {:h}', {
+            h: dedupHash,
+          })
+        } catch (_) {}
+
+        if (!recExame) {
+          recExame = new Record(colExames)
+          recExame.set('dedup_hash', dedupHash)
+        }
+
+        recExame.set('brinco', cleanBrinco)
+        if (estacao2526Id) recExame.set('estacao_id', estacao2526Id)
+        recExame.set('ano_safra', '2025/2026')
+        recExame.set('data_exame', it.data_cobertura || '2025-10-11')
+        recExame.set('resultado', it.resultado || 'prenhe')
+        recExame.set('dias_gestacao', it.dias_gestacao || 290)
+        recExame.set('serie', it.serie || '')
+        recExame.set('numero', it.numero || '')
+        recExame.set('categoria_matriz', it.categoria_matriz || '')
+        recExame.set('touro_nome', it.touro_nome || '')
+        recExame.set('touro_registro', it.touro_registro || '')
+        recExame.set('touro_ou_lote_iatf', it.touro_ou_lote_iatf || it.touro_nome || '')
+        recExame.set('data_cobertura', it.data_cobertura || '')
+        recExame.set('data_prevista_parto', it.data_prevista_parto || '')
+        recExame.set('tipo_manejo', it.tipo_manejo || 'iatf')
+        recExame.set('status_previsao', it.status_previsao || 'OK')
+        recExame.set('arquivo_origem', 'relatrio-parto-faz.sto-antonio-e.m.25-26-2-4647e.pdf')
+
+        txApp.save(recExame)
+        examesSalvos++
+      }
+
+      // 3. Gravar Histórico de Matrizes (Caderno 2024/2025 ~827 registros individuais)
+      for (let k = 0; k < matrizesInput.length; k++) {
+        const mat = matrizesInput[k]
+        const cleanBrinco = (mat.brinco || '').trim()
+        if (!cleanBrinco) continue
+
+        let recMatriz = null
+        try {
+          recMatriz = txApp.findFirstRecordByFilter('historico_matrizes', 'brinco = {:b}', {
+            b: cleanBrinco,
+          })
+        } catch (_) {}
+
+        if (!recMatriz) {
+          recMatriz = new Record(colMatrizes)
+          recMatriz.set('brinco', cleanBrinco)
+        }
+
+        const canonico = mat.touro_codigo_canonico || mat.touro_registro || ''
+        const rotuloTouro = canonico ? mat.touro_nome + ' (' + canonico + ')' : mat.touro_nome || ''
+        recMatriz.set('nome_ou_registro', rotuloTouro)
         recMatriz.set('total_partos', 1)
         recMatriz.set('total_exames_registrados', 1)
-        recMatriz.set('iep_medio_meses', 12.0)
+        recMatriz.set('iep_medio_meses', 12.9)
         recMatriz.set('partos_por_ano_vida', 0.95)
         recMatriz.set('eficiencia_acumulada_pct', 95.0)
-        recMatriz.set('status_reprodutivo', it.resultado === 'prenhe' ? 'prenhe' : 'vazia')
-        recMatriz.set('ultimo_resultado_diagnostico', it.resultado || 'prenhe')
-        recMatriz.set('data_ultimo_diagnostico', it.data_cobertura || '2025-10-11')
-        $app.save(recMatriz)
+        recMatriz.set('status_reprodutivo', mat.resultado === 'vazia' ? 'vazia' : 'prenhe')
+        recMatriz.set('ultimo_resultado_diagnostico', mat.resultado || 'prenhe')
+        recMatriz.set('data_ultimo_diagnostico', mat.data_cobertura || '2024-10-08')
+        recMatriz.set('data_ultimo_parto', mat.data_prevista_parto || '2025-07-25')
+        recMatriz.set(
+          'ciclos_reprodutivos',
+          JSON.stringify([
+            {
+              ano_safra: '2024/2025',
+              categoria: mat.categoria_matriz || 'Primípara',
+              touro: rotuloTouro,
+              touro_codigo: canonico,
+              data_cobertura: mat.data_cobertura,
+              data_parto: mat.data_prevista_parto,
+              resultado: mat.resultado || 'prenhe',
+            },
+          ]),
+        )
+
+        txApp.save(recMatriz)
         matrizesSalvas++
       }
-    }
+    })
 
     return e.json(200, {
       sucesso: true,
