@@ -45,6 +45,10 @@ function mapCanonicalTouro(raw) {
     return { nome: 'Astro Jacamin', registro: 'MMVA 3739', canonico: 'MMVA 3739' }
   if (/Heringer\s*M[ií]ssil/i.test(s))
     return { nome: 'Heringer Míssil', registro: 'FHGM A1981', canonico: 'FHGM A1981' }
+  if (/Camarote/i.test(s))
+    return { nome: 'Camarote S.N.', registro: 'GRI B9334', canonico: 'GRI B9334' }
+  if (/Efetivo/i.test(s))
+    return { nome: 'Efetivo S.N.', registro: 'GRI C1361', canonico: 'GRI C1361' }
   if (/Comboio/i.test(s)) return { nome: 'Comboio SN', registro: '', canonico: 'Comboio SN' }
   if (/Elguapo/i.test(s)) return { nome: 'Rem Elguapo', registro: '', canonico: 'Rem Elguapo' }
   if (/Fusc[aã]o/i.test(s)) return { nome: 'Rem Fuscão', registro: '', canonico: 'Rem Fuscão' }
