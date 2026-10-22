@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/select'
 import { sanitaryEvents } from '@/data/mock'
 import { ProtocolosTab } from '@/components/sanidade/ProtocolosTab'
+import { BibliotecaPromptsTab } from '@/components/sanidade/BibliotecaPromptsTab'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFarm } from '@/contexts/FarmContext'
 import {
@@ -192,6 +193,7 @@ export default function Sanidade() {
         <TabsList className="mb-2 w-full sm:w-auto overflow-x-auto justify-start">
           <TabsTrigger value="agendados">Calendário & Alertas</TabsTrigger>
           <TabsTrigger value="protocolos">Protocolos por Idade</TabsTrigger>
+          <TabsTrigger value="biblioteca-prompts">Biblioteca de Prompts</TabsTrigger>
         </TabsList>
 
         <TabsContent value="agendados" className="mt-0">
@@ -281,6 +283,10 @@ export default function Sanidade() {
 
         <TabsContent value="protocolos" className="mt-0">
           <ProtocolosTab />
+        </TabsContent>
+
+        <TabsContent value="biblioteca-prompts" className="mt-0">
+          <BibliotecaPromptsTab />
         </TabsContent>
       </Tabs>
     </div>
