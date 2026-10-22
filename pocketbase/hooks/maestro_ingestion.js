@@ -584,3 +584,8 @@ routerAdd('POST', '/backend/v1/maestro/process-reproducao', (e) => {
     return e.json(500, { error: err.message || 'Falha ao processar relatório reprodutivo' })
   }
 })
+
+/**
+ * 5. POST /backend/v1/maestro/import-reproducao-real
+ * Ingestão direta dos dados reprodutivos oficiais das estações 2024-25 e 2025-26
+ */

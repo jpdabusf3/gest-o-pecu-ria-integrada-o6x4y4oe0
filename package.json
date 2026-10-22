@@ -15,7 +15,9 @@
     "format:check": "oxfmt --check",
     "preview": "vite preview",
     "test": "echo \"there are no tests for this project\" && exit 0",
-    "test:watch": "echo \"there are no tests for this project\" && exit 0"
+    "test:watch": "echo \"there are no tests for this project\" && exit 0",
+    "extract": "node scripts/extract_pdf_data.mjs",
+    "prebuild": "node scripts/extract_pdf_data.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
