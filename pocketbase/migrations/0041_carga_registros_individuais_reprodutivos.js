@@ -177,8 +177,8 @@ migrate(
       }
     }
 
-    const DATA_2526 = "TEST_INLINE"
-    const DATA_2425 = "TEST_INLINE"
+    const DATA_2526 = 'TEST_INLINE'
+    const DATA_2425 = 'TEST_INLINE'
     const rawRows2526 = []
     const rawRows2425 = []
     const itens2526 = []
@@ -301,7 +301,7 @@ migrate(
     )
   },
   (app) => {
-    console.log("TESTING 0041 MIGRATION APPLY")
+    console.log('TESTING 0041 MIGRATION APPLY')
     // Reversão
     try {
       app.db().newQuery("DELETE FROM exames_gestacao WHERE ano_safra = '2025/2026'").execute()
