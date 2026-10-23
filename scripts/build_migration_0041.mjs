@@ -162,13 +162,13 @@ migrate(
 `
 
 fs.writeFileSync(
-  'pocketbase/migrations/0041_carga_registros_individuais_reprodutivos.js',
-  migrationTemplate,
+  'pocketbase/migrations/0042_carga_registros_individuais_reprodutivos.js',
+  migrationTemplate.replace('0041', '0042'),
 )
 console.log(
-  'Successfully wrote pocketbase/migrations/0041_carga_registros_individuais_reprodutivos.js',
+  'Successfully wrote pocketbase/migrations/0042_carga_registros_individuais_reprodutivos.js',
 )
 console.log(
   'File size bytes:',
-  fs.statSync('pocketbase/migrations/0041_carga_registros_individuais_reprodutivos.js').size,
+  fs.statSync('pocketbase/migrations/0042_carga_registros_individuais_reprodutivos.js').size,
 )
