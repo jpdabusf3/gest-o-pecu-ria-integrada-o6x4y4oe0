@@ -38,13 +38,25 @@ import {
   CustosMargemCriaResult,
 } from '@/services/reproducao'
 import { VisaoEstacaoTab } from '@/components/reproducao/VisaoEstacaoTab'
-import { HistoricoMatrizTab } from '@/components/reproducao/HistoricoMatrizTab'
+import { HistoricoReprodutivoTab } from '@/components/reproducao/HistoricoReprodutivoTab'
+import { ModalCadastroIatf } from '@/components/reproducao/ModalCadastroIatf'
+import { ModalCadastroDg } from '@/components/reproducao/ModalCadastroDg'
+import { ModalCadastroResultadoFinal } from '@/components/reproducao/ModalCadastroResultadoFinal'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Plus, Stethoscope } from 'lucide-react'
 
 export default function Reproducao() {
   const { isGestor, isProprietario } = useAuth()
 
   const [abaAtiva, setAbaAtiva] = useState<
-    'visao' | 'matriz' | 'desempenho' | 'custo_margem' | 'descarte' | 'benchmarking'
+    'visao' | 'historico_reprodutivo' | 'desempenho' | 'custo_margem' | 'descarte' | 'benchmarking'
   >('visao')
 
   // Estados de dados do backend
@@ -53,6 +65,11 @@ export default function Reproducao() {
   const [matrizes, setMatrizes] = useState<HistoricoMatrizRecord[]>([])
   const [estacaoSelecionadaId, setEstacaoSelecionadaId] = useState<string>('todas')
   const [custosCria, setCustosCria] = useState<CustosMargemCriaResult | null>(null)
+
+  // Modais de Cadastro Manual (PEDIDO 1)
+  const [modalIatfAberto, setModalIatfAberto] = useState(false)
+  const [modalDgAberto, setModalDgAberto] = useState(false)
+  const [modalResultadoFinalAberto, setModalResultadoFinalAberto] = useState(false)
 
   // Estado da busca de matriz individual
   const [buscaBrinco, setBuscaBrinco] = useState('')
@@ -273,7 +290,62 @@ export default function Reproducao() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Menu Dropdown de Cadastros Manuais (PEDIDO 1) */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="gap-1.5 border-emerald-700 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 font-semibold shadow-sm"
+              >
+                <Plus className="h-4 w-4 text-emerald-700" />
+                Cadastrar Informações
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-64 text-xs">
+              <DropdownMenuLabel className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                Cadastros Reprodutivos Manuais
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => setModalIatfAberto(true)}
+                className="cursor-pointer gap-2 py-2"
+              >
+                <Baby className="h-4 w-4 text-emerald-700" />
+                <div>
+                  <div className="font-semibold text-foreground">Ação / Rodada de IATF</div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Data, lote, sêmen, protocolo e rodada
+                  </div>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setModalDgAberto(true)}
+                className="cursor-pointer gap-2 py-2"
+              >
+                <Stethoscope className="h-4 w-4 text-emerald-700" />
+                <div>
+                  <div className="font-semibold text-foreground">Diagnóstico de Gestação (DG)</div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Por matriz ou em lote com resultado e dias
+                  </div>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setModalResultadoFinalAberto(true)}
+                className="cursor-pointer gap-2 py-2"
+              >
+                <Award className="h-4 w-4 text-emerald-700" />
+                <div>
+                  <div className="font-semibold text-foreground">Resultado Final da Estação</div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Fechamento oficial, prenhez e quebra IATF×Touro
+                  </div>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button
             asChild
             className="gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold shadow-sm"
@@ -310,10 +382,10 @@ export default function Reproducao() {
             <Calendar className="h-3.5 w-3.5 text-emerald-700" /> Visão da Estação
           </TabsTrigger>
           <TabsTrigger
-            value="matriz"
+            value="historico_reprodutivo"
             className="text-xs py-2 gap-1.5 data-[state=active]:bg-background data-[state=active]:font-semibold"
           >
-            <Baby className="h-3.5 w-3.5 text-emerald-700" /> Histórico da Matriz
+            <Baby className="h-3.5 w-3.5 text-emerald-700" /> Histórico Reprodutivo
           </TabsTrigger>
           <TabsTrigger
             value="desempenho"
@@ -351,18 +423,20 @@ export default function Reproducao() {
             statsEstacao={statsEstacao}
             dadosGraficoEstacoes={dadosGraficoEstacoes}
             dadosDistribuicaoIEP={dadosDistribuicaoIEP}
+            onAbrirCadastroResultadoFinal={() => setModalResultadoFinalAberto(true)}
+            onAbrirCadastroDg={() => setModalDgAberto(true)}
+            onAbrirCadastroIatf={() => setModalIatfAberto(true)}
           />
         </TabsContent>
 
-        {/* ABA 2: HISTÓRICO DA MATRIZ */}
-        <TabsContent value="matriz">
-          <HistoricoMatrizTab
+        {/* ABA 2: HISTÓRICO REPRODUTIVO (PEDIDO 2) */}
+        <TabsContent value="historico_reprodutivo">
+          <HistoricoReprodutivoTab
             matrizes={matrizes}
-            buscaBrinco={buscaBrinco}
-            setBuscaBrinco={setBuscaBrinco}
-            matrizSelecionada={matrizSelecionada}
-            setMatrizSelecionada={setMatrizSelecionada}
-            matrizesFiltradas={matrizesFiltradas}
+            exames={exames}
+            estacoes={estacoes}
+            onAbrirCadastroDg={() => setModalDgAberto(true)}
+            onAbrirCadastroIatf={() => setModalIatfAberto(true)}
           />
         </TabsContent>
 
@@ -820,6 +894,31 @@ export default function Reproducao() {
           </div>
         </TabsContent>
       </Tabs>
+      {/* Modais de Cadastro Manual (PEDIDO 1) */}
+      <ModalCadastroIatf
+        open={modalIatfAberto}
+        onOpenChange={setModalIatfAberto}
+        estacoes={estacoes}
+        estacaoPadraoId={estacaoAtiva?.id}
+        onSucesso={carregarDados}
+      />
+
+      <ModalCadastroDg
+        open={modalDgAberto}
+        onOpenChange={setModalDgAberto}
+        estacoes={estacoes}
+        estacaoPadraoId={estacaoAtiva?.id}
+        lotesSugeridos={['Lote Primíparas Piatã', 'Lote Multíparas Pasto 11', 'Lote Nulíparas']}
+        onSucesso={carregarDados}
+      />
+
+      <ModalCadastroResultadoFinal
+        open={modalResultadoFinalAberto}
+        onOpenChange={setModalResultadoFinalAberto}
+        estacoes={estacoes}
+        estacaoPadraoId={estacaoAtiva?.id}
+        onSucesso={carregarDados}
+      />
     </div>
   )
 }

@@ -48,6 +48,9 @@ interface VisaoEstacaoTabProps {
     quantidade: number
     pct: number
   }>
+  onAbrirCadastroResultadoFinal?: () => void
+  onAbrirCadastroDg?: () => void
+  onAbrirCadastroIatf?: () => void
 }
 
 export function VisaoEstacaoTab({
@@ -58,6 +61,9 @@ export function VisaoEstacaoTab({
   statsEstacao,
   dadosGraficoEstacoes,
   dadosDistribuicaoIEP,
+  onAbrirCadastroResultadoFinal,
+  onAbrirCadastroDg,
+  onAbrirCadastroIatf,
 }: VisaoEstacaoTabProps) {
   return (
     <div className="space-y-6">
@@ -82,14 +88,34 @@ export function VisaoEstacaoTab({
           </Select>
         </div>
 
-        <div className="text-xs text-muted-foreground">
+        <div className="text-xs text-muted-foreground flex items-center gap-3">
           {estacaoAtiva ? (
             <span>
-              Período avaliado: <strong>{estacaoAtiva.data_inicio || '01/11'}</strong> até{' '}
-              <strong>{estacaoAtiva.data_fim || '28/02'}</strong> • Status: {estacaoAtiva.status}
+              Período avaliado:{' '}
+              <strong>
+                {estacaoAtiva.data_inicio ? estacaoAtiva.data_inicio.slice(0, 10) : '01/11'}
+              </strong>{' '}
+              até{' '}
+              <strong>
+                {estacaoAtiva.data_fim ? estacaoAtiva.data_fim.slice(0, 10) : '28/02'}
+              </strong>{' '}
+              • Status:{' '}
+              <Badge variant="outline" className="text-[10px] ml-1 uppercase">
+                {estacaoAtiva.status}
+              </Badge>
             </span>
           ) : (
             <span>Nenhuma estação selecionada</span>
+          )}
+
+          {onAbrirCadastroResultadoFinal && (
+            <button
+              type="button"
+              onClick={onAbrirCadastroResultadoFinal}
+              className="text-xs text-emerald-800 dark:text-emerald-300 font-semibold underline hover:text-emerald-950"
+            >
+              Editar Fechamento
+            </button>
           )}
         </div>
       </div>

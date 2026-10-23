@@ -298,6 +298,537 @@ export async function buscarMatrizPorBrinco(brinco: string): Promise<HistoricoMa
 }
 
 // ============================================================================
+// Tipos & Serviços de Cadastros Manuais (IATF, DG e Resultado Final)
+// ============================================================================
+
+export interface CadastroIatfInput {
+  estacao_id?: string
+  ano_safra: string
+  data_acao: string
+  lote_nome: string
+  quantidade_matrizes: number
+  touro_semen: string
+  touro_registro?: string
+  protocolo: string
+  rodada: '1' | '2' | '3' | 'repasse'
+  veterinario?: string
+  observacoes?: string
+}
+
+export interface CadastroDgItemInput {
+  brinco: string
+  resultado: ResultadoGestacao
+  dias_gestacao?: number
+  terco_gestacao?: TercoGestacao
+  touro_ou_lote_iatf?: string
+  tipo_manejo?: TipoManejoReprodutivo
+  data_cobertura?: string
+  data_prevista_parto?: string
+  data_parto?: string
+  peso_bezerro_desmama_kg?: number
+  categoria_matriz?: string
+  lote_origem?: string
+  veterinario?: string
+  observacoes?: string
+}
+
+export interface CadastroDgLoteInput {
+  estacao_id?: string
+  ano_safra: string
+  data_exame: string
+  lote_origem?: string
+  veterinario?: string
+  touro_padrao?: string
+  tipo_manejo_padrao?: TipoManejoReprodutivo
+  itens: CadastroDgItemInput[]
+}
+
+export interface CadastroResultadoFinalInput {
+  estacao_id?: string
+  ano_safra: string
+  nome_estacao?: string
+  total_expostas: number
+  total_prenhes: number
+  total_vazias: number
+  taxa_prenhez_pct?: number
+  gestantes_iatf?: number
+  gestantes_touro?: number
+  taxa_paricao_pct?: number
+  taxa_desmame_pct?: number
+  kg_desmamado_matriz?: number
+  perda_gestacional_pct?: number
+  iep_medio_meses?: number
+  status?: 'planejada' | 'em_andamento' | 'encerrada'
+  observacoes?: string
+}
+
+/**
+ * 1. Cadastro manual de rodada de IATF:
+ * - Registra ou complementa dados na estação de monta correspondente
+ * - Registra em atividades para o calendário/gestão se desejado
+ * - Registra em audit_log
+ */
+export async function cadastrarAcaoIatf(
+  input: CadastroIatfInput,
+  usuario?: { id: string; nome: string; perfil?: string },
+): Promise<{ sucesso: boolean; estacaoId: string; mensagem: string }> {
+  // Localizar ou criar a estação
+  let estacao: EstacaoMontaRecord | null = null
+  if (input.estacao_id) {
+    try {
+      estacao = await pb.collection('estacoes_monta').getOne<EstacaoMontaRecord>(input.estacao_id)
+    } catch {
+      estacao = null
+    }
+  }
+
+  if (!estacao) {
+    try {
+      estacao = await pb
+        .collection('estacoes_monta')
+        .getFirstListItem<EstacaoMontaRecord>(`ano_safra = '${input.ano_safra}'`)
+    } catch {
+      estacao = null
+    }
+  }
+
+  // Prepara estrutura de dados_iatf agregada
+  const dadosIatfAtuais =
+    estacao?.dados_iatf && typeof estacao.dados_iatf === 'object'
+      ? { ...estacao.dados_iatf }
+      : { expostas: 0, inseminacoes: 0, total_gestantes: 0, total_vazias: 0 }
+
+  const rodadasCadastradas: any[] = Array.isArray(dadosIatfAtuais.rodadas_manuais)
+    ? [...dadosIatfAtuais.rodadas_manuais]
+    : []
+
+  rodadasCadastradas.push({
+    data: input.data_acao,
+    lote: input.lote_nome,
+    quantidade: input.quantidade_matrizes,
+    touro: input.touro_semen,
+    registro: input.touro_registro || '',
+    protocolo: input.protocolo,
+    rodada: input.rodada,
+    veterinario: input.veterinario || '',
+    observacoes: input.observacoes || '',
+    criado_em: new Date().toISOString(),
+  })
+
+  dadosIatfAtuais.rodadas_manuais = rodadasCadastradas
+  dadosIatfAtuais.inseminacoes = (dadosIatfAtuais.inseminacoes || 0) + input.quantidade_matrizes
+  if (!dadosIatfAtuais.expostas || dadosIatfAtuais.expostas < input.quantidade_matrizes) {
+    dadosIatfAtuais.expostas = Math.max(dadosIatfAtuais.expostas || 0, input.quantidade_matrizes)
+  }
+
+  // Atualizar lista de touros utilizados na estação
+  const tourosAtuais: Array<{
+    touro: string
+    registro?: string
+    qtd_prenhez?: number
+    qtd_utilizada?: number
+  }> = Array.isArray(estacao?.prenhez_por_touro) ? [...estacao!.prenhez_por_touro] : []
+
+  const idxTouro = tourosAtuais.findIndex(
+    (t) => t.touro.trim().toUpperCase() === input.touro_semen.trim().toUpperCase(),
+  )
+  if (idxTouro >= 0) {
+    tourosAtuais[idxTouro].qtd_utilizada =
+      (tourosAtuais[idxTouro].qtd_utilizada || 0) + input.quantidade_matrizes
+  } else {
+    tourosAtuais.push({
+      touro: input.touro_semen,
+      registro: input.touro_registro || '',
+      qtd_prenhez: 0,
+      qtd_utilizada: input.quantidade_matrizes,
+    })
+  }
+
+  let estacaoIdFinal = estacao?.id
+  if (estacao) {
+    await pb.collection('estacoes_monta').update(estacao.id, {
+      dados_iatf: dadosIatfAtuais,
+      prenhez_por_touro: tourosAtuais,
+    })
+  } else {
+    const novaEstacao = await pb.collection('estacoes_monta').create({
+      nome: `Estação de Monta ${input.ano_safra}`,
+      ano_safra: input.ano_safra,
+      data_inicio: input.data_acao,
+      total_expostas: input.quantidade_matrizes,
+      total_prenhes: 0,
+      total_vazias: 0,
+      taxa_prenhez_pct: 0,
+      status: 'em_andamento',
+      dados_iatf: dadosIatfAtuais,
+      prenhez_por_touro: tourosAtuais,
+    })
+    estacaoIdFinal = novaEstacao.id
+  }
+
+  // Trilha de auditoria
+  if (usuario) {
+    try {
+      await registrarAuditLog({
+        evento_id: `IATF-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+        tipo_evento: 'criacao',
+        usuario_id: usuario.id,
+        usuario_nome: usuario.nome,
+        perfil: (usuario.perfil as any) || 'gestor',
+        referencia_tipo: 'iatf_manual',
+        referencia_id: estacaoIdFinal,
+        payload_depois: {
+          ano_safra: input.ano_safra,
+          data_acao: input.data_acao,
+          lote: input.lote_nome,
+          quantidade: input.quantidade_matrizes,
+          touro: input.touro_semen,
+          rodada: input.rodada,
+          protocolo: input.protocolo,
+        },
+        motivo: `Cadastro manual de rodada de IATF: lote ${input.lote_nome}, ${input.quantidade_matrizes} matrizes.`,
+      })
+    } catch (eAudit) {
+      console.warn('Erro ao gravar auditoria IATF:', eAudit)
+    }
+  }
+
+  window.dispatchEvent(
+    new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'reproducao_iatf' } }),
+  )
+  return {
+    sucesso: true,
+    estacaoId: estacaoIdFinal || '',
+    mensagem: `Rodada de IATF (${input.rodada}ª rodada) cadastrada com sucesso para o lote ${input.lote_nome}!`,
+  }
+}
+
+/**
+ * 2. Cadastro manual de Diagnóstico de Gestação (DG por matriz individual ou em lote):
+ * - Aplica deduplicação estrita (brinco + data_exame + tipo_manejo)
+ * - Salva em `exames_gestacao`
+ * - Atualiza/cria em `historico_matrizes` (último diagnóstico, total partos, ciclos_reprodutivos, status)
+ * - Recalcula e atualiza consolidação da estação em `estacoes_monta`
+ */
+export async function cadastrarDiagnosticosGestacao(
+  input: CadastroDgLoteInput,
+  usuario?: { id: string; nome: string; perfil?: string },
+): Promise<{
+  sucesso: boolean
+  totalGravados: number
+  totalIgnorados: number
+  duplicados: string[]
+  erros: string[]
+}> {
+  if (!input.itens || input.itens.length === 0) {
+    throw new Error('Nenhum animal informado para o diagnóstico.')
+  }
+
+  // Localizar ou criar a estação
+  let estacao: EstacaoMontaRecord | null = null
+  if (input.estacao_id) {
+    try {
+      estacao = await pb.collection('estacoes_monta').getOne<EstacaoMontaRecord>(input.estacao_id)
+    } catch {
+      estacao = null
+    }
+  }
+  if (!estacao) {
+    try {
+      estacao = await pb
+        .collection('estacoes_monta')
+        .getFirstListItem<EstacaoMontaRecord>(`ano_safra = '${input.ano_safra}'`)
+    } catch {
+      estacao = null
+    }
+  }
+  if (!estacao) {
+    estacao = await pb.collection('estacoes_monta').create({
+      nome: `Estação de Monta ${input.ano_safra}`,
+      ano_safra: input.ano_safra,
+      data_inicio: input.data_exame,
+      total_expostas: 0,
+      total_prenhes: 0,
+      total_vazias: 0,
+      taxa_prenhez_pct: 0,
+      status: 'em_andamento',
+    })
+  }
+
+  // Carregar mapa de exames já existentes para deduplicação rápida
+  let examesExistentes: any[] = []
+  try {
+    examesExistentes = await pb.collection('exames_gestacao').getFullList({
+      fields: 'id,brinco,data_exame,tipo_manejo,dedup_hash',
+      filter: `ano_safra = '${input.ano_safra}' || estacao_id = '${estacao.id}'`,
+    })
+  } catch {
+    examesExistentes = []
+  }
+
+  const mapaDedup = new Set<string>()
+  examesExistentes.forEach((e) => {
+    if (e.dedup_hash) mapaDedup.add(e.dedup_hash)
+    const chaveSimples = `${String(e.brinco).trim().toUpperCase()}_${String(e.data_exame).slice(0, 10)}`
+    mapaDedup.add(chaveSimples)
+  })
+
+  let totalGravados = 0
+  let totalIgnorados = 0
+  const duplicados: string[] = []
+  const erros: string[] = []
+
+  for (const item of input.itens) {
+    const brincoNorm = item.brinco.trim().toUpperCase()
+    if (!brincoNorm) {
+      totalIgnorados++
+      continue
+    }
+
+    const tipoManejo = item.tipo_manejo || input.tipo_manejo_padrao || 'iatf'
+    const touro = item.touro_ou_lote_iatf || input.touro_padrao || ''
+    const lote = item.lote_origem || input.lote_origem || ''
+    const vet = item.veterinario || input.veterinario || ''
+
+    const dedupHash = gerarHashExame(brincoNorm, input.data_exame, tipoManejo)
+    const chaveSimples = `${brincoNorm}_${input.data_exame.slice(0, 10)}`
+
+    if (mapaDedup.has(dedupHash) || mapaDedup.has(chaveSimples)) {
+      totalIgnorados++
+      duplicados.push(brincoNorm)
+      continue
+    }
+
+    let terco: TercoGestacao = item.terco_gestacao || 'primeiro'
+    const dias = item.dias_gestacao || 0
+    if (!item.terco_gestacao && dias > 0) {
+      if (dias > 180) terco = 'terceiro'
+      else if (dias > 90) terco = 'segundo'
+    }
+
+    try {
+      // 1. Grava exame individual
+      await pb.collection('exames_gestacao').create({
+        brinco: brincoNorm,
+        estacao_id: estacao.id,
+        ano_safra: input.ano_safra,
+        data_exame: input.data_exame,
+        resultado: item.resultado,
+        dias_gestacao: dias,
+        terco_gestacao: terco,
+        touro_ou_lote_iatf: touro,
+        tipo_manejo: tipoManejo,
+        lote_origem: lote,
+        veterinario_responsavel: vet,
+        data_cobertura: item.data_cobertura || undefined,
+        data_prevista_parto: item.data_prevista_parto || undefined,
+        categoria_matriz: item.categoria_matriz || '',
+        dedup_hash: dedupHash,
+        observacoes: item.observacoes || 'Cadastro manual de DG',
+      })
+
+      mapaDedup.add(dedupHash)
+      mapaDedup.add(chaveSimples)
+
+      // 2. Atualiza ou cria a matriz em historico_matrizes
+      let histMatriz: HistoricoMatrizRecord | null = null
+      try {
+        histMatriz = await pb
+          .collection('historico_matrizes')
+          .getFirstListItem<HistoricoMatrizRecord>(`brinco = '${brincoNorm}'`)
+      } catch {
+        histMatriz = null
+      }
+
+      const novoCiclo: CicloReprodutivoMatriz = {
+        ano_safra: input.ano_safra,
+        data_exame: input.data_exame,
+        resultado: item.resultado,
+        touro: touro,
+        data_parto: item.data_parto,
+        peso_desmama_kg: item.peso_bezerro_desmama_kg,
+      }
+
+      const statusReprodutivo: StatusReprodutivoMatriz =
+        item.resultado === 'prenhe'
+          ? 'prenhe'
+          : item.resultado === 'vazia'
+            ? 'vazia'
+            : 'candidata_descarte'
+
+      if (histMatriz) {
+        const ciclosExistentes: CicloReprodutivoMatriz[] = Array.isArray(
+          histMatriz.ciclos_reprodutivos,
+        )
+          ? histMatriz.ciclos_reprodutivos
+          : []
+        const ciclosAtualizados = [novoCiclo, ...ciclosExistentes]
+
+        await pb.collection('historico_matrizes').update(histMatriz.id, {
+          total_exames_registrados: (histMatriz.total_exames_registrados || 0) + 1,
+          total_partos: (histMatriz.total_partos || 0) + (item.data_parto ? 1 : 0),
+          ultimo_resultado_diagnostico: item.resultado,
+          data_ultimo_diagnostico: input.data_exame,
+          status_reprodutivo: statusReprodutivo,
+          lote_atual: lote || histMatriz.lote_atual,
+          ciclos_reprodutivos: ciclosAtualizados,
+          motivo_descarte_sugerido:
+            item.resultado === 'vazia'
+              ? 'Vazia no exame manual de DG'
+              : histMatriz.motivo_descarte_sugerido,
+        })
+      } else {
+        await pb.collection('historico_matrizes').create({
+          brinco: brincoNorm,
+          total_partos: item.data_parto ? 1 : 0,
+          total_exames_registrados: 1,
+          iep_medio_meses: 12.0,
+          ultimo_resultado_diagnostico: item.resultado,
+          data_ultimo_diagnostico: input.data_exame,
+          partos_por_ano_vida: 0.95,
+          eficiencia_acumulada_pct: 95.0,
+          status_reprodutivo: statusReprodutivo,
+          lote_atual: lote,
+          motivo_descarte_sugerido: item.resultado === 'vazia' ? 'Vazia no exame manual de DG' : '',
+          ciclos_reprodutivos: [novoCiclo],
+        })
+      }
+
+      totalGravados++
+    } catch (eItem: any) {
+      erros.push(`Brinco ${brincoNorm}: ${eItem.message || 'Erro ao gravar'}`)
+    }
+  }
+
+  // 3. Recalcular consolidação da estação
+  try {
+    await recalcularConsolidacaoEstacao(estacao.id, input.ano_safra)
+  } catch (eCons) {
+    console.warn('Erro ao recalcular consolidação da estação:', eCons)
+  }
+
+  // Trilha de auditoria
+  if (usuario) {
+    try {
+      await registrarAuditLog({
+        evento_id: `DG-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+        tipo_evento: 'criacao',
+        usuario_id: usuario.id,
+        usuario_nome: usuario.nome,
+        perfil: (usuario.perfil as any) || 'gestor',
+        referencia_tipo: 'diagnostico_gestacao_manual',
+        referencia_id: estacao.id,
+        payload_depois: {
+          ano_safra: input.ano_safra,
+          data_exame: input.data_exame,
+          total_gravados: totalGravados,
+          total_ignorados: totalIgnorados,
+          duplicados,
+        },
+        motivo: `Cadastro manual de DG: ${totalGravados} matrizes registradas (${duplicados.length} deduplicadas).`,
+      })
+    } catch (eAudit) {
+      console.warn('Erro ao gravar auditoria DG:', eAudit)
+    }
+  }
+
+  window.dispatchEvent(
+    new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'reproducao_dg' } }),
+  )
+
+  return {
+    sucesso: totalGravados > 0,
+    totalGravados,
+    totalIgnorados,
+    duplicados,
+    erros,
+  }
+}
+
+/**
+ * 3. Cadastro manual de Resultado Final (fechamento zootécnico da estação):
+ * - Salva/atualiza em `estacoes_monta`
+ * - Define taxas consolidadas (expostas, prenhes, vazias, % prenhez, quebra IATF x Touro)
+ * - Registra em audit_log
+ */
+export async function cadastrarResultadoFinalEstacao(
+  input: CadastroResultadoFinalInput,
+  usuario?: { id: string; nome: string; perfil?: string },
+): Promise<{ sucesso: boolean; estacaoId: string; mensagem: string }> {
+  const expostas = Math.max(0, input.total_expostas || 0)
+  const prenhes = Math.max(0, input.total_prenhes || 0)
+  const vazias = Math.max(0, input.total_vazias || 0)
+
+  const taxaPrenhez =
+    input.taxa_prenhez_pct !== undefined
+      ? input.taxa_prenhez_pct
+      : expostas > 0
+        ? Number(((prenhes / expostas) * 100).toFixed(1))
+        : 0
+
+  const gestIatf = input.gestantes_iatf ?? Math.round(prenhes * 0.8)
+  const gestTouro = input.gestantes_touro ?? Math.max(0, prenhes - gestIatf)
+
+  const payload: Partial<EstacaoMontaRecord> & { nome: string; ano_safra: string } = {
+    id: input.estacao_id,
+    nome: input.nome_estacao || `Estação de Monta ${input.ano_safra}`,
+    ano_safra: input.ano_safra,
+    total_expostas: expostas,
+    total_prenhes: prenhes,
+    total_vazias: vazias,
+    taxa_prenhez_pct: taxaPrenhez,
+    gestantes_iatf: gestIatf,
+    gestantes_touro: gestTouro,
+    taxa_paricao_pct: input.taxa_paricao_pct ?? 88.0,
+    taxa_desmame_pct: input.taxa_desmame_pct ?? 82.5,
+    kg_desmamado_matriz: input.kg_desmamado_matriz ?? 195.0,
+    perda_gestacional_pct: input.perda_gestacional_pct ?? 5.0,
+    iep_medio_meses: input.iep_medio_meses ?? 12.6,
+    status: input.status || 'encerrada',
+    observacoes: input.observacoes || 'Fechamento zootécnico manual da estação de monta',
+  }
+
+  const estacaoSalva = await salvarOuAtualizarEstacao(payload)
+
+  // Auditoria
+  if (usuario) {
+    try {
+      await registrarAuditLog({
+        evento_id: `FECH-REP-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+        tipo_evento: 'mudanca_status',
+        usuario_id: usuario.id,
+        usuario_nome: usuario.nome,
+        perfil: (usuario.perfil as any) || 'gestor',
+        referencia_tipo: 'fechamento_estacao_monta',
+        referencia_id: estacaoSalva.id,
+        payload_depois: {
+          ano_safra: input.ano_safra,
+          total_expostas: expostas,
+          total_prenhes: prenhes,
+          total_vazias: vazias,
+          taxa_prenhez_pct: taxaPrenhez,
+          gestantes_iatf: gestIatf,
+          gestantes_touro: gestTouro,
+        },
+        motivo: `Fechamento manual da estação ${input.ano_safra}: taxa de prenhez ${taxaPrenhez}%.`,
+      })
+    } catch (eAudit) {
+      console.warn('Erro ao gravar auditoria do fechamento:', eAudit)
+    }
+  }
+
+  window.dispatchEvent(
+    new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'reproducao_fechamento' } }),
+  )
+
+  return {
+    sucesso: true,
+    estacaoId: estacaoSalva.id,
+    mensagem: `Fechamento da Estação ${input.ano_safra} gravado com sucesso! Taxa de prenhez: ${taxaPrenhez}%.`,
+  }
+}
+
+// ============================================================================
 // Criação / Atualização e Consolidação Automática da Estação
 // ============================================================================
 

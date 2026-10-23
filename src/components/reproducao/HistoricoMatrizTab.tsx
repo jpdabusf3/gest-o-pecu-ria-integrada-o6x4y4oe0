@@ -14,6 +14,9 @@ interface HistoricoMatrizTabProps {
   matrizesFiltradas: HistoricoMatrizRecord[]
 }
 
+/**
+ * @deprecated Use `HistoricoReprodutivoTab` no lugar. Mantido para compatibilidade reversa.
+ */
 export function HistoricoMatrizTab({
   matrizes,
   buscaBrinco,
