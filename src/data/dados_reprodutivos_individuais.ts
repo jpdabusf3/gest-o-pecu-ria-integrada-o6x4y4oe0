@@ -1,3 +1,4 @@
+// src/data/dados_reprodutivos_individuais.ts
 import fs from 'fs'
 
 const allData = JSON.parse(fs.readFileSync('scripts/extracted_all_strings.json', 'utf8'))
@@ -7,7 +8,7 @@ const pdfCaderno2425 =
   allData['src/assets/caderno-de-paricao-fazenda-santo-antonio-e.m.2024-25-1bfbb.pdf']
     .allParsedStrings
 
-function ddmmyyyyToYyyymmdd(str) {
+function ddmmyyyyToYyyymmdd(str: string | null) {
   if (!str) return null
   const m = str.match(/(\d{2})\/(\d{2})\/(\d{4})/)
   if (m) {
@@ -16,8 +17,8 @@ function ddmmyyyyToYyyymmdd(str) {
   return null
 }
 
-function parseNumberedRows(strings) {
-  const rows = []
+function parseNumberedRows(strings: string[]) {
+  const rows: { idx: number; tokens: string[] }[] = []
   let i = 0
   while (i < strings.length) {
     const s = strings[i]
@@ -38,7 +39,7 @@ function parseNumberedRows(strings) {
   return rows
 }
 
-function mapCanonicalTouro(raw) {
+function mapCanonicalTouro(raw: string) {
   const s = (raw || '').replace(/\\/g, '').trim()
   if (/Astro\s*Jac/i.test(s))
     return { nome: 'Astro Jacamin', registro: 'MMVA 3739', canonico: 'MMVA 3739' }
@@ -72,8 +73,8 @@ function mapCanonicalTouro(raw) {
   return { nome: s, registro: '', canonico: s }
 }
 
-function processTokens(tokens, anoSafra) {
-  const dateIndices = []
+function processTokens(tokens: string[], anoSafra: string) {
+  const dateIndices: number[] = []
   for (let k = 1; k < tokens.length; k++) {
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(tokens[k])) {
       dateIndices.push(k)
@@ -125,7 +126,7 @@ function processTokens(tokens, anoSafra) {
   const isRepasse = /REPASSE/i.test(touroInfo.nome) || /REPASSE/i.test(touroRaw)
 
   // Peso bezerro desmama: check if any token after second date has a number/weight
-  let pesoDesmama = null
+  let pesoDesmama: number | null = null
   const afterSecondDateIdx = dateIndices.length > 1 ? dateIndices[1] + 1 : tokens.length
   for (let t = afterSecondDateIdx; t < tokens.length; t++) {
     const mWeight = tokens[t].match(/^(\d+(?:[.,]\d+)?)\s*(?:kg)?$/i)
@@ -170,3 +171,6 @@ export const consolidatedRecords = {
   itens2526: items2526,
   itens2425: items2425,
 }
+
+export const ITENS_2526_DATA = items2526
+export const ITENS_2425_DATA = items2425
