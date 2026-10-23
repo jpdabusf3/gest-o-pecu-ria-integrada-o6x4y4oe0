@@ -298,6 +298,137 @@ export async function buscarMatrizPorBrinco(brinco: string): Promise<HistoricoMa
 }
 
 // ============================================================================
+// Consultas & Persistência de Nascimentos Realizados na Estação
+// ============================================================================
+
+export function gerarHashNascimento(
+  estacaoId: string,
+  mes: string,
+  sexo: string,
+  raca = '',
+  categoria = '',
+  classe = '',
+): string {
+  const e = String(estacaoId || '').trim()
+  const m = String(mes || '')
+    .trim()
+    .toUpperCase()
+  const s = String(sexo || '')
+    .trim()
+    .toLowerCase()
+  const r = String(raca || '')
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, '_')
+  const cat = String(categoria || '')
+    .trim()
+    .toLowerCase()
+  const cl = String(classe || '')
+    .trim()
+    .toUpperCase()
+  return `nasc_${e}_${m}_${s}_${r || 'NI'}_${cat || 'IND'}_${cl || 'IND'}`
+}
+
+export async function getNascimentosEstacao(
+  estacaoIdOrSafra?: string,
+): Promise<NascimentoEstacaoRecord[]> {
+  try {
+    let filter = ''
+    if (estacaoIdOrSafra && estacaoIdOrSafra !== 'todas') {
+      filter = `estacao_id = '${estacaoIdOrSafra}' || ano_safra = '${estacaoIdOrSafra}'`
+    }
+    return await pb.collection('nascimentos_estacao').getFullList<NascimentoEstacaoRecord>({
+      filter: filter || undefined,
+      sort: 'mes_referencia,sexo,raca',
+    })
+  } catch (err) {
+    console.warn('Erro ao carregar nascimentos_estacao:', err)
+    return []
+  }
+}
+
+/**
+ * Salva ou atualiza os nascimentos da estação de forma idempotente (deduplicação por dedup_hash).
+ * Se o usuário enviar uma lista com novas quantidades para os mesmos meses/sexos/raças,
+ * os registros existentes são atualizados com as novas quantidades e os novos são criados.
+ */
+export async function salvarNascimentosEstacao(
+  estacaoId: string,
+  anoSafra: string,
+  itens: ItemNascimentoInput[],
+): Promise<NascimentoEstacaoRecord[]> {
+  if (!itens || itens.length === 0) return []
+
+  // 1. Busca os registros existentes desta estação para deduplicação idempotente
+  let existentes: NascimentoEstacaoRecord[] = []
+  try {
+    existentes = await pb.collection('nascimentos_estacao').getFullList<NascimentoEstacaoRecord>({
+      filter: `estacao_id = '${estacaoId}' || ano_safra = '${anoSafra}'`,
+    })
+  } catch {
+    existentes = []
+  }
+
+  const mapaExistentes = new Map<string, NascimentoEstacaoRecord>()
+  existentes.forEach((rec) => {
+    if (rec.dedup_hash) {
+      mapaExistentes.set(rec.dedup_hash, rec)
+    }
+  })
+
+  const resultados: NascimentoEstacaoRecord[] = []
+
+  for (const item of itens) {
+    if (!item.quantidade || item.quantidade <= 0) continue
+
+    const racaTratada = item.raca?.trim() || 'Não informado'
+    const catTratada = item.categoria_matriz || 'indefinida'
+    const clTratada = item.classe_matriz || 'indefinida'
+    const mesNorm = item.mes_referencia.trim().toUpperCase()
+
+    const dedupHash = gerarHashNascimento(
+      estacaoId,
+      mesNorm,
+      item.sexo,
+      racaTratada,
+      catTratada,
+      clTratada,
+    )
+
+    const payload = {
+      estacao_id: estacaoId,
+      ano_safra: anoSafra,
+      mes_referencia: mesNorm,
+      data_referencia: item.data_referencia || undefined,
+      sexo: item.sexo,
+      raca: racaTratada,
+      categoria_matriz: catTratada,
+      classe_matriz: clTratada,
+      quantidade: item.quantidade,
+      peso_medio_nasc_kg: item.peso_medio_nasc_kg || undefined,
+      dedup_hash: dedupHash,
+      observacoes: item.observacoes || '',
+    }
+
+    const existente = mapaExistentes.get(dedupHash)
+    if (existente) {
+      const atualizado = await pb
+        .collection('nascimentos_estacao')
+        .update<NascimentoEstacaoRecord>(existente.id, payload)
+      resultados.push(atualizado)
+    } else {
+      const criado = await pb
+        .collection('nascimentos_estacao')
+        .create<NascimentoEstacaoRecord>(payload)
+      resultados.push(criado)
+      mapaExistentes.set(dedupHash, criado)
+    }
+  }
+
+  return resultados
+}
+
+// ============================================================================
 // Tipos & Serviços de Cadastros Manuais (IATF, DG e Resultado Final)
 // ============================================================================
 
@@ -343,6 +474,40 @@ export interface CadastroDgLoteInput {
   itens: CadastroDgItemInput[]
 }
 
+export type SexoNascimento = 'macho' | 'femea' | 'indefinido'
+export type CategoriaMatrizNascimento = 'nulipara' | 'primipara' | 'multipara' | 'indefinida'
+export type ClasseMatrizNascimento = 'PO' | 'comercial' | 'indefinida'
+
+export interface NascimentoEstacaoRecord {
+  id: string
+  estacao_id?: string
+  ano_safra: string
+  mes_referencia: string
+  data_referencia?: string
+  sexo: SexoNascimento
+  raca?: string
+  categoria_matriz?: CategoriaMatrizNascimento
+  classe_matriz?: ClasseMatrizNascimento
+  quantidade: number
+  peso_medio_nasc_kg?: number
+  dedup_hash?: string
+  observacoes?: string
+  created: string
+  updated: string
+}
+
+export interface ItemNascimentoInput {
+  mes_referencia: string
+  data_referencia?: string
+  sexo: SexoNascimento
+  raca?: string
+  categoria_matriz?: CategoriaMatrizNascimento
+  classe_matriz?: ClasseMatrizNascimento
+  quantidade: number
+  peso_medio_nasc_kg?: number
+  observacoes?: string
+}
+
 export interface CadastroResultadoFinalInput {
   estacao_id?: string
   ano_safra: string
@@ -360,6 +525,7 @@ export interface CadastroResultadoFinalInput {
   iep_medio_meses?: number
   status?: 'planejada' | 'em_andamento' | 'encerrada'
   observacoes?: string
+  nascimentos?: ItemNascimentoInput[]
 }
 
 /**
@@ -789,6 +955,15 @@ export async function cadastrarResultadoFinalEstacao(
   }
 
   const estacaoSalva = await salvarOuAtualizarEstacao(payload)
+
+  // Grava/atualiza nascimentos com deduplicação idempotente
+  if (input.nascimentos && input.nascimentos.length > 0) {
+    try {
+      await salvarNascimentosEstacao(estacaoSalva.id, input.ano_safra, input.nascimentos)
+    } catch (eNasc) {
+      console.warn('Erro ao salvar nascimentos da estação:', eNasc)
+    }
+  }
 
   // Auditoria
   if (usuario) {

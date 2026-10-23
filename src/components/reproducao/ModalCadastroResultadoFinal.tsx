@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -18,8 +18,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Award, Loader2, Sparkles, AlertCircle } from 'lucide-react'
-import { EstacaoMontaRecord, cadastrarResultadoFinalEstacao } from '@/services/reproducao'
+import { Badge } from '@/components/ui/badge'
+import { Award, Loader2, Sparkles, Baby, Plus, Trash2, Calendar, Layers, Tag } from 'lucide-react'
+import {
+  EstacaoMontaRecord,
+  cadastrarResultadoFinalEstacao,
+  getNascimentosEstacao,
+  ItemNascimentoInput,
+  SexoNascimento,
+  CategoriaMatrizNascimento,
+  ClasseMatrizNascimento,
+} from '@/services/reproducao'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -68,6 +77,91 @@ export function ModalCadastroResultadoFinal({
   )
   const [status, setStatus] = useState<'planejada' | 'em_andamento' | 'encerrada'>('encerrada')
   const [observacoes, setObservacoes] = useState<string>(estacaoInicial?.observacoes || '')
+
+  // Seção de Nascimentos Realizados (Pedido do Usuário)
+  const [linhasNascimento, setLinhasNascimento] = useState<ItemNascimentoInput[]>([])
+  const [carregandoNascimentos, setCarregandoNascimentos] = useState(false)
+
+  // Carrega nascimentos existentes ao abrir ou alterar estação
+  useEffect(() => {
+    if (!open) return
+    const carregarNascimentos = async () => {
+      if (estacaoId && estacaoId !== 'nova') {
+        setCarregandoNascimentos(true)
+        try {
+          const list = await getNascimentosEstacao(estacaoId)
+          if (list.length > 0) {
+            setLinhasNascimento(
+              list.map((item) => ({
+                mes_referencia: item.mes_referencia,
+                data_referencia: item.data_referencia,
+                sexo: item.sexo,
+                raca: item.raca || '',
+                categoria_matriz: item.categoria_matriz || 'indefinida',
+                classe_matriz: item.classe_matriz || 'indefinida',
+                quantidade: item.quantidade,
+                peso_medio_nasc_kg: item.peso_medio_nasc_kg,
+                observacoes: item.observacoes,
+              })),
+            )
+          } else {
+            // Sugere estrutura vazia inicial por padrão
+            setLinhasNascimento([])
+          }
+        } catch {
+          setLinhasNascimento([])
+        } finally {
+          setCarregandoNascimentos(false)
+        }
+      } else {
+        setLinhasNascimento([])
+      }
+    }
+    carregarNascimentos()
+  }, [open, estacaoId])
+
+  const handleAdicionarLinhaNascimento = () => {
+    setLinhasNascimento((prev) => [
+      ...prev,
+      {
+        mes_referencia: 'JUL',
+        sexo: 'macho',
+        raca: 'Nelore',
+        categoria_matriz: 'multipara',
+        classe_matriz: 'comercial',
+        quantidade: 10,
+      },
+    ])
+  }
+
+  const handleRemoverLinhaNascimento = (index: number) => {
+    setLinhasNascimento((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const handleAtualizarLinhaNascimento = (
+    index: number,
+    campo: keyof ItemNascimentoInput,
+    valor: any,
+  ) => {
+    setLinhasNascimento((prev) => {
+      const clone = [...prev]
+      clone[index] = { ...clone[index], [campo]: valor }
+      return clone
+    })
+  }
+
+  const totalNascidosMachos = linhasNascimento
+    .filter((l) => l.sexo === 'macho')
+    .reduce((acc, l) => acc + (Number(l.quantidade) || 0), 0)
+
+  const totalNascidosFemeas = linhasNascimento
+    .filter((l) => l.sexo === 'femea')
+    .reduce((acc, l) => acc + (Number(l.quantidade) || 0), 0)
+
+  const totalGeralNascidos = linhasNascimento.reduce(
+    (acc, l) => acc + (Number(l.quantidade) || 0),
+    0,
+  )
 
   const handleEstacaoChange = (id: string) => {
     setEstacaoId(id)
@@ -152,6 +246,7 @@ export function ModalCadastroResultadoFinal({
           iep_medio_meses: iepMedio,
           status,
           observacoes: observacoes.trim() || undefined,
+          nascimentos: linhasNascimento.filter((l) => (Number(l.quantidade) || 0) > 0),
         },
         user ? { id: user.id, nome: user.name || 'Gestor', perfil: user.role } : undefined,
       )
@@ -176,7 +271,7 @@ export function ModalCadastroResultadoFinal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
@@ -188,7 +283,7 @@ export function ModalCadastroResultadoFinal({
               </DialogTitle>
               <DialogDescription className="text-xs">
                 Consolidação dos indicadores zootécnicos oficiais da estação de monta (expostas,
-                prenhez, quebra IATF × touro e taxas da frente cria).
+                prenhez, quebra IATF × touro, nascimentos realizados por sexo, raça e categoria).
               </DialogDescription>
             </div>
           </div>
@@ -392,6 +487,216 @@ export function ModalCadastroResultadoFinal({
                 className="h-8 text-xs font-mono"
               />
             </div>
+          </div>
+
+          {/* SEÇÃO PEDIDO DO USUÁRIO: Nascimentos Realizados por Sexo e Raça */}
+          <div className="p-4 bg-card border rounded-xl space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-2">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                  <Baby className="h-4 w-4" />
+                </div>
+                <div>
+                  <span className="font-semibold text-foreground text-xs uppercase tracking-wider block">
+                    Nascimentos Realizados da Estação
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
+                    Registro de nascidos por sexo (machos/fêmeas), raça adicional (ex: Nelore, PO),
+                    categoria e mês.
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-[10px] font-mono">
+                  Total: {totalGeralNascidos} ({totalNascidosMachos}M / {totalNascidosFemeas}F)
+                </Badge>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={handleAdicionarLinhaNascimento}
+                  className="h-7 text-xs gap-1 border-emerald-700 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Adicionar Nascimentos
+                </Button>
+              </div>
+            </div>
+
+            {carregandoNascimentos ? (
+              <div className="py-6 text-center text-muted-foreground flex items-center justify-center gap-2 text-xs">
+                <Loader2 className="h-4 w-4 animate-spin text-emerald-700" />
+                Carregando registros de nascimentos da estação...
+              </div>
+            ) : linhasNascimento.length === 0 ? (
+              <div className="p-4 rounded-lg bg-muted/30 border border-dashed text-center text-xs text-muted-foreground space-y-2">
+                <p>Nenhum lote de nascimentos registrado para esta estação de monta ainda.</p>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleAdicionarLinhaNascimento}
+                  className="h-7 text-xs gap-1"
+                >
+                  <Plus className="h-3 w-3" /> Inserir primeiro registro de nascimentos
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2 overflow-x-auto">
+                <div className="grid grid-cols-12 gap-2 text-[11px] font-semibold text-muted-foreground px-1 uppercase tracking-wider">
+                  <div className="col-span-2">Mês Ref.</div>
+                  <div className="col-span-2">Sexo *</div>
+                  <div className="col-span-2">Raça (opcional)</div>
+                  <div className="col-span-2">Categoria Matriz</div>
+                  <div className="col-span-2">Classe</div>
+                  <div className="col-span-1 text-right">Qtd *</div>
+                  <div className="col-span-1 text-center">Ação</div>
+                </div>
+
+                <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                  {linhasNascimento.map((linha, idx) => (
+                    <div
+                      key={idx}
+                      className="grid grid-cols-12 gap-2 items-center bg-muted/20 p-2 rounded-md border"
+                    >
+                      {/* Mês de Referência */}
+                      <div className="col-span-2">
+                        <Select
+                          value={linha.mes_referencia}
+                          onValueChange={(v) =>
+                            handleAtualizarLinhaNascimento(idx, 'mes_referencia', v)
+                          }
+                        >
+                          <SelectTrigger className="h-7 text-xs font-semibold">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {[
+                              'JUL',
+                              'AGO',
+                              'SET',
+                              'OUT',
+                              'NOV',
+                              'DEZ',
+                              'JAN',
+                              'FEV',
+                              'MAR',
+                              'ABR',
+                              'MAI',
+                              'JUN',
+                            ].map((m) => (
+                              <SelectItem key={m} value={m}>
+                                {m}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Sexo */}
+                      <div className="col-span-2">
+                        <Select
+                          value={linha.sexo}
+                          onValueChange={(v: SexoNascimento) =>
+                            handleAtualizarLinhaNascimento(idx, 'sexo', v)
+                          }
+                        >
+                          <SelectTrigger className="h-7 text-xs font-semibold">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="macho">Macho</SelectItem>
+                            <SelectItem value="femea">Fêmea</SelectItem>
+                            <SelectItem value="indefinido">Indefinido</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Raça (característica adicional, ex: Nelore, Cruzamento, etc.) */}
+                      <div className="col-span-2">
+                        <Input
+                          placeholder="Ex: Nelore"
+                          value={linha.raca || ''}
+                          onChange={(e) =>
+                            handleAtualizarLinhaNascimento(idx, 'raca', e.target.value)
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
+
+                      {/* Categoria Matriz */}
+                      <div className="col-span-2">
+                        <Select
+                          value={linha.categoria_matriz || 'indefinida'}
+                          onValueChange={(v: CategoriaMatrizNascimento) =>
+                            handleAtualizarLinhaNascimento(idx, 'categoria_matriz', v)
+                          }
+                        >
+                          <SelectTrigger className="h-7 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="nulipara">Nulípara</SelectItem>
+                            <SelectItem value="primipara">Primípara</SelectItem>
+                            <SelectItem value="multipara">Multípara</SelectItem>
+                            <SelectItem value="indefinida">Não informada</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Classe Matriz */}
+                      <div className="col-span-2">
+                        <Select
+                          value={linha.classe_matriz || 'indefinida'}
+                          onValueChange={(v: ClasseMatrizNascimento) =>
+                            handleAtualizarLinhaNascimento(idx, 'classe_matriz', v)
+                          }
+                        >
+                          <SelectTrigger className="h-7 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="PO">PO</SelectItem>
+                            <SelectItem value="comercial">Comercial</SelectItem>
+                            <SelectItem value="indefinida">Não informada</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Quantidade */}
+                      <div className="col-span-1">
+                        <Input
+                          type="number"
+                          min={1}
+                          value={linha.quantidade}
+                          onChange={(e) =>
+                            handleAtualizarLinhaNascimento(
+                              idx,
+                              'quantidade',
+                              parseInt(e.target.value, 10) || 0,
+                            )
+                          }
+                          className="h-7 text-xs font-mono font-bold text-right"
+                        />
+                      </div>
+
+                      {/* Botão Remover */}
+                      <div className="col-span-1 text-center">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleRemoverLinhaNascimento(idx)}
+                          className="h-7 w-7 text-muted-foreground hover:text-rose-600"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-1">

@@ -29,11 +29,13 @@ import {
 import {
   getEstacoesMonta,
   getExamesGestacao,
+  getNascimentosEstacao,
   getHistoricoMatrizes,
   avaliarCandidatasDescarte,
   calcularCustoMargemCriaReal,
   EstacaoMontaRecord,
   ExameGestacaoRecord,
+  NascimentoEstacaoRecord,
   HistoricoMatrizRecord,
   CustosMargemCriaResult,
 } from '@/services/reproducao'
@@ -62,6 +64,7 @@ export default function Reproducao() {
   // Estados de dados do backend
   const [estacoes, setEstacoes] = useState<EstacaoMontaRecord[]>([])
   const [exames, setExames] = useState<ExameGestacaoRecord[]>([])
+  const [nascimentos, setNascimentos] = useState<any[]>([])
   const [matrizes, setMatrizes] = useState<HistoricoMatrizRecord[]>([])
   const [estacaoSelecionadaId, setEstacaoSelecionadaId] = useState<string>('todas')
   const [custosCria, setCustosCria] = useState<CustosMargemCriaResult | null>(null)
@@ -78,14 +81,17 @@ export default function Reproducao() {
   // Carregamento inicial de dados
   const carregarDados = async () => {
     try {
-      const [listaEstacoes, listaExames, listaMatrizes, resCustos] = await Promise.all([
-        getEstacoesMonta(),
-        getExamesGestacao(),
-        getHistoricoMatrizes(),
-        calcularCustoMargemCriaReal(),
-      ])
+      const [listaEstacoes, listaExames, listaNascimentos, listaMatrizes, resCustos] =
+        await Promise.all([
+          getEstacoesMonta(),
+          getExamesGestacao(),
+          getNascimentosEstacao(),
+          getHistoricoMatrizes(),
+          calcularCustoMargemCriaReal(),
+        ])
       setEstacoes(listaEstacoes)
       setExames(listaExames)
+      setNascimentos(listaNascimentos)
       setMatrizes(listaMatrizes)
       setCustosCria(resCustos)
 
@@ -423,6 +429,7 @@ export default function Reproducao() {
             statsEstacao={statsEstacao}
             dadosGraficoEstacoes={dadosGraficoEstacoes}
             dadosDistribuicaoIEP={dadosDistribuicaoIEP}
+            nascimentos={nascimentos}
             onAbrirCadastroResultadoFinal={() => setModalResultadoFinalAberto(true)}
             onAbrirCadastroDg={() => setModalDgAberto(true)}
             onAbrirCadastroIatf={() => setModalIatfAberto(true)}

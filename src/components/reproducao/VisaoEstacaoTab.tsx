@@ -19,7 +19,8 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts'
-import { EstacaoMontaRecord } from '@/services/reproducao'
+import { EstacaoMontaRecord, NascimentoEstacaoRecord } from '@/services/reproducao'
+import { ConfrontoNascimentosSection } from './ConfrontoNascimentosSection'
 
 interface VisaoEstacaoTabProps {
   estacoes: EstacaoMontaRecord[]
@@ -48,6 +49,7 @@ interface VisaoEstacaoTabProps {
     quantidade: number
     pct: number
   }>
+  nascimentos?: NascimentoEstacaoRecord[]
   onAbrirCadastroResultadoFinal?: () => void
   onAbrirCadastroDg?: () => void
   onAbrirCadastroIatf?: () => void
@@ -61,6 +63,7 @@ export function VisaoEstacaoTab({
   statsEstacao,
   dadosGraficoEstacoes,
   dadosDistribuicaoIEP,
+  nascimentos,
   onAbrirCadastroResultadoFinal,
   onAbrirCadastroDg,
   onAbrirCadastroIatf,
@@ -340,6 +343,13 @@ export function VisaoEstacaoTab({
           </div>
         </CardContent>
       </Card>
+
+      {/* SEÇÃO CONFRONTO PREVISTO x REALIZADO & GRÁFICOS CONSOLIDADOS */}
+      <ConfrontoNascimentosSection
+        estacaoAtiva={estacaoAtiva}
+        nascimentos={nascimentos || []}
+        onAbrirCadastroResultadoFinal={onAbrirCadastroResultadoFinal}
+      />
     </div>
   )
 }
