@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T14:12:40.814Z",
+  "generatedAt": "2026-10-23T14:45:58.391Z",
   "collections": [
     {
       "name": "users",
@@ -52,7 +52,8 @@
             "servente",
             "operador",
             "admin",
-            "gerente"
+            "gerente",
+            "funcionario"
           ]
         }
       ],
@@ -2182,7 +2183,15 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["proprietario", "socio", "gestor", "capataz", "vaqueiro", "servente"]
+          "selectValues": [
+            "proprietario",
+            "socio",
+            "gestor",
+            "capataz",
+            "vaqueiro",
+            "servente",
+            "funcionario"
+          ]
         },
         {
           "name": "status",
