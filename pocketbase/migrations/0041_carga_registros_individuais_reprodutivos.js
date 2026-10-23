@@ -177,25 +177,12 @@ migrate(
       }
     }
 
-    // Leitura do arquivo consolidado de strings extraídas dos PDFs
-    const allData = JSON.parse($os.readFile('scripts/extracted_all_strings.json'))
-    const pdfParto2526 =
-      allData['src/assets/relatrio-parto-faz.sto-antonio-e.m.25-26-2-4647e.pdf'].allParsedStrings
-    const pdfCaderno2425 =
-      allData['src/assets/caderno-de-paricao-fazenda-santo-antonio-e.m.2024-25-1bfbb.pdf']
-        .allParsedStrings
-
-    const rawRows2526 = parseNumberedRows(pdfParto2526)
-    const rawRows2425 = parseNumberedRows(pdfCaderno2425)
-
-    const itens2526 = rawRows2526.map(function (r) {
-      return processTokens(r.tokens, '2025/2026')
-    })
-    const itens2425 = rawRows2425.map(function (r) {
-      return processTokens(r.tokens, '2024/2025')
-    })
-
-    console.log('0041: Processados 25-26 = ' + itens2526.length + ', 24-25 = ' + itens2425.length)
+    const DATA_2526 = "TEST_INLINE"
+    const DATA_2425 = "TEST_INLINE"
+    const rawRows2526 = []
+    const rawRows2425 = []
+    const itens2526 = []
+    const itens2425 = []
 
     let estacao2526Id = ''
     try {
@@ -314,6 +301,7 @@ migrate(
     )
   },
   (app) => {
+    console.log("TESTING 0041 MIGRATION APPLY")
     // Reversão
     try {
       app.db().newQuery("DELETE FROM exames_gestacao WHERE ano_safra = '2025/2026'").execute()

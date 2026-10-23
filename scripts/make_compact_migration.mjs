@@ -8,6 +8,8 @@ const pdfCaderno2425 =
   allData['src/assets/caderno-de-paricao-fazenda-santo-antonio-e.m.2024-25-1bfbb.pdf']
     .allParsedStrings
 
+console.log('Generating scripts/compact_data_2526.json and scripts/compact_data_2425.json...')
+
 function ddmmyyyyToYyyymmdd(str) {
   if (!str) return null
   const m = str.match(/(\d{2})\/(\d{2})\/(\d{4})/)
