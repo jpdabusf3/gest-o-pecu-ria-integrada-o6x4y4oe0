@@ -17,6 +17,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { CardProjecaoSafra } from '@/components/gestor/CardProjecaoSafra'
+import { CardEstacaoMontaDashboard } from '@/components/gestor/CardEstacaoMontaDashboard'
 import { TopDesvioGmdCard } from '@/components/gmd/TopDesvioGmdCard'
 import { MedidorBenchmarkAnualCard } from '@/components/gmd/MedidorBenchmarkAnualCard'
 import { WidgetAtividadesSemanaGestor } from '@/components/gestor/WidgetAtividadesSemanaGestor'
@@ -24,6 +25,7 @@ import { CentralNotificacoesGestor } from '@/components/gestor/CentralNotificaco
 import { BannerRecalibracaoAnual } from '@/components/gestor/BannerRecalibracaoAnual'
 import { DesempenhoPorFrenteCard } from '@/components/gestor/DesempenhoPorFrenteCard'
 import { getConfigBenchmarks, ConfigBenchmarkRecord } from '@/services/configBenchmark'
+import { getEstacoesMonta, EstacaoMontaRecord } from '@/services/reproducao'
 import { useAuth } from '@/contexts/AuthContext'
 import { OperatorDashboard } from '@/components/OperatorDashboard'
 import { Link } from 'react-router-dom'
@@ -66,6 +68,7 @@ export default function Index() {
   const [alertas, setAlertas] = useState<AlertaGMDRecord[]>([])
   const [atividades, setAtividades] = useState<AtividadeRecord[]>([])
   const [benchmarks, setBenchmarks] = useState<ConfigBenchmarkRecord[]>([])
+  const [estacoesMonta, setEstacoesMonta] = useState<EstacaoMontaRecord[]>([])
   const [loading, setLoading] = useState(true)
 
   const loadData = useCallback(async () => {
@@ -83,6 +86,7 @@ export default function Index() {
         alertasRes,
         atividadesRes,
         benchmarksRes,
+        estacoesRes,
       ] = await Promise.all([
         getLots(),
         getPesagens(),
@@ -95,6 +99,7 @@ export default function Index() {
         getAlertasGMD(),
         getAtividades(),
         getConfigBenchmarks(),
+        getEstacoesMonta(),
       ])
 
       setLots(lotsRes || [])
@@ -108,6 +113,7 @@ export default function Index() {
       setAlertas(alertasRes || [])
       setAtividades(atividadesRes || [])
       setBenchmarks(benchmarksRes || [])
+      setEstacoesMonta(estacoesRes || [])
     } catch (err) {
       console.warn('Erro ao carregar dados do dashboard real:', err)
     } finally {
@@ -127,6 +133,7 @@ export default function Index() {
   useRealtime('movimentacoes_rebanho', () => loadData())
   useRealtime('vendas', () => loadData())
   useRealtime('estoque_insumos', () => loadData())
+  useRealtime('estacoes_monta', () => loadData())
 
   // Cálculo consolidado a partir do motor oficial fechamento.ts
   const fechamentoConsolidado: FechamentoCompletoResult | null = useMemo(() => {
@@ -544,6 +551,9 @@ export default function Index() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Card da Estação de Monta Atual & Comparativo de Safras */}
+      <CardEstacaoMontaDashboard estacoes={estacoesMonta} loading={loading} />
 
       {/* Seção Desempenho por Frente com Semáforo Camada 1 & Metas do Benchmarking */}
       <DesempenhoPorFrenteCard
