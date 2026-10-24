@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { getEstoqueInsumos, salvarItemEstoque } from '@/services/fechamento'
 import { getLotesRebanho } from '@/services/rebanho'
+import { useAutoRefresh, notifyDataChanged } from '@/lib/syncEvents'
 
 export type LotWeightRecord = { date: string; weight: number }
 
@@ -146,6 +147,18 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
     reloadLots()
   }, [])
 
+  // Atualização em tempo real do FarmContext conectado ao barramento e às coleções PB
+  useAutoRefresh(() => {
+    reloadLots()
+    reloadInventory()
+  }, [
+    'lots',
+    'estoque_insumos',
+    'animais_individuais',
+    'nascimentos_estacao',
+    'movimentacoes_rebanho',
+  ])
+
   const addInventoryItem = (item: Omit<InventoryItem, 'id'>) => {
     setInventory((prev) => [{ ...item, id: `NEW-${crypto.randomUUID()}` }, ...prev])
   }
@@ -219,14 +232,16 @@ export function FarmProvider({ children }: { children: React.ReactNode }) {
       return { ...prev, [loteId]: newHistory }
     })
 
-    setLots((prev) =>
-      prev.map((lot) => {
+    setLots((prev) => {
+      const atualizados = prev.map((lot) => {
         if (lot.id === loteId) {
           return { ...lot, pesoMedio: weight }
         }
         return lot
-      }),
-    )
+      })
+      notifyDataChanged('peso_atualizado', { loteId, weight, date })
+      return atualizados
+    })
   }
 
   const getPredictedSlaughterDate = (loteId: string) => {

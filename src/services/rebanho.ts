@@ -1,4 +1,5 @@
 import pb from '@/lib/pocketbase/client'
+import { notifyDataChanged } from '@/lib/syncEvents'
 import { getDispositivoId, registrarAuditLog } from '@/services/auditoria'
 
 // =============================================================
@@ -177,11 +178,15 @@ export async function criarPastoRebanho(data: {
   if (data.observacoes?.trim()) payload.observacoes = data.observacoes.trim()
   if (data.criado_por?.trim()) payload.criado_por = data.criado_por.trim()
 
-  return await pb.collection('pastos_rebanho').create<PastoRebanhoRecord>(payload)
+  const criado = await pb.collection('pastos_rebanho').create<PastoRebanhoRecord>(payload)
+  notifyDataChanged('pastos_rebanho', { acao: 'criar', id: criado.id })
+  return criado
 }
 
 export async function excluirPastoRebanho(id: string): Promise<boolean> {
-  return await pb.collection('pastos_rebanho').delete(id)
+  const res = await pb.collection('pastos_rebanho').delete(id)
+  notifyDataChanged('pastos_rebanho', { acao: 'excluir', id })
+  return res
 }
 
 export async function atualizarPastoRebanho(
@@ -201,7 +206,9 @@ export async function atualizarPastoRebanho(
   if (data.fazenda !== undefined) payload.fazenda = data.fazenda.trim()
   if (data.observacoes !== undefined) payload.observacoes = data.observacoes.trim()
 
-  return await pb.collection('pastos_rebanho').update<PastoRebanhoRecord>(id, payload)
+  const atualizado = await pb.collection('pastos_rebanho').update<PastoRebanhoRecord>(id, payload)
+  notifyDataChanged('pastos_rebanho', { acao: 'atualizar', id })
+  return atualizado
 }
 
 export async function getLotesRebanho(): Promise<LoteRebanhoRecord[]> {
@@ -256,7 +263,7 @@ export async function criarLoteRebanho(data: {
   registrado_por: string
   registrado_por_id: string
 }): Promise<LoteRebanhoRecord> {
-  return await pb.collection('lots').create<LoteRebanhoRecord>({
+  const lote = await pb.collection('lots').create<LoteRebanhoRecord>({
     name: data.name,
     sector:
       data.fase === 'confinamento' || data.fase === 'engorda'
@@ -281,6 +288,8 @@ export async function criarLoteRebanho(data: {
     is_arrendamento: false,
     gmd_alvo_g_dia: 0,
   })
+  notifyDataChanged('lots', { acao: 'criar', id: lote.id })
+  return lote
 }
 
 export async function atualizarLoteRebanho(
@@ -304,7 +313,9 @@ export async function atualizarLoteRebanho(
   if (data.pasto_atual_id !== undefined) payload.pasto_atual_id = data.pasto_atual_id
   if (data.pasto_atual !== undefined) payload.pasto_atual = data.pasto_atual
   if (data.fase !== undefined) payload.fase_atual = data.fase
-  return await pb.collection('lots').update<LoteRebanhoRecord>(id, payload)
+  const lote = await pb.collection('lots').update<LoteRebanhoRecord>(id, payload)
+  notifyDataChanged('lots', { acao: 'atualizar', id: lote.id })
+  return lote
 }
 
 export async function criarAnimalIndividual(data: {
@@ -319,7 +330,7 @@ export async function criarAnimalIndividual(data: {
   registrado_por: string
   registrado_por_id: string
 }): Promise<AnimalIndividualRecord> {
-  return await pb.collection('animais_individuais').create<AnimalIndividualRecord>({
+  const animal = await pb.collection('animais_individuais').create<AnimalIndividualRecord>({
     brinco: data.brinco.trim(),
     categoria: data.categoria,
     sexo: data.sexo,
@@ -332,6 +343,8 @@ export async function criarAnimalIndividual(data: {
     registrado_por: data.registrado_por,
     registrado_por_id: data.registrado_por_id,
   })
+  notifyDataChanged('animais_individuais', { acao: 'criar', id: animal.id, brinco: animal.brinco })
+  return animal
 }
 
 export async function atualizarAnimalIndividual(
@@ -343,23 +356,29 @@ export async function atualizarAnimalIndividual(
     pasto_atual_id?: string
   },
 ): Promise<AnimalIndividualRecord> {
-  return await pb.collection('animais_individuais').update<AnimalIndividualRecord>(id, data)
+  const animal = await pb.collection('animais_individuais').update<AnimalIndividualRecord>(id, data)
+  notifyDataChanged('animais_individuais', { acao: 'atualizar', id: animal.id })
+  return animal
 }
 
 export async function mudarStatusAnimalIndividual(
   id: string,
   novoStatus: StatusRebanho,
 ): Promise<AnimalIndividualRecord> {
-  return await pb.collection('animais_individuais').update<AnimalIndividualRecord>(id, {
+  const animal = await pb.collection('animais_individuais').update<AnimalIndividualRecord>(id, {
     status: novoStatus,
   })
+  notifyDataChanged('animais_individuais', { acao: 'status', id: animal.id, novoStatus })
+  return animal
 }
 
 export async function mudarStatusLote(
   id: string,
   novoStatus: 'active' | 'sold' | 'abated' | 'inativo',
 ): Promise<LoteRebanhoRecord> {
-  return await pb.collection('lots').update<LoteRebanhoRecord>(id, { status: novoStatus })
+  const lote = await pb.collection('lots').update<LoteRebanhoRecord>(id, { status: novoStatus })
+  notifyDataChanged('lots', { acao: 'status', id: lote.id, novoStatus })
+  return lote
 }
 
 // -------------------------------------------------------------
@@ -426,6 +445,13 @@ export async function transferirParaPasto(params: {
   } catch (e) {
     console.warn('Falha ao registrar auditoria da transferência:', e)
   }
+
+  notifyDataChanged('movimentacoes_pasto', {
+    tipo: params.tipo,
+    registroId: params.registroId,
+    origem: params.pastoOrigemId,
+    destino: params.pastoDestinoId,
+  })
 }
 
 // -------------------------------------------------------------

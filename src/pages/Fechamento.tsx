@@ -59,6 +59,7 @@ import { getConfigBenchmarks, ConfigBenchmarkRecord } from '@/services/configBen
 import { useToast } from '@/hooks/use-toast'
 import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useAutoRefresh } from '@/lib/syncEvents'
 import { getLots, LotRecord } from '@/services/lots'
 import { getPesagens, PesagemRecord } from '@/services/pesagens'
 import {
@@ -172,16 +173,26 @@ export default function Fechamento() {
 
   useEffect(() => {
     carregarDadosReais()
-
-    // Ouve evento global de importação concluída no robô Chicão
-    const handleDadosAtualizados = () => {
-      carregarDadosReais()
-    }
-    window.addEventListener('gpi:dados-atualizados', handleDadosAtualizados)
-    return () => {
-      window.removeEventListener('gpi:dados-atualizados', handleDadosAtualizados)
-    }
   }, [])
+
+  // Auto-refresh reativo a eventos do sistema e banco de dados real
+  useAutoRefresh(
+    () => carregarDadosReais(),
+    [
+      'lots',
+      'pesagens',
+      'movimentacoes_rebanho',
+      'vendas',
+      'compras_gado',
+      'lancamentos_financeiros',
+      'estoque_insumos',
+      'imobilizado',
+      'estacoes_monta',
+      'nascimentos_estacao',
+      'exames_gestacao',
+      'animais_individuais',
+    ],
+  )
 
   // Calcular Fechamento com dados reais (declarado antes dos effects que o usam)
   const resultado = useMemo<FechamentoCompletoResult>(() => {

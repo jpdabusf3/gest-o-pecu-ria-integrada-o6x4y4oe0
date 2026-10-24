@@ -33,6 +33,7 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFarm } from '@/contexts/FarmContext'
+import { useAutoRefresh } from '@/lib/syncEvents'
 import { ModalCadastroRebanho } from '@/components/rebanho/ModalCadastroRebanho'
 import {
   getPastosRebanho,
@@ -151,6 +152,19 @@ export default function Rebanho() {
   useEffect(() => {
     loadData()
   }, [loadData])
+
+  // Assinatura em tempo real e auto-refresh de todas as coleções do rebanho e reprodutivas
+  useAutoRefresh(
+    () => loadData(),
+    [
+      'lots',
+      'animais_individuais',
+      'pastos_rebanho',
+      'movimentacoes_pasto',
+      'nascimentos_estacao',
+      'movimentacoes_rebanho',
+    ],
+  )
 
   const consistencia: ConsistenciaRebanho = useMemo(
     () => calcularConsistencia(pastos, lotes, animais, parseInt(rebanhoEsperado, 10) || 0),

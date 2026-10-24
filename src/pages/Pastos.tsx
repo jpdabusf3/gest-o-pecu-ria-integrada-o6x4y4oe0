@@ -36,10 +36,11 @@ import {
   getLotesRebanho,
   getAnimaisIndividuais,
   criarPastoRebanho,
-  PastoRebanhoRecord,
-  LoteRebanhoRecord,
-  AnimalIndividualRecord,
+  type PastoRebanhoRecord,
+  type LoteRebanhoRecord,
+  type AnimalIndividualRecord,
 } from '@/services/rebanho'
+import { useAutoRefresh } from '@/lib/syncEvents'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function Pastos() {
@@ -87,6 +88,19 @@ export default function Pastos() {
   useEffect(() => {
     carregarDadosPb()
   }, [carregarDadosPb])
+
+  // Atualização em tempo real de pastos, lotes e movimentações
+  useAutoRefresh(
+    () => carregarDadosPb(),
+    [
+      'pastos_rebanho',
+      'lots',
+      'animais_individuais',
+      'movimentacoes_pasto',
+      'movimentacoes_rebanho',
+      'nascimentos_estacao',
+    ],
+  )
 
   const handleCriarNovoPasto = async () => {
     const nomeTrim = novoNome.trim()

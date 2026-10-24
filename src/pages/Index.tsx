@@ -52,6 +52,7 @@ import {
 import { getAlertasGMD, AlertaGMDRecord } from '@/services/gmdAlertas'
 import { getAtividades, AtividadeRecord } from '@/services/atividades'
 import { useRealtime } from '@/hooks/use-realtime'
+import { useAutoRefresh } from '@/lib/syncEvents'
 
 export default function Index() {
   const { user } = useAuth()
@@ -125,15 +126,26 @@ export default function Index() {
     loadData()
   }, [loadData])
 
-  // Assinaturas realtime para manter o dashboard consolidado vivo e reativo
-  useRealtime('lots', () => loadData())
-  useRealtime('pesagens', () => loadData())
-  useRealtime('atividades', () => loadData())
-  useRealtime('alertas_gmd', () => loadData())
-  useRealtime('movimentacoes_rebanho', () => loadData())
-  useRealtime('vendas', () => loadData())
-  useRealtime('estoque_insumos', () => loadData())
-  useRealtime('estacoes_monta', () => loadData())
+  // Assinaturas realtime e barramento de eventos para manter o dashboard consolidado vivo e reativo
+  useAutoRefresh(
+    () => loadData(),
+    [
+      'lots',
+      'pesagens',
+      'atividades',
+      'alertas_gmd',
+      'movimentacoes_rebanho',
+      'vendas',
+      'compras_gado',
+      'lancamentos_financeiros',
+      'estoque_insumos',
+      'estacoes_monta',
+      'nascimentos_estacao',
+      'exames_gestacao',
+      'animais_individuais',
+      'pastos_rebanho',
+    ],
+  )
 
   // Cálculo consolidado a partir do motor oficial fechamento.ts
   const fechamentoConsolidado: FechamentoCompletoResult | null = useMemo(() => {

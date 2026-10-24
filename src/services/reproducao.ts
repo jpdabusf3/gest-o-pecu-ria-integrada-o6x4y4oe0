@@ -20,6 +20,7 @@
  */
 
 import pb from '@/lib/pocketbase/client'
+import { notifyDataChanged } from '@/lib/syncEvents'
 import { registrarAuditLog } from './auditoria'
 import { getAnimaisIndividuais, AnimalIndividualRecord } from './rebanho'
 import { calcularFechamento, getLancamentosFinanceiros, AREAS_FAZENDA_HA } from './fechamento'
@@ -425,7 +426,201 @@ export async function salvarNascimentosEstacao(
     }
   }
 
+  // 2. Sincronização automática com movimentacoes_rebanho e lots para refletir em Rebanho, Dashboard e Fechamento
+  try {
+    await sincronizarNascimentosComRebanho(estacaoId, anoSafra, resultados)
+  } catch (errSync) {
+    console.warn('Erro ao sincronizar nascimentos com rebanho/movimentações:', errSync)
+  }
+
+  // Dispara notificação no barramento global do sistema
+  notifyDataChanged('nascimentos_estacao', { estacaoId, anoSafra, totalItens: resultados.length })
+
   return resultados
+}
+
+/**
+ * Sincroniza os registros de nascimentos_estacao com movimentacoes_rebanho e com o lote de cria da safra
+ * garantindo que o rebanho ativo, entradas por nascimento e indicadores de fechamento reflitam os novos nascidos.
+ */
+export async function sincronizarNascimentosComRebanho(
+  estacaoId: string,
+  anoSafra: string,
+  nascimentosSalvos?: NascimentoEstacaoRecord[],
+): Promise<void> {
+  const listaNasc =
+    nascimentosSalvos && nascimentosSalvos.length > 0
+      ? nascimentosSalvos
+      : await getNascimentosEstacao(estacaoId || anoSafra)
+
+  if (!listaNasc || listaNasc.length === 0) return
+
+  // 1. Busca movimentações de rebanho já existentes do tipo 'nascimento' vinculadas a esta safra
+  let movExistentes: any[] = []
+  try {
+    movExistentes = await pb.collection('movimentacoes_rebanho').getFullList({
+      filter: `tipo = 'nascimento' && (documento ~ '${anoSafra}' || observacoes ~ '${estacaoId}')`,
+    })
+  } catch {
+    movExistentes = []
+  }
+
+  const mapaMovExistentes = new Map<string, any>()
+  movExistentes.forEach((m) => {
+    if (m.documento) {
+      mapaMovExistentes.set(m.documento, m)
+    }
+  })
+
+  // Agrupa os nascimentos por sexo e mês de referência para criar movimentações coerentes
+  for (const nasc of listaNasc) {
+    const docKey = `NASC_${nasc.id}`
+    const pesoMedio =
+      nasc.peso_medio_nasc_kg && nasc.peso_medio_nasc_kg > 0 ? nasc.peso_medio_nasc_kg : 32
+    const pesoTotal = (nasc.quantidade || 0) * pesoMedio
+
+    // Data aproximada baseada no ano da safra e mês de referência
+    let dataMov = nasc.data_referencia
+    if (!dataMov) {
+      const mapaMeses: Record<string, string> = {
+        JAN: '01',
+        FEV: '02',
+        MAR: '03',
+        ABR: '04',
+        MAI: '05',
+        JUN: '06',
+        JUL: '07',
+        AGO: '08',
+        SET: '09',
+        OUT: '10',
+        NOV: '11',
+        DEZ: '12',
+      }
+      const mesNum = mapaMeses[nasc.mes_referencia?.toUpperCase()] || '08'
+      const anoParto = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN'].includes(
+        nasc.mes_referencia?.toUpperCase(),
+      )
+        ? anoSafra.split('/')[1] || new Date().getFullYear().toString()
+        : anoSafra.split('/')[0] || new Date().getFullYear().toString()
+      dataMov = `${anoParto}-${mesNum}-15`
+    }
+
+    const payloadMov = {
+      data: dataMov,
+      frente: 'cria',
+      tipo: 'nascimento',
+      qtd_cabecas: nasc.quantidade,
+      peso_total_kg: pesoTotal,
+      valor_total_rs: 0,
+      documento: docKey,
+      sexo: nasc.sexo === 'femea' ? 'femea' : 'macho',
+      observacoes: `Nascimentos da Estação (${anoSafra} - ${nasc.mes_referencia}): ${nasc.raca || 'Nelore'} [${estacaoId}]`,
+    }
+
+    const movJaExiste = mapaMovExistentes.get(docKey)
+    if (movJaExiste) {
+      if (movJaExiste.qtd_cabecas !== nasc.quantidade || movJaExiste.peso_total_kg !== pesoTotal) {
+        await pb.collection('movimentacoes_rebanho').update(movJaExiste.id, payloadMov)
+      }
+    } else {
+      await pb.collection('movimentacoes_rebanho').create(payloadMov)
+    }
+  }
+
+  // 2. Garante que exista um lote ativo correspondente de Bezerros da Safra na coleção 'lots'
+  // para que as telas de Rebanho Atual, Dashboard e Pastos exibam essas cabeças
+  try {
+    const totalMachos = listaNasc
+      .filter((n) => n.sexo === 'macho')
+      .reduce((acc, n) => acc + (n.quantidade || 0), 0)
+    const totalFemeas = listaNasc
+      .filter((n) => n.sexo === 'femea')
+      .reduce((acc, n) => acc + (n.quantidade || 0), 0)
+
+    let pastoPadraoId: string | undefined = undefined
+    try {
+      const pastos = await pb.collection('pastos_rebanho').getFullList({ limit: 1 })
+      if (pastos.length > 0) pastoPadraoId = pastos[0].id
+    } catch {
+      // pasto opcional
+    }
+
+    // Lote de Bezerros Machos
+    if (totalMachos > 0) {
+      const nomeLoteM = `Bezerros Nascidos Safra ${anoSafra}`
+      let loteM: any = null
+      try {
+        loteM = await pb.collection('lots').getFirstListItem(`name = '${nomeLoteM}'`)
+      } catch {
+        loteM = null
+      }
+
+      const payloadLoteM = {
+        name: nomeLoteM,
+        sector: 'cria',
+        sex: 'macho',
+        category: 'Bezerro(a)',
+        initial_weight: 32,
+        final_weight: 0,
+        entry_date: `${anoSafra.split('/')[0] || new Date().getFullYear()}-07-01`,
+        status: 'active',
+        headcount: totalMachos,
+        peso_entrada_medio: 32,
+        peso_medio_atual: 34,
+        fase_atual: 'cria',
+        frente: 'cria',
+        pasto_atual_id: pastoPadraoId || undefined,
+        pasto_atual: pastoPadraoId ? 'Maternidade / Cria' : undefined,
+      }
+
+      if (loteM) {
+        if (loteM.headcount !== totalMachos) {
+          await pb.collection('lots').update(loteM.id, { headcount: totalMachos })
+        }
+      } else {
+        await pb.collection('lots').create(payloadLoteM)
+      }
+    }
+
+    // Lote de Bezerras Fêmeas
+    if (totalFemeas > 0) {
+      const nomeLoteF = `Bezerras Nascidas Safra ${anoSafra}`
+      let loteF: any = null
+      try {
+        loteF = await pb.collection('lots').getFirstListItem(`name = '${nomeLoteF}'`)
+      } catch {
+        loteF = null
+      }
+
+      const payloadLoteF = {
+        name: nomeLoteF,
+        sector: 'cria',
+        sex: 'femea',
+        category: 'Bezerro(a)',
+        initial_weight: 30,
+        final_weight: 0,
+        entry_date: `${anoSafra.split('/')[0] || new Date().getFullYear()}-07-01`,
+        status: 'active',
+        headcount: totalFemeas,
+        peso_entrada_medio: 30,
+        peso_medio_atual: 32,
+        fase_atual: 'cria',
+        frente: 'cria',
+        pasto_atual_id: pastoPadraoId || undefined,
+        pasto_atual: pastoPadraoId ? 'Maternidade / Cria' : undefined,
+      }
+
+      if (loteF) {
+        if (loteF.headcount !== totalFemeas) {
+          await pb.collection('lots').update(loteF.id, { headcount: totalFemeas })
+        }
+      } else {
+        await pb.collection('lots').create(payloadLoteF)
+      }
+    }
+  } catch (errLote) {
+    console.warn('Erro ao atualizar lotes de nascimentos:', errLote)
+  }
 }
 
 // ============================================================================
@@ -659,9 +854,7 @@ export async function cadastrarAcaoIatf(
     }
   }
 
-  window.dispatchEvent(
-    new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'reproducao_iatf' } }),
-  )
+  notifyDataChanged('reproducao_iatf', { estacaoId: estacaoIdFinal, lote: input.lote_nome })
   return {
     sucesso: true,
     estacaoId: estacaoIdFinal || '',
@@ -898,9 +1091,7 @@ export async function cadastrarDiagnosticosGestacao(
     }
   }
 
-  window.dispatchEvent(
-    new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'reproducao_dg' } }),
-  )
+  notifyDataChanged('reproducao_dg', { estacaoId: estacao.id, totalGravados })
 
   return {
     sucesso: totalGravados > 0,
@@ -992,9 +1183,10 @@ export async function cadastrarResultadoFinalEstacao(
     }
   }
 
-  window.dispatchEvent(
-    new CustomEvent('gpi:dados-atualizados', { detail: { origem: 'reproducao_fechamento' } }),
-  )
+  notifyDataChanged('reproducao_fechamento', {
+    estacaoId: estacaoSalva.id,
+    anoSafra: input.ano_safra,
+  })
 
   return {
     sucesso: true,

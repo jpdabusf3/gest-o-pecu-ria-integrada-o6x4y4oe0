@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useAutoRefresh } from '@/lib/syncEvents'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -109,15 +110,20 @@ export default function Reproducao() {
 
   useEffect(() => {
     carregarDados()
-
-    const handleAtualizacao = () => {
-      carregarDados()
-    }
-    window.addEventListener('gpi:dados-atualizados', handleAtualizacao)
-    return () => {
-      window.removeEventListener('gpi:dados-atualizados', handleAtualizacao)
-    }
   }, [])
+
+  // Auto-refresh conectado a eventos locais, abas e PocketBase Realtime
+  useAutoRefresh(
+    () => carregarDados(),
+    [
+      'estacoes_monta',
+      'exames_gestacao',
+      'nascimentos_estacao',
+      'historico_matrizes',
+      'lancamentos_financeiros',
+      'lots',
+    ],
+  )
 
   // Estação ativa selecionada
   const estacaoAtiva = useMemo(() => {
