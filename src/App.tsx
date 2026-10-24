@@ -27,6 +27,7 @@ import ProjecaoVendas from './pages/ProjecaoVendas'
 import Colaboradores from './pages/Colaboradores'
 import Auditoria from './pages/Auditoria'
 import MinhaEquipe from './pages/MinhaEquipe'
+import Usuarios from './pages/Usuarios'
 import { PainelOcorrenciasGestor } from './components/gestor/PainelOcorrenciasGestor'
 import Configuracoes from './pages/Configuracoes'
 import Administrativo from './pages/Administrativo'
@@ -211,6 +212,14 @@ const App = () => (
                         element={
                           <RoleRoute allowedRoles={['proprietario', 'gestor', 'socio']}>
                             <Colaboradores />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="/usuarios"
+                        element={
+                          <RoleRoute allowedRoles={['proprietario', 'gestor']}>
+                            <Usuarios />
                           </RoleRoute>
                         }
                       />

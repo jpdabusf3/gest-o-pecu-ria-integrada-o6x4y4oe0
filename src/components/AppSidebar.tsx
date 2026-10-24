@@ -27,6 +27,7 @@ import {
   Users,
   Bot,
   HeartHandshake,
+  ShieldCheck,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
@@ -644,6 +645,20 @@ export function AppSidebar() {
                 RBAC
               </Badge>
             </Link>
+
+            {(isGestor || isProprietario) && (
+              <Link
+                to="/usuarios"
+                className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                  isActive('/usuarios')
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                    : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                }`}
+              >
+                <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                <span className="flex-1">Gestão de Usuários</span>
+              </Link>
+            )}
 
             <Link
               to="/ocorrencias"

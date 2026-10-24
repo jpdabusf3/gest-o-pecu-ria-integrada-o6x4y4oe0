@@ -19,6 +19,8 @@ import { useAppNotifications } from '@/contexts/NotificationContext'
 import { useMarket } from '@/contexts/MarketContext'
 import { BenchmarkingConfigTab } from '@/components/reports/BenchmarkingConfigTab'
 import { BenchmarkingHistoricoTab } from '@/components/reports/BenchmarkingHistoricoTab'
+import { ModalFotoPerfil } from '@/components/perfil/ModalFotoPerfil'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Save,
   UserCog,
@@ -29,6 +31,8 @@ import {
   History,
   ShieldAlert,
   CheckCircle2,
+  Camera,
+  Users,
 } from 'lucide-react'
 
 export default function Configuracoes() {
@@ -47,6 +51,7 @@ export default function Configuracoes() {
     }
   }, [searchParams, abaAtiva])
 
+  const [fotoModalOpen, setFotoModalOpen] = useState(false)
   const [email, setEmail] = useState(user.email)
   const [whatsapp, setWhatsapp] = useState(user.whatsapp || '')
   const [password, setPassword] = useState('')
@@ -152,6 +157,11 @@ export default function Configuracoes() {
           <TabsTrigger value="mercado" className="py-2">
             Mercado
           </TabsTrigger>
+          {(user.role === 'gestor' || user.role === 'proprietario' || user.role === 'admin') && (
+            <TabsTrigger value="usuarios" className="py-2 gap-1.5 font-semibold text-primary">
+              <Users className="w-3.5 h-3.5" /> Gestão de Usuários
+            </TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value="benchmark" className="mt-0 space-y-6">
@@ -167,10 +177,34 @@ export default function Configuracoes() {
             <CardHeader>
               <CardTitle>Meu Perfil</CardTitle>
               <CardDescription>
-                Atualize seu e-mail, telefone de contato e credenciais de segurança.
+                Atualize sua foto, e-mail, telefone de contato e credenciais de segurança.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
+              {/* Foto de Perfil */}
+              <div className="flex items-center gap-4 pb-4 border-b border-border">
+                <Avatar className="h-20 w-20 border-2 border-primary/20 shadow-sm">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className="text-xl font-bold bg-primary/10 text-primary">
+                    {user.name?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="space-y-1.5">
+                  <h4 className="text-sm font-semibold">{user.name}</h4>
+                  <p className="text-xs text-muted-foreground">{user.email}</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5 h-8 text-xs"
+                    onClick={() => setFotoModalOpen(true)}
+                  >
+                    <Camera className="h-3.5 w-3.5 text-primary" />
+                    Alterar Foto de Perfil
+                  </Button>
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email">E-mail de Acesso</Label>
                 <Input
@@ -376,6 +410,32 @@ export default function Configuracoes() {
           </Card>
         </TabsContent>
 
+        {(user.role === 'gestor' || user.role === 'proprietario' || user.role === 'admin') && (
+          <TabsContent value="usuarios" className="mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  Usuários e Funcionários
+                </CardTitle>
+                <CardDescription>
+                  Acesse a central completa de criação, edição e controle de papéis e senhas de
+                  usuários.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Como gestor ou proprietário, você pode gerenciar todas as credenciais de acesso,
+                  criar novos colaboradores e redefinir senhas na área dedicada.
+                </p>
+                <Button onClick={() => window.location.assign('/usuarios')} className="gap-2">
+                  <Users className="h-4 w-4" /> Ir para Gestão de Usuários e Funcionários
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
+
         <TabsContent value="mercado" className="mt-0">
           <Card>
             <CardHeader>
@@ -424,6 +484,8 @@ export default function Configuracoes() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <ModalFotoPerfil open={fotoModalOpen} onOpenChange={setFotoModalOpen} />
     </div>
   )
 }

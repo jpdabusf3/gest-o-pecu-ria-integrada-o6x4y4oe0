@@ -24,8 +24,8 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const { login, isLoadingAuth } = useAuth()
   const { toast } = useToast()
 
-  const [nomeUsuario, setNomeUsuario] = useState('João Pedro')
-  const [password, setPassword] = useState('Skip@Pass')
+  const [nomeUsuario, setNomeUsuario] = useState('')
+  const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -54,7 +54,6 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
 
   const handleQuickFill = (quickName: string) => {
     setNomeUsuario(quickName)
-    setPassword('Skip@Pass')
   }
 
   return (
@@ -66,19 +65,19 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
             <DialogTitle>Autenticação do Sistema</DialogTitle>
           </div>
           <DialogDescription>
-            Acesse com o <strong>Nome do usuário</strong> e a senha cadastrada. Você também pode
-            utilizar seu e-mail corporativo.
+            Acesse com o <strong>Nome do usuário</strong> ou <strong>e-mail cadastrado</strong> e
+            sua respectiva senha.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleLogin} className="space-y-4 pt-2">
           <div className="space-y-1.5">
-            <Label className="text-xs font-semibold">Nome do usuário</Label>
+            <Label className="text-xs font-semibold">Nome do usuário ou E-mail</Label>
             <Input
               type="text"
               value={nomeUsuario}
               onChange={(e) => setNomeUsuario(e.target.value)}
-              placeholder="Ex: João Pedro ou seu.email@pecuariaf3.com.br"
+              placeholder="Ex: João Pedro ou Claudio Figueiredo"
               autoComplete="username"
               required
             />
@@ -97,42 +96,14 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
           </div>
 
           <div className="p-3 bg-muted/40 rounded-lg space-y-2 border text-xs">
-            <span className="font-semibold text-muted-foreground block">
-              Usuários cadastrados na equipe:
-            </span>
+            <span className="font-semibold text-muted-foreground block">Contas do sistema:</span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-              <button
-                type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('Dr. Carlos Eduardo')}
-              >
-                <span className="truncate">Dr. Carlos (Proprietário)</span>
-                <Badge
-                  variant="outline"
-                  className="text-[9px] shrink-0 text-amber-600 border-amber-300"
-                >
-                  Proprietário
-                </Badge>
-              </button>
-              <button
-                type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('Mariana Castro')}
-              >
-                <span className="truncate">Mariana (Sócia Adm)</span>
-                <Badge
-                  variant="outline"
-                  className="text-[9px] shrink-0 text-blue-600 border-blue-300"
-                >
-                  Sócio
-                </Badge>
-              </button>
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
                 onClick={() => handleQuickFill('João Pedro')}
               >
-                <span className="truncate">João Pedro (Gestor RT)</span>
+                <span className="truncate">João Pedro</span>
                 <Badge
                   variant="outline"
                   className="text-[9px] shrink-0 text-emerald-600 border-emerald-300"
@@ -143,46 +114,19 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               <button
                 type="button"
                 className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('Antônio Capataz')}
+                onClick={() => handleQuickFill('Claudio Figueiredo')}
               >
-                <span className="truncate">Antônio (Capataz)</span>
+                <span className="truncate">Claudio Figueiredo</span>
                 <Badge
                   variant="outline"
-                  className="text-[9px] shrink-0 text-purple-600 border-purple-300"
+                  className="text-[9px] shrink-0 text-amber-600 border-amber-300"
                 >
-                  Capataz
-                </Badge>
-              </button>
-              <button
-                type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('João Vaqueiro')}
-              >
-                <span className="truncate">João Vaqueiro (Campo)</span>
-                <Badge
-                  variant="outline"
-                  className="text-[9px] shrink-0 text-sky-600 border-sky-300"
-                >
-                  Vaqueiro
-                </Badge>
-              </button>
-              <button
-                type="button"
-                className="text-left text-xs text-primary hover:underline flex justify-between items-center p-1 rounded hover:bg-muted/50"
-                onClick={() => handleQuickFill('Tiago Servente')}
-              >
-                <span className="truncate">Tiago (Servente Trato)</span>
-                <Badge
-                  variant="outline"
-                  className="text-[9px] shrink-0 text-slate-600 border-slate-300"
-                >
-                  Servente
+                  Proprietário
                 </Badge>
               </button>
             </div>
             <p className="text-[10px] text-muted-foreground pt-1">
-              Senha padrão para todas as contas:{' '}
-              <code className="font-mono font-bold">Skip@Pass</code>
+              Informe suas credenciais registradas pela administração da fazenda.
             </p>
           </div>
 

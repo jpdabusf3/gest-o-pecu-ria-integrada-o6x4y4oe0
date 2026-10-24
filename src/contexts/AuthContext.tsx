@@ -57,75 +57,75 @@ export const defaultPreferences: UserPreferences = {
 
 export const fallbackUsers: Record<Role, User> = {
   proprietario: {
-    id: 'usr-proprietario',
-    name: 'Dr. Carlos Eduardo',
-    email: 'proprietario@pecuariaf3.com.br',
+    id: '6eiq0dto75keczg',
+    name: 'Claudio Figueiredo',
+    email: 'claudiodabus@gmail.com',
     role: 'proprietario',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=8',
+    avatar: '',
     preferences: defaultPreferences,
   },
   socio: {
-    id: 'usr-socio',
-    name: 'Mariana Castro',
-    email: 'socio@pecuariaf3.com.br',
+    id: '6eiq0dto75keczg',
+    name: 'Claudio Figueiredo',
+    email: 'claudiodabus@gmail.com',
     role: 'socio',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=female&seed=9',
+    avatar: '',
     preferences: defaultPreferences,
   },
   gestor: {
-    id: 'usr-gestor',
-    name: 'João Pedro (Gestor)',
+    id: 'ei0g5ismjk9jzy8',
+    name: 'João Pedro',
     email: 'joaopedro_zoo@hotmail.com',
     role: 'gestor',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=1',
+    avatar: '',
     preferences: defaultPreferences,
   },
   capataz: {
     id: 'usr-capataz',
-    name: 'Antônio Capataz',
-    email: 'antonio.capataz@pecuariaf3.com.br',
+    name: 'Capataz',
+    email: 'capataz@pecuariaf3.com.br',
     role: 'capataz',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=2',
+    avatar: '',
     preferences: { ...defaultPreferences, compactMode: true },
   },
   vaqueiro: {
     id: 'usr-vaqueiro',
-    name: 'João Vaqueiro',
-    email: 'joao.vaqueiro@pecuariaf3.com.br',
+    name: 'Vaqueiro',
+    email: 'vaqueiro@pecuariaf3.com.br',
     role: 'vaqueiro',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=3',
+    avatar: '',
     preferences: { ...defaultPreferences, compactMode: true },
   },
   servente: {
     id: 'usr-servente',
-    name: 'Tiago Servente',
-    email: 'tiago.servente@pecuariaf3.com.br',
+    name: 'Servente',
+    email: 'servente@pecuariaf3.com.br',
     role: 'servente',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=6',
+    avatar: '',
     preferences: { ...defaultPreferences, compactMode: true },
   },
   operador: {
     id: 'usr-operador',
-    name: 'João Vaqueiro',
-    email: 'joao.vaqueiro@pecuariaf3.com.br',
+    name: 'Operador',
+    email: 'operador@pecuariaf3.com.br',
     role: 'operador',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=3',
+    avatar: '',
     preferences: { ...defaultPreferences, compactMode: true },
   },
   admin: {
-    id: 'usr-admin',
-    name: 'Admin Sistema',
-    email: 'admin@pecuariaf3.com.br',
+    id: 'ei0g5ismjk9jzy8',
+    name: 'João Pedro',
+    email: 'joaopedro_zoo@hotmail.com',
     role: 'admin',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=4',
+    avatar: '',
     preferences: defaultPreferences,
   },
   gerente: {
-    id: 'usr-gerente',
-    name: 'Gerente Operacional',
-    email: 'gerente@pecuariaf3.com.br',
+    id: 'ei0g5ismjk9jzy8',
+    name: 'João Pedro',
+    email: 'joaopedro_zoo@hotmail.com',
     role: 'gerente',
-    avatar: 'https://img.usecurling.com/ppl/medium?gender=male&seed=5',
+    avatar: '',
     preferences: defaultPreferences,
   },
 }
@@ -137,6 +137,8 @@ interface AuthContextType {
   logout: () => void
   switchRole: (role: Role) => void
   updatePreferences: (preferences: Partial<UserPreferences>) => void
+  updateAvatar: (file: File) => Promise<string>
+  removeAvatar: () => Promise<void>
   isProprietario: boolean
   isSocio: boolean
   isGestor: boolean
@@ -165,9 +167,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         name: pbAuth.name || pbAuth.email || 'Usuário Autenticado',
         email: pbAuth.email || '',
         role,
-        avatar: pbAuth.avatar
-          ? pb.files.getURL(pbAuth, pbAuth.avatar)
-          : `https://img.usecurling.com/ppl/medium?gender=male&seed=${pbAuth.id.slice(-1) || '1'}`,
+        avatar: pbAuth.avatar ? pb.files.getURL(pbAuth, pbAuth.avatar) : '',
         preferences: defaultPreferences,
       }
     }
@@ -201,9 +201,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: model.name || model.email || 'Usuário Autenticado',
           email: model.email || '',
           role,
-          avatar: model.avatar
-            ? pb.files.getURL(model, model.avatar)
-            : `https://img.usecurling.com/ppl/medium?gender=male&seed=${model.id.slice(-1) || '1'}`,
+          avatar: model.avatar ? pb.files.getURL(model, model.avatar) : '',
           preferences: defaultPreferences,
         })
       }
@@ -248,7 +246,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             return nomeNorm === termoNorm
           })
 
-          // Match inicial ou por primeiro nome (ex: "João", "Dr. Carlos", "Antônio")
+          // Match inicial ou por primeiro nome (ex: "João", "Claudio")
           const matchAproximado =
             matchExato ||
             equipeRecords.find((rec) => {
@@ -343,9 +341,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: r.name || termo || r.email,
           email: r.email,
           role,
-          avatar: r.avatar
-            ? pb.files.getURL(r, r.avatar)
-            : `https://img.usecurling.com/ppl/medium?gender=male&seed=${r.id.slice(-1) || '1'}`,
+          avatar: r.avatar ? pb.files.getURL(r, r.avatar) : '',
           preferences: defaultPreferences,
         })
         return true
@@ -386,6 +382,72 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
     }))
   }, [])
+
+  // Atualização imediata de foto de perfil
+  const updateAvatar = useCallback(
+    async (file: File): Promise<string> => {
+      const maxSize = 5 * 1024 * 1024 // 5MB
+      if (file.size > maxSize) {
+        throw new Error('A imagem deve ter no máximo 5MB.')
+      }
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+      if (!validTypes.includes(file.type)) {
+        throw new Error('Formato inválido. Use JPG, PNG, WEBP ou GIF.')
+      }
+
+      const formData = new FormData()
+      formData.append('avatar', file)
+
+      const targetId = currentUser.id
+      if (targetId && !targetId.startsWith('usr-')) {
+        const updated = await pb.collection('users').update(targetId, formData)
+        const newUrl = updated.avatar ? pb.files.getURL(updated, updated.avatar) : ''
+        setCurrentUser((prev) => {
+          const updatedUser = {
+            ...prev,
+            avatar: newUrl,
+            avatarUrl: newUrl,
+          }
+          localStorage.setItem('gpi_auth_user', JSON.stringify(updatedUser))
+          return updatedUser
+        })
+        return newUrl
+      } else {
+        // Fallback local caso não tenha ID no PocketBase
+        const localUrl = URL.createObjectURL(file)
+        setCurrentUser((prev) => {
+          const updatedUser = {
+            ...prev,
+            avatar: localUrl,
+            avatarUrl: localUrl,
+          }
+          localStorage.setItem('gpi_auth_user', JSON.stringify(updatedUser))
+          return updatedUser
+        })
+        return localUrl
+      }
+    },
+    [currentUser.id],
+  )
+
+  const removeAvatar = useCallback(async (): Promise<void> => {
+    const targetId = currentUser.id
+    if (targetId && !targetId.startsWith('usr-')) {
+      const formData = new FormData()
+      formData.append('avatar', '')
+      await pb.collection('users').update(targetId, formData)
+    }
+
+    setCurrentUser((prev) => {
+      const updatedUser = {
+        ...prev,
+        avatar: '',
+        avatarUrl: '',
+      }
+      localStorage.setItem('gpi_auth_user', JSON.stringify(updatedUser))
+      return updatedUser
+    })
+  }, [currentUser.id])
 
   // Mapeamento e flags dos 6 perfis em ordem hierárquica
   const isProprietario = currentUser.role === 'proprietario' || currentUser.role === 'admin'
@@ -430,6 +492,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
         switchRole,
         updatePreferences,
+        updateAvatar,
+        removeAvatar,
         isProprietario,
         isSocio,
         isGestor,

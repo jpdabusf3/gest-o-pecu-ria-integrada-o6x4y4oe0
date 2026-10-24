@@ -31,22 +31,24 @@ import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
 import { LoginModal } from './LoginModal'
-import { LogIn, LogOut, UserCheck } from 'lucide-react'
+import { ModalFotoPerfil } from '@/components/perfil/ModalFotoPerfil'
+import { LogIn, LogOut, Camera, Users as UsersIcon } from 'lucide-react'
 
 export function Header() {
-  const { user, switchRole, logout } = useAuth()
+  const { user, switchRole, logout, isGestor, isProprietario } = useAuth()
   const { toast } = useToast()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useAppNotifications()
   const { isOnline, toggleSimulatedOffline, isSyncing, queue } = useOffline()
   const navigate = useNavigate()
   const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [fotoModalOpen, setFotoModalOpen] = useState(false)
 
   const handleUserSwitch = (roleKey: keyof typeof fallbackUsers) => {
     switchRole(roleKey)
     const target = fallbackUsers[roleKey]
     toast({
       title: 'Perfil Selecionado',
-      description: `Você agora está operando como ${target.name} (${roleKey === 'gestor' ? 'Gestor' : roleKey === 'capataz' ? 'Capataz' : 'Vaqueiro'}).`,
+      description: `Você agora está operando como ${target.name}.`,
     })
   }
 
@@ -195,7 +197,9 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <Avatar className="h-9 w-9 border-2 border-primary/20 cursor-pointer transition-transform hover:scale-105 hidden sm:flex">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name?.charAt(0) || 'U'}</AvatarFallback>
+              <AvatarFallback className="font-bold text-xs bg-primary/10 text-primary">
+                {user.name?.charAt(0) || 'U'}
+              </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-64">
@@ -209,47 +213,23 @@ export function Header() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer" onClick={() => setLoginModalOpen(true)}>
-              <LogIn className="mr-2 h-4 w-4 text-primary" />
-              <span>Entrar com Outro Usuário</span>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setFotoModalOpen(true)}>
+              <Camera className="mr-2 h-4 w-4 text-primary" />
+              <span>Alterar Foto de Perfil</span>
             </DropdownMenuItem>
+            {(isGestor || isProprietario) && (
+              <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/usuarios')}>
+                <UsersIcon className="mr-2 h-4 w-4 text-emerald-600" />
+                <span>Gestão de Usuários</span>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/configuracoes')}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Configurações</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel className="text-[11px] text-muted-foreground uppercase font-semibold">
-              Alternar Perfil Rápido
-            </DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => handleUserSwitch('proprietario')}
-              className="cursor-pointer"
-            >
-              Dr. Carlos (Proprietário)
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleUserSwitch('socio')} className="cursor-pointer">
-              Mariana (Sócia Executiva)
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleUserSwitch('gestor')} className="cursor-pointer">
-              João Pedro (Gestor Geral)
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleUserSwitch('capataz')}
-              className="cursor-pointer"
-            >
-              Antônio (Capataz)
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleUserSwitch('vaqueiro')}
-              className="cursor-pointer"
-            >
-              João (Vaqueiro / Campo)
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleUserSwitch('servente')}
-              className="cursor-pointer"
-            >
-              Tiago (Servente / Trato)
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setLoginModalOpen(true)}>
+              <LogIn className="mr-2 h-4 w-4 text-primary" />
+              <span>Entrar com Outro Usuário</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -263,6 +243,7 @@ export function Header() {
         </DropdownMenu>
 
         <LoginModal open={loginModalOpen} onOpenChange={setLoginModalOpen} />
+        <ModalFotoPerfil open={fotoModalOpen} onOpenChange={setFotoModalOpen} />
       </div>
     </header>
   )
